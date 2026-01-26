@@ -2,7 +2,7 @@
 Advanced Validation & Diagnostics
 ==================================
 
-Comprehensive validation and diagnostic tools.
+Validation and diagnostic tools.
 
 Features:
 - Advanced cross-validation
@@ -13,27 +13,30 @@ Features:
 Examples
 --------
 >>> from geostats.diagnostics import comprehensive_validation, outlier_analysis
->>> 
+>>>
 >>> # Full diagnostic suite
 >>> results = comprehensive_validation(x, y, z, variogram_model)
->>> print(results['diagnostics'])
+>>> logger.info(results['diagnostics'])
 """
 
 from .validation_suite import (
-    comprehensive_validation,
-    spatial_validation,
-    model_diagnostics,
+ comprehensive_validation,
+ spatial_validation,
+ model_diagnostics,
 )
 
 from .outlier_detection import (
-    outlier_analysis,
-    robust_validation,
+import logging
+
+logger = logging.getLogger(__name__)
+ outlier_analysis,
+ robust_validation,
 )
 
 __all__ = [
-    'comprehensive_validation',
-    'spatial_validation',
-    'model_diagnostics',
-    'outlier_analysis',
-    'robust_validation',
+ 'comprehensive_validation',
+ 'spatial_validation',
+ 'model_diagnostics',
+ 'outlier_analysis',
+ 'robust_validation',
 ]

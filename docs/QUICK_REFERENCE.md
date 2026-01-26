@@ -1,6 +1,6 @@
 # GeoStats Library - Quick Reference Card
 
-## 🆕 New Advanced Features
+## New Advanced Features
 
 ### 1. Normal Score Transform
 ```python
@@ -19,11 +19,11 @@ original = nst.inverse_transform(normal_scores)
 from geostats.algorithms import ExternalDriftKriging
 
 # Kriging with external covariate (e.g., elevation)
-edk = ExternalDriftKriging(x, y, temperature, 
-                           covariates_data=elevation,
-                           variogram_model=model)
-pred, var = edk.predict(x_new, y_new, 
-                        covariates_new=elevation_new)
+edk = ExternalDriftKriging(x, y, temperature,
+ covariates_data=elevation,
+ variogram_model=model)
+pred, var = edk.predict(x_new, y_new,
+ covariates_new=elevation_new)
 ```
 
 ### 3. Neighborhood Search
@@ -32,10 +32,10 @@ from geostats.algorithms import NeighborhoodSearch, NeighborhoodConfig
 
 # Configure search with octant distribution
 config = NeighborhoodConfig(
-    max_neighbors=25,
-    search_radius=50,
-    use_octants=True,
-    max_per_octant=3
+ max_neighbors=25,
+ search_radius=50,
+ use_octants=True,
+ max_per_octant=3
 )
 
 ns = NeighborhoodSearch(x, y, config)
@@ -48,14 +48,14 @@ from geostats.algorithms import fit_nested_variogram
 
 # Fit multi-scale variogram (e.g., nugget + short + long range)
 nested = fit_nested_variogram(
-    lags, semivariance,
-    n_structures=2,
-    model_types=['spherical', 'exponential']
+ lags, semivariance,
+ n_structures=2,
+ model_types=['spherical', 'exponential']
 )
 
 # Evaluate
-gamma = nested(h)  # At distance h
-print(nested)  # Shows nugget + structures
+gamma = nested(h) # At distance h
+print(nested) # Shows nugget + structures
 ```
 
 ### 5. Declustering
@@ -75,13 +75,13 @@ print(f"Bias correction: {info['mean_difference']}")
 from geostats.algorithms import LognormalKriging
 
 # For lognormally distributed data (e.g., ore grades)
-lnk = LognormalKriging(x, y, z_lognormal, 
-                       variogram_model=model,
-                       kriging_type='ordinary')
+lnk = LognormalKriging(x, y, z_lognormal,
+ variogram_model=model,
+ kriging_type='ordinary')
 
 # Predict with proper back-transform
-pred = lnk.predict(x_new, y_new, 
-                   back_transform_method='unbiased')
+pred = lnk.predict(x_new, y_new,
+ back_transform_method='unbiased')
 ```
 
 ### 7. 3D Kriging
@@ -89,8 +89,8 @@ pred = lnk.predict(x_new, y_new,
 from geostats.algorithms import OrdinaryKriging3D
 
 # Full 3D spatial interpolation
-ok3d = OrdinaryKriging3D(x, y, z_coord, values, 
-                         variogram_model_3d)
+ok3d = OrdinaryKriging3D(x, y, z_coord, values,
+ variogram_model_3d)
 
 # Predict in 3D space
 pred, var = ok3d.predict(x_new, y_new, z_new)
@@ -102,9 +102,9 @@ from geostats.simulation import SequentialIndicatorSimulation, SISConfig
 
 # Non-parametric simulation
 config = SISConfig(
-    n_realizations=100,
-    n_thresholds=5,
-    random_seed=42
+ n_realizations=100,
+ n_thresholds=5,
+ random_seed=42
 )
 
 sis = SequentialIndicatorSimulation(x, y, z, config)
@@ -115,8 +115,8 @@ realizations = sis.simulate(x_grid, y_grid)
 
 # Get statistics
 stats = sis.get_statistics(realizations)
-e_type = stats['e_type']  # Mean
-uncertainty = stats['uncertainty']  # Std
+e_type = stats['e_type'] # Mean
+uncertainty = stats['uncertainty'] # Std
 ```
 
 ### 9. Block Kriging (Support Change)
@@ -124,14 +124,14 @@ uncertainty = stats['uncertainty']  # Std
 from geostats.algorithms import BlockKriging
 
 # Estimate block averages (e.g., mining blocks)
-bk = BlockKriging(x, y, z, 
-                  variogram_model=model,
-                  block_size=(10.0, 10.0),  # 10x10 blocks
-                  n_disc=5)  # Discretization
+bk = BlockKriging(x, y, z,
+ variogram_model=model,
+ block_size=(10.0, 10.0), # 10x10 blocks
+ n_disc=5) # Discretization
 
 # Predict block values
-pred_block, var_block = bk.predict(x_block_centers, 
-                                   y_block_centers)
+pred_block, var_block = bk.predict(x_block_centers,
+ y_block_centers)
 
 # Note: var_block << var_point (variance reduction)
 ```
@@ -142,14 +142,14 @@ pred_block, var_block = bk.predict(x_block_centers,
 
 # Octant search (8 sectors, 45° each)
 config_octant = NeighborhoodConfig(
-    use_octants=True,
-    max_per_octant=2  # Max 2 per sector = 16 total
+ use_octants=True,
+ max_per_octant=2 # Max 2 per sector = 16 total
 )
 
 # Quadrant search (4 sectors, 90° each)
 config_quadrant = NeighborhoodConfig(
-    use_quadrants=True,
-    max_per_quadrant=6  # Max 6 per sector = 24 total
+ use_quadrants=True,
+ max_per_quadrant=6 # Max 6 per sector = 24 total
 )
 ```
 
@@ -188,8 +188,8 @@ realizations = sgs.simulate(x_grid, y_grid, n_realizations=100)
 ```python
 from geostats.algorithms import IndicatorKriging
 
-ik = IndicatorKriging(x, y, z, threshold=cutoff, 
-                      variogram_model=model)
+ik = IndicatorKriging(x, y, z, threshold=cutoff,
+ variogram_model=model)
 prob, var = ik.predict(x_new, y_new)
 ```
 
@@ -198,7 +198,7 @@ prob, var = ik.predict(x_new, y_new)
 from geostats.algorithms import Cokriging
 
 ck = Cokriging(x, y, primary=z1, secondary=z2,
-               variogram_models=[model1, model2, cross_model])
+ variogram_models=[model1, model2, cross_model])
 pred = ck.predict(x_new, y_new)
 ```
 
@@ -210,11 +210,11 @@ pred = ck.predict(x_new, y_new)
 import numpy as np
 from geostats.transformations import NormalScoreTransform, cell_declustering
 from geostats.algorithms import (
-    experimental_variogram,
-    fit_nested_variogram,
-    OrdinaryKriging,
-    NeighborhoodSearch,
-    NeighborhoodConfig
+ experimental_variogram,
+ fit_nested_variogram,
+ OrdinaryKriging,
+ NeighborhoodSearch,
+ NeighborhoodConfig
 )
 
 # 1. Load data
@@ -224,21 +224,21 @@ x, y, z = load_sample_data()
 from geostats.transformations.declustering import detect_clustering
 cluster_stats = detect_clustering(x, y)
 if cluster_stats['is_likely_clustered']:
-    # Apply declustering
-    weights, _ = cell_declustering(x, y, z)
-    z_mean = np.average(z, weights=weights)
+ # Apply declustering
+ weights, _ = cell_declustering(x, y, z)
+ z_mean = np.average(z, weights=weights)
 else:
-    z_mean = np.mean(z)
+ z_mean = np.mean(z)
 
 # 3. Check distribution
 from scipy import stats
 _, p_value = stats.normaltest(z)
 if p_value < 0.05:
-    # Apply normal score transform
-    nst = NormalScoreTransform()
-    z_transformed = nst.fit_transform(z)
+ # Apply normal score transform
+ nst = NormalScoreTransform()
+ z_transformed = nst.fit_transform(z)
 else:
-    z_transformed = z
+ z_transformed = z
 
 # 4. Variogram analysis
 lags, gamma = experimental_variogram(x, y, z_transformed, n_lags=15)
@@ -248,9 +248,9 @@ nested_model = fit_nested_variogram(lags, gamma, n_structures=2)
 
 # 6. Set up neighborhood search for efficiency
 config = NeighborhoodConfig(
-    max_neighbors=25,
-    use_octants=True,
-    max_per_octant=3
+ max_neighbors=25,
+ use_octants=True,
+ max_per_octant=3
 )
 
 # 7. Ordinary Kriging
@@ -264,7 +264,7 @@ pred, var = ok.predict(xx.flatten(), yy.flatten())
 
 # 9. Back-transform if needed
 if p_value < 0.05:
-    pred = nst.inverse_transform(pred)
+ pred = nst.inverse_transform(pred)
 
 # 10. Reshape and plot
 pred = pred.reshape(xx.shape)
@@ -277,23 +277,23 @@ pred = pred.reshape(xx.shape)
 ```python
 # Test all new features
 from geostats.transformations import (
-    NormalScoreTransform, 
-    cell_declustering
+ NormalScoreTransform,
+ cell_declustering
 )
 from geostats.algorithms import (
-    ExternalDriftKriging,
-    LognormalKriging,
-    SimpleKriging3D,
-    OrdinaryKriging3D,
-    BlockKriging,
-    NeighborhoodSearch,
-    fit_nested_variogram
+ ExternalDriftKriging,
+ LognormalKriging,
+ SimpleKriging3D,
+ OrdinaryKriging3D,
+ BlockKriging,
+ NeighborhoodSearch,
+ fit_nested_variogram
 )
 from geostats.simulation import SequentialIndicatorSimulation
 
-print("✅ All imports successful!")
+print(" All imports successful!")
 
-# Run comprehensive example
+# Run example
 import subprocess
 subprocess.run(["python", "examples/example_7_advanced_features.py"])
 ```
@@ -302,7 +302,7 @@ subprocess.run(["python", "examples/example_7_advanced_features.py"])
 
 ## Documentation
 
-- **Comprehensive Guide**: `TOP_10_FEATURES_SUMMARY.md`
+- **Guide**: `TOP_10_FEATURES_SUMMARY.md`
 - **Implementation Details**: `IMPLEMENTATION_COMPLETE.md`
 - **Visual Checklist**: `FEATURES_CHECKLIST.txt`
 - **Examples**: `examples/example_7_advanced_features.py`
@@ -363,18 +363,18 @@ ns = NeighborhoodSearch(x, y, config)
 ```python
 # For large datasets (>10,000 points)
 config = NeighborhoodConfig(
-    max_neighbors=25,           # Limit search
-    search_radius=max_range*3,  # Limit by distance
-    use_octants=True,           # Balanced distribution
-    max_per_octant=3            # Control per sector
+ max_neighbors=25, # Limit search
+ search_radius=max_range*3, # Limit by distance
+ use_octants=True, # Balanced distribution
+ max_per_octant=3 # Control per sector
 )
 
 # For block kriging, adjust discretization
-bk = BlockKriging(..., n_disc=5)  # Lower = faster, less accurate
+bk = BlockKriging(..., n_disc=5) # Lower = faster, less accurate
 
 # For simulation, reduce realizations
 sgs = SequentialGaussianSimulation(...)
-realizations = sgs.simulate(..., n_realizations=50)  # Instead of 100+
+realizations = sgs.simulate(..., n_realizations=50) # Instead of 100+
 ```
 
 ---

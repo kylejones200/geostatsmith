@@ -1,21 +1,21 @@
 # GeoStats Jupyter Notebooks
 
-## 📓 Interactive Examples with Real Alaska Data
+## Interactive Examples with Real Alaska Data
 
 These notebooks use **real geochemical data** (375,000+ samples) to discover cool insights using GeoStats!
 
 ## Notebooks
 
-### 🏆 01: Gold Exploration Insights
+### 01: Gold Exploration Insights
 **File**: `01_gold_exploration_insights.ipynb`
 
 **Cool Insights Discovered**:
-- 🗺️ Gold distribution patterns across Fairbanks
-- 🎯 High-probability zones (>90% chance of economic gold)
-- 💰 Optimal drilling locations (save $100k+ in costs)
-- 🔬 Spatial structure analysis
-- ⚡ Uncertainty quantification
-- 📊 Target prioritization (8x better than random!)
+- Gold distribution patterns across Fairbanks
+- High-probability zones (>90% chance of economic gold)
+- Optimal drilling locations (save $100k+ in costs)
+- Spatial structure analysis
+- Uncertainty quantification
+- Target prioritization (8x better than random!)
 
 **What You'll Learn**:
 - Lognormal kriging for skewed data
@@ -26,15 +26,15 @@ These notebooks use **real geochemical data** (375,000+ samples) to discover coo
 
 ---
 
-### ⚗️ 02: Multi-Element Detective ✅
+### 02: Multi-Element Detective
 **File**: `02_multi_element_detective.ipynb`
 
 **Cool Insights Discovered**:
-- 🔬 Element correlations (Cu-Au r=0.65 - porphyry signature!)
-- ⚡ Cokriging (30-50% variance reduction)
-- 🎯 Porphyry fertility index (combined Cu×Au)
-- 🎲 Anomaly detection (3 methods)
-- ⭐ Multi-element targeting (best targets!)
+- Element correlations (Cu-Au r=0.65 - porphyry signature!)
+- Cokriging (30-50% variance reduction)
+- Porphyry fertility index (combined Cu×Au)
+- Anomaly detection (3 methods)
+- Multi-element targeting (best targets!)
 
 **What You'll Learn**:
 - Multi-element correlation analysis
@@ -45,15 +45,15 @@ These notebooks use **real geochemical data** (375,000+ samples) to discover coo
 
 ---
 
-### 🛡️ 03: Environmental Risk Assessment ✅
+### 03: Environmental Risk Assessment
 **File**: `03_environmental_risk.ipynb`
 
 **Cool Insights Discovered**:
-- 🎲 EPA threshold exceedance probability
-- 🗺️ Risk classification maps (Low/Moderate/High)
-- 🚨 Hotspot identification (priority areas)
-- 💰 Cost-benefit analysis ($1-10M+ savings!)
-- 📋 Auto-generated regulatory reports
+- EPA threshold exceedance probability
+- Risk classification maps (Low/Moderate/High)
+- Hotspot identification (priority areas)
+- Cost-benefit analysis ($1-10M+ savings!)
+- Auto-generated regulatory reports
 
 **What You'll Learn**:
 - Probability of exceedance mapping
@@ -64,7 +64,7 @@ These notebooks use **real geochemical data** (375,000+ samples) to discover coo
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: Convert to Jupyter Notebooks
 
@@ -102,33 +102,33 @@ jupyter lab
 
 ---
 
-## 📊 What Makes These Notebooks Special?
+## What Makes These Notebooks Special?
 
-### 1. **Real Data** ✅
+### 1. **Real Data**
 - Not synthetic examples
 - 375,000+ Alaska samples
 - Published USGS database
 - Real-world complexity
 
-### 2. **Story-Driven** 📖
+### 2. **Story-Driven**
 - Each notebook tells a story
 - Progressive insights
 - "Aha!" moments throughout
 - Business context provided
 
-### 3. **Interactive** 🎮
+### 3. **Interactive**
 - Modify parameters and re-run
 - Try different regions
 - Experiment with methods
 - See immediate results
 
-### 4. **Educational** 🎓
+### 4. **Educational**
 - Concepts explained clearly
 - Why each step matters
 - Common pitfalls noted
 - Best practices shown
 
-### 5. **Professional** 💼
+### 5. **Professional**
 - Publication-quality figures
 - Proper statistics
 - Cost-benefit analysis
@@ -136,7 +136,7 @@ jupyter lab
 
 ---
 
-## 🎯 Key Insights You'll Discover
+## Key Insights You'll Discover
 
 ### Gold Exploration Notebook
 
@@ -181,29 +181,29 @@ jupyter lab
 
 ---
 
-## 🛠️ Customization Ideas
+## Customization Ideas
 
 ### Try Different Regions:
 ```python
 # In the notebook, change:
-region = 'Fairbanks'  # Gold mining
-region = 'Juneau'     # Gold belt
-region = 'Iliamna'    # Pebble Cu-Mo-Au
+region = 'Fairbanks' # Gold mining
+region = 'Juneau' # Gold belt
+region = 'Iliamna' # Pebble Cu-Mo-Au
 ```
 
 ### Try Different Elements:
 ```python
-element = 'Au'  # Gold
-element = 'Ag'  # Silver
-element = 'Cu'  # Copper
+element = 'Au' # Gold
+element = 'Ag' # Silver
+element = 'Cu' # Copper
 element = 'REE' # Rare earths
 ```
 
 ### Adjust Parameters:
 ```python
-threshold = 0.1      # Change economic cutoff
-n_new_samples = 20   # More/fewer infill samples
-grid_resolution = 150  # Higher resolution maps
+threshold = 0.1 # Change economic cutoff
+n_new_samples = 20 # More/fewer infill samples
+grid_resolution = 150 # Higher resolution maps
 ```
 
 ### Add Your Own Analysis:
@@ -217,7 +217,7 @@ grid_resolution = 150  # Higher resolution maps
 
 ---
 
-## 📈 Expected Runtime
+## Expected Runtime
 
 **On typical laptop** (8GB RAM, 4 cores):
 - Gold Exploration: ~2-3 minutes
@@ -231,7 +231,7 @@ grid_resolution = 150  # Higher resolution maps
 
 ---
 
-## 🎨 Visualization Examples
+## Visualization Examples
 
 Each notebook generates **10+ professional figures**:
 - Sample location maps
@@ -250,7 +250,7 @@ All figures are:
 
 ---
 
-## 🎓 Learning Path
+## Learning Path
 
 **Beginner**:
 1. Start with Gold Exploration notebook
@@ -272,7 +272,7 @@ All figures are:
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### "AGDB4 not found"
 ```python
@@ -295,10 +295,10 @@ pip install -e ".[all]"
 ### "Out of memory"
 ```python
 # Reduce grid resolution:
-x_grid = np.linspace(x.min(), x.max(), 50)  # Instead of 100
+x_grid = np.linspace(x.min(), x.max(), 50) # Instead of 100
 
 # Or reduce sample size:
-data = data.sample(n=5000)  # Use subset
+data = data.sample(n=5000) # Use subset
 ```
 
 ### "Notebook won't convert"
@@ -311,7 +311,7 @@ pip install jupytext
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 **GeoStats Documentation**:
 - `GEOCHEMISTRY.md` - Geochemistry applications
@@ -331,7 +331,7 @@ pip install jupytext
 
 ---
 
-## 🎯 Use Cases
+## Use Cases
 
 **For Students**:
 - Learn geostatistics with real data
@@ -359,7 +359,7 @@ pip install jupytext
 
 ---
 
-## 🌟 Next Steps
+## Next Steps
 
 1. **Run the notebooks** - See the insights yourself!
 2. **Modify parameters** - Experiment with different settings
@@ -369,6 +369,6 @@ pip install jupytext
 
 ---
 
-**Built with GeoStats v0.3.0** 🚀
+**Built with GeoStats v0.3.0**
 
 *Making professional geostatistics accessible through interactive notebooks!*

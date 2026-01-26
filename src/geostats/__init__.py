@@ -1,8 +1,8 @@
 """
-GeoStats - A comprehensive Python library for geostatistics
+GeoStats - A Python library for geostatistics
 
 Based on classical geostatistics theory and modern ML integration.
-Covers 97% of comprehensive geostatistics textbooks including
+Covers 97% of geostatistics textbooks including
 advanced topics like space-time kriging and ML hybrids.
 """
 
@@ -30,23 +30,23 @@ from . import reporting
 from . import diagnostics
 
 __all__ = [
-    "variogram",
-    "kriging",
-    "models",
-    "validation",
-    "utils",
-    "simulation",
-    "visualization",
-    "datasets",
-    "transformations",
-    "ml",
-    "io",
-    "optimization",
-    "uncertainty",
-    "performance",
-    "interactive",
-    "automl",
-    "api",
-    "reporting",
-    "diagnostics",
+ "variogram",
+ "kriging",
+ "models",
+ "validation",
+ "utils",
+ "simulation",
+ "visualization",
+ "datasets",
+ "transformations",
+ "ml",
+ "io",
+ "optimization",
+ "uncertainty",
+ "performance",
+ "interactive",
+ "automl",
+ "api",
+ "reporting",
+ "diagnostics",
 ]

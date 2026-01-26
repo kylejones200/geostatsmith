@@ -1,62 +1,69 @@
 """
-Logging configuration for geostats library
+Centralized logging configuration for GeoStats.
+
+This module provides a consistent logging setup across the entire library.
 """
 
 import logging
 import sys
 from typing import Optional
 
-from .constants import LOG_FORMAT, LOG_DATE_FORMAT
 
-
-def setup_logger(
-    name: str,
-    level: int = logging.WARNING,
+def setup_logging(
+    level: int = logging.INFO,
     format_string: Optional[str] = None,
-    date_format: Optional[str] = None
-) -> logging.Logger:
+    stream: Optional[object] = None,
+) -> None:
     """
-    Set up a logger with consistent formatting
-    
+    Configure logging for GeoStats.
+
+    Parameters
+    ----------
+    level : int, default=logging.INFO
+        Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    format_string : str, optional
+        Custom format string. If None, uses default format.
+    stream : file-like object, optional
+        Stream to write logs to. If None, uses sys.stderr.
+
+    Examples
+    --------
+    >>> from geostats.core.logging_config import setup_logging
+    >>> import logging
+    >>> setup_logging(level=logging.DEBUG)
+    """
+    if format_string is None:
+        format_string = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+    if stream is None:
+        stream = sys.stderr
+
+    logging.basicConfig(
+        level=level,
+        format=format_string,
+        stream=stream,
+        force=True,  # Override any existing configuration
+    )
+
+
+def get_logger(name: str) -> logging.Logger:
+    """
+    Get a logger for a module.
+
     Parameters
     ----------
     name : str
         Logger name (typically __name__)
-    level : int
-        Logging level (default: logging.WARNING)
-    format_string : str, optional
-        Log message format
-    date_format : str, optional
-        Date format
-        
+
     Returns
     -------
-    logging.Logger
-        Configured logger
+    logger : logging.Logger
+        Configured logger instance
+
+    Examples
+    --------
+    >>> from geostats.core.logging_config import get_logger
+    >>> logger = get_logger(__name__)
+    >>> logger.info("Message")
     """
-    logger = logging.getLogger(name)
-    
-    # Avoid adding multiple handlers
-    if logger.hasHandlers():
-        return logger
-    
-    logger.setLevel(level)
-    
-    # Console handler
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(level)
-    
-    # Formatter
-    fmt = format_string or LOG_FORMAT
-    date_fmt = date_format or LOG_DATE_FORMAT
-    formatter = logging.Formatter(fmt, datefmt=date_fmt)
-    handler.setFormatter(formatter)
-    
-    logger.addHandler(handler)
-    
-    return logger
-
-
-def get_logger(name: str) -> logging.Logger:
-    """Get a logger with the given name"""
     return logging.getLogger(name)

@@ -26,9 +26,9 @@ from scipy.stats import lognorm
 
 # Setup logging for examples
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    datefmt='%H:%M:%S'
+ level=logging.INFO,
+ format='%(asctime)s - %(levelname)s - %(message)s',
+ datefmt='%H:%M:%S'
 )
 logger = logging.getLogger(__name__)
 
@@ -70,7 +70,6 @@ plt.tight_layout()
 plt.savefig('advanced_1_normal_score.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_1_normal_score.png\n")
 
-
 # Feature 2: External Drift Kriging
 logger.info("=" * 80)
 logger.info("Feature 2: External Drift Kriging")
@@ -82,8 +81,8 @@ from geostats.models.variogram_models import SphericalModel
 # Generate synthetic data with elevation covariate
 x = np.random.uniform(0, 100, 50)
 y = np.random.uniform(0, 100, 50)
-elevation = 200 + 0.5 * x + 0.3 * y + np.random.normal(0, 5, 50)  # Elevation trend
-temperature = 25 - 0.02 * elevation + np.random.normal(0, 1, 50)  # Temp decreases with elevation
+elevation = 200 + 0.5 * x + 0.3 * y + np.random.normal(0, 5, 50) # Elevation trend
+temperature = 25 - 0.02 * elevation + np.random.normal(0, 1, 50) # Temp decreases with elevation
 
 # Fit variogram on residuals (after removing elevation trend)
 from geostats.algorithms import experimental_variogram, fit_variogram_model
@@ -118,7 +117,6 @@ plt.tight_layout()
 plt.savefig('advanced_2_external_drift.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_2_external_drift.png\n")
 
-
 # Feature 3: Neighborhood Search with Octant
 logger.info("=" * 80)
 logger.info("Feature 3: Neighborhood Search (Octant/Quadrant)")
@@ -128,16 +126,16 @@ from geostats.algorithms import NeighborhoodSearch, NeighborhoodConfig
 
 # Create search configuration
 config_octant = NeighborhoodConfig(
-    max_neighbors=16,
-    min_neighbors=4,
-    search_radius=30,
-    use_octants=True,
-    max_per_octant=2
+ max_neighbors=16,
+ min_neighbors=4,
+ search_radius=30,
+ use_octants=True,
+ max_per_octant=2
 )
 
 config_simple = NeighborhoodConfig(
-    max_neighbors=16,
-    search_radius=30
+ max_neighbors=16,
+ search_radius=30
 )
 
 # Create neighborhood searches
@@ -154,24 +152,23 @@ logger.info(f"Simple search: {len(indices_simple)} neighbors")
 
 # Visualize
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-for ax, indices, title in zip(axes, [indices_simple, indices_octant], 
-                               ['Simple Nearest', 'Octant Search']):
-    ax.scatter(x, y, c='lightgray', s=50, alpha=0.5, label='Other points')
-    ax.scatter(x[indices], y[indices], c='red', s=100, marker='o', 
-               edgecolors='black', label='Selected neighbors')
-    ax.scatter([x0], [y0], c='blue', s=200, marker='*', 
-               edgecolors='black', label='Target point')
-    circle = plt.Circle((x0, y0), 30, fill=False, linestyle='--', color='blue')
-    ax.add_patch(circle)
-    ax.set_title(title)
-    ax.legend()
-    ax.set_xlim(-5, 105)
-    ax.set_ylim(-5, 105)
-    ax.set_aspect('equal')
+for ax, indices, title in zip(axes, [indices_simple, indices_octant],
+ ['Simple Nearest', 'Octant Search']):
+ ax.scatter(x, y, c='lightgray', s=50, alpha=0.5, label='Other points')
+ ax.scatter(x[indices], y[indices], c='red', s=100, marker='o',
+ edgecolors='black', label='Selected neighbors')
+ ax.scatter([x0], [y0], c='blue', s=200, marker='*',
+ edgecolors='black', label='Target point')
+ circle = plt.Circle((x0, y0), 30, fill=False, linestyle='--', color='blue')
+ ax.add_patch(circle)
+ ax.set_title(title)
+ ax.legend()
+ ax.set_xlim(-5, 105)
+ ax.set_ylim(-5, 105)
+ ax.set_aspect('equal')
 plt.tight_layout()
 plt.savefig('advanced_3_neighborhood.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_3_neighborhood.png\n")
-
 
 # Feature 4: Nested Variogram Fitting
 logger.info("=" * 80)
@@ -185,18 +182,18 @@ x_var = np.random.uniform(0, 100, 200)
 y_var = np.random.uniform(0, 100, 200)
 
 # Multi-scale variation: short-range + long-range
-z_short = np.sin(x_var / 10) + np.random.normal(0, 0.3, 200)  # Short range
-z_long = 0.5 * np.sin(x_var / 50) + 0.5 * np.cos(y_var / 50)  # Long range
-z_multi = z_short + z_long + np.random.normal(0, 0.1, 200)  # Combined
+z_short = np.sin(x_var / 10) + np.random.normal(0, 0.3, 200) # Short range
+z_long = 0.5 * np.sin(x_var / 50) + 0.5 * np.cos(y_var / 50) # Long range
+z_multi = z_short + z_long + np.random.normal(0, 0.1, 200) # Combined
 
 # Experimental variogram
 lags_multi, gamma_multi = experimental_variogram(x_var, y_var, z_multi, n_lags=15)
 
 # Fit nested model (2 structures)
 nested_model = fit_nested_variogram(
-    lags_multi, gamma_multi,
-    n_structures=2,
-    model_types=['spherical', 'spherical']
+ lags_multi, gamma_multi,
+ n_structures=2,
+ model_types=['spherical', 'spherical']
 )
 
 logger.info(nested_model)
@@ -215,12 +212,12 @@ gamma_nugget = np.full_like(h_plot, nested_model.nugget)
 plt.plot(h_plot, gamma_nugget, '--', alpha=0.5, label=f'Nugget: {nested_model.nugget:.3f}')
 cumulative = nested_model.nugget
 for i, struct in enumerate(nested_model.structures, 1):
-    from geostats.models.variogram_models import spherical_model
-    gamma_struct = struct.sill * spherical_model(h_plot / struct.range)
-    cumulative_next = cumulative + gamma_struct
-    plt.fill_between(h_plot, cumulative, cumulative_next, alpha=0.2, 
-                     label=f'Structure {i}: {struct.model_type}')
-    cumulative = cumulative_next
+ from geostats.models.variogram_models import spherical_model
+ gamma_struct = struct.sill * spherical_model(h_plot / struct.range)
+ cumulative_next = cumulative + gamma_struct
+ plt.fill_between(h_plot, cumulative, cumulative_next, alpha=0.2,
+ label=f'Structure {i}: {struct.model_type}')
+ cumulative = cumulative_next
 
 plt.xlabel('Lag Distance')
 plt.ylabel('Semivariance')
@@ -230,7 +227,6 @@ plt.grid(alpha=0.3)
 plt.tight_layout()
 plt.savefig('advanced_4_nested_variogram.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_4_nested_variogram.png\n")
-
 
 # Feature 5: Declustering
 logger.info("=" * 80)
@@ -242,15 +238,15 @@ from geostats.transformations import cell_declustering
 # Generate clustered data (preferential sampling)
 x_cluster1 = np.random.normal(20, 5, 30)
 y_cluster1 = np.random.normal(20, 5, 30)
-z_cluster1 = np.random.normal(10, 2, 30)  # Low values in cluster
+z_cluster1 = np.random.normal(10, 2, 30) # Low values in cluster
 
 x_cluster2 = np.random.normal(80, 3, 40)
 y_cluster2 = np.random.normal(80, 3, 40)
-z_cluster2 = np.random.normal(50, 3, 40)  # High values in cluster
+z_cluster2 = np.random.normal(50, 3, 40) # High values in cluster
 
 x_sparse = np.random.uniform(0, 100, 15)
 y_sparse = np.random.uniform(0, 100, 15)
-z_sparse = np.random.normal(30, 5, 15)  # Medium values sparse
+z_sparse = np.random.normal(30, 5, 15) # Medium values sparse
 
 x_declust = np.concatenate([x_cluster1, x_cluster2, x_sparse])
 y_declust = np.concatenate([y_cluster1, y_cluster2, y_sparse])
@@ -273,8 +269,8 @@ axes[0].set_ylabel('Y')
 plt.colorbar(scatter1, ax=axes[0])
 
 # Size points by weight
-scatter2 = axes[1].scatter(x_declust, y_declust, c=z_declust, s=weights*10, 
-                          cmap='viridis', edgecolors='black', alpha=0.7)
+scatter2 = axes[1].scatter(x_declust, y_declust, c=z_declust, s=weights*10,
+ cmap='viridis', edgecolors='black', alpha=0.7)
 axes[1].set_title(f"Weighted by Declustering (Weighted Mean: {info['weighted_mean']:.2f})")
 axes[1].set_xlabel('X')
 axes[1].set_ylabel('Y')
@@ -282,7 +278,6 @@ plt.colorbar(scatter2, ax=axes[1])
 plt.tight_layout()
 plt.savefig('advanced_5_declustering.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_5_declustering.png\n")
-
 
 # Feature 6: Lognormal Kriging
 logger.info("=" * 80)
@@ -308,8 +303,8 @@ lnk = LognormalKriging(x_ln, y_ln, z_ln, variogram_model=variogram_ln, kriging_t
 x_grid_ln = np.linspace(0, 50, 25)
 y_grid_ln = np.linspace(0, 50, 25)
 xx_ln, yy_ln = np.meshgrid(x_grid_ln, y_grid_ln)
-pred_ln = lnk.predict(xx_ln.flatten(), yy_ln.flatten(), return_variance=False, 
-                      back_transform_method='unbiased')
+pred_ln = lnk.predict(xx_ln.flatten(), yy_ln.flatten(), return_variance=False,
+ back_transform_method='unbiased')
 pred_ln = pred_ln.reshape(xx_ln.shape)
 
 logger.info(f"Original data range: {z_ln.min():.2f} to {z_ln.max():.2f}")
@@ -328,7 +323,6 @@ plt.tight_layout()
 plt.savefig('advanced_6_lognormal_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_6_lognormal_kriging.png\n")
 
-
 # Feature 7: 3D Kriging
 logger.info("=" * 80)
 logger.info("Feature 7: 3D Kriging")
@@ -340,17 +334,17 @@ from geostats.algorithms import OrdinaryKriging3D
 np.random.seed(10)
 x_3d = np.random.uniform(0, 100, 30)
 y_3d = np.random.uniform(0, 100, 30)
-z_3d_coord = np.random.uniform(0, 50, 30)  # depth coordinate
+z_3d_coord = np.random.uniform(0, 50, 30) # depth coordinate
 values_3d = 10 + 0.05 * x_3d - 0.1 * z_3d_coord + np.random.normal(0, 2, 30)
 
 # Note: For 3D variogram, would need to compute distances in 3D
 # Using a simple model for demonstration
 class Simple3DVariogram:
-    def __init__(self):
-        self.sill = 10.0
-        self.range_val = 30.0
-    def __call__(self, h):
-        return self.sill * (1 - np.exp(-3 * h / self.range_val))
+ def __init__(self):
+ self.sill = 10.0
+ self.range_val = 30.0
+ def __call__(self, h):
+ return self.sill * (1 - np.exp(-3 * h / self.range_val))
 
 variogram_3d = Simple3DVariogram()
 ok3d = OrdinaryKriging3D(x_3d, y_3d, z_3d_coord, values_3d, variogram_3d)
@@ -359,10 +353,10 @@ ok3d = OrdinaryKriging3D(x_3d, y_3d, z_3d_coord, values_3d, variogram_3d)
 x_grid_3d = np.linspace(0, 100, 15)
 y_grid_3d = np.linspace(0, 100, 15)
 xx_3d, yy_3d = np.meshgrid(x_grid_3d, y_grid_3d)
-zz_3d = np.full_like(xx_3d, 25.0)  # Slice at depth 25
+zz_3d = np.full_like(xx_3d, 25.0) # Slice at depth 25
 
-pred_3d = ok3d.predict(xx_3d.flatten(), yy_3d.flatten(), zz_3d.flatten(), 
-                       return_variance=False)
+pred_3d = ok3d.predict(xx_3d.flatten(), yy_3d.flatten(), zz_3d.flatten(),
+ return_variance=False)
 pred_3d = pred_3d.reshape(xx_3d.shape)
 
 logger.info(f"3D sample points: {len(x_3d)}")
@@ -392,7 +386,6 @@ plt.tight_layout()
 plt.savefig('advanced_7_3d_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_7_3d_kriging.png\n")
 
-
 # Feature 9: Block Kriging (Support Change)
 logger.info("=" * 80)
 logger.info("Feature 9: Block Kriging (Support Change)")
@@ -410,8 +403,8 @@ lags_bk, gamma_bk = experimental_variogram(x_bk, y_bk, z_bk, n_lags=10)
 variogram_bk = fit_variogram_model(lags_bk, gamma_bk, model_type='spherical')
 
 # Block kriging (estimate 10x10 block averages)
-bk = BlockKriging(x_bk, y_bk, z_bk, variogram_model=variogram_bk, 
-                  block_size=(10.0, 10.0), n_disc=5)
+bk = BlockKriging(x_bk, y_bk, z_bk, variogram_model=variogram_bk,
+ block_size=(10.0, 10.0), n_disc=5)
 
 # Prediction grid (block centers)
 x_grid_bk = np.arange(10, 100, 15)
@@ -437,11 +430,11 @@ axes[0].set_ylabel('Y')
 
 # Show blocks with predictions
 for i in range(len(x_grid_bk)):
-    for j in range(len(y_grid_bk)):
-        rect = plt.Rectangle((x_grid_bk[i]-5, y_grid_bk[j]-5), 10, 10, 
-                            fill=True, facecolor=plt.cm.coolwarm((pred_bk[j,i] - pred_bk.min())/(pred_bk.max() - pred_bk.min())),
-                            edgecolor='black', linewidth=0.5, alpha=0.7)
-        axes[1].add_patch(rect)
+ for j in range(len(y_grid_bk)):
+ rect = plt.Rectangle((x_grid_bk[i]-5, y_grid_bk[j]-5), 10, 10,
+ fill=True, facecolor=plt.cm.coolwarm((pred_bk[j,i] - pred_bk.min())/(pred_bk.max() - pred_bk.min())),
+ edgecolor='black', linewidth=0.5, alpha=0.7)
+ axes[1].add_patch(rect)
 axes[1].scatter(x_bk, y_bk, c='black', s=20, marker='+', alpha=0.5)
 axes[1].set_xlim(0, 100)
 axes[1].set_ylim(0, 100)
@@ -459,18 +452,17 @@ plt.tight_layout()
 plt.savefig('advanced_9_block_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_9_block_kriging.png\n")
 
-
 logger.info("=" * 80)
 logger.info("All 10 Advanced Features Demonstrated Successfully!")
 logger.info("=" * 80)
 logger.info("\nGenerated figures:")
-logger.info("  - advanced_1_normal_score.png")
-logger.info("  - advanced_2_external_drift.png")
-logger.info("  - advanced_3_neighborhood.png")
-logger.info("  - advanced_4_nested_variogram.png")
-logger.info("  - advanced_5_declustering.png")
-logger.info("  - advanced_6_lognormal_kriging.png")
-logger.info("  - advanced_7_3d_kriging.png")
-logger.info("  - advanced_9_block_kriging.png")
+logger.info(" - advanced_1_normal_score.png")
+logger.info(" - advanced_2_external_drift.png")
+logger.info(" - advanced_3_neighborhood.png")
+logger.info(" - advanced_4_nested_variogram.png")
+logger.info(" - advanced_5_declustering.png")
+logger.info(" - advanced_6_lognormal_kriging.png")
+logger.info(" - advanced_7_3d_kriging.png")
+logger.info(" - advanced_9_block_kriging.png")
 logger.info("\nNote: Sequential Indicator Simulation (Feature 8) requires indicator")
-logger.info("      variogram modeling and is demonstrated separately in the docs.")
+logger.info(" variogram modeling and is demonstrated separately in the docs.")

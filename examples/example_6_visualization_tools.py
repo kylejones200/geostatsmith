@@ -6,7 +6,7 @@ This example demonstrates:
 - Variogram cloud visualization
 - Directional variograms for anisotropy detection
 - Variogram map (2D surface)
-- Comprehensive diagnostic plots
+- Diagnostic plots
 
 Based on Zhang, Y. (2010). Course Notes, Chapter 3
 """
@@ -20,21 +20,21 @@ from geostats.datasets import load_walker_lake
 from geostats import variogram, visualization
 
 # Load Walker Lake dataset
-print("Loading Walker Lake dataset...")
+logger.info("Loading Walker Lake dataset...")
 data = load_walker_lake()
 x, y, V, U = data['x'], data['y'], data['V'], data['U']
 
-print(f"Dataset: {len(x)} samples on a 10x10 grid")
-print(f"V (Arsenious): [{np.min(V)}, {np.max(V)}] ppm")
-print(f"U (PCE): [{np.min(U)}, {np.max(U)}] ppm")
+logger.info(f"Dataset: {len(x)} samples on a 10x10 grid")
+logger.info(f"V (Arsenious): [{np.min(V)}, {np.max(V)}] ppm")
+logger.info(f"U (PCE): [{np.min(U)}, {np.max(U)}] ppm")
 
 # Calculate experimental variogram
-print("\nCalculating experimental variogram...")
+logger.info("\nCalculating experimental variogram...")
 lags, gamma, n_pairs = variogram.experimental_variogram(x, y, V, n_lags=8)
 vario_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
 
-# Create comprehensive visualization
-print("\nGenerating comprehensive visualizations...")
+# Create visualization
+logger.info("\nGenerating visualizations...")
 
 # Figure 1: h-Scatterplots at different lags
 fig1 = plt.figure(figsize=(16, 12))
@@ -42,15 +42,15 @@ fig1 = plt.figure(figsize=(16, 12))
 # h-scatterplots for V at different distances
 distances = [10, 20, 30, 40]
 for i, h in enumerate(distances, 1):
-    ax = plt.subplot(3, 4, i)
-    visualization.plot_h_scatterplot(x, y, V, h_distance=h, tolerance=5.0, ax=ax)
+ ax = plt.subplot(3, 4, i)
+ visualization.plot_h_scatterplot(x, y, V, h_distance=h, tolerance=5.0, ax=ax)
 
 # Directional h-scatterplots for V
 directions = [0, 45, 90, 135]
 for i, direction in enumerate(directions, 5):
-    ax = plt.subplot(3, 4, i)
-    visualization.plot_h_scatterplot(x, y, V, h_distance=20, tolerance=5.0,
-                                    direction=direction, angle_tolerance=30, ax=ax)
+ ax = plt.subplot(3, 4, i)
+ visualization.plot_h_scatterplot(x, y, V, h_distance=20, tolerance=5.0,
+ direction=direction, angle_tolerance=30, ax=ax)
 
 # h-scatterplot for U vs V (cross-correlation)
 ax9 = plt.subplot(3, 4, 9)
@@ -76,7 +76,7 @@ visualization.plot_qq_plot(V, ax=ax12)
 
 plt.tight_layout()
 plt.savefig('example_6_hscatterplots.png', dpi=300, bbox_inches='tight')
-print("Saved h-scatterplots to: example_6_hscatterplots.png")
+logger.info("Saved h-scatterplots to: example_6_hscatterplots.png")
 
 # Figure 2: Variogram Analyses
 fig2 = plt.figure(figsize=(16, 10))
@@ -92,14 +92,14 @@ visualization.plot_variogram(lags, gamma, n_pairs, model=vario_model, ax=ax2)
 # Directional variograms
 ax3 = plt.subplot(2, 3, 3)
 # Use the full function that returns a figure, but we'll extract and rearrange
-print("Calculating directional variograms...")
+logger.info("Calculating directional variograms...")
 dirs = [0, 45, 90, 135]
 for direction in dirs:
-    lags_dir, gamma_dir, n_pairs_dir = variogram.experimental_variogram_directional(
-        x, y, V, angle=direction, tolerance=22.5, n_lags=6
-    )
-    valid = ~np.isnan(gamma_dir)
-    ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label=f'{direction}°', linewidth=2, markersize=6)
+ lags_dir, gamma_dir, n_pairs_dir = variogram.experimental_variogram_directional(
+ x, y, V, angle=direction, tolerance=22.5, n_lags=6
+ )
+ valid = ~np.isnan(gamma_dir)
+ ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label=f'{direction}°', linewidth=2, markersize=6)
 
 ax3.set_xlabel('Distance (h)', fontsize=11)
 ax3.set_ylabel('γ(h)', fontsize=11)
@@ -127,25 +127,28 @@ ax5.grid(True, alpha=0.3)
 # Anisotropy analysis
 ax6 = plt.subplot(2, 3, 6)
 from geostats.models.anisotropy import DirectionalVariogram
+import logging
+
+logger = logging.getLogger(__name__)
 dir_vario = DirectionalVariogram(x, y, V)
 aniso_params = dir_vario.fit_anisotropy(angles=[0, 45, 90, 135], n_lags=6)
 
 aniso_text = (
-    f"Anisotropy Analysis:\n"
-    f"Major direction: {aniso_params['major_angle']:.0f}°\n"
-    f"Major range: {aniso_params['major_range']:.1f}\n"
-    f"Minor range: {aniso_params['minor_range']:.1f}\n"
-    f"Ratio: {aniso_params['ratio']:.3f}"
+ f"Anisotropy Analysis:\n"
+ f"Major direction: {aniso_params['major_angle']:.0f}°\n"
+ f"Major range: {aniso_params['major_range']:.1f}\n"
+ f"Minor range: {aniso_params['minor_range']:.1f}\n"
+ f"Ratio: {aniso_params['ratio']:.3f}"
 )
 ax6.text(0.1, 0.5, aniso_text, transform=ax6.transAxes,
-        fontsize=12, verticalalignment='center',
-        bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
+ fontsize=12, verticalalignment='center',
+ bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
 ax6.axis('off')
 ax6.set_title('Anisotropy Parameters', fontweight='bold', fontsize=12)
 
 plt.tight_layout()
 plt.savefig('example_6_variogram_analysis.png', dpi=300, bbox_inches='tight')
-print("Saved variogram analysis to: example_6_variogram_analysis.png")
+logger.info("Saved variogram analysis to: example_6_variogram_analysis.png")
 
 # Figure 3: Spatial Maps
 fig3, axes = plt.subplots(2, 2, figsize=(14, 12))
@@ -168,44 +171,44 @@ axes[1, 1].set_title('U - Symbol Map (size ∝ value)', fontweight='bold', fonts
 
 plt.tight_layout()
 plt.savefig('example_6_spatial_maps.png', dpi=300, bbox_inches='tight')
-print("Saved spatial maps to: example_6_spatial_maps.png")
+logger.info("Saved spatial maps to: example_6_spatial_maps.png")
 
 # Display plots
 plt.show()
 
 # Print summary statistics
-print("\n" + "="*60)
-print("SPATIAL ANALYSIS SUMMARY")
-print("="*60)
-print("\nVariable V (Arsenious):")
-print(f"  Mean: {np.mean(V):.2f} ppm")
-print(f"  Std Dev: {np.std(V):.2f} ppm")
-print(f"  Range: [{np.min(V)}, {np.max(V)}] ppm")
-print(f"  Variogram model: {vario_model.__class__.__name__}")
-print(f"  Sill: {vario_model.parameters['sill']:.2f}")
-print(f"  Range: {vario_model.parameters['range']:.2f}")
-print(f"  Nugget: {vario_model.parameters['nugget']:.2f}")
+logger.info("\n" + "="*60)
+logger.info("SPATIAL ANALYSIS SUMMARY")
+logger.info("="*60)
+logger.info("\nVariable V (Arsenious):")
+logger.info(f" Mean: {np.mean(V):.2f} ppm")
+logger.info(f" Std Dev: {np.std(V):.2f} ppm")
+logger.info(f" Range: [{np.min(V)}, {np.max(V)}] ppm")
+logger.info(f" Variogram model: {vario_model.__class__.__name__}")
+logger.info(f" Sill: {vario_model.parameters['sill']:.2f}")
+logger.info(f" Range: {vario_model.parameters['range']:.2f}")
+logger.info(f" Nugget: {vario_model.parameters['nugget']:.2f}")
 
-print("\nVariable U (PCE):")
-print(f"  Mean: {np.mean(U):.2f} ppm")
-print(f"  Std Dev: {np.std(U):.2f} ppm")
-print(f"  Range: [{np.min(U)}, {np.max(U)}] ppm")
-print(f"  Variogram model: {model_u.__class__.__name__}")
-print(f"  Sill: {model_u.parameters['sill']:.2f}")
-print(f"  Range: {model_u.parameters['range']:.2f}")
+logger.info("\nVariable U (PCE):")
+logger.info(f" Mean: {np.mean(U):.2f} ppm")
+logger.info(f" Std Dev: {np.std(U):.2f} ppm")
+logger.info(f" Range: [{np.min(U)}, {np.max(U)}] ppm")
+logger.info(f" Variogram model: {model_u.__class__.__name__}")
+logger.info(f" Sill: {model_u.parameters['sill']:.2f}")
+logger.info(f" Range: {model_u.parameters['range']:.2f}")
 
-print("\nCross-correlation:")
-print(f"  Correlation(V, U): {np.corrcoef(V, U)[0, 1]:.3f}")
+logger.info("\nCross-correlation:")
+logger.info(f" Correlation(V, U): {np.corrcoef(V, U)[0, 1]:.3f}")
 
-print("\nAnisotropy (V):")
+logger.info("\nAnisotropy (V):")
 for key, value in aniso_params.items():
-    if isinstance(value, (int, float)):
-        print(f"  {key}: {value:.3f}")
+ if isinstance(value, (int, float)):
+ logger.info(f" {key}: {value:.3f}")
 
-print("\nAll visualizations demonstrate key geostatistical concepts:")
-print("- h-scatterplots show spatial correlation at different lags")
-print("- Variogram cloud reveals individual pair contributions")
-print("- Directional variograms detect anisotropy")
-print("- Symbol maps and data posting aid spatial understanding")
+logger.info("\nAll visualizations demonstrate key geostatistical concepts:")
+logger.info("- h-scatterplots show spatial correlation at different lags")
+logger.info("- Variogram cloud reveals individual pair contributions")
+logger.info("- Directional variograms detect anisotropy")
+logger.info("- Symbol maps and data posting aid spatial understanding")
 
-print("\nExample completed successfully!")
+logger.info("\nExample completed successfully!")

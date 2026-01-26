@@ -20,30 +20,30 @@ from geostats import variogram, kriging
 from geostats.utils import create_grid
 
 # Load Walker Lake data
-print("Loading Walker Lake dataset...")
+logger.info("Loading Walker Lake dataset...")
 data = load_walker_lake()
 x, y, V = data['x'], data['y'], data['V']
 
-print(f"Samples: {len(x)}")
-print(f"V range: [{np.min(V)}, {np.max(V)}] ppm")
+logger.info(f"Samples: {len(x)}")
+logger.info(f"V range: [{np.min(V)}, {np.max(V)}] ppm")
 
 # Define threshold (e.g., regulatory limit)
-threshold = 100.0  # ppm
-print(f"\nThreshold: {threshold} ppm")
+threshold = 100.0 # ppm
+logger.info(f"\nThreshold: {threshold} ppm")
 
 # Create indicator variable
 indicators = (V > threshold).astype(float)
 exceedance_rate = np.mean(indicators)
-print(f"Exceedance rate in samples: {exceedance_rate*100:.1f}%")
+logger.info(f"Exceedance rate in samples: {exceedance_rate*100:.1f}%")
 
 # Calculate indicator variogram
-print("\nFitting indicator variogram...")
+logger.info("\nFitting indicator variogram...")
 lags, gamma, n_pairs = variogram.experimental_variogram(x, y, indicators, n_lags=8)
 indicator_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
-print(f"Indicator variogram parameters: {indicator_model.parameters}")
+logger.info(f"Indicator variogram parameters: {indicator_model.parameters}")
 
 # Perform indicator kriging
-print("\nPerforming indicator kriging...")
+logger.info("\nPerforming indicator kriging...")
 ik = kriging.IndicatorKriging(x, y, V, threshold=threshold, variogram_model=indicator_model)
 
 # Create prediction grid
@@ -58,13 +58,13 @@ P_grid = probabilities.reshape(X.shape)
 V_grid = variance.reshape(X.shape)
 
 # Cross-validation
-print("\nCross-validation...")
+logger.info("\nCross-validation...")
 cv_pred, metrics = ik.cross_validate()
-print(f"  RMSE: {metrics['rmse']:.4f}")
-print(f"  MAE: {metrics['mae']:.4f}")
+logger.info(f" RMSE: {metrics['rmse']:.4f}")
+logger.info(f" MAE: {metrics['mae']:.4f}")
 
 # Multiple threshold analysis
-print("\nMultiple threshold indicator kriging...")
+logger.info("\nMultiple threshold indicator kriging...")
 thresholds = [70, 85, 100, 115, 130]
 multi_ik = kriging.MultiThresholdIndicatorKriging(x, y, V, thresholds=thresholds)
 multi_ik.fit()
@@ -74,7 +74,7 @@ median_pred = multi_ik.predict_quantile(x_grid, y_grid, quantile=0.5)
 Median_grid = median_pred.reshape(X.shape)
 
 # Visualize
-print("\nGenerating plots...")
+logger.info("\nGenerating plots...")
 fig = plt.figure(figsize=(16, 10))
 
 # Plot 1: Original data
@@ -99,8 +99,11 @@ ax2.set_aspect('equal')
 ax2.grid(True, alpha=0.3)
 # Add legend
 from matplotlib.patches import Patch
+import logging
+
+logger = logging.getLogger(__name__)
 legend_elements = [Patch(facecolor='green', label='Below threshold'),
-                   Patch(facecolor='red', label='Above threshold')]
+ Patch(facecolor='red', label='Above threshold')]
 ax2.legend(handles=legend_elements, loc='upper right')
 
 # Plot 3: Indicator variogram
@@ -119,7 +122,7 @@ ax3.grid(True, alpha=0.3)
 ax4 = plt.subplot(2, 3, 4)
 contour4 = ax4.contourf(X, Y, P_grid, levels=15, cmap='RdYlGn_r', alpha=0.9)
 ax4.scatter(x, y, c=indicators, cmap='RdYlGn_r', s=60,
-           edgecolors='white', linewidth=1.5, zorder=5)
+ edgecolors='white', linewidth=1.5, zorder=5)
 plt.colorbar(contour4, ax=ax4, label='P(V > 100 ppm)')
 ax4.set_title('Probability of Exceedance', fontweight='bold', fontsize=12)
 ax4.set_xlabel('X (m)')
@@ -140,7 +143,7 @@ ax5.set_aspect('equal')
 ax6 = plt.subplot(2, 3, 6)
 contour6 = ax6.contourf(X, Y, Median_grid, levels=15, cmap='viridis', alpha=0.9)
 ax6.scatter(x, y, c=V, cmap='viridis', s=60,
-           edgecolors='white', linewidth=1.5, zorder=5)
+ edgecolors='white', linewidth=1.5, zorder=5)
 plt.colorbar(contour6, ax=ax6, label='Median V (ppm)')
 ax6.set_title('Predicted Median (Multi-threshold IK)', fontweight='bold', fontsize=12)
 ax6.set_xlabel('X (m)')
@@ -149,23 +152,23 @@ ax6.set_aspect('equal')
 
 plt.tight_layout()
 plt.savefig('example_4_indicator_kriging.png', dpi=300, bbox_inches='tight')
-print("Saved plot to: example_4_indicator_kriging.png")
+logger.info("Saved plot to: example_4_indicator_kriging.png")
 plt.show()
 
 # Risk assessment summary
-print("\n" + "="*60)
-print("RISK ASSESSMENT SUMMARY")
-print("="*60)
-print(f"Threshold: {threshold} ppm")
-print(f"Sample exceedance rate: {exceedance_rate*100:.1f}%")
-print(f"Mean predicted probability: {np.mean(probabilities)*100:.1f}%")
-print(f"Max predicted probability: {np.max(probabilities)*100:.1f}%")
-print(f"Min predicted probability: {np.min(probabilities)*100:.1f}%")
+logger.info("\n" + "="*60)
+logger.info("RISK ASSESSMENT SUMMARY")
+logger.info("="*60)
+logger.info(f"Threshold: {threshold} ppm")
+logger.info(f"Sample exceedance rate: {exceedance_rate*100:.1f}%")
+logger.info(f"Mean predicted probability: {np.mean(probabilities)*100:.1f}%")
+logger.info(f"Max predicted probability: {np.max(probabilities)*100:.1f}%")
+logger.info(f"Min predicted probability: {np.min(probabilities)*100:.1f}%")
 
 # Identify high-risk areas (P > 0.7)
 high_risk = probabilities > 0.7
 n_high_risk = np.sum(high_risk)
 pct_high_risk = (n_high_risk / len(probabilities)) * 100
-print(f"\nHigh-risk locations (P>0.7): {n_high_risk} ({pct_high_risk:.1f}% of area)")
+logger.info(f"\nHigh-risk locations (P>0.7): {n_high_risk} ({pct_high_risk:.1f}% of area)")
 
-print("\nExample completed successfully!")
+logger.info("\nExample completed successfully!")

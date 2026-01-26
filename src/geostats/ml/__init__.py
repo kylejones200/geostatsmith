@@ -6,19 +6,19 @@ with modern machine learning techniques.
 
 Key Approaches:
 1. Regression Kriging with ML
-   - Use ML models (RF, XGBoost, Neural Nets) for trend
-   - Krige the residuals
-   - More flexible than polynomial trends
+ - Use ML models (RF, XGBoost, Neural Nets) for trend
+ - Krige the residuals
+ - More flexible than polynomial trends
 
 2. Gaussian Process Regression
-   - ML interpretation of kriging
-   - sklearn-compatible interface
-   - Hyperparameter optimization
+ - ML interpretation of kriging
+ - sklearn-compatible interface
+ - Hyperparameter optimization
 
 3. Ensemble Methods
-   - Combine multiple models
-   - Bootstrap aggregating
-   - Model stacking
+ - Combine multiple models
+ - Bootstrap aggregating
+ - Model stacking
 
 Modules
 -------
@@ -28,17 +28,17 @@ ensemble : Ensemble geostatistical methods
 """
 
 from .regression_kriging import (
-    RegressionKriging,
-    RandomForestKriging,
-    XGBoostKriging,
+ RegressionKriging,
+ RandomForestKriging,
+ XGBoostKriging,
 )
 from .gaussian_process import GaussianProcessGeostat
 from .ensemble import EnsembleKriging
 
 __all__ = [
-    'RegressionKriging',
-    'RandomForestKriging',
-    'XGBoostKriging',
-    'GaussianProcessGeostat',
-    'EnsembleKriging',
+ 'RegressionKriging',
+ 'RandomForestKriging',
+ 'XGBoostKriging',
+ 'GaussianProcessGeostat',
+ 'EnsembleKriging',
 ]

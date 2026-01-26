@@ -4,73 +4,73 @@
 # Alaska geochemical database (AGDB4) focusing on gold concentrations.
 
 project:
-  name: "Alaska Gold Analysis"
-  output_dir: "./alaska_outputs/config_driven"
-  description: "Config-driven analysis of Alaska gold geochemistry"
+ name: "Alaska Gold Analysis"
+ output_dir: "./alaska_outputs/config_driven"
+ description: "Config-driven analysis of Alaska gold geochemistry"
 
 data:
-  input_file: "/Users/k.jones/Downloads/AGDB4_text/Geol_AllSpls.txt"
-  x_column: "LONGITUDE"
-  y_column: "LATITUDE"
-  z_column: "DEPTH"  # Using depth as example - real gold data would need joining with Chem tables
+ input_file: "/Users/k.jones/Downloads/AGDB4_text/Geol_AllSpls.txt"
+ x_column: "LONGITUDE"
+ y_column: "LATITUDE"
+ z_column: "DEPTH" # Using depth as example - real gold data would need joining with Chem tables
 
 preprocessing:
-  remove_outliers: true
-  outlier_method: "iqr"
-  outlier_threshold: 3.0
-  
-  transform: "log"
-  handle_negatives: "shift"
-  
-  declustering: false
+ remove_outliers: true
+ outlier_method: "iqr"
+ outlier_threshold: 3.0
+
+ transform: "log"
+ handle_negatives: "shift"
+
+ declustering: false
 
 variogram:
-  n_lags: 15
-  max_lag: null
-  estimator: "matheron"
-  
-  models: ["spherical", "exponential", "gaussian"]
-  auto_fit: true
-  fit_method: "wls"
-  fit_criterion: "rmse"
-  
-  check_anisotropy: true
-  anisotropy_angles: [0, 45, 90, 135]
-  anisotropy_tolerance: 22.5
+ n_lags: 15
+ max_lag: null
+ estimator: "matheron"
+
+ models: ["spherical", "exponential", "gaussian"]
+ auto_fit: true
+ fit_method: "wls"
+ fit_criterion: "rmse"
+
+ check_anisotropy: true
+ anisotropy_angles: [0, 45, 90, 135]
+ anisotropy_tolerance: 22.5
 
 kriging:
-  method: "ordinary"
-  
-  neighborhood:
-    max_neighbors: 25
-    min_neighbors: 3
-  
-  grid:
-    resolution: 0.1
-    buffer: 0.5
-  
-  return_variance: true
+ method: "ordinary"
+
+ neighborhood:
+ max_neighbors: 25
+ min_neighbors: 3
+
+ grid:
+ resolution: 0.1
+ buffer: 0.5
+
+ return_variance: true
 
 validation:
-  cross_validation: true
-  cv_method: "loo"
-  metrics: ["rmse", "mae", "r2"]
+ cross_validation: true
+ cv_method: "loo"
+ metrics: ["rmse", "mae", "r2"]
 
 visualization:
-  style: "minimalist"
-  plots:
-    - "variogram"
-    - "kriging_map"
-    - "variance_map"
-    - "cross_validation"
-  dpi: 300
-  colormap: "YlOrRd"
+ style: "minimalist"
+ plots:
+ - "variogram"
+ - "kriging_map"
+ - "variance_map"
+ - "cross_validation"
+ dpi: 300
+ colormap: "YlOrRd"
 
 output:
-  save_predictions: true
-  save_variance: true
-  save_report: true
-  formats: ["npy", "csv"]
+ save_predictions: true
+ save_variance: true
+ save_report: true
+ formats: ["npy", "csv"]
 
 random_seed: 42
 verbose: true

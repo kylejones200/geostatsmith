@@ -82,10 +82,10 @@ Example test:
 
 ```python
 def test_spherical_model_at_origin():
-    """Test that spherical model equals nugget at h=0"""
-    model = SphericalModel(nugget=0.5, sill=2.0, range_param=10.0)
-    result = model(np.array([0.0]))
-    assert np.isclose(result[0], 0.5)
+ """Test that spherical model equals nugget at h=0"""
+ model = SphericalModel(nugget=0.5, sill=2.0, range_param=10.0)
+ result = model(np.array([0.0]))
+ assert np.isclose(result[0], 0.5)
 ```
 
 ## Documentation
@@ -96,30 +96,30 @@ Use NumPy-style docstrings:
 
 ```python
 def my_function(param1: int, param2: str) -> float:
-    """
-    Brief description of function.
-    
-    Longer description if needed.
-    
-    Parameters
-    ----------
-    param1 : int
-        Description of param1
-    param2 : str
-        Description of param2
-        
-    Returns
-    -------
-    float
-        Description of return value
-        
-    Examples
-    --------
-    >>> result = my_function(5, "test")
-    >>> print(result)
-    42.0
-    """
-    return 42.0
+ """
+ Brief description of function.
+
+ Longer description if needed.
+
+ Parameters
+ ----------
+ param1 : int
+ Description of param1
+ param2 : str
+ Description of param2
+
+ Returns
+ -------
+ float
+ Description of return value
+
+ Examples
+ --------
+ >>> result = my_function(5, "test")
+ >>> print(result)
+ 42.0
+ """
+ return 42.0
 ```
 
 ### Building Documentation
@@ -132,10 +132,10 @@ make html
 ## Pull Request Process
 
 1. **Create descriptive PR title**: Use conventional commits format
-   - `feat: Add new kriging method`
-   - `fix: Fix variogram calculation bug`
-   - `docs: Update README`
-   - `test: Add tests for kriging`
+ - `feat: Add new kriging method`
+ - `fix: Fix variogram calculation bug`
+ - `docs: Update README`
+ - `test: Add tests for kriging`
 
 2. **Write clear description**: Explain what changes you made and why
 
@@ -164,17 +164,17 @@ Follow the layered architecture (see `ARCHITECTURE.md`):
 
 ```python
 class MyModel(VariogramModelBase):
-    """
-    My custom variogram model
-    
-    Formula:
-        γ(h) = ...
-    """
-    
-    def _model_function(self, h):
-        """Implement model formula"""
-        # Your implementation
-        return gamma_values
+ """
+ My custom variogram model
+
+ Formula:
+ γ(h) = ...
+ """
+
+ def _model_function(self, h):
+ """Implement model formula"""
+ # Your implementation
+ return gamma_values
 ```
 
 2. Add tests in `tests/test_variogram.py`
@@ -189,17 +189,17 @@ class MyModel(VariogramModelBase):
 
 ```python
 class MyKriging(BaseKriging):
-    """My custom kriging method"""
-    
-    def predict(self, x, y, return_variance=True):
-        """Implement prediction logic"""
-        # Your implementation
-        return predictions, variances
-    
-    def cross_validate(self):
-        """Implement cross-validation"""
-        # Your implementation
-        return predictions, metrics
+ """My custom kriging method"""
+
+ def predict(self, x, y, return_variance=True):
+ """Implement prediction logic"""
+ # Your implementation
+ return predictions, variances
+
+ def cross_validate(self):
+ """Implement cross-validation"""
+ # Your implementation
+ return predictions, metrics
 ```
 
 2. Add tests in `tests/test_kriging.py`

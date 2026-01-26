@@ -35,7 +35,7 @@ geostats-run quick_test.yaml
 - Full preprocessing pipeline (outliers, Box-Cox transform, declustering)
 - Anisotropy analysis with directional variograms
 - Multiple model comparison
-- Comprehensive validation metrics
+- Validation metrics
 - All plot types
 - Multiple output formats (NPY, CSV, GeoTIFF)
 
@@ -121,14 +121,14 @@ Open `my_custom.yaml` and modify:
 
 ```yaml
 data:
-  input_file: "my_data.csv"  # Your data file
-  x_column: "Easting"        # Your X column
-  y_column: "Northing"       # Your Y column
-  z_column: "Grade"          # Your value column
+ input_file: "my_data.csv" # Your data file
+ x_column: "Easting" # Your X column
+ y_column: "Northing" # Your Y column
+ z_column: "Grade" # Your value column
 
 kriging:
-  grid:
-    resolution: 10.0         # Match your data spacing
+ grid:
+ resolution: 10.0 # Match your data spacing
 ```
 
 ### 3. Validate
@@ -151,74 +151,74 @@ geostats-run my_custom.yaml
 
 ```yaml
 variogram:
-  models: ["spherical"]      # Force spherical model
-  auto_fit: false
-  manual_model: "spherical"
-  manual_range: 100.0
-  manual_sill: 1.5
-  manual_nugget: 0.1
+ models: ["spherical"] # Force spherical model
+ auto_fit: false
+ manual_model: "spherical"
+ manual_range: 100.0
+ manual_sill: 1.5
+ manual_nugget: 0.1
 ```
 
 ### Grid Resolution
 
 ```yaml
 kriging:
-  grid:
-    resolution: 0.5          # Finer grid
-    # OR
-    nx: 200                  # Explicit grid size
-    ny: 150
+ grid:
+ resolution: 0.5 # Finer grid
+ # OR
+ nx: 200 # Explicit grid size
+ ny: 150
 ```
 
 ### Transformation Options
 
 ```yaml
 preprocessing:
-  # Log transform
-  transform: "log"
-  
-  # Box-Cox (auto-finds best lambda)
-  transform: "boxcox"
-  
-  # Normal score (for non-Gaussian data)
-  transform: "normal_score"
-  
-  # Square root
-  transform: "sqrt"
-  
-  # None
-  transform: null
+ # Log transform
+ transform: "log"
+
+ # Box-Cox (auto-finds best lambda)
+ transform: "boxcox"
+
+ # Normal score (for non-Gaussian data)
+ transform: "normal_score"
+
+ # Square root
+ transform: "sqrt"
+
+ # None
+ transform: null
 ```
 
 ### Kriging Methods
 
 ```yaml
 kriging:
-  # Ordinary kriging (most common)
-  method: "ordinary"
-  
-  # Simple kriging (known mean)
-  method: "simple"
-  mean: 10.5
-  
-  # Universal kriging (with trend)
-  method: "universal"
-  drift_terms: "linear"      # or "quadratic"
+ # Ordinary kriging (most common)
+ method: "ordinary"
+
+ # Simple kriging (known mean)
+ method: "simple"
+ mean: 10.5
+
+ # Universal kriging (with trend)
+ method: "universal"
+ drift_terms: "linear" # or "quadratic"
 ```
 
 ### Cross-Validation Methods
 
 ```yaml
 validation:
-  # Leave-one-out (most thorough)
-  cv_method: "loo"
-  
-  # K-fold (faster)
-  cv_method: "kfold"
-  n_folds: 10
-  
-  # Spatial CV (for spatially correlated errors)
-  cv_method: "spatial"
+ # Leave-one-out (most thorough)
+ cv_method: "loo"
+
+ # K-fold (faster)
+ cv_method: "kfold"
+ n_folds: 10
+
+ # Spatial CV (for spatially correlated errors)
+ cv_method: "spatial"
 ```
 
 ---
@@ -233,11 +233,11 @@ extends: basic_template.yaml
 
 # Only override what changes
 data:
-  input_file: "my_data.csv"
+ input_file: "my_data.csv"
 
 kriging:
-  grid:
-    resolution: 0.5
+ grid:
+ resolution: 0.5
 ```
 
 ---
@@ -252,8 +252,8 @@ Begin with `basic_template.yaml`, then add complexity as needed.
 
 ```yaml
 variogram:
-  estimator: "cressie"       # Comment: Robust to outliers
-  n_lags: 20                 # Comment: Fine lag spacing for short-range structure
+ estimator: "cressie" # Comment: Robust to outliers
+ n_lags: 20 # Comment: Fine lag spacing for short-range structure
 ```
 
 ### 3. Version Control
@@ -266,8 +266,8 @@ git commit -m "Add analysis configurations"
 ### 4. Descriptive Names
 
 Use names that describe the analysis:
-- `gold_preliminary_2024q1.yaml` ✓
-- `test.yaml` ✗
+- `gold_preliminary_2024q1.yaml`
+- `test.yaml`
 
 ### 5. Test First
 
@@ -278,8 +278,8 @@ geostats-validate my_config.yaml
 # Test on subset if dataset is large
 # (add filter in config)
 data:
-  filter_column: "Year"
-  filter_value: 2024
+ filter_column: "Year"
+ filter_value: 2024
 ```
 
 ---

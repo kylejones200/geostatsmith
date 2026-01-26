@@ -27,9 +27,9 @@ import numpy as np
 from geostats import variogram, kriging
 
 # 1. Your data
-x = np.array([0, 10, 20, 30, 40, 50])  # X coordinates
-y = np.array([0, 10, 20, 30, 40, 50])  # Y coordinates
-z = np.array([1.2, 2.1, 1.8, 3.2, 2.9, 3.5])  # Values
+x = np.array([0, 10, 20, 30, 40, 50]) # X coordinates
+y = np.array([0, 10, 20, 30, 40, 50]) # Y coordinates
+z = np.array([1.2, 2.1, 1.8, 3.2, 2.9, 3.5]) # Values
 
 # 2. Calculate experimental variogram
 lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=10)
@@ -56,12 +56,12 @@ The library provides several theoretical variogram models:
 
 ```python
 from geostats.models.variogram_models import (
-    SphericalModel,
-    ExponentialModel,
-    GaussianModel,
-    LinearModel,
-    PowerModel,
-    MaternModel,
+ SphericalModel,
+ ExponentialModel,
+ GaussianModel,
+ LinearModel,
+ PowerModel,
+ MaternModel,
 )
 
 # Create a model with specific parameters
@@ -111,9 +111,9 @@ from geostats.kriging import UniversalKriging
 
 # Handles linear or quadratic trends
 uk = UniversalKriging(
-    x, y, z,
-    variogram_model=model,
-    drift_terms='linear'  # or 'quadratic'
+ x, y, z,
+ variogram_model=model,
+ drift_terms='linear' # or 'quadratic'
 )
 predictions, variances = uk.predict(x_new, y_new)
 ```
@@ -138,16 +138,16 @@ from geostats.utils import create_grid, interpolate_to_grid
 
 # Create prediction grid
 X, Y = create_grid(
-    x_min=0, x_max=100,
-    y_min=0, y_max=100,
-    resolution=50
+ x_min=0, x_max=100,
+ y_min=0, y_max=100,
+ resolution=50
 )
 
 # Interpolate
 X, Y, Z, V = interpolate_to_grid(
-    ok, 0, 100, 0, 100,
-    resolution=50,
-    return_variance=True
+ ok, 0, 100, 0, 100,
+ resolution=50,
+ return_variance=True
 )
 
 # Visualize
@@ -177,9 +177,9 @@ print(f"Anisotropy ratio: {aniso_params['ratio']:.3f}")
 from geostats.models.variogram_models import SphericalModel
 base_model = SphericalModel(nugget=0.1, sill=1.0, range_param=20.0)
 aniso_model = AnisotropicModel(
-    base_model,
-    angle=aniso_params['major_angle'],
-    ratio=aniso_params['ratio']
+ base_model,
+ angle=aniso_params['major_angle'],
+ ratio=aniso_params['ratio']
 )
 ```
 
@@ -189,9 +189,9 @@ For data with outliers:
 
 ```python
 lags, gamma, n_pairs = variogram.robust_variogram(
-    x, y, z,
-    n_lags=15,
-    estimator='cressie'  # or 'dowd'
+ x, y, z,
+ n_lags=15,
+ estimator='cressie' # or 'dowd'
 )
 ```
 
@@ -203,12 +203,12 @@ For testing and learning:
 from geostats.utils import generate_synthetic_data
 
 x, y, z = generate_synthetic_data(
-    n_points=100,
-    spatial_structure='spherical',
-    nugget=0.1,
-    sill=1.0,
-    range_param=20.0,
-    seed=42  # For reproducibility
+ n_points=100,
+ spatial_structure='spherical',
+ nugget=0.1,
+ sill=1.0,
+ range_param=20.0,
+ seed=42 # For reproducibility
 )
 ```
 
@@ -218,9 +218,9 @@ x, y, z = generate_synthetic_data(
 2. **Check for anisotropy** in your data using directional variograms
 3. **Handle outliers** using robust variogram estimators
 4. **Use appropriate kriging method**:
-   - Ordinary Kriging: General purpose, most common
-   - Simple Kriging: When mean is well-known
-   - Universal Kriging: When data has large-scale trends
+ - Ordinary Kriging: General purpose, most common
+ - Simple Kriging: When mean is well-known
+ - Universal Kriging: When data has large-scale trends
 5. **Monitor kriging variance** to assess prediction uncertainty
 6. **Use enough sample points**: Generally 50+ for reliable variogram
 
@@ -244,9 +244,9 @@ lags, gamma, _ = variogram.robust_variogram(x, y, z, estimator='cressie')
 
 # Solution 3: Adjust lag parameters
 lags, gamma, _ = variogram.experimental_variogram(
-    x, y, z,
-    n_lags=20,  # More lags
-    maxlag=max_distance/3  # Shorter maximum distance
+ x, y, z,
+ n_lags=20, # More lags
+ maxlag=max_distance/3 # Shorter maximum distance
 )
 ```
 
@@ -255,7 +255,7 @@ lags, gamma, _ = variogram.experimental_variogram(
 # Solution: Check for duplicate locations
 unique_coords = np.unique(np.column_stack([x, y]), axis=0)
 if len(unique_coords) < len(x):
-    print("Warning: Duplicate locations detected")
+ print("Warning: Duplicate locations detected")
 # Remove duplicates or add small random noise
 ```
 

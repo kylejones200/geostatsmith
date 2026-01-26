@@ -4,55 +4,55 @@
 # Suitable for quick exploratory analysis.
 
 project:
-  name: "Basic Kriging Analysis"
-  output_dir: "./results/basic_analysis"
-  description: "Simple ordinary kriging with default settings"
+ name: "Basic Kriging Analysis"
+ output_dir: "./results/basic_analysis"
+ description: "Simple ordinary kriging with default settings"
 
 data:
-  input_file: "data.csv"
-  x_column: "X"
-  y_column: "Y"
-  z_column: "Value"
+ input_file: "data.csv"
+ x_column: "X"
+ y_column: "Y"
+ z_column: "Value"
 
 preprocessing:
-  remove_outliers: false
-  transform: null
-  declustering: false
+ remove_outliers: false
+ transform: null
+ declustering: false
 
 variogram:
-  n_lags: 15
-  estimator: "matheron"
-  models: ["spherical", "exponential", "gaussian"]
-  auto_fit: true
-  fit_method: "wls"
-  check_anisotropy: false
+ n_lags: 15
+ estimator: "matheron"
+ models: ["spherical", "exponential", "gaussian"]
+ auto_fit: true
+ fit_method: "wls"
+ check_anisotropy: false
 
 kriging:
-  method: "ordinary"
-  neighborhood:
-    max_neighbors: 25
-    min_neighbors: 3
-  grid:
-    resolution: 1.0
-    buffer: 0.0
+ method: "ordinary"
+ neighborhood:
+ max_neighbors: 25
+ min_neighbors: 3
+ grid:
+ resolution: 1.0
+ buffer: 0.0
 
 validation:
-  cross_validation: true
-  cv_method: "loo"
-  metrics: ["rmse", "mae", "r2"]
+ cross_validation: true
+ cv_method: "loo"
+ metrics: ["rmse", "mae", "r2"]
 
 visualization:
-  style: "minimalist"
-  plots:
-    - "variogram"
-    - "kriging_map"
-    - "cross_validation"
-  dpi: 300
-  colormap: "viridis"
+ style: "minimalist"
+ plots:
+ - "variogram"
+ - "kriging_map"
+ - "cross_validation"
+ dpi: 300
+ colormap: "viridis"
 
 output:
-  save_predictions: true
-  save_variance: true
-  save_report: true
-  formats: ["npy", "csv"]
-  compression: true
+ save_predictions: true
+ save_variance: true
+ save_report: true
+ formats: ["npy", "csv"]
+ compression: true

@@ -11,33 +11,36 @@ import numpy as np
 import matplotlib.pyplot as plt
 from geostats import variogram, kriging
 from geostats.utils import generate_synthetic_data, create_grid
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Generate synthetic data
-print("Generating synthetic spatial data...")
+logger.info("Generating synthetic spatial data...")
 np.random.seed(42)
 x, y, z = generate_synthetic_data(n_points=80, range_param=25.0, seed=42)
 
-print(f"Sample points: {len(x)}")
+logger.info(f"Sample points: {len(x)}")
 
 # Calculate and fit variogram
-print("\nFitting variogram model...")
+logger.info("\nFitting variogram model...")
 lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=12)
 vario_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
 
-print(f"Variogram parameters: {vario_model.parameters}")
+logger.info(f"Variogram parameters: {vario_model.parameters}")
 
 # Create Ordinary Kriging object
-print("\nSetting up Ordinary Kriging...")
+logger.info("\nSetting up Ordinary Kriging...")
 ok = kriging.OrdinaryKriging(x, y, z, variogram_model=vario_model)
 
 # Create prediction grid
-print("Creating prediction grid...")
+logger.info("Creating prediction grid...")
 X, Y = create_grid(
-    x_min=np.min(x) - 5,
-    x_max=np.max(x) + 5,
-    y_min=np.min(y) - 5,
-    y_max=np.max(y) + 5,
-    resolution=50,
+ x_min=np.min(x) - 5,
+ x_max=np.max(x) + 5,
+ y_min=np.min(y) - 5,
+ y_max=np.max(y) + 5,
+ resolution=50,
 )
 
 # Flatten for prediction
@@ -45,7 +48,7 @@ x_grid = X.flatten()
 y_grid = Y.flatten()
 
 # Perform kriging prediction
-print("Performing kriging interpolation...")
+logger.info("Performing kriging interpolation...")
 z_pred, variance = ok.predict(x_grid, y_grid, return_variance=True)
 
 # Reshape to grid
@@ -53,16 +56,16 @@ Z_pred = z_pred.reshape(X.shape)
 Variance = variance.reshape(X.shape)
 
 # Cross-validation
-print("\nPerforming cross-validation...")
+logger.info("\nPerforming cross-validation...")
 cv_pred, metrics = ok.cross_validate()
-print(f"Cross-validation metrics:")
-print(f"  RMSE: {metrics['rmse']:.4f}")
-print(f"  MAE: {metrics['mae']:.4f}")
-print(f"  R²: {metrics['r2']:.4f}")
-print(f"  Bias: {metrics['bias']:.4f}")
+logger.info(f"Cross-validation metrics:")
+logger.info(f" RMSE: {metrics['rmse']:.4f}")
+logger.info(f" MAE: {metrics['mae']:.4f}")
+logger.info(f" R²: {metrics['r2']:.4f}")
+logger.info(f" Bias: {metrics['bias']:.4f}")
 
 # Visualize results
-print("\nGenerating plots...")
+logger.info("\nGenerating plots...")
 fig = plt.figure(figsize=(16, 5))
 
 # Plot 1: Kriging predictions
@@ -104,7 +107,7 @@ ax3.set_aspect('equal')
 
 plt.tight_layout()
 plt.savefig('example_2_kriging.png', dpi=300, bbox_inches='tight')
-print("Saved plot to: example_2_kriging.png")
+logger.info("Saved plot to: example_2_kriging.png")
 plt.show()
 
-print("\nExample completed successfully!")
+logger.info("\nExample completed successfully!")

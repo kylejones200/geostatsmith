@@ -18,40 +18,43 @@ sys.path.insert(0, '../src')
 from geostats.datasets import get_walker_lake_subset
 from geostats import variogram, kriging, simulation
 from geostats.utils import create_grid
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Load subset of Walker Lake data
-print("Loading Walker Lake data subset...")
+logger.info("Loading Walker Lake data subset...")
 data = get_walker_lake_subset(n_samples=30, seed=42)
 x, y, V = data['x'], data['y'], data['V']
 
-print(f"Conditioning data: {len(x)} samples")
-print(f"V range: [{np.min(V):.1f}, {np.max(V):.1f}] ppm")
+logger.info(f"Conditioning data: {len(x)} samples")
+logger.info(f"V range: [{np.min(V):.1f}, {np.max(V):.1f}] ppm")
 
 # Fit variogram
-print("\nFitting variogram...")
+logger.info("\nFitting variogram...")
 lags, gamma, n_pairs = variogram.experimental_variogram(x, y, V, n_lags=8)
 vario_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
-print(f"Variogram parameters: {vario_model.parameters}")
+logger.info(f"Variogram parameters: {vario_model.parameters}")
 
 # Create simulation grid
-print("\nCreating simulation grid...")
+logger.info("\nCreating simulation grid...")
 X, Y = create_grid(x_min=0, x_max=90, y_min=0, y_max=90, resolution=30)
 x_grid, y_grid = X.flatten(), Y.flatten()
 
 # Perform Sequential Gaussian Simulation
-print("\nPerforming Sequential Gaussian Simulation...")
+logger.info("\nPerforming Sequential Gaussian Simulation...")
 sgs = simulation.SequentialGaussianSimulation(x, y, V, vario_model)
 
 # Generate multiple realizations
 n_realizations = 5
-print(f"Generating {n_realizations} realizations...")
+logger.info(f"Generating {n_realizations} realizations...")
 realizations_flat = sgs.simulate(x_grid, y_grid, n_realizations=n_realizations, seed=123)
 
 # Reshape to grid
 realizations = realizations_flat.reshape(n_realizations, X.shape[0], X.shape[1])
 
 # Calculate statistics from realizations
-print("\nCalculating statistics...")
+logger.info("\nCalculating statistics...")
 mean_sgs, std_sgs, p10, p90 = sgs.get_statistics(realizations_flat)
 
 # Reshape statistics
@@ -61,26 +64,26 @@ P10 = p10.reshape(X.shape)
 P90 = p90.reshape(X.shape)
 
 # Compare with Ordinary Kriging
-print("\nPerforming Ordinary Kriging for comparison...")
+logger.info("\nPerforming Ordinary Kriging for comparison...")
 ok = kriging.OrdinaryKriging(x, y, V, variogram_model=vario_model)
 z_ok, var_ok = ok.predict(x_grid, y_grid, return_variance=True)
 Z_ok = z_ok.reshape(X.shape)
 Var_ok = var_ok.reshape(X.shape)
 
 # Visualize
-print("\nGenerating plots...")
+logger.info("\nGenerating plots...")
 fig = plt.figure(figsize=(18, 12))
 
 # Plot realizations
 for i in range(min(4, n_realizations)):
-    ax = plt.subplot(3, 4, i+1)
-    contour = ax.contourf(X, Y, realizations[i], levels=15, cmap='viridis', alpha=0.9)
-    ax.scatter(x, y, c=V, cmap='viridis', s=60, edgecolors='white', linewidth=1.5, zorder=5)
-    plt.colorbar(contour, ax=ax, label='V (ppm)')
-    ax.set_title(f'Realization {i+1}', fontweight='bold', fontsize=11)
-    ax.set_xlabel('X (m)')
-    ax.set_ylabel('Y (m)')
-    ax.set_aspect('equal')
+ ax = plt.subplot(3, 4, i+1)
+ contour = ax.contourf(X, Y, realizations[i], levels=15, cmap='viridis', alpha=0.9)
+ ax.scatter(x, y, c=V, cmap='viridis', s=60, edgecolors='white', linewidth=1.5, zorder=5)
+ plt.colorbar(contour, ax=ax, label='V (ppm)')
+ ax.set_title(f'Realization {i+1}', fontweight='bold', fontsize=11)
+ ax.set_xlabel('X (m)')
+ ax.set_ylabel('Y (m)')
+ ax.set_aspect('equal')
 
 # E-type estimate (mean of realizations)
 ax5 = plt.subplot(3, 4, 5)
@@ -166,24 +169,24 @@ ax12.set_aspect('equal')
 
 plt.tight_layout()
 plt.savefig('example_5_simulation_sgs.png', dpi=300, bbox_inches='tight')
-print("Saved plot to: example_5_simulation_sgs.png")
+logger.info("Saved plot to: example_5_simulation_sgs.png")
 plt.show()
 
 # Summary statistics
-print("\n" + "="*60)
-print("SIMULATION SUMMARY")
-print("="*60)
-print(f"Number of realizations: {n_realizations}")
-print(f"\nOriginal data:")
-print(f"  Mean: {np.mean(V):.2f}")
-print(f"  Std: {np.std(V):.2f}")
-print(f"\nSGS E-type estimate:")
-print(f"  Mean: {np.mean(Mean_sgs):.2f}")
-print(f"  Mean Std Dev: {np.mean(Std_sgs):.2f}")
-print(f"\nKriging:")
-print(f"  Mean prediction: {np.mean(Z_ok):.2f}")
-print(f"  Mean variance: {np.mean(Var_ok):.2f}")
+logger.info("\n" + "="*60)
+logger.info("SIMULATION SUMMARY")
+logger.info("="*60)
+logger.info(f"Number of realizations: {n_realizations}")
+logger.info(f"\nOriginal data:")
+logger.info(f" Mean: {np.mean(V):.2f}")
+logger.info(f" Std: {np.std(V):.2f}")
+logger.info(f"\nSGS E-type estimate:")
+logger.info(f" Mean: {np.mean(Mean_sgs):.2f}")
+logger.info(f" Mean Std Dev: {np.mean(Std_sgs):.2f}")
+logger.info(f"\nKriging:")
+logger.info(f" Mean prediction: {np.mean(Z_ok):.2f}")
+logger.info(f" Mean variance: {np.mean(Var_ok):.2f}")
 
-print("\nSimulation captures spatial variability and uncertainty!")
-print("Multiple realizations provide full uncertainty quantification.")
-print("\nExample completed successfully!")
+logger.info("\nSimulation captures spatial variability and uncertainty!")
+logger.info("Multiple realizations provide full uncertainty quantification.")
+logger.info("\nExample completed successfully!")

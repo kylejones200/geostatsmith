@@ -12,55 +12,58 @@ import numpy as np
 import matplotlib.pyplot as plt
 from geostats import variogram
 from geostats.utils import generate_synthetic_data
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Set random seed for reproducibility
 np.random.seed(42)
 
 # Generate synthetic spatial data
-print("Generating synthetic spatial data...")
+logger.info("Generating synthetic spatial data...")
 x, y, z = generate_synthetic_data(
-    n_points=100,
-    spatial_structure="spherical",
-    nugget=0.1,
-    sill=1.0,
-    range_param=20.0,
+ n_points=100,
+ spatial_structure="spherical",
+ nugget=0.1,
+ sill=1.0,
+ range_param=20.0,
 )
 
-print(f"Generated {len(x)} sample points")
-print(f"Value range: [{np.min(z):.2f}, {np.max(z):.2f}]")
+logger.info(f"Generated {len(x)} sample points")
+logger.info(f"Value range: [{np.min(z):.2f}, {np.max(z):.2f}]")
 
 # Calculate experimental variogram
-print("\nCalculating experimental variogram...")
+logger.info("\nCalculating experimental variogram...")
 lags, gamma, n_pairs = variogram.experimental_variogram(
-    x, y, z,
-    n_lags=15,
-    maxlag=50,
+ x, y, z,
+ n_lags=15,
+ maxlag=50,
 )
 
-print(f"Number of lags: {len(lags)}")
-print(f"Maximum lag: {np.max(lags):.2f}")
+logger.info(f"Number of lags: {len(lags)}")
+logger.info(f"Maximum lag: {np.max(lags):.2f}")
 
 # Fit different variogram models
-print("\nFitting variogram models...")
+logger.info("\nFitting variogram models...")
 
 models_to_fit = ['spherical', 'exponential', 'gaussian']
 fitted_models = {}
 
 for model_name in models_to_fit:
-    model = variogram.fit_model(model_name, lags, gamma, weights=n_pairs)
-    fitted_models[model_name] = model
-    print(f"\n{model_name.capitalize()} Model:")
-    print(f"  Parameters: {model.parameters}")
+ model = variogram.fit_model(model_name, lags, gamma, weights=n_pairs)
+ fitted_models[model_name] = model
+ logger.info(f"\n{model_name.capitalize()} Model:")
+ logger.info(f" Parameters: {model.parameters}")
 
 # Automatic model selection
-print("\nAutomatic model selection...")
+logger.info("\nAutomatic model selection...")
 result = variogram.auto_fit(lags, gamma, weights=n_pairs, criterion='rmse')
 best_model = result['model']
-print(f"Best model: {best_model.__class__.__name__}")
-print(f"RMSE: {result['score']:.4f}")
+logger.info(f"Best model: {best_model.__class__.__name__}")
+logger.info(f"RMSE: {result['score']:.4f}")
 
 # Visualize results
-print("\nGenerating plots...")
+logger.info("\nGenerating plots...")
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
 # Plot 1: Sample locations
@@ -77,8 +80,8 @@ ax2.scatter(lags, gamma, s=n_pairs/2, alpha=0.6, c='black', label='Experimental'
 
 h_plot = np.linspace(0, np.max(lags), 100)
 for model_name, model in fitted_models.items():
-    gamma_plot = model(h_plot)
-    ax2.plot(h_plot, gamma_plot, label=model_name.capitalize(), linewidth=2)
+ gamma_plot = model(h_plot)
+ ax2.plot(h_plot, gamma_plot, label=model_name.capitalize(), linewidth=2)
 
 ax2.set_xlabel('Distance (h)', fontsize=12)
 ax2.set_ylabel('Semivariance γ(h)', fontsize=12)
@@ -88,7 +91,7 @@ ax2.grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.savefig('example_1_variogram.png', dpi=300, bbox_inches='tight')
-print("Saved plot to: example_1_variogram.png")
+logger.info("Saved plot to: example_1_variogram.png")
 plt.show()
 
-print("\nExample completed successfully!")
+logger.info("\nExample completed successfully!")

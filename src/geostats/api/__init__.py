@@ -13,13 +13,13 @@ Enables:
 Examples
 --------
 >>> from geostats.api import create_app
->>> 
+>>>
 >>> # Create FastAPI application
 >>> app = create_app()
->>> 
+>>>
 >>> # Run server
 >>> # uvicorn geostats.api:app --reload
->>> 
+>>>
 >>> # Access API:
 >>> # POST /predict - Make predictions
 >>> # POST /variogram - Fit variogram
@@ -30,7 +30,7 @@ from .app import create_app, app
 from .endpoints import router
 
 __all__ = [
-    'create_app',
-    'app',
-    'router',
+ 'create_app',
+ 'app',
+ 'router',
 ]

@@ -3,24 +3,25 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-0.3.0-green.svg)](https://github.com)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Type checking: mypy](https://img.shields.io/badge/type%20checking-mypy-blue.svg)](https://mypy.readthedocs.io/)
 
-A comprehensive, enterprise-ready Python library for geostatistics and spatial data analysis.
+A Python library for geostatistics and spatial data analysis.
 
 **Status: Beta** - Production-ready with extensive testing and validation
 
 ## Overview
 
-GeoStats is a modern Python library that brings together classical geostatistics, machine learning, and high-performance computing. Built for Python 3.12+, it provides everything from basic variogram analysis to enterprise deployment capabilities.
+GeoStats is a modern Python library that brings together classical geostatistics, machine learning, and high-performance computing. Built for Python 3.12+, it provides everything from basic variogram analysis to advanced deployment capabilities.
 
 ### Key Capabilities
 
-- 🎯 **Complete Geostatistics** - All major kriging methods, variogram models, and simulation techniques
-- ⚙️ **Config-Driven** - Run complete workflows from YAML/JSON config files (NEW!)
-- 🚀 **High Performance** - 2-100x faster with parallel processing, caching, and GPU support
-- 🤖 **AutoML** - Automatic model selection with one-function APIs
-- 🌐 **Enterprise Ready** - REST API, CLI tools, professional reporting
-- 📊 **Interactive Viz** - Web-based visualizations with Plotly
-- 🔬 **Production Grade** - Comprehensive validation, diagnostics, and uncertainty quantification
+- **Complete Geostatistics** - All major kriging methods, variogram models, and simulation techniques
+- **Config-Driven** - Run complete workflows from YAML/JSON config files
+- **High Performance** - 2-100x faster with parallel processing, caching
+- **AutoML** - Automatic model selection with one-function APIs
+- **Interactive Viz** - Web-based visualizations with Plotly
+- **Production Grade** - Validation, diagnostics, and uncertainty quantification
 
 ## Features
 
@@ -112,12 +113,12 @@ GeoStats is a modern Python library that brings together classical geostatistics
 
 #### Professional Reporting
 - **Auto-Generate**: HTML reports with one function call
-- **Comprehensive**: Stats, models, validation, plots
+- **Complete**: Stats, models, validation, plots
 - **Professional**: Client-ready formatting
 - **Customizable**: Templates for different use cases
 
 #### Advanced Diagnostics
-- **Comprehensive Validation**: Full diagnostic suite with quality scores
+- **Validation**: Full diagnostic suite with quality scores
 - **Outlier Detection**: IQR, Z-score, spatial methods
 - **Robust Validation**: Performance with/without outliers
 - **Model Diagnostics**: Variogram fit quality assessment
@@ -211,25 +212,25 @@ Example config (`my_analysis.yaml`):
 
 ```yaml
 project:
-  name: "My Analysis"
-  output_dir: "./results"
+ name: "My Analysis"
+ output_dir: "./results"
 
 data:
-  input_file: "data.csv"
-  x_column: "X"
-  y_column: "Y"
-  z_column: "Value"
+ input_file: "data.csv"
+ x_column: "X"
+ y_column: "Y"
+ z_column: "Value"
 
 kriging:
-  method: "ordinary"
-  grid:
-    resolution: 1.0
+ method: "ordinary"
+ grid:
+ resolution: 1.0
 
 visualization:
-  plots: ["variogram", "kriging_map", "cross_validation"]
+ plots: ["variogram", "kriging_map", "cross_validation"]
 ```
 
-**Complete workflow in one command** - no Python coding required!  
+**Complete workflow in one command** - no Python coding required!
 See [`docs/CONFIG_DRIVEN.md`](docs/CONFIG_DRIVEN.md) for full guide.
 
 ---
@@ -279,7 +280,7 @@ from geostats.performance import parallel_kriging
 
 # Use all CPU cores (2-8x faster)
 z_pred, var = parallel_kriging(
-    x, y, z, x_pred, y_pred, model, n_jobs=-1
+ x, y, z, x_pred, y_pred, model, n_jobs=-1
 )
 ```
 
@@ -290,7 +291,7 @@ from geostats.interactive import interactive_prediction_map
 
 # Create interactive web map
 fig = interactive_prediction_map(x_grid, y_grid, z_grid)
-fig.show()  # Opens in browser!
+fig.show() # Opens in browser!
 ```
 
 ### Professional Reporting
@@ -298,13 +299,13 @@ fig.show()  # Opens in browser!
 ```python
 from geostats.reporting import generate_report
 
-# Generate comprehensive HTML report
+# Generate HTML report
 generate_report(
-    x, y, z,
-    output='analysis_report.html',
-    title='Soil Contamination Analysis',
-    author='Your Name',
-    include_cv=True
+ x, y, z,
+ output='analysis_report.html',
+ title='Soil Contamination Analysis',
+ author='Your Name',
+ include_cv=True
 )
 ```
 
@@ -446,45 +447,45 @@ Deploy the FastAPI application to any cloud platform that supports Python web ap
 ## Project Status
 
 ### What Works Well
-✅ Core kriging algorithms (Simple, Ordinary, Universal, Block)  
-✅ Advanced kriging (Cokriging, External Drift, Indicator, Lognormal, 3D)  
-✅ Variogram analysis and fitting (9 models, automatic selection)  
-✅ Geostatistical simulation (SGS, SIS, unconditional)  
-✅ ML-enhanced kriging (Regression, Random Forest, XGBoost)  
-✅ Data I/O (GeoTIFF, CSV, NetCDF, GeoJSON)  
-✅ Optimization tools (sampling design, cost-benefit)  
-✅ Uncertainty quantification (bootstrap, probability maps)  
-✅ Performance optimization (parallel, caching, chunking)  
-✅ Interactive visualization (Plotly-based)  
-✅ AutoML capabilities (one-function APIs)  
-✅ Web API (FastAPI, REST endpoints)  
-✅ CLI tools (command-line interface)  
-✅ Professional reporting (HTML generation)  
-✅ Advanced diagnostics (validation, outlier detection)  
+- Core kriging algorithms (Simple, Ordinary, Universal, Block)
+- Advanced kriging (Cokriging, External Drift, Indicator, Lognormal, 3D)
+- Variogram analysis and fitting (9 models, automatic selection)
+- Geostatistical simulation (SGS, SIS, unconditional)
+- ML-enhanced kriging (Regression, Random Forest, XGBoost)
+- Data I/O (GeoTIFF, CSV, NetCDF, GeoJSON)
+- Optimization tools (sampling design, cost-benefit)
+- Uncertainty quantification (bootstrap, probability maps)
+- Performance optimization (parallel, caching, chunking)
+- Interactive visualization (Plotly-based)
+- AutoML capabilities (one-function APIs)
+- Web API (FastAPI, REST endpoints)
+- CLI tools (command-line interface)
+- Professional reporting (HTML generation)
+- Advanced diagnostics (validation, outlier detection)
 
 ### What's In Progress
-🔄 Expanding test coverage (currently 50%, targeting 80%+)  
-🔄 Comprehensive documentation  
-🔄 Performance profiling and optimization  
-🔄 Additional example notebooks  
+- Expanding test coverage (currently 50%, targeting 80%+)
+- Documentation
+- Performance profiling and optimization
+- Additional example notebooks
 
 ### What's Planned
-📋 GPU acceleration (CuPy integration)  
-📋 Jupyter notebook examples  
-📋 PDF report generation  
-📋 More ML models (Neural Kriging)  
-📋 Spatio-temporal analysis enhancements  
+- GPU acceleration (CuPy integration)
+- Jupyter notebook examples
+- PDF report generation
+- More ML models (Neural Kriging)
+- Spatio-temporal analysis enhancements
 
 ## Contributing
 
 Contributions are welcome! Areas where help is needed:
 
-- 🧪 **Testing**: Increase test coverage, edge cases
-- 📚 **Documentation**: Tutorials, API docs, examples
-- 🐛 **Bug Fixes**: Report and fix issues
-- ⚡ **Performance**: Profiling and optimization
-- 🎨 **Visualization**: New plot types, themes
-- 🌐 **I/O**: Additional data format support
+- **Testing**: Increase test coverage, edge cases
+- **Documentation**: Tutorials, API docs, examples
+- **Bug Fixes**: Report and fix issues
+- **Performance**: Profiling and optimization
+- **Visualization**: New plot types, themes
+- **I/O**: Additional data format support
 
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for guidelines.
 
@@ -505,10 +506,10 @@ If you use GeoStats in academic work, please cite:
 
 ```bibtex
 @software{geostats2026,
-  author = {Jones, Kyle},
-  title = {GeoStats: A Comprehensive Python Library for Geostatistics},
-  year = {2026},
-  url = {https://github.com/kylejones200/geostats}
+ author = {Jones, Kyle},
+ title = {GeoStats: A Python Library for Geostatistics},
+ year = {2026},
+ url = {https://github.com/kylejones200/geostats}
 }
 ```
 
@@ -532,4 +533,4 @@ This library implements algorithms from academic literature and textbooks. It is
 
 ---
 
-**Built with ❤️ for the spatial data community**
+**Built for the spatial data community**

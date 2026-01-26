@@ -34,19 +34,19 @@ Open `my_analysis.yaml` and update the data paths and parameters:
 
 ```yaml
 project:
-  name: "My Analysis"
-  output_dir: "./results/my_analysis"
+ name: "My Analysis"
+ output_dir: "./results/my_analysis"
 
 data:
-  input_file: "my_data.csv"
-  x_column: "X"
-  y_column: "Y"
-  z_column: "Value"
+ input_file: "my_data.csv"
+ x_column: "X"
+ y_column: "Y"
+ z_column: "Value"
 
 kriging:
-  method: "ordinary"
-  grid:
-    resolution: 1.0
+ method: "ordinary"
+ grid:
+ resolution: 1.0
 ```
 
 ### 4. Run Analysis
@@ -121,134 +121,134 @@ A complete configuration has the following sections:
 
 ```yaml
 project:
-  name: "Analysis Name"
-  output_dir: "./results"
-  description: "Optional description"
-  author: "Your Name"
+ name: "Analysis Name"
+ output_dir: "./results"
+ description: "Optional description"
+ author: "Your Name"
 ```
 
 ### Data Loading
 
 ```yaml
 data:
-  input_file: "data.csv"
-  x_column: "X"
-  y_column: "Y"
-  z_column: "Value"
-  z_secondary: "Secondary"  # For cokriging
-  filter_column: "Type"      # Optional filtering
-  filter_value: "Surface"
+ input_file: "data.csv"
+ x_column: "X"
+ y_column: "Y"
+ z_column: "Value"
+ z_secondary: "Secondary" # For cokriging
+ filter_column: "Type" # Optional filtering
+ filter_value: "Surface"
 ```
 
 ### Preprocessing
 
 ```yaml
 preprocessing:
-  # Outlier removal
-  remove_outliers: true
-  outlier_method: "iqr"      # iqr, zscore, isolation_forest
-  outlier_threshold: 3.0
-  
-  # Data transformation
-  transform: "log"           # log, boxcox, normal_score, sqrt, null
-  handle_negatives: "shift"  # shift, remove, absolute
-  
-  # Declustering
-  declustering: true
-  declustering_method: "cell"  # cell, polygonal
+ # Outlier removal
+ remove_outliers: true
+ outlier_method: "iqr" # iqr, zscore, isolation_forest
+ outlier_threshold: 3.0
+
+ # Data transformation
+ transform: "log" # log, boxcox, normal_score, sqrt, null
+ handle_negatives: "shift" # shift, remove, absolute
+
+ # Declustering
+ declustering: true
+ declustering_method: "cell" # cell, polygonal
 ```
 
 ### Variogram Modeling
 
 ```yaml
 variogram:
-  # Experimental variogram
-  n_lags: 15
-  max_lag: null              # Auto if null
-  estimator: "matheron"      # matheron, cressie, dowd, madogram
-  
-  # Model fitting
-  models: ["spherical", "exponential", "gaussian"]
-  auto_fit: true
-  fit_method: "wls"          # ols, wls
-  fit_criterion: "rmse"      # rmse, mae, r2, aic
-  
-  # Anisotropy
-  check_anisotropy: true
-  anisotropy_angles: [0, 45, 90, 135]
+ # Experimental variogram
+ n_lags: 15
+ max_lag: null # Auto if null
+ estimator: "matheron" # matheron, cressie, dowd, madogram
+
+ # Model fitting
+ models: ["spherical", "exponential", "gaussian"]
+ auto_fit: true
+ fit_method: "wls" # ols, wls
+ fit_criterion: "rmse" # rmse, mae, r2, aic
+
+ # Anisotropy
+ check_anisotropy: true
+ anisotropy_angles: [0, 45, 90, 135]
 ```
 
 ### Kriging Configuration
 
 ```yaml
 kriging:
-  method: "ordinary"  # ordinary, simple, universal, indicator, cokriging
-  
-  neighborhood:
-    max_neighbors: 25
-    min_neighbors: 3
-    search_radius: null      # Auto if null
-    use_octant_search: false
-  
-  grid:
-    resolution: 1.0
-    buffer: 0.0
-    # Or specify grid size:
-    # nx: 100
-    # ny: 100
-  
-  return_variance: true
-  parallel: false
+ method: "ordinary" # ordinary, simple, universal, indicator, cokriging
+
+ neighborhood:
+ max_neighbors: 25
+ min_neighbors: 3
+ search_radius: null # Auto if null
+ use_octant_search: false
+
+ grid:
+ resolution: 1.0
+ buffer: 0.0
+ # Or specify grid size:
+ # nx: 100
+ # ny: 100
+
+ return_variance: true
+ parallel: false
 ```
 
 ### Validation
 
 ```yaml
 validation:
-  cross_validation: true
-  cv_method: "loo"           # loo, kfold, spatial
-  n_folds: 5
-  metrics: ["rmse", "mae", "r2"]
-  save_predictions: true
+ cross_validation: true
+ cv_method: "loo" # loo, kfold, spatial
+ n_folds: 5
+ metrics: ["rmse", "mae", "r2"]
+ save_predictions: true
 ```
 
 ### Visualization
 
 ```yaml
 visualization:
-  style: "minimalist"        # minimalist, default, seaborn
-  
-  plots:
-    - "variogram"
-    - "kriging_map"
-    - "variance_map"
-    - "cross_validation"
-    - "histogram"
-  
-  dpi: 300
-  colormap: "viridis"
-  save_format: ["png", "pdf"]
+ style: "minimalist" # minimalist, default, seaborn
+
+ plots:
+ - "variogram"
+ - "kriging_map"
+ - "variance_map"
+ - "cross_validation"
+ - "histogram"
+
+ dpi: 300
+ colormap: "viridis"
+ save_format: ["png", "pdf"]
 ```
 
 ### Output
 
 ```yaml
 output:
-  save_predictions: true
-  save_variance: true
-  save_weights: true
-  save_model: true
-  save_report: true
-  
-  formats: ["npy", "csv", "geotiff"]
-  compression: true
-  precision: "float32"
+ save_predictions: true
+ save_variance: true
+ save_weights: true
+ save_model: true
+ save_report: true
+
+ formats: ["npy", "csv", "geotiff"]
+ compression: true
+ precision: "float32"
 ```
 
 ### Advanced Options
 
 ```yaml
-random_seed: 42            # For reproducibility
+random_seed: 42 # For reproducibility
 verbose: true
 log_file: "./analysis.log"
 ```
@@ -266,9 +266,9 @@ Example validation error:
 
 ```
 Configuration validation failed:
-  • data -> input_file: Input file not found: data.csv
-  • variogram -> n_lags: Input should be greater than or equal to 5
-  • kriging -> neighborhood -> max_neighbors: Input should be greater than or equal to min_neighbors
+ • data -> input_file: Input file not found: data.csv
+ • variogram -> n_lags: Input should be greater than or equal to 5
+ • kriging -> neighborhood -> max_neighbors: Input should be greater than or equal to min_neighbors
 ```
 
 ## Programmatic Usage
@@ -297,14 +297,14 @@ pipeline.run()
 from geostats.config import AnalysisConfig, load_config_dict
 
 config_dict = {
-    'project': {'name': 'Test', 'output_dir': './results'},
-    'data': {
-        'input_file': 'data.csv',
-        'x_column': 'X',
-        'y_column': 'Y',
-        'z_column': 'Value'
-    },
-    # ... other sections with defaults
+ 'project': {'name': 'Test', 'output_dir': './results'},
+ 'data': {
+ 'input_file': 'data.csv',
+ 'x_column': 'X',
+ 'y_column': 'Y',
+ 'z_column': 'Value'
+ },
+ # ... other sections with defaults
 }
 
 config = load_config_dict(config_dict)
@@ -317,8 +317,8 @@ from geostats.config import load_config, merge_configs
 
 base = load_config('base.yaml')
 overrides = {
-    'project': {'name': 'Modified'},
-    'kriging': {'grid': {'resolution': 0.5}}
+ 'project': {'name': 'Modified'},
+ 'kriging': {'grid': {'resolution': 0.5}}
 }
 
 config = merge_configs(base, overrides)
@@ -331,22 +331,22 @@ config = merge_configs(base, overrides)
 ```yaml
 # basic_analysis.yaml
 project:
-  name: "Quick Kriging"
-  output_dir: "./results"
+ name: "Quick Kriging"
+ output_dir: "./results"
 
 data:
-  input_file: "data.csv"
-  x_column: "X"
-  y_column: "Y"
-  z_column: "Value"
+ input_file: "data.csv"
+ x_column: "X"
+ y_column: "Y"
+ z_column: "Value"
 
 kriging:
-  method: "ordinary"
-  grid:
-    resolution: 1.0
+ method: "ordinary"
+ grid:
+ resolution: 1.0
 
 visualization:
-  plots: ["variogram", "kriging_map"]
+ plots: ["variogram", "kriging_map"]
 ```
 
 Run: `geostats-run basic_analysis.yaml`
@@ -356,36 +356,36 @@ Run: `geostats-run basic_analysis.yaml`
 ```yaml
 # gold_exploration.yaml
 project:
-  name: "Gold Grade Estimation"
-  output_dir: "./results/gold"
+ name: "Gold Grade Estimation"
+ output_dir: "./results/gold"
 
 data:
-  input_file: "assays.csv"
-  x_column: "Easting"
-  y_column: "Northing"
-  z_column: "Au_ppm"
+ input_file: "assays.csv"
+ x_column: "Easting"
+ y_column: "Northing"
+ z_column: "Au_ppm"
 
 preprocessing:
-  remove_outliers: true
-  transform: "log"
-  declustering: true
+ remove_outliers: true
+ transform: "log"
+ declustering: true
 
 variogram:
-  estimator: "cressie"       # Robust
-  check_anisotropy: true     # Important for mineralization
+ estimator: "cressie" # Robust
+ check_anisotropy: true # Important for mineralization
 
 kriging:
-  method: "ordinary"
-  neighborhood:
-    use_octant_search: true  # Better for deposits
+ method: "ordinary"
+ neighborhood:
+ use_octant_search: true # Better for deposits
 
 visualization:
-  colormap: "YlOrRd"
-  plots:
-    - "variogram"
-    - "directional_variograms"
-    - "kriging_map"
-    - "variance_map"
+ colormap: "YlOrRd"
+ plots:
+ - "variogram"
+ - "directional_variograms"
+ - "kriging_map"
+ - "variance_map"
 ```
 
 Run: `geostats-run gold_exploration.yaml`
@@ -397,12 +397,12 @@ Create multiple configs with different parameters:
 ```bash
 # Generate configs
 for resolution in 0.5 1.0 2.0; do
-  sed "s/resolution: 1.0/resolution: $resolution/" base.yaml > analysis_res_${resolution}.yaml
+ sed "s/resolution: 1.0/resolution: $resolution/" base.yaml > analysis_res_${resolution}.yaml
 done
 
 # Run all
 for config in analysis_res_*.yaml; do
-  geostats-run $config
+ geostats-run $config
 done
 ```
 
@@ -412,38 +412,38 @@ The config-driven pipeline follows this workflow:
 
 ```
 1. Load Config (YAML/JSON)
-   ↓
+ ↓
 2. Validate (Pydantic schemas)
-   ↓
+ ↓
 3. Load Data
-   ↓
+ ↓
 4. Preprocess
-   - Outlier removal
-   - Transformation
-   - Declustering
-   ↓
+ - Outlier removal
+ - Transformation
+ - Declustering
+ ↓
 5. Variogram Modeling
-   - Experimental variogram
-   - Model fitting
-   - Anisotropy check
-   ↓
+ - Experimental variogram
+ - Model fitting
+ - Anisotropy check
+ ↓
 6. Kriging
-   - Grid creation
-   - Prediction
-   - Variance estimation
-   ↓
+ - Grid creation
+ - Prediction
+ - Variance estimation
+ ↓
 7. Validation
-   - Cross-validation
-   - Metric computation
-   ↓
+ - Cross-validation
+ - Metric computation
+ ↓
 8. Visualization
-   - Plot generation
-   - Style application
-   ↓
+ - Plot generation
+ - Style application
+ ↓
 9. Output
-   - Save predictions
-   - Save report
-   - Export formats
+ - Save predictions
+ - Save report
+ - Export formats
 ```
 
 ## Best Practices
@@ -464,11 +464,11 @@ Create base templates for common workflows:
 ```yaml
 # base_template.yaml
 project:
-  output_dir: "./results/${ANALYSIS_NAME}"
+ output_dir: "./results/${ANALYSIS_NAME}"
 
 variogram:
-  n_lags: 15
-  models: ["spherical", "exponential"]
+ n_lags: 15
+ models: ["spherical", "exponential"]
 ```
 
 Then extend:
@@ -478,10 +478,10 @@ Then extend:
 extends: base_template.yaml
 
 project:
-  name: "Specific Analysis"
+ name: "Specific Analysis"
 
 data:
-  input_file: "specific_data.csv"
+ input_file: "specific_data.csv"
 ```
 
 ### 3. Document Configs
@@ -490,8 +490,8 @@ Add comments explaining choices:
 
 ```yaml
 variogram:
-  n_lags: 20  # Increased for better resolution at small lags
-  estimator: "cressie"  # Robust to outliers in this dataset
+ n_lags: 20 # Increased for better resolution at small lags
+ estimator: "cressie" # Robust to outliers in this dataset
 ```
 
 ### 4. Validate Before Long Runs
@@ -508,8 +508,8 @@ geostats-run analysis.yaml
 
 ```yaml
 project:
-  name: "Alaska_Gold_2024Q1_Preliminary"
-  output_dir: "./results/alaska_gold_2024q1_preliminary"
+ name: "Alaska_Gold_2024Q1_Preliminary"
+ output_dir: "./results/alaska_gold_2024q1_preliminary"
 ```
 
 ## Troubleshooting

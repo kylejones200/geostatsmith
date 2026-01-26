@@ -59,7 +59,7 @@ All examples require:
 Install with:
 ```bash
 pip install numpy matplotlib
-pip install -e ..  # Install geostats in development mode
+pip install -e .. # Install geostats in development mode
 ```
 
 ## Expected Output
