@@ -184,3 +184,9 @@ Thumbs.db
 # *.nc
 # *.netcdf
 
+# Archive folder
+archive/
+
+# Experiments folder
+experiments/
+
