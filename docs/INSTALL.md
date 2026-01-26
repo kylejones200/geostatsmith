@@ -2,8 +2,8 @@
 
 ## Prerequisites
 
-- Python 3.8 or higher
-- pip package manager
+- Python 3.12 or higher
+- uv package manager (install with: `curl -LsSf https://astral.sh/uv/install.sh | sh`)
 
 ## Installation Options
 
@@ -11,39 +11,26 @@
 
 ```bash
 # Clone the repository
-cd /Users/k.jones/Desktop/geostats
+git clone https://github.com/kylejones200/geostats.git
+cd geostats
 
-# Install dependencies
-pip install numpy scipy matplotlib pandas
-
-# Install in development mode
-pip install -e .
-
-# Or install with development tools
-pip install -e ".[dev]"
+# Install in development mode with all dependencies
+uv sync --dev
 ```
 
-### Option 2: Install Dependencies Only
+### Option 2: Install Core Dependencies Only
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
-### Option 3: Create requirements.txt
+### Option 3: Install with All Optional Features
 
-Create a `requirements.txt` file:
-
-```txt
-numpy>=1.20.0
-scipy>=1.7.0
-matplotlib>=3.3.0
-pandas>=1.3.0
-```
-
-Then install:
 ```bash
-pip install -r requirements.txt
+uv sync --all-extras
 ```
+
+**Note**: The project now uses `uv` and `pyproject.toml` as the single source of truth. Legacy `requirements.txt` files are kept for reference but `uv.lock` is authoritative.
 
 ## Verify Installation
 
@@ -62,14 +49,14 @@ print(f'Available modules: variogram, kriging, models, validation, utils')
 ## Running Tests
 
 ```bash
-# Install test dependencies
-pip install pytest pytest-cov
+# Install test dependencies (included with --dev)
+uv sync --dev
 
 # Run tests
-pytest tests/ -v
+uv run pytest tests/ -v
 
 # Run with coverage
-pytest tests/ --cov=geostats --cov-report=html
+uv run pytest tests/ --cov=geostats --cov-report=html
 ```
 
 ## Running Examples
@@ -92,16 +79,20 @@ python example_3_comparison_kriging_methods.py
 For development, install additional tools:
 
 ```bash
-pip install black flake8 mypy sphinx sphinx-rtd-theme
+# Install all dev dependencies
+uv sync --dev
 
 # Format code
-black src/geostats tests examples
+uv run black src/geostats tests examples
 
-# Check style
-flake8 src/geostats tests
+# Check style with ruff
+uv run ruff check .
+
+# Or with flake8
+uv run flake8 src/geostats tests
 
 # Type checking
-mypy src/geostats
+uv run mypy src/geostats
 ```
 
 ## Quick Start After Installation
@@ -154,11 +145,11 @@ If scipy installation fails:
 ```bash
 # macOS
 brew install openblas
-pip install numpy scipy
+uv sync
 
 # Linux
 sudo apt-get install libopenblas-dev liblapack-dev
-pip install numpy scipy
+uv sync
 ```
 
 ### Memory Issues with Large Datasets

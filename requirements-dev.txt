@@ -1,3 +1,8 @@
+# LEGACY FILE - This file is kept for reference only.
+# The project now uses uv and pyproject.toml as the single source of truth.
+# Use `uv sync --dev` instead of `pip install -r requirements-dev.txt`
+# See MIGRATION_UV.md for migration instructions.
+
 # Development dependencies
 -r requirements.txt
 

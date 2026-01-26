@@ -158,17 +158,17 @@ git clone https://github.com/kylejones200/geostats.git
 cd geostats
 
 # Install with core dependencies
-pip install -e .
+uv sync
 ```
 
 ### Full Installation (All Features)
 
 ```bash
 # Install with all optional dependencies
-pip install -e ".[dev]"
+uv sync --all-extras
 
-# Or manually install optional packages
-pip install rasterio netCDF4 geopandas openpyxl xgboost plotly fastapi uvicorn
+# Or install with dev dependencies
+uv sync --dev
 ```
 
 ### Dependencies
@@ -381,13 +381,13 @@ Run the test suite:
 
 ```bash
 # All tests
-pytest tests/ -v
+uv run pytest tests/ -v
 
 # With coverage report
-pytest tests/ -v --cov=geostats --cov-report=html
+uv run pytest tests/ -v --cov=geostats --cov-report=html
 
 # Specific test file
-pytest tests/test_kriging.py -v
+uv run pytest tests/test_kriging.py -v
 ```
 
 **Test Coverage**: ~50% (actively improving)
@@ -418,18 +418,18 @@ GeoStats is designed for:
 
 ### Desktop
 ```bash
-pip install -e .
-python your_analysis.py
+uv sync
+uv run python your_analysis.py
 ```
 
 ### Command Line / Scripts
 ```bash
-geostats predict input.csv output.csv
+uv run geostats predict input.csv output.csv
 ```
 
 ### Local API Server
 ```bash
-geostats serve --port 8000
+uv run geostats serve --port 8000
 ```
 
 ### Docker
@@ -437,8 +437,8 @@ geostats serve --port 8000
 FROM python:3.12-slim
 WORKDIR /app
 COPY . .
-RUN pip install -e .
-CMD ["uvicorn", "geostats.api:app", "--host", "0.0.0.0", "--port", "8000"]
+RUN pip install uv && uv sync --frozen
+CMD ["uv", "run", "uvicorn", "geostats.api:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 ### Cloud (AWS/GCP/Azure)

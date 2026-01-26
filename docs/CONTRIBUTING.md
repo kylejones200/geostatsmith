@@ -13,7 +13,7 @@ cd geostats
 
 3. Install development dependencies:
 ```bash
-pip install -e ".[dev]"
+uv sync --dev
 ```
 
 4. Create a new branch for your feature:
@@ -35,7 +35,7 @@ git checkout -b feature/your-feature-name
 We use Black for code formatting:
 
 ```bash
-black src/geostats tests examples
+uv run black src/geostats tests examples
 ```
 
 ### Type Checking
@@ -43,15 +43,21 @@ black src/geostats tests examples
 Run mypy for type checking:
 
 ```bash
-mypy src/geostats
+uv run mypy src/geostats
 ```
 
 ### Linting
 
-Run flake8 for linting:
+Run ruff for linting (recommended):
 
 ```bash
-flake8 src/geostats tests
+uv run ruff check .
+```
+
+Or flake8:
+
+```bash
+uv run flake8 src/geostats tests
 ```
 
 ## Testing
@@ -61,13 +67,13 @@ flake8 src/geostats tests
 Run all tests:
 
 ```bash
-pytest tests/
+uv run pytest tests/
 ```
 
 Run with coverage:
 
 ```bash
-pytest tests/ --cov=geostats --cov-report=html
+uv run pytest tests/ --cov=geostats --cov-report=html
 ```
 
 ### Writing Tests

@@ -4,11 +4,11 @@
 
 ```bash
 # From source (development)
-git clone https://github.com/yourusername/geostats.git
+git clone https://github.com/kylejones200/geostats.git
 cd geostats
-pip install -e ".[dev]"
+uv sync --dev
 
-# Or directly
+# Or install from PyPI (when published)
 pip install geostats
 ```
 
