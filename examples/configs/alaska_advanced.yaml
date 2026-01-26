@@ -1,0 +1,86 @@
+# Example 2: Advanced Alaska Gold Analysis
+#
+# Complete workflow with preprocessing for mineral exploration.
+# Includes log transformation, outlier removal, and anisotropy analysis.
+
+project:
+  name: "Alaska Gold - Advanced Analysis"
+  output_dir: "./results/alaska_advanced"
+  description: "Advanced gold grade estimation with preprocessing"
+  author: "Geostats Pipeline"
+
+data:
+  input_file: "alaska_gold_synthetic.csv"
+  x_column: "LONGITUDE"
+  y_column: "LATITUDE"
+  z_column: "Au_ppm"
+
+preprocessing:
+  # Remove extreme outliers (analytical errors, high-grade nuggets)
+  remove_outliers: true
+  outlier_method: "iqr"
+  outlier_threshold: 3.0
+  
+  # Log transform - typical for positively skewed gold data
+  transform: "log"
+  handle_negatives: "shift"
+  
+  # Declustering for clustered sampling
+  declustering: false  # Set true if samples are clustered
+
+variogram:
+  n_lags: 15
+  max_lag: null  # Auto-calculate
+  estimator: "matheron"
+  
+  # Try multiple models
+  models: ["spherical", "exponential", "gaussian"]
+  auto_fit: true
+  fit_method: "wls"  # Weighted least squares
+  fit_criterion: "rmse"
+  
+  # Check for directional trends (mineralization)
+  check_anisotropy: true
+  anisotropy_angles: [0, 45, 90, 135]
+  anisotropy_tolerance: 22.5
+
+kriging:
+  method: "ordinary"
+  
+  neighborhood:
+    max_neighbors: 25
+    min_neighbors: 8  # Ensure stable estimates
+    search_radius: null  # Auto
+    use_octant_search: false
+  
+  grid:
+    resolution: 0.3  # Finer grid for detailed map
+    buffer: 0.5
+  
+  return_variance: true  # For resource classification
+
+validation:
+  cross_validation: true
+  cv_method: "loo"
+  metrics: ["rmse", "mae", "r2", "bias", "mape"]
+  save_predictions: true
+
+visualization:
+  style: "minimalist"
+  plots:
+    - "variogram"
+    - "kriging_map"
+    - "variance_map"
+    - "cross_validation"
+  colormap: "YlOrRd"  # Good for grade maps
+
+output:
+  save_predictions: true
+  save_variance: true
+  save_report: true
+  formats: ["npy", "csv"]
+  compression: true
+
+random_seed: 42
+verbose: true
+log_file: "./results/alaska_advanced/analysis.log"

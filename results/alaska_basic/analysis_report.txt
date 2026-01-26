@@ -1,0 +1,28 @@
+Geostatistical Analysis Report
+======================================================================
+
+Project: Alaska Gold - Basic Exploration
+Date: 2026-01-22 23:58:14
+Elapsed Time: 0:11:17.065419
+
+Data Summary
+----------------------------------------------------------------------
+Input: alaska_gold_synthetic.csv
+Records: 350
+Variable: Au_ppm
+Range: [0.0016, 0.1817]
+Mean: 0.0217
+Std: 0.0224
+
+Variogram Model
+----------------------------------------------------------------------
+Type: Spherical
+Nugget: 0.0004
+Sill: 0.0005
+Range: 4.9584
+
+Cross-Validation
+----------------------------------------------------------------------
+RMSE: 0.0255
+MAE: 0.0166
+R2: -0.2988

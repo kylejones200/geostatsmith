@@ -1,0 +1,25 @@
+Demo: Demo 3: Environmental Assessment
+Script: demo_03_environmental_assessment.py
+Started: 2026-01-22 21:41:13
+Duration: 56.9 seconds
+================================================================================
+
+STDOUT:
+
+
+STDERR:
+/opt/anaconda3/lib/python3.12/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_type" in PredictionResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/opt/anaconda3/lib/python3.12/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_parameters" in PredictionResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+/opt/anaconda3/lib/python3.12/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_types" in VariogramRequest has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+
+
+Exit Code: -9

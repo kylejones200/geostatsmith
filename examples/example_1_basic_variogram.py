@@ -1,0 +1,94 @@
+"""
+Example 1: Basic Variogram Analysis
+
+This example demonstrates:
+- Generating synthetic spatial data
+- Calculating experimental variogram
+- Fitting variogram models
+- Automatic model selection
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+from geostats import variogram
+from geostats.utils import generate_synthetic_data
+
+# Set random seed for reproducibility
+np.random.seed(42)
+
+# Generate synthetic spatial data
+print("Generating synthetic spatial data...")
+x, y, z = generate_synthetic_data(
+    n_points=100,
+    spatial_structure="spherical",
+    nugget=0.1,
+    sill=1.0,
+    range_param=20.0,
+)
+
+print(f"Generated {len(x)} sample points")
+print(f"Value range: [{np.min(z):.2f}, {np.max(z):.2f}]")
+
+# Calculate experimental variogram
+print("\nCalculating experimental variogram...")
+lags, gamma, n_pairs = variogram.experimental_variogram(
+    x, y, z,
+    n_lags=15,
+    maxlag=50,
+)
+
+print(f"Number of lags: {len(lags)}")
+print(f"Maximum lag: {np.max(lags):.2f}")
+
+# Fit different variogram models
+print("\nFitting variogram models...")
+
+models_to_fit = ['spherical', 'exponential', 'gaussian']
+fitted_models = {}
+
+for model_name in models_to_fit:
+    model = variogram.fit_model(model_name, lags, gamma, weights=n_pairs)
+    fitted_models[model_name] = model
+    print(f"\n{model_name.capitalize()} Model:")
+    print(f"  Parameters: {model.parameters}")
+
+# Automatic model selection
+print("\nAutomatic model selection...")
+result = variogram.auto_fit(lags, gamma, weights=n_pairs, criterion='rmse')
+best_model = result['model']
+print(f"Best model: {best_model.__class__.__name__}")
+print(f"RMSE: {result['score']:.4f}")
+
+# Visualize results
+print("\nGenerating plots...")
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+# Plot 1: Sample locations
+scatter = ax1.scatter(x, y, c=z, cmap='viridis', s=50, edgecolors='black', linewidth=0.5)
+ax1.set_xlabel('X', fontsize=12)
+ax1.set_ylabel('Y', fontsize=12)
+ax1.set_title('Sample Locations', fontsize=14, fontweight='bold')
+ax1.set_aspect('equal')
+plt.colorbar(scatter, ax=ax1, label='Value')
+ax1.grid(True, alpha=0.3)
+
+# Plot 2: Variogram models
+ax2.scatter(lags, gamma, s=n_pairs/2, alpha=0.6, c='black', label='Experimental', zorder=3)
+
+h_plot = np.linspace(0, np.max(lags), 100)
+for model_name, model in fitted_models.items():
+    gamma_plot = model(h_plot)
+    ax2.plot(h_plot, gamma_plot, label=model_name.capitalize(), linewidth=2)
+
+ax2.set_xlabel('Distance (h)', fontsize=12)
+ax2.set_ylabel('Semivariance γ(h)', fontsize=12)
+ax2.set_title('Variogram Models', fontsize=14, fontweight='bold')
+ax2.legend(fontsize=10)
+ax2.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('example_1_variogram.png', dpi=300, bbox_inches='tight')
+print("Saved plot to: example_1_variogram.png")
+plt.show()
+
+print("\nExample completed successfully!")

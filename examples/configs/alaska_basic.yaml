@@ -1,0 +1,54 @@
+# Example 1: Basic Alaska Gold Exploration
+#
+# Simple ordinary kriging analysis of gold concentrations across Alaska.
+# This example demonstrates the minimal configuration needed for a complete analysis.
+
+project:
+  name: "Alaska Gold - Basic Exploration"
+  output_dir: "./results/alaska_basic"
+  description: "Regional gold geochemistry analysis"
+
+data:
+  input_file: "alaska_gold_synthetic.csv"
+  x_column: "LONGITUDE"
+  y_column: "LATITUDE"
+  z_column: "Au_ppm"
+
+preprocessing:
+  remove_outliers: false
+  transform: null
+  declustering: false
+
+variogram:
+  n_lags: 12
+  estimator: "matheron"
+  models: ["spherical", "exponential"]
+  auto_fit: true
+  check_anisotropy: false
+
+kriging:
+  method: "ordinary"
+  neighborhood:
+    max_neighbors: 20
+    min_neighbors: 5
+  grid:
+    resolution: 0.5  # 0.5 degree grid
+    buffer: 1.0
+
+validation:
+  cross_validation: true
+  cv_method: "loo"
+  metrics: ["rmse", "mae", "r2"]
+
+visualization:
+  style: "minimalist"
+  plots: ["variogram", "kriging_map"]
+
+output:
+  save_predictions: true
+  save_variance: true
+  save_report: true
+  formats: ["npy", "csv"]
+
+random_seed: 42
+verbose: true

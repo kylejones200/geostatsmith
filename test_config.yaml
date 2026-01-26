@@ -1,0 +1,51 @@
+# Test Config - Demonstrates Working Pipeline
+
+project:
+  name: "Config-Driven Test"
+  output_dir: "./test_config_results"
+
+data:
+  input_file: "test_data.csv"
+  x_column: "X"
+  y_column: "Y"
+  z_column: "Value"
+
+preprocessing:
+  remove_outliers: false
+  transform: null
+  declustering: false
+
+variogram:
+  n_lags: 10
+  estimator: "matheron"
+  models: ["spherical", "exponential"]
+  auto_fit: true
+  fit_method: "wls"
+  check_anisotropy: false
+
+kriging:
+  method: "ordinary"
+  neighborhood:
+    max_neighbors: 25
+    min_neighbors: 3
+  grid:
+    resolution: 5.0
+  return_variance: true
+
+validation:
+  cross_validation: true
+  cv_method: "loo"
+  metrics: ["rmse", "mae", "r2"]
+
+visualization:
+  style: "minimalist"
+  plots: ["variogram", "kriging_map"]
+
+output:
+  save_predictions: true
+  save_variance: true
+  save_report: true
+  formats: ["npy", "csv"]
+
+random_seed: 42
+verbose: true

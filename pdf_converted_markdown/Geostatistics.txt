@@ -1,0 +1,6275 @@
+University of Miskolc
+Department of Geophysics
+e-mail:
+gfnmail@uni-miskolc.hu
+
+Why Geostatistics?
+
+
+
+
+
+
+
+
+
+
+S
+a
+m
+p
+l
+e
+
+Data
+
+
+
+
+
+Isaaks and Srivastava (1989)
+
+How often does a specific value of data
+occur in the data set?
+How many data occur below a specific
+value?
+How can data frequency modelled
+mathematically?
+What is the most characteristic vale in
+the measurement area?
+What is the standard deviation of the
+data set?
+How to handle incorrect data?
+How can we estimate measurements at
+points which have not been measured
+based on other measurements?
+What kind of relation a data type has
+with other data?
+
+Why Geostatistics?
+Isaaks and Srivastava (1989)
+
+
+
+
+
+
+
+
+
+
+
+
+
+Statistical sample
+of two variables
+
+
+
+What is the probability of joint
+occurrence of data?
+Is there a relation between data sets
+or are they independent?
+How strong is the relation between
+data sets, positive or negative?
+How do we describe this function
+relation mathematically and use it to
+interpolate the result to unmeasured
+locations?
+How do we estimate the model
+parameters from the data?
+What is the error of estimation?
+How do we sort data in case of a big
+data set?
+
+Course Outline
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Data Sets, Histograms and Density Functions
+Determination of the Mode
+Characterization of Uncertainty
+Maximum Likelihood Method
+Measure of Joint Variability
+Variogram Analysis and Kriging
+Regression Analysis
+Multi-Dimensional Samples and Scaling
+Factor Analysis and Principal Component Analysis
+Cluster Analysis
+Linear Optimization Methods
+Global Optimization Methods
+
+Selected Bibliography
+
+
+
+
+
+
+
+
+
+
+
+
+Edward H Isaacs, R Mohan Srivastava, 1989. An
+Introduction to Applied Geostatistics. Oxford University
+Press
+Martin H Trauth, 2006. MATLAB Recipes for Earth
+Sciences. Springer
+Ferenc Steiner, 1991. The Most frequent value:
+introduction to a modern conception of statistics. Academic
+Press Budapest
+William Menke, 2012.
+Geophysical Data Analysis:
+Discrete Inverse Theory. MATLAB Edition. Elsevier
+Michalewicz Z, 1992. Genetic Algorithms + Data Structures
+= Evolution Programs. Springer
+Other journal articles, e-books and chapters
+
+Data Sets, Histograms and
+Density Functions
+
+Data Represented on the Continuum of
+Numbers
+
+
+
+
+
+
+Observed data set - repeated radioactive measurements on the same rock
+sample, with the same instrument and in the same environment
+Different number of gamma particles are detected by the instrument over
+the same time period. During the decay of atomic nuclei, the number of
+particles emitted is not constant during the same period. The measured
+values are scattering around a typical (expected) value
+
+On the line from left to right in the data density increases until it reaches
+the maximum, then decreases again. Depending on the position of the
+interval of a and b, we can expect values with different frequency. At
+repeated measurements, the number of data varies in the different
+intervals, but the whole data density does not change
+
+Occurrence of Data
+
+
+
+
+Attention - during the measurement the same data can occur
+repeatedly
+Plot the number of occurrence against the values
+
+Steiner (1990)
+
+
+For instance - Borsod II coal seam in Múcsony area, x is
+thickness of seam, y is the number of occurrence
+
+Data Represented by Histogram
+
+
+
+
+
+Denote the total number of data with n, and mark with ni the
+number of data in the i-th subinterval
+Consider the plot of the number of data with h long subintervals
+On the y-axis, at a given height corresponding to the number of
+data, we draw a solid line parallel with the x axis for every
+subinterval. This step like function representing the empirical data
+density distribution is called a histogram
+
+Steiner (1990)
+
+Data Represented by Histogram
+
+
+
+
+
+
+Plot the ratio ni/n on the ordinate axis,
+this is the relative frequency. Then the
+histogram will be independent from
+the number of data (data density
+distribution does not change). The
+ratio 100*ni/n gives the percentage of
+data inside the i-th subinterval
+Plot the ratio ni/(n*h) on the ordinate
+axis. Then, the total area of the
+histogram’s column will be 1. The i-th
+rectangular area is proportional to the
+number of data in the i-th subinterval
+If the h value is too big, the global
+data density image will be distorted. If
+the h value is small, large amplitude
+fluctuations will disturb the data
+analysis
+
+Steiner (1990)
+
+Walker Lake, Nevada (USA)
+
+Isaaks and Srivastava (1989)
+
+Probability Density Function
+
+
+
+
+
+
+A curve can be fitted to the data points (xi,yi) of the histogram. The best
+fitting f(x) function is called the probability density function (PDF)
+Location parameter (T) appoints the location of the probability density
+function on the x-axis, the location of maximum density. Given that the
+distribution is symmetric it marks the point of symmetry (in case of
+asymmetric distribution it does not)
+Scale parameter (S) it characterizes the with of the probability density
+function. With increasing values of S, the uncertainty of data is greater
+
+Steiner (1990)
+
+Properties of PDF
+
+
+The whole area under the PDF
+curve (100%)
+
+
+ f(x)dx  1
+
+-
+
+
+
+The probability that the measured
+data will fall in interval [a,b] is
+b
+
+P(a  x  b)   f(x)dx
+a
+
+
+
+
+
+Standard form - point of symmetry is at T=0, the parameter controlling
+the width is S=1
+General form - it is derived from the standard form x→(x–T)/S and
+from f(x)→f(x)/S by transformation. The point of symmetry is
+relocated to x=T and the probability density function will be streched
+in the x-axis direction depending on the value of S
+
+PDF of Uniform Distribution
+
+
+
+
+Uniform distribution - the data is evenly distributed in the interval of
+length L (for instance, lottery)
+The probability density function
+S
+S
+1
+ , T xT
+f u (x)   S
+2
+2
+0 , otherwise
+
+The integral of the probability
+density function for the whole
+number line (area under the
+curve) is unity (100 %)
+Steiner, 1990
+
+
+Example - fitting a uniform probability density function to Borsod II
+data set of the coal seam thickness (rough approximation)
+
+PDF of Normal Distribution
+
+
+Gaussian distribution - the typical (accepted) distribution of
+observed variables (and errors)
+
+
+
+Standard form of probability
+density function
+
+1
+e
+2
+
+f G (x) 
+
+
+x2
+2
+
+General form of the probability
+density function
+
+f G (x) 
+
+
+
+
+1
+S  2
+
+
+
+e
+
+( x T ) 2
+2S2
+
+Steiner, 1990
+
+Example - fitting a Gaussian probability density function to Borsod II
+data set of the coal seam thickness (better approximation)
+
+PDF of Laplace Distribution
+
+
+Laplace distribution - it has wider flanks than the Gaussian
+distribution (instead of a fast x2 decrease, the function decrease to
+zero by x)
+
+
+
+Standard form of the PDF
+
+1 x
+f L (x)  e
+2
+
+
+General form of the PDF
+x T
+
+1  S
+f L (x)  e
+2S
+
+Steiner, 1990
+
+
+Example - fitting the Laplacian probability density function to Borsod
+II data set of the coal seam thickness (best fit, however the spikey
+maximum is not very likely)
+
+PDF of Cauchy Distribution
+
+
+
+
+Cauchy distribution - its peak is not so sharp than that of the Laplace
+density function and its flanks are heavier
+Standard form of the PDF
+f C (x) 
+
+
+
+1
+1
+
+ 1 x2
+
+General form of the PDF
+f C (x) 
+
+1
+
+S
+
+1
+ x T
+1 
+
+ S 
+
+
+2
+
+1
+S
+ 2
+ S  x  T 2
+Steiner, 1990
+
+
+
+Example - fitting the Cauchy probability density function to Borsod II
+data set of the coal seam thickness (almost the best fit, but more
+realistic than the Laplace distribution)
+
+Finding a PDF for the Histogram
+
+
+
+
+Requirement - the points of the histogram (empirical probability density
+function) should be (as a whole) as close as possible to the PDF
+curve. Parameters are: xi is the i-th data, yi=ni/(nh) is the i-th relative
+frequency (points of the histogram), f (x,T,S) is the theoretical
+(analytical) density function
+Least Squares (LSQ) method - finds the optimal values of T and S,
+where the sum of the squared deviations between the measured yi and
+calculated frequencies f(xi, T, S) is minimal
+N
+
+2
+
+
+
+
+y
+
+f
+x
+,
+T,
+S
+ min
+ i i
+i 1
+
+
+
+The above optimization problem can be solved by a properly chosen
+minimum search method (see the section of the linearized and global
+optimization methods), which gives an estimate to the T and S
+parameters of the probability density function f(x)
+
+Symmetric PDF Models
+
+
+Probability density functions can be sorted to model families, these are
+called supermodels. The density function can be written analytically
+and by changing the parameters (a or p etc.), we get a different density
+function. The super models can be symmetric or asymmetric
+
+Supermodel fa(x)
+
+Supermodel fp(x)
+
+Steiner (1990)
+
+Asymmetric PDF Models
+Weibull distribution
+
+Lognormal distribution
+
+Gamma distribution
+
+F-distribution
+
+Cumulative Frequency
+
+
+
+
+Let us define that in what ratio we can expect data below a specified
+value of x0
+Empirical cumulative frequency histogram - a step like function, which
+for every x shows how many smaller datum we have. With a new
+measurement, the frequency on the ordinate continuously increases
+
+Steiner (1990)
+
+Walker Lake, Nevada (USA)
+
+Isaaks and Srivastava (1989)
+
+Cumulative Distribution Function
+
+
+Cumulative distribution function (CDF) - an analytical function that
+can be constructed in case of large data sets ( infinite number of
+data). Describes the probability that a variate takes on a value less
+than or equal to x0
+x0
+
+F( x 0 )   f ( x )dx
+
+
+PDF
+
+CDF
+
+http://evolution-textbook.org
+
+Properties of CDF
+dF( x )
+ f (x)
+dx
+
+
+
+The CDF is the primitive function of the PDF
+
+
+
+Since f(x) is normalized to 1, thus the range of the CDF is 0≤F(x) ≤1
+
+
+
+Since f(x)0, CDF is monotonic increasing: F(x1) ≤ F(x2), if x1<x2
+
+
+
+What’s the ratio of numbers greater than x? It is 1–F(x)
+
+
+
+What’s the ratio of numbers in the interval of [a,b]? It is F(b)-F(a)
+
+
+
+What percentage of the data is smaller than x? It is 100*F(x)
+
+Grain-Size Distribution Curves
+
+
+
+
+Probability density function - how many of a given size of particle is
+there in the sample
+Cumulative distribution function - how many particles is there below
+a given size of particle
+
+Freudlund et al. (2000)
+
+Determination of the Mode
+
+Indicator Maps
+
+Isaaks and Srivastava (1989)
+
+Characteristic Values of the Sample
+
+
+Arithmetic mean (average) - all data have equal weight (w=1)
+
+1 n
+x  x2  xn
+xn   xk  1
+n k 1
+n
+
+
+Weighted mean - each data has different (a priori) weight (wk)
+n
+
+w x
+
+x n, w  k 1 n
+
+k
+
+w
+k 1
+
+
+
+k
+
+
+
+w 1  x1  w 2  x 2    w n  x n
+w1  w 2    w n
+
+k
+
+Median - the value separating the higher half of the sample. For
+a data set, it may be thought of as the "middle" value
+n is odd
+x (n 1)/2 ,
+
+med n   x n/2  x (n 2)/2
+, n is even
+
+2
+
+
+Walker Lake, Nevada (USA)
+
+V1  V2   V100
+1 100
+V
+Vk 
+ 97.55 ppm
+
+100 k 1
+100
+
+V50  V51
+med(V) 
+ 100.5 ppm
+2
+
+MATLAB Recipe 1
+Put your sample here
+clc;
+clear all;
+x=[-1 2.2 3.6 4 9.8]',
+w=[0.5 1 2 1 0.5]',
+n=length(x);
+avr=0;
+for k=1:n
+avr=avr+x(k);
+end
+avr=avr/n;
+weigavr=0;
+aux=0;
+for k=1:n
+weigavr=weigavr+(w(k)*x(k));
+aux=aux+w(k);
+end
+weigavr=weigavr/aux;
+x=sort(x);
+if mod(n,2)==0
+med=0.5*(x(n/2)+x((n+2)/2));
+else
+med=x((n+1)/2);
+end
+avr,
+weigavr,
+med,
+
+x=
+-1.0000
+2.2000
+3.6000
+4.0000
+9.8000
+w=
+0.5000
+1.0000
+2.0000
+1.0000
+0.5000
+avr =
+3.7200
+weighavr =
+3.5600
+med =
+3.6000
+
+MATLAB Recipe 2
+>> x=[-1 2.2 120 3.6 4 9.8]'
+x=
+-1.0000
+2.2000
+120.0000
+3.6000
+4.0000
+9.8000
+
+>> w=[0.5 1 0.0001 2 1 0.5]'
+w=
+0.5000
+1.0000
+0.0001
+2.0000
+1.0000
+0.5000
+
+>> w=[0.5 1 100 2 1 0.5]'
+w=
+0.5000
+1.0000
+100.0000
+2.0000
+1.0000
+0.5000
+
+>> (w'*x)/sum(w)
+ans =
+3.5623
+
+>> (w'*x)/sum(w)
+ans =
+114.4552
+
+Most Frequent Value
+ Weighted average - data far from the most of the data get small weights, data at
+near the MFV get higher weights
+n
+
+x 
+i
+
+M
+
+i 1
+n
+
+
+
+i
+
+,
+
+ε2
+i  2
+2
+ε  x i  M 
+
+i
+
+i 1
+
+ M is the most frequent value (location parameter),  is dihesion (scale parameter)
+
+Large dihesion =
+Big weights go to each data
+
+Small dihesion =
+Small or zero weights to
+outlying data
+
+Estimation of MFV
+
+
+Automated iterative process - in general the values of M and  are
+calculated simultaneously by a recursion formula (j is the number of
+iterations). In the first step, M1 takes the value of the mean or median,
+and the first approximation of dihesion is estimated from the range of
+the sample
+ε1 
+
+
+
+3
+max x i   min x i 
+2
+
+In later iterations, M and ε are calculated from each other. Optimal
+weights are automatically estimated to each data
+2
+
+x i  M n, j 
+3
+2 2
+2
+
+
+
+
+ε
+
+x
+
+M
+i
+
+1
+j
+i
+n, j
+2
+ε 
+j1
+
+n
+
+ ε  x  M  
+i 1
+
+1
+
+2
+j
+
+2 2
+
+i
+
+n, j
+
+ε 2j1
+
+n
+
+n
+
+M n, j1 
+
+ε
+i 1
+
+2
+j1 
+
+x i  M n, j 
+ε 2j1
+
+n
+
+ε
+i 1
+
+2
+j1 
+
+2
+
+ xi
+
+x i  M n, j  2
+
+Estimation of MFV
+x=[-12.5 -6.7 -2 -1.5 0.1 2.4 6.8 9.8 15 23.5 30]
+
+Leggyakoribb érték (M)
+
+10
+M(1)=mean(x)
+M(1)=median(x)
+
+8
+6
+4
+2
+0
+
+5
+
+10
+
+15
+20
+Iterációs lépésszám (j)
+
+25
+
+30
+
+5
+
+10
+
+15
+20
+Iterációs lépésszám (j)
+
+25
+
+30
+
+40
+
+Dihézió ()
+
+30
+20
+10
+0
+
+Estimation of MFV
+
+Outlier
+
+x=[-12.5 -6.7 -2 -1.5 0.1 2.4 6.8 9.8 15 23.5 30 100]
+
+Leggyakoribb érték (M)
+
+20
+M(1)=mean(x)
+M(1)=median(x)
+
+15
+10
+5
+0
+
+5
+
+10
+
+15
+20
+Iterációs lépésszám (j)
+
+25
+
+30
+
+5
+
+10
+
+15
+20
+Iterációs lépésszám (j)
+
+25
+
+30
+
+120
+
+Dihézió ()
+
+100
+80
+60
+40
+20
+0
+
+MATLAB Recipe 3
+clear all;
+x=[-12.5 -6.7 -2 -1.5 0.1 2.4 6.8 9.8 15 23.5 30 100];
+M1=mean(x);
+epsilon1=0.5*sqrt(3)*(max(x)-min(x));
+itermax=30;
+for j=1:itermax
+szaml=0; szaml2=0;
+nev=0; nev2=0;
+seg=0; seg2=0;
+if j==1
+epsilon(j)=epsilon1;
+M(j)=M1;
+else
+for i=1:length(x)
+seg=(x(i)-M(j-1))^2;
+szaml=szaml+3*((seg)/(((epsilon(j-1)^2)+seg)^2));
+nev=nev+(1/((epsilon(j-1)^2)+seg)^2);
+end
+epsilon(j)=sqrt(szaml/nev);
+for i=1:length(x)
+seg2=(epsilon(j-1)^2)/((epsilon(j-1)^2)+((x(i)-M(j-1))^2));
+szaml2=szaml2+(seg2*x(i));
+nev2=nev2+seg2;
+end
+M(j)=szaml2/nev2;
+end
+end
+
+>> mean(x)
+ans =
+13.7417
+>> median(x)
+ans =
+4.6000
+>> M(1)
+ans =
+13.7417
+>> M(itermax)
+ans =
+3.2485
+>> epsilon(1)
+ans =
+97.4279
+>> epsilon(itermax)
+ans =
+10.3280
+
+Expected Value of Random Variable
+
+
+
+
+
+
+Relative frequency - how often the event A (one data) happens divided
+by all outcomes (measured data set)
+Probability - with increasing number of measurements, the relative
+frequency will fluctuate around P(A), which shows the probability of the
+event A happening compared to all outcomes
+Random variable - a variable whose possible values are numerical
+outcomes of a random phenomenon. The probability of occurrence of
+xk (k=1,2,…,n) is pk for discrete random variables is (n is the number of
+possible outcomes)
+n
+p k  P( x  x k ),
+
+
+
+p 1
+k 1
+
+k
+
+Expected value (En) is the long-run average
+(measurement data) of the experiment it represents
+n
+
+E n   x k  p k  x1  p1  x 2  p 2    x n  p n
+k 1
+
+E(cx)  cE(x),
+
+of
+
+repetitions
+
+c : const.
+
+E(xy)  E(x)E(y),
+x and y : independ.
+E(x  y)  E(x)  E(y), x and y : dependent
+E(ax  b)  aE(x)  b, a and b : const.
+
+Expected Value when PDF is Known
+
+
+What is the probability that the value x is in the interval [x0,x0+h]?
+P( x 0  x  x 0  h )  f(x 0 )  h  f ( x 0 ) 
+
+
+
+P( x 0  x  x 0  h )
+h
+
+Probability of the value x being in the interval equals to the relative
+frequency (n0 is the number of data in the interval, n is that of all data)
+n
+n
+n0
+n0
+f(x 0 ) 
+ h  f(x 0 ) 
+ E n  h  x k  f(x k ) 
+x k  pk
+nh
+n
+k 1
+k 1
+
+
+
+
+
+Comparison of Typical Values
+
+
+
+
+Balance example - consider the following data set including six data
+and one of them is an outlier. The source of outliers can be a defective
+instrument, wrong measurement, data transfer or recording etc.
+It can be seen that the sample mean is very sensitive to the presence
+of the outlier, the median and the most frequent value given more
+realistic estimations
+
+Outlier
+
+
+
+
+
+Resistance - the estimator is almost entirely insensitive to the
+presence of outliers
+Robustness - this kind of estimation procedure gives reliable results for
+a wide variety of data distributions
+
+Characterization of Uncertainty
+
+Types of Observational Errors
+
+
+
+
+
+
+Systematic error - it has deterministic reasons, it is a frequent error.
+Systematic errors are reproducible inaccuracies that are consistently
+in the same direction. Systematic errors are often due to a problem
+which persists throughout the entire experiment (defective
+instrument), condition (pressure, temperature, humidity) uncertainty.
+Except the last one it can be corrected reasonably well
+Random error - stochastic errors in experimental measurements are
+caused by unknown and unpredictable changes in the experiment.
+These changes may occur in the measuring instruments or in the
+environmental conditions. It can not be eliminated entirely, only the
+average effect can be estimated
+Statistical fluctuations - fluctuations in quantities derived from many
+identical random processes. They are fundamental and unavoidable.
+For example, the counts measured in radioactive measurements. The
+relative fluctuations reduce as the square root of the number of
+identical processes (e.g. the gamma-ray logging instrument needs
+proper pulling speed)
+
+Deviation from the Mode
+
+
+If we knew the exact value of a quantity (xe), and we would conduct
+only one measurement, then the measuring error of the result would
+be the real error: |x–xe|. Since we do not know the exact quantity, we
+substitute it with En, medn or Mn etc. Note that the values of error
+characteristics are different. Let us define the distance between the x
+and the mode x0
+p
+x  x 0 (p  0)
+
+
+
+The data set x=[x1, x2,…, xn] has a distance from x0
+n
+
+ xi  x0
+i 1
+
+
+
+p
+
+n
+
+n
+
+i 1
+
+i 1
+
+ p  1 :  x i  x 0 vagy p  2 :  x i  x 0 
+
+2
+
+It can be seen that if the xi is far from the most frequently occurring
+range of x than the distances are big. The effect of large deviations
+can be reduced by suitably chosen 2 as
+
+   x  x  
+n
+
+2
+
+2
+
+i
+
+i 1
+
+0
+
+Overall Deviation from the Mode
+
+
+Decouple the characteristic distance from n and identify the unit of
+measurement with the unit of x
+1 n
+p
+Lp    x i  x 0 
+ n i 1
+
+
+1/ p
+
+1 n
+ p  1 : L1   x i  x 0
+n i 1
+1 n
+x i  x 0 2
+p  2 : L2 
+
+n i 1
+1
+2n
+
+ n   x  x   
+ n   x  x   
+i
+0
+0
+Pk   1  
+    k  1: P1   1   i
+ 
+ i 1   k     
+ i 1      
+2
+
+2
+
+1
+2n
+
+   x  x   
+0
+k  2 : P2   1   i
+ 
+ i 1   2   
+n
+
+
+
+2
+
+1
+2n
+
+The minima of the above vector norms with respect to x0 are
+accepted as the typical value of the data set. L1-norm’s minimum to
+x0 is the median, L2-norm’s minimum to x0 is the mean and P2-norm
+minimum to x0 is the most frequent value
+
+Error Characteristics
+
+
+If the given value of the minimum is written for x0, we get a single
+distances-type data that characterizes the distance from the
+minimum location. The above quantity is related to uncertainty (at
+high average distance the uncertainty is high, the small average
+distance is smaller, that is, the data is less "scattered") If a single
+data is accepted as a characteristic value, the distance can be
+considered as the magnitude of the error (note that these are not the
+characteristics of medn, En or Mn but the uncertainty of the data set)
+
+
+
+Least absolute deviation (L1-norm)
+Empirical standard deviation (L2-norm)
+Empirical incertitude (P2-norm)
+
+
+
+If the distribution is continuous
+(integral formulas) then these
+are the theoretical deviations
+
+1 n
+d emp   x i  med n
+n i 1
+ emp 
+
+1 n
+x i  E n 2
+
+n i 1
+
+
+ n   xi  M n  
+
+U emp     1  
+ 
+
+ i 1   2   
+
+2
+
+1
+2n
+
+Comparing the Error Formulae
+
+
+
+
+Calculate the L1-, L2- and P-norm by changing the value of x0 for the data
+set xi (i=1,2,…,6)
+At a given norm’s minimum place on the ordinate we can read the error
+that is characteristics to the data set. It is concluded that without outlying
+data, error values are close to each other, and with outlying data they
+are spread. The L2-norm is highly sensitive for outliers, while the P-norm
+is resistant against that ( is approximately the same)
+
+Steiner (1990)
+
+Variance of Random Variable
+
+
+The variance (square of standard deviation) characterizes the
+random variable’s deviation from the expected value (the squared
+deviation of a random variable from its mean). For discrete random
+variable it is defined
+n
+
+   x k  E n   p k
+2
+n
+
+
+
+2
+
+k 1
+
+The most important properties of variance are
+
+
+
+
+
+σ 2 (x)  E x  E(x)   E(x 2 )  E 2 (x),
+
+
+
+2
+
+σ 2 (ax  b)  a 2  σ 2 (x),
+
+a and b : const.
+
+σ 2 (x  y)  σ 2 (x)  σ 2 (y),
+
+x and y : independ.
+
+Chebyshev’s inequality guarantees that, for a wide class of probability
+distributions, no more than a certain fraction of values can be more
+than a certain distance from the mean
+2 (x)
+P x  E ( x )    
+2
+
+Uncertainty for Normal Distribution
+
+
+By using maximum likelihood estimation, it can be proved that (see
+the derivation later) that the Gaussian distribution’s scale parameter
+(S) is equal to the standard deviation (σ) and the location parameter
+(T) is the expected value (E)
+
+f G (x) 
+f G (x) 
+
+1
+S  2
+1
+  2
+
+e
+
+( x T ) 2
+
+2S2
+
+
+
+e
+
+( x E )2
+22
+
+Unbiased Estimation of Variance
+
+
+The empirical standard deviation (n) is the biased estimation of the
+theoretical standard deviation (), because E(n)
+n 1 2
+E   
+  , n 
+n
+2
+n
+
+
+
+The definition of corrected empirical standard deviation
+ n 1 
+
+
+
+1 n
+x i  x 2
+
+n i 1
+
+n
+1
+2
+  x i  x  ,
+n  1 i 1
+
+ 2n 1 
+
+n
+  2n
+n 1
+
+The corrected (sample) standard deviation is an unbiased estimation
+of theoretical standard deviation, because E(n-1)=
+n
+n n 1 2
+ n
+
+E  2n 1  E
+  2n  
+ E  2n 
+
+   2
+n 1 n
+ n 1
+ n 1
+
+
+
+
+
+
+
+ 
+
+Note that the corrected sample standard deviation’s denominator is
+(n-1), because its determination is coming from (n-1) independent
+data (i.e. one data can be derived from the average)
+
+MATLAB Recipe 4
+clc;
+clear all;
+x=[-1 2.2 3.6 4 9.8 11.6 15 16.7 17 18.1]',
+n=length(x);
+atl=0;
+for i=1:n
+atl=atl+x(i);
+end
+atl=atl/n;
+sz=0;
+for i=1:n
+sz=sz+(x(i)-atl)*(x(i)-atl);
+end
+Standdev=sqrt(sz/n),
+KorrStanddev=sqrt(sz/(n-1)),
+Variance=sz/n,
+KorrVariance=sz/(n-1),
+
+x=
+-1.0000
+2.2000
+3.6000
+4.0000
+9.8000
+11.6000
+15.0000
+16.7000
+17.0000
+18.1000
+Standdev =
+6.6708
+KorrStanddev =
+7.0317
+Variance =
+44.5000
+KorrVariance =
+49.4444
+
+Isaaks and Srivastava (1989)
+
+Walker Lake, Nevada (USA)
+1 100
+V
+Vk  97.55 ppm
+100 k 1
+
+
+
+σ 2n 
+
+1 100
+Vk  V 2  688 ppm2
+100 k 1
+
+
+
+1 100
+Vk  V 2  688 ppm2  26.23 ppm
+σn 
+100 k 1
+
+
+
+f G (V) 
+
+1
+e
+σ(V) 2π
+
+
+
+(V  E(V)) 2
+2σσ(V2
+
+
+
+1
+26.23 2π
+
+(V 97.55) 2
+2
+e 226.23
+
+
+Confidence Intervals
+
+
+
+
+The dihesion characterizes the interval of most frequently occurring
+data. It also shows what percentage of data can be expected in
+intervals whose lengths are several times the dihesion
+Confidence level is the percentage frequency of possible confidence
+intervals that contain the true value of their corresponding parameter
+
+Steiner (1990)
+
+Confidence Intervals
+
+
+
+
+In the intersextile range [-Q,Q] two-third of data (66% confidence level), half of the
+data in the interquartile range [-q,q] (50% confidence level) is expected. Error
+characteristic quantities are the semi-interquartile range (q) and the semi-intersextile
+range (Q), -q is the lower quartile (1/4 of the data is less than this), q is the upper
+quarter (1/4 of the data is higher than this), -Q is the lower sextile (1/6 of the data is
+less than this), Q is the upper sextile (1/6 of the data is higher than this)
+A percentile (or a centile) is a measure indicating the value below which a given
+percentage of observations fall. For instance, the 10th percentile is the value below
+which 10% of the observations may be found
+
+Confidence Intervals of Gaussian PDF
+Standard Gaussian PDF
+
+Skewness
+
+
+
+
+The k-th central moment is defined as E((x–E(x))k), where k is a
+positive integer. For instance, the variance is equal to the second
+central moment (k=2)
+Skewness is a measure of the asymmetry of an unimodal PDF, which
+can be directly calculated from the sample
+
+
+
+1 n
+x i  x 3
+
+n i 1
+3
+2
+
+1 n
+  x i  x 2 
+ n i 1
+
+
+Martin H. Trauth (2006)
+
+
+If =0, then the density function is symmetric, if <0, it leans to the
+right of its mean, If >0, it leans to the left
+
+Kurtosis
+
+
+Kurtosis is a measure of whether the data are heavy-tailed or lighttailed relative to a normal distribution. The kurtosis as the fourth
+standardized moment can be calculated directly from the sample
+
+
+
+1 n
+4
+
+
+x
+
+x
+ i
+n i 1
+1
+
+  x i  x 2 
+ n i 1
+
+n
+
+2
+
+3
+
+Martin H. Trauth (2006)
+
+
+If =0 then the probability density function is of Gaussian type, if >0
+then it is heavy-tailed, if <0, it is light-tailed relative to a normal
+distribution
+
+MATLAB Recipe 5
+Profile-N
+0.16
+0.14
+0.12
+
+Frequency
+
+0.1
+0.08
+0.06
+0.04
+0.02
+0
+4.88
+
+4.885
+
+4.89
+Magnetic field [nT]
+
+Telkibánya, Hungary (2013)
+
+4.895
+x 10
+
+4
+
+DATA=dlmread('line_N.dat','\t',1,0);
+N=length(DATA);
+[n,a]=hist(DATA(:,2),(DATA(:,2):10:max(...DATA(:,2))));
+bar(a,n/length(DATA));
+xlabel('Magnetic field [nT]');
+ylabel('Frequency');
+title('Profile-N');
+grid on;
+xatls=0;
+for i=1:N
+xatls=xatls+DATA(i,2);
+end
+E=xatls/N,
+s1=0;
+for k=1:N
+s1=s1+((DATA(k,2)-E)*(DATA(k,2)-E));
+end
+Sigma=sqrt(s1/(N-1)),
+Skew=skewness(DATA(:,2)),
+Kurt=kurtosis(DATA(:,2))-3,
+
+Propagation of Error
+
+
+If the unmeasured quantity q depends on other measurable
+quantities, meaning that q=q(x,y,…), then by measuring variables
+(x,y…) and knowing the measurement errors (Δx, Δy,…), the
+mean of q and its absolute error Δq can be derived as
+q  q  Δq, where q  q(x, y,) és Δq 
+
+
+
+q
+q
+ Δx 
+ Δy  
+x
+y
+
+A property of variance applied to independent random variables
+ 2 c11  c 2 2       ci2   2 i 
+i
+
+
+
+The Gaussian quadratic (absolute) error is
+2
+
+2
+
+q
+q
+q
+q
+q2 
+  2x 
+  2y    q 
+ x 2 
+ y 2  
+x
+y
+x x , y,
+y x , y,
+2
+
+2
+
+Maximum Likelihood Method
+
+Estimation of Location Parameter
+
+
+
+
+
+
+
+
+Let us assume that we know the type
+of the PDF f(x) and its scale parameter
+(S). The location parameter (T) is to be
+determined
+We search for the optimal value of T
+that maximizes the probability of
+getting the n number of data we
+observed. The parameter estimation
+method is called the maximum
+likelihood method (ML)
+Consider a 10-element data set of
+Cauchy distribution with a scale
+parameter S=1
+Select a small value of x and
+calculate the probabilities f(xi)x at the
+locations of the observed data. The
+optimal value of T is given at the
+maximum of the product of probabilities
+calculated over the data set
+
+Steiner (1990)
+
+Likelihood Function
+
+
+Likelihood function - the condition of finding the optimum using the
+maximum likelihood method (xn can be neglected because it is
+independent from T)
+L
+
+n
+
+ f x , T   f x , T   f x , T    f x , T  max
+i
+
+1
+
+2
+
+n
+
+i 1
+
+
+
+Log-likelihood function is the logarithm of objective function L
+L 
+*
+
+n
+
+ ln f x , T   max
+i
+
+i 1
+
+
+
+The log-likelihood function is maximal
+where the partial derivatives with
+respect to the unknown parameters are
+zero. The unknowns can be estimated
+by solving the optimization problem
+
+ML Estimation for Gaussian PDF
+L
+
+n
+
+
+
+f G x i , S, T  
+
+i 1
+
+n
+
+ S  2π
+1
+
+i 1
+
+1
+ 2 x i T 2
+e 2S
+
+
+
+
+1
+
+S  2π 
+
+e
+n
+
+1
+
+2S2
+
+n
+
+ x i T 2
+i 1
+
+n
+n
+
+  1
+2
+L  ln L    n  lnS   ln2π    2  x i  T    max
+2
+
+  2S i1
+
+
+
+
+*
+
+L* 1 n
+ 2  x i  T   0
+T S i 1
+
+
+
+x1  T   x 2  T     x n  T   0
+1 n
+T
+xi  x
+n i 1
+
+
+
+Arithmetic mean of data
+
+L*
+n 1 n
+2
+   3   x i  T   0
+S
+S S i 1
+1 n
+2
+
+
+S
+x
+
+T
+ n
+
+i
+n i 1
+Standard deviation of data
+
+Sampling Distribution of the Mean
+
+
+Central limit theorem - given a population with a finite mean (E) and a finite
+non-zero variance (σ2), the sampling distribution of the mean approaches a
+normal distribution with a mean of E and a variance of σ/N as the sample
+size increases (n→)
+
+
+
+
+
+1
+ x  ...  x n  1
+E x  E 1
+  Ex1   ...  Ex n    n  Ex   Ex   E x  Ex 
+n
+n
+
+ n
+1 2
+1
+ 2 x 
+σx 
+2
+2  x 1  ...  x n 
+2
+2
+σ x  
+ σx 
+  2  x1   ...   x n   2  n   x  
+n
+n
+n
+n
+
+ n
+
+
+
+
+
+
+
+As a consequence, in case
+of large n and finite standard
+deviation of the mean shows
+a n-proportional increase in
+estimation accuracy
+
+
+
+
+
+Measure of Joint Variability
+
+Uncorrelated Variables
+
+
+
+
+Let x(x1,x2) be a two-dimensional random variable. The probability
+density function f(x1,x2) gives the probability of the first
+measurement falling in the range of x1, and the second in the range
+of x2
+The joint probability density function of uncorrelated variables is
+
+f(x 1 , x 2 )  f(x 1 )f(x 2 )
+
+
+Look at the figure. It can be seen
+that e.g. if x2 is high, the
+probability of having a high or
+small x1 is the same. The
+variables do not change together
+and there is no trend-type
+relationship. Then, we say that
+the variables are uncorrelated
+
+Menke (1984)
+
+Correlated Variables
+
+
+
+
+For correlated data, only certain x2 values are present in the vicinity of
+the certain values of x1 with the same probability. In this case, data are
+changing together, there is a trend-type relationship between the
+variables
+The figure shows that large x1 values only belong to large x2 values.
+The angle  is proportional with the measure of correlation
+
+Menke (1984)
+
+Covariance
+
+
+Divide the plain x1 x2 for four quadrants. Then, form from the data the
+function 𝐱𝟏 − 𝐱𝟏 ∙ 𝐱𝟐 − 𝐱𝟐 . Multiply this function with the values of the PDF
+then, sum the areas. The resultant quantity is the covariance, which is the
+measure of the joint variability of two random variables
+
+Menke,1984
+
+
+For uncorrelated variables cov=0, because the values for all quadrants are
+the same. For correlated variables cov≠0. The sign of the covariance shows
+the tendency in the linear relationship between the variables. The sign is
+either positive (direct relationship) or negative (inverse relationship)
+
+Properties of Covariance
+
+
+The theoretical formula and properties of covariance
+cov( x, y)  Ex  E( x )   y  E( y) 
+cov( x, y)  E( xy )  E( x )  E( y)
+ 2 x  y    2 x    2 y   2 covx, y 
+covx, y   x   y 
+
+cov( x, x )   2 x 
+
+
+The empirical formula of covariance
+1 n
+xi  x    yi  y 
+cov n 
+n i 1
+
+
+
+
+
+If x=y then the covariance equals to the empirical variance
+1 n
+1 n
+xi  x  xi  x  
+xi  x 2   n2
+n i 1
+n i 1
+
+
+
+
+
+Pearson’s Correlation Coefficient
+
+
+Correlation coefficient is a measure of the strength and direction of the
+linear relationship between two variables. Calculated as the covariance
+normalized by the product of the empirical standard deviations
+n
+
+r ( x , y) 
+
+cov( x , y)
+ ( x )   ( y)
+2
+
+2
+
+, rn 
+
+ x  x  y  y 
+n
+
+k
+
+n
+
+ x  x    y  y 
+k 1
+
+
+
+k
+
+k 1
+
+2
+
+k
+
+k 1
+
+2
+
+k
+
+The range of the correlation coefficient is between –1 and 1. If r=1 than it
+is a complete correlation, if r=0 than it is linear independence. The
+strength of correlation:
+
+0 < r < 0.4: weak correlation
+0.4  r < 0.7: medium correlation
+0.7  r  1: strong correlation
+
+
+The sign of the correlation coefficient informs about the direction of covariation
+
+Walker Lake, Nevada (USA)
+ U  U V  V 
+100
+
+r
+
+k
+
+ U  U   V  V 
+100
+
+k 1
+
+Isaaks and Srivastava (1989)
+
+k
+
+k 1
+
+2
+
+k
+
+100
+
+k 1
+
+2
+
+k
+
+ 0.84
+
+Multivariate Linear Relationships
+
+
+
+
+Consider the x(x1,x2,…,xn) n-dimensional random (vector) variable,
+where the variances and expected values of variables xi are known
+Covariance matrix gives the covariance between the elements of
+random vector x. The covariance matrix is symmetrical, because
+cov(xi,xj)=cov(xj,xi)
+ σ 2 x1 
+cov( x1 , x 2 )
+
+cov( x 2 , x1 )
+σ 2 x 2 
+
+COV 
+
+
+
+
+
+cov( x n , x1 )
+
+
+
+ cov( x1 , x n )
+
+
+
+
+
+
+
+
+
+σ 2 x n  
+
+Correlation matrix gives the correlation coefficients of multiple
+random variables. It is a symmetric matrix because R(xi,xj)=R(xj,xi)
+r ( x1 , x 2 )
+ 1
+r(x , x )
+1
+R 2 1
+
+
+
+
+
+r ( x n , x1 )
+
+ r ( x1 , x n ) 
+
+ 
+
+ 
+
+
+1 
+
+MATLAB Recipe 6
+clc; clear all;
+x=[1 2 3 4 5], y=[-1 3 5 6 9.4],
+N=length(x);
+xatls=0;
+for i=1:N
+xatls=xatls+x(i);
+end
+xatl=xatls/N;
+yatls=0;
+for i=1:N
+yatls=yatls+y(i);
+end
+yatl=yatls/N;
+s1=0;
+for k=1:N
+s1=s1+((x(k)-xatl)^2);
+end
+kov11=s1/(N-1);
+varx=sqrt(kov11);
+s2=0;
+for k=1:N
+s2=s2+((x(k)-xatl)*(y(k)-yatl));
+end
+kov12=s2/(N-1);
+kov21=s2/(N-1);
+s3=0;
+for k=1:N
+s3=s3+((y(k)-yatl)^2);
+end
+kov22=s3/(N-1);
+vary=sqrt(kov22);
+kovar=[kov11 kov12;kov21 kov22],
+korr11=kov11/(varx*varx);
+korr12=kov12/(varx*vary);
+korr21=korr12;
+korr22=kov22/(vary*vary);
+korrel=[korr11 korr12;korr21 korr22],
+
+x=
+
+y=
+1 2 3 4 5
+
+-1 3 5 6 9.4
+
+kovar =
+2.5000 5.9500
+5.9500 14.7520
+
+varx =
+
+korrel =
+1.0000
+0.9798
+
+vary =
+0.9798
+1.0000
+
+1.5811
+
+3.8408
+
+Nyékládháza, North-East Hungary
+B/z
+
+__
+m
+
+Szabó, 2004
+
+B/z
+
+__
+m
+
+MATLAB Recipe 7
+y=15m
+0.35
+
+0.3
+
+0.25
+
+P
+
+0.2
+
+0.15
+
+0.1
+
+0.05
+
+__
+m
+
+0
+4.83
+
+4.84
+
+4.85
+
+4.86
+
+4.87
+T [nT]
+
+4.88
+
+4.89
+
+4.9
+
+4.91
+4
+
+x 10
+
+4
+
+4.91
+
+x 10
+
+4.9
+
+Nyékládháza, Hungary (2004)
+
+4.89
+
+kovar =
+
+y=18m
+
+var_x=
+12635
+13041
+
+0.25
+
+151.98
+
+4.87
+
+0.2
+
+4.86
+
+0.15
+
+4.85
+
+P
+
+23099
+12635
+
+T[nT]
+
+4.88
+
+korrel =
+1.0000
+0.7280
+
+var_y=
+0.7280
+1.0000
+
+114.19
+
+0.1
+
+4.84
+0.05
+
+4.83
+0
+4.83
+
+4.84
+
+4.85
+
+4.86
+T [nT]
+
+4.87
+
+4.88
+
+4.89
+4
+
+x 10
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+x[m]
+
+30
+
+35
+
+40
+
+45
+
+50
+
+Correlation of Nonlinear Relations
+
+
+Sort the data xi (i=1,2,…,n) in increasing order. The smallest value gets rank 1,
+while the highest gets rank n. Do the same with the data set yi (i=1,2,…,n).
+Calculate the average values and variances of the ranks
+
+
+
+Rank correlation coefficient is a
+measure of correlation between two
+nonlinearly related random variables
+
+250
+
+200
+
+ rank x   rank x rank y   rank y 
+n
+
+k
+
+
+
+
+
+ = 0.95
+
+k
+
+y
+
+ρ n  k 1
+
+r = 0.64
+
+150
+
+σ rank x σ rank y 
+
+For nonlinear relations, ρ characterizes
+much more appropriately the strength of
+correlation than r. The rank correlation
+coefficient is less affected by the
+outliers in the data set
+The larger the value of |ρ| the more
+accurately variable y can be estimated
+with the help of variable x
+
+100
+
+50
+
+0
+
+-50
+-3
+
+-2
+
+-1
+
+0
+
+1
+x
+
+2
+
+3
+
+4
+
+5
+
+Variogram Analysis and Kriging
+
+Basic Problem
+
+
+Assume that the quantity Z is known in the points Zi (i=1,2,…,7).
+Estimate the same quantity in Z0 using the information of Zi
+
+
+
+The value of Z0 can be
+determined by conventional
+interpolation methods, where
+the values Zi are weighted
+depending on their distance
+from point Z0
+Z0 
+
+n
+
+ w Z , where w 
+i
+
+i 1
+
+i
+
+i
+
+d i1
+n
+
+
+
+d i1
+
+i 1
+
+Zhang (2009)
+
+
+Note that the points Z3 and Z5 points should get higher weights than Z7,
+because they are in the same geological unit as Z0. How can we take
+the prior geological information into consideration during the
+interpolation?
+
+Spatial Correlation of Porosity
+
+Lag
+
+Bohling (2005)
+
+Variogram
+
+
+
+
+
+
+Assume that the data is normally distributed and their fluctuation can be
+characterized by a standard deviation 
+Our task - a given quantity in a point is estimated as the weighted average
+of known data in the vicinity. Finding the optimal values of the weights so
+that the variance of the result is minimal
+Semi-variogram - a function describing the degree of spatial dependence of
+a spatial random variable. The curve (h) gives the half of the squared sum
+of the differences of the observed variable Z as a function of distance h
+
+1 n h 
+Zri   Zri  h 2
+ h  
+
+2n h  i1
+where
+
+h - distance between the two studied points (i.e. lag)
+n(h) - number of all pairs of points spaced apart h.
+Z(ri) - observed quantity in the ri point
+Z(ri+h) - observed quantity from h distance to the ri point
+ri - location of the i-th point
+
+Properties of Variogram
+
+
+It is observable that:[Z(ri)-Z(ri+h)] changes to -1 times when the two points
+change space in the space. Therefore, the mean of the deviations is zero.
+Thus, the differences can be considered as a deviation from the mean value,
+i.e. the variogram equals half the value of the empirical variance
+ h  
+
+
+
+1
+VAR Zr   Zr  h 
+2
+
+The variogram asymptotically tends to a given value of γ(H). If h=0, it
+appoints the variance of Z(r)
+VAR Zr   COVZr , Zr    H 
+
+where H is the effective distance. The
+correlation exists between two points
+within this range only (you can choose
+points for interpolation only within this
+range). The covariance is calculated as
+
+COVZr , Zr  h    H    h 
+Bohling (2005)
+
+Direction Dependence of Variogram
+
+Isotropic case
+Isaaks and Srivastava (1989)
+
+Anisotropic cases
+
+Variogram Models
+
+
+Variogram models (theoretical functions) can be fitted to the points of the
+empirical variograms plotted from the measurement results
+
+
+
+The exponential, spherical and
+Gaussian models are normally used
+
+C
+
+3
+ 
+h
+h 
+C 1.5  0.5   , h  H
+γSph. h     H
+ H  
+
+hH
+C,
+h
+
+ 
+H
+γ Exp. h   C 1  e ,
+
+
+
+
+
+
+
+ h
+
+  
+γ Gauss h   C 1  e  H  
+
+
+
+
+2
+
+Theoretical curves ɣ(h) converge to
+constant C, where H is calculated
+by adjustment
+C   H   VAR Zr 
+Covariance required for kriging is calculated from the variogram
+
+COVZr , Zr  h   C   h 
+
+Bohling (2005)
+
+Kriging
+
+
+
+
+Kriging is a robust interpolation method for estimating the
+characteristics of unrecognized points using the information of the
+surrounding data and spatial variance (not sensitive to the variogram
+model and its directional dependence)
+Approximate the unknown value of physical property Z in a point P0
+with the weighted average of Z(Pi) measured close to point P0
+n
+
+ZP0    w i ZPi 
+i 1
+
+
+
+
+Let the sum of weights wi be 1, thus, the estimation is unbiased
+We connect the determination of the weights wi to the minimum of the
+variance of the estimation (variance of the difference between real
+and estimated values)
+n
+
+
+VAR  ZP0    w i ZPi   min
+i 1
+
+
+
+Kriging
+
+
+The minimization leads to the Kw=D linear system (where the K is the
+Krige matrix and μ is the Lagrange multiplier)
+ c11
+c
+ 21
+c31
+
+ 
+c n1
+
+ 1
+
+
+
+ c1n
+
+c12
+
+c13
+
+c 22
+c 32
+
+c 23  c 2 n
+c 33  c 3n
+
+
+cn 2
+
+  
+c n 3  c nn
+
+1
+
+1
+
+
+
+1
+
+1  w 1   c 01 
+1  w 2   c 02 
+1  w 3   c 03 
+    
+      
+1   w n  c 0 n 
+   
+0     1 
+
+The covariances in matrix K are known from the variogram
+
+
+
+
+
+c ij  COV ZPi , ZPj   C   h ( Pi , Pj ) 
+c ii  VAR ZPi   C
+
+c 0i  COV ZP0 , ZPi   C   h ( P0 , Pi ) 
+
+
+
+The unknown weights can be determined from the W=K-1D system, with
+the help of which the unknown Z(P0) can be calculated. The estimation
+error (variance) can be obtained by =wTD
+
+Walker Lake, Nevada (USA)
+
+Isaaks and Srivastava (1989)
+
+exponenciális
+
+Walker Lake, Nevada (USA)
+
+Isaaks and Srivastava (1989)
+
+Nyékládháza, North-East Hungary
+B/z
+
+__
+m
+
+Szabó, 2004
+
+B/z
+
+__
+m
+
+Nyékládháza, North-East Hungary
+
+Empirical variogram
+
+Result of interpolation
+
+Nyékládháza, Hungary (2004)
+
+Regression Analysis
+
+Linear Regression
+
+
+
+
+We are looking for the functional relation between the variables x and
+y. By using the observed data, we specify the regression function
+y=f(x)
+The simplest univariate task is linear regression. One can fit an
+optimal straight line to measured data (xi(m),yi(m)) (i=1,2,…,n) and
+determine the regression model in the form as
+
+y  mx  a
+
+
+
+where m is the slope (gradient) of the straight line (which describes
+both the direction and the steepness of the line) and a is the intercept
+(where the line crosses the ordinate-axis)
+By using the above equation, one can obtain (xi(c),yi(c)) (i=1,2,…,n)
+calculated data set, the deviation of which from the measured data
+depends on the choice of parameters m and a. The optimal line is
+obtained by minimizing the misfit between the measured and
+calculated data
+
+Linear Regression
+y  mx  a
+
+Linear Regression
+
+
+Calculate the data yi(c) at places xi(m) (i=1,2,…,n) using the linear
+regression model
+(m)
+y(c)
+
+mx
+a
+i
+i
+
+
+
+Determine the optimal value of the parameters m and a using the LSQ
+method. The best fit between the measured and calculated data is
+given at the minimum of the objective function
+
+E
+
+
+n
+
+i 1
+
+
+
+  y
+
+(c) 2
+y (m)
+
+y
+
+i
+i
+
+n
+
+
+
+2
+(m)
+
+mx
+
+a
+ min
+i
+i
+
+i 1
+
+By solving the above optimization problem, the optimal values of
+regression coefficients m and a are obtained. They can be extracted
+from the correlation coefficient (rxy) and the variances (x, y)
+m  rxy
+
+y
+x
+
+, a  y  mx
+
+MATLAB Recipe 8
+clc;
+clear all;
+x=[0:10];
+y_meas=[-1 0.56 1.3 3.4 4 5.6 …
+7.8 7.9 8.3 9 9.8];
+eh=polyfit(x,y_meas,1);
+y_cal=polyval(eh,x);
+plot(x,y_meas,'*');
+hold on;
+plot(x,y_cal);
+xlabel('x');
+ylabel('y');
+title('Linear regression');
+m=eh(1),
+a=eh(2),
+R=corrcoef(x,y_meas),
+Sigmax=std(x),
+Sigmay=std(y_meas),
+m_R=R(2,1)*std(y_meas)/std(x),
+a_ave=mean(y_meas)-m*mean(x),
+
+R=
+1.0000
+0.9822
+
+m =
+1.1051
+
+Sigmax =
+0.9822
+1.0000
+
+a=
+-0.3745
+
+3.3166
+
+m_R =
+1.1051
+
+Sigmay =
+3.7317
+
+a_atl =
+-0.3745
+
+Robust Regression Methods
+
+
+The least-squares method (based on the L2-norm) has a major drawback, it
+is highly sensitive to outliers
+1/p
+
+p
+ 1 n (m)
+Lp  
+y i  f x i  
+ n i 1
+
+
+
+
+1 n (m)
+p  1 : L1 
+y i  f x i 
+n i 1
+
+
+
+p  2 : L2 
+
+
+
+
+
+2
+1 n (m)
+y i  f x i 
+n i 1
+n
+
+p   : L   max y (m)
+ f x i 
+i
+i 1
+
+
+
+The L1-norm or P-norm based procedures are less sensitive to outlying
+data. The objective function of the L1-norm with R number of side conditions
+A(p)=0 (where p is the vector of unknowns,  Lagrange multiplier)
+E
+
+n
+
+
+i 1
+
+y (m)
+f
+i
+
+R
+
+x i , p   λ r Ap   min
+
+
+r 1
+
+Nonlinear Regression
+
+
+Nonlinear regression is used when the regression function, which fits
+the best to the data, is not linear. We often use polynomial
+regression (e.g. power functions)
+
+ y
+N
+
+
+
+ 2
+(m)
+
+f(x
+,
+p
+)  min
+i
+i
+
+i 1
+
+J
+
+f(x, p)  f(x, p1 , p 2 ,..., p J ) 
+p jx j
+
+
+j0
+
+
+
+The functional relation y=f(x) can be frequently linearized. Instead of
+using the original variables, we derive new variables related to the
+original variables for linear regression
+y  ae bx  lny  lna  bx
+Y  lny, X  x  Y  A  BX
+a  eA , b  B
+
+Petrophysical Example
+
+ln( K )  3.2088  4.3756  POR - 0.0776  SWIRR  16.8436  POR 2
+ 6.7329  POR  SWIRR - 2.5573 SWIRR 2  44.0552  POR 3
+ 5.0006  POR 2  SWIRR - 12.6079  POR  SWIRR 2  5.8270  SWIRR 3
+ 12.9346  POR 4  129.8712  POR 3  SWIRR  110.1269  POR 2  SWIRR 2
+ 7.4378  POR  SWIRR 3  9.6925  SWIRR 4
+
+Multi-Dimensional Samples and
+Scaling
+
+Multi-Dimensional Random Variables
+
+
+
+
+
+
+Relative frequency - how often event A (one data) happens divided
+by all outcomes (measured data set)
+Probability - with increasing number of measurements, the relative
+frequency will fluctuate around P(A), which shows the probability of A
+event happening compared to all outcomes
+Random variable - a variable whose possible values are numerical
+outcomes of a random phenomenon. The probability of occurrence
+of xk (k=1,2,…,n) is pk for discrete random variables is (n is the
+number of possible outcomes)
+p k  P( x  x k ),
+
+
+
+n
+
+p 1
+k
+
+k 1
+
+The joint probability of the (x,y) two dimensional discrete random
+(vector) variable is
+pik  P( x  x i , y  y k ),
+
+ p  1
+ik
+
+i
+
+k
+
+Multi-Dimensional Distributions
+
+
+The marginal probability mass functions of variables x and y in discrete case
+are
+P(x  x i )   pik
+P(y  y k )   pik
+k
+
+
+
+i
+
+The joint probability distribution function of variables x and y in discrete case
+F(x 0 , y 0 )  P(x  x 0 , y  y 0 ) 
+
+
+
+p
+
+ik
+x i  x 0 , y k  y0
+
+The marginal distribution functions of variables x and y in discrete case
+F( x 0 , )  P( x  x 0 , y  )   P( x  x i )
+xi x0
+
+F(, y 0 )  P( x  , y  y 0 )   P( y  y k )
+yk  y0
+
+
+
+The joint probability density function of variables x and y in the case of
+continuous variables (the volume under the surface f(x,y)) equals to 1)
+
+ 2 F(x, y)
+f(x, y) 
+xy
+
+Bivariate Normal Distribution
+
+
+For bivariate Gaussian distribution the marginal probability density function of
+variables x and y (where standard deviations 1, 2 and expected values m1,
+m2 are known) follow a normal distribution
+
+f G (x) 
+f G (y) 
+
+
+
+1
+1 2
+1
+ 2 2
+
+
+
+ x -m1 2
+2 12
+
+e
+
+
+ y -m 2 2
+
+e
+
+2  22
+
+The joint probability density function of normal distribution (where r is the
+Pearson’s correlation coefficient of random variables x and y)
+
+f G (x, y) 
+
+1
+2π σ1σ 2 1  r 2
+
+e
+
+
+1  x  m1 2
+x  m1  y  m 2   y  m 2 2 
+
+ 2r
+
+
+
+σ1σ 2
+2 1 r 2  σ12
+σ 22
+
+
+
+
+
+
+Multi-Dimensional Observations
+
+
+
+
+
+
+The recorded values of observations are called data. During
+exploration projects, the data set can contain different kinds of
+measurements with different magnitude and measurement units
+collected from a large number of geological objects from all over the
+investigated area (surface or subsurface)
+Data have two specifications. Object - one element of a geological
+formation/structure that we observe. Feature - physical property of
+the object element (i.e. measured variable)
+Let us collect the data of J types measured on I number of objects
+into a data matrix
+d11
+ 
+
+D   d i1
+
+ 
+ d I1
+
+
+
+
+d1 j
+
+
+
+
+
+
+d ij
+
+
+
+
+
+
+d Ij
+
+
+
+d1J 
+ 
+d iJ 
+
+ 
+d IJ 
+
+Data Vectors
+
+
+The i-th object vector derived from data matrix D contains all features of the
+i-th object, and the j-th feature vector includes the values of the j-th feature
+observed on different objects
+
+ (obj)
+di
+ d i1 , d i2 ,, d iJ 
+ d1j 
+ (feat) d 2j 
+dj
+ 
+  
+ 
+ d Ij 
+
+
+Geophysical example - the i-th object is a layer (investigated in a given
+depth) and the j-th feature is a physical property observed by one of J
+number of sondes. One can measure different physical parameters such as
+natural gamma-ray intensity (GR), spontaneous potential (SP) or acoustic
+traveltime (AT) etc. The recordings are called well logs, which contain the
+measured data in the function of depth
+
+Scaling of Observations
+
+
+
+
+Feature vectors can contain features with different dimension units and order
+of magnitude. In statistics, we might need unified data sets (dimensionless
+and same order of magnitude). This transformation of data is called scaling
+Centering - scaling data to zero mean, which requires a constant shift applied
+on the elements. The arithmetic mean of the elements of the j-th feature
+vector becomes 0, but the standard deviation of elements does not change
+dij  d ij  d j ,
+
+
+
+1 I
+d j   d ij
+I i 1
+
+Standardization - scaling data to zero mean and to unit variance, which
+means a constant shifting and stretching. The arithmetic mean of the
+elements of the j-th feature vector becomes 0 and the variance is 1. The
+standardized variable is dimensionless (and because of using σn-1 it is
+unbiased)
+
+d ij  d j 
+2
+1 I
+
+dij 
+, σj 
+d ij  d j 
+σj
+I  1 i 1
+
+
+
+Scaling of Observations
+
+
+Maximum scaling - scaling data into the highest value, which means
+constant compression. The highest element of the j-th feature vector
+becomes 1. The scaled variable is dimensionless
+dij 
+
+
+
+max( d ij )
+
+Extent scaling - scaling data into the interval [0,1], which means constant
+shift and compression. The elements of the j-th feature vector are now in
+the interval [0,1]. The scaled variable is dimensionless
+dij 
+
+
+
+d ij
+
+ 
+max d ij   min d ij 
+d ij  min d ij
+
+Scaling into arbitrary interval - scaling data into the interval [A,B], where A
+and B are the desired lower and upper limits of the new interval
+dij  A j  B j  A j 
+
+d ij  min d ij 
+
+max d ij   min d ij 
+
+MATLAB Recipe 8
+>> d=[1 3.2 -5.6 5 8 11]'
+d=
+1.0000
+3.2000
+-5.6000
+5.0000
+8.0000
+11.0000
+>> datl=mean(d)
+datl =
+3.7667
+>> duj=d-datl
+duj =
+-2.7667
+-0.5667
+-9.3667
+1.2333
+4.2333
+7.2333
+>> mean(duj)
+ans =
+-5.9212e-016
+
+>> sigma=std(d)
+sigma =
+5.7875
+
+>> max(d)
+ans =
+11
+
+>> min(duj4)
+ans =
+0
+
+>> duj2=(d-mean(d))/sigma
+duj2 =
+
+>> duj3=d/max(d)
+duj3 =
+0.0909
+0.2909
+-0.5091
+0.4545
+0.7273
+1.0000
+
+>> max(duj4)
+ans =
+1
+
+-0.4780
+-0.0979
+-1.6184
+0.2131
+0.7315
+1.2498
+>> mean(duj2)
+ans =
+-1.1102e-016
+
+>> std(duj2)
+ans =
+1
+
+>> max(duj3)
+ans =
+1
+>> min(d)
+ans =
+-5.6000
+>> duj4=(d-min(d))/ ...
+(max(d)-min(d))
+duj4 =
+0.3976
+0.5301
+0
+0.6386
+0.8193
+1.0000
+
+>> A=-10, B=20
+A=
+-10
+B=
+20
+>> duj5=A+((B-A)*(d-min(d))/ ...
+(max(d)-min(d)))
+duj5 =
+1.9277
+5.9036
+-10.0000
+9.1566
+14.5783
+20.0000
+
+>> min(duj5)
+ans =
+-10
+>> max(duj5)
+ans =
+20
+
+Matrix Product
+A (IJ) B(J L)  C(IL)
+
+ a11 a12
+a
+a 22
+21
+
+C
+a 31 a 32
+
+a 41 a 42
+
+a13
+a 23
+a 33
+a 43
+
+a14   b1   c1 
+a 24  b 2  c 2 
+
+
+a 34   b 3  c3 
+    
+a 44  b 4  c 4 
+
+I  4, J  4, L  1 
+
+Factor Analysis and Principal
+Component Analysis
+
+Dimensionality Reduction
+
+
+
+
+
+
+After reduction the same phenomenon is described with less variables
+while the accumulated information in the statistical sample is slightly
+reduced
+Factor Analysis (FA) - the observed variables are transformed into a
+smaller number of uncorrelated variables called factors. The new
+variables can not be observed directly. The measured variables can
+be reconstructed from the new variables only with a certain amount of
+error
+Principal Component Analysis (PCA) - an approximate method for
+solving the problem of factor analysis. The first principal component is
+located in the coordinate system of the new variables where the
+variance of the sample is the greatest. The second principal
+component is the maximum variance direction which is perpendicular
+to the first principal component etc. The first few principal components
+represent most of the information in the sample (that describes most
+of the variance), thus the following variables are negligible
+
+Input of Factor Analysis
+
+
+
+
+Our task is to replace a number of correlated or independent observed
+variables with fewer common variables called factors. Latent information
+can be extracted from the factors that can not be observed directly
+(exploratory factor analysis)
+Data matrix consists of data indexed with row and column indices, where
+we have totally N rows (i.e. objects) and M columns (i.e. observed
+variables)
+
+ x11
+x
+X   21
+ 
+
+ x N1
+
+
+x12
+
+
+
+x 22
+
+
+
+
+
+
+
+x N2
+
+
+
+x1M 
+x 2 M 
+ 
+
+x NM 
+
+The M-dimensional data space is projected to a space with lower
+dimensions, where it is easier to discover meaningful clusters. A numerical
+condition is that the data matrix should not contain more than 5% of
+missing data. The rows and columns need to contain at least half the
+elements, missing elements are substituted with the average of rows and
+columns (however, this operation causes bias)
+
+Model of Factor Analysis
+
+
+After the scaling of data (standardization) one has to decompose the data
+matrix X. The input (measured) variables is given as the sum of the N-byM matrix of common components (A) and the N-by-M matrix of residuals E
+
+X  AE
+
+
+Matrix A is expressed as the linear combination of a<M number of factors
+
+A  FL T
+
+
+
+where F is the N-by-a matrix of factor scores and L is the M-by-a matrix of
+factor loadings (practically they represent the correlation coefficients
+between the measurements and the derived factors)
+The number of factors (a) depends on the statistical problem. Some
+approximate methods can specify it (K. G. Jöreskog’s non-iterative
+method). Sometimes, the upper limit of a is estimated as
+
+
+
+a  0.5 2M  1  8M  1
+
+
+
+Types of Statistical Factors
+
+
+
+
+
+
+
+
+
+General factor - common factor connected to most of the observed
+variables with high or medium loadings
+Common factor - at least two of factor loadings are different from zero
+Specific factor - influences only one variable
+Residual factor - it is a specific factor generated by measurement error or
+approximation
+The decomposition of matrix A is not unique, because for any a-by-a
+orthogonal (rotation) matrix B holds
+1
+
+A  FBB L
+
+
+T
+
+Is there a numerical solution? The necessary condition is that for any
+matrix B the matrix product L*B (Ma) columns has to contain at least
+three non-zero elements. A sufficient condition is that of eliminating any
+row of matrix L, two matrices with the same rank (the maximum number of
+linearly independent columns) can be formed from the remaining rows
+
+Correlation of Observations
+
+
+Assume that the common component A and the error matrix E are
+uncorrelated (ATE=ETA=0), the elements of matrix E are independent
+(ETE/N=U2 is the M-by-M diagonal covariance matrix) and the factors are
+linearly independent (FTF/N=I identity matrix, T is the symbol of transpose)
+12
+
+0
+1 T
+2
+U 
+E E
+ 
+N
+
+ 0
+
+
+
+0
+
+
+
+ 22
+0
+
+
+
+
+0 
+
+0 
+
+
+ 2M 
+
+If the above criteria are fulfilled, the M-by-M correlation matrix (R) including the
+correlation coefficients of measured variables can be written as
+1 T
+1 T
+2
+X X
+A AU
+N
+N
+1
+T T
+T
+2
+T
+2
+R
+FL
+FL  U  L L  U
+N
+
+R
+
+
+
+
+
+
+
+
+
+Correlation matrix can be related to the factor loadings (elements of matrix L).
+The specific variances that are not described by the common factors are in the
+main diagonal of matrix U2
+
+Communalities
+
+
+The diagonal elements of the correlation matrix R are equal to 1, they
+represent the variance of the standardized measured variables (σ=1). The
+elements of the reduced correlation matrix derived from matrix product LLT
+are the correlation coefficients of the measured variables and factors
+ h12
+
+r
+2
+T
+R  U  L L   12
+ 
+
+ r1M
+
+
+
+ r1M 
+
+ r2M 
+  
+
+ h 2M 
+
+r12
+h 22
+
+r2M
+
+M
+
+L  1
+2
+ij
+
+j1
+
+Communalities (h2) - the elements in the main diagonal of matrix LLT, they
+are the variance portions of the measured variables that can be described
+by the common factors. For the residual factors, we derive the specific
+variances from the M-by-M matrix of communalities H2
+U  IH
+2
+
+
+
+where
+
+h i2 
+
+2
+
+If h2 is a far less than 1, the measured variables has little connection to the
+factors, vica versa
+
+Estimation of Factor Loadings
+
+
+Determination of the M-by-a matrix of factor loadings (L) leads to an
+eigenvalue problem (Av=λv, where v0 and λ is a scalar) which is solved
+by the method of spectral (or eigen-) decomposition of symmetrical
+matrices
+
+LL  R  U
+T
+
+L L  Z Z
+T
+
+L  Z
+
+
+
+
+
+
+
+T
+
+1/ 2
+
+L  Z
+T
+
+2
+
+    Z   Z
+
+1/ 2 T
+
+1/ 2 T
+
+T
+
+1/ 2
+
+T
+
+Matrix Z is the M-by-a matrix of the eigenvectors of R–U2, where the
+columns of the matrix contain the eigenvectors. Matrix  is the a-by-a
+matrix of the eigenvalues of R–U2, the main diagonal of which contains the
+eigenvalues as ii1/2 =√λi
+In the above solution, matrix U2 was assumed to be a known, but in
+practice the error variance is unknown, which has to be approximated
+
+Estimation of Factor Scores
+
+
+
+
+Principal Component Analysis - by choosing E=0 the estimation of U2 is avoided
+(see section of PCA). Since the part of the total variance that is not described by the
+common factors is neglected, the resultant principal components do not show the full
+variance of the data
+Principal Factor Analysis - Maximal communalities are aimed by minimizing the rank
+of matrix LLT. The most part of the variance of the measured variables are explained
+by a minimal number of common factors. The diagonal elements of the correlation
+matrix are estimated by the greatest correlation method (I), the triad method (II), the
+average correlation method (III) (l and k are the indices of the elements that
+correlate the best with i)
+I)
+
+
+
+
+
+
+
+h i2  max rij
+j
+
+II)
+
+h i2 
+
+rik ril
+rkl
+
+III)
+
+h i2 
+
+M
+1
+rij
+M  1 j1
+
+
+ji
+
+Bartlett’s method - based on the hypothesis of linearity, the LSQ method weighted by
+the specific variances gives an estimate to the factor scores
+Maximum Likelihood method - factor scores and loadings are simultaneously
+estimated to maximize the likelihood objective function in an iterative process
+Jöreskog’s method - a non-iterative (quick) approximate solution (independent of
+scaling of the data and gives an objective estimate the optimal number of factors)
+
+Interpretation of Factors
+
+
+
+
+
+
+The interpretation of the k-th factor is based on the magnitude and the sign of
+the factor loading Lik. The higher the value of coefficient Lik the more closely the
+k-th factor correlates to the i-th measured variable
+A general factor is indicated by high relative loadings and identical signs.
+In case of simple structure (the factor coefficients are close to either 1 or 0), the
+factors can be easily interpretable (they can be associated with physical
+properties)
+If the factors cannot be interpreted well, they can be transformed by rotation
+methods to be more informative. The orthogonal transformation methods lead to
+uncorrelated factors. For instance, the aim of the varimax method is to produce
+factor loads close to 1 or 0. The varimax method maximizes the variance of the
+squared factor loadings
+
+VAR( L ) 
+2
+
+ L  L   max
+M
+
+a
+
+2
+ik
+
+2 2
+k
+
+i 1 k 1
+
+
+
+As a result of the rotation, a simple structure is obtained, in which just a few
+variables are connected to the original data. The original variable is connected
+to one or a small number of factors and each factor represents only a small
+number of observed variables
+
+MATLAB Recipe 9
+clc; clear all;
+% X: data matrix <101object x13 variables, shaly limestone HC reservoir
+% well logs: GR, K, U, TH, SP, CAL, RD, RS, RMLL, ZDEN, PE, CN, AT
+Faktor=3;
+[FactorLoad,SpecVar,RotMatrix,Stat,ComFactor] = factoran(X,Faktor);
+FaktorLoad,
+ComFactor, % Component1-3
+biplot(FaktorLoad,'LineWidth',2,'MarkerSize',20);
+AvKorrX=mean(mean(corr(X))),
+
+AvKorrX =
+0.1106
+KorrComFaktor =
+1.0000 -0.0000 -0.0000
+-0.0000 1.0000 -0.0000
+-0.0000 -0.0000 1.0000
+
+1
+
+0.5
+
+Component 3
+
+FaktorLoad =
+-0.0183 0.8819 0.4176
+0.8957 -0.1850 -0.2882
+-0.3719 0.8160 0.4372
+0.7625 -0.3221 -0.1011
+0.8550 -0.1932 -0.4526
+0.8617 0.2317 0.0521
+-0.3777 0.0864 0.9115
+-0.1772 0.4261 0.8602
+-0.2675 -0.6310 -0.0042
+0.3714 -0.6780 -0.1985
+-0.3017 0.7901 -0.1074
+0.9340 0.0632 -0.2839
+0.1108 0.7729 0.2184
+
+0
+
+-0.5
+
+-1
+1
+0.5
+
+1
+0.5
+
+0
+
+0
+
+-0.5
+Component 2
+
+-0.5
+-1
+
+-1
+
+Component 1
+
+Shale Volume Estimation
+
+Environmental Factors
+Bank of the Niger River, Nigeria
+
+Factor 1
+
+Olobaniyi és Owoyemi (2006)
+Factor 1 - Seawater intrusion (Na, K, Cl)
+Factor 2 - Interaction of ground water and fresh water
+(PH, Mg, Ca, HCO3)
+Factor 3 - Industrial activity and acid rain (SO4)
+
+Model of PCA
+
+
+
+
+
+
+Principal Component Analysis is the approximate method of factor analysis
+as well as an independent data structure analyzing method
+The aim of PCA is to transform the variables of data matrix X (featurevectors) into less number of extracted variables. The transformation is
+orthogonal, thus the new variables will be uncorrelated. The new variables
+are called principal components, which are sorted in such a way that the first
+few describes most of the variance of the original (measured) variables
+By neglecting the residual matrix E in the model of factor analysis, we obtain
+the model of PCA. The N-by-M data matrix (X) is written as the product of
+the N-by-r matrix of principal components (T) and the transpose of the M-byr matrix of principal component coefficients (P)
+
+X  TPT
+where r<M is the number of principal components (upper index T denotes
+the symbol of matrix transpose). The above equation linear set of equations
+has a unique algebraic solution (not that FA has infinite number of identical
+solutions)
+
+Geometrical Interpretation of PCA
+
+
+Let us project the N number of objects given in data matrix X into the r
+dimensional subspace (r<M) with the help of the PT projection matrix. The
+resulting r number of principal components are the projections of the M
+number of feature vectors in the new coordinate system. The first axis
+represents a direction where the variance of the original variables is the
+highest. The second component is perpendicular to the axis of the first
+component and represent the second highest variance of the variables etc.
+Principal component analysis gives the original data objects in a new
+coordinate system defined by the principal components. Thus, PCA rotates
+the original variables into the direction of the principal components
+
+http://cnx.org/content/m11461/latest
+
+Estimation of Principal Components
+
+
+Multiply the model equation X=TPT with matrix P on the right side. The inner
+product of the M-length vector pi is orthonormal (piTpj=1, if i=j, else piTpj=0),
+from here the N-by-r matrix of principal components is
+
+T  XP
+
+
+The principal components are the linear combinations of the original
+variables. For example, the elements of the first principal component are
+given by the following linear set of equations
+t11  x11p11  x12 p 21    x1M p M1
+t 21  x 21p11  x 22 p 21    x 2 M p M1
+
+t N1  x N1p11  x N 2 p 21    x NM p M1
+
+
+
+The extracted new variables (principal components) forming the column
+vectors of matrix T are uncorrelated with each other (since vector t is also
+orthonormal)
+
+Estimation of Principal Components
+
+
+
+
+Centralize the elements of data matrix X. In this case the arithmetic mean
+of j-th feature vector will be zero, but the variance of data does not change
+Then the M-by-M data covariance matrix (COV) of the original variables is
+COV  X X
+T
+
+
+
+Determine the eigenvectors and eigenvalues of matrix COV using e.g. the
+SVD (singular value decomposition) or the method of spectral
+decomposition of symmetric matrices (see the section of factor analysis)
+
+COV  ZΛ Z  Λ I
+T
+
+where the M-by-r orthonormal matrix (Z) is the matrix of eigenvectors
+(ZTZ=I),  is the r-by-r matrix of eigenvalues, I is the M-by-M unity matrix.
+The columns of matrix Z contain the eigenvectors, and the diagonal
+elements of matrix  contain the eigenvalues
+
+Estimation of Principal Components
+
+
+The elements of the main diagonal of matrix COV are the variances, while
+matrix Λ contains the eigenvalues of matrix COV in its main diagonal. Due to
+the equality of the two matrices
+
+ i  i2
+
+
+
+
+Principal components are sorted according to the eigenvalues of the
+covariance matrix. The direction of the highest variance is designated by the
+eigenvector of the highest eigenvalue. This is the first axis in the new
+coordinate system (identified as the first principal component). Then we find
+the second highest eigenvalue and that will be the second coordinate (second
+principal component) etc.
+With the M-by-r matrix of principal component coefficients (P), one can
+determine the N-by-r matrix of principal components (T)
+
+PZ
+T  XZ
+
+MATLAB Recipe 10
+clc;
+clear all;
+n=1000;
+mu=[0,0];
+covar=[4 1;1 2];
+X=mvnrnd(mu,covar,n);
+[Princoef PrincC EigValX]=princomp(X);
+[Princoef2,Var,Percent]=pcacov(covar);
+Princoef,
+Var,
+EigValX,
+Percent,
+
+Princoef =
+0.9142 -0.4053
+0.4053 0.9142
+EigValX =
+4.8125
+1.5323
+Var =
+4.4142
+1.5858
+Percent =
+73.5702
+26.4298
+
+Cluster Analysis
+
+Principles of Clustering
+
+
+
+
+
+
+
+
+Cluster analysis - multivariate statistical method the aim of which is to classify the
+elements of a given data set based on their common properties and partition the
+data objects into groups. The classification is based on the definition of distance.
+Two objects are considered as similar if their distance is small, and they are
+different if that is large. The goal of clustering is to have minimal distances within
+groups and maximal distances between the groups
+Cluster - a group of objects which are similar in a well defined aspect. Diameter the distance between the furthermost elements of the cluster. Centroid gives the
+location of the cluster in the data space, the centroid cK of the k-th cluster is the
+arithmetic mean of the cluster elements. Radius - the distance between the centroid
+and the furthermost element from it
+www.cse.unr.edu
+The following criteria must be met during
+the decomposition of data matrix X to
+subclusters: each element must be
+classified into a cluster, one element must
+be classified only in one cluster, no cluster
+must be empty
+Cluster analysis is sensitive to outlying
+data. Data objects with extreme values and
+noise level can distort the estimation
+
+Measure of Distance
+
+Measure of Distance
+ Distance definitions: Minkowski distance - Lp-norm of the deviation of i-th
+and j-th observations, Euclidean distance - L2-norm of the deviation of i-th
+and j-th observations, Cityblock (Manhattan) distance - L1-norm of the
+deviation of i-th and j-th observations, Mahalanobis distance - L2-norm of the
+deviation of i-th and j-th observations weighted by the inverse covariance
+matrix. If the observations are not independent from each other then the
+measure of correlation has to be taken into account (also when the distance
+of variables are not comparable because of different magnitudes)
+ Distance matrix - an n-by-n
+matrix, where dij gives the
+distance between the i-th
+and j-th data objects (n is the
+total number of data objects)
+ 0
+d
+D   21
+ 
+
+d n1
+
+d12
+
+
+
+0
+dn2
+
+
+
+
+d1n 
+d 2 n 
+
+
+0 
+
+www.emeraldinsight.com
+
+Hierarchical Clustering
+
+
+
+
+
+
+
+
+The benefit of hierarchical cluster analysis is that the number of
+generated clusters does not have to be preset. Disadvantage - it is
+rather time consuming, therefore only used for relatively small data sets
+(data distances need to be stored in matrix D). This method is sensitive
+to noise and outlying data
+Agglomerative methods - each object starts as an individual cluster
+(singleton), then, the two closest objects are combined, repeatedly until
+all objects will be gathered in the same cluster. After calculating all
+cluster solutions, the optimum number of clusters can be chosen
+Divisive methods - starts with one cluster and with the same strategy as
+the above method in a reverse order separates objects until all are
+separated
+Algorithm of hierarchical clustering - in the first step, the distance matrix
+of initial configuration of data objects is calculated. At this point, each
+data is in its own individual cluster. After this, the closest data points to
+each other are merged and the distance matrix is re-calculated. The
+above steps are repeated until only one cluster remains
+
+Dendrogram
+
+
+Dendrogram - tree diagram frequently used to illustrate the arrangement of the
+clusters produced by hierarchical clustering methods. The inner branches
+represent different clusters, and at the end of the branches the connected data
+objects are represented (nodes represents data of individual observations). The
+distance between merged clusters is monotone increasing with the level of the
+merger. This method illustrates how elements are grouped, but it is not suitable for
+spatial representation of clusters
+
+Distance between clusters
+
+Leaf nodes
+
+Linkage Criteria
+
+
+The distance between two clusters can be defined several ways. Singlelinkage clustering - it applies the distance of the closest elements as
+linkage criterion. Complete-linkage clustering - it examines the maximum
+distance between the elements of each cluster. Average linkage
+clustering - it is based on the average distance between the elements of
+clusters. Centroid linkage clustering - it examines the distance of cluster
+centroids. Ward’s linkage method - it minimizes the increase in total
+within-cluster variance (sum of squared deviations from the centroid)
+after merging clusters using agglomerative cluster analysis
+
+Tan (2006)
+
+MATLAB Recipe 11
+Increase the number of objects here
+clc;
+clear all;
+subplot(2,2,1);
+X = 10*rand(30,1);
+Y = pdist(X,'mahalanobis');
+Z = linkage(Y,'single');
+[H,T] = dendrogram(Z,'colorthreshold','default');
+set(H,'LineWidth',2);
+xlabel(‚Number of objects');
+ylabel('Centroid distance');
+subplot(2,2,2);
+Y = pdist(X,'mahalanobis');
+Z = linkage(Y,'average');
+[H,T] = dendrogram(Z,'colorthreshold','default');
+set(H,'LineWidth',2);
+xlabel(‚Number of objects');
+ylabel('Centroid distance');
+subplot(2,2,3);
+Y = pdist(X,'mahalanobis');
+Z = linkage(Y,'centroid');
+[H,T] = dendrogram(Z,'colorthreshold','default');
+set(H,'LineWidth',2);
+xlabel(‚Number of objects');
+ylabel('Centroid distance');
+subplot(2,2,4);
+Y = pdist(X,'mahalanobis');
+Z = linkage(Y,'ward');
+[H,T] = dendrogram(Z,'colorthreshold','default');
+set(H,'LineWidth',2);
+xlabel(‚Number of objects');
+ylabel('Centroid distance');
+
+Petrophysical Example
+
+Petrophysical Example
+
+Petrophysical Example
+
+Non-Hierarchical Clustering
+
+
+
+
+
+Non-Hierarchical clustering or partitioning is an iterative cluster analysis
+method. This kind of clustering requires the determination of the number of
+clusters prior to the iterative process. It has the feature of handling big data
+sets well; but the result is highly affected by the initial selection of centroids
+K-Means Clustering - choose the number of clusters and the K pieces of
+starting centroids. Create K number of group so that each element is classified
+in a cluster with the nearest centroid. Calculate the new cluster centroids. The
+previous steps are repeated until the convergence criteria is met
+The sum of squared error for the
+elements and nearest centroids
+
+SSE   d 2 ci , x j 
+K
+
+ni
+
+i 1 j1
+
+where K is the predefined number of
+clusters, ni is the number of objects
+in the i-th cluster. The optimal
+number of clusters is given as the
+lowest one at the minimum of SSE
+
+Tan, 2006
+
+
+
+Cluster Analysis of Core Data
+
+Initial Model Dependence
+Klaszterezés után (Euklideszi távolság)
+
+Kiindulási állapot
+
+10
+
+10
+
+7
+
+8
+7
+
+CA
+
+6
+
+y
+
+8
+
+y
+
+9
+
+1. csoport
+2. csoport
+3. csoport
+1. centoid
+2. centroid
+3. centroid
+
+9
+
+3
+
+5
+
+6
+5
+
+2
+1
+
+4
+
+4
+3
+
+3
+2
+
+2
+
+1
+
+2
+
+3
+
+4
+
+5
+x
+
+6
+
+7
+
+8
+
+9
+
+1
+
+2
+
+10
+
+9
+
+9
+
+8
+
+8
+
+CA
+
+6
+
+5
+
+4
+
+4
+
+3
+
+3
+
+3
+
+4
+
+5
+x
+
+6
+
+7
+
+8
+
+9
+
+8
+
+9
+
+6
+
+5
+
+2
+
+5
+x
+
+7
+
+y
+
+y
+
+7
+
+1
+
+4
+
+Klaszterezés után (Euklideszi távolság)
+
+Kiindulási állapot
+10
+
+2
+
+3
+
+6
+
+7
+
+8
+
+9
+
+2
+
+1
+
+2
+
+3
+
+4
+
+5
+x
+
+6
+
+7
+
+MATLAB Recipe 12
+10
+9
+8
+
+Data / Cluster number
+
+c1=mean(X1);
+c2=mean(X2);
+c3=mean(X3);
+X=[X1;X2;X3];
+figure(1);
+subplot(1,2,1);
+plot(X1(:,1),X1(:,2),'r*');
+grid on;
+hold on;
+plot(X2(:,1),X2(:,2),'*');
+hold on;
+plot(X3(:,1),X3(:,2),'g*');
+xlabel('x');
+ylabel('y');
+title('Initial model');
+hold on;
+plot(c1(1),c1(2),'k+');
+hold on;
+plot(c2(1),c2(2),'k+');
+hold on;
+plot(c3(1),c3(2),'k+');
+%
+M = kmeans(X,3,'distance','sqEuclidean');
+plot(M);
+
+7
+6
+5
+4
+3
+2
+1
+
+0
+
+5
+
+10
+
+15
+20
+Sample number
+
+25
+
+30
+
+35
+
+Linear Optimization Methods
+
+Inverse Modeling
+
+
+
+
+
+
+
+
+The model is a simplification of reality, which
+quantitatively describes the examined
+geological object. The geophysical model
+consist of petrophysical (porosity, water
+saturation, shale volume, seismic velocity
+etc.) and geometrical parameters. From a
+geometrical point of view, models can be
+one-, two-, three-dimensional (exactly as
+many independent geometrical variables it
+has) (in case of 4-D models, time also
+changes). The above model parameters are
+unmeasurable under in-situ conditions
+During the observations, we collect real data
+(gravity, electric, EM, nuclear, seismic etc.),
+which are related to the model parameters.
+The physical relation between the data and
+the model is called a response function
+Forward problem - model parameters >>
+response equations >> calculated data
+Inverse problem - measured data >>
+response equations >> model parameters
+
+Model building
+
+Measured data,
+a priori
+information
+
+Calculating
+theoretical
+data
+
+Model
+refinement
+No
+
+Comparing
+measured and
+calculated data
+
+Is the fit
+satisfactory?
+Yes
+
+Accepting
+model
+parameters
+
+Seismic Toy Example
+
+Seismic Toy Example
+Seismic section
+
+Geoph.
+1.0000
+2.0000
+3.0000
+4.0000
+5.0000
+6.0000
+7.0000
+8.0000
+9.0000
+10.0000
+11.0000
+12.0000
+13.0000
+14.0000
+15.0000
+16.0000
+17.0000
+18.0000
+19.0000
+20.0000
+21.0000
+22.0000
+23.0000
+24.0000
+
+INVERSION
+
+x-coord. y-coord. t_meas.
+0
+0
+141.5121
+2.0000
+0
+136.4190
+4.0000
+0
+132.4577
+6.0000
+0
+128.4965
+8.0000
+0
+128.4965
+10.0000
+0
+131.8918
+12.0000
+0
+136.4190
+12.0000 2.0000 130.1942
+12.0000 4.0000 127.3647
+12.0000 6.0000 125.1011
+12.0000 8.0000 129.0624
+12.0000 10.0000 133.0236
+12.0000 12.0000 138.1167
+10.0000 12.0000 133.5895
+8.0000 12.0000 130.7601
+6.0000 12.0000 129.0624
+4.0000 12.0000 130.1942
+2.0000 12.0000 132.4577
+0
+12.0000 137.5508
+0
+10.0000 135.2872
+0
+8.0000 131.3260
+0
+6.0000 130.7601
+0
+4.0000 133.0236
+0
+2.0000 138.1167
+
+Initial model = 5 5 200 2
+Initial data misfit = 95.76 %
+Data misfit = 1.35 %
+Estimated coordinates of earthquake:
+x = 6.5896 y =6.0322
+Estimated velocity and zero time:
+v = 252.5935 t0 = 105.0583
+
+Inverse Problems
+
+
+
+
+
+
+
+
+
+
+
+
+Rate of overdetermination is the datato-unknowns ratio in the inverse
+problem
+Let N is the number of observed
+(independent) data and M is the
+number of model parameters as
+unknown of the inverse problem
+Even-Determined problem
+(when N=M)
+Overdetermined problem
+(when N>M, e.g. well logging)
+Underdetermined problem
+(when N<M, e.g. gravity, magnetics)
+Mixed-determined problem
+(when N≠M, e.g. seismic tomography)
+Menke
+(2012)
+
+Formulation of Inverse Problem
+
+
+Model vector - the column vector of model parameters such as
+petrophysical properties and geometrical quantities
+
+
+m  [m1 , m 2 ,, m M ]T
+
+
+
+where M is the number of model parameters and T denotes the symbol of
+matrix transpose
+Data vector - the column vector of measured data the length of which is
+not necessarily the same than that of the model vector
+
+
+d  [d1 , d 2 ,, d N ]T
+
+
+
+where N is the number of data
+Response function - a nonlinear (explicit) vector-vector function, which
+connects the data to the model vector
+
+  
+d  g(m)
+
+Linearized Inverse Problem
+
+
+
+
+
+Let us linearize the nonlinear function relation d=g(m)
+Select a start model (m0) and update it with a model correction
+vector in an iteration process (m= m0 +m)
+Apply Taylor series expansion in the vicinity of the start model
+  
+
+d k0   g k m  0  , d k  d k  d k0 
+d  g ( m)
+M g
+
+d k  g k m  0     k  m i , (k  1,2,, N)
+i 1 m 
+i mo
+
+
+
+Since the N-by-M Jacobi’s matrix (G)
+(parameter sensitivity matrix) is
+independent from vector m, the
+relation between the deviation of data
+and the model parameters is linear
+
+
+*
+
+
+d  G  m  d  G  m*
+
+G ki 
+
+g k
+m i m
+
+ d1
+
+ m1
+ d 2
+G   m
+ 1
+ 
+ d N
+ m1
+
+o
+
+d1
+m 2
+d 2
+m 2
+
+d N
+m 2
+
+
+
+
+
+
+d1 
+
+m M 
+d 2 
+m M 
+
+ 
+d N 
+m M 
+
+Measure of Data Misfit
+
+
+Deviation vector (e) - it characterizes the misfit
+between the calculated and observed data
+d1(meas)  d1(cal) 
+
+
+(cal)
+ (meas)  (cal) 
+ d (meas)
+
+d
+ 
+2
+2
+d
+d e  e  
+ 0
+
+
+
+(meas)
+(cal)
+d N
+ d N 
+
+
+
+Objective function - some vector norm of e
+deviation vector, which characterizes the overall
+fit with just one scalar. The solution of the inverse
+problem is based on the minimization of this
+vector-sclar function
+
+
+
+
+
+ (meas)  (cal)
+EEd
+d
+ min
+N
+
+
+e1
+ei , e 2 
+
+
+i 1
+
+N
+
+
+i 1
+
+ei2 ,
+
+N
+
+
+p
+e p p
+ei , e   max ei
+
+
+i 1
+
+i 1...N
+
+Gaussian Least Squares Method
+
+
+
+
+Overdetermined inverse problems (number of data > number of
+unknowns) do not have algebraic solutions (number of independent
+equations > number of unknowns)
+The deviation vector can be expressed using the Jacobi’s matrix
+  (meas)  (calc)  (meas)
+
+ed
+d
+d
+ Gm  0
+
+
+
+The solution is found at the minimum of the squared L2-norm of the
+deviation vector
+e1 
+e  N
+T
+E  e e  e1 , e 2 ,, e N  2   e i2  min
+   i 1
+ 
+e N 
+
+
+
+
+
+The model parameters are estimated by the solution of the optimization
+problem E/m=0
+
+
+
+
+
+1 T 
+
+T
+m(est)  G G G d (meas)
+
+Derivation of Normal Equation
+
+
+Let us introduce the detailed objective function of the Gaussian
+LSQ method (d(m) denotes the measured data vector)
+e1 
+e  N
+N
+M
+M
+T
+2
+2
+(m)
+(m)
+
+
+E  e e  e1 , e 2 ,, e N 
+  e k   (d k   G ki m i )(d k   G kjm j )
+k 1
+i 1
+j1
+   k 1
+ 
+e N 
+
+
+
+The condition for determining the extreme value of function E
+E
+ 0, (l  1,2, , M )
+m l
+E
+E
+E
+ 0,
+ 0,  ,
+0
+m1
+m 2
+m M
+
+Derivation of Normal Equation
+
+
+Derive the objective function E (ij=mi/mj=1, if i=j, else ij=0)
+N
+
+E   (d
+k 1
+
+M
+
+(m)
+k
+
+  G ki m i )(d
+i 1
+
+M
+
+(m)
+k
+
+  G kj m j )
+j1
+
+N M
+N M M
+
+ N 2
+(m)
+d
+
+2
+d
+G
+m
+
+m
+m
+G
+G
+ k
+
+k
+kj
+j 
+i
+j ki kj   0
+m l  k 1
+k 1 j1
+k 1 i 1 j1
+
+
+M
+
+N
+
+j1
+
+k 1
+
+ 2  jl  G kjd
+
+
+(m)
+k
+
+N
+
+  2  G kl d
+k 1
+
+(m)
+k
+
+M M
+
+N
+
+M
+
+N
+
+i 1 j1
+
+k 1
+
+i 1
+
+k 1
+
+ (mi jl  m jil ) G ki G kj  2 mi  G ki G kl
+
+After re-arranging the equation, the solution in matrix-vector form is
+N
+
+M
+
+N
+
+2  G kl G ki  m i  2  G kl d (km )  0
+k 1
+
+i 1
+
+k 1
+
+N
+
+M
+
+N
+
+k 1
+
+i 1
+
+k 1
+
+ G kl G ki  m i   G kl d k
+
+(m)
+
+
+
+/ G G
+T
+
+
+
+1
+
+
+
+T (m)
+G Gm  G d
+1 T  ( m )
+
+T
+m G G G d
+T
+
+
+
+
+
+Linear Regression Solved By Inversion
+
+
+Assume that the temperature versus
+depth relation is linear. Accordingly,
+the model (response) equation
+T(z)  m1  m 2 z
+
+
+
+The vector of the unknown model
+parameters
+
+ m1 
+m 
+m 2 
+
+
+The vector of measured temperatures
+T1( m ) 
+ ( m ) T2( m ) 
+
+d 
+  
+ (m) 
+TN 
+
+ T1( m )  1
+ (m)  
+
+
+ T2  1
+d  Gm  
+
+
+
+ 
+ T ( m )  1
+ N  
+
+z1 
+
+z 2  m1 
+ 
+  m 2 
+
+z N 
+
+Linear Regression Solved By Inversion
+N
+1 z1  
+
+
+  N  zi 
+1 1 ... 1 1 z 2  
+T
+i 1
+
+
+G G  
+
+  N
+N
+
+2
+ z1 z 2 ... z N     z
+1 z    i  z i 
+i 1
+ i 1
+
+N
+
+ T1( m )   N ( m ) 
+ ( m )    Ti 
+
+1 1 ... 1  T2   i 1
+T
+
+
+G d  
+
+  N
+
+ z1 z 2 ... z N     z T ( m ) 
+i i
+
+ T ( m )   
+i 1
+
+ N 
+
+N
+
+
+
+
+N
+z
+i
+(est)
+
+ m1 
+1 T
+
+
+
+T
+i 1
+m(est)   (est)   G G G d (m)   N
+
+N
+m 
+2
+ 2 
+ z
+z
+i
+i
+
+
+i 1
+ i 1
+
+
+
+
+
+
+
+
+ 
+
+1
+
+ N (m) 
+
+Ti 
+ i 1
+
+ N
+
+ z T (m) 
+i i
+
+
+ i 1
+
+
+
+
+
+
+MATLAB Recipe 13
+
+Estimated model
+
+Generalized Inverse
+
+
+
+
+Measurement data always contain noise, which is transformed to the
+model space during inversion. Thus, the model parameters estimated by
+inversion will also contain some amount of error. On the other hand, the
+forward modeling procedure is also a source of error, because in the
+(mostly empirical or approximate) response equations the selection of rock
+and fluid properties causes also some modeling error in the results of
+inversion. These two independent error types are added and treated as the
+data error (σd), which is also an input of inversion
+Generalized inverse - an M-by-N matrix (M) which creates a connection
+between the model and data during the inversion
+
+ 
+
+m  Md  v
+
+
+In linearized inversion, vector v is zero and the data versus model relation
+is linear. For instance, in case of the Gaussian LSQ method matrix M is
+
+
+
+
+
+ (meas)
+1 T
+ (est)
+T
+m  Md
+where M  G G G
+
+Model Covariance
+
+
+In case of linear relation, the model equation can be written also with the
+average values
+
+
+
+ 
+m  m  M (d  d )
+
+
+
+For the i-th and j-th model parameters with indices (i=j=1,2,…,M)
+m i  mi   M ik d k  d k , m j  m j   M jl d l  d l 
+
+
+
+N
+
+N
+
+k 1
+
+l 1
+
+Create the covariance of i-th and j-th model parameters
+
+mi  mi m j  m j    M ik M jl d k  dk d l  dl   
+N
+
+N
+
+N
+
+k 1 l 1
+
+
+
+N
+
+k 1 l 1
+
+  
+
+
+M ik cov d kl M jl
+
+The estimation error of model parameters (σm) can be determined in the
+knowledge of the data uncertainties (σd)
+
+
+
+ T
+
+covm   M cov d M , where σ mi 
+
+
+
+
+
+
+covm  ii and σ d k 
+
+  
+
+
+cov d kk
+
+Estimation Error for LSQ Method
+
+
+If the data are uncorrelated and similarly deviated (d2), then the model
+covariance matrix is getting more simple
+
+ 
+
+
+T
+covm   M σ d2 I M
+
+
+In case of the LSQ method, the model covariance matrix simplifies as
+
+
+
+
+
+
+
+
+
+1 T
+1 T T
+
+T
+T
+2
+
+covm   σ d G G G G G G 
+
+
+
+
+Let us use the following algebraic identity
+
+AB   BA, A  G G  és B  G
+T T
+
+
+
+T
+
+1
+
+With the above relation, the model-covariance matrix gets simpler form
+
+
+
+
+
+
+
+
+
+
+
+
+
+1 T
+1
+1
+
+T
+T
+T
+2
+2
+covm  σd G G G G G G  σd G G
+
+Inversion of Direct-Push Data
+
+Inverted direct push logs are: natural gamma-ray intensity (GR), density (ρb), neutron-porosity (ΦN), electric resistivity (R).
+Estimated model parameters are: water volume (Vw), quartz volume (Vs), clay volume (Vcl).
+
+Weighted LSQ Method
+
+
+
+
+The uncertainty of inverted data variables is normally different
+(measurement error). If we have a priori information about the accuracy of
+data, then it can be taken in consideration during the inversion procedure
+Let W(d) an N-by-N weighting matrix in the data space (which is a diagonal
+matrix in case of uncorrelated data), which consists of weighting coefficients
+for each data depending on their accuracy. The more accurate the data the
+higher the weight it gets. The weighting matrix can be constructed by
+different principles
+12
+1 0  0
+
+0 2  0 
+(d)
+(
+d
+)
+, W   0
+W 
+ 
+    0
+
+
+
+0
+0
+
+1
+ 0
+
+
+
+
+
+0
+ 2 2
+
+0
+
+ e1 1
+0 
+
+
+ 0 
+0
+(d )
+, W  
+ 0 
+
+
+
+  N2 
+ 0
+
+
+
+
+0
+e2
+
+1
+
+
+
+
+
+0
+
+
+
+The solution of the inverse problem using the WLSQ method is
+
+
+(d) 
+L  e T W e  min
+
+
+
+
+
+
+
+1 T (d)  (meas)
+ (est)
+T (d)
+m G W G G W d
+
+0 
+
+0 
+0 
+
+1
+e N 
+
+Well-Logging Inversion
+
+Halliburton Co.
+
+Global Optimization Methods
+
+Search for Global Optimum
+
+
+
+
+
+
+Linearized optimization methods provide quick and acceptable solution, if the start model
+is selected favorably (by having sufficient a priori information, the optimization procedure
+can be started not too far from the optimum)
+If the start model is too far from
+the solution, then the linear
+optimization methods (such as
+LSQ) tend to be trapped in one
+of the local minimums of the
+objective function  gradientbased search
+Global optimization methods
+(such as Simulated Annealing
+and Genetic Algorithms) allow
+the determination of the global
+Absolute minimum
+(absolute) minimum of an
+Locality Initial model
+objective function given that the
+control parameters are set
+properly  derivative-free and
+initial
+model
+independent
+Szabó, 2004
+random search
+
+Simulated Annealing Method
+
+
+
+
+
+
+Simulated Annealing (SA) is a random search technique used for finding
+the global optimum of an objective function. The SA algorithm is based on
+the analogy between the simulation of the annealing of solids and the
+problem of solving multivariate optimization problems. It has more variants
+to decrease the CPU time (e.g. FSA, VFSA)
+The SA algorithm can be used to solve the inverse problem. Depending on
+the rate and schedule of cooling some structure of the solid will form, which
+will have an energy state (energy function) and the inverse problem also
+has an objective function to be minimized
+In metallurgy the annealing of metals are done by heating the metals to
+melting point and then cooling them slowly. This process gradually reduces
+the kinetic energy of atoms and the metal starts to crystallize. The energy of
+the formed structure depends on the cooling schedule. An (theoretically)
+infinitely slow cooling would result in a low energy, perfect structure which is
+analogous to the geophysical inverse problem, where we try to stabilize the
+objective function at the global minimum. In practice, such a slow cooling is
+not possible, therefore a faster cooling schedule is necessary
+
+Simulated Annealing Method
+
+
+
+
+Faster cooling results in defects in the
+crystal structure, which means that the
+metal freezes up at a higher energy
+state into an imperfect structure. This is
+consistent with the stabilization of the
+inversion process in a local minimum.
+However, by a special heat treatment,
+called annealing, atoms are released
+from the higher energy state and they
+reach the absolute minimum energy
+structure under appropriate cooling. The
+SA method is used to find the global
+minimum of the objective function
+In a convergent SA process the optimal
+model tends to the Gibbs-Boltzmann
+distribution (thermal equilibrium), the
+probability density function of which is
+shown on the right. In the formula, P(m(i))
+is the probability of i-th model, S is the
+number of models and T is the
+temperature as a control parameter of
+the SA procedure
+
+ 
+
+P m (i ) 
+
+e
+S
+
+
+
+e
+j1
+
+
+
+E m(i )
+T
+
+
+
+
+
+
+E m( j)
+T
+
+
+
+Energy Function
+
+
+Energy function - objective function of the SA procedure, which is related to the
+deviation of the measured and calculated data. If the data distribution is
+normal, the LSQ method gives an optimal solution
+
+
+
+1 N (meas)
+E2 
+dk
+ d (cal)
+k
+N k 1
+
+
+
+
+  min
+
+For data types of different magnitudes, the deviation should be normalized with
+either the data variances or the measured data
+In case of having outliers in the data set, the use of L1-norm is preferable
+1 N (meas)
+E1 
+dk
+ d (cal)
+ min
+k
+N k 1
+
+
+
+
+
+2
+
+SA search iteratively updates the
+model parameters
+m(new)
+ m(old)
+ b, 0  b  bmax
+i
+i
+
+where b is the rate of parameter
+change (bmax(new)=bmax(old), 0<1)
+
+Metropolis Criterion
+
+
+If the difference of energy function is less than zero, the fit of measured and
+calculated data is improved and the new model is accepted
+
+
+
+ 
+
+
+
+ΔE  E m(new)  E m(old)
+
+
+Metropolis criterion - it is the probability rule of accepting a new model. If the
+acceptance probability P is greater than or equal to a randomly generated
+number from U[0,1], the new model is accepted, otherwise it is rejected. Even
+in the case of ΔE>0, some models can be accepted→ escape a local minimum
+E  0
+1,
+
+
+P(E)    E
+
+e T , E  0 
+
+
+
+
+
+Several models are accepted
+at the beginning of the MSA
+procedure (at high T values).
+Large perturbations are not
+allowed at low T in the vicinity
+of the global optimum
+
+Cooling Schedule
+
+
+The generalized temperature (T) is reduced in an iteration process, which highly influences
+the convergence of the MSA procedure. A necessary and sufficient condition for converging
+to the global minimum is the use of the following (slow) logarithmic cooling schedule
+Tq  
+
+T0
+ln q
+
+(q  1)
+
+
+
+Setting the initial temperature (T0) can be done empirically or based on test runs (q is the
+number of iterations). With the average energy method, one can calculate the mean of the
+energy of the accepted models for different temperatures. Where the above average error
+is minimal, one can set the given T0 as initial temperature for the MSA procedure
+
+
+
+The cooling rate of MSA is very slow. The
+optimum search takes orders of magnitude
+higher CPU time than linear methods
+The Fast Simulated Annealing (FSA) method
+cools down according to a function 1/q and
+takes sample from multivariate Cauchy
+distribution. The Very Fast Simulated
+Annealing (VFSA) applies an exponential
+cooling schedule by applying an individual
+temperature for each model parameter
+
+
+
+Workflow of MSA Procedure
+Iinitialization
+
+Initial temperature
+
+Update the model
+No
+
+Is the Metropolis
+criterion fulfilled?
+
+ΔE≤0?
+Yes
+
+No
+Yes
+
+Accepting new
+parameters
+
+Temperature
+reduction
+No
+
+Required number of
+iterations?
+Yes
+
+Maximal number of
+iterations?
+No
+
+Optimal model
+Yes
+
+Evolutionary Computation
+
+
+
+
+
+
+Evolutionary techniques is a family of algorithms for global optimization
+inspired by biological evolution, and the subfield of artificial intelligence and
+soft computing methods. They are a family of population-based metaheuristic
+optimization approaches
+Genetic Algorithm (GA) is a highly adaptive and efficient mathematical tool,
+which uses the natural selection mechanism to solve optimization problems.
+It has a remarkable adaptation capability - „acceptable performance under
+changing conditions"
+According to the theory of natural selection, the fittest individuals tend to
+survive and reproduce, while others disappear from the population. Genetic
+information of the organisms of the artificial population are encoded into
+number sequences based on DNA analogy, which clearly define the
+parameters of the optimization problem. For artificial inheritance, GA chooses
+the most suitable organisms from a random population. It creates information
+exchange and mutation among them to create a more capable generation.
+GA improves the population by using genetic operations. In the metaheuristic
+searching process, a population of artificial individuals is iteratively improved
+generation by generation
+
+Fitness Function
+
+
+
+
+In optimization problems, the model can be considered as an individual of an artificial
+population, the survival capability of which is quantitatively characterized by a fitness
+value. The individuals with high fitness (or small data misfit) are more likely to survive and
+reproduce into the next generation, whereas those with low fitness tend to die out of the
+population. The individuals of the population are represented by chromosomes, the
+elements of which, called genes, are randomly exchanged and modified during the
+genetic process
+In geophysical inversion, the fit between the measured and calculated data (E) is
+connected to the fitness function (F). GA maximizes the fitness function to keep the most
+capable models for next generations
+ (meas)  (calc)
+i 
+E Ed
+d
+
+ 
+Ei   E d (meas)  g mi 
+1
+
+F(mi  )  E i   ε 2  max
+
+
+
+
+
+
+
+
+
+
+ 
+
+where 2 is a positive constant, which
+sets an upper limit of the value of
+fitness
+At the end of the GA procedure, the
+individual with maximum fitness is
+regarded as the result of optimization
+
+Genetic Operators
+
+
+
+
+
+
+
+
+
+
+
+
+
+For maximizing the average fitness of the population, genetic operations such as
+selection, crossover and mutation are repeatedly and randomly applied on the
+individuals in consecutive generations
+Initialization - generates an initial random population (start models). The range of
+model parameters need to be preset. Population size is the number of individuals
+Coding - the model parameters are transformed into coded number sequences. To
+solve the forward problem, decoding operation is necessary in each generation
+Selection - a random selection of the most suitable individuals from the population
+Crossover - exchange of genetic information between two initial individuals (parents)
+which results in two new individuals (children)
+Mutation - a gene of the individual is randomly changed. It is important to preset the
+mutation rate (number of mutated individuals-to-population size ratio) to prevent the
+homogenization of the population
+Reproduction - constructs the composition of the new generation. In general, the
+intermediate (undergone genetic operations) individuals of the population build up
+the new generation. However, an elitism-based reproduction allows the replacement
+of the worst individual(s) of the new generation with the fittest one(s) of the old
+generation. This strategy guarantees that the quality of the solution obtained by the
+GA will not decrease from one generation to the next generation
+
+Classical Genetic Algorithm
+Roulette selection
+
+0001101011
+126+125+123+121+120 =107
+
+Binary coding
+P=F/F
+
+http://www.edc.ncl.ac.uk
+
+Crossover
+
+Mutation
+
+Float-Encoded Genetic Algorithm
+
+
+
+
+
+
+Classical GA is a time-consuming
+optimum seeking method, because
+in each iteration for the calculation
+of the theoretical data a decoding
+phase is to be applied
+Float-encoded Genetic Algorithm
+(FGA) calculates the fitness directly
+with real valued model parameters
+and does not apply any coding and
+decoding operations. Since each
+parameter is selected from a real
+interval, the parameter space can
+be better resolved than with the
+binary GA
+In the FGA procedure applied for
+seeking the absolute extreme of
+the fitness function, the model
+parameters are encoded as
+floating-point numbers and floatingpoint genetic operations are used
+to provide a solution with the
+highest precision and optimal
+computer processing time
+
+a) Selection b) Crossover c) Mutation
+
+Comparative Study
+
+
+
+
+
+
+
+
+The FGA improves a large number of models (30-100), while the LSQ and SA
+methods updates only one model. At the end of the optimization procedure, FGA
+provides a set of optimal models but, it is also the most time-consuming process.
+Linear inversion methods usually require only 5-20 iterations, SA needs 5000-10000
+iterations, and FGA requires 10,000-100,000 generations to find the optimum
+Since the random search in FGA is not only performed from point to point in the
+parameter space, but we examine several points simultaneously, thereby more
+effectively we can avoid the local extrema of objective function. Some hyperplane
+partitions can be automatically eliminated, when we are out of the pre-defined range
+of model parameters
+FGA does not use any linearization like the LSQ, therefore the calculation of the
+Jacobi’s matrix (i.e. partial derivatives of data with respect to the model parameters)
+is unnecessary (it only works with the codes and values of the objective function).
+FGA and SA as global optimization methods are independent from the derivatives
+and are practically initial-model independent (i.e. they do not require a priori
+information in the phase of inversion)
+Development of convergence of global optimization methods (SA, FGA) is highly
+dependent on the setting of the control parameters (e.g. SA - temperature, FGA types and parameters of genetic operators)
+
+Factor Analysis Using FGA
+
+2D FGA Inversion of
+Direct-Push Logging Data
+
+Zone parameter
+GRcl (kcpm)
+GRsd (kcpm)
+ρcl (g/cm3)
+ρsd (g/cm3)
+ΦN,cl (v/v)
+Rcl (ohmm)
+
+Search domain
+8.0–12.0
+0–2.0
+1.9–2.3
+2.3–2.7
+0.2–0.5
+1.0–6.0
+
+Estimated value
+8.02
+1.98
+1.97
+2.31
+0.33
+4.19
+
+Estimation error
+0.17
+0.01
+0.03
+0.01
+0.01
+0.49
+
+Artificial Neural Network
+
+
+Artificial Neural Network (ANN) is a parallel computing method inspired by biological neural
+networks. ANNs are considered nonlinear statistical data modeling tools where the complex
+relations between the inputs and outputs are modeled or patterns are found. After a training
+procedure, ANN gives an estimate for the output data if a new input is given. The calculations
+are made using small processing units (i.e. artificial neurons), which can be connected to a
+network in many different ways depending on the specific task
+
+
+
+Biological model - an ANN is based on a
+collection of connected units called artificial
+neurons. The processing of incoming stimuli is
+done by the nucleus, and the results are
+forwarded to the other neuron through the axon.
+The axon endings (synapses) are connected to
+the dendrites of other neurons. The incoming
+information is forwarded to the nucleus by the
+dendrites. If the stimuli reaches a threshold
+value, then the neuron forwards a signal to the
+neuron that it is connected to. A neuron can
+receive impulses from several neurons. If the
+sum of these signals reaches the threshold
+value then this neuron will also send signals to
+the next neuron. In the end, the impulse
+reaches the last neuron and the nerve system
+answers the input
+
+http://www.web.eku.edu
+
+Perceptron
+
+
+The simplest neuron model with a learning algorithm is called a perceptron. It
+produces a weighted sum of the components of a multidimensional input (neural
+network following a linear combination), which is followed by nonlinear
+transformation. Assume that the input (x) and output (y) of artificial neural network
+is both an N dimensional column vector
+
+
+
+T
+T
+x  x1 , x 2 ,, x N  and y  y1 , y2 ,, y N 
+
+
+The output of the perceptron is related non-linearly with the input
+N
+
+y j  f (s j ), s j   Wij x i
+
+x1
+
+W1j
+
+x2
+
+W2j
+
+i 1
+
+x3
+
+W3j
+
+...
+
+...
+
+where Wij is the weight of ith input (xi) giving the extent
+to which the i-th input is
+involved in the neuron’s
+answer yj (j=1,2,…,N)
+
+xN
+
+WNj
+
+∑
+
+s=WTx
+f(s)
+
+y1
+
+y2
+
+…
+
+yN
+
+Activation Function
+
+
+
+
+In ANNs, the activation function
+of a node defines the output of
+that node given an input or set
+of inputs. The nonlinear transfer
+function is called an activation
+function. Activation is taken
+place above an appropriate
+(stimulus) threshold value
+The following types of activation
+functions are used in practice:
+-
+
+Sigmoid (I)
+Linear (II)
+Heaviside-step (III)
+Gaussian (IV)
+Sinus (V)
+Tangent-hyperbolic (VI)
+
+Benedek (2000)
+
+Structure of ANNs
+
+
+
+
+In order to solve complex problems,
+neurons are networked. This is done
+because it can be shown that a properly
+connected neural network can approximate
+any nonlinear relationship to any arbitrary
+precision. This function approximation
+capability allows the effective modeling of
+static and dynamic systems
+Structurally the ANN consists of different
+layers. A layer is the combination of
+neurons involved in the processing of
+similar information. The outputs of one
+layer are connected to inputs of another
+layer or the outputs of the entire network.
+The input layer does not process any
+information, it only transmits, the input of
+the entire network. The input and output of
+the hidden layer are connected only to the
+neurons of the environment, while the
+output layer contains the output of the 
+entire network. From a structural point of
+view, the neural networks differ in how the
+neurons building up them are connected to
+each other
+
+Multilayer
+perceptron
+
+Several parameters have to be preset that will
+affect the determination of the output values,
+e.g. the number of data, number of layers,
+initial weights, objective function, optimization
+algorithm (linear or global optimization)
+
+Training of ANNs
+
+
+
+
+Training the neural network is possible with the existence of the associated input and output data
+pairs. When teaching a given input, it is assumed that the output will display the desired
+response. In the course of the training, in an iterative (optimization) method, the above two data
+sets are fitted, i.e. we minimize a suitably chosen fit criterion function (objective function). The
+operation of the network to be taught is achieved in such a way as to be as close as possible to
+the operation of the system being tested. The result depends on the optimization method (i.e.
+linear or global optimization). The success of teaching can be characterized quantitatively, since
+the difference of the input and output data sets can be measured with the data distance or
+correlation coefficient
+The system is clearly characterized by its parameters. These parameters are independent
+variables of an objective function that define a model. The parameters of the model are the
+weights of the ANN. During optimization, these are refined, and at the end of the process, we
+obtain an optimal combination of weighting coefficients. With the specified weights, the given
+system configuration gives an appropriate response to the new input data, i.e. an output data set
+
+Input
+
+ANN
+
+system
+
+Criteria
+fulfilled?
+Yes
+No
+
+Model
+
+Optimal
+weights
+
+Modifying
+weights
+
+End of
+training
+
+Types of ANNs
+
+
+
+
+
+
+
+
+Multilayer Perceptron (MLP) - the most commonly used multi-layer feedforward neural
+network. In the MLP, there are simple perceptrons which are connected as a network
+using different weights. The three-layered MLP network can classify any kind of samples
+Radial Basis Function (RBF) - often used as a feedforward network. It contains only one
+hidden layer, where radially symmetric activation functions transform the input data nonlinearly. A network usually uses only one type of activation function but their parameters
+can be changed neuron to neuron. The weighted sum is generated in the output layer
+Hopfield network - is a simple recurrent ANN, where connections between units form a
+directed cycle. They are used to solve complex problems. They can be locally (within
+layers) or globally recurrent networks (from output into input), which have excellent
+function approximations capability. The Hopfield network consists of one layer (input and
+output). In the network all the neuron are connected to each other. The Hopfield network is
+trained using unsupervised learning, which means that not the weights are being
+optimized but the values of y. The weights (w) and the initial values of x are estimated.
+Then using the network, we will get the values of y in the first iteration. In the next
+iteration, the values of y will be identified as the input variables (x=y), and that is how we
+get the second approximation etc.
+Self-Organizing Map (SOM) - they are used for complicated problems using unsupervised
+learning. In the Kohonen’s network for example only input and output neurons are present.
+Such as cluster analysis, we can use it efficiently for dimensionality reduction and
+grouping of the input sample. Kohonen’s network is a computationally convenient
+abstraction building on biological models of neural systems
+
+Training of GIS-Based ANN
+Output max
+
+Class
+
+Classification error min.
+between input and output
+
+Class 0
+
+Vegetation type
+
+1
+2
+3
+4
+
+Dry Sclerophyll
+Eucalyptus botryoides
+Lower slope wet
+Wet E. maculata
+
+5
+6
+7
+8
+9
+
+Dry E. maculata
+Rainforest Ecotone
+Rainforest
+Paddock
+Ocean
+
+Laffan (1998)
+
+Thank You for Your Attention.
+
+norbert.szabo.phd@gmail.com
+
+

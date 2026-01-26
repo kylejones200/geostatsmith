@@ -1,0 +1,65 @@
+# Example 3: Alaska Stream Sediment Analysis
+#
+# Filtered analysis of stream sediment samples only.
+# Demonstrates data filtering in config-driven workflow.
+
+project:
+  name: "Alaska Gold - Stream Sediments"
+  output_dir: "./results/alaska_streams"
+  description: "Stream sediment gold analysis for drainage-based exploration"
+
+data:
+  input_file: "alaska_gold_synthetic.csv"
+  x_column: "LONGITUDE"
+  y_column: "LATITUDE"
+  z_column: "Au_ppm"
+  # Filter to stream samples only
+  filter_column: "SAMPLE_TYPE"
+  filter_value: "Stream"
+
+preprocessing:
+  remove_outliers: true
+  outlier_method: "iqr"
+  outlier_threshold: 2.5  # More conservative for streams
+  
+  transform: "log"
+  handle_negatives: "shift"
+  
+  declustering: false
+
+variogram:
+  n_lags: 10
+  estimator: "matheron"
+  models: ["spherical", "exponential"]
+  auto_fit: true
+  check_anisotropy: false
+
+kriging:
+  method: "ordinary"
+  
+  neighborhood:
+    max_neighbors: 15
+    min_neighbors: 5
+  
+  grid:
+    resolution: 0.6  # Coarser for regional stream patterns
+    buffer: 1.0
+
+validation:
+  cross_validation: true
+  cv_method: "loo"
+  metrics: ["rmse", "mae", "r2"]
+
+visualization:
+  style: "minimalist"
+  plots: ["variogram", "kriging_map", "cross_validation"]
+  colormap: "Blues"  # Appropriate for stream data
+
+output:
+  save_predictions: true
+  save_variance: true
+  save_report: true
+  formats: ["npy", "csv"]
+
+random_seed: 42
+verbose: true

@@ -1,0 +1,28 @@
+Geostatistical Analysis Report
+======================================================================
+
+Project: Alaska Gold - Stream Sediments
+Date: 2026-01-22 23:58:39
+Elapsed Time: 0:00:00.194670
+
+Data Summary
+----------------------------------------------------------------------
+Input: alaska_gold_synthetic.csv
+Records: 104
+Variable: Au_ppm
+Range: [-6.4188, -2.8778]
+Mean: -4.3739
+Std: 0.7242
+
+Variogram Model
+----------------------------------------------------------------------
+Type: Spherical
+Nugget: 1.0044
+Sill: 0.4409
+Range: 1.1840
+
+Cross-Validation
+----------------------------------------------------------------------
+RMSE: 0.7859
+MAE: 0.6286
+R2: -0.1779

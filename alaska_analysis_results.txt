@@ -1,0 +1,47 @@
+======================================================================
+ALASKA GEOCHEMICAL ANALYSIS - TEST RUN
+======================================================================
+
+✅ AGDB4 data found at: /Users/k.jones/Downloads/AGDB4_text
+
+Available data files:
+  - Agency_Biblio.txt              (   0.1 MB)
+  - AnalyticMethod.txt             (   0.0 MB)
+  - AnalyticMethod_Biblio.txt      (   0.2 MB)
+  - BV_Ag_Br.txt                   (  87.0 MB)
+  - BV_C_Gd.txt                    ( 104.7 MB)
+  - BV_Ge_Os.txt                   ( 112.6 MB)
+  - BV_NonElement.txt              (  41.9 MB)
+  - BV_P_Te.txt                    ( 106.2 MB)
+  - BV_Th_Zr.txt                   (  93.1 MB)
+  - BV_WholeRock_Majors.txt        (  19.0 MB)
+
+Loading sample locations...
+  ✅ Loaded 1,000 samples (preview)
+  Columns: ['DDPD_ID', 'DDPD_ID_text', 'AGDB_ID', 'SPL_ID', 'PREV_AGDB_ID_1', 'PREV_AGDB_ID_2', 'PREV_AGDB_ID_3', 'PREV_AGDB_ID_4', 'PREV_SPL_ID_1', 'PREV_SPL_ID_2']
+
+Geographic coverage:
+  Latitude:  50.00 to 67.64°N
+  Longitude: -166.49 to -132.67°W
+
+Loading chemistry data...
+  ✅ Loaded 1,000 analyses (preview)
+  Elements available: Ag_ppm_ES_SQ, Al_pct_ES_SQ, As_ppm_ES_SQ, B_ppm_ES_SQ, Ba_ppm_ES_SQ, Be_ppm_ES_SQ, Bi_ppm_ES_SQ
+
+======================================================================
+DATA CHECK COMPLETE
+======================================================================
+
+The full analysis workflow includes:
+  1. Loading and filtering AGDB4 data
+  2. Variogram analysis and modeling
+  3. Kriging predictions
+  4. Multi-element cokriging
+  5. Probability mapping
+  6. Visualization
+
+To run the full analysis, use alaska_geochemical_analysis.py
+
+======================================================================
+TEST RUN COMPLETE
+======================================================================

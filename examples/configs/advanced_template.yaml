@@ -1,0 +1,121 @@
+# Advanced Geostatistical Analysis Configuration
+#
+# Complete workflow with preprocessing, anisotropy checking,
+# multiple validation methods, and comprehensive outputs.
+
+project:
+  name: "Advanced Analysis"
+  output_dir: "./results/advanced_analysis"
+  description: "Complete geostatistical workflow with preprocessing"
+  author: "Your Name"
+
+data:
+  input_file: "data.csv"
+  x_column: "X"
+  y_column: "Y"
+  z_column: "Value"
+  # Optional filtering
+  # filter_column: "SampleType"
+  # filter_value: "Surface"
+
+preprocessing:
+  # Outlier detection
+  remove_outliers: true
+  outlier_method: "iqr"  # Options: iqr, zscore, isolation_forest
+  outlier_threshold: 3.0
+  
+  # Data transformation
+  transform: "boxcox"  # Options: log, boxcox, normal_score, sqrt, null
+  handle_negatives: "shift"  # Options: shift, remove, absolute
+  
+  # Declustering
+  declustering: true
+  declustering_method: "cell"  # Options: cell, polygonal
+
+variogram:
+  # Experimental variogram
+  n_lags: 20
+  max_lag: null  # Auto: 1/3 of max distance
+  estimator: "matheron"  # Options: matheron, cressie, dowd, madogram
+  
+  # Model fitting
+  models: ["spherical", "exponential", "gaussian", "matern"]
+  auto_fit: true
+  fit_method: "wls"  # Options: ols, wls
+  fit_criterion: "rmse"  # Options: rmse, mae, r2, aic
+  
+  # Anisotropy
+  check_anisotropy: true
+  anisotropy_angles: [0, 45, 90, 135]
+  anisotropy_tolerance: 22.5
+
+kriging:
+  method: "ordinary"  # Options: ordinary, simple, universal, indicator, cokriging
+  
+  neighborhood:
+    max_neighbors: 30
+    min_neighbors: 5
+    search_radius: null  # Auto
+    use_octant_search: false
+  
+  grid:
+    resolution: 0.5
+    buffer: 10.0
+    # Or specify grid size directly:
+    # nx: 100
+    # ny: 100
+  
+  return_variance: true
+  parallel: false
+  n_jobs: -1
+
+validation:
+  cross_validation: true
+  cv_method: "loo"  # Options: loo, kfold, spatial
+  n_folds: 10
+  metrics: ["rmse", "mae", "mse", "r2", "bias"]
+  save_predictions: true
+
+visualization:
+  style: "minimalist"  # Options: minimalist, default, seaborn
+  
+  plots:
+    - "variogram"
+    - "variogram_cloud"
+    - "directional_variograms"
+    - "data_locations"
+    - "kriging_map"
+    - "variance_map"
+    - "cross_validation"
+    - "histogram"
+    - "qq_plot"
+    - "residuals"
+  
+  dpi: 300
+  colormap: "viridis"
+  save_format: ["png", "pdf"]
+  
+  # Per-plot customization
+  variogram:
+    enabled: true
+    figsize: [8, 6]
+  
+  kriging_map:
+    enabled: true
+    colormap: "RdYlGn"
+
+output:
+  save_predictions: true
+  save_variance: true
+  save_weights: true
+  save_model: true
+  save_report: true
+  
+  formats: ["npy", "csv", "geotiff"]
+  compression: true
+  precision: "float32"
+
+# Advanced options
+random_seed: 42
+verbose: true
+log_file: "./results/advanced_analysis/analysis.log"

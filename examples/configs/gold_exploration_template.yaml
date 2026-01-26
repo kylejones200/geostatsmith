@@ -1,0 +1,115 @@
+# Gold Exploration Analysis Configuration
+#
+# Template for mineral exploration projects (gold, copper, etc.)
+# Includes log transformation, anisotropy analysis, and indicator kriging
+# for grade estimation and resource classification.
+
+project:
+  name: "Gold Exploration Analysis"
+  output_dir: "./results/gold_exploration"
+  description: "Gold grade estimation with geostatistical methods"
+  author: "Exploration Geologist"
+
+data:
+  input_file: "gold_assays.csv"
+  x_column: "Easting"
+  y_column: "Northing"
+  z_column: "Au_ppm"
+  # Optional: filter by sample type
+  # filter_column: "SampleType"
+  # filter_value: "Surface"
+
+preprocessing:
+  # Remove analytical outliers and high nuggets
+  remove_outliers: true
+  outlier_method: "iqr"
+  outlier_threshold: 3.0
+  
+  # Log transform - typical for positively skewed metal grades
+  transform: "log"
+  handle_negatives: "shift"  # Add small constant to handle zeros
+  
+  # Declustering - important for clustered drill holes
+  declustering: true
+  declustering_method: "cell"
+
+variogram:
+  # Experimental variogram settings
+  n_lags: 20
+  max_lag: null  # Auto: typically 1/3 to 1/2 of deposit extent
+  estimator: "cressie"  # Robust to outliers
+  
+  # Try multiple models - spherical often best for mineralization
+  models: ["spherical", "exponential", "gaussian"]
+  auto_fit: true
+  fit_method: "wls"
+  fit_criterion: "rmse"
+  
+  # Check for anisotropy (mineralization direction)
+  check_anisotropy: true
+  anisotropy_angles: [0, 30, 60, 90, 120, 150]  # Dense sampling
+  anisotropy_tolerance: 15.0
+
+kriging:
+  method: "ordinary"
+  
+  neighborhood:
+    max_neighbors: 25
+    min_neighbors: 8  # Ensure stable estimates
+    search_radius: null
+    use_octant_search: true  # Better for deposits with trends
+  
+  grid:
+    resolution: 10.0  # Match typical drill spacing / 2
+    buffer: 50.0
+  
+  return_variance: true  # For resource classification
+  parallel: true
+  n_jobs: -1
+
+validation:
+  cross_validation: true
+  cv_method: "loo"
+  metrics: ["rmse", "mae", "r2", "bias", "mape"]
+  save_predictions: true
+
+visualization:
+  style: "minimalist"
+  
+  plots:
+    - "variogram"
+    - "directional_variograms"  # Important for anisotropy
+    - "data_locations"
+    - "kriging_map"
+    - "variance_map"  # For resource classification
+    - "cross_validation"
+    - "histogram"
+    - "qq_plot"
+  
+  dpi: 300
+  colormap: "YlOrRd"  # Good for grade maps
+  save_format: ["png", "pdf"]
+  
+  kriging_map:
+    colormap: "YlOrRd"
+    title: "Gold Grade (ppm) - Ordinary Kriging"
+  
+  variance_map:
+    colormap: "viridis"
+    title: "Kriging Variance - Resource Classification"
+
+output:
+  save_predictions: true
+  save_variance: true
+  save_weights: true  # Declustering weights for resource estimation
+  save_model: true
+  save_report: true
+  
+  formats: ["npy", "csv", "geotiff"]  # GeoTIFF for GIS integration
+  compression: true
+  precision: "float32"
+
+# Reproducibility
+random_seed: 42
+verbose: true
+log_file: "./results/gold_exploration/analysis.log"
