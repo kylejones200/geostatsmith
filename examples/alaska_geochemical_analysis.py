@@ -273,9 +273,9 @@ def multi_element_analysis(agdb_path):
     # (Full cokriging requires cross-variogram, which is more complex)
 
     return {
-    'x': x, 'y': y,
-    'cu': cu, 'mo': mo,
-    'correlation': correlation
+        'x': x, 'y': y,
+        'cu': cu, 'mo': mo,
+        'correlation': correlation
     }
 
     # ==============================================================================
