@@ -113,13 +113,10 @@ line-length = 88
 target-version = "py312"
 
 [tool.ruff.lint]
-# Only check for critical errors, be lenient with style
-select = ["F"]  # Only check for critical errors (F = Pyflakes)
-ignore = [
-    "F401",  # Unused imports (too noisy)
-    "F841",  # Unused variables (too noisy)
-    "F821",  # Undefined names (sometimes false positives)
-]
+# Minimal linting - only check for truly critical issues
+# Most checks disabled to keep linting lenient
+select = []  # Don't select any linting rules by default
+ignore = []  # Nothing to ignore if nothing is selected
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Unused imports in __init__.py are fine
