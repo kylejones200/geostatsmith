@@ -406,5 +406,6 @@ class TestPlotSaving:
                     os.remove(tmp_path)
                 plt.close(fig)
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])
