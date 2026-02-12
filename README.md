@@ -387,7 +387,7 @@ uv run pytest tests/ -v --cov=geostats --cov-report=html
 uv run pytest tests/test_kriging.py -v
 ```
 
-**Test Coverage**: ~50% (actively improving)
+**Test Coverage**: ~60% (actively improving)
 
 ## Performance Benchmarks
 
