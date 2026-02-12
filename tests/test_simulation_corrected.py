@@ -129,8 +129,11 @@ class TestUnconditionalSimulation:
         x = np.array([0, 10, 20])
         y = np.array([0, 10, 20])
 
+        from geostats.simulation.unconditional import unconditional_simulation
         with pytest.raises(ValueError, match="Unknown method"):
-        with pytest.raises(ValueError, match="Unknown method"):
+            unconditional_simulation(
+                x,
+                y,
                 covariance_model=self.model,
                 method="invalid_method"
             )

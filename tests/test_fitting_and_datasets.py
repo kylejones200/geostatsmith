@@ -349,8 +349,10 @@ class TestEdgeCases:
 
         # Should handle constant variogram
         try:
+            from geostats.algorithms import fit_variogram_model
+            fitted_model = fit_variogram_model('spherical', lags, gamma, weights=n_pairs)
             # If successful, should have large nugget, small sill
-        assert fitted_model.nugget > 0
+            assert fitted_model.nugget > 0
         except (ValueError, RuntimeError):
             # Also acceptable to fail on degenerate case
             pass

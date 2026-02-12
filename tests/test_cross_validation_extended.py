@@ -155,8 +155,13 @@ class TestSpatialCrossValidation:
 
         variogram = ExponentialModel(sill=1.0, range_param=5.0)
 
+        from geostats.validation.cross_validation import block_cross_validate
         for n_blocks in [2, 4]:
-        for n_blocks in [2, 4]:
+            results = block_cross_validate(
+                self.x,
+                self.y,
+                self.z,
+                variogram_model=variogram,
                 n_blocks=n_blocks
             )
 

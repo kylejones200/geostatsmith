@@ -7,9 +7,10 @@ import numpy as np
 
 # Check if sklearn is available
 try:
-try:
+    import sklearn
+    SKLEARN_AVAILABLE = True
 except ImportError:
- SKLEARN_AVAILABLE = False
+    SKLEARN_AVAILABLE = False
 
     # Check if xgboost is available
 try:

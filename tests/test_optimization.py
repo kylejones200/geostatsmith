@@ -99,12 +99,16 @@ class TestSamplingDesign:
         assert np.all(y_new <= 90)
 
     def test_optimal_sampling_design_invalid_strategy(self):
+        from geostats.optimization.sampling_design import optimal_sampling_design
         with pytest.raises(ValueError, match="Unknown strategy"):
-        with pytest.raises(ValueError, match="Unknown strategy"):
+            optimal_sampling_design(
+                self.x_existing,
+                self.y_existing,
                 self.z_existing,
                 n_new_samples=5,
                 variogram_model=self.model,
                 strategy="invalid",
+            )
             )
 
 

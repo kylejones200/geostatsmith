@@ -45,18 +45,19 @@ def test_config_validation():
             'project': {'name': 'test'}
         })
 
-            # Invalid: wrong type
- with pytest.raises(ConfigError):
-     'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
- },
- 'variogram': {
- 'n_lags': 'invalid' # Should be int
- }
- })
+    # Invalid: wrong type
+    with pytest.raises(ConfigError):
+        load_config({
+            'data': {
+                'input_file': __file__,
+                'x_column': 'X',
+                'y_column': 'Y',
+                'z_column': 'Z'
+            },
+            'variogram': {
+                'n_lags': 'invalid'  # Should be int
+            }
+        })
 
  # Invalid: value out of range
  with pytest.raises(ConfigError):

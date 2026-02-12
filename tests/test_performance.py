@@ -212,8 +212,11 @@ class TestParallelKriging:
         assert np.isfinite(results["rmse"])
 
     def test_parallel_cross_validation_invalid_method(self):
+        from geostats.performance.parallel import parallel_cross_validate
         with pytest.raises(ValueError, match="Unknown method"):
-        with pytest.raises(ValueError, match="Unknown method"):
+            parallel_cross_validate(
+                self.x,
+                self.y,
                 self.z,
                 variogram_model=self.model,
                 method="invalid_method",

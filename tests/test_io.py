@@ -36,14 +36,14 @@ except ImportError:
     RASTERIO_AVAILABLE = False
 
 try:
-
-    try:
+    import netCDF4
+    NETCDF_AVAILABLE = True
 except ImportError:
     NETCDF_AVAILABLE = False
 
 try:
-
-    try:
+    import geopandas
+    GEOPANDAS_AVAILABLE = True
 except ImportError:
     GEOPANDAS_AVAILABLE = False
 

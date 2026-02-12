@@ -89,12 +89,15 @@ class TestDisjunctiveKriging:
         assert len(dk.hermite_coeffs) == 11
 
     def test_initialization_invalid_kriging_type(self):
+        from geostats.algorithms.disjunctive_kriging import DisjunctiveKriging
         with pytest.raises(ValueError, match="kriging_type must be 'simple' or 'ordinary'"):
-        with pytest.raises(ValueError, match="kriging_type must be 'simple' or 'ordinary'"):
+            DisjunctiveKriging(
                 self.x,
                 self.y,
                 self.z,
                 variogram_model=self.model,
+                kriging_type='invalid'
+            )
                 kriging_type="invalid",
             )
 

@@ -126,12 +126,17 @@ class TestBootstrapUncertainty:
         assert np.all(width_95 >= width_90)
 
     def test_bootstrap_uncertainty_invalid_method(self):
+        from geostats.uncertainty.bootstrap import bootstrap_uncertainty
         with pytest.raises(ValueError, match="Unknown method"):
-        with pytest.raises(ValueError, match="Unknown method"):
+            bootstrap_uncertainty(
+                self.x,
+                self.y,
                 self.z,
                 self.x_pred,
                 self.y_pred,
                 variogram_model=self.model,
+                method="invalid_method"
+            )
                 method="invalid",
             )
 

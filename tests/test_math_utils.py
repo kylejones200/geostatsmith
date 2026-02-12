@@ -282,11 +282,14 @@ class TestEdgeCases:
 
         # Should either regularize or raise error
         try:
+            from geostats.math.linear_algebra import solve_linear_system
+            x = solve_linear_system(A, b)
             # If it succeeds, solution should satisfy equation approximately
-        residual = np.linalg.norm(A @ x - b)
-        assert residual < 1.0
+            residual = np.linalg.norm(A @ x - b)
+            assert residual < 1.0
         except np.linalg.LinAlgError:
             # Acceptable to raise error for singular matrix
+            pass
             pass
 
     def test_grid_single_point(self):
