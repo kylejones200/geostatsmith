@@ -43,7 +43,7 @@ class TestLeaveOneOut:
 
  def test_leave_one_out_metrics(self):
  """Test LOO CV with metrics calculation"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 10, 25)
  y = np.random.uniform(0, 10, 25)
  z = x + y + np.random.normal(0, 0.3, 25)
@@ -66,7 +66,7 @@ class TestLeaveOneOut:
 
  def test_leave_one_out_simple_kriging(self):
  """Test LOO CV with Simple Kriging"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 10, 20)
  y = np.random.uniform(0, 10, 20)
  mean_val = 5.0
@@ -103,7 +103,7 @@ class TestKFoldCrossValidation:
 
  def test_k_fold_different_folds(self):
  """Test k-fold with different number of folds"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 10, 50)
  y = np.random.uniform(0, 10, 50)
  z = 2*x + y + np.random.normal(0, 0.4, 50)
@@ -160,7 +160,7 @@ class TestSpatialCrossValidation:
 
  def test_spatial_cv_different_blocks(self):
  """Test spatial CV with different number of blocks"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 20, 60)
  y = np.random.uniform(0, 20, 60)
  z = np.sin(x/2) + np.cos(y/2) + np.random.normal(0, 0.3, 60)
@@ -253,7 +253,7 @@ class TestMetrics:
 
  def test_perfect_prediction(self):
  """Test metrics with perfect prediction"""
- y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+     y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
  y_pred = y_true.copy()
 
  assert mean_squared_error(y_true, y_pred) == 0
@@ -263,7 +263,7 @@ class TestMetrics:
 
  def test_worst_prediction(self):
  """Test metrics with constant prediction"""
- y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+     y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
  y_pred = np.array([3.0, 3.0, 3.0, 3.0, 3.0]) # Mean
 
  # R² should be 0 for constant prediction at mean

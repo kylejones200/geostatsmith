@@ -2,7 +2,7 @@
 Tests for geostatistical simulation methods (CORRECTED APIS)
 
 Tests all simulation approaches with actual library APIs:
-- Unconditional Gaussian Simulation
+    - Unconditional Gaussian Simulation
 - Sequential Gaussian Simulation (SGS)
 - Conditional vs Unconditional
 - Multiple realizations

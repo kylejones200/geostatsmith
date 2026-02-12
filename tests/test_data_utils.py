@@ -70,7 +70,7 @@ class TestSplitTrainTest:
 
  def test_split_train_test_reproducible(self):
  """Test that split is reproducible with same random_state"""
- x = np.random.rand(100)
+     x = np.random.rand(100)
  y = np.random.rand(100)
  z = np.random.rand(100)
 

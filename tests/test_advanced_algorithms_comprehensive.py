@@ -1,7 +1,7 @@
 """
 Tests for advanced kriging algorithms
 Tests for algorithms with low coverage (<30%)
-"""
+    """
 
 import pytest
 import numpy as np
@@ -102,7 +102,7 @@ class TestExternalDriftKriging:
 
  def test_predict_single_drift(self):
  """Test EDK prediction with single drift"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 10, 40)
  y = np.random.uniform(0, 10, 40)
  drift = x + y
@@ -123,7 +123,7 @@ class TestExternalDriftKriging:
 
  def test_predict_multiple_drifts(self):
  """Test EDK with multiple drifts"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 10, 50)
  y = np.random.uniform(0, 10, 50)
 
@@ -161,7 +161,7 @@ class TestFactorialKriging:
 
  def test_predict_two_structures(self):
  """Test FK with two nested structures"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 20, 60)
  y = np.random.uniform(0, 20, 60)
 

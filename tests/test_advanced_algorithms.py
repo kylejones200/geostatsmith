@@ -119,7 +119,7 @@ class TestIndicatorKriging:
 
  def test_indicator_kriging_initialization(self):
  """Test indicator kriging initialization with single threshold"""
- threshold = 1.5 # Between low (1) and medium (2)
+     threshold = 1.5 # Between low (1) and medium (2)
  ik = IndicatorKriging(
  self.x, self.y, self.z,
  threshold=threshold,
@@ -132,7 +132,7 @@ class TestIndicatorKriging:
 
  def test_indicator_kriging_probability_estimation(self):
  """Test probability estimation with single threshold"""
- threshold = 1.5
+     threshold = 1.5
  ik = IndicatorKriging(
  self.x, self.y, self.z,
  threshold=threshold,
@@ -171,7 +171,7 @@ class TestIndicatorKriging:
 
  def test_indicator_kriging_binary_case(self):
  """Test indicator kriging with binary data"""
- # Binary data (0 or 1)
+     # Binary data (0 or 1)
  z_binary = np.random.choice([0.0, 1.0], size=self.n, p=[0.6, 0.4])
 
  # Use threshold of 0.5 to separate 0s and 1s

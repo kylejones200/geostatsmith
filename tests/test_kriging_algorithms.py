@@ -2,7 +2,7 @@
 Tests for kriging algorithms
 
 Tests all major kriging variants with various scenarios:
-- Simple Kriging
+    - Simple Kriging
 - Ordinary Kriging (already partially tested)
 - Universal Kriging (already partially tested)
 - 3D Kriging

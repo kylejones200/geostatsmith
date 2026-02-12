@@ -45,7 +45,7 @@ class TestCellDeclustering:
 
  def test_cell_declustering_different_cell_sizes(self):
  """Test cell declustering with different cell sizes"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 10, 50)
  y = np.random.uniform(0, 10, 50)
  z = x + y + np.random.normal(0, 0.5, 50)
@@ -160,7 +160,7 @@ class TestIQROutlierDetection:
 
  def test_iqr_outliers_no_outliers(self):
  """Test IQR with no outliers"""
- np.random.seed(42)
+     np.random.seed(42)
  data = np.random.normal(5, 1, 50)
 
  outliers = detect_outliers_iqr(data, factor=1.5)
@@ -170,7 +170,7 @@ class TestIQROutlierDetection:
 
  def test_iqr_outliers_different_factors(self):
  """Test IQR with different factors"""
- np.random.seed(42)
+     np.random.seed(42)
  data = np.random.normal(5, 1, 100)
  data = np.append(data, [15, 20])
 
@@ -197,7 +197,7 @@ class TestZScoreOutlierDetection:
 
  def test_zscore_outliers_different_thresholds(self):
  """Test Z-score with different thresholds"""
- np.random.seed(42)
+     np.random.seed(42)
  data = np.random.normal(5, 1, 100)
  data = np.append(data, [10, 12, 15])
 

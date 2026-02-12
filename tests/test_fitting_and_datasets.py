@@ -161,7 +161,7 @@ class TestVariogramFitting:
 
  def test_fitting_with_few_lags(self):
  """Test fitting with very few lag points"""
- # Use only first 3 lags
+     # Use only first 3 lags
  lags_few = self.lags[:3]
  gamma_few = self.gamma[:3]
  n_pairs_few = self.n_pairs[:3]
@@ -298,7 +298,7 @@ class TestVariogramComputation:
 
  def test_variogram_with_different_lag_numbers(self):
  """Test variogram with different numbers of lags"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 100, 60)
  y = np.random.uniform(0, 100, 60)
  z = np.random.randn(60)
@@ -314,7 +314,7 @@ class TestVariogramComputation:
 
  def test_variogram_lag_tolerance(self):
  """Test variogram with different lag tolerances"""
- np.random.seed(42)
+     np.random.seed(42)
  x = np.random.uniform(0, 100, 50)
  y = np.random.uniform(0, 100, 50)
  z = np.random.randn(50)
@@ -346,7 +346,7 @@ class TestVariogramComputation:
 
  def test_variogram_increases_with_distance(self):
  """Test that variogram generally increases with distance"""
- np.random.seed(42)
+     np.random.seed(42)
  n = 100
  x = np.random.uniform(0, 100, n)
  y = np.random.uniform(0, 100, n)
@@ -401,7 +401,7 @@ class TestEdgeCases:
 
  def test_fit_with_missing_values(self):
  """Test fitting with NaN values in experimental variogram"""
- lags = np.array([10, 20, 30, 40, 50])
+     lags = np.array([10, 20, 30, 40, 50])
  gamma = np.array([0.5, 1.0, np.nan, 1.8, 2.0]) # Has NaN
  n_pairs = np.array([100, 90, 0, 70, 60]) # Zero pairs for NaN lag
 
