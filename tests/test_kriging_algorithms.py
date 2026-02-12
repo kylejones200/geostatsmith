@@ -119,7 +119,7 @@ class TestSimpleKriging:
         )
 
         with pytest.raises(KrigingError):
-        sk.predict(np.array([50.0]), np.array([50.0]))
+            sk.predict(np.array([50.0]), np.array([50.0]))
 
     def test_prediction_grid(self):
         """Test prediction on regular grid"""

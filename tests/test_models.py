@@ -120,7 +120,7 @@ class TestPowerModel:
     def test_exponent_constraint(self):
         # Exponent must be in (0, 2) for valid variogram
         with pytest.raises(ValueError):
-        variogram_models.PowerModel(nugget=0.0, scale=1.0, exponent=2.5)
+            variogram_models.PowerModel(nugget=0.0, scale=1.0, exponent=2.5)
 
 class TestMaternModel:
     """Test Matérn variogram model"""

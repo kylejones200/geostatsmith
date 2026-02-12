@@ -138,7 +138,7 @@ class TestUnconditionalSimulation:
         y = np.array([0, 10, 20])
 
         with pytest.raises(ValueError, match="Unknown method"):
-        unconditional_gaussian_simulation(
+            unconditional_gaussian_simulation(
         x, y,
         covariance_model=self.model,
         method="invalid_method"
