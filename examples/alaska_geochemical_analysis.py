@@ -347,30 +347,31 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
     # MAIN EXECUTION
     # ==============================================================================
 
-    if __name__ == '__main__':
-    if __name__ == '__main__':
+if __name__ == '__main__':
+    AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
     if not AGDB_PATH.exists():
-    if not AGDB_PATH.exists():
+        logger.error(f"AGDB4 path not found: {AGDB_PATH}")
+        exit(1)
 
     logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
     logger.info("Using GeoStats Library")
 
     # Example 1: Gold Exploration
     try:
-    try:
+        gold_exploration_analysis(AGDB_PATH)
     except Exception as e:
         logger.error(f"Gold analysis error: {e}")
 
     # Example 2: Multi-element (Cu-Mo)
     try:
-    try:
+        multi_element_analysis(AGDB_PATH)
     except Exception as e:
         logger.error(f"Multi-element analysis error: {e}")
 
     # Example 3: Environmental (Arsenic)
     try:
-    try:
+        environmental_assessment(AGDB_PATH, element='As', threshold=20)
     except Exception as e:
         logger.error(f"Environmental analysis error: {e}")
 
