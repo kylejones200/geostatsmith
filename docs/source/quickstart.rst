@@ -1,5 +1,5 @@
 Quick Start Guide
 =================
 
-.. include:: ../../QUICKSTART.md
+.. include:: ../QUICKSTART.md
    :parser: myst_parser
