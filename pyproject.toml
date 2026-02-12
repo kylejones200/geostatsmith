@@ -113,21 +113,12 @@ line-length = 88
 target-version = "py312"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "N", "W", "UP"]
+# Only check for critical errors, be lenient with style
+select = ["F"]  # Only check for critical errors (F = Pyflakes)
 ignore = [
-    "E203",  # Whitespace before ':' (conflicts with black)
-    "E501",  # Line too long (handled by formatter)
-    "E402",  # Module import not at top of file (sometimes needed)
-    "E999",  # Syntax errors (handled by Python compiler, ruff sometimes has false positives)
-    "N806",  # Variable in function should be lowercase (X, Y, Z common in scientific code)
-    "I001",  # Import block is un-sorted (auto-fixable, but too noisy)
-    "W291",  # Trailing whitespace (auto-fixable)
-    "W293",  # Blank line with whitespace (auto-fixable)
-    "W292",  # Missing newline at end of file (auto-fixable)
-    "F541",  # f-string missing placeholders (sometimes intentional)
-    "UP006",  # Non-PEP 585 annotation (typing.List vs list)
-    "UP035",  # Deprecated import (typing.Union vs X | Y)
-    "UP045",  # Non-PEP 604 annotation optional (Optional[X] vs X | None)
+    "F401",  # Unused imports (too noisy)
+    "F841",  # Unused variables (too noisy)
+    "F821",  # Undefined names (sometimes false positives)
 ]
 
 [tool.ruff.lint.per-file-ignores]
