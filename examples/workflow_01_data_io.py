@@ -25,7 +25,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 try:
-    from geostats.io.tabular import (
+try:
         read_csv_spatial, write_csv_spatial,
         to_dataframe, to_geopandas
     )
@@ -39,7 +39,7 @@ except ImportError:
  exit(1)
 
 def example_1_read_csv_and_interpolate():
- 
+def example_1_read_csv_and_interpolate():
  logger.info("Example 1: CSV → Kriging → GeoTIFF")
  
 
@@ -124,13 +124,12 @@ def example_1_read_csv_and_interpolate():
  plt.close()
 
 def example_2_geotiff_workflow():
- 
+def example_2_geotiff_workflow():
  logger.info("Example 2: GeoTIFF Validation Workflow")
  
 
- try:
- try:
- x_grid, y_grid, z_grid, metadata = read_geotiff(
+    try:
+    try:
  'elevation_kriging.tif',
  as_grid=True
  )
@@ -160,7 +159,7 @@ def example_2_geotiff_workflow():
  logger.info(f"\n{df.head()}")
 
         try:
-            gdf = to_geopandas(x_valid, y_valid, z_valid,
+        try:
                              x_col='easting', y_col='northing', z_col='elevation')
             logger.info(f"Converted to GeoDataFrame with CRS: {gdf.crs}")
  gdf.to_file('validation_points.geojson', driver='GeoJSON')
@@ -172,7 +171,7 @@ def example_2_geotiff_workflow():
  logger.warning(" elevation_kriging.tif not found. Run Example 1 first.")
 
 def example_3_format_comparison():
- 
+def example_3_format_comparison():
  logger.info("Example 3: Format Comparison")
  
 
@@ -190,7 +189,7 @@ def example_3_format_comparison():
  x_grid, y_grid = np.meshgrid(np.linspace(0, 100, 50), np.linspace(0, 100, 50))
  z_grid = np.random.rand(50, 50)
         try:
-            write_geotiff('test.tif', np.linspace(0, 100, 50), np.linspace(0, 100, 50), z_grid)
+        try:
  formats.append(('GeoTIFF', time.time() - start, os.path.getsize('test.tif') / 1024))
  except ImportError:
  logger.warning(" rasterio not available for GeoTIFF")
@@ -202,7 +201,7 @@ def example_3_format_comparison():
         logger.info(f"{fmt:<15} {t:<15.4f} {s:<15.2f}")
 
 def main():
- logger.info("GEOSTATS DATA I/O WORKFLOW EXAMPLES")
+def main():
 
  example_1_read_csv_and_interpolate()
  example_2_geotiff_workflow()
