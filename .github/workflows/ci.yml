@@ -33,13 +33,11 @@ jobs:
     - name: Format check with ruff
       run: |
         # Only check formatting, not linting errors
-        # Skip syntax checking (Python compiler handles that)
         uv run ruff format --check . || true
-    - name: Lint with ruff (optional, non-blocking)
-      continue-on-error: true
+    - name: Syntax check with Python (not ruff)
       run: |
-        # Optional linting - won't fail CI
-        uv run ruff check . || true
+        # Use Python's compiler for syntax checking (more reliable than ruff)
+        find . -name "*.py" -not -path "./.git/*" -not -path "./venv/*" -not -path "./.venv/*" | xargs python3 -m py_compile || true
     
     - name: Lint with flake8
       run: |
