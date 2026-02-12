@@ -76,9 +76,9 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     if 'VALUE' in merged.columns:
         value_col = 'VALUE'
     elif element_col in merged.columns:
-     value_col = element_col
+        value_col = element_col
     else:
-    else:
+        value_col = None
 
     if value_col:
     if value_col:
