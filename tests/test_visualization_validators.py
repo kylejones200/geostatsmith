@@ -247,9 +247,11 @@ class TestValidators:
         """Test validation catches infinite values"""
         z = np.array([10, 20, np.inf, 40, 50])
 
+        from geostats.validation.validators import validate_values
         with pytest.raises((ValueError, AssertionError)):
+            validate_values(z)
 
-        with pytest.raises((ValueError, AssertionError)):
+    def test_validate_positive_values(self):
         """Test validation of positive values"""
         value = 5.0
 

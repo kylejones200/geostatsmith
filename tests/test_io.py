@@ -77,8 +77,9 @@ class TestCSVIO:
 
     def teardown_method(self):
         if self.temp_dir.exists():
+            shutil.rmtree(self.temp_dir)
 
-        if self.temp_dir.exists():
+    def test_basic_csv_reading(self):
         """Test basic CSV reading"""
         # Create CSV file
         df = pd.DataFrame({"x": self.x, "y": self.y, "z": self.z})
