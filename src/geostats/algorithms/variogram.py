@@ -17,44 +17,44 @@ from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance_matrix, directional_distance
 
 def experimental_variogram(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- n_lags: int = 15,
- maxlag: Optional[float] = None,
- lag_tol: Optional[float] = None,
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    n_lags: int = 15,
+    maxlag: Optional[float] = None,
+    lag_tol: Optional[float] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
  """
- Calculate experimental (empirical) variogram
+    Calculate experimental (empirical) variogram
 
- Uses Matheron's classical estimator for the semivariogram.
+    Uses Matheron's classical estimator for the semivariogram.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- n_lags : int
- Number of lag bins
- maxlag : float, optional
- Maximum lag distance to consider
- If None, uses half the maximum distance
- lag_tol : float, optional
- Tolerance for lag binning
- If None, uses lag_width / 2
+    Parameters
+    ----------
+    x, y : np.ndarray
+    Coordinates of sample points
+    z : np.ndarray
+    Values at sample points
+    n_lags : int
+    Number of lag bins
+    maxlag : float, optional
+    Maximum lag distance to consider
+    If None, uses half the maximum distance
+    lag_tol : float, optional
+    Tolerance for lag binning
+    If None, uses lag_width / 2
 
- Returns
- -------
- lags : np.ndarray
- Lag distances (bin centers)
- gamma : np.ndarray
- Semivariance values
- n_pairs : np.ndarray
- Number of pairs in each lag bin
+    Returns
+    -------
+    lags : np.ndarray
+    Lag distances (bin centers)
+    gamma : np.ndarray
+    Semivariance values
+    n_pairs : np.ndarray
+    Number of pairs in each lag bin
 
- References
- ----------
- Matheron, G. (1963). Principles of geostatistics.
+    References
+    ----------
+    Matheron, G. (1963). Principles of geostatistics.
     """
     # Validate inputs
     x, y = validate_coordinates(x, y)
@@ -100,81 +100,81 @@ def experimental_variogram(
     return lag_centers, gamma, n_pairs
 
 def experimental_variogram_directional(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- angle: float = 0.0,
- tolerance: float = 22.5,
- n_lags: int = 15,
- maxlag: Optional[float] = None,
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    angle: float = 0.0,
+    tolerance: float = 22.5,
+    n_lags: int = 15,
+    maxlag: Optional[float] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
- """
- Calculate directional experimental variogram
+    """
+    Calculate directional experimental variogram
 
- Computes variogram along a specific direction, useful for
- detecting and analyzing anisotropy.
+    Computes variogram along a specific direction, useful for
+    detecting and analyzing anisotropy.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- angle : float
- Direction angle in degrees (0-360)
- 0° = East, 90° = North
- tolerance : float
- Angular tolerance in degrees
- n_lags : int
- Number of lag bins
- maxlag : float, optional
- Maximum lag distance
+    Parameters
+    ----------
+    x, y : np.ndarray
+    Coordinates of sample points
+    z : np.ndarray
+    Values at sample points
+    angle : float
+    Direction angle in degrees (0-360)
+    0° = East, 90° = North
+    tolerance : float
+    Angular tolerance in degrees
+    n_lags : int
+    Number of lag bins
+    maxlag : float, optional
+    Maximum lag distance
 
- Returns
- -------
- lags : np.ndarray
- Lag distances
- gamma : np.ndarray
- Semivariance values
- n_pairs : np.ndarray
- Number of pairs in each lag bin
- """
- # Validate inputs
- x, y = validate_coordinates(x, y)
- z = validate_values(z, n_expected=len(x))
+    Returns
+    -------
+    lags : np.ndarray
+    Lag distances
+    gamma : np.ndarray
+    Semivariance values
+    n_pairs : np.ndarray
+    Number of pairs in each lag bin
+    """
+    # Validate inputs
+    x, y = validate_coordinates(x, y)
+    z = validate_values(z, n_expected=len(x))
 
- # Calculate distances and directional mask
- dist, dir_mask = directional_distance(x, y, x, y, angle, tolerance)
+    # Calculate distances and directional mask
+    dist, dir_mask = directional_distance(x, y, x, y, angle, tolerance)
 
- # Calculate squared differences
- z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
+    # Calculate squared differences
+    z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
 
- # Determine lag bins
- if maxlag is None:
+    # Determine lag bins
+    if maxlag is None:
 
- if maxlag is None:
- lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
+    if maxlag is None:
+    lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
- # Compute variogram for each lag
- gamma = np.zeros(n_lags)
- n_pairs = np.zeros(n_lags, dtype=np.int64)
+    # Compute variogram for each lag
+    gamma = np.zeros(n_lags)
+    n_pairs = np.zeros(n_lags, dtype=np.int64)
 
- for i in range(n_lags):
- for i in range(n_lags):
- lag_max = lag_bins[i + 1]
+    for i in range(n_lags):
+    for i in range(n_lags):
+    lag_max = lag_bins[i + 1]
 
- # Find pairs in this lag bin and direction
- mask = (dist >= lag_min) & (dist < lag_max) & dir_mask
- mask = np.triu(mask, k=1) # Upper triangle only
+    # Find pairs in this lag bin and direction
+    mask = (dist >= lag_min) & (dist < lag_max) & dir_mask
+    mask = np.triu(mask, k=1) # Upper triangle only
 
- n_pairs_lag = np.sum(mask)
+    n_pairs_lag = np.sum(mask)
 
- if n_pairs_lag > 0:
- if n_pairs_lag > 0:
- else:
- else:
- n_pairs[i] = 0
+    if n_pairs_lag > 0:
+    if n_pairs_lag > 0:
+    else:
+    else:
+    n_pairs[i] = 0
 
- return lag_centers, gamma, n_pairs
+    return lag_centers, gamma, n_pairs
 
 def variogram_cloud(
  y: npt.NDArray[np.float64],
