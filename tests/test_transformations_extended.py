@@ -82,11 +82,12 @@ class TestNormalScoreTransform:
         ns = NormalScoreTransform()
         # Should handle constant data gracefully
         try:
+            transformed = ns.fit_transform(data)
             # If it succeeds, all values should be the same
-        assert np.std(transformed) < 0.1
+            assert np.std(transformed) < 0.1
         except ValueError:
-        # Also acceptable to raise error for constant data
-        pass
+            # Also acceptable to raise error for constant data
+            pass
 
 class TestLogTransformExtended:
 
@@ -312,10 +313,11 @@ class TestTransformationEdgeCases:
 
         # Should handle empty data gracefully
         try:
+            transformed = ns.fit_transform(data)
             assert len(transformed) == 0
         except ValueError:
-        # Also acceptable to raise error
-        pass
+            # Also acceptable to raise error
+            pass
 
     def test_single_point(self):
         data = np.array([5.0])
@@ -324,10 +326,11 @@ class TestTransformationEdgeCases:
 
         # Should handle single point
         try:
+            transformed = ns.fit_transform(data)
             assert len(transformed) == 1
         except ValueError:
-        # Also acceptable to raise error
-        pass
+            # Also acceptable to raise error
+            pass
 
     def test_negative_values_log_transform(self):
         data = np.array([-5, -2, 0, 1, 2, 5])
@@ -337,10 +340,11 @@ class TestTransformationEdgeCases:
         lt.fit(data)
 
         try:
+            transformed = lt.transform(data)
             assert all(np.isfinite(transformed))
         except ValueError:
-        # Acceptable to raise error for negative values
-        pass
+            # Acceptable to raise error for negative values
+            pass
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+    pytest.main([__file__])
