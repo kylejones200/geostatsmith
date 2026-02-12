@@ -62,26 +62,26 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Filter for sample type if specified
     if sample_type:
-        merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
+    if sample_type:
 
     # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
     element_col = f"{element}_ppm"
  
     # Filter for parameter = element and valid values
     if 'PARAMETER' in chem_data.columns:
-     element_mask = merged['PARAMETER'].str.contains(f'{element}_', case=False, na=False)
+    if 'PARAMETER' in chem_data.columns:
      merged = merged[element_mask]
 
     # Get the value column (usually 'VALUE' in chem files)
     if 'VALUE' in merged.columns:
-     value_col = 'VALUE'
+    if 'VALUE' in merged.columns:
     elif element_col in merged.columns:
      value_col = element_col
     else:
      value_col = None
 
     if value_col:
-     merged = merged[merged[value_col] > 0]
+    if value_col:
      merged = merged.dropna(subset=[value_col])
 
     logger.info(f" After filtering: {len(merged):,} samples with valid {element} data")
@@ -91,7 +91,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     y = merged['LATITUDE'].values
 
     if value_col:
-     values = merged[value_col].values
+    if value_col:
     else:
      values = None
 
@@ -129,14 +129,14 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
 
     # Filter for specific region if desired
     if region_name:
-     # Try to filter by district name if available
+    if region_name:
      if 'metadata' in au_data and 'dataframe' in au_data['metadata']:
-         df = au_data['metadata']['dataframe']
+     if 'metadata' in au_data and 'dataframe' in au_data['metadata']:
          if 'DISTRICT_NAME' in df.columns:
-             mask = df['DISTRICT_NAME'].str.contains(region_name, case=False, na=False)
+         if 'DISTRICT_NAME' in df.columns:
              indices = np.where(mask.values)[0]
              if len(indices) > 0:
-                 au_data['x'] = au_data['x'][indices]
+             if len(indices) > 0:
                  au_data['y'] = au_data['y'][indices]
                  au_data['values'] = au_data['values'][indices]
                  logger.info(f"Focused on {region_name} region: {len(indices)} samples")
@@ -244,7 +244,7 @@ def multi_element_analysis(agdb_path):
     logger.info(f"Common Cu-Mo samples: {len(common)}")
 
     if len(common) < 50:
-        return None
+    if len(common) < 50:
 
     x = common['LONGITUDE'].values
     y = common['LATITUDE'].values
@@ -260,9 +260,8 @@ def multi_element_analysis(agdb_path):
     logger.info(f" Cu-Mo correlation: {correlation:.3f}")
 
     if correlation > 0.3:
-
-    # Fit individual variograms
-    logger.info("\nFitting variograms...")
+    if correlation > 0.3:
+        logger.info("\nFitting variograms...")
     lags_cu, gamma_cu = experimental_variogram(x, y, cu_log, n_lags=12)
     model_cu = fit_variogram(lags_cu, gamma_cu, model_type='spherical')
 
@@ -351,10 +350,10 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
     # ==============================================================================
 
     if __name__ == '__main__':
-    AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
+        AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
     if not AGDB_PATH.exists():
-    exit(1)
+        exit(1)
 
     logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
     logger.info("Using GeoStats Library")
