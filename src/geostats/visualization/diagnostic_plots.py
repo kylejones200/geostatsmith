@@ -118,7 +118,6 @@ def plot_histogram(
  ax.set_xlabel('Value', fontsize=12)
  ax.set_ylabel('Density', fontsize=12)
  ax.set_title('Histogram', fontsize=14, fontweight='bold')
- ax.grid(True, alpha=0.3, axis='y')
 
  return ax
 
@@ -189,7 +188,6 @@ def plot_residuals(
  ax1.set_xlabel('Predicted Values', fontsize=11)
  ax1.set_ylabel('Residuals', fontsize=11)
  ax1.set_title('Residuals vs Predicted', fontsize=12, fontweight='bold')
- ax1.grid(True, alpha=0.3)
 
  # Histogram of residuals
  ax2.hist(residuals, bins=20, density=True, alpha=0.7, edgecolor='black')
@@ -199,7 +197,6 @@ def plot_residuals(
  ax2.set_xlabel('Residuals', fontsize=11)
  ax2.set_ylabel('Density', fontsize=11)
  ax2.set_title('Residual Distribution', fontsize=12, fontweight='bold')
- ax2.grid(True, alpha=0.3, axis='y')
 
  # Q-Q plot of residuals
  (osm, osr), (slope, intercept, r) = stats.probplot(residuals, dist="norm")
@@ -208,7 +205,6 @@ def plot_residuals(
  ax3.set_xlabel('Theoretical Quantiles', fontsize=11)
  ax3.set_ylabel('Sample Quantiles', fontsize=11)
  ax3.set_title('Q-Q Plot', fontsize=12, fontweight='bold')
- ax3.grid(True, alpha=0.3)
 
  plt.tight_layout()
 
@@ -297,7 +293,6 @@ def plot_histogram(
  ax.set_ylabel('Frequency', fontsize=12)
  ax.set_title('Histogram', fontsize=14, fontweight='bold')
  ax.legend(fontsize=10)
- ax.grid(True, alpha=0.3, axis='y')
 
  return fig, ax
 
@@ -447,6 +442,5 @@ def plot_residual_histogram(
  ax.set_ylabel('Density', fontsize=12)
  ax.set_title('Residual Histogram', fontsize=14, fontweight='bold')
  ax.legend(fontsize=10)
- ax.grid(True, alpha=0.3, axis='y')
 
  return fig, ax

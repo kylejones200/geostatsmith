@@ -72,6 +72,9 @@ def example_1_bootstrap_confidence():
 
     # Visualize
     fig, ax = plt.subplots(figsize=(12, 6))
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Mean prediction
     ax.plot(x_pred, results["mean"], "b-", linewidth=2, label="Mean Prediction")
@@ -111,7 +114,6 @@ def example_1_bootstrap_confidence():
     ax.set_ylabel("Value", fontsize=12)
     ax.set_title("Bootstrap Confidence Intervals (Transect at Y=50m)", fontsize=14)
     ax.legend()
-    ax.grid(False)
 
     plt.tight_layout()
     plt.savefig("example_workflow_03_bootstrap.png", dpi=150, bbox_inches="tight")
@@ -168,6 +170,9 @@ def example_2_probability_map():
 
     # Visualize
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Kriging prediction
     krig = OrdinaryKriging(x, y, z, variogram_model)
@@ -185,12 +190,21 @@ def example_2_probability_map():
         linestyles="--",
     )
     ax1.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7, label="Samples")
+    # Remove top and right spines
+    ax1.scatter(x, y, c.spines['top'].set_visible(False)
+    ax1.scatter(x, y, c.spines['right'].set_visible(False)
     ax1.set_xlabel("X (m)")
     ax1.set_ylabel("Y (m)")
     ax1.set_title("Kriging Prediction\n(dashed = regulatory limit)")
+    # Remove top and right spines
+    ax1.set_title("Kriging Prediction\n(dashed.spines['top'].set_visible(False)
+    ax1.set_title("Kriging Prediction\n(dashed.spines['right'].set_visible(False)
     ax1.legend()
     ax1.set_aspect("equal")
     plt.colorbar(im1, ax=ax1, label="Concentration")
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Probability map
     im2 = ax2.contourf(
@@ -206,11 +220,20 @@ def example_2_probability_map():
         linestyles="-",
     )
     ax2.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
+    # Remove top and right spines
+    ax2.scatter(x, y, c.spines['top'].set_visible(False)
+    ax2.scatter(x, y, c.spines['right'].set_visible(False)
     ax2.set_xlabel("X (m)")
     ax2.set_ylabel("Y (m)")
     ax2.set_title("P(Concentration > 12)\n(solid line = 50% probability)")
+    # Remove top and right spines
+    ax2.set_title("P(Concentration > 12)\n(solid line.spines['top'].set_visible(False)
+    ax2.set_title("P(Concentration > 12)\n(solid line.spines['right'].set_visible(False)
     ax2.set_aspect("equal")
     plt.colorbar(im2, ax=ax2, label="Probability", ticks=np.arange(0, 1.1, 0.1))
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("example_workflow_03_probability.png", dpi=150, bbox_inches="tight")
@@ -277,6 +300,9 @@ def example_3_risk_assessment():
 
     # Visualize
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Probability map
     prob_grid = results["probability_exceed"].reshape((ny, nx))
@@ -284,21 +310,57 @@ def example_3_risk_assessment():
         x_grid, y_grid, prob_grid, levels=np.linspace(0, 1, 11), cmap="RdYlGn_r"
     )
     axes[0].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
+    # Remove top and right spines
+    axes[0].scatter(x, y, c.spines['top'].set_visible(False)
+    axes[0].scatter(x, y, c.spines['right'].set_visible(False)
     axes[0].set_xlabel("X (m)")
+    # Remove top and right spines
+    axes[0].set_xlabel("X (m)").spines['top'].set_visible(False)
+    axes[0].set_xlabel("X (m)").spines['right'].set_visible(False)
     axes[0].set_ylabel("Y (m)")
+    # Remove top and right spines
+    axes[0].set_ylabel("Y (m)").spines['top'].set_visible(False)
+    axes[0].set_ylabel("Y (m)").spines['right'].set_visible(False)
     axes[0].set_title("P(Exceed Threshold)")
+    # Remove top and right spines
+    axes[0].set_title("P(Exceed Threshold)").spines['top'].set_visible(False)
+    axes[0].set_title("P(Exceed Threshold)").spines['right'].set_visible(False)
     axes[0].set_aspect("equal")
+    # Remove top and right spines
+    axes[0].set_aspect("equal").spines['top'].set_visible(False)
+    axes[0].set_aspect("equal").spines['right'].set_visible(False)
     plt.colorbar(im1, ax=axes[0], label="Probability")
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Expected cost map
     cost_grid = results["total_expected_cost"].reshape((ny, nx))
     im2 = axes[1].contourf(x_grid, y_grid, cost_grid, levels=15, cmap="YlOrRd")
     axes[1].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
+    # Remove top and right spines
+    axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+    axes[1].scatter(x, y, c.spines['right'].set_visible(False)
     axes[1].set_xlabel("X (m)")
+    # Remove top and right spines
+    axes[1].set_xlabel("X (m)").spines['top'].set_visible(False)
+    axes[1].set_xlabel("X (m)").spines['right'].set_visible(False)
     axes[1].set_ylabel("Y (m)")
+    # Remove top and right spines
+    axes[1].set_ylabel("Y (m)").spines['top'].set_visible(False)
+    axes[1].set_ylabel("Y (m)").spines['right'].set_visible(False)
     axes[1].set_title("Expected Cost")
+    # Remove top and right spines
+    axes[1].set_title("Expected Cost").spines['top'].set_visible(False)
+    axes[1].set_title("Expected Cost").spines['right'].set_visible(False)
     axes[1].set_aspect("equal")
+    # Remove top and right spines
+    axes[1].set_aspect("equal").spines['top'].set_visible(False)
+    axes[1].set_aspect("equal").spines['right'].set_visible(False)
     plt.colorbar(im2, ax=axes[1], label="Cost ($)")
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Optimal decision map
     decision_numeric = (
@@ -313,10 +375,25 @@ def example_3_risk_assessment():
         alpha=0.7,
     )
     axes[2].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
+    # Remove top and right spines
+    axes[2].scatter(x, y, c.spines['top'].set_visible(False)
+    axes[2].scatter(x, y, c.spines['right'].set_visible(False)
     axes[2].set_xlabel("X (m)")
+    # Remove top and right spines
+    axes[2].set_xlabel("X (m)").spines['top'].set_visible(False)
+    axes[2].set_xlabel("X (m)").spines['right'].set_visible(False)
     axes[2].set_ylabel("Y (m)")
+    # Remove top and right spines
+    axes[2].set_ylabel("Y (m)").spines['top'].set_visible(False)
+    axes[2].set_ylabel("Y (m)").spines['right'].set_visible(False)
     axes[2].set_title("Optimal Decision\n(Red=Remediate, Green=No Action)")
+    # Remove top and right spines
+    axes[2].set_title("Optimal Decision\n(Red.spines['top'].set_visible(False)
+    axes[2].set_title("Optimal Decision\n(Red.spines['right'].set_visible(False)
     axes[2].set_aspect("equal")
+    # Remove top and right spines
+    axes[2].set_aspect("equal").spines['top'].set_visible(False)
+    axes[2].set_aspect("equal").spines['right'].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("example_workflow_03_risk.png", dpi=150, bbox_inches="tight")

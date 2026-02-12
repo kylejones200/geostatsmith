@@ -41,7 +41,13 @@ logger.info(f" Elevation range: {z.min():.1f} to {z.max():.1f} m")
 
 # Create prediction grid
 x_min, x_max = 0, 100
+# Remove top and right spines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 y_min, y_max = 0, 100
+# Remove top and right spines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 grid_res = 40
 
 x_pred = np.linspace(x_min, x_max, grid_res)
@@ -63,6 +69,9 @@ results = compare_interpolation_methods(
 
 # Create comparison plot
 fig, axes = plt.subplots(3, 3, figsize=(18, 16))
+# Remove top and right spines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 fig.suptitle('Method Comparison: Accuracy vs Speed', fontsize=16, fontweight='bold')
 
 # Plot interpolation results (top row and middle row)
@@ -70,6 +79,9 @@ plot_idx = 0
 for i, method in enumerate(methods):
 for i, method in enumerate(methods):
  ax = axes[row, col]
+ # Remove top and right spines
+ ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  Z_pred = results['predictions'][method].reshape(X_grid.shape)
 
@@ -78,6 +90,9 @@ for i, method in enumerate(methods):
  im = ax.contourf(X_grid, Y_grid, Z_pred, levels=levels, cmap='terrain')
  ax.scatter(x, y, c=z, s=20, edgecolors='black', linewidths=0.5,
  cmap='terrain', vmin=Z_pred.min(), vmax=Z_pred.max())
+ # Remove top and right spines
+ ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  # Title with metrics
  title = method.replace('_', ' ').title()
@@ -90,6 +105,9 @@ for i, method in enumerate(methods):
  ax.set_ylabel('Y')
  ax.set_aspect('equal')
  plt.colorbar(im, ax=ax, label='Elevation')
+ # Remove top and right spines
+ ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  plot_idx += 1
 
@@ -107,7 +125,6 @@ ax_rmse.set_ylabel('RMSE (Cross-Validation)')
 ax_rmse.set_title('Accuracy Comparison', fontweight='bold')
 ax_rmse.set_xticks(range(len(method_names)))
 ax_rmse.set_xticklabels(method_names, rotation=0, ha='center', fontsize=9)
-ax_rmse.grid(axis='y', alpha=0.3)
 
 # Highlight best method
 best_idx = np.argmin(rmse_values)
@@ -124,7 +141,6 @@ ax_speed.set_ylabel('Time (seconds)')
 ax_speed.set_title('Speed Comparison', fontweight='bold')
 ax_speed.set_xticks(range(len(method_names)))
 ax_speed.set_xticklabels(method_names, rotation=0, ha='center', fontsize=9)
-ax_speed.grid(axis='y', alpha=0.3)
 
 # Highlight fastest method
 fastest_idx = np.argmin(speed_values)
@@ -145,7 +161,6 @@ for i, method in enumerate(methods):
 ax_tradeoff.set_xlabel('Computation Time (seconds)')
 ax_tradeoff.set_ylabel('RMSE')
 ax_tradeoff.set_title('Accuracy vs Speed Tradeoff', fontweight='bold')
-ax_tradeoff.grid(True, alpha=0.3)
 
 # Add "optimal" region annotation
 ax_tradeoff.axhline(min(rmse_values) * 1.1, color='green', linestyle='--',

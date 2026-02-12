@@ -66,17 +66,31 @@ logger.info(f"RMSE: {result['score']:.4f}")
 # Visualize results
 logger.info("\nGenerating plots...")
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+# Remove top and right spines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 
 # Plot 1: Sample locations
 scatter = ax1.scatter(
     x, y, c=z, cmap="viridis", s=50, edgecolors="black", linewidth=0.5
 )
 ax1.set_xlabel("X", fontsize=12)
+# Remove top and right spines
+ax1.set_xlabel("X", fontsize.spines['top'].set_visible(False)
+ax1.set_xlabel("X", fontsize.spines['right'].set_visible(False)
 ax1.set_ylabel("Y", fontsize=12)
+# Remove top and right spines
+ax1.set_ylabel("Y", fontsize.spines['top'].set_visible(False)
+ax1.set_ylabel("Y", fontsize.spines['right'].set_visible(False)
 ax1.set_title("Sample Locations", fontsize=14, fontweight="bold")
+# Remove top and right spines
+ax1.set_title("Sample Locations", fontsize.spines['top'].set_visible(False)
+ax1.set_title("Sample Locations", fontsize.spines['right'].set_visible(False)
 ax1.set_aspect("equal")
 plt.colorbar(scatter, ax=ax1, label="Value")
-ax1.grid(True, alpha=0.3)
+# Remove top and right spines
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 
 # Plot 2: Variogram models
 ax2.scatter(
@@ -88,10 +102,21 @@ for model_name, model in fitted_models.items():
 for model_name, model in fitted_models.items():
 
 ax2.set_xlabel("Distance (h)", fontsize=12)
+# Remove top and right spines
+ax2.set_xlabel("Distance (h)", fontsize.spines['top'].set_visible(False)
+ax2.set_xlabel("Distance (h)", fontsize.spines['right'].set_visible(False)
 ax2.set_ylabel("Semivariance γ(h)", fontsize=12)
+# Remove top and right spines
+ax2.set_ylabel("Semivariance γ(h)", fontsize.spines['top'].set_visible(False)
+ax2.set_ylabel("Semivariance γ(h)", fontsize.spines['right'].set_visible(False)
 ax2.set_title("Variogram Models", fontsize=14, fontweight="bold")
+# Remove top and right spines
+ax2.set_title("Variogram Models", fontsize.spines['top'].set_visible(False)
+ax2.set_title("Variogram Models", fontsize.spines['right'].set_visible(False)
 ax2.legend(fontsize=10)
-ax2.grid(True, alpha=0.3)
+# Remove top and right spines
+ax2.legend(fontsize.spines['top'].set_visible(False)
+ax2.legend(fontsize.spines['right'].set_visible(False)
 
 plt.tight_layout()
 plt.savefig("example_1_variogram.png", dpi=300, bbox_inches="tight")

@@ -140,8 +140,6 @@ ax1.scatter(cu, au, alpha=0.5, s=30, c='steelblue', edgecolors='k', linewidths=0
 ax1.set_xlabel('Cu (ppm)', fontsize=12)
 ax1.set_ylabel('Au (ppm)', fontsize=12)
 ax1.set_title(f'Cu vs Au Correlation\n(r = {corr_cu_au:.3f})', fontsize=14, fontweight='bold')
-ax1.grid(True, alpha=0.3)
-
 # Log-transformed
 ax2.scatter(cu_log, au_log, alpha=0.5, s=30, c='coral', edgecolors='k', linewidths=0.5)
 
@@ -155,8 +153,6 @@ ax2.set_xlabel('log₁₀(Cu + 1)', fontsize=12)
 ax2.set_ylabel('log₁₀(Au + 0.001)', fontsize=12)
 ax2.set_title(f'Log-Transformed Correlation\n(r = {corr_log:.3f})', fontsize=14, fontweight='bold')
 ax2.legend()
-ax2.grid(True, alpha=0.3)
-
 plt.tight_layout()
 plt.show()
 
