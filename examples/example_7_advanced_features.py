@@ -56,12 +56,14 @@ logger.info(f"Back-transformed matches original: {np.allclose(back_transformed, 
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 axes[0].hist(original_data, bins=20, edgecolor='black', alpha=0.7)
 # Remove top and right spines
 axes[0].spines['top'].set_visible(False)
 axes[0].spines['right'].set_visible(False)
 # Remove top and right spines
 axes[0].hist(original_data, bins.spines['top'].set_visible(False)
+bins.spines['right'].set_visible(False)
 axes[0].set_title('Original Data (Lognormal)')
 # Remove top and right spines
 axes[0].set_title('Original Data (Lognormal)').spines['top'].set_visible(False)
@@ -74,6 +76,7 @@ axes[1].spines['top'].set_visible(False)
 axes[1].spines['right'].set_visible(False)
 # Remove top and right spines
 axes[1].hist(normal_scores, bins.spines['top'].set_visible(False)
+bins.spines['right'].set_visible(False)
 axes[1].set_title('Normal Scores (Gaussian)')
 # Remove top and right spines
 axes[1].set_title('Normal Scores (Gaussian)').spines['top'].set_visible(False)
@@ -86,6 +89,7 @@ axes[2].spines['top'].set_visible(False)
 axes[2].spines['right'].set_visible(False)
 # Remove top and right spines
 axes[2].scatter(original_data, normal_scores, alpha.spines['top'].set_visible(False)
+alpha.spines['right'].set_visible(False)
 axes[2].set_xlabel('Original Value')
 # Remove top and right spines
 axes[2].set_xlabel('Original Value').spines['top'].set_visible(False)
@@ -135,6 +139,7 @@ logger.info(f"Predicted range: {pred.min():.2f} to {pred.max():.2f}°C")
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 c1 = axes[0].scatter(x, y, c=temperature, cmap='coolwarm', s=100, edgecolors='black')
 axes[0].set_title('Observed Temperature')
 # Remove top and right spines
@@ -146,6 +151,7 @@ c2 = axes[1].contourf(xx, yy, pred, levels=15, cmap='coolwarm')
 axes[1].scatter(x, y, c='black', s=20, marker='+')
 # Remove top and right spines
 axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+c.spines['right'].set_visible(False)
 axes[1].set_title('EDK Prediction (with Elevation Covariate)')
 # Remove top and right spines
 axes[1].set_title('EDK Prediction (with Elevation Covariate)').spines['top'].set_visible(False)
@@ -191,6 +197,7 @@ logger.info(f"Simple search: {len(indices_simple)} neighbors")
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 for ax, indices, title in zip(axes, [indices_simple, indices_octant],
  ['Simple Nearest', 'Octant Search']):
  ax.scatter(x, y, c='lightgray', s=50, alpha=0.5, label='Other points')
@@ -297,6 +304,7 @@ logger.info(f"Optimal cell size: {info['optimal_cell_size']:.1f}")
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 scatter1 = axes[0].scatter(x_declust, y_declust, c=z_declust, s=50, cmap='viridis', edgecolors='black')
 axes[0].set_title(f"Clustered Data (Unweighted Mean: {info['unweighted_mean']:.2f})")
 # Remove top and right spines
@@ -363,6 +371,7 @@ logger.info(f"Predicted range: {pred_ln.min():.2f} to {pred_ln.max():.2f}")
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 c1 = axes[0].scatter(x_ln, y_ln, c=z_ln, s=100, cmap='YlOrRd', edgecolors='black')
 axes[0].set_title('Lognormal Data (Ore Grades)')
 # Remove top and right spines
@@ -374,6 +383,7 @@ c2 = axes[1].contourf(xx_ln, yy_ln, pred_ln, levels=15, cmap='YlOrRd')
 axes[1].scatter(x_ln, y_ln, c='black', s=30, marker='+')
 # Remove top and right spines
 axes[1].scatter(x_ln, y_ln, c.spines['top'].set_visible(False)
+c.spines['right'].set_visible(False)
 axes[1].set_title('Lognormal Kriging Prediction')
 # Remove top and right spines
 axes[1].set_title('Lognormal Kriging Prediction').spines['top'].set_visible(False)
@@ -427,6 +437,7 @@ ax1 = fig.add_subplot(121, projection='3d')
 ax1.spines['top'].set_visible(False)
 # Remove top and right spines
 ax1.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
 scatter = ax1.scatter(x_3d, y_3d, z_3d_coord, c=values_3d, cmap='plasma', s=100, edgecolors='black')
 ax1.set_xlabel('X')
 ax1.set_ylabel('Y')
@@ -439,6 +450,7 @@ ax1.set_title('3D Sample Data').spines['top'].set_visible(False)
 ax2 = fig.add_subplot(122)
 # Remove top and right spines
 ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
 contour = ax2.contourf(xx_3d, yy_3d, pred_3d, levels=15, cmap='plasma')
 # Show samples at this depth slice
 mask_slice = np.abs(z_3d_coord - 25) < 10
@@ -448,9 +460,11 @@ ax2.spines['top'].set_visible(False)
 ax2.spines['right'].set_visible(False)
 # Remove top and right spines
 ax2.scatter(x_3d[mask_slice], y_3d[mask_slice], c.spines['top'].set_visible(False)
+c.spines['right'].set_visible(False)
 ax2.set_title('3D Kriging Prediction (Slice at Depth=25)')
 # Remove top and right spines
 ax2.set_title('3D Kriging Prediction (Slice at Depth.spines['top'].set_visible(False)
+Depth.spines['right'].set_visible(False)
 ax2.set_xlabel('X')
 ax2.set_ylabel('Y')
 plt.colorbar(contour, ax=ax2, label='Value')
@@ -496,6 +510,7 @@ logger.info(f"Variance reduction: {(1 - np.mean(var_bk)/np.mean(gamma_bk[-3:]))*
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 c1 = axes[0].scatter(x_bk, y_bk, c=z_bk, s=60, cmap='coolwarm', edgecolors='black')
 axes[0].set_title('Point Data')
 # Remove top and right spines
@@ -521,6 +536,7 @@ for i in range(len(x_grid_bk)):
 axes[1].scatter(x_bk, y_bk, c='black', s=20, marker='+', alpha=0.5)
 # Remove top and right spines
 axes[1].scatter(x_bk, y_bk, c.spines['top'].set_visible(False)
+c.spines['right'].set_visible(False)
 axes[1].set_xlim(0, 100)
 # Remove top and right spines
 axes[1].set_xlim(0, 100).spines['top'].set_visible(False)
@@ -548,6 +564,7 @@ sm.set_array([])
 plt.colorbar(sm, ax=axes[1])
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 
 plt.tight_layout()
 plt.savefig('advanced_9_block_kriging.png', dpi=150, bbox_inches='tight')

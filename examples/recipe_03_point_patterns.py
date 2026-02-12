@@ -109,12 +109,14 @@ for pattern_name, (x, y) in patterns.items():
  ax1 = fig.add_subplot(gs[row, 0])
  # Remove top and right spines
  ax1.spines['top'].set_visible(False)
+ ax1.spines['right'].set_visible(False)
  ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
  # Remove top and right spines
  ax1.spines['top'].set_visible(False)
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
  ax1.scatter(x, y, s.spines['top'].set_visible(False)
+ s.spines['right'].set_visible(False)
  ax1.set_xlim(0, 100)
  ax1.set_ylim(0, 100)
  ax1.set_aspect('equal')
@@ -139,6 +141,7 @@ for pattern_name, (x, y) in patterns.items():
  ax1.text(0.05, 0.95, textstr, transform=ax1.transAxes,
  # Remove top and right spines
  ax1.text(0.05, 0.95, textstr, transform.spines['top'].set_visible(False)
+ transform.spines['right'].set_visible(False)
  fontsize=10, verticalalignment='top', fontweight='bold',
  bbox=dict(boxstyle='round', facecolor=color, alpha=0.3))
 
@@ -146,6 +149,7 @@ for pattern_name, (x, y) in patterns.items():
  ax2 = fig.add_subplot(gs[row, 1])
  # Remove top and right spines
  ax2.spines['top'].set_visible(False)
+ ax2.spines['right'].set_visible(False)
  ripley_res = results['ripley']
  ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth=2, label='Observed K')
  # Remove top and right spines
@@ -153,6 +157,7 @@ for pattern_name, (x, y) in patterns.items():
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth.spines['top'].set_visible(False)
+ linewidth.spines['right'].set_visible(False)
  ax2.plot(ripley_res['d'], ripley_res['K_theoretical'], 'r--',
  linewidth=2, label='Theoretical (Random)')
  ax2.set_title('Ripley\'s K Function', fontsize=11, fontweight='bold')
@@ -166,18 +171,22 @@ for pattern_name, (x, y) in patterns.items():
  ax3 = fig.add_subplot(gs[row, 2])
  # Remove top and right spines
  ax3.spines['top'].set_visible(False)
+ ax3.spines['right'].set_visible(False)
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth=2, label='Observed L')
  # Remove top and right spines
  ax3.spines['top'].set_visible(False)
  ax3.spines['right'].set_visible(False)
  # Remove top and right spines
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth.spines['top'].set_visible(False)
+ linewidth.spines['right'].set_visible(False)
  ax3.axhline(0, color='r', linestyle='--', linewidth=2, label='Random')
  # Remove top and right spines
  ax3.axhline(0, color.spines['top'].set_visible(False)
+ color.spines['right'].set_visible(False)
  ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',
  # Remove top and right spines
  ax3.fill_between(ripley_res['d'], -5, 5, alpha.spines['top'].set_visible(False)
+ alpha.spines['right'].set_visible(False)
  label='±5 envelope')
  ax3.set_title('L Function Transform', fontsize=11, fontweight='bold')
  # Remove top and right spines
@@ -193,6 +202,7 @@ for pattern_name, (x, y) in patterns.items():
  ax3.text(0.5, 0.95, interp_text, transform=ax3.transAxes,
  # Remove top and right spines
  ax3.text(0.5, 0.95, interp_text, transform.spines['top'].set_visible(False)
+ transform.spines['right'].set_visible(False)
  fontsize=9, verticalalignment='top', horizontalalignment='center',
  bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
 
@@ -202,6 +212,7 @@ for pattern_name, (x, y) in patterns.items():
  ax4.spines['top'].set_visible(False)
  # Remove top and right spines
  ax4.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ ax4.spines['right'].set_visible(False)
  quadrat_res = results['quadrat']
  im = ax4.imshow(quadrat_res['counts'], cmap='YlOrRd', aspect='auto')
  ax4.set_title('Quadrat Counts', fontsize=11, fontweight='bold')
@@ -220,6 +231,7 @@ for pattern_name, (x, y) in patterns.items():
  ax4.text(0.05, 0.95, vmr_text, transform=ax4.transAxes,
  # Remove top and right spines
  ax4.text(0.05, 0.95, vmr_text, transform.spines['top'].set_visible(False)
+ transform.spines['right'].set_visible(False)
  fontsize=9, verticalalignment='top',
  bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
 

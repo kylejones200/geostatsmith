@@ -53,6 +53,7 @@ ik = kriging.IndicatorKriging(
 X, Y = create_grid(x_min=-5, x_max=95, y_min=-5, y_max=95, resolution=40)
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 x_grid, y_grid = X.flatten(), Y.flatten()
 
 # Predict probabilities
@@ -88,6 +89,7 @@ ax1 = plt.subplot(2, 3, 1)
 ax1.spines['top'].set_visible(False)
 # Remove top and right spines
 ax1.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
 scatter1 = ax1.scatter(
     x, y, c=V, cmap="RdYlGn_r", s=100, edgecolors="black", linewidth=1
 )
@@ -97,9 +99,11 @@ ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
 ax1.axhline(threshold, color.spines['top'].set_visible(False)
+color.spines['right'].set_visible(False)
 plt.colorbar(scatter1, ax=ax1, label="V (ppm)")
 # Remove top and right spines
 ax1.axhline(threshold, color.spines['right'].set_visible(False).spines['top'].set_visible(False)
+color.spines['right'].set_visible(False)
 ax1.set_title(
     f"Sample Data (threshold={threshold} ppm)", fontweight="bold", fontsize=12
 )
@@ -111,6 +115,7 @@ ax1.set_aspect("equal")
 ax2 = plt.subplot(2, 3, 2)
 # Remove top and right spines
 ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
 colors = ["green" if i == 0 else "red" for i in indicators]
 ax2.scatter(x, y, c=colors, s=100, edgecolors="black", linewidth=1, alpha=0.7)
 # Remove top and right spines
@@ -118,9 +123,11 @@ ax2.spines['top'].set_visible(False)
 ax2.spines['right'].set_visible(False)
 # Remove top and right spines
 ax2.scatter(x, y, c.spines['top'].set_visible(False)
+c.spines['right'].set_visible(False)
 ax2.set_title(f"Indicators (V > {threshold})", fontweight="bold", fontsize=12)
 # Remove top and right spines
 ax2.set_title(f"Indicators (V > {threshold})", fontweight.spines['top'].set_visible(False)
+fontweight.spines["right"].set_visible(False)
 ax2.set_xlabel("X (m)")
 ax2.set_ylabel("Y (m)")
 ax2.set_aspect("equal")
@@ -136,6 +143,7 @@ legend_elements = [
 ax2.legend(handles=legend_elements, loc="upper right")
 # Remove top and right spines
 ax2.legend(handles.spines['top'].set_visible(False)
+handles.spines['right'].set_visible(False)
 
 # Plot 3: Indicator variogram
 ax3 = plt.subplot(2, 3, 3)
@@ -143,6 +151,7 @@ ax3 = plt.subplot(2, 3, 3)
 ax3.spines['top'].set_visible(False)
 # Remove top and right spines
 ax3.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False)
 ax3.scatter(
     lags,
     gamma,
@@ -159,11 +168,13 @@ ax3.spines['top'].set_visible(False)
 ax3.spines['right'].set_visible(False)
 # Remove top and right spines
 ax3.plot(h_plot, gamma_plot, "r-", linewidth.spines['top'].set_visible(False)
+linewidth.spines["right"].set_visible(False)
 ax3.set_xlabel("Distance (h)")
 ax3.set_ylabel("γ(h)")
 ax3.set_title("Indicator Variogram", fontweight="bold", fontsize=12)
 # Remove top and right spines
 ax3.set_title("Indicator Variogram", fontweight.spines['top'].set_visible(False)
+fontweight.spines["right"].set_visible(False)
 ax3.legend()
 
 # Plot 4: Probability map
@@ -172,6 +183,7 @@ ax4 = plt.subplot(2, 3, 4)
 ax4.spines['top'].set_visible(False)
 # Remove top and right spines
 ax4.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax4.spines['right'].set_visible(False)
 contour4 = ax4.contourf(X, Y, P_grid, levels=15, cmap="RdYlGn_r", alpha=0.9)
 ax4.scatter(
     x,
@@ -186,12 +198,14 @@ ax4.scatter(
 plt.colorbar(contour4, ax=ax4, label="P(V > 100 ppm)")
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 ax4.set_title("Probability of Exceedance", fontweight="bold", fontsize=12)
 # Remove top and right spines
 ax4.spines['top'].set_visible(False)
 ax4.spines['right'].set_visible(False)
 # Remove top and right spines
 ax4.set_title("Probability of Exceedance", fontweight.spines['top'].set_visible(False)
+fontweight.spines["right"].set_visible(False)
 ax4.set_xlabel("X (m)")
 ax4.set_ylabel("Y (m)")
 ax4.set_aspect("equal")
@@ -202,6 +216,7 @@ ax5 = plt.subplot(2, 3, 5)
 ax5.spines['top'].set_visible(False)
 # Remove top and right spines
 ax5.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax5.spines['right'].set_visible(False)
 contour5 = ax5.contourf(X, Y, V_grid, levels=15, cmap="YlOrRd", alpha=0.9)
 ax5.scatter(x, y, s=40, c="blue", marker="x", linewidth=2, zorder=5)
 # Remove top and right spines
@@ -209,12 +224,15 @@ ax5.spines['top'].set_visible(False)
 ax5.spines['right'].set_visible(False)
 # Remove top and right spines
 ax5.scatter(x, y, s.spines['top'].set_visible(False)
+s.spines['right'].set_visible(False)
 plt.colorbar(contour5, ax=ax5, label="Variance")
 # Remove top and right spines
 ax5.scatter(x, y, s.spines['right'].set_visible(False).spines['top'].set_visible(False)
+s.spines['right'].set_visible(False)
 ax5.set_title("Indicator Kriging Variance", fontweight="bold", fontsize=12)
 # Remove top and right spines
 ax5.set_title("Indicator Kriging Variance", fontweight.spines['top'].set_visible(False)
+fontweight.spines["right"].set_visible(False)
 ax5.set_xlabel("X (m)")
 ax5.set_ylabel("Y (m)")
 ax5.set_aspect("equal")
@@ -225,6 +243,7 @@ ax6 = plt.subplot(2, 3, 6)
 ax6.spines['top'].set_visible(False)
 # Remove top and right spines
 ax6.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax6.spines['right'].set_visible(False)
 contour6 = ax6.contourf(X, Y, Median_grid, levels=15, cmap="viridis", alpha=0.9)
 ax6.scatter(
     x, y, c=V, cmap="viridis", s=60, edgecolors="white", linewidth=1.5, zorder=5
@@ -238,6 +257,7 @@ ax6.spines['top'].set_visible(False)
 ax6.spines['right'].set_visible(False)
 # Remove top and right spines
 ax6.set_title("Predicted Median (Multi-threshold IK)", fontweight.spines['top'].set_visible(False)
+fontweight.spines["right"].set_visible(False)
 ax6.set_xlabel("X (m)")
 ax6.set_ylabel("Y (m)")
 ax6.set_aspect("equal")

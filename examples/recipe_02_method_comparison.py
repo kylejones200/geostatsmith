@@ -43,9 +43,11 @@ logger.info(f" Elevation range: {z.min():.1f} to {z.max():.1f} m")
 x_min, x_max = 0, 100
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 y_min, y_max = 0, 100
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 grid_res = 40
 
 x_pred = np.linspace(x_min, x_max, grid_res)
@@ -69,6 +71,7 @@ results = compare_interpolation_methods(
 fig, axes = plt.subplots(3, 3, figsize=(18, 16))
 # Remove top and right spines
 ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
 fig.suptitle('Method Comparison: Accuracy vs Speed', fontsize=16, fontweight='bold')
 
 # Plot interpolation results (top row and middle row)
@@ -78,6 +81,7 @@ for i, method in enumerate(methods):
  ax = axes[row, col]
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  Z_pred = results['predictions'][method].reshape(X_grid.shape)
 
@@ -88,6 +92,7 @@ for i, method in enumerate(methods):
  cmap='terrain', vmin=Z_pred.min(), vmax=Z_pred.max())
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  # Title with metrics
  title = method.replace('_', ' ').title()
@@ -102,6 +107,7 @@ for i, method in enumerate(methods):
  plt.colorbar(im, ax=ax, label='Elevation')
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  plot_idx += 1
 

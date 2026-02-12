@@ -40,10 +40,12 @@ X, Y = create_grid(
     x_max=np.max(x) + 5,
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
     y_min=np.min(y) - 5,
     y_max=np.max(y) + 5,
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
     resolution=50,
 )
 
@@ -76,6 +78,7 @@ fig = plt.figure(figsize=(16, 5))
 ax1 = plt.subplot(131)
 # Remove top and right spines
 ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
 contour = ax1.contourf(X, Y, Z_pred, levels=15, cmap="viridis", alpha=0.8)
 ax1.scatter(x, y, c=z, s=50, cmap="viridis", edgecolors="black", linewidth=1, zorder=5)
 # Remove top and right spines
@@ -83,6 +86,7 @@ ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
 ax1.scatter(x, y, c.spines['top'].set_visible(False)
+c.spines['right'].set_visible(False)
 ax1.set_xlabel("X", fontsize=12)
 # Remove top and right spines
 ax1.set_ylabel("Y", fontsize=12)
@@ -100,6 +104,7 @@ ax2 = plt.subplot(132)
 ax2.spines['top'].set_visible(False)
 # Remove top and right spines
 ax2.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
 contour2 = ax2.contourf(X, Y, Variance, levels=15, cmap="YlOrRd", alpha=0.8)
 ax2.scatter(
     x, y, s=50, c="blue", marker="x", linewidth=1, zorder=5, label="Sample points"
@@ -123,18 +128,21 @@ ax2.legend()
 ax3 = plt.subplot(133)
 # Remove top and right spines
 ax3.spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False)
 ax3.scatter(z, cv_pred, alpha=0.6, s=50, edgecolors="black", linewidth=0.5)
 # Remove top and right spines
 ax3.spines['top'].set_visible(False)
 ax3.spines['right'].set_visible(False)
 # Remove top and right spines
 ax3.scatter(z, cv_pred, alpha.spines['top'].set_visible(False)
+alpha.spines['right'].set_visible(False)
 # Plot 1:1 line
 min_val = min(np.min(z), np.min(cv_pred))
 max_val = max(np.max(z), np.max(cv_pred))
 ax3.plot([min_val, max_val], [min_val, max_val], "r--", linewidth=2, label="1:1 line")
 # Remove top and right spines
 ax3.plot([min_val, max_val], [min_val, max_val], "r--", linewidth.spines['top'].set_visible(False)
+linewidth.spines["right"].set_visible(False)
 ax3.set_xlabel("True Values", fontsize=12)
 # Remove top and right spines
 ax3.set_ylabel("Predicted Values (CV)", fontsize=12)

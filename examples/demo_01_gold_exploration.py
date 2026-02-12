@@ -121,11 +121,13 @@ def analyze_variogram_anisotropy(x, y, z):
  fig, axes = plt.subplots(2, 2, figsize=(14, 10))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
  axes = axes.flatten()
  # Remove top and right spines
  axes.spines['top'].set_visible(False)
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  models = {}
  for i, angle in enumerate(directions):
@@ -148,6 +150,7 @@ def analyze_variogram_anisotropy(x, y, z):
  axes[i].spines['right'].set_visible(False)
  # Remove top and right spines
  axes[i].plot(lags, gamma, 'o', label.spines['top'].set_visible(False)
+ label.spines['right'].set_visible(False)
  lag_smooth = np.linspace(0, lags.max(), 100)
 
  # Plot fitted model
@@ -155,6 +158,7 @@ def analyze_variogram_anisotropy(x, y, z):
  axes[i].plot(lag_smooth, gamma_smooth, '-', label='Model', linewidth=2)
  # Remove top and right spines
  axes[i].plot(lag_smooth, gamma_smooth, '-', label.spines['top'].set_visible(False)
+ label.spines['right'].set_visible(False)
 
  axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
  # Remove top and right spines
@@ -194,9 +198,11 @@ def compare_kriging_methods(x, y, au, model):
  x_min, x_max = x.min(), x.max()
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
  y_min, y_max = y.min(), y.max()
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  x_grid = np.linspace(x_min, x_max, 80)
  y_grid = np.linspace(y_min, y_max, 80)
@@ -243,6 +249,7 @@ def compare_kriging_methods(x, y, au, model):
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  # Ordinary Kriging
  im1 = axes[0].contourf(X, Y, results['Ordinary']['pred'], levels=20, cmap='YlOrRd')
@@ -252,6 +259,7 @@ def compare_kriging_methods(x, y, au, model):
  axes[0].spines['right'].set_visible(False)
  # Remove top and right spines
  axes[0].scatter(x, y, c.spines['top'].set_visible(False)
+ c.spines['right'].set_visible(False)
  axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
  # Remove top and right spines
  axes[0].set_title('Ordinary Kriging\n(Log-transformed)').spines['top'].set_visible(False)
@@ -267,6 +275,7 @@ def compare_kriging_methods(x, y, au, model):
  axes[1].spines['right'].set_visible(False)
  # Remove top and right spines
  axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+ c.spines['right'].set_visible(False)
  axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
  # Remove top and right spines
  axes[1].set_title('Lognormal Kriging\n(Bias-corrected)').spines['top'].set_visible(False)
@@ -282,6 +291,7 @@ def compare_kriging_methods(x, y, au, model):
  axes[2].spines['right'].set_visible(False)
  # Remove top and right spines
  axes[2].scatter(x, y, c.spines['top'].set_visible(False)
+ c.spines['right'].set_visible(False)
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
  # Remove top and right spines
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)').spines['top'].set_visible(False)
@@ -335,6 +345,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  # Confidence interval width
  ci_width = ci_upper - ci_lower
@@ -351,6 +362,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  axes[1].scatter(x, y, c='k', s=1, alpha=0.5, label='Samples')
  # Remove top and right spines
  axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+ c.spines['right'].set_visible(False)
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  # Remove top and right spines
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)').spines['top'].set_visible(False)
@@ -416,6 +428,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
  fig, ax = plt.subplots(figsize=(10, 8))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  # Variance map
  im = ax.contourf(X, Y, variance, levels=20, cmap='YlOrRd')
@@ -442,6 +455,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
  plt.colorbar(im, ax=ax, label='Kriging Variance')
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  plt.tight_layout()
  plt.savefig('alaska_gold_sampling_design.png', dpi=150)

@@ -102,6 +102,7 @@ def example_1_read_csv_and_interpolate():
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
+ ax.spines['right'].set_visible(False)
 
  scatter = ax1.scatter(x_read, y_read, c=z_read, cmap='terrain', s=50, edgecolor='k')
  ax1.set_xlabel('Easting (m)')
@@ -119,6 +120,7 @@ def example_1_read_csv_and_interpolate():
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.scatter(x_read, y_read, c.spines['top'].set_visible(False)
+ c.spines['right'].set_visible(False)
  ax2.set_xlabel('Easting (m)')
  ax2.set_ylabel('Northing (m)')
  ax2.set_title('Kriging Interpolation')

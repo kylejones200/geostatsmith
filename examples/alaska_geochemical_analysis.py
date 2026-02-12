@@ -187,6 +187,7 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Sample locations
     axes[0].scatter(x, y, c=au, s=10, cmap='YlOrRd', vmin=0, vmax=np.percentile(au, 95))
@@ -197,9 +198,11 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[0].scatter(x, y, c.spines['top'].set_visible(False)
     # Remove top and right spines
     axes[0].scatter(x, y, c.spines['right'].set_visible(False).spines['top'].set_visible(False)
+    c.spines['right'].set_visible(False)
     axes[0].set_title(f'Gold Sample Locations (n={len(au)})')
     # Remove top and right spines
     axes[0].set_title(f'Gold Sample Locations (n.spines['top'].set_visible(False)
+    n.spines['right'].set_visible(False)
     axes[0].set_xlabel('Longitude')
     # Remove top and right spines
     axes[0].set_xlabel('Longitude').spines['top'].set_visible(False)
@@ -218,6 +221,7 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[1].spines['right'].set_visible(False)
     # Remove top and right spines
     axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+    c.spines['right'].set_visible(False)
     axes[1].set_title('Kriged Gold Distribution')
     # Remove top and right spines
     axes[1].set_title('Kriged Gold Distribution').spines['top'].set_visible(False)

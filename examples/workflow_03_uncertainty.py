@@ -74,6 +74,7 @@ def example_1_bootstrap_confidence():
     fig, ax = plt.subplots(figsize=(12, 6))
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Mean prediction
     ax.plot(x_pred, results["mean"], "b-", linewidth=2, label="Mean Prediction")
@@ -171,6 +172,7 @@ def example_2_probability_map():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Kriging prediction
     krig = OrdinaryKriging(x, y, z, variogram_model)
@@ -193,11 +195,13 @@ def example_2_probability_map():
     ax1.spines['right'].set_visible(False)
     # Remove top and right spines
     ax1.scatter(x, y, c.spines['top'].set_visible(False)
+    c.spines['right'].set_visible(False)
     ax1.set_xlabel("X (m)")
     ax1.set_ylabel("Y (m)")
     ax1.set_title("Kriging Prediction\n(dashed = regulatory limit)")
     # Remove top and right spines
     ax1.set_title("Kriging Prediction\n(dashed.spines['top'].set_visible(False)
+    dashed.spines["right"].set_visible(False)
     ax1.legend()
     ax1.set_aspect("equal")
     plt.colorbar(im1, ax=ax1, label="Concentration")
@@ -223,11 +227,13 @@ def example_2_probability_map():
     ax2.spines['right'].set_visible(False)
     # Remove top and right spines
     ax2.scatter(x, y, c.spines['top'].set_visible(False)
+    c.spines['right'].set_visible(False)
     ax2.set_xlabel("X (m)")
     ax2.set_ylabel("Y (m)")
     ax2.set_title("P(Concentration > 12)\n(solid line = 50% probability)")
     # Remove top and right spines
     ax2.set_title("P(Concentration > 12)\n(solid line.spines['top'].set_visible(False)
+    line.spines["right"].set_visible(False)
     ax2.set_aspect("equal")
     plt.colorbar(im2, ax=ax2, label="Probability", ticks=np.arange(0, 1.1, 0.1))
     # Remove top and right spines
@@ -300,6 +306,7 @@ def example_3_risk_assessment():
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Probability map
     prob_grid = results["probability_exceed"].reshape((ny, nx))
@@ -312,6 +319,7 @@ def example_3_risk_assessment():
     axes[0].spines['right'].set_visible(False)
     # Remove top and right spines
     axes[0].scatter(x, y, c.spines['top'].set_visible(False)
+    c.spines['right'].set_visible(False)
     axes[0].set_xlabel("X (m)")
     # Remove top and right spines
     axes[0].set_xlabel("X (m)").spines['top'].set_visible(False)
@@ -337,6 +345,7 @@ def example_3_risk_assessment():
     axes[1].spines['right'].set_visible(False)
     # Remove top and right spines
     axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+    c.spines['right'].set_visible(False)
     axes[1].set_xlabel("X (m)")
     # Remove top and right spines
     axes[1].set_xlabel("X (m)").spines['top'].set_visible(False)
@@ -371,6 +380,7 @@ def example_3_risk_assessment():
     axes[2].spines['right'].set_visible(False)
     # Remove top and right spines
     axes[2].scatter(x, y, c.spines['top'].set_visible(False)
+    c.spines['right'].set_visible(False)
     axes[2].set_xlabel("X (m)")
     # Remove top and right spines
     axes[2].set_xlabel("X (m)").spines['top'].set_visible(False)
@@ -380,6 +390,7 @@ def example_3_risk_assessment():
     axes[2].set_title("Optimal Decision\n(Red=Remediate, Green=No Action)")
     # Remove top and right spines
     axes[2].set_title("Optimal Decision\n(Red.spines['top'].set_visible(False)
+    Red.spines["right"].set_visible(False)
     axes[2].set_aspect("equal")
     # Remove top and right spines
     axes[2].set_aspect("equal").spines['top'].set_visible(False)

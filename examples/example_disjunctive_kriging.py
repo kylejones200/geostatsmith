@@ -110,6 +110,7 @@ def main():
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     # Remove top and right spines
     ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     # Original data
     scatter1 = axes[0, 0].scatter(x, y, c=z, s=50, cmap="viridis", edgecolors="black")
@@ -173,11 +174,13 @@ def main():
     axes[1, 1].spines['right'].set_visible(False)
     # Remove top and right spines
     axes[1, 1].scatter(z, cv_predictions, alpha.spines['top'].set_visible(False)
+    alpha.spines['right'].set_visible(False)
     min_val = min(z.min(), cv_predictions.min())
     max_val = max(z.max(), cv_predictions.max())
     axes[1, 1].plot([min_val, max_val], [min_val, max_val], "r--", label="1:1 line")
     # Remove top and right spines
     axes[1, 1].plot([min_val, max_val], [min_val, max_val], "r--", label.spines['top'].set_visible(False)
+    label.spines["right"].set_visible(False)
     axes[1, 1].set_xlabel("Actual Values")
     # Remove top and right spines
     axes[1, 1].set_xlabel("Actual Values").spines['top'].set_visible(False)
@@ -187,6 +190,7 @@ def main():
     axes[1, 1].set_title(f"Cross-Validation (R² = {cv_metrics.get('R2', 0):.3f})")
     # Remove top and right spines
     axes[1, 1].set_title(f"Cross-Validation (R².spines['top'].set_visible(False)
+    R².spines["right"].set_visible(False)
     axes[1, 1].legend()
     # Remove top and right spines
     axes[1, 1].legend().spines['top'].set_visible(False)

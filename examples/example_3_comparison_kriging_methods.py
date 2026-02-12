@@ -104,6 +104,7 @@ for idx, (method_name, z_pred, var_pred, metrics) in enumerate(methods, 1):
     ax2 = plt.subplot(2, 3, idx + 3)
     # Remove top and right spines
     ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
     Var_pred = var_pred.reshape(X.shape)
     contour2 = ax2.contourf(X, Y, Var_pred, levels=15, cmap="YlOrRd", alpha=0.8)
     ax2.scatter(x, y, s=20, c="blue", marker="x", linewidth=0.5, zorder=5)
@@ -112,6 +113,7 @@ for idx, (method_name, z_pred, var_pred, metrics) in enumerate(methods, 1):
     ax2.spines['right'].set_visible(False)
     # Remove top and right spines
     ax2.scatter(x, y, s.spines['top'].set_visible(False)
+    s.spines['right'].set_visible(False)
     ax2.set_title(f"{method_name} - Variance", fontsize=12, fontweight="bold")
     # Remove top and right spines
     ax2.set_xlabel("X")
