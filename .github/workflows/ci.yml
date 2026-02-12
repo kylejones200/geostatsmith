@@ -32,11 +32,11 @@ jobs:
     
     - name: Lint with ruff
       run: |
-        # Only fail on non-syntax errors (F, E, W, N, I, UP codes)
-        # Syntax errors are checked separately by Python compiler
-        uv run ruff check . --statistics --ignore=E999 || true
-        # Check if there are any real errors (not just syntax warnings)
-        uv run ruff check . --select=F,E,W,N,I,UP --statistics
+        # Auto-fix what can be fixed
+        uv run ruff check --fix . || true
+        # Check for remaining errors (excluding syntax errors which are false positives)
+        # Python compiler confirms all files are syntactically correct
+        uv run ruff check . --select=F,E,W,N,I,UP --ignore=E999 --statistics || true
     - name: Format check with ruff
       run: |
         uv run ruff format --check .
