@@ -1,6 +1,6 @@
 # GeoStats Library - Quick Reference Card
 
-## New Advanced Features
+## Additional Features
 
 ### 1. Normal Score Transform
 ```python
@@ -204,7 +204,7 @@ pred = ck.predict(x_new, y_new)
 
 ---
 
-## Complete Workflow Example
+## Workflow Example
 
 ```python
 import numpy as np

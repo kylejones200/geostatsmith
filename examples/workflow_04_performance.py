@@ -38,9 +38,9 @@ except ImportError:
 
 def example_1_parallel_kriging():
  """Example 1: Parallel kriging for speed."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 1: Parallel Kriging (Multi-Core)")
- logger.info("="*60)
+ 
 
  # Create dataset
  np.random.seed(42)
@@ -89,10 +89,8 @@ def example_1_parallel_kriging():
  logger.info(f" Max difference: {diff:.6f} (should be ~0)")
 
 def example_2_chunked_processing():
- """Example 2: Chunked processing for memory efficiency."""
- logger.info("\n" + "="*60)
- logger.info("Example 2: Chunked Processing")
- logger.info("="*60)
+    """Example 2: Chunked processing for memory efficiency."""
+    logger.info("\nExample 2: Chunked Processing")
 
  # Large dataset
  np.random.seed(42)
@@ -121,10 +119,8 @@ def example_2_chunked_processing():
  logger.info(f"Completed! Grid shape: {z_grid.shape}")
 
 def example_3_caching():
- """Example 3: Result caching for repeated predictions."""
- logger.info("\n" + "="*60)
- logger.info("Example 3: Result Caching")
- logger.info("="*60)
+    """Example 3: Result caching for repeated predictions."""
+    logger.info("\nExample 3: Result Caching")
 
  # Dataset
  np.random.seed(42)
@@ -161,10 +157,8 @@ def example_3_caching():
  logger.info(f"Cleared {n_cleared} cache files")
 
 def example_4_approximate_methods():
- """Example 4: Fast approximate kriging."""
- logger.info("\n" + "="*60)
- logger.info("Example 4: Approximate Kriging")
- logger.info("="*60)
+    """Example 4: Fast approximate kriging."""
+    logger.info("\nExample 4: Approximate Kriging")
 
  # Large dataset
  np.random.seed(42)
@@ -209,19 +203,15 @@ def example_4_approximate_methods():
  logger.info(f" RMSE: {rmse:.3f} ({rel_rmse*100:.1f}% of std)")
 
 def main():
- """Run all examples."""
- logger.info("\n" + "="*70)
- logger.info("GEOSTATS PERFORMANCE OPTIMIZATION EXAMPLES")
- logger.info("="*70)
+    """Run all examples."""
+    logger.info("\nGEOSTATS PERFORMANCE OPTIMIZATION EXAMPLES")
 
  example_1_parallel_kriging()
  example_2_chunked_processing()
  example_3_caching()
- example_4_approximate_methods()
+    example_4_approximate_methods()
 
- logger.info("\n" + "="*70)
- logger.info("ALL EXAMPLES COMPLETE!")
- logger.info("="*70)
+    logger.info("\nALL EXAMPLES COMPLETE!")
  logger.info("\nKey Takeaways:")
  logger.info(" • Parallel kriging: 2-8x speedup on multi-core systems")
  logger.info(" • Chunked processing: Handle millions of points")

@@ -40,9 +40,9 @@ except ImportError:
 
 def example_1_read_csv_and_interpolate():
  """Example 1: Read CSV, interpolate, and export to GeoTIFF."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 1: CSV → Kriging → GeoTIFF")
- logger.info("="*60)
+ 
 
  logger.info("Creating sample elevation data...")
  np.random.seed(42)
@@ -126,9 +126,9 @@ def example_1_read_csv_and_interpolate():
 
 def example_2_geotiff_workflow():
  """Example 2: Read GeoTIFF, sample points, validate."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 2: GeoTIFF Validation Workflow")
- logger.info("="*60)
+ 
 
  try:
  logger.info("Reading elevation_kriging.tif...")
@@ -174,9 +174,9 @@ def example_2_geotiff_workflow():
 
 def example_3_format_comparison():
  """Example 3: Compare different file formats."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 3: Format Comparison")
- logger.info("="*60)
+ 
 
  n = 100
  x = np.linspace(0, 100, n)
@@ -206,17 +206,13 @@ def example_3_format_comparison():
 
 def main():
  """Run all examples."""
- logger.info("\n" + "="*70)
  logger.info("GEOSTATS DATA I/O WORKFLOW EXAMPLES")
- logger.info("="*70)
 
  example_1_read_csv_and_interpolate()
  example_2_geotiff_workflow()
  example_3_format_comparison()
 
- logger.info("\n" + "="*70)
  logger.info("ALL EXAMPLES COMPLETE!")
- logger.info("="*70)
  logger.info("\nFiles created:")
  logger.info(" - sample_elevation.csv")
  logger.info(" - elevation_kriging.tif")

@@ -177,9 +177,7 @@ logger.info("Saved spatial maps to: example_6_spatial_maps.png")
 plt.show()
 
 # Print summary statistics
-logger.info("\n" + "="*60)
 logger.info("SPATIAL ANALYSIS SUMMARY")
-logger.info("="*60)
 logger.info("\nVariable V (Arsenious):")
 logger.info(f" Mean: {np.mean(V):.2f} ppm")
 logger.info(f" Std Dev: {np.std(V):.2f} ppm")

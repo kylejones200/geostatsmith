@@ -6,7 +6,7 @@ The `geostats` library now supports **fully config-driven analysis** using YAML 
 
 - **Reproducible workflows**: All parameters in version-controlled config files
 - **Batch processing**: Run multiple analyses with different configs
-- **Parameter exploration**: Easy parameter sweeps and sensitivity analysis
+- **Parameter exploration**: Parameter sweeps and sensitivity analysis
 - **Collaboration**: Share analyses via config files
 - **Documentation**: Self-documenting analysis parameters
 
@@ -61,7 +61,7 @@ Results are saved to `./results/my_analysis/`.
 
 ### `geostats-run`
 
-Run a complete geostatistical analysis from a config file.
+Run a geostatistical analysis from a config file.
 
 ```bash
 # Basic usage
@@ -102,7 +102,7 @@ geostats-init my_project --output-dir ./configs
 
 Available templates:
 - `basic`: Minimal configuration for quick analysis
-- `advanced`: Complete workflow with all features
+- `advanced`: Workflow with additional features
 - `gold_exploration`: Mineral exploration template
 
 ### `geostats-templates`
@@ -115,7 +115,7 @@ geostats-templates
 
 ## Configuration Structure
 
-A complete configuration has the following sections:
+A configuration file has the following sections:
 
 ### Project Metadata
 

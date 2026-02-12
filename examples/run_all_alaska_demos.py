@@ -39,18 +39,14 @@ demos = [
  }
 ]
 
-logger.info("=" * 80)
 logger.info("RUNNING ALL ALASKA DEMOS")
-logger.info("=" * 80)
 logger.info(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 logger.info(f"Output directory: {OUTPUT_DIR}")
 
 results = []
 
 for i, demo in enumerate(demos, 1):
- logger.info("=" * 80)
  logger.info(f"DEMO {i}/3: {demo['name']}")
- logger.info("=" * 80)
  logger.info(f"Description: {demo['description']}")
  logger.info(f"Script: {demo['file']}")
 
@@ -84,7 +80,7 @@ for i, demo in enumerate(demos, 1):
  f.write(f"Script: {demo['file']}\n")
  f.write(f"Started: {start_time.strftime('%Y-%m-%d %H:%M:%S')}\n")
  f.write(f"Duration: {duration:.1f} seconds\n")
- f.write("=" * 80 + "\n\n")
+ f.write("\n")
  f.write("STDOUT:\n")
  f.write(result.stdout)
  f.write("\n\nSTDERR:\n")
@@ -128,9 +124,7 @@ for i, demo in enumerate(demos, 1):
  })
 
 # Summary
-logger.info("=" * 80)
 logger.info("SUMMARY")
-logger.info("=" * 80)
 
 success_count = sum(1 for r in results if r['status'] == 'SUCCESS')
 failed_count = sum(1 for r in results if r['status'] in ['FAILED', 'ERROR', 'TIMEOUT'])
@@ -152,8 +146,7 @@ logger.info(f"All outputs saved to: {OUTPUT_DIR}")
 # Create summary file
 summary_path = OUTPUT_DIR / 'SUMMARY.txt'
 with open(summary_path, 'w') as f:
- f.write("Alaska Demos Execution Summary\n")
- f.write("=" * 80 + "\n")
+    f.write("Alaska Demos Execution Summary\n")
  f.write(f"Executed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
 
  for r in results:
@@ -168,6 +161,4 @@ with open(summary_path, 'w') as f:
  f.write(f"\nSuccess Rate: {success_count}/{len(demos)} ({success_count/len(demos)*100:.0f}%)\n")
 
 logger.info(f"Summary saved to: {summary_path.name}")
-logger.info("=" * 80)
 logger.info("DEMO EXECUTION COMPLETE")
-logger.info("=" * 80)

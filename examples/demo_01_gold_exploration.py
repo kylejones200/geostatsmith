@@ -40,9 +40,7 @@ except:
 # Interactive viz - skip if not available
 PLOTLY_AVAILABLE = False # Not yet implemented
 
-logger.info("="*80)
 logger.info(" GOLD RUSH ALASKA - COMPLETE EXPLORATION WORKFLOW")
-logger.info("="*80)
 
 # ==============================================================================
 # STEP 1: Load Real Alaska Gold Data
@@ -482,9 +480,7 @@ if __name__ == '__main__':
  # Validation
  validation = validate_predictions(x, y, au, model)
 
- logger.info("\n" + "="*80)
  logger.info(" COMPLETE! Generated 4 Publication-Quality Figures:")
- logger.info("="*80)
  logger.info(" 1. alaska_gold_anisotropy.png - Directional variograms")
  logger.info(" 2. alaska_gold_methods_comparison.png - 3 kriging methods")
  logger.info(" 3. alaska_gold_uncertainty.png - Uncertainty quantification")

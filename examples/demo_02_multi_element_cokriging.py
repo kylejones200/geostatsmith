@@ -27,9 +27,7 @@ logger = logging.getLogger(__name__)
 # from geostats.diagnostics.outlier_detection import outlier_analysis # Not available
 # from geostats.transformations import normal_score_transform, back_transform as inverse_normal_score # Not available
 
-logger.info("="*80)
 logger.info(" MULTI-ELEMENT ARSENAL - PORPHYRY DEPOSIT ANALYSIS")
-logger.info("="*80)
 
 # ==============================================================================
 # STEP 1: Load Multi-Element Data
@@ -413,9 +411,7 @@ if __name__ == '__main__':
  # Porphyry fertility index
  index, index_pred = calculate_porphyry_index(data, elements_dict)
 
- logger.info("\n" + "="*80)
  logger.info(" COMPLETE! Generated 4 Advanced Analysis Figures:")
- logger.info("="*80)
  logger.info(" 1. alaska_element_correlations.png - Cu-Mo-Au associations")
  logger.info(" 2. alaska_anomaly_detection.png - Multi-element anomaly maps")
  logger.info(" 3. alaska_cokriging_comparison.png - OK vs Cokriging")

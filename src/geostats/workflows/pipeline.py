@@ -639,9 +639,8 @@ class AnalysisPipeline:
  """Generate text report"""
  report_path = self.output_dir / 'analysis_report.txt'
 
- with open(report_path, 'w') as f:
- f.write(f"Geostatistical Analysis Report\n")
- f.write(f"{'='*70}\n\n")
+with open(report_path, 'w') as f:
+    f.write(f"Geostatistical Analysis Report\n\n")
  f.write(f"Project: {self.config.project.name}\n")
  f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
  f.write(f"Elapsed Time: {elapsed}\n\n")

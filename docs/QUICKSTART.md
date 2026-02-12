@@ -20,7 +20,7 @@ The typical geostatistical workflow consists of three steps:
 2. **Fit a theoretical variogram model**
 3. **Perform kriging interpolation**
 
-### Example: Complete Workflow
+### Example: Workflow
 
 ```python
 import numpy as np
@@ -74,7 +74,7 @@ gamma = model(h)
 
 ### Automatic Model Selection
 
-Let the library choose the best model:
+Select a model automatically:
 
 ```python
 result = variogram.auto_fit(lags, gamma, weights=n_pairs, criterion='rmse')

@@ -21,6 +21,7 @@ from .indicator_kriging import IndicatorKriging, MultiThresholdIndicatorKriging
 from .cokriging import Cokriging, CollocatedCokriging
 from .external_drift_kriging import ExternalDriftKriging
 from .lognormal_kriging import LognormalKriging
+from .disjunctive_kriging import DisjunctiveKriging
 from .kriging_3d import SimpleKriging3D, OrdinaryKriging3D
 from .support_change import BlockKriging, SupportCorrection
 from .neighborhood_search import NeighborhoodSearch, NeighborhoodConfig
@@ -51,9 +52,10 @@ __all__ = [
  "MultiThresholdIndicatorKriging",
  "Cokriging",
  "CollocatedCokriging",
- "ExternalDriftKriging",
- "LognormalKriging",
- # 3D Kriging
+    "ExternalDriftKriging",
+    "LognormalKriging",
+    "DisjunctiveKriging",
+    # 3D Kriging
  "SimpleKriging3D",
  "OrdinaryKriging3D",
  # Block Kriging & Support

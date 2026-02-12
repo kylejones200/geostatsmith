@@ -36,9 +36,7 @@ except ImportError:
 
 def example_1_bootstrap_confidence():
  """Example 1: Bootstrap confidence intervals."""
- logger.info("\n" + "="*60)
  logger.info("Example 1: Bootstrap Confidence Intervals")
- logger.info("="*60)
 
  # Create sample data
  logger.info("Creating sample data...")
@@ -100,9 +98,7 @@ def example_1_bootstrap_confidence():
 
 def example_2_probability_map():
  """Example 2: Probability maps for threshold exceedance."""
- logger.info("\n" + "="*60)
  logger.info("Example 2: Probability Maps")
- logger.info("="*60)
 
  # Create contamination data
  logger.info("Creating contamination scenario...")
@@ -182,9 +178,9 @@ def example_2_probability_map():
 
 def example_3_risk_assessment():
  """Example 3: Risk-based decision analysis."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 3: Risk Assessment")
- logger.info("="*60)
+ 
 
  # Use same contamination data from example 2
  np.random.seed(42)
@@ -272,17 +268,13 @@ def example_3_risk_assessment():
 
 def main():
  """Run all examples."""
- logger.info("\n" + "="*70)
  logger.info("GEOSTATS UNCERTAINTY QUANTIFICATION EXAMPLES")
- logger.info("="*70)
 
  example_1_bootstrap_confidence()
  example_2_probability_map()
  example_3_risk_assessment()
 
- logger.info("\n" + "="*70)
  logger.info("ALL EXAMPLES COMPLETE!")
- logger.info("="*70)
  logger.info("\nFiles created:")
  logger.info(" - example_workflow_03_bootstrap.png")
  logger.info(" - example_workflow_03_probability.png")

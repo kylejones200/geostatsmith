@@ -69,10 +69,8 @@ def auto_interpolate(
  if methods is None:
  methods = ['ordinary_kriging']
 
- if verbose:
- logger.info("=" * 60)
- logger.info("AUTO-INTERPOLATE: Automatic Method Selection")
- logger.info("=" * 60)
+if verbose:
+    logger.info("AUTO-INTERPOLATE: Automatic Method Selection")
 
  best_method = None
  best_rmse = np.inf
@@ -169,11 +167,9 @@ def auto_interpolate(
  "Check data quality (sufficient points, no duplicates, valid values)."
  )
 
- if verbose:
- logger.info("\n" + "=" * 60)
- logger.info(f"BEST METHOD: {best_method}")
- logger.info(f" CV RMSE: {best_rmse:.4f}")
- logger.info("=" * 60)
+if verbose:
+    logger.info(f"\nBEST METHOD: {best_method}")
+    logger.info(f" CV RMSE: {best_rmse:.4f}")
 
  return {
  'best_method': best_method,

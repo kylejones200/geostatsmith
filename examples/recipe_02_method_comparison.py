@@ -24,9 +24,7 @@ logger = logging.getLogger(__name__)
  cross_validate_interpolation,
 )
 
-logger.info("=" * 70)
 logger.info("RECIPE 2: SYSTEMATIC METHOD COMPARISON")
-logger.info("=" * 70)
 
 # Generate test data with known properties
 logger.info("\nGenerating synthetic terrain data...")
@@ -165,9 +163,7 @@ logger.info("\nFigure saved as 'recipe_02_method_comparison.png'")
 plt.show()
 
 # Print summary table
-logger.info("\n" + "=" * 70)
-logger.info("DETAILED COMPARISON TABLE")
-logger.info("=" * 70)
+logger.info("\nDETAILED COMPARISON TABLE")
 logger.info(f"{'Method':<25} {'RMSE':>10} {'R²':>8} {'MAE':>10} {'Time (s)':>12}")
 logger.info("-" * 70)
 
@@ -182,11 +178,8 @@ for method in methods:
  logger.info(f"{method:<25} {metrics['rmse']:>10.3f} {metrics['r2']:>8.3f} "
  f"{metrics['mae']:>10.3f} {timing:>12.4f}{marker}")
 
-logger.info("=" * 70)
-
 # Recommendations
 logger.info("\nRECOMMENDATIONS")
-logger.info("=" * 70)
 logger.info(f"\nMost Accurate: {methods[best_idx]}")
 logger.info(f" RMSE: {rmse_values[best_idx]:.3f}")
 
@@ -208,6 +201,4 @@ logger.info(" • Production/Real-time: Use fastest method")
 logger.info(" • Research/Publication: Use most accurate method")
 logger.info(" • General purpose: Use balanced method")
 
-logger.info("\n" + "=" * 70)
-logger.info("Recipe complete!")
-logger.info("=" * 70)
+logger.info("\nRecipe complete!")

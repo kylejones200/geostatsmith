@@ -173,9 +173,9 @@ logger.info("Saved plot to: example_5_simulation_sgs.png")
 plt.show()
 
 # Summary statistics
-logger.info("\n" + "="*60)
+
 logger.info("SIMULATION SUMMARY")
-logger.info("="*60)
+
 logger.info(f"Number of realizations: {n_realizations}")
 logger.info(f"\nOriginal data:")
 logger.info(f" Mean: {np.mean(V):.2f}")

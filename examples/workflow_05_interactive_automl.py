@@ -109,9 +109,9 @@ def example_2_interactive_prediction_map():
 
 def example_3_auto_variogram():
  """Example 3: Automatic variogram selection."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 3: Automatic Variogram Selection")
- logger.info("="*60)
+ 
 
  # Data
  np.random.seed(42)

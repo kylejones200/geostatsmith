@@ -33,9 +33,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Feature 1: Normal Score Transform
-logger.info("="* 80)
 logger.info("Feature 1: Normal Score Transform")
-logger.info("=" * 80)
 
 from geostats.transformations import NormalScoreTransform
 
@@ -71,9 +69,7 @@ plt.savefig('advanced_1_normal_score.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_1_normal_score.png\n")
 
 # Feature 2: External Drift Kriging
-logger.info("=" * 80)
 logger.info("Feature 2: External Drift Kriging")
-logger.info("=" * 80)
 
 from geostats.algorithms import ExternalDriftKriging
 from geostats.models.variogram_models import SphericalModel
@@ -118,9 +114,7 @@ plt.savefig('advanced_2_external_drift.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_2_external_drift.png\n")
 
 # Feature 3: Neighborhood Search with Octant
-logger.info("=" * 80)
 logger.info("Feature 3: Neighborhood Search (Octant/Quadrant)")
-logger.info("=" * 80)
 
 from geostats.algorithms import NeighborhoodSearch, NeighborhoodConfig
 
@@ -171,9 +165,7 @@ plt.savefig('advanced_3_neighborhood.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_3_neighborhood.png\n")
 
 # Feature 4: Nested Variogram Fitting
-logger.info("=" * 80)
 logger.info("Feature 4: Nested Variogram Fitting")
-logger.info("=" * 80)
 
 from geostats.algorithms import fit_nested_variogram
 
@@ -229,9 +221,7 @@ plt.savefig('advanced_4_nested_variogram.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_4_nested_variogram.png\n")
 
 # Feature 5: Declustering
-logger.info("=" * 80)
 logger.info("Feature 5: Declustering")
-logger.info("=" * 80)
 
 from geostats.transformations import cell_declustering
 
@@ -280,9 +270,7 @@ plt.savefig('advanced_5_declustering.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_5_declustering.png\n")
 
 # Feature 6: Lognormal Kriging
-logger.info("=" * 80)
 logger.info("Feature 6: Lognormal Kriging")
-logger.info("=" * 80)
 
 from geostats.algorithms import LognormalKriging
 
@@ -324,9 +312,7 @@ plt.savefig('advanced_6_lognormal_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_6_lognormal_kriging.png\n")
 
 # Feature 7: 3D Kriging
-logger.info("=" * 80)
 logger.info("Feature 7: 3D Kriging")
-logger.info("=" * 80)
 
 from geostats.algorithms import OrdinaryKriging3D
 
@@ -387,9 +373,7 @@ plt.savefig('advanced_7_3d_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_7_3d_kriging.png\n")
 
 # Feature 9: Block Kriging (Support Change)
-logger.info("=" * 80)
 logger.info("Feature 9: Block Kriging (Support Change)")
-logger.info("=" * 80)
 
 from geostats.algorithms import BlockKriging
 
@@ -452,9 +436,7 @@ plt.tight_layout()
 plt.savefig('advanced_9_block_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_9_block_kriging.png\n")
 
-logger.info("=" * 80)
 logger.info("All 10 Advanced Features Demonstrated Successfully!")
-logger.info("=" * 80)
 logger.info("\nGenerated figures:")
 logger.info(" - advanced_1_normal_score.png")
 logger.info(" - advanced_2_external_drift.png")

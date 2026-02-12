@@ -28,9 +28,7 @@ logger = logging.getLogger(__name__)
  spatial_randomness_test,
 )
 
-logger.info("=" * 70)
 logger.info("RECIPE 3: SPATIAL POINT PATTERN ANALYSIS")
-logger.info("=" * 70)
 
 # Generate three different point patterns for comparison
 logger.info("\nGenerating spatial point patterns...")
@@ -67,7 +65,6 @@ logger.info(f" Created 3 patterns with ~100 points each")
 
 # Analyze each pattern
 logger.info("\nAnalyzing patterns...")
-logger.info("=" * 70)
 
 results_all = {}
 
@@ -193,9 +190,7 @@ logger.info(" Figure saved as 'recipe_03_point_patterns.png'")
 plt.show()
 
 # Create summary table
-logger.info("\n" + "=" * 70)
 logger.info("SUMMARY TABLE")
-logger.info("=" * 70)
 logger.info(f"{'Pattern':<12} {'R Index':>10} {'VMR':>10} {'Ripley':>15} {'Overall':>15}")
 logger.info("-" * 70)
 
@@ -239,7 +234,6 @@ for pattern_name in patterns.keys():
 
  logger.info(f"{pattern_name:<12} {r_index:>10.3f} {vmr:>10.3f} {ripley_interp:>15} {overall:>15}")
 
-logger.info("=" * 70)
 
 logger.info("\nKEY INSIGHTS")
 logger.debug("""
@@ -264,6 +258,4 @@ logger.debug("""
  - Archaeology: Settlement patterns
 """)
 
-logger.info("=" * 70)
 logger.info("Recipe complete!")
-logger.info("=" * 70)

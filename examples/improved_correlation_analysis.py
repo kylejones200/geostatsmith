@@ -18,9 +18,7 @@ logger = logging.getLogger(__name__)
 AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 OUTPUT_DIR = Path('/Users/k.jones/Desktop/geostats/alaska_outputs')
 
-logger.info("=" * 80)
 logger.info("IMPROVED MULTI-ELEMENT CORRELATION ANALYSIS")
-logger.info("=" * 80)
 
 # Load data
 logger.info("Loading location data...")
@@ -49,9 +47,7 @@ logger.info(f"Total samples with Cu & Au: {len(multi_data):,}")
 # APPROACH 1: Statewide (all data) - BASELINE
 # ============================================================================
 
-logger.info("=" * 80)
 logger.info("APPROACH 1: STATEWIDE (All Alaska) - BASELINE")
-logger.info("=" * 80)
 
 cu_all = multi_data['Cu'].values
 au_all = multi_data['Au'].values
@@ -70,9 +66,7 @@ logger.info(" Weak correlation - mixing multiple deposit types")
 # APPROACH 2: Porphyry Districts Only - REGIONAL
 # ============================================================================
 
-logger.info("=" * 80)
 logger.info("APPROACH 2: PORPHYRY DISTRICTS - REGIONAL FILTERING")
-logger.info("=" * 80)
 
 # Known porphyry districts in Alaska:
 # 1. Pebble (Iliamna) - 59-60°N, -155.5 to -154.5°W
@@ -105,9 +99,7 @@ logger.info(f" Improvement: {((corr_porp/corr_all - 1) * 100):.1f}% stronger cor
 # APPROACH 3: Anomalous Samples Only - THRESHOLD FILTERING
 # ============================================================================
 
-logger.info("=" * 80)
 logger.info("APPROACH 3: ANOMALOUS SAMPLES - THRESHOLD FILTERING")
-logger.info("=" * 80)
 
 # Define anomaly thresholds (high percentiles)
 cu_p90 = np.percentile(cu_all, 90) # Top 10%
@@ -137,9 +129,7 @@ logger.info(f" Improvement: {((corr_anom/corr_all - 1) * 100):.1f}% stronger cor
 # APPROACH 4: Porphyry + Anomalous - COMBINED BEST
 # ============================================================================
 
-logger.info("=" * 80)
 logger.info("APPROACH 4: PORPHYRY DISTRICTS + ANOMALOUS - COMBINED")
-logger.info("=" * 80)
 
 # Porphyry districts with anomalous samples
 best = porphyry_regions[
@@ -170,9 +160,7 @@ else:
 # CREATE IMPROVED COMPARISON FIGURE
 # ============================================================================
 
-logger.info("=" * 80)
 logger.info("CREATING IMPROVED COMPARISON FIGURE")
-logger.info("=" * 80)
 
 fig = plt.figure(figsize=(20, 12))
 
@@ -283,9 +271,7 @@ plt.close()
 # SUMMARY
 # ============================================================================
 
-logger.info("=" * 80)
 logger.info("SUMMARY: CORRELATION IMPROVEMENTS")
-logger.info("=" * 80)
 
 logger.info(f"Baseline (Statewide): r = {corr_all:.3f}, R² = {corr_all**2:.3f}")
 logger.info(f"Porphyry Districts: r = {corr_porp:.3f}, R² = {corr_porp**2:.3f} ({(corr_porp/corr_all-1)*100:+.0f}%)")
@@ -298,6 +284,4 @@ logger.info(" Anomaly filtering removes background noise")
 logger.info(" Combined approach yields strongest signal")
 logger.info(f" R² improved from {corr_all**2:.3f} to {corr_best**2:.3f} ({(corr_best**2/corr_all**2 - 1)*100:.0f}% increase)")
 
-logger.info("=" * 80)
 logger.info("ANALYSIS COMPLETE!")
-logger.info("=" * 80)

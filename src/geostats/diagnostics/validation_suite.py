@@ -130,8 +130,7 @@ def comprehensive_validation(
 
 def _generate_diagnostic_summary(results: Dict) -> str:
  """Generate human-readable diagnostic summary."""
- summary = "VALIDATION DIAGNOSTICS\n"
- summary += "="*50 + "\n\n"
+    summary = "VALIDATION DIAGNOSTICS\n\n"
 
  summary += f"Overall Score: {results['overall_score']}/100\n\n"
 

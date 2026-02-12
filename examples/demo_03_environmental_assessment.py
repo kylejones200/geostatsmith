@@ -26,9 +26,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-logger.info("="*80)
 logger.info(" ENVIRONMENTAL GUARDIAN - CONTAMINATION RISK ASSESSMENT")
-logger.info("="*80)
 
 # ==============================================================================
 # STEP 1: Load Environmental Data (As, Pb, Hg)
@@ -432,9 +430,7 @@ if __name__ == '__main__':
  # Professional report
  generate_environmental_report(data_dict, thresholds, hotspots)
 
- logger.info("\n" + "="*80)
  logger.info(" COMPLETE! Generated 4 Environmental Analysis Outputs:")
- logger.info("="*80)
  logger.info(" 1. alaska_threshold_analysis.png - Regulatory comparison")
  logger.info(" 2. alaska_exceedance_probability.png - Probability maps (As, Pb, Hg)")
  logger.info(" 3. alaska_as_risk_classification.png - Multi-threshold risk")

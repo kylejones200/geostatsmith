@@ -37,9 +37,9 @@ except ImportError:
 
 def example_1_optimal_sampling():
  """Example 1: Design optimal sampling network."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 1: Optimal Sampling Design")
- logger.info("="*60)
+ 
 
  # Initial sparse sampling
  logger.info("Creating initial sparse sample network...")
@@ -117,9 +117,9 @@ def example_1_optimal_sampling():
 
 def example_2_infill_sampling():
  """Example 2: Infill sampling to reduce uncertainty."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 2: Infill Sampling")
- logger.info("="*60)
+ 
 
  # Initial samples
  np.random.seed(42)
@@ -193,9 +193,9 @@ def example_2_infill_sampling():
 
 def example_3_sample_size_calculator():
  """Example 3: Determine required sample size."""
- logger.info("\n" + "="*60)
+ 
  logger.info("Example 3: Sample Size Calculator")
- logger.info("="*60)
+ 
 
  # Initial samples
  np.random.seed(42)
@@ -252,9 +252,7 @@ def example_3_sample_size_calculator():
 
 def example_4_cost_benefit():
  """Example 4: Cost-benefit analysis."""
- logger.info("\n" + "="*60)
  logger.info("Example 4: Cost-Benefit Analysis")
- logger.info("="*60)
 
  # Initial samples
  np.random.seed(42)
@@ -324,18 +322,14 @@ def example_4_cost_benefit():
 
 def main():
  """Run all examples."""
- logger.info("\n" + "="*70)
  logger.info("GEOSTATS OPTIMIZATION WORKFLOW EXAMPLES")
- logger.info("="*70)
 
  example_1_optimal_sampling()
  example_2_infill_sampling()
  example_3_sample_size_calculator()
  example_4_cost_benefit()
 
- logger.info("\n" + "="*70)
  logger.info("ALL EXAMPLES COMPLETE!")
- logger.info("="*70)
  logger.info("\nFiles created:")
  logger.info(" - example_workflow_02_optimal_sampling.png")
  logger.info(" - example_workflow_02_infill.png")

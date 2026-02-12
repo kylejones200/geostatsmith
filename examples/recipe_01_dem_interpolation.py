@@ -31,9 +31,7 @@ logger = logging.getLogger(__name__)
  radial_basis_function_interpolation,
 )
 
-logger.info("=" * 70)
 logger.info("RECIPE 1: DEM INTERPOLATION WORKFLOW")
-logger.info("=" * 70)
 
 # Step 1: Load sample DEM data
 logger.info("\nStep 1: Loading sample DEM data...")
@@ -195,9 +193,7 @@ logger.info(" Figure saved as 'recipe_01_dem_interpolation.png'")
 plt.show()
 
 # Summary
-logger.info("\n" + "=" * 70)
 logger.info("SUMMARY")
-logger.info("=" * 70)
 logger.info("\nBest method for this DEM:")
 best_method = min(results['cv_results'].items(),
  key=lambda x: x[1]['metrics']['rmse'])
@@ -208,6 +204,4 @@ logger.info(" • Ordinary Kriging accounts for spatial correlation")
 logger.info(" • IDW is fastest but may create bull's-eye artifacts")
 logger.info(" • RBF produces smooth surfaces")
 
-logger.info("\n" + "=" * 70)
 logger.info("Recipe complete! See output figure for visual comparison.")
-logger.info("=" * 70)

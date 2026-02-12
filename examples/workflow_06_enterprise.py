@@ -19,9 +19,7 @@ logger = logging.getLogger(__name__)
 
 def example_1_cli_tools():
  """Example 1: Command-line tools."""
- logger.info("\n" + "="*60)
  logger.info("Example 1: CLI Tools")
- logger.info("="*60)
 
  logger.info("\nAvailable CLI commands:")
  logger.info(" geostats predict input.csv output.csv")
@@ -35,9 +33,7 @@ def example_1_cli_tools():
 
 def example_2_professional_reporting():
  """Example 2: Generate professional reports."""
- logger.info("\n" + "="*60)
  logger.info("Example 2: Professional Reporting")
- logger.info("="*60)
 
  try:
  from geostats.reporting import generate_report
@@ -65,9 +61,7 @@ def example_2_professional_reporting():
 
 def example_3_advanced_diagnostics():
  """Example 3: Validation."""
- logger.info("\n" + "="*60)
  logger.info("Example 3: Advanced Diagnostics")
- logger.info("="*60)
 
  try:
  from geostats.diagnostics import comprehensive_validation, outlier_analysis
@@ -97,9 +91,7 @@ def example_3_advanced_diagnostics():
 
 def example_4_web_api():
  """Example 4: Web API usage."""
- logger.info("\n" + "="*60)
  logger.info("Example 4: Web API Deployment")
- logger.info("="*60)
 
  logger.info("\nTo start the API server:")
  logger.info(" $ geostats serve --port 8000")
@@ -151,9 +143,7 @@ def example_4_web_api():
 
 def example_5_complete_workflow():
  """Example 5: Complete enterprise workflow."""
- logger.info("\n" + "="*60)
  logger.info("Example 5: Complete Enterprise Workflow")
- logger.info("="*60)
 
  try:
  from geostats.automl import auto_interpolate
@@ -196,9 +186,7 @@ def example_5_complete_workflow():
 
 def main():
  """Run all examples."""
- logger.info("\n" + "="*70)
  logger.info("GEOSTATS PHASE 3: ENTERPRISE DEPLOYMENT")
- logger.info("="*70)
 
  example_1_cli_tools()
  example_2_professional_reporting()
@@ -206,9 +194,7 @@ def main():
  example_4_web_api()
  example_5_complete_workflow()
 
- logger.info("\n" + "="*70)
  logger.info("ALL EXAMPLES COMPLETE!")
- logger.info("="*70)
  logger.info("\nPhase 3 Capabilities:")
  logger.info(" CLI tools for command-line usage")
  logger.info(" Web API for remote/cloud deployment")

@@ -71,10 +71,8 @@ def run(config_file, validate_only, override, verbose):
  if verbose:
  config.verbose = True
 
- # Run pipeline
- click.echo(click.style(f"\n{'='*70}", fg='cyan'))
- click.echo(click.style(f"Starting Analysis: {config.project.name}", fg='cyan', bold=True))
- click.echo(click.style(f"{'='*70}\n", fg='cyan'))
+# Run pipeline
+click.echo(click.style(f"\nStarting Analysis: {config.project.name}", fg='cyan', bold=True))
 
  pipeline = AnalysisPipeline(config)
  pipeline.run()

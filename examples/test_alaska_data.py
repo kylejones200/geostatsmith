@@ -16,9 +16,7 @@ logger = logging.getLogger(__name__)
 # Check if AGDB4 data exists
 AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
-logger.info("=" * 70)
 logger.info("ALASKA GEOCHEMICAL ANALYSIS - TEST RUN")
-logger.info("=" * 70)
 
 if not AGDB_PATH.exists():
  logger.info(" AGDB4 data not found at:", AGDB_PATH)
@@ -64,9 +62,7 @@ else:
  elements = chem['PARAMETER'].unique()
  logger.info(f" Elements available: {', '.join(elements[:20])}")
 
- logger.info("=" * 70)
  logger.info("DATA CHECK COMPLETE")
- logger.info("=" * 70)
  logger.info("The full analysis workflow includes:")
  logger.info(" 1. Loading and filtering AGDB4 data")
  logger.info(" 2. Variogram analysis and modeling")
@@ -78,6 +74,4 @@ else:
 
  except Exception as e:
 
-logger.info("=" * 70)
 logger.info("TEST RUN COMPLETE")
-logger.info("=" * 70)

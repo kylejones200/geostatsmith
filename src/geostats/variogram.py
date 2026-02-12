@@ -230,10 +230,10 @@ def fit_model(
 
  model_type_lower = model_type.lower()
  if model_type_lower not in model_map:
- raise ValueError(
- f"Unknown model type: {model_type}. "
- f"Choose from: {list(model_map.keys())}"
- )
+     raise ValueError(
+         f"Unknown model type: {model_type}. "
+         f"Choose from: {list(model_map.keys())}"
+     )
 
  # Create and fit model
  model = model_map[model_type_lower](**kwargs)

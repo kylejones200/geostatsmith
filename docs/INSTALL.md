@@ -162,7 +162,7 @@ For large datasets (>10,000 points):
 ## Next Steps
 
 1. Read `QUICKSTART.md` for usage guide
-2. Check `examples/` directory for complete examples
+2. Check `examples/` directory for examples
 3. Review `ARCHITECTURE.md` to understand the design
 4. See `CONTRIBUTING.md` if you want to contribute
 

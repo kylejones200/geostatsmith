@@ -174,9 +174,7 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
  """
  Analyze gold distribution for mineral exploration.
  """
- logger.info("\n" + "="*70)
  logger.info("GOLD EXPLORATION ANALYSIS")
- logger.info("="*70 + "\n")
 
  # Load Au data
  au_data = load_agdb4_data(agdb_path, element='Au', sample_type='sediment')
@@ -279,9 +277,7 @@ def multi_element_analysis(agdb_path):
  Analyze multiple correlated elements using cokriging.
  Example: Cu-Mo association in porphyry deposits.
  """
- logger.info("\n" + "="*70)
  logger.info("MULTI-ELEMENT COKRIGING ANALYSIS (Cu-Au-Mo)")
- logger.info("="*70 + "\n")
 
  # Load Cu and Mo data
  cu_data = load_agdb4_data(agdb_path, element='Cu', sample_type='sediment')
@@ -352,9 +348,7 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
  threshold : float
  Regulatory or background threshold (ppm)
  """
- logger.info("\n" + "="*70)
  logger.info(f"{element.upper()} ENVIRONMENTAL ASSESSMENT")
- logger.info("="*70 + "\n")
 
  # Load data
  data = load_agdb4_data(agdb_path, element=element, sample_type='sediment')
@@ -417,10 +411,8 @@ if __name__ == '__main__':
  logger.info("Please download AGDB4 and update the path in this script.")
  exit(1)
 
- logger.info("="*70)
  logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
  logger.info("Using GeoStats Library")
- logger.info("="*70)
 
  # Example 1: Gold Exploration
  try:
@@ -440,9 +432,7 @@ if __name__ == '__main__':
  except Exception as e:
  logger.error(f"Environmental analysis error: {e}")
 
- logger.info("\n" + "="*70)
  logger.info("ANALYSIS COMPLETE!")
- logger.info("="*70)
  logger.info("\nThis example demonstrates:")
  logger.info(" Loading large-scale geochemical databases")
  logger.info(" Mineral exploration workflows (Au)")

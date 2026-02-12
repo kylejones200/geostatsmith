@@ -2,9 +2,7 @@
 
 ## Overview
 
-These demos showcase the full power of the GeoStats library using **real data** from the Alaska Geochemical Database (AGDB4). Each demo is a complete, production-ready workflow that you can run with actual geochemical data.
-
-**No toy datasets. No fake data. Real science!**
+These demos use the GeoStats library with data from the Alaska Geochemical Database (AGDB4). Each demo is a workflow that can be run with geochemical data.
 
 ## Prerequisites
 
@@ -37,7 +35,7 @@ Download and extract to: `/Users/k.jones/Downloads/AGDB4_text`
 - Compares 3 kriging methods (Ordinary, Lognormal, Indicator)
 - Uncertainty quantification (Bootstrap + variance)
 - Optimal sampling design (where to drill next?)
-- Performance comparison (parallel processing speedup)
+- Performance comparison
 - Validation
 
 **Features showcased**:
@@ -46,7 +44,7 @@ Download and extract to: `/Users/k.jones/Downloads/AGDB4_text`
 - Bootstrap confidence intervals
 - Probability mapping
 - Infill sampling optimization
-- Parallel processing (2-8x speedup)
+- Parallel processing
 - Cross-validation
 
 **Outputs**:
@@ -57,7 +55,7 @@ Download and extract to: `/Users/k.jones/Downloads/AGDB4_text`
 
 **Run time**: ~2-5 minutes
 
-**Wow factor**: See actual gold anomalies in famous mining district!
+**Output**: Gold anomaly maps for the mining district.
 
 ---
 
@@ -88,7 +86,7 @@ Download and extract to: `/Users/k.jones/Downloads/AGDB4_text`
 
 **Run time**: ~3-6 minutes
 
-**Wow factor**: See how cokriging reduces uncertainty by 30-50%!
+**Output**: Comparison of cokriging and ordinary kriging results.
 
 ---
 
@@ -102,7 +100,7 @@ Download and extract to: `/Users/k.jones/Downloads/AGDB4_text`
 - Probability of exceedance mapping
 - Multi-threshold risk classification
 - Hotspot identification
-- Professional HTML report generation
+- HTML report generation
 
 **Features showcased**:
 - Environmental thresholds (EPA standards)
@@ -110,18 +108,16 @@ Download and extract to: `/Users/k.jones/Downloads/AGDB4_text`
 - Probability mapping
 - Multi-threshold classification
 - Risk assessment
-- Professional reporting
+- Reporting
 
 **Outputs**:
 1. `alaska_threshold_analysis.png` - Regulatory comparison
 2. `alaska_exceedance_probability.png` - Probability maps (3 elements)
 3. `alaska_as_risk_classification.png` - Multi-level risk map
 4. `alaska_contamination_hotspots.png` - Priority locations
-5. `alaska_environmental_report.html` - **Client-ready report!**
+5. `alaska_environmental_report.html` - HTML report
 
 **Run time**: ~4-7 minutes
-
-**Wow factor**: Generate a professional regulatory report!
 
 ---
 
@@ -167,36 +163,36 @@ data = load_fairbanks_gold_data(AGDB_PATH, region='Juneau')
 - Published, peer-reviewed data source
 - Real geologic complexity
 
-### 2. Production-Ready
-- Complete workflows, not code snippets
+### 2. Complete Workflows
+- Full workflows, not code snippets
 - Error handling
-- Professional visualizations
-- Client-ready outputs
+- Visualization outputs
+- Structured outputs
 
 ### 3. Multiple Applications
 - **Exploration**: Find mineral deposits
 - **Environmental**: Assess contamination
 - **Research**: Test methods, validate algorithms
 
-### 4. Showcase Library Power
-Each demo highlights different GeoStats capabilities:
-- All major kriging methods
+### 4. Library Features
+Each demo demonstrates different GeoStats capabilities:
+- Kriging methods
 - Uncertainty quantification
 - Performance optimization
 - Interactive visualization
-- Professional reporting
+- Reporting
 
-### 5. Publication Quality
+### 5. Output Quality
 - High-resolution figures (150 DPI)
-- Professional formatting
-- Proper axis labels, colorbars, legends
-- Ready for reports/presentations
+- Structured formatting
+- Axis labels, colorbars, legends
+- Suitable for reports/presentations
 
 ## Expected Results
 
 ### Demo 1 Output Example:
 ```
- GOLD RUSH ALASKA - COMPLETE EXPLORATION WORKFLOW
+ GOLD RUSH ALASKA - EXPLORATION WORKFLOW
 
  Loading Alaska gold data...
  Total samples in database: 375,279
@@ -222,20 +218,19 @@ Each demo highlights different GeoStats capabilities:
  Performance Showcase...
  Standard Kriging: 2.30s
  Parallel Kriging: 0.35s
- SPEEDUP: 6.6x faster!
+ Parallel processing enabled
 
  Model Validation...
  RMSE: 0.234
  R²: 0.82
  Overall Quality Score: 85/100
- EXCELLENT quality!
 ```
 
-### Visual Quality
+### Visual Output
 
-All demos generate **publication-ready figures**:
+All demos generate figures:
 - High resolution (150 DPI)
-- Professional colormaps
+- Standard colormaps
 - Clear labeling
 - Sample locations shown
 - Contour lines for important thresholds
@@ -363,7 +358,7 @@ AGDB4 Database:
 1. **Run the demos** with real Alaska data
 2. **Customize** for your region of interest
 3. **Combine** methods for your specific application
-4. **Publish** results - the outputs are publication quality!
+4. Use results as needed
 
 ## Support
 
@@ -376,4 +371,4 @@ AGDB4 Database:
 
 **Built with GeoStats v0.3.0** - geostatistics for Python
 
-*These demos prove that academic-quality spatial analysis is now accessible to everyone!*
+*These demos demonstrate spatial analysis workflows using GeoStats.*

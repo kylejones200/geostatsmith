@@ -156,9 +156,9 @@ logger.info("Saved plot to: example_4_indicator_kriging.png")
 plt.show()
 
 # Risk assessment summary
-logger.info("\n" + "="*60)
+
 logger.info("RISK ASSESSMENT SUMMARY")
-logger.info("="*60)
+
 logger.info(f"Threshold: {threshold} ppm")
 logger.info(f"Sample exceedance rate: {exceedance_rate*100:.1f}%")
 logger.info(f"Mean predicted probability: {np.mean(probabilities)*100:.1f}%")
