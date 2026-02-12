@@ -49,20 +49,20 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     """
     Load Alaska Geochemical Database and prepare for analysis.
 
- Parameters:
- -----------
- agdb_path : str or Path
- Path to AGDB4_text directory
- element : str
- Element to analyze (e.g., 'Au', 'Cu', 'Pb', 'As')
- sample_type : str
- Type of sample to filter for
+    Parameters:
+    -----------
+    agdb_path : str or Path
+        Path to AGDB4_text directory
+    element : str
+        Element to analyze (e.g., 'Au', 'Cu', 'Pb', 'As')
+    sample_type : str
+        Type of sample to filter for
 
- Returns:
- --------
- dict with keys: x, y, values, metadata
- """
- agdb_path = Path(agdb_path)
+    Returns:
+    --------
+    dict with keys: x, y, values, metadata
+    """
+    agdb_path = Path(agdb_path)
 
  logger.info(f"Loading AGDB4 data for {element}...")
 
