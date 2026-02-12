@@ -259,8 +259,8 @@ def multi_element_analysis(agdb_path):
     logger.info(f" Cu-Mo correlation: {correlation:.3f}")
 
     if correlation > 0.3:
-    if correlation > 0.3:
-    lags_cu, gamma_cu = experimental_variogram(x, y, cu_log, n_lags=12)
+        logger.info("\nFitting variograms...")
+        lags_cu, gamma_cu = experimental_variogram(x, y, cu_log, n_lags=12)
     model_cu = fit_variogram(lags_cu, gamma_cu, model_type='spherical')
 
     lags_mo, gamma_mo = experimental_variogram(x, y, mo_log, n_lags=12)
