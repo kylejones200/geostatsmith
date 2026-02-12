@@ -13,8 +13,8 @@ from .hillshade import hillshade, plot_hillshaded_dem
 from .comparison_plots import plot_method_comparison, plot_error_analysis
 
 __all__ = [
- "hillshade",
- "plot_hillshaded_dem",
- "plot_method_comparison",
- "plot_error_analysis",
+    "hillshade",
+    "plot_hillshaded_dem",
+    "plot_method_comparison",
+    "plot_error_analysis",
 ]

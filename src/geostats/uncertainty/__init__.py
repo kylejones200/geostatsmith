@@ -32,34 +32,34 @@ Examples
 """
 
 from .bootstrap import (
- bootstrap_uncertainty,
- bootstrap_variogram,
- bootstrap_kriging,
+    bootstrap_uncertainty,
+    bootstrap_variogram,
+    bootstrap_kriging,
 )
 
 from .probability import (
- probability_map,
- conditional_probability,
- risk_assessment,
+    probability_map,
+    conditional_probability,
+    risk_assessment,
 )
 
 from .confidence_intervals import (
- confidence_intervals,
- prediction_bands,
- uncertainty_ellipse,
+    confidence_intervals,
+    prediction_bands,
+    uncertainty_ellipse,
 )
 
 __all__ = [
- # Bootstrap methods
- 'bootstrap_uncertainty',
- 'bootstrap_variogram',
- 'bootstrap_kriging',
- # Probability maps
- 'probability_map',
- 'conditional_probability',
- 'risk_assessment',
- # Confidence intervals
- 'confidence_intervals',
- 'prediction_bands',
- 'uncertainty_ellipse',
+    # Bootstrap methods
+    "bootstrap_uncertainty",
+    "bootstrap_variogram",
+    "bootstrap_kriging",
+    # Probability maps
+    "probability_map",
+    "conditional_probability",
+    "risk_assessment",
+    # Confidence intervals
+    "confidence_intervals",
+    "prediction_bands",
+    "uncertainty_ellipse",
 ]

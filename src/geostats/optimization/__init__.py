@@ -31,26 +31,26 @@ Examples
 """
 
 from .sampling_design import (
- optimal_sampling_design,
- infill_sampling,
- stratified_sampling,
- adaptive_sampling,
+    optimal_sampling_design,
+    infill_sampling,
+    stratified_sampling,
+    adaptive_sampling,
 )
 
 from .cost_benefit import (
- sample_size_calculator,
- cost_benefit_analysis,
- estimate_interpolation_error,
+    sample_size_calculator,
+    cost_benefit_analysis,
+    estimate_interpolation_error,
 )
 
 __all__ = [
- # Sampling design
- 'optimal_sampling_design',
- 'infill_sampling',
- 'stratified_sampling',
- 'adaptive_sampling',
- # Cost-benefit analysis
- 'sample_size_calculator',
- 'cost_benefit_analysis',
- 'estimate_interpolation_error',
+    # Sampling design
+    "optimal_sampling_design",
+    "infill_sampling",
+    "stratified_sampling",
+    "adaptive_sampling",
+    # Cost-benefit analysis
+    "sample_size_calculator",
+    "cost_benefit_analysis",
+    "estimate_interpolation_error",
 ]

@@ -28,30 +28,30 @@ Examples
 """
 
 from .variogram_plots import (
- interactive_variogram,
- interactive_variogram_cloud,
+    interactive_variogram,
+    interactive_variogram_cloud,
 )
 
 from .prediction_maps import (
- interactive_prediction_map,
- interactive_uncertainty_map,
- interactive_3d_surface,
+    interactive_prediction_map,
+    interactive_uncertainty_map,
+    interactive_3d_surface,
 )
 
 from .comparison import (
- interactive_comparison,
- interactive_cross_validation,
+    interactive_comparison,
+    interactive_cross_validation,
 )
 
 __all__ = [
- # Variogram plots
- 'interactive_variogram',
- 'interactive_variogram_cloud',
- # Prediction maps
- 'interactive_prediction_map',
- 'interactive_uncertainty_map',
- 'interactive_3d_surface',
- # Comparison
- 'interactive_comparison',
- 'interactive_cross_validation',
+    # Variogram plots
+    "interactive_variogram",
+    "interactive_variogram_cloud",
+    # Prediction maps
+    "interactive_prediction_map",
+    "interactive_uncertainty_map",
+    "interactive_3d_surface",
+    # Comparison
+    "interactive_comparison",
+    "interactive_cross_validation",
 ]

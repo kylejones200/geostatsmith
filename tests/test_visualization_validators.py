@@ -12,18 +12,20 @@ Tests:
 import pytest
 import numpy as np
 import matplotlib
-matplotlib.use('Agg') # Use non-interactive backend for testing
+
+matplotlib.use("Agg")  # Use non-interactive backend for testing
 import matplotlib.pyplot as plt
 
 from geostats import variogram
 from geostats.visualization import spatial_plots, variogram_plots, diagnostic_plots
 from geostats.core.validators import (
- validate_coordinates,
- validate_values,
- validate_positive,
- validate_array_shapes_match
+    validate_coordinates,
+    validate_values,
+    validate_positive,
+    validate_array_shapes_match,
 )
-from geostats.models.variogram_models import SphericalModel, ExponentialModel
+from geostats.models.variogram_models import SphericalModel
+
 
 class TestSpatialPlots:
     """Tests for spatial plotting functions"""
@@ -38,7 +40,7 @@ class TestSpatialPlots:
 
     def teardown_method(self):
         """Close all plots after each test"""
-        plt.close('all')
+        plt.close("all")
 
     def test_scatter_plot(self):
         """Test basic scatter plot creation"""
@@ -50,10 +52,7 @@ class TestSpatialPlots:
 
     def test_scatter_plot_with_colorbar(self):
         """Test scatter plot with colorbar"""
-        fig, ax = spatial_plots.plot_data_points(
-        self.x, self.y, self.z,
-        colorbar=True
-        )
+        fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z, colorbar=True)
 
         assert fig is not None
         plt.close(fig)
@@ -86,8 +85,7 @@ class TestSpatialPlots:
     def test_plot_with_title(self):
         """Test plot with custom title"""
         fig, ax = spatial_plots.plot_data_points(
-        self.x, self.y, self.z,
-        title="Test Plot"
+            self.x, self.y, self.z, title="Test Plot"
         )
 
         assert ax.get_title() == "Test Plot"
@@ -96,14 +94,13 @@ class TestSpatialPlots:
     def test_plot_with_labels(self):
         """Test plot with axis labels"""
         fig, ax = spatial_plots.plot_data_points(
-        self.x, self.y, self.z,
-        xlabel="X Coordinate",
-        ylabel="Y Coordinate"
+            self.x, self.y, self.z, xlabel="X Coordinate", ylabel="Y Coordinate"
         )
 
         assert "X Coordinate" in ax.get_xlabel()
         assert "Y Coordinate" in ax.get_ylabel()
         plt.close(fig)
+
 
 class TestVariogramPlots:
     """Tests for variogram plotting functions"""
@@ -118,22 +115,22 @@ class TestVariogramPlots:
 
         # Compute experimental variogram
         self.lags, self.gamma, self.n_pairs = variogram.experimental_variogram(
-        x, y, z, n_lags=15
+            x, y, z, n_lags=15
         )
 
         # Fit model
-        self.model = variogram.fit_model('spherical', self.lags, self.gamma, weights=self.n_pairs)
+        self.model = variogram.fit_model(
+            "spherical", self.lags, self.gamma, weights=self.n_pairs
+        )
 
     def teardown_method(self):
         """Close all plots"""
-        plt.close('all')
+        plt.close("all")
 
     def test_plot_experimental_variogram(self):
         """Test plotting experimental variogram"""
         fig, ax = variogram_plots.plot_experimental_variogram(
-        self.lags,
-        self.gamma,
-        n_pairs=self.n_pairs
+            self.lags, self.gamma, n_pairs=self.n_pairs
         )
 
         assert fig is not None
@@ -142,10 +139,7 @@ class TestVariogramPlots:
 
     def test_plot_variogram_model(self):
         """Test plotting variogram model"""
-        fig, ax = variogram_plots.plot_variogram_model(
-        self.model,
-        max_distance=100
-        )
+        fig, ax = variogram_plots.plot_variogram_model(self.model, max_distance=100)
 
         assert fig is not None
         plt.close(fig)
@@ -153,10 +147,7 @@ class TestVariogramPlots:
     def test_plot_experimental_and_model(self):
         """Test plotting experimental variogram with fitted model"""
         fig, ax = variogram_plots.plot_variogram_with_model(
-        self.lags,
-        self.gamma,
-        self.model,
-        n_pairs=self.n_pairs
+            self.lags, self.gamma, self.model, n_pairs=self.n_pairs
         )
 
         assert fig is not None
@@ -174,6 +165,7 @@ class TestVariogramPlots:
         assert fig is not None
         plt.close(fig)
 
+
 class TestDiagnosticPlots:
     """Tests for diagnostic plotting functions"""
 
@@ -187,7 +179,7 @@ class TestDiagnosticPlots:
 
     def teardown_method(self):
         """Close all plots"""
-        plt.close('all')
+        plt.close("all")
 
     def test_qq_plot(self):
         """Test Q-Q plot"""
@@ -205,20 +197,14 @@ class TestDiagnosticPlots:
 
     def test_scatterplot_observed_vs_predicted(self):
         """Test observed vs predicted scatter plot"""
-        fig, ax = diagnostic_plots.plot_obs_vs_pred(
-        self.observed,
-        self.predicted
-        )
+        fig, ax = diagnostic_plots.plot_obs_vs_pred(self.observed, self.predicted)
 
         assert fig is not None
         plt.close(fig)
 
     def test_residual_plot(self):
         """Test residual plot"""
-        fig, ax = diagnostic_plots.plot_residuals(
-        self.predicted,
-        self.residuals
-        )
+        fig, ax = diagnostic_plots.plot_residuals(self.predicted, self.residuals)
 
         assert fig is not None
         plt.close(fig)
@@ -229,6 +215,7 @@ class TestDiagnosticPlots:
 
         assert fig is not None
         plt.close(fig)
+
 
 class TestValidators:
     """Tests for input validation functions"""
@@ -320,6 +307,7 @@ class TestValidators:
         with pytest.raises((ValueError, AssertionError)):
             validate_array_shapes_match(a, b)
 
+
 class TestParameterValidation:
     """Tests for parameter validation"""
 
@@ -381,7 +369,7 @@ class TestPlotSaving:
 
     def teardown_method(self):
         """Close all plots"""
-        plt.close('all')
+        plt.close("all")
 
     def test_save_plot_to_file(self):
         """Test saving plot to file"""
@@ -391,7 +379,7 @@ class TestPlotSaving:
         fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z)
 
         # Save to temporary file
-        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
             tmp_path = tmp.name
 
             try:

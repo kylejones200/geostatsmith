@@ -28,38 +28,38 @@ Examples
 """
 
 from .parallel import (
- parallel_kriging,
- parallel_cross_validation,
- parallel_variogram_fit,
+    parallel_kriging,
+    parallel_cross_validation,
+    parallel_variogram_fit,
 )
 
 from .chunked import (
- ChunkedKriging,
- chunked_predict,
+    ChunkedKriging,
+    chunked_predict,
 )
 
 from .caching import (
- CachedKriging,
- clear_cache,
+    CachedKriging,
+    clear_cache,
 )
 
 from .approximate import (
- approximate_kriging,
- coarse_to_fine,
+    approximate_kriging,
+    coarse_to_fine,
 )
 
 __all__ = [
- # Parallel processing
- 'parallel_kriging',
- 'parallel_cross_validation',
- 'parallel_variogram_fit',
- # Chunked processing
- 'ChunkedKriging',
- 'chunked_predict',
- # Caching
- 'CachedKriging',
- 'clear_cache',
- # Approximate methods
- 'approximate_kriging',
- 'coarse_to_fine',
+    # Parallel processing
+    "parallel_kriging",
+    "parallel_cross_validation",
+    "parallel_variogram_fit",
+    # Chunked processing
+    "ChunkedKriging",
+    "chunked_predict",
+    # Caching
+    "CachedKriging",
+    "clear_cache",
+    # Approximate methods
+    "approximate_kriging",
+    "coarse_to_fine",
 ]

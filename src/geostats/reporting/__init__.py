@@ -24,22 +24,22 @@ Examples
 """
 
 from .report_generator import (
- generate_report,
- create_kriging_report,
- create_validation_report,
+    generate_report,
+    create_kriging_report,
+    create_validation_report,
 )
 
 from .templates import (
- ReportTemplate,
- KrigingTemplate,
- ValidationTemplate,
+    ReportTemplate,
+    KrigingTemplate,
+    ValidationTemplate,
 )
 
 __all__ = [
- 'generate_report',
- 'create_kriging_report',
- 'create_validation_report',
- 'ReportTemplate',
- 'KrigingTemplate',
- 'ValidationTemplate',
+    "generate_report",
+    "create_kriging_report",
+    "create_validation_report",
+    "ReportTemplate",
+    "KrigingTemplate",
+    "ValidationTemplate",
 ]

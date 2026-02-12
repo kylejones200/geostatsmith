@@ -64,7 +64,7 @@ class DisjunctiveKriging(BaseKriging):
         z: npt.NDArray[np.float64],
         variogram_model: Optional[object] = None,
         max_hermite_order: int = 20,
-        kriging_type: str = 'ordinary',
+        kriging_type: str = "ordinary",
         mean: Optional[float] = None,
     ):
         """
@@ -93,17 +93,19 @@ class DisjunctiveKriging(BaseKriging):
 
         self.max_hermite_order = max_hermite_order
         self.kriging_type = kriging_type.lower()
-        if self.kriging_type not in ['simple', 'ordinary']:
-            raise ValueError(f"kriging_type must be 'simple' or 'ordinary', got '{kriging_type}'")
+        if self.kriging_type not in ["simple", "ordinary"]:
+            raise ValueError(
+                f"kriging_type must be 'simple' or 'ordinary', got '{kriging_type}'"
+            )
 
         # Step 1: Transform data to standard normal using Hermite expansion
         self._fit_hermite_expansion()
-        
+
         # Step 2: Transform z to Gaussian space
         self.y_gaussian = self._transform_to_gaussian(self.z)
 
         # Mean for simple kriging
-        if self.kriging_type == 'simple':
+        if self.kriging_type == "simple":
             self.mean = mean if mean is not None else np.mean(self.y_gaussian)
         else:
             self.mean = None
@@ -132,10 +134,10 @@ class DisjunctiveKriging(BaseKriging):
         # Fit Hermite expansion coefficients
         # We'll use a simplified approach: fit polynomial expansion
         # In practice, this uses the orthogonality of Hermite polynomials
-        
+
         # For each Hermite polynomial order, compute coefficient
         self.hermite_coeffs = np.zeros(self.max_hermite_order + 1)
-        
+
         # Compute coefficients using orthogonality property
         # φᵢ = E[Z * Hᵢ(Y)] / i! (for normalized Hermite polynomials)
         for i in range(self.max_hermite_order + 1):
@@ -151,9 +153,13 @@ class DisjunctiveKriging(BaseKriging):
         self.sorted_z = sorted_z
         self.y_normal = y_normal
 
-        logger.debug(f"Fitted Hermite expansion with {self.max_hermite_order + 1} terms")
+        logger.debug(
+            f"Fitted Hermite expansion with {self.max_hermite_order + 1} terms"
+        )
 
-    def _transform_to_gaussian(self, z_values: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    def _transform_to_gaussian(
+        self, z_values: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         """
         Transform original values to Gaussian space
 
@@ -173,16 +179,18 @@ class DisjunctiveKriging(BaseKriging):
         sorted_indices = np.argsort(z_values)
         ranks = np.empty_like(sorted_indices)
         ranks[sorted_indices] = np.arange(n)
-        
+
         # Empirical CDF values
         cdf_values = (ranks + 0.5) / n
-        
+
         # Map to standard normal quantiles
         y_gaussian = stats.norm.ppf(np.clip(cdf_values, 1e-10, 1 - 1e-10))
-        
+
         return y_gaussian
 
-    def _transform_from_gaussian(self, y_gaussian: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    def _transform_from_gaussian(
+        self, y_gaussian: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         """
         Transform Gaussian values back to original space using Hermite expansion
 
@@ -198,11 +206,11 @@ class DisjunctiveKriging(BaseKriging):
         """
         # Use Hermite expansion: Z = Σᵢ φᵢ Hᵢ(Y)
         z_pred = np.zeros_like(y_gaussian)
-        
+
         for i in range(len(self.hermite_coeffs)):
             if abs(self.hermite_coeffs[i]) < 1e-10:
                 continue  # Skip negligible terms
-            
+
             hermite_poly = hermitenorm(i)
             h_values = hermite_poly(y_gaussian)
             z_pred += self.hermite_coeffs[i] * np.math.factorial(i) * h_values
@@ -219,7 +227,7 @@ class DisjunctiveKriging(BaseKriging):
 
         n = self.n_points
 
-        if self.kriging_type == 'simple':
+        if self.kriging_type == "simple":
             # Simple kriging: just covariance matrix
             self.kriging_matrix = gamma_matrix
         else:
@@ -231,15 +239,11 @@ class DisjunctiveKriging(BaseKriging):
             self.kriging_matrix[n, n] = 0.0
 
         # Regularize for numerical stability
-        if self.kriging_type == 'simple':
-            self.kriging_matrix = regularize_matrix(
-                self.kriging_matrix,
-                epsilon=1e-10
-            )
+        if self.kriging_type == "simple":
+            self.kriging_matrix = regularize_matrix(self.kriging_matrix, epsilon=1e-10)
         else:
             self.kriging_matrix[:n, :n] = regularize_matrix(
-                self.kriging_matrix[:n, :n],
-                epsilon=1e-10
+                self.kriging_matrix[:n, :n], epsilon=1e-10
             )
 
     def predict(
@@ -287,7 +291,7 @@ class DisjunctiveKriging(BaseKriging):
             # Variogram vector
             gamma_vec = self.variogram_model(dist_to_samples)
 
-            if self.kriging_type == 'simple':
+            if self.kriging_type == "simple":
                 # Simple kriging in Gaussian space
                 rhs = gamma_vec
                 try:
@@ -300,7 +304,9 @@ class DisjunctiveKriging(BaseKriging):
                     continue
 
                 # Prediction: Ŷ = μ + Σλᵢ(Yᵢ - μ)
-                y_pred_gaussian[i] = self.mean + np.dot(weights, self.y_gaussian - self.mean)
+                y_pred_gaussian[i] = self.mean + np.dot(
+                    weights, self.y_gaussian - self.mean
+                )
 
                 # Variance in Gaussian space
                 if return_variance:
@@ -309,7 +315,7 @@ class DisjunctiveKriging(BaseKriging):
             else:
                 # Ordinary kriging in Gaussian space
                 rhs = np.zeros(self.n_points + 1)
-                rhs[:self.n_points] = gamma_vec
+                rhs[: self.n_points] = gamma_vec
                 rhs[self.n_points] = 1.0
 
                 try:
@@ -321,7 +327,7 @@ class DisjunctiveKriging(BaseKriging):
                         y_var_gaussian[i] = 0.0
                     continue
 
-                weights = solution[:self.n_points]
+                weights = solution[: self.n_points]
                 lagrange = solution[self.n_points]
 
                 # Prediction: Ŷ = ΣλᵢYᵢ
@@ -333,9 +339,10 @@ class DisjunctiveKriging(BaseKriging):
                     if y_var_gaussian[i] < 0.0:
                         if y_var_gaussian[i] < -1e-6:
                             import warnings
+
                             warnings.warn(
                                 f"Negative kriging variance {y_var_gaussian[i]:.6e} at prediction point {i}.",
-                                RuntimeWarning
+                                RuntimeWarning,
                             )
                         y_var_gaussian[i] = 0.0
 
@@ -360,15 +367,20 @@ class DisjunctiveKriging(BaseKriging):
                     if j > 0:
                         hermite_deriv = hermitenorm(j - 1)
                         h_deriv_values = hermite_deriv(y_pred_gaussian[i])
-                        dzdY += self.hermite_coeffs[j] * np.math.factorial(j) * j * h_deriv_values
-                
+                        dzdY += (
+                            self.hermite_coeffs[j]
+                            * np.math.factorial(j)
+                            * j
+                            * h_deriv_values
+                        )
+
                 # If derivative is too small, use empirical scaling
                 if abs(dzdY) < 1e-6:
                     # Fallback: use ratio of variances
                     var_ratio = np.var(self.z) / max(np.var(self.y_gaussian), 1e-10)
                     variances[i] = y_var_gaussian[i] * var_ratio
                 else:
-                    variances[i] = y_var_gaussian[i] * (dzdY ** 2)
+                    variances[i] = y_var_gaussian[i] * (dzdY**2)
 
             return predictions, variances
         else:

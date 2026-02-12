@@ -28,17 +28,17 @@ ensemble : Ensemble geostatistical methods
 """
 
 from .regression_kriging import (
- RegressionKriging,
- RandomForestKriging,
- XGBoostKriging,
+    RegressionKriging,
+    RandomForestKriging,
+    XGBoostKriging,
 )
 from .gaussian_process import GaussianProcessGeostat
 from .ensemble import EnsembleKriging
 
 __all__ = [
- 'RegressionKriging',
- 'RandomForestKriging',
- 'XGBoostKriging',
- 'GaussianProcessGeostat',
- 'EnsembleKriging',
+    "RegressionKriging",
+    "RandomForestKriging",
+    "XGBoostKriging",
+    "GaussianProcessGeostat",
+    "EnsembleKriging",
 ]

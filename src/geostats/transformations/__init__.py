@@ -14,14 +14,14 @@ from .boxcox import BoxCoxTransform, boxcox_transform
 from .declustering import cell_declustering, polygonal_declustering
 
 __all__ = [
- 'NormalScoreTransform',
- 'normal_score_transform',
- 'back_transform',
- 'LogTransform',
- 'log_transform',
- 'log_back_transform',
- 'BoxCoxTransform',
- 'boxcox_transform',
- 'cell_declustering',
- 'polygonal_declustering',
+    "NormalScoreTransform",
+    "normal_score_transform",
+    "back_transform",
+    "LogTransform",
+    "log_transform",
+    "log_back_transform",
+    "BoxCoxTransform",
+    "boxcox_transform",
+    "cell_declustering",
+    "polygonal_declustering",
 ]

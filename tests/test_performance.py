@@ -45,7 +45,9 @@ class TestParallelKriging:
         self.n_samples = 50
         self.x = np.random.uniform(0, 100, self.n_samples)
         self.y = np.random.uniform(0, 100, self.n_samples)
-        self.z = 50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        self.z = (
+            50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        )
 
         # Fit variogram
         lags, gamma, n_pairs = experimental_variogram(self.x, self.y, self.z, n_lags=10)
@@ -59,11 +61,14 @@ class TestParallelKriging:
     def test_parallel_kriging_basic(self):
         """Test basic parallel kriging"""
         pred, var = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_jobs=2,
-            return_variance=True
+            return_variance=True,
         )
 
         assert len(pred) == self.n_pred
@@ -75,11 +80,14 @@ class TestParallelKriging:
     def test_parallel_kriging_single_job(self):
         """Test parallel kriging with single job"""
         pred, var = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_jobs=1,
-            return_variance=True
+            return_variance=True,
         )
 
         assert len(pred) == self.n_pred
@@ -88,11 +96,14 @@ class TestParallelKriging:
     def test_parallel_kriging_all_cores(self):
         """Test parallel kriging with all cores"""
         pred, var = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_jobs=-1,
-            return_variance=True
+            return_variance=True,
         )
 
         assert len(pred) == self.n_pred
@@ -101,10 +112,13 @@ class TestParallelKriging:
     def test_parallel_kriging_without_variance(self):
         """Test parallel kriging without variance"""
         pred, var = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            return_variance=False
+            return_variance=False,
         )
 
         assert len(pred) == self.n_pred
@@ -113,19 +127,25 @@ class TestParallelKriging:
     def test_parallel_kriging_batch_size(self):
         """Test parallel kriging with different batch sizes"""
         pred1, var1 = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             batch_size=50,
-            n_jobs=2
+            n_jobs=2,
         )
 
         pred2, var2 = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             batch_size=100,
-            n_jobs=2
+            n_jobs=2,
         )
 
         # Results should be similar (within numerical precision)
@@ -136,18 +156,24 @@ class TestParallelKriging:
         """Test that parallel kriging matches sequential"""
         # Sequential (single job)
         pred_seq, var_seq = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            n_jobs=1
+            n_jobs=1,
         )
 
         # Parallel
         pred_par, var_par = parallel_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            n_jobs=2
+            n_jobs=2,
         )
 
         # Should be identical
@@ -157,47 +183,53 @@ class TestParallelKriging:
     def test_parallel_cross_validation_loo(self):
         """Test parallel leave-one-out cross-validation"""
         results = parallel_cross_validation(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            method='leave_one_out',
-            n_jobs=2
+            method="leave_one_out",
+            n_jobs=2,
         )
 
-        assert 'predictions' in results
-        assert 'variances' in results
-        assert 'errors' in results
-        assert 'rmse' in results
-        assert 'mae' in results
-        assert 'r2' in results
-        assert 'observed' in results
+        assert "predictions" in results
+        assert "variances" in results
+        assert "errors" in results
+        assert "rmse" in results
+        assert "mae" in results
+        assert "r2" in results
+        assert "observed" in results
 
-        assert len(results['predictions']) == self.n_samples
-        assert len(results['variances']) == self.n_samples
-        assert np.isfinite(results['rmse'])
-        assert np.isfinite(results['r2'])
+        assert len(results["predictions"]) == self.n_samples
+        assert len(results["variances"]) == self.n_samples
+        assert np.isfinite(results["rmse"])
+        assert np.isfinite(results["r2"])
 
     def test_parallel_cross_validation_kfold(self):
         """Test parallel k-fold cross-validation"""
         results = parallel_cross_validation(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            method='k_fold',
+            method="k_fold",
             n_folds=5,
-            n_jobs=2
+            n_jobs=2,
         )
 
-        assert 'predictions' in results
-        assert 'rmse' in results
-        assert len(results['predictions']) == self.n_samples
-        assert np.isfinite(results['rmse'])
+        assert "predictions" in results
+        assert "rmse" in results
+        assert len(results["predictions"]) == self.n_samples
+        assert np.isfinite(results["rmse"])
 
     def test_parallel_cross_validation_invalid_method(self):
         """Test that invalid method raises error"""
         with pytest.raises(ValueError, match="Unknown method"):
             parallel_cross_validation(
-                self.x, self.y, self.z,
+                self.x,
+                self.y,
+                self.z,
                 variogram_model=self.model,
-                method='invalid_method'
+                method="invalid_method",
             )
 
 
@@ -231,21 +263,25 @@ class TestCaching:
     def test_cached_kriging_initialization(self):
         """Test CachedKriging initialization"""
         cached = CachedKriging(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            cache_dir=self.temp_cache
+            cache_dir=self.temp_cache,
         )
 
         assert cached.krig is not None
         assert cached.cache_dir == self.temp_cache
-        assert hasattr(cached, 'data_hash')
+        assert hasattr(cached, "data_hash")
 
     def test_cached_kriging_first_call(self):
         """Test that first call computes and caches"""
         cached = CachedKriging(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            cache_dir=self.temp_cache
+            cache_dir=self.temp_cache,
         )
 
         # First call should compute
@@ -263,9 +299,11 @@ class TestCaching:
     def test_cached_kriging_second_call(self):
         """Test that second call uses cache"""
         cached = CachedKriging(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            cache_dir=self.temp_cache
+            cache_dir=self.temp_cache,
         )
 
         # First call
@@ -281,9 +319,11 @@ class TestCaching:
     def test_cached_kriging_without_cache(self):
         """Test that use_cache=False bypasses cache"""
         cached = CachedKriging(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            cache_dir=self.temp_cache
+            cache_dir=self.temp_cache,
         )
 
         # First call with cache
@@ -298,9 +338,11 @@ class TestCaching:
     def test_cached_kriging_different_locations(self):
         """Test that different locations create different cache entries"""
         cached = CachedKriging(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            cache_dir=self.temp_cache
+            cache_dir=self.temp_cache,
         )
 
         x_pred1 = np.array([50.0, 60.0])
@@ -323,9 +365,11 @@ class TestCaching:
     def test_clear_cache(self):
         """Test clearing cache"""
         cached = CachedKriging(
-            self.x, self.y, self.z,
+            self.x,
+            self.y,
+            self.z,
             variogram_model=self.model,
-            cache_dir=self.temp_cache
+            cache_dir=self.temp_cache,
         )
 
         # Create some cache entries
@@ -336,7 +380,7 @@ class TestCaching:
         n_deleted = clear_cache(cache_dir=self.temp_cache)
 
         assert n_deleted >= 2
-        assert len(list(self.temp_cache.glob('*.pkl'))) == 0
+        assert len(list(self.temp_cache.glob("*.pkl"))) == 0
 
     def test_clear_cache_empty(self):
         """Test clearing empty cache"""
@@ -365,30 +409,21 @@ class TestChunkedProcessing:
 
     def test_chunked_kriging_initialization(self):
         """Test ChunkedKriging initialization"""
-        chunked = ChunkedKriging(
-            self.x, self.y, self.z,
-            variogram_model=self.model
-        )
+        chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         assert chunked.krig is not None
         assert chunked.variogram_model is not None
 
     def test_predict_chunked(self):
         """Test chunked prediction"""
-        chunked = ChunkedKriging(
-            self.x, self.y, self.z,
-            variogram_model=self.model
-        )
+        chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_2d, y_2d = np.meshgrid(self.x_grid, self.y_grid)
         x_flat = x_2d.ravel()
         y_flat = y_2d.ravel()
 
         pred, var = chunked.predict_chunked(
-            x_flat, y_flat,
-            chunk_size=1000,
-            return_variance=True,
-            verbose=False
+            x_flat, y_flat, chunk_size=1000, return_variance=True, verbose=False
         )
 
         assert len(pred) == len(x_flat)
@@ -398,20 +433,14 @@ class TestChunkedProcessing:
 
     def test_predict_chunked_without_variance(self):
         """Test chunked prediction without variance"""
-        chunked = ChunkedKriging(
-            self.x, self.y, self.z,
-            variogram_model=self.model
-        )
+        chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_2d, y_2d = np.meshgrid(self.x_grid, self.y_grid)
         x_flat = x_2d.ravel()
         y_flat = y_2d.ravel()
 
         pred, var = chunked.predict_chunked(
-            x_flat, y_flat,
-            chunk_size=1000,
-            return_variance=False,
-            verbose=False
+            x_flat, y_flat, chunk_size=1000, return_variance=False, verbose=False
         )
 
         assert len(pred) == len(x_flat)
@@ -419,16 +448,14 @@ class TestChunkedProcessing:
 
     def test_predict_large_grid(self):
         """Test prediction on large grid"""
-        chunked = ChunkedKriging(
-            self.x, self.y, self.z,
-            variogram_model=self.model
-        )
+        chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         z_grid, var_grid = chunked.predict_large_grid(
-            self.x_grid, self.y_grid,
+            self.x_grid,
+            self.y_grid,
             chunk_size=2000,
             return_variance=True,
-            verbose=False
+            verbose=False,
         )
 
         assert z_grid.shape == (len(self.y_grid), len(self.x_grid))
@@ -438,15 +465,10 @@ class TestChunkedProcessing:
 
     def test_predict_large_grid_without_variance(self):
         """Test large grid prediction without variance"""
-        chunked = ChunkedKriging(
-            self.x, self.y, self.z,
-            variogram_model=self.model
-        )
+        chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         z_grid, var_grid = chunked.predict_large_grid(
-            self.x_grid, self.y_grid,
-            return_variance=False,
-            verbose=False
+            self.x_grid, self.y_grid, return_variance=False, verbose=False
         )
 
         assert z_grid.shape == (len(self.y_grid), len(self.x_grid))
@@ -459,11 +481,14 @@ class TestChunkedProcessing:
         y_flat = y_2d.ravel()[:500]
 
         pred, var = chunked_predict(
-            self.x, self.y, self.z,
-            x_flat, y_flat,
+            self.x,
+            self.y,
+            self.z,
+            x_flat,
+            y_flat,
             variogram_model=self.model,
             chunk_size=100,
-            return_variance=True
+            return_variance=True,
         )
 
         assert len(pred) == len(x_flat)
@@ -472,10 +497,7 @@ class TestChunkedProcessing:
 
     def test_chunked_consistency(self):
         """Test that chunked results match non-chunked"""
-        chunked = ChunkedKriging(
-            self.x, self.y, self.z,
-            variogram_model=self.model
-        )
+        chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         # Small grid for comparison
         x_small = np.linspace(0, 100, 20)
@@ -486,16 +508,12 @@ class TestChunkedProcessing:
 
         # Chunked
         pred_chunked, var_chunked = chunked.predict_chunked(
-            x_flat, y_flat,
-            chunk_size=50,
-            return_variance=True,
-            verbose=False
+            x_flat, y_flat, chunk_size=50, return_variance=True, verbose=False
         )
 
         # Non-chunked (direct)
         pred_direct, var_direct = chunked.krig.predict(
-            x_flat, y_flat,
-            return_variance=True
+            x_flat, y_flat, return_variance=True
         )
 
         # Should be identical
@@ -504,10 +522,7 @@ class TestChunkedProcessing:
 
     def test_different_chunk_sizes(self):
         """Test that different chunk sizes give same results"""
-        chunked = ChunkedKriging(
-            self.x, self.y, self.z,
-            variogram_model=self.model
-        )
+        chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_small = np.linspace(0, 100, 30)
         y_small = np.linspace(0, 100, 30)
@@ -516,15 +531,11 @@ class TestChunkedProcessing:
         y_flat = y_2d.ravel()
 
         pred1, var1 = chunked.predict_chunked(
-            x_flat, y_flat,
-            chunk_size=100,
-            verbose=False
+            x_flat, y_flat, chunk_size=100, verbose=False
         )
 
         pred2, var2 = chunked.predict_chunked(
-            x_flat, y_flat,
-            chunk_size=200,
-            verbose=False
+            x_flat, y_flat, chunk_size=200, verbose=False
         )
 
         # Should be identical
@@ -541,7 +552,9 @@ class TestApproximateKriging:
         self.n_samples = 100
         self.x = np.random.uniform(0, 100, self.n_samples)
         self.y = np.random.uniform(0, 100, self.n_samples)
-        self.z = 50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        self.z = (
+            50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        )
 
         # Fit variogram
         lags, gamma, n_pairs = experimental_variogram(self.x, self.y, self.z, n_lags=10)
@@ -555,10 +568,13 @@ class TestApproximateKriging:
     def test_approximate_kriging_basic(self):
         """Test basic approximate kriging"""
         pred, var = approximate_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            max_neighbors=30
+            max_neighbors=30,
         )
 
         assert len(pred) == self.n_pred
@@ -570,17 +586,23 @@ class TestApproximateKriging:
     def test_approximate_kriging_different_neighbors(self):
         """Test with different numbers of neighbors"""
         pred1, var1 = approximate_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            max_neighbors=20
+            max_neighbors=20,
         )
 
         pred2, var2 = approximate_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            max_neighbors=50
+            max_neighbors=50,
         )
 
         # Both should be valid
@@ -593,11 +615,14 @@ class TestApproximateKriging:
     def test_approximate_kriging_with_radius(self):
         """Test approximate kriging with search radius"""
         pred, var = approximate_kriging(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             max_neighbors=30,
-            search_radius=20.0
+            search_radius=20.0,
         )
 
         assert len(pred) == self.n_pred
@@ -612,10 +637,13 @@ class TestApproximateKriging:
 
         # Approximate kriging (with many neighbors, should be close)
         pred_approx, var_approx = approximate_kriging(
-            self.x, self.y, self.z,
-            self.x_pred[:10], self.y_pred[:10],
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred[:10],
+            self.y_pred[:10],
             variogram_model=self.model,
-            max_neighbors=80  # Use most neighbors
+            max_neighbors=80,  # Use most neighbors
         )
 
         # Should be reasonably close (within 5% for most points)
@@ -630,11 +658,14 @@ class TestApproximateKriging:
         y_far = np.array([1000.0, 2000.0])
 
         pred, var = approximate_kriging(
-            self.x, self.y, self.z,
-            x_far, y_far,
+            self.x,
+            self.y,
+            self.z,
+            x_far,
+            y_far,
             variogram_model=self.model,
             max_neighbors=10,
-            search_radius=5.0  # Very small radius
+            search_radius=5.0,  # Very small radius
         )
 
         # Should handle gracefully (may have NaN or inf)
@@ -647,10 +678,13 @@ class TestApproximateKriging:
         y_grid = np.linspace(0, 100, 50)
 
         pred, var = coarse_to_fine(
-            self.x, self.y, self.z,
-            x_grid, y_grid,
+            self.x,
+            self.y,
+            self.z,
+            x_grid,
+            y_grid,
             variogram_model=self.model,
-            coarse_factor=4
+            coarse_factor=4,
         )
 
         assert pred.shape == (len(y_grid), len(x_grid))
@@ -664,17 +698,23 @@ class TestApproximateKriging:
         y_grid = np.linspace(0, 100, 40)
 
         pred1, var1 = coarse_to_fine(
-            self.x, self.y, self.z,
-            x_grid, y_grid,
+            self.x,
+            self.y,
+            self.z,
+            x_grid,
+            y_grid,
             variogram_model=self.model,
-            coarse_factor=2
+            coarse_factor=2,
         )
 
         pred2, var2 = coarse_to_fine(
-            self.x, self.y, self.z,
-            x_grid, y_grid,
+            self.x,
+            self.y,
+            self.z,
+            x_grid,
+            y_grid,
             variogram_model=self.model,
-            coarse_factor=4
+            coarse_factor=4,
         )
 
         # Both should be valid

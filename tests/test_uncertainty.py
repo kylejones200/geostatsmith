@@ -27,7 +27,9 @@ class TestBootstrapUncertainty:
         self.n_samples = 50
         self.x = np.random.uniform(0, 100, self.n_samples)
         self.y = np.random.uniform(0, 100, self.n_samples)
-        self.z = 50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        self.z = (
+            50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        )
 
         # Fit variogram
         lags, gamma, n_pairs = experimental_variogram(self.x, self.y, self.z, n_lags=10)
@@ -41,87 +43,105 @@ class TestBootstrapUncertainty:
     def test_bootstrap_uncertainty_basic(self):
         """Test basic bootstrap uncertainty"""
         results = bootstrap_uncertainty(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_bootstrap=50,  # Reduced for speed
-            confidence_level=0.95
+            confidence_level=0.95,
         )
 
-        assert 'mean' in results
-        assert 'std' in results
-        assert 'lower_bound' in results
-        assert 'upper_bound' in results
-        assert 'all_predictions' in results
+        assert "mean" in results
+        assert "std" in results
+        assert "lower_bound" in results
+        assert "upper_bound" in results
+        assert "all_predictions" in results
 
-        assert len(results['mean']) == self.n_pred
-        assert len(results['std']) == self.n_pred
-        assert len(results['lower_bound']) == self.n_pred
-        assert len(results['upper_bound']) == self.n_pred
-        assert results['all_predictions'].shape == (50, self.n_pred)
+        assert len(results["mean"]) == self.n_pred
+        assert len(results["std"]) == self.n_pred
+        assert len(results["lower_bound"]) == self.n_pred
+        assert len(results["upper_bound"]) == self.n_pred
+        assert results["all_predictions"].shape == (50, self.n_pred)
 
         # Check bounds are reasonable
-        assert np.all(results['lower_bound'] <= results['mean'])
-        assert np.all(results['upper_bound'] >= results['mean'])
-        assert np.all(results['std'] >= 0)
+        assert np.all(results["lower_bound"] <= results["mean"])
+        assert np.all(results["upper_bound"] >= results["mean"])
+        assert np.all(results["std"] >= 0)
 
     def test_bootstrap_uncertainty_residual_method(self):
         """Test bootstrap with residual method"""
         results = bootstrap_uncertainty(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_bootstrap=30,
-            method='residual'
+            method="residual",
         )
 
-        assert len(results['mean']) == self.n_pred
-        assert np.all(np.isfinite(results['mean']))
+        assert len(results["mean"]) == self.n_pred
+        assert np.all(np.isfinite(results["mean"]))
 
     def test_bootstrap_uncertainty_pairs_method(self):
         """Test bootstrap with pairs method"""
         results = bootstrap_uncertainty(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_bootstrap=30,
-            method='pairs'
+            method="pairs",
         )
 
-        assert len(results['mean']) == self.n_pred
-        assert np.all(np.isfinite(results['mean']))
+        assert len(results["mean"]) == self.n_pred
+        assert np.all(np.isfinite(results["mean"]))
 
     def test_bootstrap_uncertainty_different_confidence(self):
         """Test bootstrap with different confidence levels"""
         results_90 = bootstrap_uncertainty(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_bootstrap=30,
-            confidence_level=0.90
+            confidence_level=0.90,
         )
 
         results_95 = bootstrap_uncertainty(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             n_bootstrap=30,
-            confidence_level=0.95
+            confidence_level=0.95,
         )
 
         # 95% CI should be wider than 90% CI
-        width_90 = results_90['upper_bound'] - results_90['lower_bound']
-        width_95 = results_95['upper_bound'] - results_95['lower_bound']
+        width_90 = results_90["upper_bound"] - results_90["lower_bound"]
+        width_95 = results_95["upper_bound"] - results_95["lower_bound"]
         assert np.all(width_95 >= width_90)
 
     def test_bootstrap_uncertainty_invalid_method(self):
         """Test that invalid method raises error"""
         with pytest.raises(ValueError, match="Unknown method"):
             bootstrap_uncertainty(
-                self.x, self.y, self.z,
-                self.x_pred, self.y_pred,
+                self.x,
+                self.y,
+                self.z,
+                self.x_pred,
+                self.y_pred,
                 variogram_model=self.model,
-                method='invalid'
+                method="invalid",
             )
 
 
@@ -134,7 +154,9 @@ class TestConfidenceIntervals:
         self.n_samples = 50
         self.x = np.random.uniform(0, 100, self.n_samples)
         self.y = np.random.uniform(0, 100, self.n_samples)
-        self.z = 50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        self.z = (
+            50 + 0.3 * self.x + 0.2 * self.y + np.random.normal(0, 3, self.n_samples)
+        )
 
         # Fit variogram
         lags, gamma, n_pairs = experimental_variogram(self.x, self.y, self.z, n_lags=10)
@@ -148,65 +170,72 @@ class TestConfidenceIntervals:
     def test_confidence_intervals_basic(self):
         """Test basic confidence intervals"""
         results = confidence_intervals(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            confidence_level=0.95
+            confidence_level=0.95,
         )
 
-        assert 'predictions' in results
-        assert 'std_errors' in results
-        assert 'lower_bound' in results
-        assert 'upper_bound' in results
-        assert 'confidence_level' in results
+        assert "predictions" in results
+        assert "std_errors" in results
+        assert "lower_bound" in results
+        assert "upper_bound" in results
+        assert "confidence_level" in results
 
-        assert len(results['predictions']) == self.n_pred
-        assert len(results['std_errors']) == self.n_pred
-        assert len(results['lower_bound']) == self.n_pred
-        assert len(results['upper_bound']) == self.n_pred
-        assert results['confidence_level'] == 0.95
+        assert len(results["predictions"]) == self.n_pred
+        assert len(results["std_errors"]) == self.n_pred
+        assert len(results["lower_bound"]) == self.n_pred
+        assert len(results["upper_bound"]) == self.n_pred
+        assert results["confidence_level"] == 0.95
 
         # Check bounds
-        assert np.all(results['lower_bound'] <= results['predictions'])
-        assert np.all(results['upper_bound'] >= results['predictions'])
-        assert np.all(results['std_errors'] >= 0)
+        assert np.all(results["lower_bound"] <= results["predictions"])
+        assert np.all(results["upper_bound"] >= results["predictions"])
+        assert np.all(results["std_errors"] >= 0)
 
     def test_confidence_intervals_different_levels(self):
         """Test confidence intervals with different levels"""
         results_90 = confidence_intervals(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            confidence_level=0.90
+            confidence_level=0.90,
         )
 
         results_95 = confidence_intervals(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
-            confidence_level=0.95
+            confidence_level=0.95,
         )
 
         # 95% CI should be wider
-        width_90 = results_90['upper_bound'] - results_90['lower_bound']
-        width_95 = results_95['upper_bound'] - results_95['lower_bound']
+        width_90 = results_90["upper_bound"] - results_90["lower_bound"]
+        width_95 = results_95["upper_bound"] - results_95["lower_bound"]
         assert np.all(width_95 >= width_90)
 
     def test_confidence_intervals_properties(self):
         """Test that confidence intervals have expected properties"""
         results = confidence_intervals(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
-            variogram_model=self.model
+            self.x, self.y, self.z, self.x_pred, self.y_pred, variogram_model=self.model
         )
 
         # Standard errors should be square root of variance
-        std_from_var = np.sqrt(results['variance'])
-        np.testing.assert_allclose(results['std_errors'], std_from_var, rtol=1e-10)
+        std_from_var = np.sqrt(results["variance"])
+        np.testing.assert_allclose(results["std_errors"], std_from_var, rtol=1e-10)
 
         # Margin should be symmetric
-        margin_lower = results['predictions'] - results['lower_bound']
-        margin_upper = results['upper_bound'] - results['predictions']
+        margin_lower = results["predictions"] - results["lower_bound"]
+        margin_upper = results["upper_bound"] - results["predictions"]
         np.testing.assert_allclose(margin_lower, margin_upper, rtol=1e-10)
 
 
@@ -234,12 +263,15 @@ class TestProbabilityMaps:
         """Test basic probability map"""
         threshold = 60.0
         prob = probability_map(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             threshold=threshold,
-            operator='>',
-            n_realizations=20  # Reduced for speed
+            operator=">",
+            n_realizations=20,  # Reduced for speed
         )
 
         assert len(prob) == self.n_pred
@@ -252,21 +284,27 @@ class TestProbabilityMaps:
         threshold = 60.0
 
         prob_gt = probability_map(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             threshold=threshold,
-            operator='>',
-            n_realizations=15
+            operator=">",
+            n_realizations=15,
         )
 
         prob_lt = probability_map(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             threshold=threshold,
-            operator='<',
-            n_realizations=15
+            operator="<",
+            n_realizations=15,
         )
 
         # P(Z > threshold) + P(Z < threshold) should be approximately 1
@@ -276,19 +314,25 @@ class TestProbabilityMaps:
     def test_probability_map_different_thresholds(self):
         """Test probability map with different thresholds"""
         prob_low = probability_map(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             threshold=40.0,
-            n_realizations=15
+            n_realizations=15,
         )
 
         prob_high = probability_map(
-            self.x, self.y, self.z,
-            self.x_pred, self.y_pred,
+            self.x,
+            self.y,
+            self.z,
+            self.x_pred,
+            self.y_pred,
             variogram_model=self.model,
             threshold=70.0,
-            n_realizations=15
+            n_realizations=15,
         )
 
         # Lower threshold should have higher probability of exceedance
@@ -298,9 +342,12 @@ class TestProbabilityMaps:
         """Test that invalid operator raises error"""
         with pytest.raises(ValueError, match="Unknown operator"):
             probability_map(
-                self.x, self.y, self.z,
-                self.x_pred, self.y_pred,
+                self.x,
+                self.y,
+                self.z,
+                self.x_pred,
+                self.y_pred,
                 variogram_model=self.model,
                 threshold=60.0,
-                operator='invalid'
+                operator="invalid",
             )

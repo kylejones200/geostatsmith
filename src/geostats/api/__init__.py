@@ -30,7 +30,7 @@ from .app import create_app, app
 from .endpoints import router
 
 __all__ = [
- 'create_app',
- 'app',
- 'router',
+    "create_app",
+    "app",
+    "router",
 ]
