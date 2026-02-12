@@ -31,9 +31,9 @@ try:
     )
     from geostats.io.raster import read_geotiff, write_geotiff
     from geostats.algorithms.ordinary_kriging import OrdinaryKriging
- from geostats.models.variogram_models import SphericalModel
- from geostats.algorithms.variogram import experimental_variogram
- from geostats.algorithms.fitting import fit_variogram_model as fit_variogram
+    from geostats.models.variogram_models import SphericalModel
+    from geostats.algorithms.variogram import experimental_variogram
+    from geostats.algorithms.fitting import fit_variogram_model as fit_variogram
 except ImportError:
  logger.error("Please install geostats: pip install -e .")
  exit(1)
