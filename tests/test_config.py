@@ -189,31 +189,34 @@ def test_cross_field_validation():
  assert 'indicator' in str(excinfo.value).lower()
 
 def test_neighborhood_validation():
- # max_neighbors < min_neighbors
- with pytest.raises(ConfigError):
-     'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
- },
- 'kriging': {
- 'neighborhood': {
- 'max_neighbors': 5,
- 'min_neighbors': 10 # Invalid: max < min
-
- })
+    # max_neighbors < min_neighbors
+    with pytest.raises(ConfigError):
+        load_config({
+            'data': {
+                'input_file': __file__,
+                'x_column': 'X',
+                'y_column': 'Y',
+                'z_column': 'Z'
+            },
+            'kriging': {
+                'neighborhood': {
+                    'max_neighbors': 5,
+                    'min_neighbors': 10  # Invalid: max < min
+                }
+            }
+        })
 
 def test_file_not_found_validation():
- with pytest.raises(ConfigError) as excinfo:
-     'data': {
- 'input_file': '/nonexistent/file.csv',
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
-
- })
- assert 'not found' in str(excinfo.value).lower()
+    with pytest.raises(ConfigError) as excinfo:
+        load_config({
+            'data': {
+                'input_file': '/nonexistent/file.csv',
+                'x_column': 'X',
+                'y_column': 'Y',
+                'z_column': 'Z'
+            }
+        })
+    assert 'not found' in str(excinfo.value).lower()
 
 if __name__ == '__main__':
     pytest.main([__file__])
