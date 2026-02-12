@@ -2,6 +2,7 @@
 Tests for advanced kriging algorithms
 
 Tests:
+    pass
 - 3D Kriging
 - Indicator Kriging
 - Lognormal Kriging
@@ -405,3 +406,4 @@ class TestAdvancedKrigingEdgeCases:
         assert len(indices) == 3
 
 if __name__ == "__main__":
+    pass

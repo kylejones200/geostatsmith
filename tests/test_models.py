@@ -98,8 +98,10 @@ class TestPowerModel:
 
     def test_exponent_constraint(self):
         with pytest.raises(ValueError):
+            pass
 
         with pytest.raises(ValueError):
+            pass
     """Test Matérn variogram model"""
 
     def test_initialization(self):
@@ -138,3 +140,4 @@ class TestModelFitting:
         assert abs(fitted_model.parameters['range'] - 30.0) < 10.0
 
 if __name__ == "__main__":
+    pass

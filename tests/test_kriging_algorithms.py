@@ -111,8 +111,10 @@ class TestSimpleKriging:
         )
 
         with pytest.raises(KrigingError):
+            pass
 
         with pytest.raises(KrigingError):
+            pass
         """Test prediction on regular grid"""
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
@@ -374,8 +376,10 @@ class TestKrigingEdgeCases:
 
         # NaN coordinates
         with pytest.raises((ValueError, Exception)):
+            pass
 
         with pytest.raises((ValueError, Exception)):
+            pass
     """Test kriging variance properties"""
 
     def test_variance_at_data_point_is_small(self):
@@ -428,3 +432,4 @@ class TestKrigingEdgeCases:
         assert var[0] > 0.8 # Close to sill of 1.0
 
 if __name__ == "__main__":
+    pass

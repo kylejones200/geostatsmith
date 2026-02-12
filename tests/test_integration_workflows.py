@@ -2,6 +2,7 @@
 Integration tests for complete geostatistical workflows
 
 Tests full end-to-end workflows:
+    pass
 - Data loading → Variogram → Kriging → Validation
 - Transform → Variogram → Kriging → Back-transform
 - Simulation workflows
@@ -451,3 +452,4 @@ class TestRobustnessAndEdgeCases:
         assert abs(pred[0] - 10.0) < 1.0
 
 if __name__ == "__main__":
+    pass
