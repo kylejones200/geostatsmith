@@ -286,20 +286,25 @@ class TestValidators:
         with pytest.raises((ValueError, AssertionError)):
 
 
+            pass
     """Tests for parameter validation"""
 
     def test_negative_nugget_rejected(self):
         with pytest.raises((ValueError, AssertionError)):
 
+            pass
         """Test that negative sill is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
+            pass
         """Test that negative range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
+            pass
         """Test that zero range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
+            pass
         """Test that valid parameters are accepted"""
         model = SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
 

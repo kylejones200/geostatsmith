@@ -112,13 +112,15 @@ def test_config_merging():
  base_config = load_config_dict(base_dict)
 
  # Override some values
- overrides = {
- 'project': {'name': 'Modified'},
- 'kriging': {
- 'method': 'simple',
- 'grid': {'resolution': 0.5}
+    overrides = {
+        'project': {'name': 'Modified'},
+        'kriging': {
+            'method': 'simple',
+            'grid': {'resolution': 0.5}
+        }
+    }
 
- merged = merge_configs(base_config, overrides)
+    merged = merge_configs(base_config, overrides)
 
  assert merged.project.name == 'Modified'
  assert merged.kriging.method == 'simple'

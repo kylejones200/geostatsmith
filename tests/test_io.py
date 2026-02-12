@@ -153,6 +153,7 @@ class TestCSVIO:
 
         with pytest.raises(KeyError, match="Missing columns"):
 
+            pass
         """Test basic CSV writing"""
         csv_file = self.temp_dir / "output.csv"
 
@@ -356,6 +357,7 @@ class TestNetCDFIO:
         with pytest.raises(KeyError, match="Variable"):
 
 
+            pass
     """Tests for data conversion utilities"""
 
     def setup_method(self):
