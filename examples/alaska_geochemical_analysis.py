@@ -81,7 +81,8 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
         value_col = None
 
     if value_col:
-    if value_col:
+        merged = merged[merged[value_col] > 0]
+        merged = merged.dropna(subset=[value_col])
 
     logger.info(f" After filtering: {len(merged):,} samples with valid {element} data")
 
