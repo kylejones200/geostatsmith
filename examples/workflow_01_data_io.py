@@ -168,31 +168,30 @@ def example_2_geotiff_workflow():
         logger.warning(" elevation_kriging.tif not found. Run Example 1 first.")
 
 def example_3_format_comparison():
- logger.info("Example 3: Format Comparison")
- 
+    logger.info("Example 3: Format Comparison")
+    
+    n = 100
+    x = np.linspace(0, 100, n)
+    y = np.linspace(0, 100, n)
+    z = np.random.rand(n)
 
- n = 100
- x = np.linspace(0, 100, n)
- y = np.linspace(0, 100, n)
- z = np.random.rand(n)
+    formats = []
 
- formats = []
+    start = time.time()
+    write_csv_spatial('test.csv', x, y, z)
+    formats.append(('CSV', time.time() - start, os.path.getsize('test.csv') / 1024))
 
- start = time.time()
- write_csv_spatial('test.csv', x, y, z)
- formats.append(('CSV', time.time() - start, os.path.getsize('test.csv') / 1024))
+    x_grid, y_grid = np.meshgrid(np.linspace(0, 100, 50), np.linspace(0, 100, 50))
+    z_grid = np.random.rand(50, 50)
+    try:
+        write_geotiff('test.tif', np.linspace(0, 100, 50), np.linspace(0, 100, 50), z_grid)
+        formats.append(('GeoTIFF', time.time() - start, os.path.getsize('test.tif') / 1024))
+    except ImportError:
+        logger.warning(" rasterio not available for GeoTIFF")
 
- x_grid, y_grid = np.meshgrid(np.linspace(0, 100, 50), np.linspace(0, 100, 50))
- z_grid = np.random.rand(50, 50)
-        try:
-            write_geotiff('test.tif', np.linspace(0, 100, 50), np.linspace(0, 100, 50), z_grid)
-            formats.append(('GeoTIFF', time.time() - start, os.path.getsize('test.tif') / 1024))
- except ImportError:
- logger.warning(" rasterio not available for GeoTIFF")
-
- logger.info("\nFormat Performance:")
- logger.info(f"{'Format':<15} {'Write Time (s)':<15} {'File Size (KB)':<15}")
- logger.info("-" * 45)
+    logger.info("\nFormat Performance:")
+    logger.info(f"{'Format':<15} {'Write Time (s)':<15} {'File Size (KB)':<15}")
+    logger.info("-" * 45)
     for fmt, t, s in formats:
         logger.info(f"{fmt:<15} {t:<15.4f} {s:<15.2f}")
 
