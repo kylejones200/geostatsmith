@@ -278,10 +278,11 @@ def turning_bands_simulation(
 
  try:
  try:
- w = np.random.randn(n)
- sim_1d = L @ w
- except:
- sim_1d = np.random.randn(n)
+     w = np.random.randn(n)
+     sim_1d = L @ w
+ except (np.linalg.LinAlgError, ValueError):
+     # If Cholesky decomposition fails, use random values
+     sim_1d = np.random.randn(n)
 
  # Unsort and add to simulation
  sim_1d_unsorted = np.zeros(n)

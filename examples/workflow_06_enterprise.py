@@ -56,6 +56,8 @@ def example_2_professional_reporting():
  logger.info(" Open in browser to view!")
 
  except Exception as e:
+     logger.error(f"Example 2 failed: {e}")
+     raise
 
 def example_3_advanced_diagnostics():
  logger.info("Example 3: Advanced Diagnostics")
@@ -85,6 +87,8 @@ def example_3_advanced_diagnostics():
  logger.info(results['diagnostics'])
 
  except Exception as e:
+     logger.error(f"Example 3 failed: {e}")
+     raise
 
 def example_4_web_api():
  logger.info("Example 4: Web API Deployment")
@@ -178,6 +182,8 @@ def example_5_complete_workflow():
  logger.info(f" Report: {report_path}")
 
  except Exception as e:
+     logger.error(f"Example 4 failed: {e}")
+     raise
 
 def main():
  logger.info("GEOSTATS PHASE 3: ENTERPRISE DEPLOYMENT")

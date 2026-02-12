@@ -78,22 +78,22 @@ class HealthResponse(BaseModel):
  modules_available = {}
 
  try:
- try:
- modules_available['performance'] = True
- except:
- modules_available['performance'] = False
+     from geostats.performance import parallel_kriging
+     modules_available['performance'] = True
+ except ImportError:
+     modules_available['performance'] = False
 
  try:
- try:
- modules_available['interactive'] = True
- except:
- modules_available['interactive'] = False
+     from geostats.interactive import create_interactive_map
+     modules_available['interactive'] = True
+ except ImportError:
+     modules_available['interactive'] = False
 
  try:
- try:
- modules_available['automl'] = True
- except:
- modules_available['automl'] = False
+     from geostats.automl import auto_method
+     modules_available['automl'] = True
+ except ImportError:
+     modules_available['automl'] = False
 
  return HealthResponse(
  status="healthy",

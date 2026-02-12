@@ -32,9 +32,10 @@ logger = logging.getLogger(__name__)
 
 # Performance features - skip if not available
 try:
-try:
-except:
- PERFORMANCE_AVAILABLE = False
+    from geostats.performance import parallel_kriging
+    PERFORMANCE_AVAILABLE = True
+except ImportError:
+    PERFORMANCE_AVAILABLE = False
 
 # Interactive viz - skip if not available
 PLOTLY_AVAILABLE = False # Not yet implemented

@@ -71,5 +71,7 @@ else:
  logger.info("To run the full analysis, use alaska_geochemical_analysis.py")
 
  except Exception as e:
+    logger.error(f"Test failed: {e}")
+    raise
 
 logger.info("TEST RUN COMPLETE")
