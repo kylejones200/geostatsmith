@@ -169,9 +169,6 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     """
     Analyze gold distribution for mineral exploration.
     """
-    """
-    Analyze gold distribution for mineral exploration.
-    """
     logger.info("GOLD EXPLORATION ANALYSIS")
 
  # Load Au data
