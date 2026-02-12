@@ -50,11 +50,12 @@ except ImportError:
 
 # Import raster functions if available
 if RASTERIO_AVAILABLE:
+    from geostats.io.raster import (
         read_ascii_grid,
         write_ascii_grid,
     )
 
-    # Import NetCDF functions if available
+# Import NetCDF functions if available
 if NETCDF_AVAILABLE:
     )
 

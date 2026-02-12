@@ -54,7 +54,7 @@ def test_config_validation():
             },
             'variogram': {
                 'n_lags': 'invalid'  # Should be int
-
+            }
         })
 
  # Invalid: value out of range

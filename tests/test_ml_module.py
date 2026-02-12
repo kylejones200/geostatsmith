@@ -286,11 +286,12 @@ class TestMLIntegration:
         predictions = []
         for method in methods:
             X = np.column_stack([x, y])
-        X_new = np.column_stack([x_new, y_new])
-        method.fit(X, z)
-        pred, _ = method.predict(X_new, return_std=True)
-        else:
-            pred, _ = method.predict(x_new, y_new, covariates_new=cov_new)
+            X_new = np.column_stack([x_new, y_new])
+            method.fit(X, z)
+            try:
+                pred, _ = method.predict(X_new, return_std=True)
+            except (TypeError, AttributeError):
+                pred, _ = method.predict(x_new, y_new, covariates_new=cov_new)
 
         predictions.append(pred[0])
 
