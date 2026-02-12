@@ -126,15 +126,17 @@ def test_config_merging():
  assert merged.data.x_column == 'X' # Preserved from base
 
 def test_default_values():
- config_dict = {
- 'project': {'name': 'Test', 'output_dir': './results'},
- 'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
+    config_dict = {
+        'project': {'name': 'Test', 'output_dir': './results'},
+        'data': {
+            'input_file': __file__,
+            'x_column': 'X',
+            'y_column': 'Y',
+            'z_column': 'Z'
+        }
+    }
 
- config = load_config_dict(config_dict)
+    config = load_config_dict(config_dict)
 
  # Check defaults
  assert config.preprocessing.remove_outliers == False

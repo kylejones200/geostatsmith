@@ -143,7 +143,9 @@ class TestCSVIO:
 
     def test_read_csv_spatial_file_not_found(self):
         with pytest.raises(FileNotFoundError):
+            read_csv_spatial('/nonexistent/file.csv', x_col='x', y_col='y', z_col='z')
 
+    def test_read_csv_spatial_missing_columns(self):
         """Test that missing columns raise error"""
         df = pd.DataFrame({"x": self.x, "y": self.y})  # Missing 'z'
         csv_file = self.temp_dir / "test.csv"

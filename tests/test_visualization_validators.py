@@ -260,10 +260,17 @@ class TestValidators:
         assert result == 5.0
 
     def test_validate_positive_rejects_negative(self):
+        value = -5.0
+        from geostats.validation.validators import validate_positive
         with pytest.raises((ValueError, AssertionError)):
+            validate_positive(value)
 
+    def test_validate_positive_rejects_zero(self):
         """Test that zero is rejected"""
+        value = 0.0
+        from geostats.validation.validators import validate_positive
         with pytest.raises((ValueError, AssertionError)):
+            validate_positive(value)
 
         """Test array shape validation"""
         a = np.array([1, 2, 3, 4, 5])
