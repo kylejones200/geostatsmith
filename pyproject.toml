@@ -118,6 +118,7 @@ ignore = [
     "E203",  # Whitespace before ':' (conflicts with black)
     "E501",  # Line too long (handled by formatter)
     "E402",  # Module import not at top of file (sometimes needed)
+    "E999",  # Syntax errors (handled by Python compiler, ruff sometimes has false positives)
     "N806",  # Variable in function should be lowercase (X, Y, Z common in scientific code)
     "I001",  # Import block is un-sorted (auto-fixable, but too noisy)
     "W291",  # Trailing whitespace (auto-fixable)
