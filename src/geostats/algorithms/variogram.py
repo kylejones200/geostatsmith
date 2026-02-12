@@ -66,38 +66,38 @@ def experimental_variogram(
  # Calculate squared differences
  z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
 
- # Determine lag bins
- if maxlag is None:
+    # Determine lag bins
+    if maxlag is None:
+        maxlag = np.max(dist) / 2.0
 
- if maxlag is None:
- lag_bins = np.linspace(0, maxlag, n_lags + 1)
- lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
+    lag_width = maxlag / n_lags
+    lag_bins = np.linspace(0, maxlag, n_lags + 1)
+    lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
- if lag_tol is None:
+    if lag_tol is None:
+        lag_tol = lag_width / 2.0
 
- if lag_tol is None:
- gamma = np.zeros(n_lags)
- n_pairs = np.zeros(n_lags, dtype=np.int64)
+    # Compute variogram for each lag
+    gamma = np.zeros(n_lags)
+    n_pairs = np.zeros(n_lags, dtype=np.int64)
 
- for i in range(n_lags):
- for i in range(n_lags):
- lag_min = lag_bins[i]
- lag_max = lag_bins[i + 1]
+    for i in range(n_lags):
+        lag_min = lag_bins[i]
+        lag_max = lag_bins[i + 1]
 
- # Use upper triangle only (avoid double counting)
- mask = (dist >= lag_min) & (dist < lag_max)
- mask = np.triu(mask, k=1) # Upper triangle, excluding diagonal
+        # Use upper triangle only (avoid double counting)
+        mask = (dist >= lag_min) & (dist < lag_max)
+        mask = np.triu(mask, k=1)  # Upper triangle, excluding diagonal
 
- n_pairs_lag = np.sum(mask)
+        n_pairs_lag = np.sum(mask)
 
- if n_pairs_lag > 0:
- if n_pairs_lag > 0:
- n_pairs[i] = n_pairs_lag
- else:
- else:
- n_pairs[i] = 0
+        if n_pairs_lag > 0:
+            gamma[i] = np.sum(z_diff_sq[mask]) / (2.0 * n_pairs_lag)
+            n_pairs[i] = n_pairs_lag
+        else:
+            n_pairs[i] = 0
 
- return lag_centers, gamma, n_pairs
+    return lag_centers, gamma, n_pairs
 
 def experimental_variogram_directional(
  y: npt.NDArray[np.float64],
