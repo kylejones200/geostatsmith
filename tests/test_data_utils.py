@@ -6,79 +6,79 @@ import numpy as np
 from geostats.utils.data_utils import generate_synthetic_data, split_train_test
 
 class TestGenerateSyntheticData:
- """Tests for synthetic data generation"""
+    """Tests for synthetic data generation"""
 
- def test_generate_synthetic_data_basic(self):
- """Test basic synthetic data generation"""
- x, y, z = generate_synthetic_data(n_points=50, seed=42)
+    def test_generate_synthetic_data_basic(self):
+        """Test basic synthetic data generation"""
+        x, y, z = generate_synthetic_data(n_points=50, seed=42)
 
- assert len(x) == 50
- assert len(y) == 50
- assert len(z) == 50
- assert not np.any(np.isnan(x))
- assert not np.any(np.isnan(y))
- assert not np.any(np.isnan(z))
+        assert len(x) == 50
+        assert len(y) == 50
+        assert len(z) == 50
+        assert not np.any(np.isnan(x))
+        assert not np.any(np.isnan(y))
+        assert not np.any(np.isnan(z))
 
- def test_generate_synthetic_data_reproducible(self):
- """Test that synthetic data generation is reproducible"""
- x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
- x2, y2, z2 = generate_synthetic_data(n_points=30, seed=42)
+    def test_generate_synthetic_data_reproducible(self):
+        """Test that synthetic data generation is reproducible"""
+        x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
+        x2, y2, z2 = generate_synthetic_data(n_points=30, seed=42)
 
- assert np.allclose(x1, x2)
- assert np.allclose(y1, y2)
- assert np.allclose(z1, z2)
+        assert np.allclose(x1, x2)
+        assert np.allclose(y1, y2)
+        assert np.allclose(z1, z2)
 
- def test_generate_synthetic_data_different_seeds(self):
- """Test that different seeds produce different data"""
- x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
- x2, y2, z2 = generate_synthetic_data(n_points=30, seed=123)
+    def test_generate_synthetic_data_different_seeds(self):
+        """Test that different seeds produce different data"""
+        x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
+        x2, y2, z2 = generate_synthetic_data(n_points=30, seed=123)
 
- assert not np.allclose(x1, x2)
- assert not np.allclose(y1, y2)
- assert not np.allclose(z1, z2)
+        assert not np.allclose(x1, x2)
+        assert not np.allclose(y1, y2)
+        assert not np.allclose(z1, z2)
 
 class TestSplitTrainTest:
- """Tests for train/test splitting"""
+    """Tests for train/test splitting"""
 
- def test_split_train_test_basic(self):
- """Test basic train/test split"""
- x = np.arange(100, dtype=float)
- y = np.arange(100, dtype=float)
- z = np.arange(100, dtype=float)
+    def test_split_train_test_basic(self):
+        """Test basic train/test split"""
+        x = np.arange(100, dtype=float)
+        y = np.arange(100, dtype=float)
+        z = np.arange(100, dtype=float)
 
- x_train, y_train, z_train, x_test, y_test, z_test = split_train_test(
- x, y, z, test_size=0.3, random_state=42
- )
+        x_train, y_train, z_train, x_test, y_test, z_test = split_train_test(
+        x, y, z, test_size=0.3, random_state=42
+        )
 
- assert len(x_train) == 70
- assert len(x_test) == 30
- assert len(x_train) + len(x_test) == len(x)
+        assert len(x_train) == 70
+        assert len(x_test) == 30
+        assert len(x_train) + len(x_test) == len(x)
 
- def test_split_train_test_no_overlap(self):
- """Test that train and test sets don't overlap"""
- x = np.arange(50, dtype=float)
- y = np.arange(50, dtype=float)
- z = np.arange(50, dtype=float)
+    def test_split_train_test_no_overlap(self):
+        """Test that train and test sets don't overlap"""
+        x = np.arange(50, dtype=float)
+        y = np.arange(50, dtype=float)
+        z = np.arange(50, dtype=float)
 
- x_train, y_train, z_train, x_test, y_test, z_test = split_train_test(
- x, y, z, test_size=0.2, random_state=42
- )
+        x_train, y_train, z_train, x_test, y_test, z_test = split_train_test(
+        x, y, z, test_size=0.2, random_state=42
+        )
 
- # Check no indices overlap
- all_indices = np.concatenate([x_train, x_test])
- assert len(np.unique(all_indices)) == len(x)
+        # Check no indices overlap
+        all_indices = np.concatenate([x_train, x_test])
+        assert len(np.unique(all_indices)) == len(x)
 
- def test_split_train_test_reproducible(self):
- """Test that split is reproducible with same random_state"""
-     x = np.random.rand(100)
- y = np.random.rand(100)
- z = np.random.rand(100)
+    def test_split_train_test_reproducible(self):
+        """Test that split is reproducible with same random_state"""
+        x = np.random.rand(100)
+        y = np.random.rand(100)
+        z = np.random.rand(100)
 
- result1 = split_train_test(x, y, z, test_size=0.3, random_state=42)
- result2 = split_train_test(x, y, z, test_size=0.3, random_state=42)
+        result1 = split_train_test(x, y, z, test_size=0.3, random_state=42)
+        result2 = split_train_test(x, y, z, test_size=0.3, random_state=42)
 
- for r1, r2 in zip(result1, result2):
- assert np.allclose(r1, r2)
+        for r1, r2 in zip(result1, result2):
+        assert np.allclose(r1, r2)
 
-if __name__ == "__main__":
- pytest.main([__file__, "-v"])
+        if __name__ == "__main__":
+        pytest.main([__file__, "-v"])
