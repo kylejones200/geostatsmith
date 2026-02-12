@@ -97,19 +97,21 @@ def test_yaml_loading():
  Path(temp_path).unlink()
 
 def test_config_merging():
-     base_dict = {
- 'project': {'name': 'Base', 'output_dir': './results'},
- 'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
- },
- 'kriging': {
- 'method': 'ordinary',
- 'grid': {'resolution': 1.0}
+    base_dict = {
+        'project': {'name': 'Base', 'output_dir': './results'},
+        'data': {
+            'input_file': __file__,
+            'x_column': 'X',
+            'y_column': 'Y',
+            'z_column': 'Z'
+        },
+        'kriging': {
+            'method': 'ordinary',
+            'grid': {'resolution': 1.0}
+        }
+    }
 
- base_config = load_config_dict(base_dict)
+    base_config = load_config_dict(base_dict)
 
  # Override some values
     overrides = {
@@ -122,10 +124,10 @@ def test_config_merging():
 
     merged = merge_configs(base_config, overrides)
 
- assert merged.project.name == 'Modified'
- assert merged.kriging.method == 'simple'
- assert merged.kriging.grid.resolution == 0.5
- assert merged.data.x_column == 'X' # Preserved from base
+    assert merged.project.name == 'Modified'
+    assert merged.kriging.method == 'simple'
+    assert merged.kriging.grid.resolution == 0.5
+    assert merged.data.x_column == 'X'  # Preserved from base
 
 def test_default_values():
     config_dict = {
@@ -140,8 +142,8 @@ def test_default_values():
 
     config = load_config_dict(config_dict)
 
- # Check defaults
- assert config.preprocessing.remove_outliers == False
+    # Check defaults
+    assert config.preprocessing.remove_outliers == False
  assert config.preprocessing.transform is None
  assert config.variogram.n_lags == 15
  assert config.variogram.estimator == 'matheron'

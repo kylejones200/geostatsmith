@@ -347,15 +347,19 @@ class TestPlotSaving:
 
         # Save to temporary file
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
-
-            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
-
-                # Check file was created
-                assert os.path.exists(tmp_path)
-                assert os.path.getsize(tmp_path) > 0
-            finally:
-                # Clean up
-                if os.path.exists(tmp_path):
+            tmp_path = tmp.name
+            fig.savefig(tmp_path)
+            
+            # Check file was created
+            assert os.path.exists(tmp_path)
+            assert os.path.getsize(tmp_path) > 0
+        
+        # Clean up
+        try:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+        except:
+            pass
 
 
                     if __name__ == "__main__":

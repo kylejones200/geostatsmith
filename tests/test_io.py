@@ -228,8 +228,8 @@ class TestRasterIO:
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def teardown_method(self):
         if self.temp_dir.exists():
+            shutil.rmtree(self.temp_dir)
 
-        if self.temp_dir.exists():
     def test_write_read_geotiff(self):
         tif_file = self.temp_dir / "test.tif"
 
