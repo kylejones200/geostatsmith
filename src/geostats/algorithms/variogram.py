@@ -329,62 +329,62 @@ def madogram(
  n_lags: int = 15,
  maxlag: Optional[float] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
- """
- Calculate Madogram (median-based variogram)
+    """
+    Calculate Madogram (median-based variogram)
 
- The Madogram is a robust variogram estimator using the median
- instead of the mean. It's less sensitive to outliers than Matheron's
- classical estimator.
+    The Madogram is a robust variogram estimator using the median
+    instead of the mean. It's less sensitive to outliers than Matheron's
+    classical estimator.
 
- Formula:
- γ(h) = 0.5 * [median(|Z(xi) - Z(xi+h)|)]²
+    Formula:
+    γ(h) = 0.5 * [median(|Z(xi) - Z(xi+h)|)]²
 
- The factor of 0.5 makes it comparable to the classical variogram
- under normality assumptions.
+    The factor of 0.5 makes it comparable to the classical variogram
+    under normality assumptions.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- n_lags : int
- Number of lag bins
- maxlag : float, optional
- Maximum lag distance to consider
+    Parameters
+    ----------
+    x, y : np.ndarray
+    Coordinates of sample points
+    z : np.ndarray
+    Values at sample points
+    n_lags : int
+    Number of lag bins
+    maxlag : float, optional
+    Maximum lag distance to consider
 
- Returns
- -------
- lags : np.ndarray
- Lag distances (bin centers)
- gamma : np.ndarray
- Madogram values
- n_pairs : np.ndarray
- Number of pairs in each lag bin
+    Returns
+    -------
+    lags : np.ndarray
+    Lag distances (bin centers)
+    gamma : np.ndarray
+    Madogram values
+    n_pairs : np.ndarray
+    Number of pairs in each lag bin
 
- References
- ----------
- - Cressie, N. & Hawkins, D.M. (1980). Robust estimation of the
- variogram: I. Mathematical Geology, 12:115-125.
- - Genton, M.G. (1998). Highly robust variogram estimation.
- Mathematical Geology, 30:213-221.
+    References
+    ----------
+    - Cressie, N. & Hawkins, D.M. (1980). Robust estimation of the
+    variogram: I. Mathematical Geology, 12:115-125.
+    - Genton, M.G. (1998). Highly robust variogram estimation.
+    Mathematical Geology, 30:213-221.
 
- Notes
- -----
- The Madogram is particularly useful when:
- - Data contains outliers
- - Distribution is heavy-tailed
- - Classical variogram shows erratic behavior
- """
- # Validate inputs
- x, y = validate_coordinates(x, y)
- z = validate_values(z, n_expected=len(x))
+    Notes
+    -----
+    The Madogram is particularly useful when:
+    - Data contains outliers
+    - Distribution is heavy-tailed
+    - Classical variogram shows erratic behavior
+    """
+    # Validate inputs
+    x, y = validate_coordinates(x, y)
+    z = validate_values(z, n_expected=len(x))
 
- # Calculate all pairwise distances
- dist = euclidean_distance_matrix(x, y)
+    # Calculate all pairwise distances
+    dist = euclidean_distance_matrix(x, y)
 
- # Calculate absolute differences
- z_diff_abs = np.abs(z[:, np.newaxis] - z[np.newaxis, :])
+    # Calculate absolute differences
+    z_diff_abs = np.abs(z[:, np.newaxis] - z[np.newaxis, :])
 
     # Determine lag bins
     if maxlag is None:
@@ -419,7 +419,7 @@ def madogram(
         else:
             n_pairs[i] = 0
 
- return lag_centers, gamma, n_pairs
+    return lag_centers, gamma, n_pairs
 
 def rodogram(
     x: npt.NDArray[np.float64],
@@ -428,66 +428,66 @@ def rodogram(
  n_lags: int = 15,
  maxlag: Optional[float] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
- """
- Calculate Rodogram (robust variogram estimator)
+    """
+    Calculate Rodogram (robust variogram estimator)
 
- The Rodogram is an alternative robust variogram estimator that uses
- a weighted combination of fourth-root transformed differences.
- It's particularly resistant to outliers while maintaining efficiency.
+    The Rodogram is an alternative robust variogram estimator that uses
+    a weighted combination of fourth-root transformed differences.
+    It's particularly resistant to outliers while maintaining efficiency.
 
- Formula:
- γ(h) = [1/(2*N(h)) * Σ|Z(xi) - Z(xi+h)|^(1/2)]^4 / [0.457 + 0.494/N(h)]
+    Formula:
+    γ(h) = [1/(2*N(h)) * Σ|Z(xi) - Z(xi+h)|^(1/2)]^4 / [0.457 + 0.494/N(h)]
 
- This is essentially the Cressie-Hawkins estimator, but presented
- as the "Rodogram" in some geostatistics literature.
+    This is essentially the Cressie-Hawkins estimator, but presented
+    as the "Rodogram" in some geostatistics literature.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- n_lags : int
- Number of lag bins
- maxlag : float, optional
- Maximum lag distance to consider
+    Parameters
+    ----------
+    x, y : np.ndarray
+    Coordinates of sample points
+    z : np.ndarray
+    Values at sample points
+    n_lags : int
+    Number of lag bins
+    maxlag : float, optional
+    Maximum lag distance to consider
 
- Returns
- -------
- lags : np.ndarray
- Lag distances (bin centers)
- gamma : np.ndarray
- Rodogram values
- n_pairs : np.ndarray
- Number of pairs in each lag bin
+    Returns
+    -------
+    lags : np.ndarray
+    Lag distances (bin centers)
+    gamma : np.ndarray
+    Rodogram values
+    n_pairs : np.ndarray
+    Number of pairs in each lag bin
 
- References
- ----------
- - Cressie, N. & Hawkins, D.M. (1980). Robust estimation of the
- variogram: I. Mathematical Geology, 12:115-125.
- - Dowd, P.A. (1984). The variogram and kriging: Robust and resistant
- estimators. In Geostatistics for Natural Resources Characterization,
- Part 1, pp. 91-106.
+    References
+    ----------
+    - Cressie, N. & Hawkins, D.M. (1980). Robust estimation of the
+    variogram: I. Mathematical Geology, 12:115-125.
+    - Dowd, P.A. (1984). The variogram and kriging: Robust and resistant
+    estimators. In Geostatistics for Natural Resources Characterization,
+    Part 1, pp. 91-106.
 
- Notes
- -----
- The Rodogram provides a good balance between:
- - Robustness to outliers (better than Matheron)
- - Efficiency under normality (better than median-based)
- - Computational simplicity
+    Notes
+    -----
+    The Rodogram provides a good balance between:
+    - Robustness to outliers (better than Matheron)
+    - Efficiency under normality (better than median-based)
+    - Computational simplicity
 
- The normalization factor (0.457 + 0.494/N) adjusts for bias
- and depends on the number of pairs.
- """
- # Validate inputs
- x, y = validate_coordinates(x, y)
- z = validate_values(z, n_expected=len(x))
+    The normalization factor (0.457 + 0.494/N) adjusts for bias
+    and depends on the number of pairs.
+    """
+    # Validate inputs
+    x, y = validate_coordinates(x, y)
+    z = validate_values(z, n_expected=len(x))
 
- # Calculate all pairwise distances
- dist = euclidean_distance_matrix(x, y)
+    # Calculate all pairwise distances
+    dist = euclidean_distance_matrix(x, y)
 
- # Calculate absolute differences
- z_diff_abs = np.abs(z[:, np.newaxis] - z[np.newaxis, :])
+    # Calculate absolute differences
+    z_diff_abs = np.abs(z[:, np.newaxis] - z[np.newaxis, :])
 
     # Determine lag bins
     if maxlag is None:
@@ -524,4 +524,4 @@ def rodogram(
         else:
             n_pairs[i] = 0
 
- return lag_centers, gamma, n_pairs
+    return lag_centers, gamma, n_pairs
