@@ -131,41 +131,41 @@ def example_2_geotiff_workflow():
             as_grid=True
         )
         logger.info(f" Read GeoTIFF: {z_grid.shape[1]}x{z_grid.shape[0]} grid")
- logger.info(f" CRS: {metadata['crs']}")
- logger.info(f" Resolution: {metadata['resolution']}")
+        logger.info(f" CRS: {metadata['crs']}")
+        logger.info(f" Resolution: {metadata['resolution']}")
 
- logger.info("\nExtracting validation points...")
- n_valid = 20
- i_indices = np.random.randint(0, len(y_grid), n_valid)
- j_indices = np.random.randint(0, len(x_grid), n_valid)
+        logger.info("\nExtracting validation points...")
+        n_valid = 20
+        i_indices = np.random.randint(0, len(y_grid), n_valid)
+        j_indices = np.random.randint(0, len(x_grid), n_valid)
 
- x_valid = x_grid[j_indices]
- y_valid = y_grid[i_indices]
- z_valid = z_grid[i_indices, j_indices]
+        x_valid = x_grid[j_indices]
+        y_valid = y_grid[i_indices]
+        z_valid = z_grid[i_indices, j_indices]
 
- write_csv_spatial(
- 'validation_points.csv',
- x_valid, y_valid, z_valid,
- x_col='x', y_col='y', z_col='elevation'
- )
- logger.info(f" Saved {n_valid} validation points to CSV")
+        write_csv_spatial(
+            'validation_points.csv',
+            x_valid, y_valid, z_valid,
+            x_col='x', y_col='y', z_col='elevation'
+        )
+        logger.info(f" Saved {n_valid} validation points to CSV")
 
- df = to_dataframe(x_valid, y_valid, z_valid,
- x_col='easting', y_col='northing', z_col='elevation')
- logger.info(f"Converted to DataFrame:")
- logger.info(f"\n{df.head()}")
+        df = to_dataframe(x_valid, y_valid, z_valid,
+                         x_col='easting', y_col='northing', z_col='elevation')
+        logger.info(f"Converted to DataFrame:")
+        logger.info(f"\n{df.head()}")
 
         try:
             gdf = to_geopandas(x_valid, y_valid, z_valid,
                              x_col='easting', y_col='northing', z_col='elevation')
             logger.info(f"Converted to GeoDataFrame with CRS: {gdf.crs}")
- gdf.to_file('validation_points.geojson', driver='GeoJSON')
- logger.info(" Saved validation_points.geojson")
- except ImportError:
- logger.warning("geopandas not available, skipping GeoDataFrame conversion")
+            gdf.to_file('validation_points.geojson', driver='GeoJSON')
+            logger.info(" Saved validation_points.geojson")
+        except ImportError:
+            logger.warning("geopandas not available, skipping GeoDataFrame conversion")
 
- except FileNotFoundError:
- logger.warning(" elevation_kriging.tif not found. Run Example 1 first.")
+    except FileNotFoundError:
+        logger.warning(" elevation_kriging.tif not found. Run Example 1 first.")
 
 def example_3_format_comparison():
  logger.info("Example 3: Format Comparison")
