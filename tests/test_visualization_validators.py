@@ -215,9 +215,11 @@ class TestValidators:
         x = np.array([1, 2, np.nan, 4, 5])
         y = np.array([1, 2, 3, 4, 5])
 
+        from geostats.validation.validators import validate_coordinates
         with pytest.raises((ValueError, AssertionError)):
+            validate_coordinates(x, y)
 
-        with pytest.raises((ValueError, AssertionError)):
+    def test_validate_coordinates_infinite_values(self):
         """Test validation catches infinite values"""
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, np.inf, 4, 5])
