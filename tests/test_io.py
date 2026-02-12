@@ -348,6 +348,7 @@ class TestNetCDFIO:
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def test_read_netcdf_file_not_found(self):
         with pytest.raises(FileNotFoundError):
+            read_netcdf('/nonexistent/file.nc')
 
     def test_read_netcdf_missing_variable(self):
         nc_file = self.temp_dir / "test.nc"

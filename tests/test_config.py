@@ -33,9 +33,9 @@ def test_minimal_config():
     }
 
     config = load_config_dict(config_dict)
- assert config.project.name == 'Test'
- assert config.data.x_column == 'X'
- assert config.kriging.method == 'ordinary' # Default
+    assert config.project.name == 'Test'
+    assert config.data.x_column == 'X'
+    assert config.kriging.method == 'ordinary'  # Default
 
 def test_config_validation():
     # Invalid: missing required fields
