@@ -145,8 +145,8 @@ axes[0].set_title('Observed Temperature').spines['top'].set_visible(False)
 axes[0].set_title('Observed Temperature').spines['right'].set_visible(False)
 plt.colorbar(c1, ax=axes[0], label='°C')
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[0].set_title('Observed Temperature').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[0].set_title('Observed Temperature').spines['right'].set_visible(False).spines['right'].set_visible(False)
 c2 = axes[1].contourf(xx, yy, pred, levels=15, cmap='coolwarm')
 axes[1].scatter(x, y, c='black', s=20, marker='+')
 # Remove top and right spines
@@ -158,8 +158,8 @@ axes[1].set_title('EDK Prediction (with Elevation Covariate)').spines['top'].set
 axes[1].set_title('EDK Prediction (with Elevation Covariate)').spines['right'].set_visible(False)
 plt.colorbar(c2, ax=axes[1], label='°C')
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[1].set_title('EDK Prediction (with Elevation Covariate)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[1].set_title('EDK Prediction (with Elevation Covariate)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 plt.tight_layout()
 plt.savefig('advanced_2_external_drift.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_2_external_drift.png\n")
@@ -322,8 +322,8 @@ axes[0].set_ylabel('Y').spines['top'].set_visible(False)
 axes[0].set_ylabel('Y').spines['right'].set_visible(False)
 plt.colorbar(scatter1, ax=axes[0])
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[0].set_ylabel('Y').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[0].set_ylabel('Y').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
 # Size points by weight
 scatter2 = axes[1].scatter(x_declust, y_declust, c=z_declust, s=weights*10,
@@ -342,8 +342,8 @@ axes[1].set_ylabel('Y').spines['top'].set_visible(False)
 axes[1].set_ylabel('Y').spines['right'].set_visible(False)
 plt.colorbar(scatter2, ax=axes[1])
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[1].set_ylabel('Y').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[1].set_ylabel('Y').spines['right'].set_visible(False).spines['right'].set_visible(False)
 plt.tight_layout()
 plt.savefig('advanced_5_declustering.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_5_declustering.png\n")
@@ -389,8 +389,8 @@ axes[0].set_title('Lognormal Data (Ore Grades)').spines['top'].set_visible(False
 axes[0].set_title('Lognormal Data (Ore Grades)').spines['right'].set_visible(False)
 plt.colorbar(c1, ax=axes[0], label='Grade')
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[0].set_title('Lognormal Data (Ore Grades)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[0].set_title('Lognormal Data (Ore Grades)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 c2 = axes[1].contourf(xx_ln, yy_ln, pred_ln, levels=15, cmap='YlOrRd')
 axes[1].scatter(x_ln, y_ln, c='black', s=30, marker='+')
 # Remove top and right spines
@@ -402,8 +402,8 @@ axes[1].set_title('Lognormal Kriging Prediction').spines['top'].set_visible(Fals
 axes[1].set_title('Lognormal Kriging Prediction').spines['right'].set_visible(False)
 plt.colorbar(c2, ax=axes[1], label='Grade')
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[1].set_title('Lognormal Kriging Prediction').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[1].set_title('Lognormal Kriging Prediction').spines['right'].set_visible(False).spines['right'].set_visible(False)
 plt.tight_layout()
 plt.savefig('advanced_6_lognormal_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_6_lognormal_kriging.png\n")
@@ -451,8 +451,8 @@ ax1 = fig.add_subplot(121, projection='3d')
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False).spines['right'].set_visible(False)
 scatter = ax1.scatter(x_3d, y_3d, z_3d_coord, c=values_3d, cmap='plasma', s=100, edgecolors='black')
 ax1.set_xlabel('X')
 ax1.set_ylabel('Y')
@@ -460,13 +460,13 @@ ax1.set_zlabel('Depth')
 ax1.set_title('3D Sample Data')
 plt.colorbar(scatter, ax=ax1, label='Value', shrink=0.5)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.set_title('3D Sample Data').spines['top'].set_visible(False)
+ax1.set_title('3D Sample Data').spines['right'].set_visible(False)
 
 ax2 = fig.add_subplot(122)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
 contour = ax2.contourf(xx_3d, yy_3d, pred_3d, levels=15, cmap='plasma')
 # Show samples at this depth slice
 mask_slice = np.abs(z_3d_coord - 25) < 10
@@ -482,8 +482,8 @@ ax2.set_xlabel('X')
 ax2.set_ylabel('Y')
 plt.colorbar(contour, ax=ax2, label='Value')
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax2.set_ylabel('Y').spines['top'].set_visible(False)
+ax2.set_ylabel('Y').spines['right'].set_visible(False)
 plt.tight_layout()
 plt.savefig('advanced_7_3d_kriging.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_7_3d_kriging.png\n")
@@ -532,8 +532,8 @@ axes[0].set_title('Point Data').spines['top'].set_visible(False)
 axes[0].set_title('Point Data').spines['right'].set_visible(False)
 plt.colorbar(c1, ax=axes[0])
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[0].set_title('Point Data').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[0].set_title('Point Data').spines['right'].set_visible(False).spines['right'].set_visible(False)
 axes[0].set_xlabel('X')
 # Remove top and right spines
 axes[0].set_xlabel('X').spines['top'].set_visible(False)
@@ -584,8 +584,8 @@ axes[1].set_aspect('equal').spines['right'].set_visible(False)
 # Add colorbar
 sm = plt.cm.ScalarMappable(cmap='coolwarm', norm=plt.Normalize(vmin=pred_bk.min(), vmax=pred_bk.max()))
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+axes[1].set_aspect('equal').spines['right'].set_visible(False).spines['top'].set_visible(False)
+axes[1].set_aspect('equal').spines['right'].set_visible(False).spines['right'].set_visible(False)
 sm.set_array([])
 plt.colorbar(sm, ax=axes[1])
 # Remove top and right spines

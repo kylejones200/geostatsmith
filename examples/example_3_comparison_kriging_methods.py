@@ -98,14 +98,14 @@ for idx, (method_name, z_pred, var_pred, metrics) in enumerate(methods, 1):
     ax1.set_aspect("equal")
     plt.colorbar(contour, ax=ax1, label="Value")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax1.set_aspect("equal").spines['top'].set_visible(False)
+    ax1.set_aspect("equal").spines['right'].set_visible(False)
 
     # Variance
     ax2 = plt.subplot(2, 3, idx + 3)
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
     Var_pred = var_pred.reshape(X.shape)
     contour2 = ax2.contourf(X, Y, Var_pred, levels=15, cmap="YlOrRd", alpha=0.8)
     ax2.scatter(x, y, s=20, c="blue", marker="x", linewidth=0.5, zorder=5)
@@ -121,8 +121,8 @@ for idx, (method_name, z_pred, var_pred, metrics) in enumerate(methods, 1):
     ax2.set_aspect("equal")
     plt.colorbar(contour2, ax=ax2, label="Variance")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax2.set_aspect("equal").spines['top'].set_visible(False)
+    ax2.set_aspect("equal").spines['right'].set_visible(False)
 
 plt.tight_layout()
 plt.savefig("example_3_comparison.png", dpi=300, bbox_inches="tight")

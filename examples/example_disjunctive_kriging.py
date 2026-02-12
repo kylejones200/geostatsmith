@@ -128,8 +128,8 @@ def main():
     axes[0, 0].set_ylabel("Y").spines['right'].set_visible(False)
     plt.colorbar(scatter1, ax=axes[0, 0], label="Value")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[0, 0].set_ylabel("Y").spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[0, 0].set_ylabel("Y").spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     # Predictions
     im1 = axes[0, 1].contourf(x_2d, y_2d, z_pred_grid, levels=20, cmap="viridis")
@@ -153,8 +153,8 @@ def main():
     axes[0, 1].set_ylabel("Y").spines['right'].set_visible(False)
     plt.colorbar(im1, ax=axes[0, 1], label="Predicted Value")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[0, 1].set_ylabel("Y").spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[0, 1].set_ylabel("Y").spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     # Variance
     im2 = axes[1, 0].contourf(x_2d, y_2d, var_grid, levels=20, cmap="Reds")
@@ -178,8 +178,8 @@ def main():
     axes[1, 0].set_ylabel("Y").spines['right'].set_visible(False)
     plt.colorbar(im2, ax=axes[1, 0], label="Variance")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[1, 0].set_ylabel("Y").spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[1, 0].set_ylabel("Y").spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     # Cross-validation scatter
     axes[1, 1].scatter(z, cv_predictions, alpha=0.6, edgecolors="black")

@@ -195,8 +195,8 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[0].scatter(x, y, c.spines['top'].set_visible(False)
     axes[0].scatter(x, y, c.spines['right'].set_visible(False)
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[0].scatter(x, y, c.spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[0].scatter(x, y, c.spines['right'].set_visible(False).spines['right'].set_visible(False)
     axes[0].set_title(f'Gold Sample Locations (n={len(au)})')
     # Remove top and right spines
     axes[0].set_title(f'Gold Sample Locations (n.spines['top'].set_visible(False)
@@ -211,8 +211,8 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[0].set_ylabel('Latitude').spines['right'].set_visible(False)
     plt.colorbar(axes[0].collections[0], ax=axes[0], label='Au (ppm)')
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[0].set_ylabel('Latitude').spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[0].set_ylabel('Latitude').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     # Kriged surface
     im = axes[1].contourf(X, Y, au_pred, levels=20, cmap='YlOrRd')
@@ -234,8 +234,8 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[1].set_ylabel('Latitude').spines['right'].set_visible(False)
     plt.colorbar(im, ax=axes[1], label='Predicted Au (ppm)')
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[1].set_ylabel('Latitude').spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[1].set_ylabel('Latitude').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     # Uncertainty (standard deviation)
     im = axes[2].contourf(X, Y, np.sqrt(variance), levels=20, cmap='viridis')
@@ -253,8 +253,8 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[2].set_ylabel('Latitude').spines['right'].set_visible(False)
     plt.colorbar(im, ax=axes[2], label='Std Dev (log ppm)')
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[2].set_ylabel('Latitude').spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[2].set_ylabel('Latitude').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     plt.tight_layout()
     plt.savefig('alaska_gold_analysis.png', dpi=150)

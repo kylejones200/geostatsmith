@@ -336,8 +336,8 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)').spines['right'].set_visible(False)
  plt.colorbar(im1, ax=axes[0, 0], label='log10(Cu)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # OK variance
  im2 = axes[0, 1].contourf(X, Y, var_ok, levels=20, cmap='viridis')
@@ -347,8 +347,8 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  axes[0, 1].set_title('OK Variance').spines['right'].set_visible(False)
  plt.colorbar(im2, ax=axes[0, 1], label='Variance')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[0, 1].set_title('OK Variance').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[0, 1].set_title('OK Variance').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # Cokriging prediction
  im3 = axes[1, 0].contourf(X, Y, cu_cok, levels=20, cmap='YlOrRd')
@@ -362,8 +362,8 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  axes[1, 0].set_title('Cokriging\n(Cu with Mo)').spines['right'].set_visible(False)
  plt.colorbar(im3, ax=axes[1, 0], label='log10(Cu)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[1, 0].set_title('Cokriging\n(Cu with Mo)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[1, 0].set_title('Cokriging\n(Cu with Mo)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # Cokriging variance
  im4 = axes[1, 1].contourf(X, Y, var_cok, levels=20, cmap='viridis')
@@ -373,8 +373,8 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)').spines['right'].set_visible(False)
  plt.colorbar(im4, ax=axes[1, 1], label='Variance')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  for ax in axes.flatten():
  for ax in axes.flatten():
@@ -451,8 +451,8 @@ def calculate_porphyry_index(data, elements_dict):
  ax1.set_ylabel('Latitude')
  plt.colorbar(im1, ax=ax1, label='Fertility Index')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax1.set_ylabel('Latitude').spines['top'].set_visible(False)
+ ax1.set_ylabel('Latitude').spines['right'].set_visible(False)
 
  # High-potential zones
  im2 = ax2.contourf(X, Y, high_potential.astype(int), levels=1, colors=['white', 'red'], alpha=0.5)

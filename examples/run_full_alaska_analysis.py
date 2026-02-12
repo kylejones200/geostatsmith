@@ -134,8 +134,8 @@ try:
  ax1.set_ylabel('Latitude')
  plt.colorbar(scatter1, ax=ax1, label='Au (ppm)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax1.set_ylabel('Latitude').spines['top'].set_visible(False)
+ ax1.set_ylabel('Latitude').spines['right'].set_visible(False)
 
  # Log scale
  au_log = np.log10(au + 0.001)
@@ -148,8 +148,8 @@ try:
  ax2.set_xlabel('Longitude')
  plt.colorbar(scatter2, ax=ax2, label='log₁₀(Au + 0.001)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax2.set_xlabel('Longitude').spines['top'].set_visible(False)
+ ax2.set_xlabel('Longitude').spines['right'].set_visible(False)
 
  plt.tight_layout()
  output_file = OUTPUT_DIR / 'figure_01_gold_distribution.png'

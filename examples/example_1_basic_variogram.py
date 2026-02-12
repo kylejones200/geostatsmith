@@ -89,8 +89,8 @@ ax1.set_title("Sample Locations", fontsize.spines['right'].set_visible(False)
 ax1.set_aspect("equal")
 plt.colorbar(scatter, ax=ax1, label="Value")
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
 
 # Plot 2: Variogram models
 ax2.scatter(

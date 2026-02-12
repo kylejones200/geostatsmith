@@ -265,8 +265,8 @@ def compare_kriging_methods(x, y, au, model):
  axes[0].set_title('Ordinary Kriging\n(Log-transformed)').spines['right'].set_visible(False)
  plt.colorbar(im1, ax=axes[0], label='Au (ppm)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[0].set_title('Ordinary Kriging\n(Log-transformed)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[0].set_title('Ordinary Kriging\n(Log-transformed)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # Lognormal Kriging
  im2 = axes[1].contourf(X, Y, results['Lognormal']['pred'], levels=20, cmap='YlOrRd')
@@ -280,8 +280,8 @@ def compare_kriging_methods(x, y, au, model):
  axes[1].set_title('Lognormal Kriging\n(Bias-corrected)').spines['right'].set_visible(False)
  plt.colorbar(im2, ax=axes[1], label='Au (ppm)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[1].set_title('Lognormal Kriging\n(Bias-corrected)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[1].set_title('Lognormal Kriging\n(Bias-corrected)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # Indicator Kriging
  im3 = axes[2].contourf(X, Y, results['Indicator']['pred'], levels=20, cmap='RdYlGn_r')
@@ -295,8 +295,8 @@ def compare_kriging_methods(x, y, au, model):
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)').spines['right'].set_visible(False)
  plt.colorbar(im3, ax=axes[2], label='Probability')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  for ax in axes:
  for ax in axes:
@@ -355,8 +355,8 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  axes[0].set_title('95% CI Width\n(Bootstrap)').spines['right'].set_visible(False)
  plt.colorbar(im1, ax=axes[0], label='Width (ppm)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[0].set_title('95% CI Width\n(Bootstrap)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[0].set_title('95% CI Width\n(Bootstrap)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # Standard deviation
  im2 = axes[1].contourf(X, Y, std_dev, levels=20, cmap='viridis')
@@ -370,8 +370,8 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)').spines['right'].set_visible(False)
  plt.colorbar(im2, ax=axes[1], label='Std Dev')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[1].set_title('Prediction Std Dev\n(Kriging Variance)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[1].set_title('Prediction Std Dev\n(Kriging Variance)').spines['right'].set_visible(False).spines['right'].set_visible(False)
  axes[1].legend()
  # Remove top and right spines
  axes[1].legend().spines['top'].set_visible(False)
@@ -388,8 +388,8 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)').spines['right'].set_visible(False)
  plt.colorbar(im3, ax=axes[2], label='CV (%)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  for ax in axes:
  for ax in axes:

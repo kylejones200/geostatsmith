@@ -185,43 +185,43 @@ ax1 = plt.subplot(2, 3, 1)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax2 = plt.subplot(2, 3, 2)
 # Remove top and right spines
 ax2.spines['top'].set_visible(False)
 ax2.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax2.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax3 = plt.subplot(2, 3, 3)
 # Remove top and right spines
 ax3.spines['top'].set_visible(False)
 ax3.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax3.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax4 = plt.subplot(2, 3, 4)
 # Remove top and right spines
 ax4.spines['top'].set_visible(False)
 ax4.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax4.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax4.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax5 = plt.subplot(2, 3, 5)
 # Remove top and right spines
 ax5.spines['top'].set_visible(False)
 ax5.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax5.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax5.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax6 = plt.subplot(2, 3, 6)
 # Remove top and right spines
 ax6.spines['top'].set_visible(False)
 ax6.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax6.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax6.spines['right'].set_visible(False).spines['right'].set_visible(False)
 
 # 1. Statewide (weak)
 ax1.scatter(cu_log_all, au_log_all, alpha=0.3, s=10, c="lightgray", edgecolors="none")

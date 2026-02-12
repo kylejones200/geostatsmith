@@ -108,8 +108,8 @@ for pattern_name, (x, y) in patterns.items():
 for pattern_name, (x, y) in patterns.items():
  ax1 = fig.add_subplot(gs[row, 0])
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax1.spines['top'].set_visible(False)
+ ax1.spines['right'].set_visible(False)
  ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
  # Remove top and right spines
  ax1.scatter(x, y, s.spines['top'].set_visible(False)
@@ -145,8 +145,8 @@ for pattern_name, (x, y) in patterns.items():
  # Column 2: Ripley's K function
  ax2 = fig.add_subplot(gs[row, 1])
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax2.spines['top'].set_visible(False)
+ ax2.spines['right'].set_visible(False)
  ripley_res = results['ripley']
  ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth=2, label='Observed K')
  # Remove top and right spines
@@ -168,8 +168,8 @@ for pattern_name, (x, y) in patterns.items():
  # Column 3: L function (transformed K)
  ax3 = fig.add_subplot(gs[row, 2])
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax3.spines['top'].set_visible(False)
+ ax3.spines['right'].set_visible(False)
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth=2, label='Observed L')
  # Remove top and right spines
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth.spines['top'].set_visible(False)
@@ -212,8 +212,8 @@ for pattern_name, (x, y) in patterns.items():
  ax4.spines['top'].set_visible(False)
  ax4.spines['right'].set_visible(False)
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax4.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ ax4.spines['right'].set_visible(False).spines['right'].set_visible(False)
  quadrat_res = results['quadrat']
  im = ax4.imshow(quadrat_res['counts'], cmap='YlOrRd', aspect='auto')
  ax4.set_title('Quadrat Counts', fontsize=11, fontweight='bold')
@@ -224,8 +224,8 @@ for pattern_name, (x, y) in patterns.items():
  ax4.set_ylabel('Quadrat Y')
  plt.colorbar(im, ax=ax4, label='Point count')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax4.set_ylabel('Quadrat Y').spines['top'].set_visible(False)
+ ax4.set_ylabel('Quadrat Y').spines['right'].set_visible(False)
 
  # Add VMR annotation
  vmr_text = f"VMR = {quadrat_res['vmr']:.3f}\nMean = {quadrat_res['mean']:.1f}"

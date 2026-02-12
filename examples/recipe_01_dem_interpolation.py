@@ -107,8 +107,8 @@ gs = GridSpec(3, 3, figure=fig, hspace=0.3, wspace=0.3)
 # Plot 1: Sample points
 ax1 = fig.add_subplot(gs[0, 0])
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
 scatter = ax1.scatter(x, y, c=z, cmap='terrain', s=30, edgecolors='black', linewidths=0.5)
 ax1.set_title('Sample Points (Measured)', fontsize=12, fontweight='bold')
 # Remove top and right spines
@@ -119,14 +119,14 @@ ax1.set_ylabel('Y (m)')
 ax1.set_aspect('equal')
 plt.colorbar(scatter, ax=ax1, label='Elevation (m)')
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.set_aspect('equal').spines['top'].set_visible(False)
+ax1.set_aspect('equal').spines['right'].set_visible(False)
 
 # Plot 2: True DEM (ground truth)
 ax2 = fig.add_subplot(gs[0, 1])
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
 im = ax2.contourf(X_grid, Y_grid, Z_true, levels=15, cmap='terrain')
 ax2.scatter(x, y, c='red', s=10, alpha=0.5, marker='x')
 # Remove top and right spines
@@ -141,14 +141,14 @@ ax2.set_ylabel('Y (m)')
 ax2.set_aspect('equal')
 plt.colorbar(im, ax=ax2, label='Elevation (m)')
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax2.set_aspect('equal').spines['top'].set_visible(False)
+ax2.set_aspect('equal').spines['right'].set_visible(False)
 
 # Plot 3: Experimental variogram
 ax3 = fig.add_subplot(gs[0, 2])
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax3.spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False)
 ax3.plot(lags, gamma, 'o-', label='Experimental', linewidth=2, markersize=8)
 # Remove top and right spines
 ax3.plot(lags, gamma, 'o-', label.spines['top'].set_visible(False)

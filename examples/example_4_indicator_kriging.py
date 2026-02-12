@@ -89,8 +89,8 @@ ax1 = plt.subplot(2, 3, 1)
 ax1.spines['top'].set_visible(False)
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False).spines['right'].set_visible(False)
 scatter1 = ax1.scatter(
     x, y, c=V, cmap="RdYlGn_r", s=100, edgecolors="black", linewidth=1
 )
@@ -100,8 +100,8 @@ ax1.axhline(threshold, color.spines['top'].set_visible(False)
 ax1.axhline(threshold, color.spines['right'].set_visible(False)
 plt.colorbar(scatter1, ax=ax1, label="V (ppm)")
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax1.axhline(threshold, color.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax1.axhline(threshold, color.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax1.set_title(
     f"Sample Data (threshold={threshold} ppm)", fontweight="bold", fontsize=12
 )
@@ -112,8 +112,8 @@ ax1.set_aspect("equal")
 # Plot 2: Indicator values
 ax2 = plt.subplot(2, 3, 2)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
 colors = ["green" if i == 0 else "red" for i in indicators]
 ax2.scatter(x, y, c=colors, s=100, edgecolors="black", linewidth=1, alpha=0.7)
 # Remove top and right spines
@@ -146,8 +146,8 @@ ax3 = plt.subplot(2, 3, 3)
 ax3.spines['top'].set_visible(False)
 ax3.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax3.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax3.scatter(
     lags,
     gamma,
@@ -176,8 +176,8 @@ ax4 = plt.subplot(2, 3, 4)
 ax4.spines['top'].set_visible(False)
 ax4.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax4.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax4.spines['right'].set_visible(False).spines['right'].set_visible(False)
 contour4 = ax4.contourf(X, Y, P_grid, levels=15, cmap="RdYlGn_r", alpha=0.9)
 ax4.scatter(
     x,
@@ -207,8 +207,8 @@ ax5 = plt.subplot(2, 3, 5)
 ax5.spines['top'].set_visible(False)
 ax5.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax5.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax5.spines['right'].set_visible(False).spines['right'].set_visible(False)
 contour5 = ax5.contourf(X, Y, V_grid, levels=15, cmap="YlOrRd", alpha=0.9)
 ax5.scatter(x, y, s=40, c="blue", marker="x", linewidth=2, zorder=5)
 # Remove top and right spines
@@ -216,8 +216,8 @@ ax5.scatter(x, y, s.spines['top'].set_visible(False)
 ax5.scatter(x, y, s.spines['right'].set_visible(False)
 plt.colorbar(contour5, ax=ax5, label="Variance")
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax5.scatter(x, y, s.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax5.scatter(x, y, s.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax5.set_title("Indicator Kriging Variance", fontweight="bold", fontsize=12)
 # Remove top and right spines
 ax5.set_title("Indicator Kriging Variance", fontweight.spines['top'].set_visible(False)
@@ -232,16 +232,16 @@ ax6 = plt.subplot(2, 3, 6)
 ax6.spines['top'].set_visible(False)
 ax6.spines['right'].set_visible(False)
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax6.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ax6.spines['right'].set_visible(False).spines['right'].set_visible(False)
 contour6 = ax6.contourf(X, Y, Median_grid, levels=15, cmap="viridis", alpha=0.9)
 ax6.scatter(
     x, y, c=V, cmap="viridis", s=60, edgecolors="white", linewidth=1.5, zorder=5
 )
 plt.colorbar(contour6, ax=ax6, label="Median V (ppm)")
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
+ax6.scatter(.spines['top'].set_visible(False)
+ax6.scatter(.spines['right'].set_visible(False)
 ax6.set_title("Predicted Median (Multi-threshold IK)", fontweight="bold", fontsize=12)
 # Remove top and right spines
 ax6.set_title("Predicted Median (Multi-threshold IK)", fontweight.spines['top'].set_visible(False)

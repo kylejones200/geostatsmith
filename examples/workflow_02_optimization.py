@@ -170,8 +170,8 @@ def example_2_infill_sampling():
  ax1.set_aspect('equal')
  plt.colorbar(im1, ax=ax1, label='Variance')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax1.set_aspect('equal').spines['top'].set_visible(False)
+ ax1.set_aspect('equal').spines['right'].set_visible(False)
 
  # After infill
  x_all = np.concatenate([x_init, x_infill])
@@ -200,8 +200,8 @@ def example_2_infill_sampling():
  ax2.set_aspect('equal')
  plt.colorbar(im2, ax=ax2, label='Variance')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
+ ax2.set_aspect('equal').spines['top'].set_visible(False)
+ ax2.set_aspect('equal').spines['right'].set_visible(False)
 
  plt.tight_layout()
  plt.savefig('example_workflow_02_infill.png', dpi=150, bbox_inches='tight')

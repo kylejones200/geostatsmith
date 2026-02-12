@@ -203,8 +203,8 @@ def example_2_probability_map():
     ax1.set_aspect("equal")
     plt.colorbar(im1, ax=ax1, label="Concentration")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax1.set_aspect("equal").spines['top'].set_visible(False)
+    ax1.set_aspect("equal").spines['right'].set_visible(False)
 
     # Probability map
     im2 = ax2.contourf(
@@ -232,8 +232,8 @@ def example_2_probability_map():
     ax2.set_aspect("equal")
     plt.colorbar(im2, ax=ax2, label="Probability", ticks=np.arange(0, 1.1, 0.1))
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax2.set_aspect("equal").spines['top'].set_visible(False)
+    ax2.set_aspect("equal").spines['right'].set_visible(False)
 
     plt.tight_layout()
     plt.savefig("example_workflow_03_probability.png", dpi=150, bbox_inches="tight")
@@ -331,8 +331,8 @@ def example_3_risk_assessment():
     axes[0].set_aspect("equal").spines['right'].set_visible(False)
     plt.colorbar(im1, ax=axes[0], label="Probability")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[0].set_aspect("equal").spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[0].set_aspect("equal").spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     # Expected cost map
     cost_grid = results["total_expected_cost"].reshape((ny, nx))
@@ -359,8 +359,8 @@ def example_3_risk_assessment():
     axes[1].set_aspect("equal").spines['right'].set_visible(False)
     plt.colorbar(im2, ax=axes[1], label="Cost ($)")
     # Remove top and right spines
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    axes[1].set_aspect("equal").spines['right'].set_visible(False).spines['top'].set_visible(False)
+    axes[1].set_aspect("equal").spines['right'].set_visible(False).spines['right'].set_visible(False)
 
     # Optimal decision map
     decision_numeric = (
