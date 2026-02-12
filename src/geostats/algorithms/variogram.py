@@ -68,16 +68,14 @@ def experimental_variogram(
 
  # Determine lag bins
  if maxlag is None:
- if maxlag is None:
 
- lag_width = maxlag / n_lags
+     lag_width = maxlag / n_lags
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
  if lag_tol is None:
- if lag_tol is None:
 
- # Compute variogram for each lag
+     # Compute variogram for each lag
  gamma = np.zeros(n_lags)
  n_pairs = np.zeros(n_lags, dtype=np.int64)
 
@@ -93,8 +91,7 @@ def experimental_variogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- if n_pairs_lag > 0:
- gamma[i] = np.sum(z_diff_sq[mask]) / (2.0 * n_pairs_lag)
+     gamma[i] = np.sum(z_diff_sq[mask]) / (2.0 * n_pairs_lag)
  n_pairs[i] = n_pairs_lag
  else:
  else:
@@ -153,9 +150,8 @@ def experimental_variogram_directional(
 
  # Determine lag bins
  if maxlag is None:
- if maxlag is None:
 
- lag_bins = np.linspace(0, maxlag, n_lags + 1)
+     lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
  # Compute variogram for each lag
@@ -173,8 +169,7 @@ def experimental_variogram_directional(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- if n_pairs_lag > 0:
- n_pairs[i] = n_pairs_lag
+     n_pairs[i] = n_pairs_lag
  else:
  else:
  n_pairs[i] = 0
@@ -223,9 +218,8 @@ def variogram_cloud(
  mask = np.triu(np.ones_like(dist, dtype=bool), k=1)
 
  if maxlag is not None:
- if maxlag is not None:
 
- distances = dist[mask]
+     distances = dist[mask]
  semivariances = semivar[mask]
 
  return distances, semivariances
@@ -279,9 +273,8 @@ def robust_variogram(
 
  # Determine lag bins
  if maxlag is None:
- if maxlag is None:
 
- lag_bins = np.linspace(0, maxlag, n_lags + 1)
+     lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
  # Compute robust variogram for each lag
@@ -298,10 +291,8 @@ def robust_variogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- if n_pairs_lag > 0:
 
- if estimator == "cressie":
- if estimator == "cressie":
+     if estimator == "cressie":
  # γ(h) = [(1/N(h) * Σ|z_i - z_j|^0.5)^4] / [0.457 + 0.494/N(h)]
  mean_fourth_root = np.mean(z_diff ** 0.5)
  gamma[i] = (mean_fourth_root ** 4) / (0.457 + 0.494 / n_pairs_lag)
@@ -387,9 +378,8 @@ def madogram(
 
  # Determine lag bins
  if maxlag is None:
- if maxlag is None:
 
- lag_width = maxlag / n_lags
+     lag_width = maxlag / n_lags
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
@@ -409,8 +399,7 @@ def madogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- if n_pairs_lag > 0:
- diffs = z_diff_abs[mask]
+     diffs = z_diff_abs[mask]
 
  # Madogram: 0.5 * [median(|differences|)]²
  median_diff = np.median(diffs)
@@ -491,9 +480,8 @@ def rodogram(
 
  # Determine lag bins
  if maxlag is None:
- if maxlag is None:
 
- lag_width = maxlag / n_lags
+     lag_width = maxlag / n_lags
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
@@ -513,8 +501,7 @@ def rodogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- if n_pairs_lag > 0:
- diffs = z_diff_abs[mask]
+     diffs = z_diff_abs[mask]
 
  # Rodogram (Cressie-Hawkins):
  # γ(h) = [mean(|diff|^0.5)]^4 / [0.457 + 0.494/N(h)]
