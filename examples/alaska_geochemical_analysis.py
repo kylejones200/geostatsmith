@@ -260,9 +260,9 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     logger.info("\nSaved: alaska_gold_analysis.png")
 
     return {
-    'x': x, 'y': y, 'au': au,
-    'X': X, 'Y': Y, 'au_pred': au_pred,
-    'variance': variance, 'model': model
+        'x': x, 'y': y, 'au': au,
+        'X': X, 'Y': Y, 'au_pred': au_pred,
+        'variance': variance, 'model': model
     }
 
     # ==============================================================================
