@@ -323,8 +323,17 @@ class TestProbabilityMaps:
         assert np.mean(prob_low) >= np.mean(prob_high)
 
     def test_probability_map_invalid_operator(self):
+        from geostats.uncertainty.probability import probability_map
         with pytest.raises(ValueError, match="Unknown operator"):
-        with pytest.raises(ValueError, match="Unknown operator"):
+            probability_map(
+                self.x,
+                self.y,
+                self.z,
+                self.x_pred,
+                self.y_pred,
+                variogram_model=self.model,
+                operator="invalid_operator"
+            )
                 self.z,
                 self.x_pred,
                 self.y_pred,

@@ -245,8 +245,9 @@ class TestCaching:
 
     def teardown_method(self):
         if self.temp_cache.exists():
+            self.temp_cache.unlink()
 
-        if self.temp_cache.exists():
+    def test_cached_kriging_initialization(self):
         """Test CachedKriging initialization"""
         cached = CachedKriging(
             self.x,
