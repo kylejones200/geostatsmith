@@ -338,7 +338,7 @@ class TestVariogramComputation:
         # Check that later lags are generally larger than early lags
         if len(gamma) >= 5:
             late_mean = np.mean(gamma[-2:])
-        # Late lags should generally be larger (more variance)
+            # Late lags should generally be larger (more variance)
         assert late_mean >= early_mean * 0.5 # Allow some flexibility
 
 class TestEdgeCases:
@@ -353,8 +353,8 @@ class TestEdgeCases:
             # If successful, should have large nugget, small sill
         assert fitted_model.nugget > 0
         except (ValueError, RuntimeError):
-        # Also acceptable to fail on degenerate case
-        pass
+            # Also acceptable to fail on degenerate case
+            pass
 
     def test_fit_with_decreasing_variogram(self):
         lags = np.array([10, 20, 30, 40, 50])
@@ -389,5 +389,4 @@ class TestEdgeCases:
 
         assert fitted_model is not None
 
-if __name__ == "__main__":
 if __name__ == "__main__":

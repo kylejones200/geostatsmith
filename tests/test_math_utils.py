@@ -286,8 +286,8 @@ class TestEdgeCases:
         residual = np.linalg.norm(A @ x - b)
         assert residual < 1.0
         except np.linalg.LinAlgError:
-        # Acceptable to raise error for singular matrix
-        pass
+            # Acceptable to raise error for singular matrix
+            pass
 
     def test_grid_single_point(self):
         x_grid, y_grid = grid_utils.create_grid(
@@ -347,5 +347,4 @@ class TestComputationalEfficiency:
         assert elapsed < 0.1
         assert len(x) == n
 
-if __name__ == "__main__":
 if __name__ == "__main__":

@@ -272,4 +272,3 @@ class TestIntegration:
         assert declustered_mean > np.mean(cluster_z) # Corrected for clustering
 
 if __name__ == "__main__":
-if __name__ == "__main__":

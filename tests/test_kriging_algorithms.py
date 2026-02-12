@@ -409,8 +409,8 @@ class TestKrigingEdgeCases:
         for d in distances:
             variances.append(var[0])
 
-        # Variance should generally increase with distance
-        # (may not be strictly monotonic due to kriging system)
+            # Variance should generally increase with distance
+            # (may not be strictly monotonic due to kriging system)
         assert variances[-1] > variances[0]
 
     def test_variance_reaches_sill(self):
@@ -427,5 +427,4 @@ class TestKrigingEdgeCases:
         # Should approach sill
         assert var[0] > 0.8 # Close to sill of 1.0
 
-if __name__ == "__main__":
 if __name__ == "__main__":

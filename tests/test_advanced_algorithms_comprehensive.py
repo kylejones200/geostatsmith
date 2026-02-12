@@ -307,4 +307,3 @@ class TestBlockKriging:
         assert var_large[0] < var_small[0]
 
 if __name__ == "__main__":
-if __name__ == "__main__":

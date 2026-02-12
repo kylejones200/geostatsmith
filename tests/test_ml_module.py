@@ -11,7 +11,7 @@ try:
 except ImportError:
  SKLEARN_AVAILABLE = False
 
-# Check if xgboost is available
+    # Check if xgboost is available
 try:
     except ImportError:
  XGBOOST_AVAILABLE = False
@@ -296,5 +296,4 @@ class TestMLIntegration:
         # For linear data, predictions should be similar
         assert np.std(predictions) < 10.0
 
-if __name__ == "__main__":
 if __name__ == "__main__":

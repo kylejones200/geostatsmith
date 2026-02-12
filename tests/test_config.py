@@ -44,7 +44,7 @@ def test_config_validation():
                 # Missing data section
             })
 
- # Invalid: wrong type
+            # Invalid: wrong type
  with pytest.raises(ConfigError):
      'data': {
  'input_file': __file__,
@@ -212,5 +212,4 @@ def test_file_not_found_validation():
  })
  assert 'not found' in str(excinfo.value).lower()
 
-if __name__ == '__main__':
 if __name__ == '__main__':

@@ -47,19 +47,19 @@ try:
 except ImportError:
     GEOPANDAS_AVAILABLE = False
 
-# Import raster functions if available
+    # Import raster functions if available
 if RASTERIO_AVAILABLE:
 if RASTERIO_AVAILABLE:
         read_ascii_grid,
         write_ascii_grid,
     )
 
-# Import NetCDF functions if available
+    # Import NetCDF functions if available
 if NETCDF_AVAILABLE:
 if NETCDF_AVAILABLE:
     )
 
-# Import GeoJSON functions if available
+    # Import GeoJSON functions if available
 if GEOPANDAS_AVAILABLE:
 if GEOPANDAS_AVAILABLE:
     )
