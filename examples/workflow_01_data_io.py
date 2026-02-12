@@ -128,9 +128,9 @@ def example_2_geotiff_workflow():
     try:
         x_grid, y_grid, z_grid, metadata = read_geotiff(
             'elevation_kriging.tif',
- as_grid=True
- )
- logger.info(f" Read GeoTIFF: {z_grid.shape[1]}x{z_grid.shape[0]} grid")
+            as_grid=True
+        )
+        logger.info(f" Read GeoTIFF: {z_grid.shape[1]}x{z_grid.shape[0]} grid")
  logger.info(f" CRS: {metadata['crs']}")
  logger.info(f" Resolution: {metadata['resolution']}")
 
