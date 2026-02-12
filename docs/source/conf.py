@@ -55,6 +55,23 @@ autodoc_mock_imports = [
     "python-multipart",
     "jinja2",
 ]
+# Continue building even if there are import errors
+autodoc_continue_on_import_error = True
+autodoc_mock_imports = [
+    "rasterio",
+    "netCDF4",
+    "geopandas",
+    "shapely",
+    "fiona",
+    "openpyxl",
+    "xgboost",
+    "plotly",
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "python-multipart",
+    "jinja2",
+]
 
 # Templates
 templates_path = ["_templates"]
