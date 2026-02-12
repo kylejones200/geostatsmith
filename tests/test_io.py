@@ -324,7 +324,7 @@ class TestNetCDFIO:
         if self.temp_dir.exists():
 
         if self.temp_dir.exists():
-    def test_write_read_netcdf(self):
+            shutil.rmtree(self.temp_dir)
         nc_file = self.temp_dir / "test.nc"
 
         # Write

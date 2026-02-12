@@ -29,6 +29,7 @@ def test_minimal_config():
  'x_column': 'X',
  'y_column': 'Y',
  'z_column': 'Z'
+ }
 
  config = load_config_dict(config_dict)
  assert config.project.name == 'Test'

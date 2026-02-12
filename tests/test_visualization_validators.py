@@ -359,8 +359,5 @@ class TestPlotSaving:
             # Clean up
             if tmp_path and os.path.exists(tmp_path):
                 os.remove(tmp_path)
-
-
-                    if __name__ == "__main__":
-                        pass
+if __name__ == "__main__":
     pytest.main([__file__])
