@@ -392,19 +392,19 @@ class TestPlotSaving:
 
         # Save to temporary file
         with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
-        tmp_path = tmp.name
+            tmp_path = tmp.name
 
-        try:
-        fig.savefig(tmp_path)
+            try:
+                fig.savefig(tmp_path)
 
-        # Check file was created
-        assert os.path.exists(tmp_path)
-        assert os.path.getsize(tmp_path) > 0
-        finally:
-        # Clean up
-        if os.path.exists(tmp_path):
-        os.remove(tmp_path)
-        plt.close(fig)
+                # Check file was created
+                assert os.path.exists(tmp_path)
+                assert os.path.getsize(tmp_path) > 0
+            finally:
+                # Clean up
+                if os.path.exists(tmp_path):
+                    os.remove(tmp_path)
+                plt.close(fig)
 
         if __name__ == "__main__":
         pytest.main([__file__, "-v"])
