@@ -328,9 +328,9 @@ def multi_element_analysis(agdb_path):
  'correlation': correlation
  }
 
-# ==============================================================================
-# PART 4: Environmental Assessment (As, Pb contamination)
-# ==============================================================================
+    # ==============================================================================
+    # PART 4: Environmental Assessment (As, Pb contamination)
+    # ==============================================================================
 
 def environmental_assessment(agdb_path, element='As', threshold=20):
     """
@@ -393,9 +393,9 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
  'risk': risk
  }
 
-# ==============================================================================
-# MAIN EXECUTION
-# ==============================================================================
+    # ==============================================================================
+    # MAIN EXECUTION
+    # ==============================================================================
 
 if __name__ == '__main__':
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
