@@ -335,9 +335,6 @@ class TestProbabilityMaps:
                 variogram_model=self.model,
                 operator="invalid_operator"
             )
-                self.z,
-                self.x_pred,
-                self.y_pred,
                 variogram_model=self.model,
                 threshold=60.0,
                 operator="invalid",
