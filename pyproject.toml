@@ -114,7 +114,12 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
-ignore = ["E203", "E501"]
+ignore = [
+    "E203",  # Whitespace before ':' (conflicts with black)
+    "E501",  # Line too long (handled by formatter)
+    "N806",  # Variable in function should be lowercase (X, Y, Z common in scientific code)
+    "I001",  # Import block is un-sorted (auto-fixable, but too noisy)
+]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
+"__init__.py" = ["F401"]  # Unused imports in __init__.py are fine

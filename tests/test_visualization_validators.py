@@ -385,8 +385,8 @@ class TestPlotSaving:
 
     def test_save_plot_to_file(self):
         """Test saving plot to file"""
-        import tempfile
         import os
+        import tempfile
 
         fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z)
 
