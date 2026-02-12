@@ -8,7 +8,6 @@ import numpy as np
 # Check if sklearn is available
 try:
 try:
- from sklearn.linear_model import LinearRegression
  SKLEARN_AVAILABLE = True
 except ImportError:
  SKLEARN_AVAILABLE = False
@@ -16,7 +15,6 @@ except ImportError:
 # Check if xgboost is available
 try:
 try:
- XGBOOST_AVAILABLE = True
 except ImportError:
  XGBOOST_AVAILABLE = False
 
@@ -180,7 +178,7 @@ class TestGaussianProcessGeostat:
         z = x + y + np.random.normal(0, 0.1, 25)
 
         for kernel in ['rbf', 'matern', 'rational_quadratic']:
-            gp = GaussianProcessGeostat(kernel=kernel)
+        for kernel in ['rbf', 'matern', 'rational_quadratic']:
         gp.fit(x, y, z)
 
         predictions, _ = gp.predict(np.array([5.0]), np.array([5.0]), return_std=True)
@@ -309,13 +307,13 @@ class TestMLIntegration:
 
         predictions = []
         for method in methods:
-            if isinstance(method, GaussianProcessGeostat):
+        for method in methods:
         X = np.column_stack([x, y])
         X_new = np.column_stack([x_new, y_new])
         method.fit(X, z)
         pred, _ = method.predict(X_new, return_std=True)
         else:
-            method.fit(x, y, z, covariates=covariates)
+        else:
         pred, _ = method.predict(x_new, y_new, covariates_new=cov_new)
 
         predictions.append(pred[0])

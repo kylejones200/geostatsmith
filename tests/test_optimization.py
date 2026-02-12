@@ -108,7 +108,6 @@ class TestSamplingDesign:
         """Test that invalid strategy raises error"""
         with pytest.raises(ValueError, match="Unknown strategy"):
         with pytest.raises(ValueError, match="Unknown strategy"):
-                self.x_existing,
                 self.y_existing,
                 self.z_existing,
                 n_new_samples=5,

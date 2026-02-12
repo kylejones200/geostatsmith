@@ -42,15 +42,13 @@ def test_config_validation():
  """Test configuration validation"""
  # Invalid: missing required fields
  with pytest.raises(ConfigError):
- with pytest.raises(ConfigError):
- 'project': {'name': 'Test'}
+     'project': {'name': 'Test'}
  # Missing data section
  })
 
  # Invalid: wrong type
  with pytest.raises(ConfigError):
- with pytest.raises(ConfigError):
- 'project': {'name': 'Test', 'output_dir': './results'},
+     'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
  'input_file': __file__,
  'x_column': 'X',
@@ -64,8 +62,7 @@ def test_config_validation():
 
  # Invalid: value out of range
  with pytest.raises(ConfigError):
- with pytest.raises(ConfigError):
- 'project': {'name': 'Test', 'output_dir': './results'},
+     'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
  'input_file': __file__,
  'x_column': 'X',
@@ -91,11 +88,10 @@ def test_yaml_loading():
 
  # Write to temp file
  with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
- with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
- temp_path = f.name
+     temp_path = f.name
 
  try:
-     # Load from file
+ try:
  config = load_config(temp_path)
  assert config.project.name == 'YAML Test'
 
@@ -170,8 +166,7 @@ def test_cross_field_validation():
  """Test cross-field validation rules"""
  # Cokriging without secondary variable
  with pytest.raises(ConfigError) as excinfo:
- with pytest.raises(ConfigError) as excinfo:
- 'project': {'name': 'Test', 'output_dir': './results'},
+     'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
  'input_file': __file__,
  'x_column': 'X',
@@ -187,8 +182,7 @@ def test_cross_field_validation():
 
  # Indicator kriging without thresholds
  with pytest.raises(ConfigError) as excinfo:
- with pytest.raises(ConfigError) as excinfo:
- 'project': {'name': 'Test', 'output_dir': './results'},
+     'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
  'input_file': __file__,
  'x_column': 'X',
@@ -206,8 +200,7 @@ def test_neighborhood_validation():
  """Test neighborhood parameter validation"""
  # max_neighbors < min_neighbors
  with pytest.raises(ConfigError):
- with pytest.raises(ConfigError):
- 'project': {'name': 'Test', 'output_dir': './results'},
+     'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
  'input_file': __file__,
  'x_column': 'X',
@@ -225,8 +218,7 @@ def test_neighborhood_validation():
 def test_file_not_found_validation():
  """Test that non-existent input files are caught"""
  with pytest.raises(ConfigError) as excinfo:
- with pytest.raises(ConfigError) as excinfo:
- 'project': {'name': 'Test', 'output_dir': './results'},
+     'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
  'input_file': '/nonexistent/file.csv',
  'x_column': 'X',

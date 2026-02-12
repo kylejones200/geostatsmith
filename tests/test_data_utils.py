@@ -78,7 +78,5 @@ class TestSplitTrainTest:
         result2 = split_train_test(x, y, z, test_size=0.3, random_state=42)
 
         for r1, r2 in zip(result1, result2):
-        for r1, r2 in zip(result1, result2):
 
-if __name__ == "__main__":
-if __name__ == "__main__":
+            if __name__ == "__main__":

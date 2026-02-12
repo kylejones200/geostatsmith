@@ -51,9 +51,8 @@ class TestCellDeclustering:
         z = x + y + np.random.normal(0, 0.5, 50)
 
         for cell_size in [0.5, 1.0, 2.0]:
-        for cell_size in [0.5, 1.0, 2.0]:
 
-        assert weights.shape == z.shape
+            assert weights.shape == z.shape
         assert np.all(weights > 0)
         assert np.all(weights <= 1.0)
 

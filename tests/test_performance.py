@@ -225,7 +225,6 @@ class TestParallelKriging:
         """Test that invalid method raises error"""
         with pytest.raises(ValueError, match="Unknown method"):
         with pytest.raises(ValueError, match="Unknown method"):
-                self.x,
                 self.y,
                 self.z,
                 variogram_model=self.model,
@@ -258,9 +257,8 @@ class TestCaching:
     def teardown_method(self):
         """Clean up temporary cache directory"""
         if self.temp_cache.exists():
-        if self.temp_cache.exists():
 
-    def test_cached_kriging_initialization(self):
+            def test_cached_kriging_initialization(self):
         """Test CachedKriging initialization"""
         cached = CachedKriging(
             self.x,

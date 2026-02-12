@@ -72,9 +72,8 @@ class TestMetrics:
         y_pred = np.array([1, 2, 3, 4])
 
         with pytest.raises((ValueError, IndexError)):
-        with pytest.raises((ValueError, IndexError)):
 
-class TestCrossValidation:
+            class TestCrossValidation:
     """Test cross-validation methods"""
 
     def setup_method(self):

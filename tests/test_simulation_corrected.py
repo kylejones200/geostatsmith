@@ -138,8 +138,7 @@ class TestUnconditionalSimulation:
         y = np.array([0, 10, 20])
 
         with pytest.raises(ValueError, match="Unknown method"):
-        with pytest.raises(ValueError, match="Unknown method"):
-        x, y,
+            x, y,
         covariance_model=self.model,
         method="invalid_method"
         )

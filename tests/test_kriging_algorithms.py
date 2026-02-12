@@ -119,9 +119,8 @@ class TestSimpleKriging:
         )
 
         with pytest.raises(KrigingError):
-        with pytest.raises(KrigingError):
 
-    def test_prediction_grid(self):
+            def test_prediction_grid(self):
         """Test prediction on regular grid"""
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
@@ -400,9 +399,8 @@ class TestKrigingEdgeCases:
 
         # NaN coordinates
         with pytest.raises((ValueError, Exception)):
-        with pytest.raises((ValueError, Exception)):
 
-class TestKrigingVariance:
+            class TestKrigingVariance:
     """Test kriging variance properties"""
 
     def test_variance_at_data_point_is_small(self):
@@ -436,7 +434,7 @@ class TestKrigingVariance:
         variances = []
 
         for d in distances:
-            _, var = ok.predict(np.array([50.0 + d]), np.array([50.0]))
+        for d in distances:
         variances.append(var[0])
 
         # Variance should generally increase with distance
