@@ -171,11 +171,11 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     """
     logger.info("GOLD EXPLORATION ANALYSIS")
 
- # Load Au data
- au_data = load_agdb4_data(agdb_path, element='Au', sample_type='sediment')
+    # Load Au data
+    au_data = load_agdb4_data(agdb_path, element='Au', sample_type='sediment')
 
- # Filter for specific region if desired
- if region_name:
+    # Filter for specific region if desired
+    if region_name:
      # Try to filter by district name if available
      if 'metadata' in au_data and 'dataframe' in au_data['metadata']:
          df = au_data['metadata']['dataframe']
