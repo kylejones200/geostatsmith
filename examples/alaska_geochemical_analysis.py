@@ -62,7 +62,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Filter for sample type if specified
     if sample_type:
-    if sample_type:
+        merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
 
     # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
     element_col = f"{element}_ppm"
