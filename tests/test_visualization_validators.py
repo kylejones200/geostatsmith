@@ -262,11 +262,9 @@ class TestValidators:
     def test_validate_positive_rejects_negative(self):
         with pytest.raises((ValueError, AssertionError)):
 
-        with pytest.raises((ValueError, AssertionError)):
         """Test that zero is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-        with pytest.raises((ValueError, AssertionError)):
         """Test array shape validation"""
         a = np.array([1, 2, 3, 4, 5])
         b = np.array([6, 7, 8, 9, 10])
@@ -281,25 +279,20 @@ class TestValidators:
         with pytest.raises((ValueError, AssertionError)):
 
 
-        with pytest.raises((ValueError, AssertionError)):
     """Tests for parameter validation"""
 
     def test_negative_nugget_rejected(self):
         with pytest.raises((ValueError, AssertionError)):
 
-        with pytest.raises((ValueError, AssertionError)):
         """Test that negative sill is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-        with pytest.raises((ValueError, AssertionError)):
         """Test that negative range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-        with pytest.raises((ValueError, AssertionError)):
         """Test that zero range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-        with pytest.raises((ValueError, AssertionError)):
         """Test that valid parameters are accepted"""
         model = SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
 

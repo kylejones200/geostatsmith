@@ -144,7 +144,6 @@ class TestCSVIO:
     def test_read_csv_spatial_file_not_found(self):
         with pytest.raises(FileNotFoundError):
 
-        with pytest.raises(FileNotFoundError):
         """Test that missing columns raise error"""
         df = pd.DataFrame({"x": self.x, "y": self.y})  # Missing 'z'
         csv_file = self.temp_dir / "test.csv"
@@ -152,7 +151,6 @@ class TestCSVIO:
 
         with pytest.raises(KeyError, match="Missing columns"):
 
-        with pytest.raises(KeyError, match="Missing columns"):
         """Test basic CSV writing"""
         csv_file = self.temp_dir / "output.csv"
 
@@ -275,7 +273,6 @@ class TestRasterIO:
     def test_read_geotiff_file_not_found(self):
         with pytest.raises(FileNotFoundError):
 
-        with pytest.raises(FileNotFoundError):
     def test_write_ascii_grid(self):
         asc_file = self.temp_dir / "test.asc"
 
@@ -350,7 +347,6 @@ class TestNetCDFIO:
     def test_read_netcdf_file_not_found(self):
         with pytest.raises(FileNotFoundError):
 
-        with pytest.raises(FileNotFoundError):
     def test_read_netcdf_missing_variable(self):
         nc_file = self.temp_dir / "test.nc"
         write_netcdf(str(nc_file), self.x, self.y, self.z, z_var="temp")
@@ -358,7 +354,6 @@ class TestNetCDFIO:
         with pytest.raises(KeyError, match="Variable"):
 
 
-        with pytest.raises(KeyError, match="Variable"):
     """Tests for data conversion utilities"""
 
     def setup_method(self):
