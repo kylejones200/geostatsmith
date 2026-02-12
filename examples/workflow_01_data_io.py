@@ -25,10 +25,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 try:
-try:
- read_csv_spatial, write_csv_spatial,
- to_dataframe, to_geopandas
- )
+    from geostats.io.tabular import (
+        read_csv_spatial, write_csv_spatial,
+        to_dataframe, to_geopandas
+    )
+    from geostats.io.raster import read_geotiff, write_geotiff
  from geostats.algorithms.ordinary_kriging import OrdinaryKriging
  from geostats.models.variogram_models import SphericalModel
  from geostats.algorithms.variogram import experimental_variogram
@@ -158,9 +159,10 @@ def example_2_geotiff_workflow():
  logger.info(f"Converted to DataFrame:")
  logger.info(f"\n{df.head()}")
 
- try:
- try:
- logger.info(f"Converted to GeoDataFrame with CRS: {gdf.crs}")
+        try:
+            gdf = to_geopandas(x_valid, y_valid, z_valid,
+                             x_col='easting', y_col='northing', z_col='elevation')
+            logger.info(f"Converted to GeoDataFrame with CRS: {gdf.crs}")
  gdf.to_file('validation_points.geojson', driver='GeoJSON')
  logger.info(" Saved validation_points.geojson")
  except ImportError:
@@ -187,9 +189,8 @@ def example_3_format_comparison():
 
  x_grid, y_grid = np.meshgrid(np.linspace(0, 100, 50), np.linspace(0, 100, 50))
  z_grid = np.random.rand(50, 50)
- try:
- try:
- write_geotiff('test.tif', np.linspace(0, 100, 50), np.linspace(0, 100, 50), z_grid)
+        try:
+            write_geotiff('test.tif', np.linspace(0, 100, 50), np.linspace(0, 100, 50), z_grid)
  formats.append(('GeoTIFF', time.time() - start, os.path.getsize('test.tif') / 1024))
  except ImportError:
  logger.warning(" rasterio not available for GeoTIFF")
@@ -197,8 +198,8 @@ def example_3_format_comparison():
  logger.info("\nFormat Performance:")
  logger.info(f"{'Format':<15} {'Write Time (s)':<15} {'File Size (KB)':<15}")
  logger.info("-" * 45)
- for fmt, t, s in formats:
- for fmt, t, s in formats:
+    for fmt, t, s in formats:
+        logger.info(f"{fmt:<15} {t:<15.4f} {s:<15.2f}")
 
 def main():
  logger.info("GEOSTATS DATA I/O WORKFLOW EXAMPLES")
@@ -216,4 +217,4 @@ def main():
  logger.info(" - example_workflow_01_io.png")
 
 if __name__ == '__main__':
-if __name__ == '__main__':
+    main()
