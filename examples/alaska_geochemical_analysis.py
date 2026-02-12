@@ -166,8 +166,9 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     # ==============================================================================
 
 def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
- Analyze gold distribution for mineral exploration.
-def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
+    """
+    Analyze gold distribution for mineral exploration.
+    """
     """
     Analyze gold distribution for mineral exploration.
     """
