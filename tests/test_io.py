@@ -322,8 +322,6 @@ class TestNetCDFIO:
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def teardown_method(self):
         if self.temp_dir.exists():
-
-        if self.temp_dir.exists():
             shutil.rmtree(self.temp_dir)
         nc_file = self.temp_dir / "test.nc"
 

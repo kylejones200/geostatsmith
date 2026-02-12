@@ -19,19 +19,20 @@ from geostats.config import (
 )
 
 def test_minimal_config():
- config_dict = {
- 'project': {
- 'name': 'Test',
- 'output_dir': './results'
- },
- 'data': {
- 'input_file': __file__, # Use this file as it exists
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
- }
+    config_dict = {
+        'project': {
+            'name': 'Test',
+            'output_dir': './results'
+        },
+        'data': {
+            'input_file': __file__,  # Use this file as it exists
+            'x_column': 'X',
+            'y_column': 'Y',
+            'z_column': 'Z'
+        }
+    }
 
- config = load_config_dict(config_dict)
+    config = load_config_dict(config_dict)
  assert config.project.name == 'Test'
  assert config.data.x_column == 'X'
  assert config.kriging.method == 'ordinary' # Default
@@ -174,20 +175,21 @@ def test_cross_field_validation():
         })
     assert 'cokriging' in str(excinfo.value).lower()
 
- # Indicator kriging without thresholds
- with pytest.raises(ConfigError) as excinfo:
-     'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
- },
- 'kriging': {
- 'method': 'indicator'
- # Missing thresholds
-
- })
- assert 'indicator' in str(excinfo.value).lower()
+    # Indicator kriging without thresholds
+    with pytest.raises(ConfigError) as excinfo:
+        load_config({
+            'data': {
+                'input_file': __file__,
+                'x_column': 'X',
+                'y_column': 'Y',
+                'z_column': 'Z'
+            },
+            'kriging': {
+                'method': 'indicator'
+                # Missing thresholds
+            }
+        })
+    assert 'indicator' in str(excinfo.value).lower()
 
 def test_neighborhood_validation():
     # max_neighbors < min_neighbors
