@@ -129,13 +129,17 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
 
     # Filter for specific region if desired
     if region_name:
-    if region_name:
-         if 'DISTRICT_NAME' in df.columns:
-         if 'DISTRICT_NAME' in df.columns:
-             if len(indices) > 0:
-             if len(indices) > 0:
-                 au_data['values'] = au_data['values'][indices]
-                 logger.info(f"Focused on {region_name} region: {len(indices)} samples")
+        # Try to filter by district name if available
+        if 'metadata' in au_data and 'dataframe' in au_data['metadata']:
+            df = au_data['metadata']['dataframe']
+            if 'DISTRICT_NAME' in df.columns:
+                mask = df['DISTRICT_NAME'].str.contains(region_name, case=False, na=False)
+                indices = np.where(mask.values)[0]
+                if len(indices) > 0:
+                    au_data['x'] = au_data['x'][indices]
+                    au_data['y'] = au_data['y'][indices]
+                    au_data['values'] = au_data['values'][indices]
+                    logger.info(f"Focused on {region_name} region: {len(indices)} samples")
 
     x, y, au = au_data['x'], au_data['y'], au_data['values']
 
