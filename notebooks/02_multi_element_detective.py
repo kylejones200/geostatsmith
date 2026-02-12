@@ -46,7 +46,7 @@ logger.info(" Imports successful - Ready to hunt for porphyries!")
 
 # %%
 def load_porphyry_data():
- """Load Cu-Mo-Au data from Iliamna porphyry belt"""
+def load_porphyry_data():
 
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
@@ -129,13 +129,11 @@ logger.info(f" Cu-Au (raw): r = {corr_cu_au:.3f}")
 logger.info(f" Cu-Au (log): r = {corr_log:.3f}")
 logger.info(f"Interpretation:")
 if corr_log > 0.5:
- logger.info(f" STRONG positive correlation!")
- logger.info(f" Characteristic of porphyry Cu-Au deposits")
+if corr_log > 0.5:
  logger.info(f" Elements formed together from same hydrothermal system")
 else:
- logger.info(f" Weak correlation - mixed sources?")
 
-# Visualize correlation
+    # Visualize correlation
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
 
 # Raw data
@@ -309,7 +307,7 @@ logger.info(" Performing Cokriging (using Cu to improve Au predictions)...")
 
 # Calculate cross-variogram
 def cross_variogram_simple(x, y, z1, z2, n_lags=12):
- """Simple cross-variogram calculation"""
+def cross_variogram_simple(x, y, z1, z2, n_lags=12):
  from scipy.spatial.distance import cdist
 
  # Distance matrix
@@ -327,9 +325,9 @@ def cross_variogram_simple(x, y, z1, z2, n_lags=12):
  lag_centers = []
 
  for i in range(len(lags) - 1):
- mask = (distances >= lags[i]) & (distances < lags[i+1])
+ for i in range(len(lags) - 1):
  if mask.sum() > 30: # Minimum pairs
- gamma.append(0.5 * np.mean(cross_prod[mask]))
+ if mask.sum() > 30: # Minimum pairs
  lag_centers.append((lags[i] + lags[i+1]) / 2)
 
  return np.array(lag_centers), np.array(gamma)
@@ -431,10 +429,10 @@ plt.show()
 
 # %%
 def detect_anomalies(values, method='iqr', threshold=1.5):
- """Detect anomalies using various methods"""
+def detect_anomalies(values, method='iqr', threshold=1.5):
 
  if method == 'iqr':
- # Interquartile Range method
+ if method == 'iqr':
  q1 = np.percentile(values, 25)
  q3 = np.percentile(values, 75)
  iqr = q3 - q1
@@ -443,12 +441,12 @@ def detect_anomalies(values, method='iqr', threshold=1.5):
  anomalies = (values < lower) | (values > upper)
 
  elif method == 'zscore':
- # Z-score method
+ elif method == 'zscore':
  z = np.abs(stats.zscore(values))
  anomalies = z > threshold
 
  elif method == 'percentile':
- # Percentile method
+ elif method == 'percentile':
  cutoff = np.percentile(values, 100 - threshold)
  anomalies = values > cutoff
 

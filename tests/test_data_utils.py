@@ -6,10 +6,10 @@ import numpy as np
 from geostats.utils.data_utils import generate_synthetic_data, split_train_test
 
 class TestGenerateSyntheticData:
-    """Tests for synthetic data generation"""
+class TestGenerateSyntheticData:
 
     def test_generate_synthetic_data_basic(self):
-        """Test basic synthetic data generation"""
+    def test_generate_synthetic_data_basic(self):
         x, y, z = generate_synthetic_data(n_points=50, seed=42)
 
         assert len(x) == 50
@@ -20,7 +20,7 @@ class TestGenerateSyntheticData:
         assert not np.any(np.isnan(z))
 
     def test_generate_synthetic_data_reproducible(self):
-        """Test that synthetic data generation is reproducible"""
+    def test_generate_synthetic_data_reproducible(self):
         x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
         x2, y2, z2 = generate_synthetic_data(n_points=30, seed=42)
 
@@ -29,7 +29,7 @@ class TestGenerateSyntheticData:
         assert np.allclose(z1, z2)
 
     def test_generate_synthetic_data_different_seeds(self):
-        """Test that different seeds produce different data"""
+    def test_generate_synthetic_data_different_seeds(self):
         x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
         x2, y2, z2 = generate_synthetic_data(n_points=30, seed=123)
 
@@ -38,10 +38,10 @@ class TestGenerateSyntheticData:
         assert not np.allclose(z1, z2)
 
 class TestSplitTrainTest:
-    """Tests for train/test splitting"""
+class TestSplitTrainTest:
 
     def test_split_train_test_basic(self):
-        """Test basic train/test split"""
+    def test_split_train_test_basic(self):
         x = np.arange(100, dtype=float)
         y = np.arange(100, dtype=float)
         z = np.arange(100, dtype=float)
@@ -55,7 +55,7 @@ class TestSplitTrainTest:
         assert len(x_train) + len(x_test) == len(x)
 
     def test_split_train_test_no_overlap(self):
-        """Test that train and test sets don't overlap"""
+    def test_split_train_test_no_overlap(self):
         x = np.arange(50, dtype=float)
         y = np.arange(50, dtype=float)
         z = np.arange(50, dtype=float)
@@ -69,7 +69,7 @@ class TestSplitTrainTest:
         assert len(np.unique(all_indices)) == len(x)
 
     def test_split_train_test_reproducible(self):
-        """Test that split is reproducible with same random_state"""
+    def test_split_train_test_reproducible(self):
         x = np.random.rand(100)
         y = np.random.rand(100)
         z = np.random.rand(100)
@@ -78,5 +78,4 @@ class TestSplitTrainTest:
         result2 = split_train_test(x, y, z, test_size=0.3, random_state=42)
 
         for r1, r2 in zip(result1, result2):
-
         for r1, r2 in zip(result1, result2):

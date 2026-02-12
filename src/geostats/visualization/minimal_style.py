@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 def apply_minimalist_style(ax, remove_spines=('top', 'right')):
- """
+def apply_minimalist_style(ax, remove_spines=('top', 'right')):
  Apply minimalist style to matplotlib axes
 
  Parameters
@@ -28,11 +28,11 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
 
  # Remove specified spines
  for spine in remove_spines:
- ax.spines[spine].set_visible(False)
+ for spine in remove_spines:
 
  # Make remaining spines thinner
  for spine in ax.spines.values():
- if spine.get_visible():
+ for spine in ax.spines.values():
  spine.set_linewidth(0.8)
  spine.set_color('#333333')
 
@@ -42,12 +42,12 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
 
  # Remove tick marks from hidden spines
  if 'top' in remove_spines:
- ax.tick_params(top=False)
+ if 'top' in remove_spines:
  if 'right' in remove_spines:
- ax.tick_params(right=False, labelright=False)
+ if 'right' in remove_spines:
 
 def set_minimalist_rcparams():
- """Set global matplotlib rcParams for minimalist style"""
+def set_minimalist_rcparams():
  mpl.rcParams.update({
  # Figure
  'figure.facecolor': 'white',
@@ -101,7 +101,7 @@ def set_minimalist_rcparams():
  })
 
 def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
- """
+def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  Create figure with minimalist style applied
 
  Parameters
@@ -119,18 +119,18 @@ def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  Figure and axes objects
  """
  if figsize is None:
- figsize = (8 * ncols, 6 * nrows)
+ if figsize is None:
 
  fig, axes = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
 
  # Apply style to all axes
  if isinstance(axes, np.ndarray):
- for ax in axes.flat:
+ if isinstance(axes, np.ndarray):
  apply_minimalist_style(ax)
  else:
- apply_minimalist_style(axes)
+ else:
 
  return fig, axes
 
-# Import numpy for array handling
-import numpy as np
+    # Import numpy for array handling
+    import numpy as np

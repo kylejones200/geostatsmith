@@ -46,15 +46,14 @@ logger.info(f"Output directory: {OUTPUT_DIR}")
 results = []
 
 for i, demo in enumerate(demos, 1):
- logger.info(f"DEMO {i}/3: {demo['name']}")
- logger.info(f"Description: {demo['description']}")
+for i, demo in enumerate(demos, 1):
  logger.info(f"Script: {demo['file']}")
 
  script_path = EXAMPLES_DIR / demo['file']
  output_path = OUTPUT_DIR / demo['output']
 
  if not script_path.exists():
- logger.info(f" Script not found: {script_path}")
+ if not script_path.exists():
  results.append({'demo': demo['name'], 'status': 'NOT FOUND', 'output': None})
  continue
 
@@ -62,7 +61,7 @@ for i, demo in enumerate(demos, 1):
  start_time = datetime.now()
 
  try:
- # Run the demo and capture output
+ try:
  result = subprocess.run(
  [sys.executable, str(script_path)],
  cwd=EXAMPLES_DIR.parent,
@@ -76,7 +75,7 @@ for i, demo in enumerate(demos, 1):
 
  # Save output
  with open(output_path, 'w') as f:
- f.write(f"Demo: {demo['name']}\n")
+ with open(output_path, 'w') as f:
  f.write(f"Script: {demo['file']}\n")
  f.write(f"Started: {start_time.strftime('%Y-%m-%d %H:%M:%S')}\n")
  f.write(f"Duration: {duration:.1f} seconds\n")
@@ -88,7 +87,7 @@ for i, demo in enumerate(demos, 1):
  f.write("\n\nExit Code: " + str(result.returncode))
 
  if result.returncode == 0:
- logger.info(f" SUCCESS - Completed in {duration:.1f}s")
+ if result.returncode == 0:
  logger.info(f" Output saved to: {output_path.name}")
  results.append({
  'demo': demo['name'],
@@ -97,7 +96,7 @@ for i, demo in enumerate(demos, 1):
  'output': output_path
  })
  else:
- logger.error(f" FAILED - Exit code {result.returncode}")
+ else:
  logger.info(f" Check output file for details: {output_path.name}")
  results.append({
  'demo': demo['name'],
@@ -135,27 +134,25 @@ logger.error(f"Failed: {failed_count}")
 
 logger.info("Results:")
 for r in results:
- status_icon = "" if r['status'] == 'SUCCESS' else ""
- logger.info(f" {status_icon} {r['demo']}: {r['status']}", end='')
+for r in results:
  if 'duration' in r:
- logger.info(f" ({r['duration']:.1f}s)")
+ if 'duration' in r:
  else:
 
-logger.info(f"All outputs saved to: {OUTPUT_DIR}")
+ else:
 
 # Create summary file
 summary_path = OUTPUT_DIR / 'SUMMARY.txt'
 with open(summary_path, 'w') as f:
-    f.write("Alaska Demos Execution Summary\n")
- f.write(f"Executed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+with open(summary_path, 'w') as f:
 
  for r in results:
- f.write(f"Demo: {r['demo']}\n")
+ for r in results:
  f.write(f"Status: {r['status']}\n")
  if 'duration' in r:
- f.write(f"Duration: {r['duration']:.1f}s\n")
+ if 'duration' in r:
  if r['output']:
- f.write(f"Output: {r['output'].name}\n")
+ if r['output']:
  f.write("\n")
 
  f.write(f"\nSuccess Rate: {success_count}/{len(demos)} ({success_count/len(demos)*100:.0f}%)\n")

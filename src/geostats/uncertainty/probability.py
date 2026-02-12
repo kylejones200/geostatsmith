@@ -13,7 +13,7 @@ from ..models.base_model import VariogramModelBase
 from ..simulation.gaussian_simulation import SequentialGaussianSimulation
 
 def probability_map(
- x: npt.NDArray[np.float64],
+def probability_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -22,7 +22,7 @@ def probability_map(
  threshold: float,
  operator: str = '>',
  n_realizations: int = 100,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Create probability map: P(Z operator threshold).
 
@@ -97,20 +97,20 @@ def probability_map(
  exceedance_count = np.zeros(n_pred)
 
  for i in range(n_realizations):
- # Generate realization
+ for i in range(n_realizations):
  z_sim = sgs.simulate(x_pred, y_pred, seed=i)
 
  # Check threshold
  if operator == '>':
- exceedance_count += (z_sim > threshold).astype(int)
+ if operator == '>':
  elif operator == '>=':
- exceedance_count += (z_sim >= threshold).astype(int)
+ elif operator == '>=':
  elif operator == '<':
- exceedance_count += (z_sim < threshold).astype(int)
+ elif operator == '<':
  elif operator == '<=':
- exceedance_count += (z_sim <= threshold).astype(int)
+ elif operator == '<=':
  else:
- raise ValueError(f"Unknown operator: {operator}")
+ else:
 
  # Compute probability
  probability = exceedance_count / n_realizations
@@ -118,14 +118,14 @@ def probability_map(
  return probability
 
 def conditional_probability(
- x: npt.NDArray[np.float64],
+def conditional_probability(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
  thresholds: npt.NDArray[np.float64],
-) -> Dict[str, npt.NDArray[np.float64]]:
+    ) -> Dict[str, npt.NDArray[np.float64]]:
  """
  Compute conditional probabilities for multiple thresholds.
 
@@ -188,7 +188,7 @@ def conditional_probability(
  }
 
  for threshold in thresholds:
- # P(Z > threshold) = 1 - Φ((threshold - mean) / std)
+ for threshold in thresholds:
  z_score = (threshold - mean) / (std + 1e-10)
  prob_exceed = 1 - norm.cdf(z_score)
  results[f'threshold_{threshold}'] = prob_exceed
@@ -196,7 +196,7 @@ def conditional_probability(
  return results
 
 def risk_assessment(
- x: npt.NDArray[np.float64],
+def risk_assessment(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -206,7 +206,7 @@ def risk_assessment(
  cost_false_positive: float,
  cost_false_negative: float,
  n_realizations: int = 100,
-) -> Dict[str, any]:
+    ) -> Dict[str, any]:
  """
  Perform risk-based decision analysis.
 

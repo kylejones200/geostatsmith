@@ -84,8 +84,7 @@ methods = [
 ]
 
 for idx, (method_name, z_pred, var_pred, metrics) in enumerate(methods, 1):
-    # Predictions
-    ax1 = plt.subplot(2, 3, idx)
+for idx, (method_name, z_pred, var_pred, metrics) in enumerate(methods, 1):
     Z_pred = z_pred.reshape(X.shape)
     contour = ax1.contourf(X, Y, Z_pred, levels=15, cmap="viridis", alpha=0.8)
     ax1.scatter(

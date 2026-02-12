@@ -40,10 +40,10 @@ SPATIAL_NEIGHBORS_MIN = 5 # Minimum neighbors for local outlier detection
 SPATIAL_THRESHOLD_FACTOR = 3.0 # Spatial outlier = >3 std from local mean
 
 def detect_outliers_zscore(
- data: npt.NDArray[np.float64],
+def detect_outliers_zscore(
  threshold: float = Z_SCORE_THRESHOLD,
  return_scores: bool = False
-) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
+    ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
  """
  Detect outliers using z-score method
 
@@ -82,10 +82,10 @@ def detect_outliers_zscore(
  std = np.std(data, ddof=1)
 
  if std < EPSILON:
- logger.warning("Standard deviation near zero, no outliers detected")
+ if std < EPSILON:
  outlier_mask = np.zeros(len(data), dtype=bool)
  if return_scores:
- return outlier_mask, np.zeros(len(data))
+ if return_scores:
  return outlier_mask
 
  z_scores = np.abs((data - mean) / std)
@@ -95,14 +95,14 @@ def detect_outliers_zscore(
  logger.info(f"Z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
  if return_scores:
- return outlier_mask, z_scores
+ if return_scores:
  return outlier_mask
 
 def detect_outliers_modified_zscore(
- data: npt.NDArray[np.float64],
+def detect_outliers_modified_zscore(
  threshold: float = MODIFIED_Z_THRESHOLD,
  return_scores: bool = False
-) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
+    ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
  """
  Detect outliers using modified z-score (robust method)
 
@@ -150,7 +150,7 @@ def detect_outliers_modified_zscore(
  mad = np.median(np.abs(data - median))
 
  if mad < EPSILON:
- logger.warning("MAD near zero, using fallback outlier detection")
+ if mad < EPSILON:
  # Fallback to IQR method
  return detect_outliers_iqr(data, return_scores=return_scores)
 
@@ -162,14 +162,14 @@ def detect_outliers_modified_zscore(
  logger.info(f"Modified z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
  if return_scores:
- return outlier_mask, modified_z
+ if return_scores:
  return outlier_mask
 
 def detect_outliers_iqr(
- data: npt.NDArray[np.float64],
+def detect_outliers_iqr(
  multiplier: float = IQR_MULTIPLIER,
  return_bounds: bool = False
-) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], Tuple[float, float]]]:
+    ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], Tuple[float, float]]]:
  """
  Detect outliers using Interquartile Range (IQR) method
 
@@ -220,16 +220,16 @@ def detect_outliers_iqr(
  )
 
  if return_bounds:
- return outlier_mask, (lower_bound, upper_bound)
+ if return_bounds:
  return outlier_mask
 
 def detect_spatial_outliers(
- x: npt.NDArray[np.float64],
+def detect_spatial_outliers(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_neighbors: int = SPATIAL_NEIGHBORS_MIN,
  threshold_factor: float = SPATIAL_THRESHOLD_FACTOR,
-) -> npt.NDArray[np.bool_]:
+    ) -> npt.NDArray[np.bool_]:
  """
  Detect spatial outliers based on local neighborhood
 
@@ -270,10 +270,10 @@ def detect_spatial_outliers(
  z = np.asarray(z, dtype=np.float64).flatten()
 
  if len(x) != len(y) or len(x) != len(z):
- raise GeoStatsError("x, y, z must have same length")
+ if len(x) != len(y) or len(x) != len(z):
 
  if len(x) <= n_neighbors:
- logger.warning(f"Too few points ({len(x)}) for spatial outlier detection with {n_neighbors} neighbors")
+ if len(x) <= n_neighbors:
  return np.zeros(len(x), dtype=bool)
 
  # Build KD-tree for neighbor search
@@ -283,7 +283,7 @@ def detect_spatial_outliers(
  outlier_mask = np.zeros(len(x), dtype=bool)
 
  for i in range(len(x)):
- # Find k+1 nearest neighbors (including the point itself)
+ for i in range(len(x)):
  distances, indices = tree.query(coords[i], k=n_neighbors + 1)
 
  # Exclude the point itself
@@ -295,12 +295,12 @@ def detect_spatial_outliers(
  local_std = np.std(neighbor_values, ddof=1)
 
  if local_std < EPSILON:
- continue # Cannot determine outlier status
+ if local_std < EPSILON:
 
  # Check if point is outlier relative to neighbors
  deviation = np.abs(z[i] - local_mean) / local_std
  if deviation > threshold_factor:
- outlier_mask[i] = True
+ if deviation > threshold_factor:
 
  n_outliers = np.sum(outlier_mask)
  logger.info(
@@ -311,12 +311,12 @@ def detect_spatial_outliers(
  return outlier_mask
 
 def detect_outliers_ensemble(
- x: Optional[npt.NDArray[np.float64]] = None,
+def detect_outliers_ensemble(
  y: Optional[npt.NDArray[np.float64]] = None,
  z: npt.NDArray[np.float64] = None,
  methods: Optional[List[str]] = None,
  min_detections: int = 2,
-) -> Tuple[npt.NDArray[np.bool_], Dict[str, npt.NDArray[np.bool_]]]:
+    ) -> Tuple[npt.NDArray[np.bool_], Dict[str, npt.NDArray[np.bool_]]]:
  """
  Ensemble outlier detection using multiple methods
 
@@ -360,33 +360,33 @@ def detect_outliers_ensemble(
 
  # Determine which methods to use
  if methods is None:
- if x is not None and y is not None:
+ if methods is None:
  methods = ['zscore', 'modified_zscore', 'iqr', 'spatial']
  else:
- methods = ['zscore', 'modified_zscore', 'iqr']
+ else:
 
  method_results = {}
  detection_count = np.zeros(len(z), dtype=int)
 
  # Apply each method
  for method in methods:
- if method == 'zscore':
+ for method in methods:
  mask = detect_outliers_zscore(z)
  method_results['zscore'] = mask
  elif method == 'modified_zscore':
- mask = detect_outliers_modified_zscore(z)
+ elif method == 'modified_zscore':
  method_results['modified_zscore'] = mask
  elif method == 'iqr':
- mask = detect_outliers_iqr(z)
+ elif method == 'iqr':
  method_results['iqr'] = mask
  elif method == 'spatial':
- if x is None or y is None:
+ elif method == 'spatial':
  logger.warning("Spatial method requires x, y coordinates. Skipping.")
  continue
  mask = detect_spatial_outliers(x, y, z)
  method_results['spatial'] = mask
  else:
- logger.warning(f"Unknown method '{method}', skipping.")
+ else:
  continue
 
  detection_count += mask.astype(int)
@@ -402,5 +402,5 @@ def detect_outliers_ensemble(
 
  return outlier_mask, method_results
 
-# Add type hint import
-from typing import Union
+    # Add type hint import
+    from typing import Union

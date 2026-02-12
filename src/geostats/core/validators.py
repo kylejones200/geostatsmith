@@ -9,10 +9,10 @@ import numpy.typing as npt
 from .exceptions import ValidationError
 
 def validate_coordinates(
- x: npt.NDArray[np.float64],
+def validate_coordinates(
  y: Optional[npt.NDArray[np.float64]] = None,
  z: Optional[npt.NDArray[np.float64]] = None,
-) -> Tuple[npt.NDArray[np.float64], ...]:
+    ) -> Tuple[npt.NDArray[np.float64], ...]:
  """
  Validate and convert coordinate arrays
 
@@ -38,26 +38,26 @@ def validate_coordinates(
  x = np.asarray(x, dtype=np.float64)
 
  if x.ndim == 0:
- raise ValidationError("Coordinates must be at least 1-dimensional")
+ if x.ndim == 0:
 
  if y is None:
- # x contains all coordinates
+ if y is None:
  if x.ndim == 1:
- return (x,)
+ if x.ndim == 1:
  else:
- return tuple(x[:, i] for i in range(x.shape[1]))
+ else:
 
  y = np.asarray(y, dtype=np.float64)
 
  if x.shape != y.shape:
- raise ValidationError(
+ if x.shape != y.shape:
  f"X and Y coordinates must have same shape, got {x.shape} and {y.shape}"
  )
 
  if z is not None:
- z = np.asarray(z, dtype=np.float64)
+ if z is not None:
  if x.shape != z.shape:
- raise ValidationError(
+ if x.shape != z.shape:
  f"All coordinates must have same shape, got {x.shape}, {y.shape}, and {z.shape}"
  )
  return x, y, z
@@ -65,10 +65,10 @@ def validate_coordinates(
  return x, y
 
 def validate_values(
- values: npt.NDArray[np.float64],
+def validate_values(
  n_expected: Optional[int] = None,
  allow_nan: bool = False,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Validate values array
 
@@ -94,23 +94,23 @@ def validate_values(
  values = np.asarray(values, dtype=np.float64)
 
  if values.ndim != 1:
- raise ValidationError(f"Values must be 1-dimensional, got shape {values.shape}")
+ if values.ndim != 1:
 
  if n_expected is not None and len(values) != n_expected:
- raise ValidationError(
+ if n_expected is not None and len(values) != n_expected:
  f"Expected {n_expected} values, got {len(values)}"
  )
 
  if not allow_nan and np.any(np.isnan(values)):
- raise ValidationError("Values contain NaN")
+ if not allow_nan and np.any(np.isnan(values)):
 
  if not allow_nan and np.any(np.isinf(values)):
- raise ValidationError("Values contain infinity")
+ if not allow_nan and np.any(np.isinf(values)):
 
  return values
 
 def validate_positive(value: float, name: str = "value") -> float:
- """
+def validate_positive(value: float, name: str = "value") -> float:
  Validate that a value is positive
 
  Parameters
@@ -131,15 +131,15 @@ def validate_positive(value: float, name: str = "value") -> float:
  If value is not positive
  """
  if value <= 0:
- raise ValidationError(f"{name} must be positive, got {value}")
+ if value <= 0:
  return value
 
 def validate_in_range(
- value: float,
+def validate_in_range(
  min_val: Optional[float] = None,
  max_val: Optional[float] = None,
  name: str = "value",
-) -> float:
+    ) -> float:
  """
  Validate that a value is within a range
 
@@ -165,17 +165,17 @@ def validate_in_range(
  If value is out of range
  """
  if min_val is not None and value < min_val:
- raise ValidationError(f"{name} must be >= {min_val}, got {value}")
+ if min_val is not None and value < min_val:
 
  if max_val is not None and value > max_val:
- raise ValidationError(f"{name} must be <= {max_val}, got {value}")
+ if max_val is not None and value > max_val:
 
  return value
 
 def validate_array_shapes_match(
- *arrays: npt.NDArray,
+def validate_array_shapes_match(
  names: Optional[Tuple[str, ...]] = None,
-) -> None:
+    ) -> None:
  """
  Validate that multiple arrays have matching shapes
 
@@ -192,15 +192,15 @@ def validate_array_shapes_match(
  If array shapes don't match
  """
  if len(arrays) < 2:
- return
+ if len(arrays) < 2:
 
  shapes = [arr.shape for arr in arrays]
  first_shape = shapes[0]
 
  for i, shape in enumerate(shapes[1:], 1):
- if shape != first_shape:
+ for i, shape in enumerate(shapes[1:], 1):
  if names:
- msg = f"{names[0]} and {names[i]} have different shapes: {first_shape} vs {shape}"
+ if names:
  else:
- msg = f"Arrays have different shapes: {first_shape} vs {shape}"
+ else:
  raise ValidationError(msg)

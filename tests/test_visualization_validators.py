@@ -28,10 +28,10 @@ from geostats.models.variogram_models import SphericalModel
 
 
 class TestSpatialPlots:
-    """Tests for spatial plotting functions"""
+class TestSpatialPlots:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n = 50
         self.x = np.random.uniform(0, 100, self.n)
@@ -39,11 +39,11 @@ class TestSpatialPlots:
         self.z = np.random.randn(self.n)
 
     def teardown_method(self):
-        """Close all plots after each test"""
+    def teardown_method(self):
         plt.close("all")
 
     def test_scatter_plot(self):
-        """Test basic scatter plot creation"""
+    def test_scatter_plot(self):
         fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z)
 
         assert fig is not None
@@ -51,14 +51,14 @@ class TestSpatialPlots:
         plt.close(fig)
 
     def test_scatter_plot_with_colorbar(self):
-        """Test scatter plot with colorbar"""
+    def test_scatter_plot_with_colorbar(self):
         fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z, colorbar=True)
 
         assert fig is not None
         plt.close(fig)
 
     def test_contour_plot(self):
-        """Test contour plot creation"""
+    def test_contour_plot(self):
         # Create grid data
         x_grid = np.linspace(0, 100, 20)
         y_grid = np.linspace(0, 100, 20)
@@ -71,7 +71,7 @@ class TestSpatialPlots:
         plt.close(fig)
 
     def test_contourf_plot(self):
-        """Test filled contour plot"""
+    def test_contourf_plot(self):
         x_grid = np.linspace(0, 100, 20)
         y_grid = np.linspace(0, 100, 20)
         X, Y = np.meshgrid(x_grid, y_grid)
@@ -83,7 +83,7 @@ class TestSpatialPlots:
         plt.close(fig)
 
     def test_plot_with_title(self):
-        """Test plot with custom title"""
+    def test_plot_with_title(self):
         fig, ax = spatial_plots.plot_data_points(
             self.x, self.y, self.z, title="Test Plot"
         )
@@ -92,7 +92,7 @@ class TestSpatialPlots:
         plt.close(fig)
 
     def test_plot_with_labels(self):
-        """Test plot with axis labels"""
+    def test_plot_with_labels(self):
         fig, ax = spatial_plots.plot_data_points(
             self.x, self.y, self.z, xlabel="X Coordinate", ylabel="Y Coordinate"
         )
@@ -103,10 +103,10 @@ class TestSpatialPlots:
 
 
 class TestVariogramPlots:
-    """Tests for variogram plotting functions"""
+class TestVariogramPlots:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         n = 100
         x = np.random.uniform(0, 100, n)
@@ -124,11 +124,11 @@ class TestVariogramPlots:
         )
 
     def teardown_method(self):
-        """Close all plots"""
+    def teardown_method(self):
         plt.close("all")
 
     def test_plot_experimental_variogram(self):
-        """Test plotting experimental variogram"""
+    def test_plot_experimental_variogram(self):
         fig, ax = variogram_plots.plot_experimental_variogram(
             self.lags, self.gamma, n_pairs=self.n_pairs
         )
@@ -138,14 +138,14 @@ class TestVariogramPlots:
         plt.close(fig)
 
     def test_plot_variogram_model(self):
-        """Test plotting variogram model"""
+    def test_plot_variogram_model(self):
         fig, ax = variogram_plots.plot_variogram_model(self.model, max_distance=100)
 
         assert fig is not None
         plt.close(fig)
 
     def test_plot_experimental_and_model(self):
-        """Test plotting experimental variogram with fitted model"""
+    def test_plot_experimental_and_model(self):
         fig, ax = variogram_plots.plot_variogram_with_model(
             self.lags, self.gamma, self.model, n_pairs=self.n_pairs
         )
@@ -154,7 +154,7 @@ class TestVariogramPlots:
         plt.close(fig)
 
     def test_plot_variogram_map(self):
-        """Test variogram map (directional variography)"""
+    def test_plot_variogram_map(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 80)
         y = np.random.uniform(0, 100, 80)
@@ -167,10 +167,10 @@ class TestVariogramPlots:
 
 
 class TestDiagnosticPlots:
-    """Tests for diagnostic plotting functions"""
+class TestDiagnosticPlots:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n = 50
         self.observed = np.random.randn(self.n) * 2 + 10
@@ -178,39 +178,39 @@ class TestDiagnosticPlots:
         self.residuals = self.observed - self.predicted
 
     def teardown_method(self):
-        """Close all plots"""
+    def teardown_method(self):
         plt.close("all")
 
     def test_qq_plot(self):
-        """Test Q-Q plot"""
+    def test_qq_plot(self):
         fig, ax = diagnostic_plots.qq_plot(self.residuals)
 
         assert fig is not None
         plt.close(fig)
 
     def test_histogram(self):
-        """Test histogram plot"""
+    def test_histogram(self):
         fig, ax = diagnostic_plots.plot_histogram(self.observed)
 
         assert fig is not None
         plt.close(fig)
 
     def test_scatterplot_observed_vs_predicted(self):
-        """Test observed vs predicted scatter plot"""
+    def test_scatterplot_observed_vs_predicted(self):
         fig, ax = diagnostic_plots.plot_obs_vs_pred(self.observed, self.predicted)
 
         assert fig is not None
         plt.close(fig)
 
     def test_residual_plot(self):
-        """Test residual plot"""
+    def test_residual_plot(self):
         fig, ax = diagnostic_plots.plot_residuals(self.predicted, self.residuals)
 
         assert fig is not None
         plt.close(fig)
 
     def test_residual_histogram(self):
-        """Test residual histogram"""
+    def test_residual_histogram(self):
         fig, ax = diagnostic_plots.plot_residual_histogram(self.residuals)
 
         assert fig is not None
@@ -218,10 +218,10 @@ class TestDiagnosticPlots:
 
 
 class TestValidators:
-    """Tests for input validation functions"""
+class TestValidators:
 
     def test_validate_coordinates_valid(self):
-        """Test validation of valid coordinates"""
+    def test_validate_coordinates_valid(self):
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, 3, 4, 5])
 
@@ -229,7 +229,7 @@ class TestValidators:
         validate_coordinates(x, y)
 
     def test_validate_coordinates_mismatched_length(self):
-        """Test validation catches mismatched lengths"""
+    def test_validate_coordinates_mismatched_length(self):
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, 3])
 
@@ -257,7 +257,7 @@ class TestValidators:
         validate_values(z, name="z")
 
     def test_validate_values_with_nan(self):
-        """Test validation catches NaN in values"""
+    def test_validate_values_with_nan(self):
         z = np.array([10, 20, np.nan, 40, 50])
 
         with pytest.raises((ValueError, AssertionError)):
@@ -277,7 +277,7 @@ class TestValidators:
         assert result == 5.0
 
     def test_validate_positive_rejects_negative(self):
-        """Test that negative values are rejected"""
+    def test_validate_positive_rejects_negative(self):
         with pytest.raises((ValueError, AssertionError)):
 
         with pytest.raises((ValueError, AssertionError)):
@@ -293,7 +293,7 @@ class TestValidators:
         validate_array_shapes_match(a, b)
 
     def test_validate_array_shapes_mismatch(self):
-        """Test detection of shape mismatch"""
+    def test_validate_array_shapes_mismatch(self):
         a = np.array([1, 2, 3, 4, 5])
         b = np.array([6, 7, 8])
 
@@ -304,7 +304,7 @@ class TestValidators:
     """Tests for parameter validation"""
 
     def test_negative_nugget_rejected(self):
-        """Test that negative nugget is rejected"""
+    def test_negative_nugget_rejected(self):
         with pytest.raises((ValueError, AssertionError)):
 
         with pytest.raises((ValueError, AssertionError)):
@@ -329,10 +329,10 @@ class TestValidators:
 
 
 class TestDataQuality:
-    """Tests for data quality checks"""
+class TestDataQuality:
 
     def test_data_coverage_check(self):
-        """Test checking data coverage"""
+    def test_data_coverage_check(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 50)
         y = np.random.uniform(0, 100, 50)
@@ -346,21 +346,21 @@ class TestDataQuality:
 
 
 class TestPlotSaving:
-    """Tests for saving plots"""
+class TestPlotSaving:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.x = np.random.uniform(0, 100, 50)
         self.y = np.random.uniform(0, 100, 50)
         self.z = np.random.randn(50)
 
     def teardown_method(self):
-        """Close all plots"""
+    def teardown_method(self):
         plt.close("all")
 
     def test_save_plot_to_file(self):
-        """Test saving plot to file"""
+    def test_save_plot_to_file(self):
         import os
         import tempfile
 
@@ -369,7 +369,7 @@ class TestPlotSaving:
         # Save to temporary file
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
 
-             with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
 
                 # Check file was created
                 assert os.path.exists(tmp_path)
@@ -377,8 +377,6 @@ class TestPlotSaving:
             finally:
                 # Clean up
                 if os.path.exists(tmp_path):
-                if os.path.exists(tmp_path):
 
 
-if __name__ == "__main__":
-     if __name__ == "__main__":
+                    if __name__ == "__main__":

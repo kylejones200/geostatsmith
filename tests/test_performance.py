@@ -37,10 +37,10 @@ from geostats.algorithms.ordinary_kriging import OrdinaryKriging
 
 
 class TestParallelKriging:
-    """Tests for parallel kriging"""
+class TestParallelKriging:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
         self.x = np.random.uniform(0, 100, self.n_samples)
@@ -59,7 +59,7 @@ class TestParallelKriging:
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
     def test_parallel_kriging_basic(self):
-        """Test basic parallel kriging"""
+    def test_parallel_kriging_basic(self):
         pred, var = parallel_kriging(
             self.x,
             self.y,
@@ -78,7 +78,7 @@ class TestParallelKriging:
         assert np.all(var >= 0)
 
     def test_parallel_kriging_single_job(self):
-        """Test parallel kriging with single job"""
+    def test_parallel_kriging_single_job(self):
         pred, var = parallel_kriging(
             self.x,
             self.y,
@@ -94,7 +94,7 @@ class TestParallelKriging:
         assert len(var) == self.n_pred
 
     def test_parallel_kriging_all_cores(self):
-        """Test parallel kriging with all cores"""
+    def test_parallel_kriging_all_cores(self):
         pred, var = parallel_kriging(
             self.x,
             self.y,
@@ -110,7 +110,7 @@ class TestParallelKriging:
         assert len(var) == self.n_pred
 
     def test_parallel_kriging_without_variance(self):
-        """Test parallel kriging without variance"""
+    def test_parallel_kriging_without_variance(self):
         pred, var = parallel_kriging(
             self.x,
             self.y,
@@ -125,7 +125,7 @@ class TestParallelKriging:
         assert var is None
 
     def test_parallel_kriging_batch_size(self):
-        """Test parallel kriging with different batch sizes"""
+    def test_parallel_kriging_batch_size(self):
         pred1, var1 = parallel_kriging(
             self.x,
             self.y,
@@ -153,7 +153,7 @@ class TestParallelKriging:
         np.testing.assert_allclose(var1, var2, rtol=1e-10)
 
     def test_parallel_kriging_consistency(self):
-        """Test that parallel kriging matches sequential"""
+    def test_parallel_kriging_consistency(self):
         # Sequential (single job)
         pred_seq, var_seq = parallel_kriging(
             self.x,
@@ -181,7 +181,7 @@ class TestParallelKriging:
         np.testing.assert_allclose(var_seq, var_par, rtol=1e-10)
 
     def test_parallel_cross_validation_loo(self):
-        """Test parallel leave-one-out cross-validation"""
+    def test_parallel_cross_validation_loo(self):
         results = parallel_cross_validation(
             self.x,
             self.y,
@@ -205,7 +205,7 @@ class TestParallelKriging:
         assert np.isfinite(results["r2"])
 
     def test_parallel_cross_validation_kfold(self):
-        """Test parallel k-fold cross-validation"""
+    def test_parallel_cross_validation_kfold(self):
         results = parallel_cross_validation(
             self.x,
             self.y,
@@ -222,10 +222,9 @@ class TestParallelKriging:
         assert np.isfinite(results["rmse"])
 
     def test_parallel_cross_validation_invalid_method(self):
-        """Test that invalid method raises error"""
+    def test_parallel_cross_validation_invalid_method(self):
         with pytest.raises(ValueError, match="Unknown method"):
-             with pytest.raises(ValueError, match="Unknown method"):
-                self.y,
+        with pytest.raises(ValueError, match="Unknown method"):
                 self.z,
                 variogram_model=self.model,
                 method="invalid_method",
@@ -233,10 +232,10 @@ class TestParallelKriging:
 
 
 class TestCaching:
-    """Tests for caching functionality"""
+class TestCaching:
 
     def setup_method(self):
-        """Set up test data and temporary cache directory"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_samples = 40
         self.x = np.random.uniform(0, 100, self.n_samples)
@@ -255,7 +254,7 @@ class TestCaching:
         self.y_pred = np.array([50.0, 60.0, 70.0])
 
     def teardown_method(self):
-        """Clean up temporary cache directory"""
+    def teardown_method(self):
         if self.temp_cache.exists():
 
         if self.temp_cache.exists():
@@ -273,7 +272,7 @@ class TestCaching:
         assert hasattr(cached, "data_hash")
 
     def test_cached_kriging_first_call(self):
-        """Test that first call computes and caches"""
+    def test_cached_kriging_first_call(self):
         cached = CachedKriging(
             self.x,
             self.y,
@@ -295,7 +294,7 @@ class TestCaching:
         assert cache_path.exists()
 
     def test_cached_kriging_second_call(self):
-        """Test that second call uses cache"""
+    def test_cached_kriging_second_call(self):
         cached = CachedKriging(
             self.x,
             self.y,
@@ -315,7 +314,7 @@ class TestCaching:
         np.testing.assert_array_equal(var1, var2)
 
     def test_cached_kriging_without_cache(self):
-        """Test that use_cache=False bypasses cache"""
+    def test_cached_kriging_without_cache(self):
         cached = CachedKriging(
             self.x,
             self.y,
@@ -334,7 +333,7 @@ class TestCaching:
         np.testing.assert_allclose(pred1, pred2, rtol=1e-10)
 
     def test_cached_kriging_different_locations(self):
-        """Test that different locations create different cache entries"""
+    def test_cached_kriging_different_locations(self):
         cached = CachedKriging(
             self.x,
             self.y,
@@ -361,7 +360,7 @@ class TestCaching:
         assert cached._get_cache_path(hash2).exists()
 
     def test_clear_cache(self):
-        """Test clearing cache"""
+    def test_clear_cache(self):
         cached = CachedKriging(
             self.x,
             self.y,
@@ -381,16 +380,16 @@ class TestCaching:
         assert len(list(self.temp_cache.glob("*.pkl"))) == 0
 
     def test_clear_cache_empty(self):
-        """Test clearing empty cache"""
+    def test_clear_cache_empty(self):
         n_deleted = clear_cache(cache_dir=self.temp_cache)
         assert n_deleted == 0
 
 
 class TestChunkedProcessing:
-    """Tests for chunked processing"""
+class TestChunkedProcessing:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
         self.x = np.random.uniform(0, 100, self.n_samples)
@@ -406,14 +405,14 @@ class TestChunkedProcessing:
         self.y_grid = np.linspace(0, 100, 100)
 
     def test_chunked_kriging_initialization(self):
-        """Test ChunkedKriging initialization"""
+    def test_chunked_kriging_initialization(self):
         chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         assert chunked.krig is not None
         assert chunked.variogram_model is not None
 
     def test_predict_chunked(self):
-        """Test chunked prediction"""
+    def test_predict_chunked(self):
         chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_2d, y_2d = np.meshgrid(self.x_grid, self.y_grid)
@@ -430,7 +429,7 @@ class TestChunkedProcessing:
         assert np.all(np.isfinite(var))
 
     def test_predict_chunked_without_variance(self):
-        """Test chunked prediction without variance"""
+    def test_predict_chunked_without_variance(self):
         chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_2d, y_2d = np.meshgrid(self.x_grid, self.y_grid)
@@ -445,7 +444,7 @@ class TestChunkedProcessing:
         assert var is None
 
     def test_predict_large_grid(self):
-        """Test prediction on large grid"""
+    def test_predict_large_grid(self):
         chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         z_grid, var_grid = chunked.predict_large_grid(
@@ -462,7 +461,7 @@ class TestChunkedProcessing:
         assert np.all(np.isfinite(var_grid))
 
     def test_predict_large_grid_without_variance(self):
-        """Test large grid prediction without variance"""
+    def test_predict_large_grid_without_variance(self):
         chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         z_grid, var_grid = chunked.predict_large_grid(
@@ -473,7 +472,7 @@ class TestChunkedProcessing:
         assert var_grid is None
 
     def test_chunked_predict_function(self):
-        """Test convenience function for chunked prediction"""
+    def test_chunked_predict_function(self):
         x_2d, y_2d = np.meshgrid(self.x_grid, self.y_grid)
         x_flat = x_2d.ravel()[:500]  # Smaller for speed
         y_flat = y_2d.ravel()[:500]
@@ -494,7 +493,7 @@ class TestChunkedProcessing:
         assert np.all(np.isfinite(pred))
 
     def test_chunked_consistency(self):
-        """Test that chunked results match non-chunked"""
+    def test_chunked_consistency(self):
         chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         # Small grid for comparison
@@ -519,7 +518,7 @@ class TestChunkedProcessing:
         np.testing.assert_allclose(var_chunked, var_direct, rtol=1e-10)
 
     def test_different_chunk_sizes(self):
-        """Test that different chunk sizes give same results"""
+    def test_different_chunk_sizes(self):
         chunked = ChunkedKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_small = np.linspace(0, 100, 30)
@@ -542,10 +541,10 @@ class TestChunkedProcessing:
 
 
 class TestApproximateKriging:
-    """Tests for approximate kriging methods"""
+class TestApproximateKriging:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_samples = 100
         self.x = np.random.uniform(0, 100, self.n_samples)
@@ -564,7 +563,7 @@ class TestApproximateKriging:
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
     def test_approximate_kriging_basic(self):
-        """Test basic approximate kriging"""
+    def test_approximate_kriging_basic(self):
         pred, var = approximate_kriging(
             self.x,
             self.y,
@@ -582,7 +581,7 @@ class TestApproximateKriging:
         assert np.all(var >= 0)
 
     def test_approximate_kriging_different_neighbors(self):
-        """Test with different numbers of neighbors"""
+    def test_approximate_kriging_different_neighbors(self):
         pred1, var1 = approximate_kriging(
             self.x,
             self.y,
@@ -611,7 +610,7 @@ class TestApproximateKriging:
         assert not np.array_equal(pred1, pred2)
 
     def test_approximate_kriging_with_radius(self):
-        """Test approximate kriging with search radius"""
+    def test_approximate_kriging_with_radius(self):
         pred, var = approximate_kriging(
             self.x,
             self.y,
@@ -628,7 +627,7 @@ class TestApproximateKriging:
         assert np.all(np.isfinite(pred))
 
     def test_approximate_vs_exact(self):
-        """Test that approximate kriging is close to exact"""
+    def test_approximate_vs_exact(self):
         # Exact kriging
         ok = OrdinaryKriging(self.x, self.y, self.z, variogram_model=self.model)
         pred_exact, var_exact = ok.predict(self.x_pred[:10], self.y_pred[:10])
@@ -650,7 +649,7 @@ class TestApproximateKriging:
         assert np.mean(rel_diff) < 0.1  # Mean relative difference < 10%
 
     def test_approximate_kriging_no_neighbors(self):
-        """Test handling when no neighbors found"""
+    def test_approximate_kriging_no_neighbors(self):
         # Predict far from all samples
         x_far = np.array([1000.0, 2000.0])
         y_far = np.array([1000.0, 2000.0])
@@ -671,7 +670,7 @@ class TestApproximateKriging:
         assert len(var) == 2
 
     def test_coarse_to_fine(self):
-        """Test coarse-to-fine kriging"""
+    def test_coarse_to_fine(self):
         x_grid = np.linspace(0, 100, 50)
         y_grid = np.linspace(0, 100, 50)
 
@@ -691,7 +690,7 @@ class TestApproximateKriging:
         assert np.all(np.isfinite(var))
 
     def test_coarse_to_fine_different_factors(self):
-        """Test coarse-to-fine with different factors"""
+    def test_coarse_to_fine_different_factors(self):
         x_grid = np.linspace(0, 100, 40)
         y_grid = np.linspace(0, 100, 40)
 

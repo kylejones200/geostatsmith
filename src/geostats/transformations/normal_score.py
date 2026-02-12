@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 class NormalScoreTransform:
- """
+class NormalScoreTransform:
  Normal Score Transform for geostatistical data
 
  Transforms data to follow a standard normal distribution while
@@ -41,16 +41,16 @@ class NormalScoreTransform:
  """
 
  def __init__(self):
- """Initialize Normal Score Transform"""
- self.original_values: Optional[npt.NDArray[np.float64]] = None
- self.normal_scores: Optional[npt.NDArray[np.float64]] = None
- self.forward_interp: Optional[interp1d] = None
- self.backward_interp: Optional[interp1d] = None
- self.is_fitted: bool = False
+ def __init__(self):
+     self.original_values: Optional[npt.NDArray[np.float64]] = None
+     self.normal_scores: Optional[npt.NDArray[np.float64]] = None
+     self.forward_interp: Optional[interp1d] = None
+     self.backward_interp: Optional[interp1d] = None
+     self.is_fitted: bool = False
 
  def fit(self, data: npt.NDArray[np.float64]) -> 'NormalScoreTransform':
- """
- Fit the normal score transform to data
+ def fit(self, data: npt.NDArray[np.float64]) -> 'NormalScoreTransform':
+     Fit the normal score transform to data
 
  Parameters
  ----------
@@ -69,9 +69,8 @@ class NormalScoreTransform:
  n_valid = len(valid_data)
 
  if n_valid == 0:
- raise ValueError("No valid data points for normal score transform")
 
- logger.debug(f"Fitting normal score transform on {n_valid} valid points")
+     logger.debug(f"Fitting normal score transform on {n_valid} valid points")
 
  # Sort data and get ranks (fully vectorized)
  sorted_data = np.sort(valid_data)
@@ -116,8 +115,8 @@ class NormalScoreTransform:
  return self
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Transform data to normal scores
+ def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Transform data to normal scores
 
  Parameters
  ----------
@@ -130,9 +129,8 @@ class NormalScoreTransform:
  Normal scores (mean≈0, std≈1)
  """
  if not self.is_fitted:
- raise RuntimeError("Transform must be fitted before transform()")
 
- data = np.asarray(data, dtype=np.float64)
+     data = np.asarray(data, dtype=np.float64)
  original_shape = data.shape
  data_flat = data.flatten()
 
@@ -142,8 +140,8 @@ class NormalScoreTransform:
  return transformed.reshape(original_shape)
 
  def inverse_transform(self, normal_scores: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Back-transform normal scores to original scale
+ def inverse_transform(self, normal_scores: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Back-transform normal scores to original scale
 
  Parameters
  ----------
@@ -163,9 +161,8 @@ class NormalScoreTransform:
  Values outside the training range are extrapolated using the boundary values.
  """
  if not self.is_fitted:
- raise RuntimeError("Transform must be fitted before inverse_transform()")
 
- normal_scores = np.asarray(normal_scores, dtype=np.float64)
+     normal_scores = np.asarray(normal_scores, dtype=np.float64)
  original_shape = normal_scores.shape
  scores_flat = normal_scores.flatten()
 
@@ -175,8 +172,8 @@ class NormalScoreTransform:
  return back_transformed.reshape(original_shape)
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Fit and transform data in one step
+ def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Fit and transform data in one step
 
  Parameters
  ----------
@@ -192,8 +189,8 @@ class NormalScoreTransform:
  return self.transform(data)
 
  def get_statistics(self) -> Dict[str, float]:
- """
- Get statistics of the fitted transform
+ def get_statistics(self) -> Dict[str, float]:
+     Get statistics of the fitted transform
 
  Returns
  -------
@@ -201,9 +198,8 @@ class NormalScoreTransform:
  Statistics including original and transformed statistics
  """
  if not self.is_fitted:
- raise RuntimeError("Transform must be fitted first")
 
- assert self.original_values is not None
+     assert self.original_values is not None
  assert self.normal_scores is not None
 
  return {
@@ -219,8 +215,8 @@ class NormalScoreTransform:
  }
 
 def normal_score_transform(
- data: npt.NDArray[np.float64]
-) -> Tuple[npt.NDArray[np.float64], NormalScoreTransform]:
+def normal_score_transform(
+    ) -> Tuple[npt.NDArray[np.float64], NormalScoreTransform]:
  """
  Convenience function for normal score transform
 
@@ -250,9 +246,9 @@ def normal_score_transform(
  return transformed, transformer
 
 def back_transform(
- normal_scores: npt.NDArray[np.float64],
+def back_transform(
  transformer: NormalScoreTransform
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Back-transform normal scores to original scale
 

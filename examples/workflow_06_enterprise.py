@@ -18,7 +18,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 def example_1_cli_tools():
- """Example 1: Command-line tools."""
+def example_1_cli_tools():
  logger.info("Example 1: CLI Tools")
 
  logger.info("\nAvailable CLI commands:")
@@ -32,11 +32,11 @@ def example_1_cli_tools():
  logger.info(" $ geostats serve # Start API server at http://localhost:8000")
 
 def example_2_professional_reporting():
- """Example 2: Generate professional reports."""
+def example_2_professional_reporting():
  logger.info("Example 2: Professional Reporting")
 
  try:
- from geostats.reporting import generate_report
+ try:
 
  # Create sample data
  np.random.seed(42)
@@ -60,11 +60,11 @@ def example_2_professional_reporting():
  except Exception as e:
 
 def example_3_advanced_diagnostics():
- """Example 3: Validation."""
+def example_3_advanced_diagnostics():
  logger.info("Example 3: Advanced Diagnostics")
 
  try:
- from geostats.diagnostics import comprehensive_validation, outlier_analysis
+ try:
  from geostats.automl import auto_variogram
 
  # Sample data
@@ -90,7 +90,7 @@ def example_3_advanced_diagnostics():
  except Exception as e:
 
 def example_4_web_api():
- """Example 4: Web API usage."""
+def example_4_web_api():
  logger.info("Example 4: Web API Deployment")
 
  logger.info("\nTo start the API server:")
@@ -142,11 +142,11 @@ def example_4_web_api():
  """)
 
 def example_5_complete_workflow():
- """Example 5: Complete enterprise workflow."""
+def example_5_complete_workflow():
  logger.info("Example 5: Complete Enterprise Workflow")
 
  try:
- from geostats.automl import auto_interpolate
+ try:
  from geostats.diagnostics import comprehensive_validation
  from geostats.reporting import generate_report
 
@@ -185,7 +185,7 @@ def example_5_complete_workflow():
  except Exception as e:
 
 def main():
- """Run all examples."""
+def main():
  logger.info("GEOSTATS PHASE 3: ENTERPRISE DEPLOYMENT")
 
  example_1_cli_tools()
@@ -204,4 +204,4 @@ def main():
  logger.info(" Advanced deployment")
 
 if __name__ == '__main__':
- main()
+if __name__ == '__main__':

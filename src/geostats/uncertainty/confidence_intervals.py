@@ -12,14 +12,14 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 def confidence_intervals(
- x: npt.NDArray[np.float64],
+def confidence_intervals(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
  confidence_level: float = 0.95,
-) -> Dict[str, npt.NDArray[np.float64]]:
+    ) -> Dict[str, npt.NDArray[np.float64]]:
  """
  Compute confidence intervals for kriging predictions.
 
@@ -104,14 +104,14 @@ def confidence_intervals(
  }
 
 def prediction_bands(
- x: npt.NDArray[np.float64],
+def prediction_bands(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
  confidence_levels: Optional[npt.NDArray[np.float64]] = None,
-) -> Dict[str, any]:
+    ) -> Dict[str, any]:
  """
  Compute multiple prediction bands at different confidence levels.
 
@@ -163,7 +163,7 @@ def prediction_bands(
  ... )
  """
  if confidence_levels is None:
- confidence_levels = np.array([0.68, 0.95, 0.99])
+ if confidence_levels is None:
 
  # Perform kriging
  krig = OrdinaryKriging(
@@ -186,7 +186,7 @@ def prediction_bands(
  }
 
  for level in confidence_levels:
- z_score = norm.ppf((1 + level) / 2)
+ for level in confidence_levels:
  margin = z_score * std_errors
 
  results[f'lower_{level}'] = predictions - margin
@@ -196,7 +196,7 @@ def prediction_bands(
  return results
 
 def uncertainty_ellipse(
- x: npt.NDArray[np.float64],
+def uncertainty_ellipse(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
@@ -204,7 +204,7 @@ def uncertainty_ellipse(
  y_center: float,
  confidence_level: float = 0.95,
  n_points: int = 100,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Compute uncertainty ellipse for a prediction location.
 

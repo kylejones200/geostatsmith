@@ -10,9 +10,9 @@ from scipy import linalg
 from ..core.exceptions import KrigingError
 
 def build_covariance_matrix(
- distances: npt.NDArray[np.float64],
+def build_covariance_matrix(
  covariance_func: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Build covariance matrix from distances and covariance function
 
@@ -31,9 +31,9 @@ def build_covariance_matrix(
  return covariance_func(distances)
 
 def build_variogram_matrix(
- distances: npt.NDArray[np.float64],
+def build_variogram_matrix(
  variogram_func: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Build variogram matrix from distances and variogram function
 
@@ -52,10 +52,10 @@ def build_variogram_matrix(
  return variogram_func(distances)
 
 def solve_kriging_system(
- A: npt.NDArray[np.float64],
+def solve_kriging_system(
  b: npt.NDArray[np.float64],
  method: str = "auto",
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Solve kriging system A * weights = b
 
@@ -81,7 +81,7 @@ def solve_kriging_system(
  If system cannot be solved
  """
  try:
- # Solution methods using dispatch
+ try:
  solution_methods = {
  'cholesky': lambda: linalg.cho_solve(linalg.cho_factor(A), b),
  'lu': lambda: linalg.solve(A, b),
@@ -89,15 +89,15 @@ def solve_kriging_system(
  }
 
  if method == "auto":
- # Try Cholesky first (fastest for symmetric positive definite)
+ if method == "auto":
  try:
- return linalg.cho_solve(linalg.cho_factor(A), b)
+ try:
  except linalg.LinAlgError:
  # Fall back to LU decomposition
  method = "lu"
 
  if method not in solution_methods:
- valid_methods = ', '.join(['auto'] + list(solution_methods.keys()))
+ if method not in solution_methods:
  raise ValueError(
  f"Unknown solution method '{method}'. "
  f"Valid methods: {valid_methods}"
@@ -109,9 +109,9 @@ def solve_kriging_system(
  raise KrigingError(f"Failed to solve kriging system: {e}")
 
 def is_positive_definite(
- matrix: npt.NDArray[np.float64],
+def is_positive_definite(
  tol: float = 1e-10,
-) -> bool:
+    ) -> bool:
  """
  Check if a matrix is positive definite
 
@@ -128,7 +128,7 @@ def is_positive_definite(
  True if matrix is positive definite
  """
  try:
- # Try Cholesky decomposition
+ try:
  linalg.cholesky(matrix)
  return True
  except linalg.LinAlgError:
@@ -137,9 +137,9 @@ def is_positive_definite(
  return np.all(eigenvalues > tol)
 
 def regularize_matrix(
- matrix: npt.NDArray[np.float64],
+def regularize_matrix(
  epsilon: float = 1e-10,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Regularize a matrix by adding small value to diagonal
 
@@ -163,7 +163,7 @@ def regularize_matrix(
  return result
 
 def condition_number(matrix: npt.NDArray[np.float64]) -> float:
- """
+def condition_number(matrix: npt.NDArray[np.float64]) -> float:
  Calculate condition number of a matrix
 
  High condition numbers indicate ill-conditioned matrices
@@ -182,7 +182,7 @@ def condition_number(matrix: npt.NDArray[np.float64]) -> float:
  return np.linalg.cond(matrix)
 
 def make_symmetric(matrix: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
+def make_symmetric(matrix: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  Make a matrix symmetric by averaging with its transpose
 
  Parameters
@@ -198,9 +198,9 @@ def make_symmetric(matrix: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  return (matrix + matrix.T) / 2
 
 def add_nugget_effect(
- matrix: npt.NDArray[np.float64],
+def add_nugget_effect(
  nugget: float,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Add nugget effect to variogram/covariance matrix
 

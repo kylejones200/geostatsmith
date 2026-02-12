@@ -6,14 +6,13 @@ Main FastAPI application for geostatistics web service.
 """
 
 try:
- from fastapi import FastAPI
- from fastapi.middleware.cors import CORSMiddleware
+try:
  FASTAPI_AVAILABLE = True
 except ImportError:
  FASTAPI_AVAILABLE = False
 
 def create_app() -> 'FastAPI':
- """
+def create_app() -> 'FastAPI':
  Create FastAPI application.
 
  Returns
@@ -35,7 +34,7 @@ def create_app() -> 'FastAPI':
  If FastAPI is not installed
  """
  if not FASTAPI_AVAILABLE:
- raise ImportError(
+ if not FASTAPI_AVAILABLE:
  "FastAPI is required for web API. "
  "Install with: pip install fastapi uvicorn"
  )
@@ -63,8 +62,8 @@ def create_app() -> 'FastAPI':
 
  return app
 
-# Create default app instance
-try:
- app = create_app()
-except ImportError:
+    # Create default app instance
+    try:
+    try:
+    except ImportError:
  app = None

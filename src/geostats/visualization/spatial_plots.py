@@ -11,13 +11,13 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 def plot_data_locations(
- x: npt.NDArray[np.float64],
+def plot_data_locations(
  y: npt.NDArray[np.float64],
  z: Optional[npt.NDArray[np.float64]] = None,
  ax: Optional[plt.Axes] = None,
  cmap: str = 'viridis',
  **kwargs,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Plot data locations (data posting)
 
@@ -39,14 +39,14 @@ def plot_data_locations(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 8))
+ if ax is None:
 
  if z is not None:
- scatter = ax.scatter(x, y, c=z, cmap=cmap, s=80,
+ if z is not None:
  edgecolors='black', linewidth=1, **kwargs)
  plt.colorbar(scatter, ax=ax, label='Value')
  else:
- ax.scatter(x, y, s=80, c='blue', edgecolors='black', linewidth=1, **kwargs)
+ else:
 
  ax.set_xlabel('X', fontsize=12)
  ax.set_ylabel('Y', fontsize=12)
@@ -56,7 +56,7 @@ def plot_data_locations(
  return ax
 
 def plot_contour_map(
- X: npt.NDArray[np.float64],
+def plot_contour_map(
  Y: npt.NDArray[np.float64],
  Z: npt.NDArray[np.float64],
  x_data: Optional[npt.NDArray[np.float64]] = None,
@@ -66,7 +66,7 @@ def plot_contour_map(
  ax: Optional[plt.Axes] = None,
  cmap: str = 'viridis',
  **kwargs,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Create contour map
 
@@ -92,7 +92,7 @@ def plot_contour_map(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(10, 8))
+ if ax is None:
 
  # Contour plot
  contour = ax.contourf(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)
@@ -103,11 +103,11 @@ def plot_contour_map(
 
  # Overlay data points if provided
  if x_data is not None and y_data is not None:
- if z_data is not None:
+ if x_data is not None and y_data is not None:
  ax.scatter(x_data, y_data, c=z_data, cmap=cmap, s=50,
  edgecolors='white', linewidth=1.5, zorder=5)
  else:
- ax.scatter(x_data, y_data, c='white', s=50,
+ else:
  edgecolors='black', linewidth=1, zorder=5)
 
  ax.set_xlabel('X', fontsize=12)
@@ -118,13 +118,13 @@ def plot_contour_map(
  return ax
 
 def plot_symbol_map(
- x: npt.NDArray[np.float64],
+def plot_symbol_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  thresholds: Optional[list] = None,
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Create symbol map with sized symbols
 
@@ -148,7 +148,7 @@ def plot_symbol_map(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 8))
+ if ax is None:
 
  # Normalize sizes
  z_normalized = (z - np.min(z)) / (np.max(z) - np.min(z))
@@ -167,7 +167,7 @@ def plot_symbol_map(
  return ax
 
 def plot_kriging_results(
- X: npt.NDArray[np.float64],
+def plot_kriging_results(
  Y: npt.NDArray[np.float64],
  Z_pred: npt.NDArray[np.float64],
  Z_var: npt.NDArray[np.float64],
@@ -175,7 +175,7 @@ def plot_kriging_results(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
  figsize: tuple = (16, 6),
-) -> plt.Figure:
+    ) -> plt.Figure:
  """
  Plot kriging predictions and variance side-by-side
 
@@ -223,9 +223,9 @@ def plot_kriging_results(
 
  return fig
 
-# API compatibility aliases
+    # API compatibility aliases
 def plot_data_points(
- x: npt.NDArray[np.float64],
+def plot_data_points(
  y: npt.NDArray[np.float64],
  z: Optional[npt.NDArray[np.float64]] = None,
  ax: Optional[plt.Axes] = None,
@@ -235,7 +235,7 @@ def plot_data_points(
  ylabel: str = "Y",
  cmap: str = 'viridis',
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Plot data points (API-compatible version)
 
@@ -264,17 +264,17 @@ def plot_data_points(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 8))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  if z is not None:
- scatter = ax.scatter(x, y, c=z, cmap=cmap, s=80,
+ if z is not None:
  edgecolors='black', linewidth=1, **kwargs)
  if colorbar:
- plt.colorbar(scatter, ax=ax, label='Value')
+ if colorbar:
  else:
- ax.scatter(x, y, s=80, c='blue', edgecolors='black', linewidth=1, **kwargs)
+ else:
 
  ax.set_xlabel(xlabel, fontsize=12)
  ax.set_ylabel(ylabel, fontsize=12)
@@ -284,14 +284,14 @@ def plot_data_points(
  return fig, ax
 
 def plot_contour(
- X: npt.NDArray[np.float64],
+def plot_contour(
  Y: npt.NDArray[np.float64],
  Z: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  n_levels: int = 10,
  cmap: str = 'viridis',
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Create contour plot (lines only)
 
@@ -316,9 +316,9 @@ def plot_contour(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(10, 8))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  # Contour lines only
  contour = ax.contour(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)
@@ -334,14 +334,14 @@ def plot_contour(
  return fig, ax
 
 def plot_filled_contour(
- X: npt.NDArray[np.float64],
+def plot_filled_contour(
  Y: npt.NDArray[np.float64],
  Z: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  n_levels: int = 15,
  cmap: str = 'viridis',
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Create filled contour plot
 
@@ -366,9 +366,9 @@ def plot_filled_contour(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(10, 8))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  # Filled contours
  contour = ax.contourf(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)

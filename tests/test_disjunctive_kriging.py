@@ -17,10 +17,10 @@ from geostats.core.exceptions import KrigingError
 
 
 class TestDisjunctiveKriging:
-    """Tests for Disjunctive Kriging"""
+class TestDisjunctiveKriging:
 
     def setup_method(self):
-        """Set up test data with non-Gaussian (lognormal) distribution"""
+    def setup_method(self):
         np.random.seed(42)
         self.n = 80
 
@@ -59,7 +59,7 @@ class TestDisjunctiveKriging:
         self.model = fit_variogram_model(SphericalModel(), lags, gamma, weights=n_pairs)
 
     def test_initialization_ordinary(self):
-        """Test Disjunctive Kriging initialization with ordinary kriging"""
+    def test_initialization_ordinary(self):
         dk = DisjunctiveKriging(
             self.x,
             self.y,
@@ -77,7 +77,7 @@ class TestDisjunctiveKriging:
         assert dk.mean is None
 
     def test_initialization_simple(self):
-        """Test Disjunctive Kriging initialization with simple kriging"""
+    def test_initialization_simple(self):
         dk = DisjunctiveKriging(
             self.x,
             self.y,
@@ -93,7 +93,7 @@ class TestDisjunctiveKriging:
         assert len(dk.hermite_coeffs) == 11
 
     def test_initialization_invalid_kriging_type(self):
-        """Test that invalid kriging_type raises error"""
+    def test_initialization_invalid_kriging_type(self):
         with pytest.raises(ValueError, match="kriging_type must be 'simple' or 'ordinary'"):
         with pytest.raises(ValueError, match="kriging_type must be 'simple' or 'ordinary'"):
                 self.x,
@@ -104,7 +104,7 @@ class TestDisjunctiveKriging:
             )
 
     def test_hermite_expansion_fitting(self):
-        """Test that Hermite expansion is fitted correctly"""
+    def test_hermite_expansion_fitting(self):
         dk = DisjunctiveKriging(
             self.x, self.y, self.z, variogram_model=self.model, max_hermite_order=10
         )
@@ -116,7 +116,7 @@ class TestDisjunctiveKriging:
         assert not np.allclose(dk.hermite_coeffs, 0)
 
     def test_gaussian_transformation(self):
-        """Test transformation to Gaussian space"""
+    def test_gaussian_transformation(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         # Check that Gaussian transform exists
@@ -129,7 +129,7 @@ class TestDisjunctiveKriging:
         assert 0.5 < np.std(dk.y_gaussian) < 1.5  # Std near 1
 
     def test_prediction_single_point(self):
-        """Test prediction at single point"""
+    def test_prediction_single_point(self):
         dk = DisjunctiveKriging(
             self.x, self.y, self.z, variogram_model=self.model, max_hermite_order=15
         )
@@ -145,7 +145,7 @@ class TestDisjunctiveKriging:
         assert pred[0] > 0
 
     def test_prediction_multiple_points(self):
-        """Test prediction at multiple points"""
+    def test_prediction_multiple_points(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_pred = np.array([25.0, 50.0, 75.0])
@@ -161,7 +161,7 @@ class TestDisjunctiveKriging:
         assert np.all(pred > 0)  # Lognormal data should be positive
 
     def test_prediction_without_variance(self):
-        """Test prediction without variance"""
+    def test_prediction_without_variance(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         pred, var = dk.predict(
@@ -172,7 +172,7 @@ class TestDisjunctiveKriging:
         assert var is None
 
     def test_prediction_grid(self):
-        """Test prediction on a grid"""
+    def test_prediction_grid(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_grid = np.linspace(0, 100, 20)
@@ -188,7 +188,7 @@ class TestDisjunctiveKriging:
         assert np.all(var >= 0)
 
     def test_simple_vs_ordinary_kriging(self):
-        """Test that simple and ordinary kriging give different results"""
+    def test_simple_vs_ordinary_kriging(self):
         dk_ordinary = DisjunctiveKriging(
             self.x, self.y, self.z, variogram_model=self.model, kriging_type="ordinary"
         )
@@ -216,7 +216,7 @@ class TestDisjunctiveKriging:
         assert pred_sim[0] > 0
 
     def test_cross_validation(self):
-        """Test leave-one-out cross-validation"""
+    def test_cross_validation(self):
         dk = DisjunctiveKriging(
             self.x, self.y, self.z, variogram_model=self.model, max_hermite_order=10
         )
@@ -237,7 +237,7 @@ class TestDisjunctiveKriging:
         assert np.isfinite(cv_metrics["R2"])
 
     def test_cross_validation_without_variogram(self):
-        """Test that cross-validation requires variogram model"""
+    def test_cross_validation_without_variogram(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=None)
 
         with pytest.raises(KrigingError, match="Variogram model must be set"):
@@ -251,8 +251,7 @@ class TestDisjunctiveKriging:
         with pytest.raises(KrigingError, match="Variogram model must be set"):
         """Test that different Hermite orders work"""
         for order in [5, 10, 15, 20]:
-             for order in [5, 10, 15, 20]:
-                self.y,
+        for order in [5, 10, 15, 20]:
                 self.z,
                 variogram_model=self.model,
                 max_hermite_order=order,
@@ -264,7 +263,7 @@ class TestDisjunctiveKriging:
             assert pred[0] > 0
 
     def test_back_transformation(self):
-        """Test that back-transformation works correctly"""
+    def test_back_transformation(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         # Test internal back-transformation
@@ -275,7 +274,7 @@ class TestDisjunctiveKriging:
         assert np.all(np.isfinite(z_back))
 
     def test_skewed_data_handling(self):
-        """Test that disjunctive kriging handles skewed data better than linear methods"""
+    def test_skewed_data_handling(self):
         # Create highly skewed data
         np.random.seed(123)
         n = 60
@@ -304,7 +303,7 @@ class TestDisjunctiveKriging:
         assert var[0] >= 0
 
     def test_edge_case_single_point(self):
-        """Test with minimal data (should still work)"""
+    def test_edge_case_single_point(self):
         x_min = np.array([0.0, 10.0, 20.0])
         y_min = np.array([0.0, 10.0, 20.0])
         z_min = np.array([1.0, 2.0, 3.0])
@@ -321,7 +320,7 @@ class TestDisjunctiveKriging:
         assert np.isfinite(pred[0])
 
     def test_variance_properties(self):
-        """Test that variance has expected properties"""
+    def test_variance_properties(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         # Predict at sample locations (should have low variance)
@@ -344,7 +343,7 @@ class TestDisjunctiveKriging:
         assert np.all(np.isfinite(var_far))
 
     def test_consistency_with_repeated_calls(self):
-        """Test that repeated predictions are consistent"""
+    def test_consistency_with_repeated_calls(self):
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=self.model)
 
         x_pred = np.array([50.0, 60.0])
@@ -358,7 +357,7 @@ class TestDisjunctiveKriging:
         np.testing.assert_array_almost_equal(var1, var2)
 
     def test_different_variogram_models(self):
-        """Test with different variogram models"""
+    def test_different_variogram_models(self):
         # Transform for variogram
         cdf_vals = (np.argsort(np.argsort(self.z)) + 0.5) / len(self.z)
         z_gauss = stats.norm.ppf(np.clip(cdf_vals, 1e-10, 1 - 1e-10))

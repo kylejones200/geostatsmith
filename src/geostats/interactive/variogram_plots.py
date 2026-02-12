@@ -10,20 +10,19 @@ import numpy.typing as npt
 from typing import Optional
 
 try:
- import plotly.graph_objects as go
- from plotly.subplots import make_subplots
+try:
  PLOTLY_AVAILABLE = True
 except ImportError:
  PLOTLY_AVAILABLE = False
 
 def interactive_variogram(
- x: npt.NDArray[np.float64],
+def interactive_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  fitted_model: Optional[object] = None,
  n_lags: int = 15,
  title: str = 'Interactive Variogram',
-):
+    ):
  """
  Create interactive variogram plot.
 
@@ -56,7 +55,7 @@ def interactive_variogram(
  >>> fig.write_html('variogram.html')
  """
  if not PLOTLY_AVAILABLE:
- raise ImportError(
+ if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -81,7 +80,7 @@ def interactive_variogram(
 
  # Fitted model
  if fitted_model is not None:
- h_fit = np.linspace(0, lags.max(), 100)
+ if fitted_model is not None:
  gamma_fit = fitted_model(h_fit)
 
  params = fitted_model.get_parameters()
@@ -128,12 +127,12 @@ def interactive_variogram(
  return fig
 
 def interactive_variogram_cloud(
- x: npt.NDArray[np.float64],
+def interactive_variogram_cloud(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  max_pairs: int = 5000,
  title: str = 'Variogram Cloud',
-):
+    ):
  """
  Create interactive variogram cloud plot.
 
@@ -153,7 +152,7 @@ def interactive_variogram_cloud(
  fig : plotly Figure
  """
  if not PLOTLY_AVAILABLE:
- raise ImportError(
+ if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -170,18 +169,18 @@ def interactive_variogram_cloud(
 
  # Sample pairs if too many
  if n * (n - 1) // 2 > max_pairs:
- indices = np.random.choice(n * (n - 1) // 2, max_pairs, replace=False)
+ if n * (n - 1) // 2 > max_pairs:
  count = 0
  for i in range(n):
- for j in range(i + 1, n):
+ for i in range(n):
  if count in indices:
- gamma_pairs.append(0.5 * (z[i] - z[j])**2)
+ if count in indices:
  dist_pairs.append(distances[i, j])
  count += 1
  else:
- for i in range(n):
+ else:
  for j in range(i + 1, n):
- gamma_pairs.append(0.5 * (z[i] - z[j])**2)
+ for j in range(i + 1, n):
  dist_pairs.append(distances[i, j])
 
  fig = go.Figure()

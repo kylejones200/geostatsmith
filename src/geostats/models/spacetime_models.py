@@ -53,7 +53,7 @@ from ..core.constants import EPSILON
 logger = get_logger(__name__)
 
 class SpaceTimeVariogramModel(ABC):
- """
+class SpaceTimeVariogramModel(ABC):
  Base class for space-time variogram models
 
  All space-time models must implement:
@@ -63,20 +63,20 @@ class SpaceTimeVariogramModel(ABC):
 
  @abstractmethod
  def __call__(
- self,
- h: npt.NDArray[np.float64],
- u: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """Evaluate space-time variogram"""
- pass
+ def __call__(
+     h: npt.NDArray[np.float64],
+     u: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """Evaluate space-time variogram"""
+     pass
 
- @abstractmethod
+     @abstractmethod
  def is_separable(self) -> bool:
- """Check if model is separable"""
- pass
+ def is_separable(self) -> bool:
+     pass
 
 class SeparableModel(SpaceTimeVariogramModel):
- """
+class SeparableModel(SpaceTimeVariogramModel):
  Separable space-time variogram model
 
  γ(h, u) = C_s · C_t · [γ_s(h)/C_s + γ_t(u)/C_t - γ_s(h)·γ_t(u)/(C_s·C_t)]
@@ -109,63 +109,63 @@ class SeparableModel(SpaceTimeVariogramModel):
  """
 
  def __init__(
- self,
- spatial_model: Callable,
- temporal_model: Callable
- ):
- """
- Initialize separable space-time model
+ def __init__(
+     spatial_model: Callable,
+     temporal_model: Callable
+     ):
+     """
+     Initialize separable space-time model
 
- Parameters
- ----------
- spatial_model : callable
- Spatial variogram model γ_s(h)
- temporal_model : callable
- Temporal variogram model γ_t(u)
- """
- self.spatial_model = spatial_model
- self.temporal_model = temporal_model
+     Parameters
+     ----------
+     spatial_model : callable
+     Spatial variogram model γ_s(h)
+     temporal_model : callable
+     Temporal variogram model γ_t(u)
+     """
+     self.spatial_model = spatial_model
+     self.temporal_model = temporal_model
 
- logger.info("Initialized separable space-time variogram model")
+     logger.info("Initialized separable space-time variogram model")
 
  def __call__(
- self,
- h: npt.NDArray[np.float64],
- u: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """
- Evaluate separable space-time variogram
+ def __call__(
+     h: npt.NDArray[np.float64],
+     u: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """
+     Evaluate separable space-time variogram
 
- Parameters
- ----------
- h : np.ndarray
- Spatial lag distances
- u : np.ndarray
- Temporal lag distances
+     Parameters
+     ----------
+     h : np.ndarray
+     Spatial lag distances
+     u : np.ndarray
+     Temporal lag distances
 
- Returns
- -------
- gamma : np.ndarray
- Space-time semivariance values
- """
- h = np.asarray(h, dtype=np.float64)
- u = np.asarray(u, dtype=np.float64)
+     Returns
+     -------
+     gamma : np.ndarray
+     Space-time semivariance values
+     """
+     h = np.asarray(h, dtype=np.float64)
+     u = np.asarray(u, dtype=np.float64)
 
- # Get spatial and temporal components
- gamma_s = self.spatial_model(h)
- gamma_t = self.temporal_model(u)
+     # Get spatial and temporal components
+     gamma_s = self.spatial_model(h)
+     gamma_t = self.temporal_model(u)
 
- # Separable model: γ(h,u) = γ_s(h) + γ_t(u) - γ_s(h)·γ_t(u)
- # This ensures γ(0,0) = 0
- gamma = gamma_s + gamma_t - gamma_s * gamma_t
+     # Separable model: γ(h,u) = γ_s(h) + γ_t(u) - γ_s(h)·γ_t(u)
+     # This ensures γ(0,0) = 0
+     gamma = gamma_s + gamma_t - gamma_s * gamma_t
 
- return gamma
+     return gamma
 
  def is_separable(self) -> bool:
- return True
+ def is_separable(self) -> bool:
 
 class ProductSumModel(SpaceTimeVariogramModel):
- """
+class ProductSumModel(SpaceTimeVariogramModel):
  Product-Sum space-time variogram model (Cressie & Huang, 1999)
 
  γ(h, u) = C_s·γ_t(u) + C_t·γ_s(h) + k·γ_s(h)·γ_t(u)
@@ -196,76 +196,76 @@ class ProductSumModel(SpaceTimeVariogramModel):
  """
 
  def __init__(
- self,
- spatial_model: Callable,
- temporal_model: Callable,
- C_s: float = 1.0,
- C_t: float = 1.0,
- k: float = 0.5
- ):
- """
- Initialize product-sum space-time model
+ def __init__(
+     spatial_model: Callable,
+     temporal_model: Callable,
+     C_s: float = 1.0,
+     C_t: float = 1.0,
+     k: float = 0.5
+     ):
+     """
+     Initialize product-sum space-time model
 
- Parameters
- ----------
- spatial_model : callable
- Spatial variogram model
- temporal_model : callable
- Temporal variogram model
- C_s : float
- Spatial sill parameter
- C_t : float
- Temporal sill parameter
- k : float
- Interaction parameter
- """
- self.spatial_model = spatial_model
- self.temporal_model = temporal_model
- self.C_s = C_s
- self.C_t = C_t
- self.k = k
+     Parameters
+     ----------
+     spatial_model : callable
+     Spatial variogram model
+     temporal_model : callable
+     Temporal variogram model
+     C_s : float
+     Spatial sill parameter
+     C_t : float
+     Temporal sill parameter
+     k : float
+     Interaction parameter
+     """
+     self.spatial_model = spatial_model
+     self.temporal_model = temporal_model
+     self.C_s = C_s
+     self.C_t = C_t
+     self.k = k
 
- logger.info(
- f"Initialized product-sum space-time model "
- f"(C_s={C_s:.3f}, C_t={C_t:.3f}, k={k:.3f})"
- )
+     logger.info(
+     f"Initialized product-sum space-time model "
+     f"(C_s={C_s:.3f}, C_t={C_t:.3f}, k={k:.3f})"
+     )
 
  def __call__(
- self,
- h: npt.NDArray[np.float64],
- u: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """
- Evaluate product-sum space-time variogram
+ def __call__(
+     h: npt.NDArray[np.float64],
+     u: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """
+     Evaluate product-sum space-time variogram
 
- Parameters
- ----------
- h : np.ndarray
- Spatial lag distances
- u : np.ndarray
- Temporal lag distances
+     Parameters
+     ----------
+     h : np.ndarray
+     Spatial lag distances
+     u : np.ndarray
+     Temporal lag distances
 
- Returns
- -------
- gamma : np.ndarray
- Space-time semivariance values
- """
- h = np.asarray(h, dtype=np.float64)
- u = np.asarray(u, dtype=np.float64)
+     Returns
+     -------
+     gamma : np.ndarray
+     Space-time semivariance values
+     """
+     h = np.asarray(h, dtype=np.float64)
+     u = np.asarray(u, dtype=np.float64)
 
- gamma_s = self.spatial_model(h)
- gamma_t = self.temporal_model(u)
+     gamma_s = self.spatial_model(h)
+     gamma_t = self.temporal_model(u)
 
- # Product-sum: γ(h,u) = C_s·γ_t + C_t·γ_s + k·γ_s·γ_t
- gamma = self.C_s * gamma_t + self.C_t * gamma_s + self.k * gamma_s * gamma_t
+     # Product-sum: γ(h,u) = C_s·γ_t + C_t·γ_s + k·γ_s·γ_t
+     gamma = self.C_s * gamma_t + self.C_t * gamma_s + self.k * gamma_s * gamma_t
 
- return gamma
+     return gamma
 
  def is_separable(self) -> bool:
- return np.abs(self.k) < EPSILON
+ def is_separable(self) -> bool:
 
 class GneitingModel(SpaceTimeVariogramModel):
- """
+class GneitingModel(SpaceTimeVariogramModel):
  Gneiting space-time covariance model (Gneiting, 2002)
 
  Fully symmetric, non-separable space-time model.
@@ -292,120 +292,120 @@ class GneitingModel(SpaceTimeVariogramModel):
  ----------
  Gneiting, T. (2002). "Nonseparable, stationary covariance functions
  for space-time data". JASA, 97:590-600.
- """
+ for space-time data". JASA, 97:590-600.
 
  def __init__(
- self,
- sigma2: float = 1.0,
- a0: float = 1.0,
- alpha: float = 1.0,
- spatial_range: float = 100.0,
- temporal_range: float = 10.0,
- spatial_smoothness: float = 1.0
- ):
- """
- Initialize Gneiting space-time model
+ def __init__(
+     sigma2: float = 1.0,
+     a0: float = 1.0,
+     alpha: float = 1.0,
+     spatial_range: float = 100.0,
+     temporal_range: float = 10.0,
+     spatial_smoothness: float = 1.0
+     ):
+     """
+     Initialize Gneiting space-time model
 
- Parameters
- ----------
- sigma2 : float
- Variance parameter
- a0 : float
- Base temporal scaling parameter
- alpha : float
- Temporal scaling exponent (0 < alpha ≤ 2)
- spatial_range : float
- Spatial correlation range
- temporal_range : float
- Temporal correlation range
- spatial_smoothness : float
- Spatial smoothness parameter (κ in Matérn)
- """
- self.sigma2 = sigma2
- self.a0 = a0
- self.alpha = alpha
- self.spatial_range = spatial_range
- self.temporal_range = temporal_range
- self.spatial_smoothness = spatial_smoothness
+     Parameters
+     ----------
+     sigma2 : float
+     Variance parameter
+     a0 : float
+     Base temporal scaling parameter
+     alpha : float
+     Temporal scaling exponent (0 < alpha ≤ 2)
+     spatial_range : float
+     Spatial correlation range
+     temporal_range : float
+     Temporal correlation range
+     spatial_smoothness : float
+     Spatial smoothness parameter (κ in Matérn)
+     """
+     self.sigma2 = sigma2
+     self.a0 = a0
+     self.alpha = alpha
+     self.spatial_range = spatial_range
+     self.temporal_range = temporal_range
+     self.spatial_smoothness = spatial_smoothness
 
- if not 0 < alpha <= 2:
- logger.warning(f"alpha={alpha} outside typical range (0, 2]")
+     if not 0 < alpha <= 2:
+     if not 0 < alpha <= 2:
 
- logger.info(
- f"Initialized Gneiting space-time model "
- f"(spatial_range={spatial_range:.1f}, temporal_range={temporal_range:.1f})"
- )
+     logger.info(
+     f"Initialized Gneiting space-time model "
+     f"(spatial_range={spatial_range:.1f}, temporal_range={temporal_range:.1f})"
+     )
 
  def _temporal_scaling(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Compute temporal scaling function a(u)"""
- return (self.a0 + np.abs(u) ** self.alpha) ** (1.0 / self.alpha)
+ def _temporal_scaling(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     return (self.a0 + np.abs(u) ** self.alpha) ** (1.0 / self.alpha)
 
  def _spatial_correlation(
- self,
- h: npt.NDArray[np.float64],
- a_u: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """Compute spatial correlation ϕ(h²/a(u)²)"""
- # Using exponential correlation as default
- # Can be extended to other forms (Gaussian, Matérn, etc.)
- scaled_h = h / (a_u * self.spatial_range)
- return np.exp(-scaled_h)
+ def _spatial_correlation(
+     h: npt.NDArray[np.float64],
+     a_u: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """Compute spatial correlation ϕ(h²/a(u)²)"""
+     # Using exponential correlation as default
+     # Can be extended to other forms (Gaussian, Matérn, etc.)
+     scaled_h = h / (a_u * self.spatial_range)
+     return np.exp(-scaled_h)
 
  def _temporal_correlation(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Compute temporal correlation ψ(u)"""
- scaled_u = np.abs(u) / self.temporal_range
- return np.exp(-scaled_u)
+ def _temporal_correlation(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     scaled_u = np.abs(u) / self.temporal_range
+     return np.exp(-scaled_u)
 
  def __call__(
- self,
- h: npt.NDArray[np.float64],
- u: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """
- Evaluate Gneiting space-time variogram
+ def __call__(
+     h: npt.NDArray[np.float64],
+     u: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """
+     Evaluate Gneiting space-time variogram
 
- Parameters
- ----------
- h : np.ndarray
- Spatial lag distances
- u : np.ndarray
- Temporal lag distances
+     Parameters
+     ----------
+     h : np.ndarray
+     Spatial lag distances
+     u : np.ndarray
+     Temporal lag distances
 
- Returns
- -------
- gamma : np.ndarray
- Space-time semivariance values
- """
- h = np.asarray(h, dtype=np.float64)
- u = np.asarray(u, dtype=np.float64)
+     Returns
+     -------
+     gamma : np.ndarray
+     Space-time semivariance values
+     """
+     h = np.asarray(h, dtype=np.float64)
+     u = np.asarray(u, dtype=np.float64)
 
- # Temporal scaling
- a_u = self._temporal_scaling(u)
+     # Temporal scaling
+     a_u = self._temporal_scaling(u)
 
- # Spatial correlation (dimension d=2 for 2D space)
- d = 2.0
- spatial_term = self._spatial_correlation(h, a_u) / (a_u ** d)
+     # Spatial correlation (dimension d=2 for 2D space)
+     d = 2.0
+     spatial_term = self._spatial_correlation(h, a_u) / (a_u ** d)
 
- # Temporal correlation
- temporal_term = self._temporal_correlation(u)
+     # Temporal correlation
+     temporal_term = self._temporal_correlation(u)
 
- # Covariance
- cov = self.sigma2 * spatial_term * temporal_term
+     # Covariance
+     cov = self.sigma2 * spatial_term * temporal_term
 
- # Variogram: γ = σ² - C
- gamma = self.sigma2 - cov
+     # Variogram: γ = σ² - C
+     gamma = self.sigma2 - cov
 
- return gamma
+     return gamma
 
  def is_separable(self) -> bool:
- return False
+ def is_separable(self) -> bool:
 
 def create_spacetime_model(
- model_type: str,
+def create_spacetime_model(
  spatial_model: Callable,
  temporal_model: Optional[Callable] = None,
  **kwargs
-) -> SpaceTimeVariogramModel:
+    ) -> SpaceTimeVariogramModel:
  """
  Factory function to create space-time variogram models
 
@@ -458,14 +458,14 @@ def create_spacetime_model(
  }
 
  if model_type not in models:
- raise ValueError(
+ if model_type not in models:
  f"Unknown model_type: {model_type}. "
  f"Available: {list(models.keys())}"
  )
 
  if model_type in ['separable', 'product_sum']:
- if temporal_model is None:
+ if model_type in ['separable', 'product_sum']:
  raise ValueError(f"{model_type} model requires temporal_model")
  return models[model_type](spatial_model, temporal_model, **kwargs)
  else:
- return models[model_type](**kwargs)
+ else:

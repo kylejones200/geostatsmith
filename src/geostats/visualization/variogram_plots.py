@@ -18,13 +18,13 @@ from matplotlib import gridspec
 from .minimal_style import apply_minimalist_style
 
 def plot_variogram(
- lags: npt.NDArray[np.float64],
+def plot_variogram(
  gamma: npt.NDArray[np.float64],
  n_pairs: Optional[npt.NDArray[np.int64]] = None,
  model=None,
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Plot experimental variogram with optional model fit
 
@@ -49,24 +49,24 @@ def plot_variogram(
  The axes object
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
 
  # Apply minimalist style
  apply_minimalist_style(ax)
 
  # Plot experimental variogram
  if n_pairs is not None:
- # Size markers by number of pairs
+ if n_pairs is not None:
  sizes = n_pairs / np.max(n_pairs) * 100 + 20
  ax.scatter(lags, gamma, s=sizes, alpha=0.6, c='#1f77b4',
  edgecolors='#333333', linewidth=0.8, label='Experimental', **kwargs)
  else:
- ax.scatter(lags, gamma, s=80, alpha=0.6, c='#1f77b4',
+ else:
  edgecolors='#333333', linewidth=0.8, label='Experimental', **kwargs)
 
  # Plot model if provided
  if model is not None:
- h_plot = np.linspace(0, np.max(lags) * 1.1, 200)
+ if model is not None:
  gamma_model = model(h_plot)
  ax.plot(h_plot, gamma_model, '#d62728', linewidth=2,
  label=f'{model.__class__.__name__}')
@@ -85,13 +85,13 @@ def plot_variogram(
  return ax
 
 def plot_variogram_cloud(
- x: npt.NDArray[np.float64],
+def plot_variogram_cloud(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  maxlag: Optional[float] = None,
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Plot variogram cloud (all pairwise points)
 
@@ -118,7 +118,7 @@ def plot_variogram_cloud(
  from ..algorithms.variogram import variogram_cloud
 
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
 
  # Calculate variogram cloud
  distances, semivariances = variogram_cloud(x, y, z, maxlag=maxlag)
@@ -135,7 +135,7 @@ def plot_variogram_cloud(
  return ax
 
 def plot_h_scatterplot(
- x: npt.NDArray[np.float64],
+def plot_h_scatterplot(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  h_distance: float,
@@ -143,7 +143,7 @@ def plot_h_scatterplot(
  direction: Optional[float] = None,
  angle_tolerance: float = 45.0,
  ax: Optional[plt.Axes] = None,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Plot h-scatterplot: z(x) vs z(x+h)
 
@@ -176,16 +176,16 @@ def plot_h_scatterplot(
  from ..math.distance import euclidean_distance_matrix, directional_distance
 
  if ax is None:
- fig, ax = plt.subplots(figsize=(7, 7))
+ if ax is None:
 
  # Calculate distances
  dist = euclidean_distance_matrix(x, y)
 
  # Find pairs within h ± tolerance
  if direction is None:
- mask = (dist >= h_distance - tolerance) & (dist <= h_distance + tolerance)
+ if direction is None:
  else:
- # Directional h-scatterplot
+ else:
  dist_dir, dir_mask = directional_distance(x, y, x, y, direction, angle_tolerance)
  mask = ((dist_dir >= h_distance - tolerance) &
  (dist_dir <= h_distance + tolerance) & dir_mask)
@@ -197,7 +197,7 @@ def plot_h_scatterplot(
  i_indices, j_indices = np.where(mask)
 
  if len(i_indices) == 0:
- ax.text(0.5, 0.5, 'No pairs found', ha='center', va='center',
+ if len(i_indices) == 0:
  transform=ax.transAxes, fontsize=14)
  return ax
 
@@ -219,7 +219,7 @@ def plot_h_scatterplot(
  ax.set_ylabel(f'z(x+h), h≈{h_distance:.1f}', fontsize=12)
  title = f'h-Scatterplot (h={h_distance:.1f}, n={len(i_indices)} pairs, ρ={corr:.3f})'
  if direction is not None:
- title += f'\nDirection={direction:.0f}°'
+ if direction is not None:
  ax.set_title(title, fontsize=12, fontweight='bold')
  ax.grid(False)
  ax.legend()
@@ -228,14 +228,14 @@ def plot_h_scatterplot(
  return ax
 
 def plot_directional_variograms(
- x: npt.NDArray[np.float64],
+def plot_directional_variograms(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  directions: List[float] = [0, 45, 90, 135],
  tolerance: float = 22.5,
  n_lags: int = 12,
  figsize: tuple = (12, 10),
-) -> plt.Figure:
+    ) -> plt.Figure:
  """
  Plot directional variograms to detect anisotropy
 
@@ -265,7 +265,7 @@ def plot_directional_variograms(
  axes = axes.flatten()
 
  for i, direction in enumerate(directions):
- ax = axes[i] if i < 4 else plt.subplot(2, 2, i + 1)
+ for i, direction in enumerate(directions):
 
  # Calculate directional variogram
  lags, gamma, n_pairs = experimental_variogram_directional(
@@ -278,7 +278,7 @@ def plot_directional_variograms(
  # Plot
  valid = ~np.isnan(gamma)
  if np.any(valid):
- sizes = n_pairs[valid] / np.max(n_pairs[valid]) * 100 + 20
+ if np.any(valid):
  ax.scatter(lags[valid], gamma[valid], s=sizes, alpha=0.6,
  edgecolors='black', linewidth=1)
 
@@ -294,13 +294,13 @@ def plot_directional_variograms(
  return fig
 
 def plot_variogram_map(
- x: npt.NDArray[np.float64],
+def plot_variogram_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_lags: int = 10,
  lag_size: Optional[float] = None,
  figsize: tuple = (10, 8),
-) -> plt.Figure:
+    ) -> plt.Figure:
  """
  Create a variogram map (2D variogram surface)
 
@@ -334,7 +334,7 @@ def plot_variogram_map(
 
  # Determine lag size
  if lag_size is None:
- max_dist = np.max(dist_matrix) / 2
+ if lag_size is None:
  lag_size = max_dist / n_lags
 
  # Create 2D bins
@@ -354,16 +354,16 @@ def plot_variogram_map(
  semivar_flat = semivar[mask]
 
  for i in range(len(dx_flat)):
- xi = np.digitize(dx_flat[i], x_bins) - 1
+ for i in range(len(dx_flat)):
  yi = np.digitize(dy_flat[i], y_bins) - 1
 
  if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
- vario_map[yi, xi] += semivar_flat[i]
+ if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
  counts[yi, xi] += 1
 
  # Average
  with np.errstate(divide='ignore', invalid='ignore'):
- vario_map = np.where(counts > 0, vario_map / counts, np.nan)
+ with np.errstate(divide='ignore', invalid='ignore'):
 
  # Plot
  extent = [-max_dx, max_dx, -max_dy, max_dy]
@@ -379,14 +379,14 @@ def plot_variogram_map(
 
  return fig
 
-# API compatibility functions
+    # API compatibility functions
 def plot_experimental_variogram(
- lags: npt.NDArray[np.float64],
+def plot_experimental_variogram(
  gamma: npt.NDArray[np.float64],
  n_pairs: Optional[npt.NDArray[np.int64]] = None,
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Plot experimental variogram points
 
@@ -409,17 +409,17 @@ def plot_experimental_variogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  # Plot experimental points
  if n_pairs is not None:
- sizes = n_pairs / np.max(n_pairs) * 100 + 20
+ if n_pairs is not None:
  ax.scatter(lags, gamma, s=sizes, alpha=0.7, c='blue',
  edgecolors='black', linewidth=1, label='Experimental', **kwargs)
  else:
- ax.scatter(lags, gamma, s=80, alpha=0.7, c='blue',
+ else:
  edgecolors='black', linewidth=1, label='Experimental', **kwargs)
 
  ax.set_xlabel('Distance (h)', fontsize=12)
@@ -431,12 +431,12 @@ def plot_experimental_variogram(
  return fig, ax
 
 def plot_variogram_model(
- model,
+def plot_variogram_model(
  max_distance: float = 100.0,
  ax: Optional[plt.Axes] = None,
  n_points: int = 200,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Plot theoretical variogram model
 
@@ -459,9 +459,9 @@ def plot_variogram_model(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  # Generate model curve
  h = np.linspace(0, max_distance, n_points)
@@ -486,13 +486,13 @@ def plot_variogram_model(
  return fig, ax
 
 def plot_variogram_with_model(
- lags: npt.NDArray[np.float64],
+def plot_variogram_with_model(
  gamma: npt.NDArray[np.float64],
  model,
  n_pairs: Optional[npt.NDArray[np.int64]] = None,
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Plot experimental variogram with fitted model
 
@@ -517,17 +517,17 @@ def plot_variogram_with_model(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  # Plot experimental points
  if n_pairs is not None:
- sizes = n_pairs / np.max(n_pairs) * 100 + 20
+ if n_pairs is not None:
  ax.scatter(lags, gamma, s=sizes, alpha=0.7, c='blue',
  edgecolors='black', linewidth=1, label='Experimental', zorder=5)
  else:
- ax.scatter(lags, gamma, s=80, alpha=0.7, c='blue',
+ else:
  edgecolors='black', linewidth=1, label='Experimental', zorder=5)
 
  # Plot model
@@ -552,12 +552,12 @@ def plot_variogram_with_model(
  return fig, ax
 
 def plot_variogram_map(
- x: npt.NDArray[np.float64],
+def plot_variogram_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_lags: int = 10,
  ax: Optional[plt.Axes] = None,
-) -> tuple:
+    ) -> tuple:
  """
  Create variogram map (directional variography)
 
@@ -578,9 +578,9 @@ def plot_variogram_map(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 8))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  # Compute pairwise differences
  n = len(x)
@@ -607,16 +607,16 @@ def plot_variogram_map(
  counts = np.zeros((2*n_lags, 2*n_lags))
 
  for i in range(len(dx_flat)):
- xi = np.digitize(dx_flat[i], x_bins) - 1
+ for i in range(len(dx_flat)):
  yi = np.digitize(dy_flat[i], y_bins) - 1
 
  if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
- vario_map[yi, xi] += semivar_flat[i]
+ if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
  counts[yi, xi] += 1
 
  # Average
  with np.errstate(divide='ignore', invalid='ignore'):
- vario_map = np.where(counts > 0, vario_map / counts, np.nan)
+ with np.errstate(divide='ignore', invalid='ignore'):
 
  # Plot
  extent = [-max_dx, max_dx, -max_dy, max_dy]

@@ -13,12 +13,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 def outlier_analysis(
- x: npt.NDArray[np.float64],
+def outlier_analysis(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  method: str = 'iqr',
  threshold: float = 3.0,
-) -> Dict:
+    ) -> Dict:
  """
  Detect potential outliers in spatial data.
 
@@ -46,7 +46,7 @@ def outlier_analysis(
  >>> logger.info(f"Found {results['n_outliers']} potential outliers")
  """
  if method == 'iqr':
- # Interquartile range method
+ if method == 'iqr':
  q1 = np.percentile(z, 25)
  q3 = np.percentile(z, 75)
  iqr = q3 - q1
@@ -56,19 +56,19 @@ def outlier_analysis(
  scores = np.abs(z - np.median(z)) / iqr
 
  elif method == 'zscore':
- # Z-score method
+ elif method == 'zscore':
  z_scores = np.abs((z - z.mean()) / z.std())
  outliers = z_scores > threshold
  scores = z_scores
 
  elif method == 'spatial':
- # Spatial outliers (points very different from neighbors)
+ elif method == 'spatial':
  from scipy.spatial import cKDTree
  tree = cKDTree(np.column_stack([x, y]))
 
  scores = np.zeros(len(z))
  for i in range(len(z)):
- # Find 5 nearest neighbors
+ for i in range(len(z)):
  distances, indices = tree.query([x[i], y[i]], k=6) # 6 because includes self
  neighbor_indices = indices[1:] # Exclude self
 
@@ -76,14 +76,14 @@ def outlier_analysis(
  neighbor_mean = z[neighbor_indices].mean()
  neighbor_std = z[neighbor_indices].std()
  if neighbor_std > 0:
- scores[i] = abs(z[i] - neighbor_mean) / neighbor_std
+ if neighbor_std > 0:
  else:
- scores[i] = 0
+ else:
 
  outliers = scores > threshold
 
  else:
- raise ValueError(f"Unknown method: {method}")
+ else:
 
  return {
  'outlier_indices': np.where(outliers)[0].tolist(),
@@ -94,12 +94,12 @@ def outlier_analysis(
  }
 
 def robust_validation(
- x: npt.NDArray[np.float64],
+def robust_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model,
  outlier_method: str = 'iqr',
-) -> Dict:
+    ) -> Dict:
  """
  Validation with outlier detection and removal.
 
@@ -123,7 +123,7 @@ def robust_validation(
  n = len(x)
  predictions_all = np.zeros(n)
  for i in range(n):
- train_idx = np.delete(np.arange(n), i)
+ for i in range(n):
  krig = OrdinaryKriging(x[train_idx], y[train_idx], z[train_idx], variogram_model)
  pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
  predictions_all[i] = pred[0]
@@ -137,7 +137,7 @@ def robust_validation(
 
  # Validation without outliers
  if len(outlier_idx) > 0:
- mask = np.ones(n, dtype=bool)
+ if len(outlier_idx) > 0:
  mask[outlier_idx] = False
  x_clean = x[mask]
  y_clean = y[mask]
@@ -146,7 +146,7 @@ def robust_validation(
  n_clean = len(x_clean)
  predictions_clean = np.zeros(n_clean)
  for i in range(n_clean):
- train_idx = np.delete(np.arange(n_clean), i)
+ for i in range(n_clean):
  krig = OrdinaryKriging(x_clean[train_idx], y_clean[train_idx], z_clean[train_idx], variogram_model)
  pred, _ = krig.predict(np.array([x_clean[i]]), np.array([y_clean[i]]), return_variance=True)
  predictions_clean[i] = pred[0]
@@ -154,7 +154,7 @@ def robust_validation(
  errors_clean = z_clean - predictions_clean
  rmse_clean = np.sqrt(np.mean(errors_clean**2))
  else:
- rmse_clean = rmse_all
+ else:
 
  return {
  'rmse_with_outliers': float(rmse_all),

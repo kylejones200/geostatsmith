@@ -8,7 +8,7 @@ import numpy as np
 import numpy.typing as npt
 
 class BaseModel(ABC):
- """
+class BaseModel(ABC):
  Abstract base class for all geostatistical models
 
  This provides a common interface for variogram models,
@@ -16,14 +16,14 @@ class BaseModel(ABC):
  """
 
  def __init__(self, **kwargs: Any) -> None:
- """Initialize the model with parameters"""
- self._parameters: Dict[str, float] = {}
- self._is_fitted: bool = False
+ def __init__(self, **kwargs: Any) -> None:
+     self._parameters: Dict[str, float] = {}
+     self._is_fitted: bool = False
 
  @abstractmethod
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Evaluate the model at distance h
+ def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Evaluate the model at distance h
 
  Parameters
  ----------
@@ -39,43 +39,43 @@ class BaseModel(ABC):
 
  @property
  def parameters(self) -> Dict[str, float]:
- """Get model parameters"""
- return self._parameters.copy()
+ def parameters(self) -> Dict[str, float]:
+     return self._parameters.copy()
 
  @property
  def is_fitted(self) -> bool:
- """Check if model has been fitted to data"""
- return self._is_fitted
+ def is_fitted(self) -> bool:
+     return self._is_fitted
 
  @abstractmethod
  def fit(
- self,
- lags: npt.NDArray[np.float64],
- values: npt.NDArray[np.float64],
- **kwargs: Any,
- ) -> "BaseModel":
- """
- Fit the model to data
+ def fit(
+     lags: npt.NDArray[np.float64],
+     values: npt.NDArray[np.float64],
+     **kwargs: Any,
+     ) -> "BaseModel":
+     """
+     Fit the model to data
 
- Parameters
- ----------
- lags : np.ndarray
- Lag distances
- values : np.ndarray
- Values at each lag
- **kwargs
- Additional fitting parameters
+     Parameters
+     ----------
+     lags : np.ndarray
+     Lag distances
+     values : np.ndarray
+     Values at each lag
+     **kwargs
+     Additional fitting parameters
 
- Returns
- -------
- self
- Fitted model
- """
- pass
+     Returns
+     -------
+     self
+     Fitted model
+     """
+     pass
 
  def set_parameters(self, **params: float) -> None:
- """
- Set model parameters manually
+ def set_parameters(self, **params: float) -> None:
+     Set model parameters manually
 
  Parameters
  ----------
@@ -86,12 +86,12 @@ class BaseModel(ABC):
  self._is_fitted = True
 
  def __repr__(self) -> str:
- """String representation of the model"""
- params_str = ", ".join(f"{k}={v:.4f}" for k, v in self._parameters.items())
- return f"{self.__class__.__name__}({params_str})"
+ def __repr__(self) -> str:
+     params_str = ", ".join(f"{k}={v:.4f}" for k, v in self._parameters.items())
+     return f"{self.__class__.__name__}({params_str})"
 
 class BaseKriging(ABC):
- """
+class BaseKriging(ABC):
  Abstract base class for all kriging methods
 
  This provides a common interface for simple kriging,
@@ -99,64 +99,64 @@ class BaseKriging(ABC):
  """
 
  def __init__(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- variogram_model: Optional["VariogramModelBase"] = None,
- ) -> None:
- """
- Initialize kriging with data
+ def __init__(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     variogram_model: Optional["VariogramModelBase"] = None,
+     ) -> None:
+     """
+     Initialize kriging with data
 
- Parameters
- ----------
- x : np.ndarray
- X coordinates of sample points
- y : np.ndarray
- Y coordinates of sample points
- z : np.ndarray
- Values at sample points
- variogram_model : VariogramModelBase, optional
- Fitted variogram model
- """
- self.x = np.asarray(x, dtype=np.float64)
- self.y = np.asarray(y, dtype=np.float64)
- self.z = np.asarray(z, dtype=np.float64)
- self.variogram_model = variogram_model
- self.n_points = len(self.x)
+     Parameters
+     ----------
+     x : np.ndarray
+     X coordinates of sample points
+     y : np.ndarray
+     Y coordinates of sample points
+     z : np.ndarray
+     Values at sample points
+     variogram_model : VariogramModelBase, optional
+     Fitted variogram model
+     """
+     self.x = np.asarray(x, dtype=np.float64)
+     self.y = np.asarray(y, dtype=np.float64)
+     self.z = np.asarray(z, dtype=np.float64)
+     self.variogram_model = variogram_model
+     self.n_points = len(self.x)
 
- @abstractmethod
+     @abstractmethod
  def predict(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- return_variance: bool = True,
- ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
- """
- Perform kriging prediction
+ def predict(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     return_variance: bool = True,
+     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+     """
+     Perform kriging prediction
 
- Parameters
- ----------
- x : np.ndarray
- X coordinates for prediction
- y : np.ndarray
- Y coordinates for prediction
- return_variance : bool
- Whether to return kriging variance
+     Parameters
+     ----------
+     x : np.ndarray
+     X coordinates for prediction
+     y : np.ndarray
+     Y coordinates for prediction
+     return_variance : bool
+     Whether to return kriging variance
 
- Returns
- -------
- predictions : np.ndarray
- Predicted values
- variance : np.ndarray or None
- Kriging variance (if return_variance=True)
- """
- pass
+     Returns
+     -------
+     predictions : np.ndarray
+     Predicted values
+     variance : np.ndarray or None
+     Kriging variance (if return_variance=True)
+     """
+     pass
 
- @abstractmethod
+     @abstractmethod
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- """
- Perform leave-one-out cross-validation
+ def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+     Perform leave-one-out cross-validation
 
  Returns
  -------
@@ -168,10 +168,10 @@ class BaseKriging(ABC):
  pass
 
  def __repr__(self) -> str:
- """String representation of the kriging object"""
- return (
- f"{self.__class__.__name__}("
- f"n_points={self.n_points}, "
- f"model={self.variogram_model.__class__.__name__ if self.variogram_model else None}"
- f")"
- )
+ def __repr__(self) -> str:
+     return (
+     f"{self.__class__.__name__}("
+     f"n_points={self.n_points}, "
+     f"model={self.variogram_model.__class__.__name__ if self.variogram_model else None}"
+     f")"
+     )

@@ -19,10 +19,10 @@ from geostats.models.variogram_models import (
 from geostats.datasets import walker_lake
 
 class TestVariogramFitting:
-    """Tests for variogram model fitting"""
+class TestVariogramFitting:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
 
         # Create synthetic spatial data
@@ -42,7 +42,7 @@ class TestVariogramFitting:
         )
 
     def test_fit_spherical_model(self):
-        """Test fitting spherical variogram model"""
+    def test_fit_spherical_model(self):
         fitted_model = variogram.fit_model(
         'spherical',
         self.lags,
@@ -57,7 +57,7 @@ class TestVariogramFitting:
         assert fitted_model.range_param > 0
 
     def test_fit_exponential_model(self):
-        """Test fitting exponential variogram model"""
+    def test_fit_exponential_model(self):
         fitted_model = variogram.fit_model(
         'exponential',
         self.lags,
@@ -72,7 +72,7 @@ class TestVariogramFitting:
         assert fitted_model.range_param > 0
 
     def test_fit_gaussian_model(self):
-        """Test fitting Gaussian variogram model"""
+    def test_fit_gaussian_model(self):
         fitted_model = variogram.fit_model(
         'gaussian',
         self.lags,
@@ -87,7 +87,7 @@ class TestVariogramFitting:
         assert fitted_model.range_param > 0
 
     def test_fit_linear_model(self):
-        """Test fitting linear variogram model"""
+    def test_fit_linear_model(self):
         fitted_model = variogram.fit_model(
         'linear',
         self.lags,
@@ -99,7 +99,7 @@ class TestVariogramFitting:
         assert isinstance(fitted_model, LinearModel)
 
     def test_fit_with_weights(self):
-        """Test that weights affect fit quality"""
+    def test_fit_with_weights(self):
         # Fit with weights (more emphasis on reliable lags)
         fitted_weighted = variogram.fit_model(
         'spherical',
@@ -126,7 +126,7 @@ class TestVariogramFitting:
         assert fitted_unweighted.sill > 0
 
     def test_fit_evaluates_on_lags(self):
-        """Test that fitted model can evaluate on lag distances"""
+    def test_fit_evaluates_on_lags(self):
         fitted_model = variogram.fit_model(
         'spherical',
         self.lags,
@@ -142,7 +142,7 @@ class TestVariogramFitting:
         assert all(gamma_fitted >= 0) # Variogram values should be non-negative
 
     def test_goodness_of_fit(self):
-        """Test calculation of goodness of fit"""
+    def test_goodness_of_fit(self):
         fitted_model = variogram.fit_model(
         'spherical',
         self.lags,
@@ -160,7 +160,7 @@ class TestVariogramFitting:
         assert all(np.isfinite(residuals))
 
     def test_fitting_with_few_lags(self):
-        """Test fitting with very few lag points"""
+    def test_fitting_with_few_lags(self):
         # Use only first 3 lags
         lags_few = self.lags[:3]
         gamma_few = self.gamma[:3]
@@ -177,7 +177,7 @@ class TestVariogramFitting:
         assert fitted_model is not None
 
     def test_fitting_preserves_nugget_behavior(self):
-        """Test that fitted model has correct nugget behavior"""
+    def test_fitting_preserves_nugget_behavior(self):
         fitted_model = variogram.fit_model(
         'spherical',
         self.lags,
@@ -190,10 +190,10 @@ class TestVariogramFitting:
         assert abs(gamma_0[0] - fitted_model.nugget) < 0.1
 
 class TestFittingMethods:
-    """Tests for optimization methods used in fitting"""
+class TestFittingMethods:
 
     def test_weighted_least_squares(self):
-        """Test weighted least squares fitting"""
+    def test_weighted_least_squares(self):
         # Create simple linear problem: y = 2*x + 1
         x = np.array([1, 2, 3, 4, 5])
         y = 2*x + 1 + np.random.randn(5) * 0.1
@@ -204,7 +204,7 @@ class TestFittingMethods:
         assert hasattr(fitting, 'fit_variogram_model')
 
     def test_parameter_bounds(self):
-        """Test that fitting respects parameter bounds"""
+    def test_parameter_bounds(self):
         np.random.seed(42)
         x = np.random.uniform(0, 50, 50)
         y = np.random.uniform(0, 50, 50)
@@ -220,7 +220,7 @@ class TestFittingMethods:
         assert 0 < fitted_model.range_param <= 2 * np.max(lags)
 
     def test_convergence(self):
-        """Test that fitting converges"""
+    def test_convergence(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 80)
         y = np.random.uniform(0, 100, 80)
@@ -238,10 +238,10 @@ class TestFittingMethods:
         assert all(np.isfinite(gamma_test))
 
 class TestWalkerLakeDataset:
-    """Tests for Walker Lake dataset"""
+class TestWalkerLakeDataset:
 
     def test_load_dataset(self):
-        """Test loading Walker Lake dataset"""
+    def test_load_dataset(self):
         data = walker_lake.load_data()
 
         assert data is not None
@@ -250,7 +250,7 @@ class TestWalkerLakeDataset:
         assert 'V' in data or 'value' in data
 
     def test_dataset_shape(self):
-        """Test dataset has expected structure"""
+    def test_dataset_shape(self):
         data = walker_lake.load_data()
 
         # Should have at least 100 points (Walker Lake is a standard dataset)
@@ -258,7 +258,7 @@ class TestWalkerLakeDataset:
         assert n_points > 50
 
     def test_dataset_values_valid(self):
-        """Test that dataset values are valid"""
+    def test_dataset_values_valid(self):
         data = walker_lake.load_data()
 
         x_key = 'x' if 'x' in data else 'X'
@@ -278,7 +278,7 @@ class TestWalkerLakeDataset:
         assert all(v >= 0)
 
     def test_dataset_coordinates_reasonable(self):
-        """Test that coordinates are in reasonable range"""
+    def test_dataset_coordinates_reasonable(self):
         data = walker_lake.load_data()
 
         x_key = 'x' if 'x' in data else 'X'
@@ -294,18 +294,17 @@ class TestWalkerLakeDataset:
         assert np.max(y) < 1e6
 
 class TestVariogramComputation:
-    """Additional tests for experimental variogram computation"""
+class TestVariogramComputation:
 
     def test_variogram_with_different_lag_numbers(self):
-        """Test variogram with different numbers of lags"""
+    def test_variogram_with_different_lag_numbers(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 60)
         y = np.random.uniform(0, 100, 60)
         z = np.random.randn(60)
 
         for n_lags in [5, 10, 15, 20]:
-            lags, gamma, n_pairs = variogram.experimental_variogram(
-                x, y, z, n_lags=n_lags
+        for n_lags in [5, 10, 15, 20]:
             )
 
         assert len(lags) <= n_lags
@@ -313,7 +312,7 @@ class TestVariogramComputation:
         assert len(n_pairs) == len(lags)
 
     def test_variogram_lag_tolerance(self):
-        """Test variogram with different lag tolerances"""
+    def test_variogram_lag_tolerance(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 50)
         y = np.random.uniform(0, 100, 50)
@@ -329,7 +328,7 @@ class TestVariogramComputation:
         assert all(np.isfinite(gamma1))
 
     def test_variogram_directional(self):
-        """Test directional variogram (if implemented)"""
+    def test_variogram_directional(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 80)
         y = np.random.uniform(0, 100, 80)
@@ -345,7 +344,7 @@ class TestVariogramComputation:
         assert all(np.isfinite(gamma))
 
     def test_variogram_increases_with_distance(self):
-        """Test that variogram generally increases with distance"""
+    def test_variogram_increases_with_distance(self):
         np.random.seed(42)
         n = 100
         x = np.random.uniform(0, 100, n)
@@ -363,31 +362,29 @@ class TestVariogramComputation:
         # (though not strictly monotonic due to sampling variation)
         # Check that later lags are generally larger than early lags
         if len(gamma) >= 5:
-        if len(gamma) >= 5:
-        late_mean = np.mean(gamma[-2:])
+            late_mean = np.mean(gamma[-2:])
         # Late lags should generally be larger (more variance)
         assert late_mean >= early_mean * 0.5 # Allow some flexibility
 
 class TestEdgeCases:
-    """Test edge cases in fitting"""
+class TestEdgeCases:
 
     def test_fit_with_constant_variogram(self):
-        """Test fitting when variogram is constant (pure nugget)"""
+    def test_fit_with_constant_variogram(self):
         lags = np.array([10, 20, 30, 40, 50])
         gamma = np.array([1.0, 1.0, 1.0, 1.0, 1.0]) # Constant
         n_pairs = np.array([100, 90, 80, 70, 60])
 
         # Should handle constant variogram
         try:
-        try:
-        # If successful, should have large nugget, small sill
+            # If successful, should have large nugget, small sill
         assert fitted_model.nugget > 0
         except (ValueError, RuntimeError):
         # Also acceptable to fail on degenerate case
         pass
 
     def test_fit_with_decreasing_variogram(self):
-        """Test fitting when variogram decreases (hole effect)"""
+    def test_fit_with_decreasing_variogram(self):
         lags = np.array([10, 20, 30, 40, 50])
         gamma = np.array([0.5, 1.0, 0.8, 0.6, 0.7]) # Non-monotonic
         n_pairs = np.array([100, 90, 80, 70, 60])
@@ -400,7 +397,7 @@ class TestEdgeCases:
         assert fitted_model.sill > 0
 
     def test_fit_with_missing_values(self):
-        """Test fitting with NaN values in experimental variogram"""
+    def test_fit_with_missing_values(self):
         lags = np.array([10, 20, 30, 40, 50])
         gamma = np.array([0.5, 1.0, np.nan, 1.8, 2.0]) # Has NaN
         n_pairs = np.array([100, 90, 0, 70, 60]) # Zero pairs for NaN lag

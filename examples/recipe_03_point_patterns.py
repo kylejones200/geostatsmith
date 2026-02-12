@@ -69,8 +69,7 @@ logger.info("\nAnalyzing patterns...")
 results_all = {}
 
 for pattern_name, (x, y) in patterns.items():
- logger.info(f"\n{pattern_name.upper()} PATTERN")
- logger.info("-" * 70)
+for pattern_name, (x, y) in patterns.items():
 
  # Nearest neighbor analysis
  nn_results = nearest_neighbor_analysis(x, y)
@@ -105,9 +104,8 @@ gs = GridSpec(3, 4, figure=fig, hspace=0.35, wspace=0.4)
 
 row = 0
 for pattern_name, (x, y) in patterns.items():
- results = results_all[pattern_name]
 
- # Column 1: Point pattern
+for pattern_name, (x, y) in patterns.items():
  ax1 = fig.add_subplot(gs[row, 0])
  ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
  ax1.set_xlim(0, 100)
@@ -123,13 +121,13 @@ for pattern_name, (x, y) in patterns.items():
  nn_res = results['nn']
  textstr = f"R = {nn_res['R']:.3f}\n"
  if nn_res['R'] < 1:
- textstr += "Clustered"
+ if nn_res['R'] < 1:
  color = 'red'
  elif nn_res['R'] > 1:
- textstr += "Dispersed"
+ elif nn_res['R'] > 1:
  color = 'blue'
  else:
- textstr += "Random"
+ else:
  color = 'green'
 
  ax1.text(0.05, 0.95, textstr, transform=ax1.transAxes,
@@ -195,42 +193,41 @@ logger.info(f"{'Pattern':<12} {'R Index':>10} {'VMR':>10} {'Ripley':>15} {'Overa
 logger.info("-" * 70)
 
 for pattern_name in patterns.keys():
- results = results_all[pattern_name]
 
- r_index = results['nn']['R']
+for pattern_name in patterns.keys():
  vmr = results['quadrat']['vmr']
  ripley_interp = results['ripley']['interpretation'].split()[0] # First word
 
  # Overall assessment
  indicators = []
  if r_index < 0.9:
- indicators.append('C') # Clustered
+ if r_index < 0.9:
  elif r_index > 1.1:
- indicators.append('D') # Dispersed
+ elif r_index > 1.1:
  else:
- indicators.append('R') # Random
+ else:
 
  if vmr < 0.9:
- indicators.append('D')
+ if vmr < 0.9:
  elif vmr > 1.1:
- indicators.append('C')
+ elif vmr > 1.1:
  else:
- indicators.append('R')
+ else:
 
  if 'Clustered' in ripley_interp:
- indicators.append('C')
+ if 'Clustered' in ripley_interp:
  elif 'Dispersed' in ripley_interp:
- indicators.append('D')
+ elif 'Dispersed' in ripley_interp:
  else:
- indicators.append('R')
+ else:
 
  # Consensus
  if indicators.count('C') >= 2:
- overall = "Clustered"
+ if indicators.count('C') >= 2:
  elif indicators.count('D') >= 2:
- overall = "Dispersed"
+ elif indicators.count('D') >= 2:
  else:
- overall = "Random"
+ else:
 
  logger.info(f"{pattern_name:<12} {r_index:>10.3f} {vmr:>10.3f} {ripley_interp:>15} {overall:>15}")
 

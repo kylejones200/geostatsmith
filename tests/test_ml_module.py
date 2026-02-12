@@ -7,15 +7,13 @@ import numpy as np
 
 # Check if sklearn is available
 try:
-     try:
- SKLEARN_AVAILABLE = True
+try:
 except ImportError:
  SKLEARN_AVAILABLE = False
 
 # Check if xgboost is available
 try:
-     try:
-except ImportError:
+    except ImportError:
  XGBOOST_AVAILABLE = False
 
 from geostats.ml.regression_kriging import RegressionKriging, RandomForestKriging
@@ -28,17 +26,17 @@ from geostats.models.variogram_models import SphericalModel, ExponentialModel
 pytestmark = pytest.mark.skipif(not SKLEARN_AVAILABLE, reason="scikit-learn not installed")
 
 class TestRegressionKriging:
-    """Test RegressionKriging class"""
+class TestRegressionKriging:
 
     def test_initialization(self):
-        """Test RegressionKriging initialization"""
+    def test_initialization(self):
         ml_model = LinearRegression()
         rk = RegressionKriging(ml_model=ml_model, variogram_model='spherical')
         assert rk is not None
         assert rk.variogram_model_type == 'spherical'
 
     def test_fit_predict(self):
-        """Test fit and predict workflow"""
+    def test_fit_predict(self):
         # Generate synthetic data
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
@@ -64,7 +62,7 @@ class TestRegressionKriging:
         assert np.all(variance >= 0)
 
     def test_without_covariates(self):
-        """Test RegressionKriging without covariates (should work like OK)"""
+    def test_without_covariates(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
         y = np.random.uniform(0, 10, 20)
@@ -80,16 +78,16 @@ class TestRegressionKriging:
         assert variance.shape == (1,)
 
 class TestRandomForestKriging:
-    """Test RandomForestKriging class"""
+class TestRandomForestKriging:
 
     def test_initialization(self):
-        """Test RandomForestKriging initialization"""
+    def test_initialization(self):
         rfk = RandomForestKriging(n_estimators=10, variogram_model='spherical')
         assert rfk is not None
         assert rfk.n_estimators == 10
 
     def test_fit_predict_with_covariates(self):
-        """Test RF kriging with covariates"""
+    def test_fit_predict_with_covariates(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
         y = np.random.uniform(0, 10, 40)
@@ -113,16 +111,16 @@ class TestRandomForestKriging:
 
 @pytest.mark.skipif(not XGBOOST_AVAILABLE, reason="xgboost not installed")
 class TestXGBoostKriging:
-    """Test XGBoostKriging class"""
+class TestXGBoostKriging:
 
     def test_initialization(self):
-        """Test XGBoostKriging initialization"""
+    def test_initialization(self):
         from geostats.ml.regression_kriging import XGBoostKriging
         xgbk = XGBoostKriging(n_estimators=10, variogram_model='gaussian')
         assert xgbk is not None
 
     def test_fit_predict(self):
-        """Test XGBoost kriging workflow"""
+    def test_fit_predict(self):
         from geostats.ml.regression_kriging import XGBoostKriging
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
@@ -144,15 +142,15 @@ class TestXGBoostKriging:
         assert variance.shape == (2,)
 
 class TestGaussianProcessGeostat:
-    """Test GaussianProcessGeostat class"""
+class TestGaussianProcessGeostat:
 
     def test_initialization(self):
-        """Test GP initialization"""
+    def test_initialization(self):
         gp = GaussianProcessGeostat(kernel='rbf')
         assert gp is not None
 
     def test_fit_predict(self):
-        """Test GP fit and predict"""
+    def test_fit_predict(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
         y = np.random.uniform(0, 10, 30)
@@ -171,21 +169,20 @@ class TestGaussianProcessGeostat:
         assert np.all(std >= 0)
 
     def test_different_kernels(self):
-        """Test GP with different kernels"""
+    def test_different_kernels(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 25)
         y = np.random.uniform(0, 10, 25)
         z = x + y + np.random.normal(0, 0.1, 25)
 
         for kernel in ['rbf', 'matern', 'rational_quadratic']:
-             for kernel in ['rbf', 'matern', 'rational_quadratic']:
-        gp.fit(x, y, z)
+            gp.fit(x, y, z)
 
         predictions, _ = gp.predict(np.array([5.0]), np.array([5.0]), return_std=True)
         assert predictions.shape == (1,)
 
     def test_hyperparameter_optimization(self):
-        """Test GP hyperparameter optimization"""
+    def test_hyperparameter_optimization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
         y = np.random.uniform(0, 10, 40)
@@ -201,10 +198,10 @@ class TestGaussianProcessGeostat:
         assert predictions.shape == (1,)
 
 class TestEnsembleKriging:
-    """Test EnsembleKriging class"""
+class TestEnsembleKriging:
 
     def test_initialization(self):
-        """Test ensemble initialization"""
+    def test_initialization(self):
         # Create some simple kriging models
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
@@ -219,7 +216,7 @@ class TestEnsembleKriging:
         assert len(ek.models) == 2
 
     def test_fit_predict(self):
-        """Test ensemble fit and predict"""
+    def test_fit_predict(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 35)
         y = np.random.uniform(0, 10, 35)
@@ -240,7 +237,7 @@ class TestEnsembleKriging:
         assert np.all(variance >= 0)
 
     def test_weighted_ensemble(self):
-        """Test weighted ensemble averaging"""
+    def test_weighted_ensemble(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
         y = np.random.uniform(0, 10, 30)
@@ -260,7 +257,7 @@ class TestEnsembleKriging:
         assert variance.shape == (1,)
 
     def test_inverse_variance_weighting(self):
-        """Test inverse variance weighting"""
+    def test_inverse_variance_weighting(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
         y = np.random.uniform(0, 10, 40)
@@ -280,10 +277,10 @@ class TestEnsembleKriging:
         assert variance.shape == (2,)
 
 class TestMLIntegration:
-    """Test integration between ML methods"""
+class TestMLIntegration:
 
     def test_compare_methods(self):
-        """Compare different ML kriging methods"""
+    def test_compare_methods(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -307,14 +304,12 @@ class TestMLIntegration:
 
         predictions = []
         for method in methods:
-             for method in methods:
-        X = np.column_stack([x, y])
+            X = np.column_stack([x, y])
         X_new = np.column_stack([x_new, y_new])
         method.fit(X, z)
         pred, _ = method.predict(X_new, return_std=True)
         else:
-             else:
-        pred, _ = method.predict(x_new, y_new, covariates_new=cov_new)
+            pred, _ = method.predict(x_new, y_new, covariates_new=cov_new)
 
         predictions.append(pred[0])
 
@@ -324,4 +319,4 @@ class TestMLIntegration:
         assert np.std(predictions) < 10.0
 
 if __name__ == "__main__":
-     if __name__ == "__main__":
+if __name__ == "__main__":

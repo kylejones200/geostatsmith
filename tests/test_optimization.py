@@ -21,10 +21,10 @@ from geostats.models.variogram_models import SphericalModel
 
 
 class TestSamplingDesign:
-    """Tests for optimal sampling design"""
+class TestSamplingDesign:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_existing = 20
         self.x_existing = np.random.uniform(0, 100, self.n_existing)
@@ -40,7 +40,7 @@ class TestSamplingDesign:
         self.model = fit_variogram_model(SphericalModel(), lags, gamma, weights=n_pairs)
 
     def test_optimal_sampling_design_variance_reduction(self):
-        """Test variance reduction strategy"""
+    def test_optimal_sampling_design_variance_reduction(self):
         x_new, y_new = optimal_sampling_design(
             self.x_existing,
             self.y_existing,
@@ -57,7 +57,7 @@ class TestSamplingDesign:
         assert np.all(np.isfinite(y_new))
 
     def test_optimal_sampling_design_space_filling(self):
-        """Test space-filling strategy"""
+    def test_optimal_sampling_design_space_filling(self):
         x_new, y_new = optimal_sampling_design(
             self.x_existing,
             self.y_existing,
@@ -72,7 +72,7 @@ class TestSamplingDesign:
         assert len(y_new) == 5
 
     def test_optimal_sampling_design_hybrid(self):
-        """Test hybrid strategy"""
+    def test_optimal_sampling_design_hybrid(self):
         x_new, y_new = optimal_sampling_design(
             self.x_existing,
             self.y_existing,
@@ -87,7 +87,7 @@ class TestSamplingDesign:
         assert len(y_new) == 5
 
     def test_optimal_sampling_design_with_bounds(self):
-        """Test sampling design with custom bounds"""
+    def test_optimal_sampling_design_with_bounds(self):
         x_new, y_new = optimal_sampling_design(
             self.x_existing,
             self.y_existing,
@@ -105,10 +105,9 @@ class TestSamplingDesign:
         assert np.all(y_new <= 90)
 
     def test_optimal_sampling_design_invalid_strategy(self):
-        """Test that invalid strategy raises error"""
+    def test_optimal_sampling_design_invalid_strategy(self):
         with pytest.raises(ValueError, match="Unknown strategy"):
-             with pytest.raises(ValueError, match="Unknown strategy"):
-                self.y_existing,
+        with pytest.raises(ValueError, match="Unknown strategy"):
                 self.z_existing,
                 n_new_samples=5,
                 variogram_model=self.model,
@@ -117,10 +116,10 @@ class TestSamplingDesign:
 
 
 class TestCostBenefit:
-    """Tests for cost-benefit analysis"""
+class TestCostBenefit:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_initial = 30
         self.x_initial = np.random.uniform(0, 100, self.n_initial)
@@ -136,7 +135,7 @@ class TestCostBenefit:
         self.model = fit_variogram_model(SphericalModel(), lags, gamma, weights=n_pairs)
 
     def test_sample_size_calculator_basic(self):
-        """Test basic sample size calculator"""
+    def test_sample_size_calculator_basic(self):
         results = sample_size_calculator(
             self.x_initial,
             self.y_initial,
@@ -160,7 +159,7 @@ class TestCostBenefit:
         assert len(results["rmse_values"]) == len(results["sample_sizes"])
 
     def test_sample_size_calculator_with_bounds(self):
-        """Test sample size calculator with bounds"""
+    def test_sample_size_calculator_with_bounds(self):
         results = sample_size_calculator(
             self.x_initial,
             self.y_initial,
@@ -176,7 +175,7 @@ class TestCostBenefit:
         assert np.isfinite(results["current_rmse"])
 
     def test_sample_size_calculator_achievable_target(self):
-        """Test with achievable target RMSE"""
+    def test_sample_size_calculator_achievable_target(self):
         results = sample_size_calculator(
             self.x_initial,
             self.y_initial,
@@ -191,7 +190,7 @@ class TestCostBenefit:
         assert results["current_rmse"] >= results["target_rmse"]
 
     def test_cost_benefit_analysis_basic(self):
-        """Test basic cost-benefit analysis"""
+    def test_cost_benefit_analysis_basic(self):
         results = cost_benefit_analysis(
             self.x_initial,
             self.y_initial,
@@ -216,7 +215,7 @@ class TestCostBenefit:
         assert np.isfinite(results["net_benefit"])
 
     def test_cost_benefit_analysis_different_costs(self):
-        """Test cost-benefit with different cost structures"""
+    def test_cost_benefit_analysis_different_costs(self):
         results1 = cost_benefit_analysis(
             self.x_initial,
             self.y_initial,
@@ -245,7 +244,7 @@ class TestCostBenefit:
         )
 
     def test_cost_benefit_analysis_net_benefit_properties(self):
-        """Test that net benefit has expected properties"""
+    def test_cost_benefit_analysis_net_benefit_properties(self):
         results = cost_benefit_analysis(
             self.x_initial,
             self.y_initial,

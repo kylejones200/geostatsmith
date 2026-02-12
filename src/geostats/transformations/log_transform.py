@@ -23,7 +23,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class LogTransform:
- """
+class LogTransform:
  Logarithmic Transform for geostatistical data
 
  Useful for data that follows a lognormal distribution, common in:
@@ -36,8 +36,8 @@ class LogTransform:
  """
 
  def __init__(self, base: str = 'natural', epsilon: Optional[float] = None):
- """
- Initialize Log Transform
+ def __init__(self, base: str = 'natural', epsilon: Optional[float] = None):
+     Initialize Log Transform
 
  Parameters
  ----------
@@ -64,16 +64,15 @@ class LogTransform:
  }
 
  if base not in log_functions:
- valid_bases = ', '.join(log_functions.keys())
- raise ValueError(
+     raise ValueError(
  f"base must be one of {valid_bases}, got '{base}'"
  )
 
  self.log_func, self.exp_func = log_functions[base]
 
  def fit(self, data: npt.NDArray[np.float64]) -> 'LogTransform':
- """
- Fit the log transform to data
+ def fit(self, data: npt.NDArray[np.float64]) -> 'LogTransform':
+     Fit the log transform to data
 
  Parameters
  ----------
@@ -89,9 +88,8 @@ class LogTransform:
  valid_data = data[~np.isnan(data)]
 
  if len(valid_data) == 0:
- raise ValueError("No valid data for log transform")
 
- self.min_original = np.min(valid_data)
+     self.min_original = np.min(valid_data)
  self.max_original = np.max(valid_data)
 
  # Check for zeros and negatives
@@ -99,36 +97,30 @@ class LogTransform:
  self.has_negatives = np.any(valid_data < 0)
 
  if self.has_negatives:
- raise ValueError(
- "Log transform cannot handle negative values. "
+     "Log transform cannot handle negative values. "
  "Consider adding a constant or using a different transform."
  )
 
  # Determine epsilon for zeros
  if self.has_zeros:
- if self.epsilon_user is not None:
- self.epsilon_fitted = self.epsilon_user
+     self.epsilon_fitted = self.epsilon_user
  else:
- # Use 1% of minimum positive value
- positive_values = valid_data[valid_data > 0]
+     positive_values = valid_data[valid_data > 0]
  if len(positive_values) > 0:
- self.epsilon_fitted = 0.01 * np.min(positive_values)
- else:
- self.epsilon_fitted = 1e-10
+     else:
 
  warnings.warn(
  f"Data contains zeros. Adding epsilon={self.epsilon_fitted:.2e} "
  "before log transform."
  )
  else:
- self.epsilon_fitted = 0.0
 
- self.is_fitted = True
+     self.is_fitted = True
  return self
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Transform data using logarithm
+ def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Transform data using logarithm
 
  Parameters
  ----------
@@ -141,26 +133,23 @@ class LogTransform:
  Log-transformed data
  """
  if not self.is_fitted:
- raise RuntimeError("Transform must be fitted before transform()")
 
- data = np.asarray(data, dtype=np.float64)
+     data = np.asarray(data, dtype=np.float64)
  original_shape = data.shape
  data_flat = data.flatten()
 
  # Add epsilon to handle zeros
  if self.epsilon_fitted > 0:
- data_flat = data_flat + self.epsilon_fitted
 
- # Transform
+     # Transform
  with warnings.catch_warnings():
- warnings.filterwarnings('ignore', category=RuntimeWarning)
- transformed = self.log_func(data_flat)
+     transformed = self.log_func(data_flat)
 
  return transformed.reshape(original_shape)
 
  def inverse_transform(self, log_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Back-transform log data to original scale
+ def inverse_transform(self, log_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Back-transform log data to original scale
 
  Parameters
  ----------
@@ -173,9 +162,8 @@ class LogTransform:
  Values in original data space
  """
  if not self.is_fitted:
- raise RuntimeError("Transform must be fitted before inverse_transform()")
 
- log_data = np.asarray(log_data, dtype=np.float64)
+     log_data = np.asarray(log_data, dtype=np.float64)
  original_shape = log_data.shape
  log_flat = log_data.flatten()
 
@@ -184,15 +172,14 @@ class LogTransform:
 
  # Subtract epsilon if it was added
  if self.epsilon_fitted > 0:
- back_transformed = back_transformed - self.epsilon_fitted
- # Ensure non-negative
+     # Ensure non-negative
  back_transformed = np.maximum(back_transformed, 0)
 
  return back_transformed.reshape(original_shape)
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Fit and transform data in one step
+ def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Fit and transform data in one step
 
  Parameters
  ----------
@@ -208,9 +195,9 @@ class LogTransform:
  return self.transform(data)
 
 def log_transform(
- data: npt.NDArray[np.float64],
+def log_transform(
  base: str = 'natural'
-) -> Tuple[npt.NDArray[np.float64], LogTransform]:
+    ) -> Tuple[npt.NDArray[np.float64], LogTransform]:
  """
  Convenience function for log transform
 
@@ -242,9 +229,9 @@ def log_transform(
  return transformed, transformer
 
 def log_back_transform(
- log_data: npt.NDArray[np.float64],
+def log_back_transform(
  transformer: LogTransform
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Back-transform log data to original scale
 

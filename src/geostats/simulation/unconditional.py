@@ -12,7 +12,7 @@ import numpy.typing as npt
 from .conditional_simulation import cholesky_simulation, turning_bands_simulation
 
 def unconditional_gaussian_simulation(
- x: npt.NDArray[np.float64],
+def unconditional_gaussian_simulation(
  y: npt.NDArray[np.float64],
  covariance_model,
  n_realizations: int = 1,
@@ -20,7 +20,7 @@ def unconditional_gaussian_simulation(
  method: str = "cholesky",
  seed: Optional[int] = None,
  **kwargs,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Generate unconditional Gaussian simulations
 
@@ -47,7 +47,7 @@ def unconditional_gaussian_simulation(
  Shape (n_realizations, n_points)
  """
  if method == "cholesky":
- return cholesky_simulation(
+ if method == "cholesky":
  x, y, covariance_model,
  n_realizations=n_realizations,
  mean=mean,
@@ -55,7 +55,7 @@ def unconditional_gaussian_simulation(
  )
 
  elif method == "turning_bands":
- # Convert covariance to variogram if needed
+ elif method == "turning_bands":
  n_bands = kwargs.get('n_bands', 100)
  return turning_bands_simulation(
  x, y, covariance_model,
@@ -65,4 +65,4 @@ def unconditional_gaussian_simulation(
  )
 
  else:
- raise ValueError(f"Unknown method: {method}")
+ else:

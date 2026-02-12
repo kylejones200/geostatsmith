@@ -10,10 +10,10 @@ from typing import Optional
 
 
 def setup_logging(
-    level: int = logging.INFO,
+def setup_logging(
     format_string: Optional[str] = None,
     stream: Optional[object] = None,
-) -> None:
+    ) -> None:
     """
     Configure logging for GeoStats.
 
@@ -33,10 +33,8 @@ def setup_logging(
     >>> setup_logging(level=logging.DEBUG)
     """
     if format_string is None:
-        format_string = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
-    if stream is None:
-        stream = sys.stderr
+        if stream is None:
 
     logging.basicConfig(
         level=level,
@@ -47,7 +45,7 @@ def setup_logging(
 
 
 def get_logger(name: str) -> logging.Logger:
-    """
+def get_logger(name: str) -> logging.Logger:
     Get a logger for a module.
 
     Parameters

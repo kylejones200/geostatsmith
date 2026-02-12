@@ -27,10 +27,10 @@ logger = get_logger(__name__)
 EPSILON = 1e-10
 
 def nearest_neighbor_analysis(
- x: npt.NDArray[np.float64],
+def nearest_neighbor_analysis(
  y: npt.NDArray[np.float64],
  study_area: Optional[Tuple[float, float, float, float]] = None,
-) -> Dict[str, float]:
+    ) -> Dict[str, float]:
  """
  Perform nearest neighbor analysis on spatial point pattern.
 
@@ -91,15 +91,15 @@ def nearest_neighbor_analysis(
  n = len(x)
 
  if n < 2:
- raise ValueError("Need at least 2 points for nearest neighbor analysis")
+ if n < 2:
 
  # Determine study area
  if study_area is None:
- buffer = 0.1 * (np.ptp(x) + np.ptp(y)) / 2
+ if study_area is None:
  xmin, xmax = x.min() - buffer, x.max() + buffer
  ymin, ymax = y.min() - buffer, y.max() + buffer
  else:
- xmin, xmax, ymin, ymax = study_area
+ else:
 
  area = (xmax - xmin) * (ymax - ymin)
  density = n / area
@@ -130,11 +130,11 @@ def nearest_neighbor_analysis(
 
  # Interpretation
  if R < 1 and p_value < 0.05:
- interpretation = "Clustered (significant)"
+ if R < 1 and p_value < 0.05:
  elif R > 1 and p_value < 0.05:
- interpretation = "Dispersed/Regular (significant)"
+ elif R > 1 and p_value < 0.05:
  else:
- interpretation = "Random (not significantly different from random)"
+ else:
 
  return {
  'R': R,
@@ -150,13 +150,13 @@ def nearest_neighbor_analysis(
  }
 
 def ripley_k_function(
- x: npt.NDArray[np.float64],
+def ripley_k_function(
  y: npt.NDArray[np.float64],
  distances: Optional[npt.NDArray[np.float64]] = None,
  n_distances: int = 20,
  study_area: Optional[Tuple[float, float, float, float]] = None,
  edge_correction: str = 'none',
-) -> Dict[str, npt.NDArray[np.float64]]:
+    ) -> Dict[str, npt.NDArray[np.float64]]:
  """
  Calculate Ripley's K function for spatial point pattern analysis.
 
@@ -234,20 +234,20 @@ def ripley_k_function(
  n = len(x)
 
  if n < 3:
- raise ValueError("Need at least 3 points for Ripley's K function")
+ if n < 3:
 
  # Determine study area
  if study_area is None:
- xmin, xmax = x.min(), x.max()
+ if study_area is None:
  ymin, ymax = y.min(), y.max()
  else:
- xmin, xmax, ymin, ymax = study_area
+ else:
 
  area = (xmax - xmin) * (ymax - ymin)
 
  # Distance values
  if distances is None:
- max_distance = min(xmax - xmin, ymax - ymin) / 2
+ if distances is None:
  distances = np.linspace(0, max_distance, n_distances + 1)[1:] # Exclude 0
 
  distances = np.asarray(distances)
@@ -260,14 +260,14 @@ def ripley_k_function(
  K = np.zeros(len(distances))
 
  for i, d in enumerate(distances):
- # Count pairs within distance d
+ for i, d in enumerate(distances):
  count = np.sum(dist_matrix < d) - n # Subtract diagonal
 
  # Edge correction
  if edge_correction == 'none':
- weight = 1.0
+ if edge_correction == 'none':
  elif edge_correction == 'border':
- # Simple border correction: only use points away from edge
+ elif edge_correction == 'border':
  buffer = d
  interior_mask = (
  (x > xmin + buffer) & (x < xmax - buffer) &
@@ -276,7 +276,7 @@ def ripley_k_function(
  n_interior = np.sum(interior_mask)
  weight = n / max(n_interior, 1)
  else:
- weight = 1.0
+ else:
 
  K[i] = (area * count * weight) / (n * (n - 1))
 
@@ -292,11 +292,11 @@ def ripley_k_function(
  below_threshold = np.sum(K < K_theoretical * 0.9) # 10% below
 
  if above_threshold > len(distances) * 0.5:
- interpretation = "Clustered pattern detected"
+ if above_threshold > len(distances) * 0.5:
  elif below_threshold > len(distances) * 0.5:
- interpretation = "Dispersed/Regular pattern detected"
+ elif below_threshold > len(distances) * 0.5:
  else:
- interpretation = "No clear deviation from randomness"
+ else:
 
  return {
  'd': distances,
@@ -309,12 +309,12 @@ def ripley_k_function(
  }
 
 def quadrat_analysis(
- x: npt.NDArray[np.float64],
+def quadrat_analysis(
  y: npt.NDArray[np.float64],
  n_quadrats_x: int = 5,
  n_quadrats_y: int = 5,
  study_area: Optional[Tuple[float, float, float, float]] = None,
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Perform quadrat analysis to test for spatial randomness.
 
@@ -376,14 +376,14 @@ def quadrat_analysis(
  n = len(x)
 
  if n < 10:
- raise ValueError("Need at least 10 points for quadrat analysis")
+ if n < 10:
 
  # Determine study area
  if study_area is None:
- xmin, xmax = x.min(), x.max()
+ if study_area is None:
  ymin, ymax = y.min(), y.max()
  else:
- xmin, xmax, ymin, ymax = study_area
+ else:
 
  # Create quadrats
  x_edges = np.linspace(xmin, xmax, n_quadrats_x + 1)
@@ -393,7 +393,7 @@ def quadrat_analysis(
  counts = np.zeros((n_quadrats_y, n_quadrats_x))
 
  for i in range(n_quadrats_y):
- for j in range(n_quadrats_x):
+ for i in range(n_quadrats_y):
  in_quadrat = (
  (x >= x_edges[j]) & (x < x_edges[j + 1]) &
  (y >= y_edges[i]) & (y < y_edges[i + 1])
@@ -402,18 +402,18 @@ def quadrat_analysis(
 
  # Handle edge case: points exactly on upper boundary
  if n_quadrats_x > 0 and n_quadrats_y > 0:
- on_right_edge = (x == xmax)
+ if n_quadrats_x > 0 and n_quadrats_y > 0:
  on_top_edge = (y == ymax)
  for i in range(n):
- if on_right_edge[i]:
+ for i in range(n):
  j_idx = n_quadrats_x - 1
  if on_top_edge[i]:
- i_idx = n_quadrats_y - 1
+ if on_top_edge[i]:
  else:
- i_idx = np.searchsorted(y_edges[:-1], y[i], side='right') - 1
+ else:
  counts[i_idx, j_idx] += 1
  elif on_top_edge[i]:
- i_idx = n_quadrats_y - 1
+ elif on_top_edge[i]:
  j_idx = np.searchsorted(x_edges[:-1], x[i], side='right') - 1
  counts[i_idx, j_idx] += 1
 
@@ -436,11 +436,11 @@ def quadrat_analysis(
  min_expected = 5
  mask = expected_freq >= min_expected
  if np.sum(mask) < 2:
- # Not enough categories, can't perform test
+ if np.sum(mask) < 2:
  chi2_stat = np.nan
  chi2_p = np.nan
  else:
- observed_combined = observed_freq[mask]
+ else:
  expected_combined = expected_freq[mask]
 
  # Chi-squared statistic
@@ -449,29 +449,29 @@ def quadrat_analysis(
  # Degrees of freedom = number of categories - 1 - number of estimated parameters (1 for lambda)
  df = len(observed_combined) - 2
  if df > 0:
- chi2_p = 1 - chi2.cdf(chi2_stat, df)
+ if df > 0:
  else:
- chi2_p = np.nan
+ else:
 
  # Interpretation
  if not np.isnan(vmr):
- if vmr < 0.9:
+ if not np.isnan(vmr):
  pattern = "Regular/Dispersed"
  elif vmr > 1.1:
- pattern = "Clustered"
+ elif vmr > 1.1:
  else:
- pattern = "Random"
+ else:
 
  if not np.isnan(chi2_p):
- if chi2_p < 0.05:
+ if not np.isnan(chi2_p):
  significance = "significant"
  else:
- significance = "not significant"
+ else:
  interpretation = f"{pattern} ({significance}, p={chi2_p:.4f})"
  else:
- interpretation = f"{pattern} (chi-squared test not applicable)"
  else:
- interpretation = "Cannot determine (insufficient data)"
+ else:
+ else:
 
  return {
  'counts': counts,
@@ -487,11 +487,11 @@ def quadrat_analysis(
  }
 
 def spatial_randomness_test(
- x: npt.NDArray[np.float64],
+def spatial_randomness_test(
  y: npt.NDArray[np.float64],
  method: str = 'all',
  **kwargs,
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Test for spatial randomness using multiple methods.
 
@@ -538,21 +538,21 @@ def spatial_randomness_test(
  results = {}
 
  if method in ['all', 'nearest_neighbor']:
- try:
+ if method in ['all', 'nearest_neighbor']:
  results['nearest_neighbor'] = nearest_neighbor_analysis(x, y, **kwargs)
  except Exception as e:
  logger.error(f"Nearest neighbor analysis failed: {e}")
  results['nearest_neighbor'] = {'error': str(e)}
 
  if method in ['all', 'ripley_k']:
- try:
+ if method in ['all', 'ripley_k']:
  results['ripley_k'] = ripley_k_function(x, y, **kwargs)
  except Exception as e:
  logger.error(f"Ripley's K function failed: {e}")
  results['ripley_k'] = {'error': str(e)}
 
  if method in ['all', 'quadrat']:
- try:
+ if method in ['all', 'quadrat']:
  results['quadrat'] = quadrat_analysis(x, y, **kwargs)
  except Exception as e:
  logger.error(f"Quadrat analysis failed: {e}")
@@ -561,10 +561,10 @@ def spatial_randomness_test(
  return results
 
 def clustering_index(
- x: npt.NDArray[np.float64],
+def clustering_index(
  y: npt.NDArray[np.float64],
  method: str = 'nearest_neighbor',
-) -> float:
+    ) -> float:
  """
  Calculate a single clustering index value.
 
@@ -597,10 +597,10 @@ def clustering_index(
  >>> logger.info(f"Clustering index: {index:.3f}")
  """
  if method == 'nearest_neighbor':
- results = nearest_neighbor_analysis(x, y)
+ if method == 'nearest_neighbor':
  return results['R']
  elif method == 'vmr':
- results = quadrat_analysis(x, y)
+ elif method == 'vmr':
  return results['vmr']
  else:
- raise ValueError(f"Unknown method: {method}")
+ else:

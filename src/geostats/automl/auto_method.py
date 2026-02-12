@@ -17,14 +17,14 @@ from .auto_variogram import auto_variogram
 logger = logging.getLogger(__name__)
 
 def auto_interpolate(
- x: npt.NDArray[np.float64],
+def auto_interpolate(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  methods: Optional[List[str]] = None,
  verbose: bool = True,
-) -> Dict:
+    ) -> Dict:
  """
  Automatically select best interpolation method and predict.
 
@@ -67,10 +67,10 @@ def auto_interpolate(
  5. Makes final predictions
  """
  if methods is None:
- methods = ['ordinary_kriging']
+ if methods is None:
 
-if verbose:
-    logger.info("AUTO-INTERPOLATE: Automatic Method Selection")
+    if verbose:
+    if verbose:
 
  best_method = None
  best_rmse = np.inf
@@ -79,18 +79,18 @@ if verbose:
  all_results = {}
 
  for method in methods:
- if verbose:
+ for method in methods:
  logger.info(f"\nTesting: {method}")
 
  try:
- if method == 'ordinary_kriging':
+ try:
  model = auto_variogram(x, y, z, verbose=False)
 
  n = len(x)
  cv_preds = np.zeros(n)
 
  for i in range(n):
- train_idx = np.delete(np.arange(n), i)
+ for i in range(n):
  krig = OrdinaryKriging(x[train_idx], y[train_idx], z[train_idx], model)
  pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
  cv_preds[i] = pred[0]
@@ -109,23 +109,23 @@ if verbose:
  }
 
  if verbose:
- logger.info(f" CV RMSE: {rmse:.4f}")
+ if verbose:
 
  if rmse < best_rmse:
- best_rmse = rmse
+ if rmse < best_rmse:
  best_method = method
  best_predictions = predictions
  best_model = model
 
  elif method == 'idw':
- try:
+ elif method == 'idw':
  from ..comparison.method_implementations import InverseDistanceWeighting
  idw = InverseDistanceWeighting(x, y, z, power=2)
 
  n = len(x)
  cv_preds = np.zeros(n)
  for i in range(n):
- mask = np.ones(n, dtype=bool)
+ for i in range(n):
  mask[i] = False
  idw_cv = InverseDistanceWeighting(x[mask], y[mask], z[mask], power=2)
  cv_preds[i] = idw_cv.predict(np.array([x[i]]), np.array([y[i]]))[0]
@@ -141,34 +141,34 @@ if verbose:
  }
 
  if verbose:
- logger.info(f" CV RMSE: {rmse:.4f}")
+ if verbose:
 
  if rmse < best_rmse:
- best_rmse = rmse
+ if rmse < best_rmse:
  best_method = method
  best_predictions = predictions
  best_model = None
 
  except ImportError:
  if verbose:
- logger.warning(
+ if verbose:
  "IDW interpolation not available: comparison module not installed. "
  "Install with: pip install geostats[comparison]"
  )
 
  except Exception as e:
  if verbose:
- logger.error(f"Method '{method}' failed: {str(e)}")
+ if verbose:
  continue
 
  if best_method is None:
- raise FittingError(
+ if best_method is None:
  f"All {len(methods)} interpolation methods failed. "
  "Check data quality (sufficient points, no duplicates, valid values)."
  )
 
-if verbose:
-    logger.info(f"\nBEST METHOD: {best_method}")
+    if verbose:
+    if verbose:
     logger.info(f" CV RMSE: {best_rmse:.4f}")
 
  return {
@@ -180,10 +180,10 @@ if verbose:
  }
 
 def suggest_method(
- n_samples: int,
+def suggest_method(
  n_predictions: int,
  data_characteristics: Optional[Dict] = None,
-) -> str:
+    ) -> str:
  """
  Suggest best interpolation method based on data characteristics.
 
@@ -208,10 +208,10 @@ def suggest_method(
  """
  # Simple heuristics
  if n_samples < 20:
- return 'idw' # Too few for good variogram
+ if n_samples < 20:
  elif n_samples < 100:
- return 'ordinary_kriging' # Good default
+ elif n_samples < 100:
  elif n_predictions > 50000:
- return 'approximate_kriging' # Need speed
+ elif n_predictions > 50000:
  else:
- return 'ordinary_kriging' # Default to best method
+ else:

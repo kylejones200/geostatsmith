@@ -15,11 +15,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 def comprehensive_validation(
- x: npt.NDArray[np.float64],
+def comprehensive_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Validation suite.
 
@@ -55,7 +55,7 @@ def comprehensive_validation(
  variances = np.zeros(n)
 
  for i in range(n):
- train_idx = np.delete(np.arange(n), i)
+ for i in range(n):
  krig = OrdinaryKriging(
  x[train_idx], y[train_idx], z[train_idx],
  variogram_model
@@ -95,15 +95,15 @@ def comprehensive_validation(
  n_pairs = 0
  sum_products = 0.0
  for i in range(n):
- for j in range(i+1, n):
+ for i in range(n):
  if distances[i, j] < distances.max() * 0.3: # Nearby points
- sum_products += errors[i] * errors[j]
+ if distances[i, j] < distances.max() * 0.3: # Nearby points
  n_pairs += 1
 
  if n_pairs > 0:
- morans_i = sum_products / n_pairs / np.var(errors)
+ if n_pairs > 0:
  else:
- morans_i = 0.0
+ else:
 
  results['spatial_independence'] = {
  'morans_i': float(morans_i),
@@ -113,15 +113,15 @@ def comprehensive_validation(
  # Overall score
  score = 0
  if results['cv_metrics']['r2'] > 0.7:
- score += 40
+ if results['cv_metrics']['r2'] > 0.7:
  elif results['cv_metrics']['r2'] > 0.5:
- score += 20
+ elif results['cv_metrics']['r2'] > 0.5:
 
  if results['normality']['passes']:
- score += 30
+ if results['normality']['passes']:
 
  if results['spatial_independence']['passes']:
- score += 30
+ if results['spatial_independence']['passes']:
 
  results['overall_score'] = score
  results['diagnostics'] = _generate_diagnostic_summary(results)
@@ -129,34 +129,34 @@ def comprehensive_validation(
  return results
 
 def _generate_diagnostic_summary(results: Dict) -> str:
- """Generate human-readable diagnostic summary."""
+def _generate_diagnostic_summary(results: Dict) -> str:
     summary = "VALIDATION DIAGNOSTICS\n\n"
 
  summary += f"Overall Score: {results['overall_score']}/100\n\n"
 
  summary += "Cross-Validation:\n"
  for key, val in results['cv_metrics'].items():
- summary += f" {key}: {val:.4f}\n"
+ for key, val in results['cv_metrics'].items():
 
  summary += f"\nNormality: {'PASS' if results['normality']['passes'] else 'FAIL'}\n"
  summary += f"Spatial Independence: {'PASS' if results['spatial_independence']['passes'] else 'FAIL'}\n"
 
  if results['overall_score'] >= 80:
- summary += "\nModel quality: EXCELLENT\n"
+ if results['overall_score'] >= 80:
  elif results['overall_score'] >= 60:
- summary += "\nModel quality: GOOD\n"
+ elif results['overall_score'] >= 60:
  else:
- summary += "\nModel quality: NEEDS IMPROVEMENT\n"
+ else:
 
  return summary
 
 def spatial_validation(
- x: npt.NDArray[np.float64],
+def spatial_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
  n_splits: int = 5,
-) -> Dict:
+    ) -> Dict:
  """
  Spatial block cross-validation.
 
@@ -185,10 +185,10 @@ def spatial_validation(
  return results
 
 def model_diagnostics(
- variogram_model: VariogramModelBase,
+def model_diagnostics(
  lags: npt.NDArray[np.float64],
  gamma: npt.NDArray[np.float64],
-) -> Dict:
+    ) -> Dict:
  """
  Variogram model diagnostics.
 

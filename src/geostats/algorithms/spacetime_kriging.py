@@ -51,10 +51,10 @@ from ..core.logging_config import setup_logger
 logger = setup_logger(__name__)
 
 def validate_coordinates_spacetime(
- x: npt.NDArray[np.float64],
+def validate_coordinates_spacetime(
  y: npt.NDArray[np.float64],
  t: npt.NDArray[np.float64]
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Validate space-time coordinates
 
@@ -74,12 +74,12 @@ def validate_coordinates_spacetime(
  t = np.asarray(t, dtype=np.float64).ravel()
 
  if len(t) != len(x):
- raise ValueError(f"Length mismatch: x={len(x)}, t={len(t)}")
+ if len(t) != len(x):
 
  return x, y, t
 
 class SpaceTimeOrdinaryKriging(BaseKriging):
- """
+class SpaceTimeOrdinaryKriging(BaseKriging):
  Ordinary Kriging for Space-Time Data
 
  Extends ordinary kriging to handle data with both spatial and temporal
@@ -135,34 +135,33 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
  """
 
  def __init__(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- t: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- spacetime_model: SpaceTimeVariogramModel
- ):
- """Initialize Space-Time Ordinary Kriging"""
- self.x, self.y, self.t = validate_coordinates_spacetime(x, y, t)
- self.z = validate_values(z, n_expected=len(self.x))
- self.spacetime_model = spacetime_model
+ def __init__(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     t: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     spacetime_model: SpaceTimeVariogramModel
+     ):
+     """Initialize Space-Time Ordinary Kriging"""
+     self.x, self.y, self.t = validate_coordinates_spacetime(x, y, t)
+     self.z = validate_values(z, n_expected=len(self.x))
+     self.spacetime_model = spacetime_model
 
- self._build_kriging_matrix()
+     self._build_kriging_matrix()
 
- logger.info(
- f"Space-Time Ordinary Kriging initialized with {len(self.x)} data points, "
- f"separable={spacetime_model.is_separable()}"
- )
+     logger.info(
+     f"Space-Time Ordinary Kriging initialized with {len(self.x)} data points, "
+     f"separable={spacetime_model.is_separable()}"
+     )
 
  def _build_kriging_matrix(self):
- """Build the space-time kriging system matrix"""
- n = len(self.x)
- K = np.zeros((n + 1, n + 1), dtype=np.float64)
+ def _build_kriging_matrix(self):
+     n = len(self.x)
+     K = np.zeros((n + 1, n + 1), dtype=np.float64)
 
  # Calculate all pairwise spatial and temporal distances
  for i in range(n):
- for j in range(i, n):
- # Spatial distance
+     # Spatial distance
  h = np.sqrt((self.x[i] - self.x[j])**2 + (self.y[i] - self.y[j])**2)
  # Temporal distance
  u = np.abs(self.t[i] - self.t[j])
@@ -182,82 +181,82 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
  logger.debug("Space-time kriging matrix built and regularized.")
 
  def predict(
- self,
- x_new: npt.NDArray[np.float64],
- y_new: npt.NDArray[np.float64],
- t_new: npt.NDArray[np.float64],
- return_variance: bool = True
- ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
- """
- Predict at new space-time locations
+ def predict(
+     x_new: npt.NDArray[np.float64],
+     y_new: npt.NDArray[np.float64],
+     t_new: npt.NDArray[np.float64],
+     return_variance: bool = True
+     ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+     """
+     Predict at new space-time locations
 
- Parameters
- ----------
- x_new, y_new : np.ndarray
- Spatial coordinates for prediction
- t_new : np.ndarray
- Temporal coordinates for prediction
- return_variance : bool
- Whether to return kriging variance
+     Parameters
+     ----------
+     x_new, y_new : np.ndarray
+     Spatial coordinates for prediction
+     t_new : np.ndarray
+     Temporal coordinates for prediction
+     return_variance : bool
+     Whether to return kriging variance
 
- Returns
- -------
- predictions : np.ndarray
- Predicted values at (x_new, y_new, t_new)
- variance : np.ndarray, optional
- Kriging variance at prediction points
- """
- x_new, y_new, t_new = validate_coordinates_spacetime(x_new, y_new, t_new)
- n_pred = len(x_new)
- n_data = len(self.x)
+     Returns
+     -------
+     predictions : np.ndarray
+     Predicted values at (x_new, y_new, t_new)
+     variance : np.ndarray, optional
+     Kriging variance at prediction points
+     """
+     x_new, y_new, t_new = validate_coordinates_spacetime(x_new, y_new, t_new)
+     n_pred = len(x_new)
+     n_data = len(self.x)
 
- predictions = np.zeros(n_pred, dtype=np.float64)
- variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
+     predictions = np.zeros(n_pred, dtype=np.float64)
+     variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
- for i in range(n_pred):
- # Build RHS: variogram from data points to prediction point
- rhs = np.zeros(n_data + 1, dtype=np.float64)
+     for i in range(n_pred):
+     for i in range(n_pred):
+     rhs = np.zeros(n_data + 1, dtype=np.float64)
 
- for j in range(n_data):
- # Spatial distance to prediction point
- h = np.sqrt((self.x[j] - x_new[i])**2 + (self.y[j] - y_new[i])**2)
- # Temporal distance to prediction point
- u = np.abs(self.t[j] - t_new[i])
+     for j in range(n_data):
+     for j in range(n_data):
+     h = np.sqrt((self.x[j] - x_new[i])**2 + (self.y[j] - y_new[i])**2)
+     # Temporal distance to prediction point
+     u = np.abs(self.t[j] - t_new[i])
 
- # Space-time variogram
- rhs[j] = self.spacetime_model(h, u)
+     # Space-time variogram
+     rhs[j] = self.spacetime_model(h, u)
 
- rhs[n_data] = 1.0 # Unbiasedness constraint
+     rhs[n_data] = 1.0 # Unbiasedness constraint
 
- # Solve kriging system
- try:
- weights = solve_kriging_system(self.kriging_matrix, rhs)
- except np.linalg.LinAlgError as e:
- logger.error(f"Failed to solve kriging system for point {i}: {e}")
- raise KrigingError(f"Failed to solve kriging system: {e}")
+     # Solve kriging system
+     try:
+     try:
+     except np.linalg.LinAlgError as e:
+     logger.error(f"Failed to solve kriging system for point {i}: {e}")
+     raise KrigingError(f"Failed to solve kriging system: {e}")
 
- lambdas = weights[:n_data]
- mu = weights[n_data] # Lagrange multiplier
+     lambdas = weights[:n_data]
+     mu = weights[n_data] # Lagrange multiplier
 
- # Prediction
- predictions[i] = np.dot(lambdas, self.z)
+     # Prediction
+     predictions[i] = np.dot(lambdas, self.z)
 
- # Kriging variance
- if return_variance:
- # σ²_k = Σ λ_i·γ(s_i,t_i; s₀,t₀) + μ
- variances[i] = np.dot(lambdas, rhs[:n_data]) + mu
- # Ensure non-negative
- variances[i] = max(0.0, variances[i])
+     # Kriging variance
+     if return_variance:
+     if return_variance:
+     variances[i] = np.dot(lambdas, rhs[:n_data]) + mu
+     # Ensure non-negative
+     variances[i] = max(0.0, variances[i])
 
- logger.debug(f"Space-time prediction complete for {n_pred} points")
+     logger.debug(f"Space-time prediction complete for {n_pred} points")
 
- if return_variance:
- return predictions, variances
- return predictions
+     if return_variance:
+     if return_variance:
+     return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- """
- Perform leave-one-out cross-validation
+ def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+     Perform leave-one-out cross-validation
 
  Returns
  -------
@@ -279,7 +278,7 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
  return predictions, metrics
 
 class SpaceTimeSimpleKriging(BaseKriging):
- """
+class SpaceTimeSimpleKriging(BaseKriging):
  Simple Kriging for Space-Time Data
 
  Simple kriging assumes a known mean μ for the space-time process.
@@ -305,37 +304,36 @@ class SpaceTimeSimpleKriging(BaseKriging):
  """
 
  def __init__(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- t: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- spacetime_model: SpaceTimeVariogramModel,
- mean: Optional[float] = None
- ):
- """Initialize Space-Time Simple Kriging"""
- self.x, self.y, self.t = validate_coordinates_spacetime(x, y, t)
- self.z = validate_values(z, n_expected=len(self.x))
- self.spacetime_model = spacetime_model
- self.mean = mean if mean is not None else np.mean(self.z)
+ def __init__(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     t: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     spacetime_model: SpaceTimeVariogramModel,
+     mean: Optional[float] = None
+     ):
+     """Initialize Space-Time Simple Kriging"""
+     self.x, self.y, self.t = validate_coordinates_spacetime(x, y, t)
+     self.z = validate_values(z, n_expected=len(self.x))
+     self.spacetime_model = spacetime_model
+     self.mean = mean if mean is not None else np.mean(self.z)
 
- self.residuals = self.z - self.mean
+     self.residuals = self.z - self.mean
 
- self._build_kriging_matrix()
+     self._build_kriging_matrix()
 
- logger.info(
- f"Space-Time Simple Kriging initialized with mean={self.mean:.3f}, "
- f"n_data={len(self.x)}"
- )
+     logger.info(
+     f"Space-Time Simple Kriging initialized with mean={self.mean:.3f}, "
+     f"n_data={len(self.x)}"
+     )
 
  def _build_kriging_matrix(self):
- """Build the space-time simple kriging matrix (no unbiasedness constraint)"""
- n = len(self.x)
- K = np.zeros((n, n), dtype=np.float64)
+ def _build_kriging_matrix(self):
+     n = len(self.x)
+     K = np.zeros((n, n), dtype=np.float64)
 
  for i in range(n):
- for j in range(i, n):
- h = np.sqrt((self.x[i] - self.x[j])**2 + (self.y[i] - self.y[j])**2)
+     h = np.sqrt((self.x[i] - self.x[j])**2 + (self.y[i] - self.y[j])**2)
  u = np.abs(self.t[i] - self.t[j])
 
  gamma = self.spacetime_model(h, u)
@@ -347,54 +345,54 @@ class SpaceTimeSimpleKriging(BaseKriging):
  logger.debug("Space-time simple kriging matrix built.")
 
  def predict(
- self,
- x_new: npt.NDArray[np.float64],
- y_new: npt.NDArray[np.float64],
- t_new: npt.NDArray[np.float64],
- return_variance: bool = True
- ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
- """Predict at new space-time locations"""
- x_new, y_new, t_new = validate_coordinates_spacetime(x_new, y_new, t_new)
- n_pred = len(x_new)
- n_data = len(self.x)
+ def predict(
+     x_new: npt.NDArray[np.float64],
+     y_new: npt.NDArray[np.float64],
+     t_new: npt.NDArray[np.float64],
+     return_variance: bool = True
+     ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+     """Predict at new space-time locations"""
+     x_new, y_new, t_new = validate_coordinates_spacetime(x_new, y_new, t_new)
+     n_pred = len(x_new)
+     n_data = len(self.x)
 
- predictions = np.zeros(n_pred, dtype=np.float64)
- variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
+     predictions = np.zeros(n_pred, dtype=np.float64)
+     variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
- # Get sill for variance calculation
- sill = getattr(self.spacetime_model, 'sigma2', 1.0)
+     # Get sill for variance calculation
+     sill = getattr(self.spacetime_model, 'sigma2', 1.0)
 
- for i in range(n_pred):
- rhs = np.zeros(n_data, dtype=np.float64)
+     for i in range(n_pred):
+     for i in range(n_pred):
 
- for j in range(n_data):
- h = np.sqrt((self.x[j] - x_new[i])**2 + (self.y[j] - y_new[i])**2)
- u = np.abs(self.t[j] - t_new[i])
- rhs[j] = self.spacetime_model(h, u)
+     for j in range(n_data):
+     for j in range(n_data):
+     u = np.abs(self.t[j] - t_new[i])
+     rhs[j] = self.spacetime_model(h, u)
 
- try:
- lambdas = solve_kriging_system(self.kriging_matrix, rhs)
- except np.linalg.LinAlgError as e:
- logger.error(f"Failed to solve kriging system: {e}")
- raise KrigingError(f"Failed to solve kriging system: {e}")
+     try:
+     try:
+     except np.linalg.LinAlgError as e:
+     logger.error(f"Failed to solve kriging system: {e}")
+     raise KrigingError(f"Failed to solve kriging system: {e}")
 
- # Simple kriging prediction
- predictions[i] = self.mean + np.dot(lambdas, self.residuals)
+     # Simple kriging prediction
+     predictions[i] = self.mean + np.dot(lambdas, self.residuals)
 
- if return_variance:
- # σ²_k = σ² - Σ λ_i·γ(s_i,t_i; s₀,t₀)
- variances[i] = sill - np.dot(lambdas, rhs)
- variances[i] = max(0.0, variances[i])
+     if return_variance:
+     if return_variance:
+     variances[i] = sill - np.dot(lambdas, rhs)
+     variances[i] = max(0.0, variances[i])
 
- logger.debug(f"Space-time simple kriging prediction complete for {n_pred} points")
+     logger.debug(f"Space-time simple kriging prediction complete for {n_pred} points")
 
- if return_variance:
- return predictions, variances
- return predictions
+     if return_variance:
+     if return_variance:
+     return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- """
- Perform leave-one-out cross-validation
+ def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+     Perform leave-one-out cross-validation
 
  Returns
  -------

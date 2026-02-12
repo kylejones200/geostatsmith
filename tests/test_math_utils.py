@@ -15,10 +15,10 @@ from geostats.math import distance, matrices, numerical
 from geostats.utils import data_utils, grid_utils
 
 class TestDistanceCalculations:
-    """Tests for distance calculation functions"""
+class TestDistanceCalculations:
 
     def test_euclidean_distance_2d(self):
-        """Test 2D Euclidean distance calculation"""
+    def test_euclidean_distance_2d(self):
         x1 = np.array([0, 1, 2])
         y1 = np.array([0, 0, 0])
         x2 = np.array([0, 0, 0])
@@ -35,7 +35,7 @@ class TestDistanceCalculations:
         np.testing.assert_array_almost_equal(dist, expected)
 
     def test_euclidean_distance_single_point(self):
-        """Test distance from single point"""
+    def test_euclidean_distance_single_point(self):
         x1 = np.array([0])
         y1 = np.array([0])
         x2 = np.array([3])
@@ -47,7 +47,7 @@ class TestDistanceCalculations:
         assert abs(dist[0, 0] - 5.0) < 1e-10
 
     def test_euclidean_distance_symmetry(self):
-        """Test that distance matrix is symmetric"""
+    def test_euclidean_distance_symmetry(self):
         np.random.seed(42)
         x = np.random.rand(10)
         y = np.random.rand(10)
@@ -57,7 +57,7 @@ class TestDistanceCalculations:
         np.testing.assert_array_almost_equal(dist, dist.T)
 
     def test_euclidean_distance_diagonal_zero(self):
-        """Test that diagonal of distance matrix is zero"""
+    def test_euclidean_distance_diagonal_zero(self):
         np.random.seed(42)
         x = np.random.rand(10)
         y = np.random.rand(10)
@@ -67,7 +67,7 @@ class TestDistanceCalculations:
         np.testing.assert_array_almost_equal(np.diag(dist), np.zeros(10))
 
     def test_distance_positive(self):
-        """Test that all distances are non-negative"""
+    def test_distance_positive(self):
         np.random.seed(42)
         x1 = np.random.rand(5)
         y1 = np.random.rand(5)
@@ -79,10 +79,10 @@ class TestDistanceCalculations:
         assert np.all(dist >= 0)
 
 class TestMatrixOperations:
-    """Tests for matrix operation utilities"""
+class TestMatrixOperations:
 
     def test_solve_kriging_system_basic(self):
-        """Test solving basic kriging system"""
+    def test_solve_kriging_system_basic(self):
         # Create simple symmetric positive definite matrix
         A = np.array([
         [2.0, 1.0],
@@ -99,7 +99,7 @@ class TestMatrixOperations:
         np.testing.assert_array_almost_equal(A @ x, b)
 
     def test_regularize_matrix(self):
-        """Test matrix regularization"""
+    def test_regularize_matrix(self):
         # Create matrix that might be ill-conditioned
         A = np.array([
         [1.0, 0.999],
@@ -116,7 +116,7 @@ class TestMatrixOperations:
         assert A_reg[0, 1] == A[0, 1]
 
     def test_matrix_positive_definite_check(self):
-        """Test checking if matrix is positive definite"""
+    def test_matrix_positive_definite_check(self):
         # Positive definite matrix
         A_pos = np.array([
         [2.0, 1.0],
@@ -128,7 +128,7 @@ class TestMatrixOperations:
         assert all(eigenvalues > 0)
 
     def test_covariance_matrix_properties(self):
-        """Test that covariance matrices have proper properties"""
+    def test_covariance_matrix_properties(self):
         # Create covariance matrix
         np.random.seed(42)
         data = np.random.randn(10, 3)
@@ -142,10 +142,10 @@ class TestMatrixOperations:
         assert all(eigenvalues >= -1e-10) # Allow small numerical errors
 
 class TestNumericalMethods:
-    """Tests for numerical method utilities"""
+class TestNumericalMethods:
 
     def test_cross_validation_score_rmse(self):
-        """Test RMSE calculation"""
+    def test_cross_validation_score_rmse(self):
         y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1.1, 2.1, 2.9, 4.2, 4.8])
 
@@ -159,7 +159,7 @@ class TestNumericalMethods:
         assert 0 < metrics['rmse'] < 1.0
 
     def test_cross_validation_perfect(self):
-        """Test metrics with perfect predictions"""
+    def test_cross_validation_perfect(self):
         y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4, 5])
 
@@ -170,7 +170,7 @@ class TestNumericalMethods:
         assert abs(metrics['r2'] - 1.0) < 1e-10
 
     def test_numerical_stability_small_values(self):
-        """Test numerical stability with very small values"""
+    def test_numerical_stability_small_values(self):
         y_true = np.array([1e-8, 2e-8, 3e-8])
         y_pred = np.array([1.1e-8, 2.1e-8, 2.9e-8])
 
@@ -180,10 +180,10 @@ class TestNumericalMethods:
         assert all(np.isfinite([metrics['rmse'], metrics['mae']]))
 
 class TestGridUtilities:
-    """Tests for grid creation and manipulation"""
+class TestGridUtilities:
 
     def test_create_regular_grid(self):
-        """Test creating regular grid"""
+    def test_create_regular_grid(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=0, x_max=100,
         y_min=0, y_max=100,
@@ -200,7 +200,7 @@ class TestGridUtilities:
         assert y_grid[-1, -1] == 100
 
     def test_grid_spacing(self):
-        """Test that grid spacing is correct"""
+    def test_grid_spacing(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=0, x_max=10,
         y_min=0, y_max=10,
@@ -215,7 +215,7 @@ class TestGridUtilities:
         assert abs(y_spacing - 1.0) < 1e-10
 
     def test_grid_to_points(self):
-        """Test converting grid to points"""
+    def test_grid_to_points(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=0, x_max=10,
         y_min=0, y_max=10,
@@ -234,10 +234,10 @@ class TestGridUtilities:
         assert 10 in x_flat
 
 class TestDataUtilities:
-    """Tests for data utility functions"""
+class TestDataUtilities:
 
     def test_generate_synthetic_data(self):
-        """Test generating synthetic spatial data"""
+    def test_generate_synthetic_data(self):
         np.random.seed(42)
 
         x, y, z = data_utils.generate_synthetic_data(
@@ -257,7 +257,7 @@ class TestDataUtilities:
         assert all(np.isfinite(z))
 
     def test_split_train_test(self):
-        """Test train/test split"""
+    def test_split_train_test(self):
         np.random.seed(42)
         n = 100
         x = np.random.rand(n)
@@ -274,7 +274,7 @@ class TestDataUtilities:
         assert len(x_train) + len(x_test) == n
 
     def test_data_statistics(self):
-        """Test computing data statistics"""
+    def test_data_statistics(self):
         data = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
         mean = np.mean(data)
@@ -284,10 +284,10 @@ class TestDataUtilities:
         assert abs(std - np.sqrt(8.25)) < 1e-10
 
 class TestEdgeCases:
-    """Test edge cases for math utilities"""
+class TestEdgeCases:
 
     def test_distance_empty_arrays(self):
-        """Test distance with empty arrays"""
+    def test_distance_empty_arrays(self):
         x1 = np.array([])
         y1 = np.array([])
         x2 = np.array([1, 2])
@@ -298,7 +298,7 @@ class TestEdgeCases:
         assert dist.shape == (0, 2)
 
     def test_matrix_solve_singular(self):
-        """Test handling of singular matrix"""
+    def test_matrix_solve_singular(self):
         # Singular matrix (rank deficient)
         A = np.array([
         [1.0, 1.0],
@@ -308,8 +308,7 @@ class TestEdgeCases:
 
         # Should either regularize or raise error
         try:
-             try:
-        # If it succeeds, solution should satisfy equation approximately
+            # If it succeeds, solution should satisfy equation approximately
         residual = np.linalg.norm(A @ x - b)
         assert residual < 1.0
         except np.linalg.LinAlgError:
@@ -317,7 +316,7 @@ class TestEdgeCases:
         pass
 
     def test_grid_single_point(self):
-        """Test creating grid with single point"""
+    def test_grid_single_point(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=5, x_max=5,
         y_min=10, y_max=10,
@@ -329,7 +328,7 @@ class TestEdgeCases:
         assert y_grid[0, 0] == 10
 
     def test_very_large_distances(self):
-        """Test distance calculation with very large coordinates"""
+    def test_very_large_distances(self):
         x1 = np.array([0, 1e6])
         y1 = np.array([0, 1e6])
         x2 = np.array([1e6, 0])
@@ -341,10 +340,10 @@ class TestEdgeCases:
         assert all(np.isfinite(dist.flatten()))
 
 class TestComputationalEfficiency:
-    """Tests for computational efficiency (performance)"""
+class TestComputationalEfficiency:
 
     def test_distance_vectorized(self):
-        """Test that distance calculation is vectorized"""
+    def test_distance_vectorized(self):
         np.random.seed(42)
         n = 100
         x1 = np.random.rand(n)
@@ -363,7 +362,7 @@ class TestComputationalEfficiency:
         assert dist.shape == (n, n)
 
     def test_matrix_operations_efficient(self):
-        """Test that matrix operations use optimized routines"""
+    def test_matrix_operations_efficient(self):
         np.random.seed(42)
         n = 50
         A = np.random.rand(n, n)
@@ -380,4 +379,4 @@ class TestComputationalEfficiency:
         assert len(x) == n
 
 if __name__ == "__main__":
-     if __name__ == "__main__":
+if __name__ == "__main__":

@@ -79,8 +79,7 @@ fig = plt.figure(figsize=(18, 12))
 
 # Plot realizations
 for i in range(min(4, n_realizations)):
-    ax = plt.subplot(3, 4, i + 1)
-    contour = ax.contourf(X, Y, realizations[i], levels=15, cmap="viridis", alpha=0.9)
+for i in range(min(4, n_realizations)):
     ax.scatter(
         x, y, c=V, cmap="viridis", s=60, edgecolors="white", linewidth=1.5, zorder=5
     )

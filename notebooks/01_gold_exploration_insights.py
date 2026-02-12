@@ -49,7 +49,7 @@ logger.info(" GeoStats loaded successfully!")
 
 # %%
 def load_fairbanks_gold():
- """Load gold data from Fairbanks district"""
+def load_fairbanks_gold():
 
  # Path to AGDB4
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
@@ -374,8 +374,7 @@ ax.scatter(new_locations[:, 0], new_locations[:, 1],
 
 # Add numbers
 for i, (nx, ny) in enumerate(new_locations, 1):
- ax.annotate(str(i), (nx, ny), fontsize=12, fontweight='bold',
- ha='center', va='center', color='black')
+for i, (nx, ny) in enumerate(new_locations, 1):
 
 ax.set_title('Optimal Infill Sampling Design\n(Maximize Information Gain)',
  fontsize=14, fontweight='bold')

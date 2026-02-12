@@ -56,7 +56,7 @@ from ..algorithms.nested_variogram import NestedVariogram
 logger = get_logger(__name__)
 
 class FactorialKriging(BaseKriging):
- """
+class FactorialKriging(BaseKriging):
  Factorial Kriging for multi-scale spatial analysis
 
  Decomposes a spatial variable into independent components
@@ -82,61 +82,61 @@ class FactorialKriging(BaseKriging):
  """
 
  def __init__(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- nested_variogram: NestedVariogram,
- mean: Optional[float] = None
- ):
- """
- Initialize Factorial Kriging
+ def __init__(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     nested_variogram: NestedVariogram,
+     mean: Optional[float] = None
+     ):
+     """
+     Initialize Factorial Kriging
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- nested_variogram : NestedVariogram
- Fitted nested variogram model with multiple structures
- mean : float, optional
- Known mean. If None, estimated from data.
- """
- self.x, self.y = validate_coordinates(x, y)
- self.z = validate_values(z, n_expected=len(self.x))
+     Parameters
+     ----------
+     x, y : np.ndarray
+     Coordinates of sample points
+     z : np.ndarray
+     Values at sample points
+     nested_variogram : NestedVariogram
+     Fitted nested variogram model with multiple structures
+     mean : float, optional
+     Known mean. If None, estimated from data.
+     """
+     self.x, self.y = validate_coordinates(x, y)
+     self.z = validate_values(z, n_expected=len(self.x))
 
- if not isinstance(nested_variogram, NestedVariogram):
- raise KrigingError("nested_variogram must be a NestedVariogram instance")
+     if not isinstance(nested_variogram, NestedVariogram):
+     if not isinstance(nested_variogram, NestedVariogram):
 
- if len(nested_variogram.structures) == 0:
- raise KrigingError("Nested variogram must have at least one structure")
+     if len(nested_variogram.structures) == 0:
+     if len(nested_variogram.structures) == 0:
 
- self.nested_variogram = nested_variogram
+     self.nested_variogram = nested_variogram
 
- # Estimate or use provided mean
- if mean is not None:
- self.mean = mean
- else:
- self.mean = np.mean(self.z)
+     # Estimate or use provided mean
+     if mean is not None:
+     if mean is not None:
+     else:
+     else:
 
- self.residuals = self.z - self.mean
+     self.residuals = self.z - self.mean
 
- # Number of components = number of structures (+ nugget if present)
- self.n_structures = len(nested_variogram.structures)
- self.has_nugget = nested_variogram.nugget > 0
+     # Number of components = number of structures (+ nugget if present)
+     self.n_structures = len(nested_variogram.structures)
+     self.has_nugget = nested_variogram.nugget > 0
 
- # Build kriging matrices for each component
- self._build_kriging_matrices()
+     # Build kriging matrices for each component
+     self._build_kriging_matrices()
 
- logger.info(
- f"Factorial Kriging initialized: {self.n_structures} structures, "
- f"{'with' if self.has_nugget else 'without'} nugget"
- )
+     logger.info(
+     f"Factorial Kriging initialized: {self.n_structures} structures, "
+     f"{'with' if self.has_nugget else 'without'} nugget"
+     )
 
  def _build_kriging_matrices(self):
- """
- Build separate kriging matrices for each spatial component
+ def _build_kriging_matrices(self):
+     Build separate kriging matrices for each spatial component
 
  For each structure i:
  - Build covariance matrix Cᵢ based on γᵢ(h) only
@@ -151,8 +151,7 @@ class FactorialKriging(BaseKriging):
  self.kriging_matrices = []
 
  for i, structure in enumerate(self.nested_variogram.structures):
- # Build kriging matrix for this structure alone
- K = np.zeros((n + 1, n + 1), dtype=np.float64)
+     K = np.zeros((n + 1, n + 1), dtype=np.float64)
 
  # Get variogram for this structure only
  gamma_i = structure['model'](dist_matrix)
@@ -176,229 +175,223 @@ class FactorialKriging(BaseKriging):
  logger.debug(f"Built kriging matrix for structure {i}: {structure['model_type']}")
 
  def predict_components(
- self,
- x_new: npt.NDArray[np.float64],
- y_new: npt.NDArray[np.float64],
- return_variance: bool = False
- ) -> Dict[str, npt.NDArray[np.float64]]:
- """
- Predict each spatial component independently
+ def predict_components(
+     x_new: npt.NDArray[np.float64],
+     y_new: npt.NDArray[np.float64],
+     return_variance: bool = False
+     ) -> Dict[str, npt.NDArray[np.float64]]:
+     """
+     Predict each spatial component independently
 
- Parameters
- ----------
- x_new, y_new : np.ndarray
- Coordinates of prediction points
- return_variance : bool
- If True, include variance estimates for each component
+     Parameters
+     ----------
+     x_new, y_new : np.ndarray
+     Coordinates of prediction points
+     return_variance : bool
+     If True, include variance estimates for each component
 
- Returns
- -------
- components : dict
- Dictionary with keys:
- - 'structure_0', 'structure_1', ...: spatial components
- - 'nugget': nugget component (if present)
- - 'total': sum of all components (= Z(x) - μ)
- - 'mean': the estimated mean
- - Optional: 'variance_0', 'variance_1', ... if return_variance=True
- """
- x_new, y_new = validate_coordinates(x_new, y_new)
- n_pred = len(x_new)
- n_data = len(self.x)
+     Returns
+     -------
+     components : dict
+     Dictionary with keys:
+     - 'structure_0', 'structure_1', ...: spatial components
+     - 'nugget': nugget component (if present)
+     - 'total': sum of all components (= Z(x) - μ)
+     - 'mean': the estimated mean
+     - Optional: 'variance_0', 'variance_1', ... if return_variance=True
+     """
+     x_new, y_new = validate_coordinates(x_new, y_new)
+     n_pred = len(x_new)
+     n_data = len(self.x)
 
- # Storage for components
- components = {}
+     # Storage for components
+     components = {}
 
- # Calculate distances from prediction points to data
- # Vectorized for efficiency
- coords_data = np.column_stack((self.x, self.y))
- coords_pred = np.column_stack((x_new, y_new))
+     # Calculate distances from prediction points to data
+     # Vectorized for efficiency
+     coords_data = np.column_stack((self.x, self.y))
+     coords_pred = np.column_stack((x_new, y_new))
 
- # For each prediction point, calculate distance to all data points
- from scipy.spatial.distance import cdist
- dist_to_pred = cdist(coords_pred, coords_data)
+     # For each prediction point, calculate distance to all data points
+     from scipy.spatial.distance import cdist
+     dist_to_pred = cdist(coords_pred, coords_data)
 
- # Predict each structure component
- for i, structure in enumerate(self.nested_variogram.structures):
- predictions = np.zeros(n_pred, dtype=np.float64)
- variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
+     # Predict each structure component
+     for i, structure in enumerate(self.nested_variogram.structures):
+     for i, structure in enumerate(self.nested_variogram.structures):
+     variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
- # Get variogram for this structure
- sill_i = structure['sill']
+     # Get variogram for this structure
+     sill_i = structure['sill']
 
- for j in range(n_pred):
- # Build RHS vector for this prediction point
- gamma_values = structure['model'](dist_to_pred[j])
- cov_values = sill_i - gamma_values
+     for j in range(n_pred):
+     for j in range(n_pred):
+     gamma_values = structure['model'](dist_to_pred[j])
+     cov_values = sill_i - gamma_values
 
- rhs = np.zeros(n_data + 1, dtype=np.float64)
- rhs[:n_data] = cov_values
- rhs[n_data] = 1.0
+     rhs = np.zeros(n_data + 1, dtype=np.float64)
+     rhs[:n_data] = cov_values
+     rhs[n_data] = 1.0
 
- # Solve kriging system
- try:
- weights = solve_kriging_system(self.kriging_matrices[i], rhs)
- except np.linalg.LinAlgError as e:
- logger.error(f"Failed to solve FK system for structure {i}, point {j}: {e}")
- raise KrigingError(f"Failed to solve factorial kriging system: {e}")
+     # Solve kriging system
+     try:
+     try:
+     except np.linalg.LinAlgError as e:
+     logger.error(f"Failed to solve FK system for structure {i}, point {j}: {e}")
+     raise KrigingError(f"Failed to solve factorial kriging system: {e}")
 
- lambdas = weights[:n_data]
+     lambdas = weights[:n_data]
 
- # Estimate component: Yᵢ*(x₀) = Σ λⁱ [Z(x) - μ]
- predictions[j] = np.dot(lambdas, self.residuals)
+     # Estimate component: Yᵢ*(x₀) = Σ λⁱ [Z(x) - μ]
+     predictions[j] = np.dot(lambdas, self.residuals)
 
- # Variance if requested
- if return_variance:
- variances[j] = sill_i - np.dot(lambdas, cov_values)
+     # Variance if requested
+     if return_variance:
+     if return_variance:
 
- # Store component
- comp_name = f"structure_{i}"
- components[comp_name] = predictions
+     # Store component
+     comp_name = f"structure_{i}"
+     components[comp_name] = predictions
 
- if return_variance:
- components[f"variance_{i}"] = variances
+     if return_variance:
+     if return_variance:
 
- logger.debug(f"Predicted component {i}: {structure['model_type']}")
+     logger.debug(f"Predicted component {i}: {structure['model_type']}")
 
- # Nugget component (cannot be estimated, set to zero)
- if self.has_nugget:
- components['nugget'] = np.zeros(n_pred, dtype=np.float64)
- logger.debug("Nugget component set to zero (unestimable)")
+     # Nugget component (cannot be estimated, set to zero)
+     if self.has_nugget:
+     if self.has_nugget:
+     logger.debug("Nugget component set to zero (unestimable)")
 
- # Total (sum of all components)
- total = np.zeros(n_pred, dtype=np.float64)
- for i in range(self.n_structures):
- total += components[f"structure_{i}"]
- components['total'] = total
+     # Total (sum of all components)
+     total = np.zeros(n_pred, dtype=np.float64)
+     for i in range(self.n_structures):
+     for i in range(self.n_structures):
+     components['total'] = total
 
- # Mean
- components['mean'] = np.full(n_pred, self.mean, dtype=np.float64)
+     # Mean
+     components['mean'] = np.full(n_pred, self.mean, dtype=np.float64)
 
- logger.info(f"Factorial kriging predicted {n_pred} points across {self.n_structures} components")
+     logger.info(f"Factorial kriging predicted {n_pred} points across {self.n_structures} components")
 
- return components
+     return components
 
  def predict(
- self,
- x_new: npt.NDArray[np.float64],
- y_new: npt.NDArray[np.float64],
- return_variance: bool = True
- ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
- """
- Predict at new locations (sum of all components)
+ def predict(
+     x_new: npt.NDArray[np.float64],
+     y_new: npt.NDArray[np.float64],
+     return_variance: bool = True
+     ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+     """
+     Predict at new locations (sum of all components)
 
- Parameters
- ----------
- x_new, y_new : np.ndarray
- Coordinates for prediction
- return_variance : bool
- Whether to return prediction variance
+     Parameters
+     ----------
+     x_new, y_new : np.ndarray
+     Coordinates for prediction
+     return_variance : bool
+     Whether to return prediction variance
 
- Returns
- -------
- predictions : np.ndarray
- Predicted values
- variance : np.ndarray, optional
- Prediction variance (if return_variance=True)
- """
+     Returns
+     -------
+     predictions : np.ndarray
+     Predicted values
+     variance : np.ndarray, optional
+     Prediction variance (if return_variance=True)
+     """
     components = self.predict_components(x_new, y_new, return_variance=return_variance)
 
     # Sum all components
     total = self.mean * np.ones(len(x_new))
     for i in range(self.n_structures):
-        comp_name = f"structure_{i}"
-        if comp_name in components:
-            total += components[comp_name]
+    for i in range(self.n_structures):
 
     if return_variance:
-        # Variance is sum of component variances
-        # In factorial kriging, components are independent by design,
+    if return_variance:
         # so variance is simply the sum of component variances
         variance = np.zeros(len(x_new))
         for i in range(self.n_structures):
-            var_name = f"variance_{i}"
-            if var_name in components:
-                variance += components[var_name]
+        for i in range(self.n_structures):
         
         # Add nugget variance if present
         if self.has_nugget:
-            nugget_variance = self.nested_variogram.nugget
-            variance += nugget_variance
+        if self.has_nugget:
         
         return total, variance
 
     return total
 
  def filter(
- self,
- x_new: npt.NDArray[np.float64],
- y_new: npt.NDArray[np.float64],
- components_to_keep: Optional[List[str]] = None,
- components_to_remove: Optional[List[str]] = None
- ) -> npt.NDArray[np.float64]:
- """
- Filter spatial data by selecting specific components
+ def filter(
+     x_new: npt.NDArray[np.float64],
+     y_new: npt.NDArray[np.float64],
+     components_to_keep: Optional[List[str]] = None,
+     components_to_remove: Optional[List[str]] = None
+     ) -> npt.NDArray[np.float64]:
+     """
+     Filter spatial data by selecting specific components
 
- Common use cases:
- - Remove short-range noise: keep only long-range components
- - Remove regional trend: keep only short-range components
- - Multi-scale analysis: isolate specific scales
+     Common use cases:
+     - Remove short-range noise: keep only long-range components
+     - Remove regional trend: keep only short-range components
+     - Multi-scale analysis: isolate specific scales
 
- Parameters
- ----------
- x_new, y_new : np.ndarray
- Coordinates of prediction points
- components_to_keep : list of str, optional
- Component names to keep (e.g., ['structure_1', 'structure_2'])
- If None, keeps all
- components_to_remove : list of str, optional
- Component names to remove (e.g., ['structure_0'])
- If None, removes none
+     Parameters
+     ----------
+     x_new, y_new : np.ndarray
+     Coordinates of prediction points
+     components_to_keep : list of str, optional
+     Component names to keep (e.g., ['structure_1', 'structure_2'])
+     If None, keeps all
+     components_to_remove : list of str, optional
+     Component names to remove (e.g., ['structure_0'])
+     If None, removes none
 
- Returns
- -------
- filtered : np.ndarray
- Filtered values (mean + selected components)
+     Returns
+     -------
+     filtered : np.ndarray
+     Filtered values (mean + selected components)
 
- Examples
- --------
- >>> # Remove short-range noise (keep long-range structure)
- >>> smoothed = fk.filter(x_new, y_new, components_to_keep=['structure_1'])
- >>>
- >>> # Remove regional trend (keep local variation)
- >>> local = fk.filter(x_new, y_new, components_to_remove=['structure_1'])
- """
- # Get all components
- components = self.predict_components(x_new, y_new, return_variance=False)
+     Examples
+     --------
+     >>> # Remove short-range noise (keep long-range structure)
+     >>> smoothed = fk.filter(x_new, y_new, components_to_keep=['structure_1'])
+     >>>
+     >>> # Remove regional trend (keep local variation)
+     >>> local = fk.filter(x_new, y_new, components_to_remove=['structure_1'])
+     """
+     # Get all components
+     components = self.predict_components(x_new, y_new, return_variance=False)
 
- # Start with mean
- filtered = components['mean'].copy()
+     # Start with mean
+     filtered = components['mean'].copy()
 
- # Determine which components to include
- for i in range(self.n_structures):
- comp_name = f"structure_{i}"
+     # Determine which components to include
+     for i in range(self.n_structures):
+     for i in range(self.n_structures):
 
- include = True
+     include = True
 
- if components_to_keep is not None:
- include = comp_name in components_to_keep
+     if components_to_keep is not None:
+     if components_to_keep is not None:
 
- if components_to_remove is not None:
- if comp_name in components_to_remove:
- include = False
+     if components_to_remove is not None:
+     if components_to_remove is not None:
+     include = False
 
- if include:
- filtered += components[comp_name]
+     if include:
+     if include:
 
- logger.info(
- f"Filtered {len(filtered)} points "
- f"(keep={components_to_keep}, remove={components_to_remove})"
- )
+     logger.info(
+     f"Filtered {len(filtered)} points "
+     f"(keep={components_to_keep}, remove={components_to_remove})"
+     )
 
- return filtered
+     return filtered
 
  def get_component_info(self) -> Dict[str, Dict[str, float]]:
- """
- Get information about each spatial component
+ def get_component_info(self) -> Dict[str, Dict[str, float]]:
+     Get information about each spatial component
 
  Returns
  -------
@@ -415,16 +408,14 @@ class FactorialKriging(BaseKriging):
  total_sill = self.nested_variogram.total_sill()
 
  for i, structure in enumerate(self.nested_variogram.structures):
- info[f"structure_{i}"] = {
- 'model_type': structure['model_type'],
+     'model_type': structure['model_type'],
  'sill': structure['sill'],
  'range': structure.get('range', None),
  'contribution': (structure['sill'] / total_sill) * 100 if total_sill > 0 else 0
  }
 
  if self.has_nugget:
- info['nugget'] = {
- 'model_type': 'nugget',
+     'model_type': 'nugget',
  'sill': self.nested_variogram.nugget,
  'range': 0.0,
  'contribution': (self.nested_variogram.nugget / total_sill) * 100 if total_sill > 0 else 0
@@ -433,8 +424,8 @@ class FactorialKriging(BaseKriging):
  return info
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- """
- Perform leave-one-out cross-validation
+ def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+     Perform leave-one-out cross-validation
 
  Returns
  -------

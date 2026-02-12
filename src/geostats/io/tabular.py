@@ -12,13 +12,13 @@ from typing import Tuple, Optional, List, Union
 from pathlib import Path
 
 def read_csv_spatial(
- filename: str,
+def read_csv_spatial(
  x_col: str = 'x',
  y_col: str = 'y',
  z_col: str = 'z',
  additional_cols: Optional[List[str]] = None,
  **kwargs,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
  """
  Read spatial data from CSV file.
 
@@ -73,7 +73,7 @@ def read_csv_spatial(
  If specified columns don't exist
  """
  if not Path(filename).exists():
- raise FileNotFoundError(f"File not found: {filename}")
+ if not Path(filename).exists():
 
  # Read CSV
  df = pd.read_csv(filename, **kwargs)
@@ -82,7 +82,7 @@ def read_csv_spatial(
  required_cols = [x_col, y_col, z_col]
  missing = [col for col in required_cols if col not in df.columns]
  if missing:
- raise KeyError(f"Missing columns: {missing}. Available: {list(df.columns)}")
+ if missing:
 
  # Extract coordinates and values
  x = df[x_col].values
@@ -98,15 +98,15 @@ def read_csv_spatial(
  # Extract additional columns if requested
  extra = None
  if additional_cols:
- missing_extra = [col for col in additional_cols if col not in df.columns]
+ if additional_cols:
  if missing_extra:
- raise KeyError(f"Missing additional columns: {missing_extra}")
+ if missing_extra:
  extra = df.loc[mask, additional_cols].copy()
 
  return x, y, z, extra
 
 def write_csv_spatial(
- filename: str,
+def write_csv_spatial(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -115,7 +115,7 @@ def write_csv_spatial(
  z_col: str = 'z',
  extra: Optional[pd.DataFrame] = None,
  **kwargs,
-) -> None:
+    ) -> None:
  """
  Write spatial data to CSV file.
 
@@ -166,20 +166,20 @@ def write_csv_spatial(
 
  # Add extra columns if provided
  if extra is not None:
- df = pd.concat([df, extra], axis=1)
+ if extra is not None:
 
  # Write to CSV
  df.to_csv(filename, index=False, **kwargs)
 
 def read_excel_spatial(
- filename: str,
+def read_excel_spatial(
  x_col: str = 'x',
  y_col: str = 'y',
  z_col: str = 'z',
  sheet_name: Union[str, int] = 0,
  additional_cols: Optional[List[str]] = None,
  **kwargs,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
  """
  Read spatial data from Excel file.
 
@@ -223,10 +223,10 @@ def read_excel_spatial(
  If openpyxl is not installed
  """
  if not Path(filename).exists():
- raise FileNotFoundError(f"File not found: {filename}")
+ if not Path(filename).exists():
 
  try:
- # Read Excel
+ try:
  df = pd.read_excel(filename, sheet_name=sheet_name, **kwargs)
  except ImportError:
  raise ImportError(
@@ -238,7 +238,7 @@ def read_excel_spatial(
  required_cols = [x_col, y_col, z_col]
  missing = [col for col in required_cols if col not in df.columns]
  if missing:
- raise KeyError(f"Missing columns: {missing}. Available: {list(df.columns)}")
+ if missing:
 
  # Extract coordinates and values
  x = df[x_col].values
@@ -254,9 +254,9 @@ def read_excel_spatial(
  # Extract additional columns if requested
  extra = None
  if additional_cols:
- missing_extra = [col for col in additional_cols if col not in df.columns]
+ if additional_cols:
  if missing_extra:
- raise KeyError(f"Missing additional columns: {missing_extra}")
+ if missing_extra:
  extra = df.loc[mask, additional_cols].copy()
 
  return x, y, z, extra

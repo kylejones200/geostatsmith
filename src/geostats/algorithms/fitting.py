@@ -16,13 +16,13 @@ from ..models.variogram_models import (
 from ..core.exceptions import FittingError
 
 def fit_variogram_model(
- model: VariogramModelBase,
+def fit_variogram_model(
  lags: npt.NDArray[np.float64],
  gamma: npt.NDArray[np.float64],
  weights: Optional[npt.NDArray[np.float64]] = None,
  fit_nugget: bool = True,
  **kwargs: Any,
-) -> VariogramModelBase:
+    ) -> VariogramModelBase:
  """
  Fit a variogram model to experimental data
 
@@ -52,10 +52,10 @@ def fit_variogram_model(
  gamma_clean = gamma[valid_mask]
 
  if weights is not None:
- weights = weights[valid_mask]
+ if weights is not None:
 
  if len(lags_clean) == 0:
- raise FittingError("No valid data points for fitting")
+ if len(lags_clean) == 0:
 
  # Fit the model
  model.fit(lags_clean, gamma_clean, weights=weights, fit_nugget=fit_nugget, **kwargs)
@@ -63,12 +63,12 @@ def fit_variogram_model(
  return model
 
 def automatic_fit(
- lags: npt.NDArray[np.float64],
+def automatic_fit(
  gamma: npt.NDArray[np.float64],
  models: Optional[List[Type[VariogramModelBase]]] = None,
  weights: Optional[npt.NDArray[np.float64]] = None,
  criterion: str = "rmse",
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Automatically select and fit the best variogram model
 
@@ -103,7 +103,7 @@ def automatic_fit(
  """
  # Default models to try
  if models is None:
- models = [
+ if models is None:
  SphericalModel,
  ExponentialModel,
  GaussianModel,
@@ -116,18 +116,18 @@ def automatic_fit(
  gamma_clean = gamma[valid_mask]
 
  if weights is not None:
- weights_clean = weights[valid_mask]
+ if weights is not None:
  else:
- weights_clean = None
+ else:
 
  if len(lags_clean) == 0:
- raise FittingError("No valid data points for automatic fitting")
+ if len(lags_clean) == 0:
 
  # Try each model
  results = []
 
  for model_class in models:
- try:
+ for model_class in models:
  # Initialize and fit model
  model = model_class()
  model.fit(lags_clean, gamma_clean, weights=weights_clean)
@@ -181,7 +181,7 @@ def automatic_fit(
  }
 
  if criterion not in criterion_functions:
- valid_criteria = ', '.join(criterion_functions.keys())
+ if criterion not in criterion_functions:
  raise ValueError(
  f"Unknown criterion '{criterion}'. "
  f"Valid criteria: {valid_criteria}"
@@ -192,7 +192,7 @@ def automatic_fit(
  best_result = results[best_idx]
 
  if best_result['model'] is None:
- raise FittingError("All models failed to fit")
+ if best_result['model'] is None:
 
  return {
  'model': best_result['model'],
@@ -201,12 +201,12 @@ def automatic_fit(
  }
 
 def cross_validation_fit(
- x: npt.NDArray[np.float64],
+def cross_validation_fit(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  model_class: Type[VariogramModelBase],
  n_folds: int = 5,
-) -> Dict[str, float]:
+    ) -> Dict[str, float]:
  """
  Cross-validate variogram model fitting
 
@@ -236,7 +236,7 @@ def cross_validation_fit(
  scores = []
 
  for i in range(n_folds):
- # Split data
+ for i in range(n_folds):
  test_start = i * fold_size
  test_end = (i + 1) * fold_size if i < n_folds - 1 else n
  test_idx = indices[test_start:test_end]
@@ -258,7 +258,7 @@ def cross_validation_fit(
  # Remove NaN
  valid = ~np.isnan(test_gamma) & ~np.isnan(pred_gamma)
  if np.sum(valid) > 0:
- rmse = np.sqrt(np.mean((test_gamma[valid] - pred_gamma[valid]) ** 2))
+ if np.sum(valid) > 0:
  scores.append(rmse)
 
  return {

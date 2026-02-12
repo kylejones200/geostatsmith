@@ -20,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Try importing geostats
 try:
-    from geostats.uncertainty import (
-        bootstrap_uncertainty,
+try:
         probability_map,
         risk_assessment,
         confidence_intervals,
@@ -36,7 +35,7 @@ except ImportError:
 
 
 def example_1_bootstrap_confidence():
-    """Example 1: Bootstrap confidence intervals."""
+def example_1_bootstrap_confidence():
     logger.info("Example 1: Bootstrap Confidence Intervals")
 
     # Create sample data
@@ -122,7 +121,7 @@ def example_1_bootstrap_confidence():
 
 
 def example_2_probability_map():
-    """Example 2: Probability maps for threshold exceedance."""
+def example_2_probability_map():
     logger.info("Example 2: Probability Maps")
 
     # Create contamination data
@@ -222,7 +221,7 @@ def example_2_probability_map():
 
 
 def example_3_risk_assessment():
-    """Example 3: Risk-based decision analysis."""
+def example_3_risk_assessment():
 
     logger.info("Example 3: Risk Assessment")
 
@@ -329,7 +328,7 @@ def example_3_risk_assessment():
 
 
 def main():
-    """Run all examples."""
+def main():
     logger.info("GEOSTATS UNCERTAINTY QUANTIFICATION EXAMPLES")
 
     example_1_bootstrap_confidence()
@@ -344,4 +343,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+if __name__ == "__main__":

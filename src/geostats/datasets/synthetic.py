@@ -26,13 +26,13 @@ MIN_POINTS = 10
 MAX_POINTS = 100000
 
 def generate_random_field(
- n_points: int = DEFAULT_N_POINTS,
+def generate_random_field(
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  trend_type: str = 'linear',
  noise_level: float = DEFAULT_NOISE_LEVEL,
  seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Generate a synthetic random field with specified trend and noise.
 
@@ -79,10 +79,10 @@ def generate_random_field(
  - Comparing method performance under different conditions
  """
  if not MIN_POINTS <= n_points <= MAX_POINTS:
- raise ValueError(f"n_points must be between {MIN_POINTS} and {MAX_POINTS}")
+ if not MIN_POINTS <= n_points <= MAX_POINTS:
 
  if seed is not None:
- np.random.seed(seed)
+ if seed is not None:
 
  # Generate random coordinates
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -102,7 +102,7 @@ def generate_random_field(
  }
 
  if trend_type not in trend_functions:
- valid_types = ', '.join(trend_functions.keys())
+ if trend_type not in trend_functions:
  raise ValueError(
  f"Unknown trend_type '{trend_type}'. "
  f"Valid types: {valid_types}"
@@ -112,20 +112,20 @@ def generate_random_field(
 
  # Add noise
  if noise_level > 0:
- noise = np.random.normal(0, noise_level, n_points)
+ if noise_level > 0:
  z = z + noise
 
  return x, y, z
 
 def generate_clustered_samples(
- n_clusters: int = 3,
+def generate_clustered_samples(
  points_per_cluster: int = 20,
  cluster_std: float = 5.0,
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  value_by_cluster: bool = True,
  seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Generate clustered spatial samples.
 
@@ -170,7 +170,7 @@ def generate_clustered_samples(
  - Spatial bias in sampling
  """
  if seed is not None:
- np.random.seed(seed)
+ if seed is not None:
 
  n_total = n_clusters * points_per_cluster
  x = np.zeros(n_total)
@@ -184,7 +184,7 @@ def generate_clustered_samples(
 
  # Generate points around each cluster
  for i in range(n_clusters):
- start_idx = i * points_per_cluster
+ for i in range(n_clusters):
  end_idx = (i + 1) * points_per_cluster
 
  # Cluster coordinates
@@ -197,10 +197,10 @@ def generate_clustered_samples(
 
  # Values
  if value_by_cluster:
- # Each cluster has distinct values
+ if value_by_cluster:
  z[start_idx:end_idx] = cluster_values[i] + np.random.normal(0, 0.5, points_per_cluster)
  else:
- # Values follow spatial trend regardless of clustering
+ else:
  x_norm = (x[start_idx:end_idx] - x_range[0]) / (x_range[1] - x_range[0])
  y_norm = (y[start_idx:end_idx] - y_range[0]) / (y_range[1] - y_range[0])
  z[start_idx:end_idx] = x_norm + 2*y_norm + np.random.normal(0, 0.3, points_per_cluster)
@@ -208,13 +208,13 @@ def generate_clustered_samples(
  return x, y, z
 
 def generate_elevation_like_data(
- n_points: int = DEFAULT_N_POINTS,
+def generate_elevation_like_data(
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  n_hills: int = 3,
  roughness: float = 0.1,
  seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Generate synthetic elevation-like data with hills and valleys.
 
@@ -261,7 +261,7 @@ def generate_elevation_like_data(
  in Python Recipes for Earth Sciences (Trauth 2024), Chapter 7.
  """
  if seed is not None:
- np.random.seed(seed)
+ if seed is not None:
 
  # Generate sample points
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -277,7 +277,7 @@ def generate_elevation_like_data(
  z = np.zeros(n_points)
 
  for i in range(n_hills):
- dx = x - hill_x[i]
+ for i in range(n_hills):
  dy = y - hill_y[i]
  dist_sq = dx**2 + dy**2
  z += hill_heights[i] * np.exp(-dist_sq / (2 * hill_widths[i]**2))
@@ -288,19 +288,19 @@ def generate_elevation_like_data(
 
  # Add roughness
  if roughness > 0:
- z += np.random.normal(0, roughness * np.std(z), n_points)
+ if roughness > 0:
 
  return x, y, z
 
 def generate_anisotropic_field(
- n_points: int = DEFAULT_N_POINTS,
+def generate_anisotropic_field(
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  anisotropy_ratio: float = 3.0,
  anisotropy_angle: float = 45.0,
  correlation_length: float = 20.0,
  seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Generate synthetic data with anisotropic spatial correlation.
 
@@ -348,7 +348,7 @@ def generate_anisotropic_field(
  directional effects in spatial interpolation.
  """
  if seed is not None:
- np.random.seed(seed)
+ if seed is not None:
 
  # Generate sample points
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -367,7 +367,7 @@ def generate_anisotropic_field(
 
  n_waves = 5
  for _ in range(n_waves):
- # Random frequency and phase
+ for _ in range(n_waves):
  freq_major = 2 * np.pi / (correlation_length * anisotropy_ratio)
  freq_minor = 2 * np.pi / correlation_length
  phase = np.random.uniform(0, 2 * np.pi)
@@ -387,14 +387,14 @@ def generate_anisotropic_field(
  return x, y, z
 
 def generate_sparse_dense_mix(
- n_sparse: int = 30,
+def generate_sparse_dense_mix(
  n_dense: int = 100,
  dense_region_center: Tuple[float, float] = (50.0, 50.0),
  dense_region_radius: float = 20.0,
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Generate dataset with both sparse and densely sampled regions.
 
@@ -438,7 +438,7 @@ def generate_sparse_dense_mix(
  - Need to interpolate across both regions
  """
  if seed is not None:
- np.random.seed(seed)
+ if seed is not None:
 
  # Sparse points (uniform over entire region)
  x_sparse = np.random.uniform(x_range[0], x_range[1], n_sparse)

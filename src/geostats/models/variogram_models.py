@@ -14,7 +14,7 @@ from scipy.special import gamma as gamma_func, kv
 from .base_model import VariogramModelBase
 
 class SphericalModel(VariogramModelBase):
- """
+class SphericalModel(VariogramModelBase):
  Spherical variogram model
 
  The spherical model is one of the most commonly used variogram models.
@@ -28,11 +28,11 @@ class SphericalModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Spherical model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- sill = self._parameters["sill"]
- range_param = self._parameters["range"]
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     sill = self._parameters["sill"]
+     range_param = self._parameters["range"]
 
  # Normalized distance
  h_norm = h / range_param
@@ -47,7 +47,7 @@ class SphericalModel(VariogramModelBase):
  return result
 
 class ExponentialModel(VariogramModelBase):
- """
+class ExponentialModel(VariogramModelBase):
  Exponential variogram model
 
  The exponential model approaches the sill asymptotically.
@@ -60,18 +60,18 @@ class ExponentialModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Exponential model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- sill = self._parameters["sill"]
- range_param = self._parameters["range"]
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     sill = self._parameters["sill"]
+     range_param = self._parameters["range"]
 
  result = nugget + (sill - nugget) * (1.0 - np.exp(-h / range_param))
 
  return result
 
 class GaussianModel(VariogramModelBase):
- """
+class GaussianModel(VariogramModelBase):
  Gaussian variogram model
 
  The Gaussian model is very smooth near the origin.
@@ -85,11 +85,11 @@ class GaussianModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Gaussian model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- sill = self._parameters["sill"]
- range_param = self._parameters["range"]
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     sill = self._parameters["sill"]
+     range_param = self._parameters["range"]
 
  h_norm = h / range_param
  result = nugget + (sill - nugget) * (1.0 - np.exp(-(h_norm**2)))
@@ -97,7 +97,7 @@ class GaussianModel(VariogramModelBase):
  return result
 
 class LinearModel(VariogramModelBase):
- """
+class LinearModel(VariogramModelBase):
  Linear variogram model
 
  The linear model has no sill and increases indefinitely.
@@ -110,17 +110,17 @@ class LinearModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Linear model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- slope = self._parameters["sill"] # Reinterpret sill as slope
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     slope = self._parameters["sill"] # Reinterpret sill as slope
 
  result = nugget + slope * h
 
  return result
 
 class PowerModel(VariogramModelBase):
- """
+class PowerModel(VariogramModelBase):
  Power variogram model
 
  A generalized model with power-law behavior.
@@ -137,8 +137,8 @@ class PowerModel(VariogramModelBase):
  """
 
  def __init__(self, nugget: float = 0.0, scale: float = 1.0, exponent: float = 1.5):
- """
- Initialize Power model
+ def __init__(self, nugget: float = 0.0, scale: float = 1.0, exponent: float = 1.5):
+     Initialize Power model
 
  Parameters
  ----------
@@ -151,21 +151,20 @@ class PowerModel(VariogramModelBase):
  """
  super().__init__(nugget=nugget, sill=scale, range_param=exponent)
  if not (0 < exponent < 2):
- raise ValueError("Power model exponent must be in (0, 2)")
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Power model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- scale = self._parameters["sill"] # Reinterpreted as scale
- exponent = self._parameters["range"] # Reinterpreted as exponent
+ if not (0 < exponent < 2):
+     """Power model function"""
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     scale = self._parameters["sill"] # Reinterpreted as scale
+     exponent = self._parameters["range"] # Reinterpreted as exponent
 
  result = nugget + scale * np.power(h, exponent)
 
  return result
 
 class MaternModel(VariogramModelBase):
- """
+class MaternModel(VariogramModelBase):
  Matérn variogram model
 
  A flexible model controlled by smoothness parameter ν (nu).
@@ -184,54 +183,52 @@ class MaternModel(VariogramModelBase):
  """
 
  def __init__(
- self,
- nugget: float = 0.0,
- sill: float = 1.0,
- range_param: float = 1.0,
- nu: float = 0.5,
- ):
- """
- Initialize Matérn model
+ def __init__(
+     nugget: float = 0.0,
+     sill: float = 1.0,
+     range_param: float = 1.0,
+     nu: float = 0.5,
+     ):
+     """
+     Initialize Matérn model
 
- Parameters
- ----------
- nugget : float
- Nugget effect
- sill : float
- Sill
- range_param : float
- Range parameter
- nu : float
- Smoothness parameter (must be positive)
- """
- super().__init__(nugget=nugget, sill=sill, range_param=range_param)
- if nu <= 0:
- raise ValueError("Matérn nu parameter must be positive")
- self._parameters["nu"] = nu
+     Parameters
+     ----------
+     nugget : float
+     Nugget effect
+     sill : float
+     Sill
+     range_param : float
+     Range parameter
+     nu : float
+     Smoothness parameter (must be positive)
+     """
+     super().__init__(nugget=nugget, sill=sill, range_param=range_param)
+     if nu <= 0:
+     if nu <= 0:
+     self._parameters["nu"] = nu
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Matérn model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- sill = self._parameters["sill"]
- range_param = self._parameters["range"]
- nu = self._parameters["nu"]
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     sill = self._parameters["sill"]
+     range_param = self._parameters["range"]
+     nu = self._parameters["nu"]
 
  # Handle h = 0 case
  result = np.zeros_like(h)
  mask = h > 0
 
  if np.any(mask):
- h_scaled = h[mask] / range_param
 
- # Matérn formula
+     # Matérn formula
  const = 2.0 ** (1.0 - nu) / gamma_func(nu)
  bessel_part = kv(nu, h_scaled)
 
  # For numerical stability
  with np.errstate(over='ignore', invalid='ignore'):
- spatial_part = const * (h_scaled ** nu) * bessel_part
- spatial_part = np.nan_to_num(spatial_part, nan=0.0, posinf=1.0)
+     spatial_part = np.nan_to_num(spatial_part, nan=0.0, posinf=1.0)
 
  result[mask] = nugget + (sill - nugget) * (1.0 - spatial_part)
 
@@ -240,7 +237,7 @@ class MaternModel(VariogramModelBase):
  return result
 
 class HoleEffectModel(VariogramModelBase):
- """
+class HoleEffectModel(VariogramModelBase):
  Hole-effect (dampened oscillatory) variogram model
 
  Shows periodic behavior, useful for quasi-periodic phenomena.
@@ -253,19 +250,17 @@ class HoleEffectModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Hole-effect model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- sill = self._parameters["sill"]
- range_param = self._parameters["range"]
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     sill = self._parameters["sill"]
+     range_param = self._parameters["range"]
 
  result = np.zeros_like(h)
  mask = h > 0
 
  if np.any(mask):
- h_norm = h[mask] / range_param
- with np.errstate(divide='ignore', invalid='ignore'):
- sinc_val = np.sin(h_norm) / h_norm
+     with np.errstate(divide='ignore', invalid='ignore'):
  sinc_val = np.nan_to_num(sinc_val, nan=1.0)
 
  result[mask] = nugget + (sill - nugget) * (1.0 - sinc_val)
@@ -275,7 +270,7 @@ class HoleEffectModel(VariogramModelBase):
  return result
 
 class CubicModel(VariogramModelBase):
- """
+class CubicModel(VariogramModelBase):
  Cubic variogram model
 
  Similar to spherical but with cubic polynomial.
@@ -287,11 +282,11 @@ class CubicModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Cubic model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- sill = self._parameters["sill"]
- range_param = self._parameters["range"]
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     sill = self._parameters["sill"]
+     range_param = self._parameters["range"]
 
  h_norm = h / range_param
 
@@ -309,7 +304,7 @@ class CubicModel(VariogramModelBase):
  return result
 
 class StableModel(VariogramModelBase):
- """
+class StableModel(VariogramModelBase):
  Stable (powered exponential) variogram model
 
  A generalization of the Gaussian and Exponential models.
@@ -323,38 +318,38 @@ class StableModel(VariogramModelBase):
  """
 
  def __init__(
- self,
- nugget: float = 0.0,
- sill: float = 1.0,
- range_param: float = 1.0,
- shape: float = 1.0,
- ):
- """
- Initialize Stable model
+ def __init__(
+     nugget: float = 0.0,
+     sill: float = 1.0,
+     range_param: float = 1.0,
+     shape: float = 1.0,
+     ):
+     """
+     Initialize Stable model
 
- Parameters
- ----------
- nugget : float
- Nugget effect
- sill : float
- Sill
- range_param : float
- Range parameter
- shape : float
- Shape parameter s (must be in (0, 2])
- """
- super().__init__(nugget=nugget, sill=sill, range_param=range_param)
- if not (0 < shape <= 2):
- raise ValueError("Stable model shape parameter must be in (0, 2]")
- self._parameters["shape"] = shape
+     Parameters
+     ----------
+     nugget : float
+     Nugget effect
+     sill : float
+     Sill
+     range_param : float
+     Range parameter
+     shape : float
+     Shape parameter s (must be in (0, 2])
+     """
+     super().__init__(nugget=nugget, sill=sill, range_param=range_param)
+     if not (0 < shape <= 2):
+     if not (0 < shape <= 2):
+     self._parameters["shape"] = shape
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """Stable model function"""
- h = np.asarray(h, dtype=np.float64)
- nugget = self._parameters["nugget"]
- sill = self._parameters["sill"]
- range_param = self._parameters["range"]
- shape = self._parameters["shape"]
+ def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     h = np.asarray(h, dtype=np.float64)
+     nugget = self._parameters["nugget"]
+     sill = self._parameters["sill"]
+     range_param = self._parameters["range"]
+     shape = self._parameters["shape"]
 
  h_norm = h / range_param
  result = nugget + (sill - nugget) * (1.0 - np.exp(-(h_norm ** shape)))

@@ -21,10 +21,10 @@ from geostats.algorithms.simple_kriging import SimpleKriging
 from geostats.models.variogram_models import SphericalModel, ExponentialModel
 
 class TestLeaveOneOut:
-    """Test leave-one-out cross-validation"""
+class TestLeaveOneOut:
 
     def test_leave_one_out_basic(self):
-        """Test basic LOO CV"""
+    def test_leave_one_out_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
         y = np.random.uniform(0, 10, 30)
@@ -42,7 +42,7 @@ class TestLeaveOneOut:
         assert 'r2' in metrics
 
     def test_leave_one_out_metrics(self):
-        """Test LOO CV with metrics calculation"""
+    def test_leave_one_out_metrics(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 25)
         y = np.random.uniform(0, 10, 25)
@@ -65,7 +65,7 @@ class TestLeaveOneOut:
         assert metrics['mse'] >= 0
 
     def test_leave_one_out_simple_kriging(self):
-        """Test LOO CV with Simple Kriging"""
+    def test_leave_one_out_simple_kriging(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
         y = np.random.uniform(0, 10, 20)
@@ -83,10 +83,10 @@ class TestLeaveOneOut:
         assert 'mse' in metrics
 
 class TestKFoldCrossValidation:
-    """Test k-fold cross-validation"""
+class TestKFoldCrossValidation:
 
     def test_k_fold_basic(self):
-        """Test basic k-fold CV"""
+    def test_k_fold_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
         y = np.random.uniform(0, 10, 40)
@@ -102,7 +102,7 @@ class TestKFoldCrossValidation:
         assert 'metrics' in results
 
     def test_k_fold_different_folds(self):
-        """Test k-fold with different number of folds"""
+    def test_k_fold_different_folds(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -111,14 +111,13 @@ class TestKFoldCrossValidation:
         variogram = ExponentialModel(sill=1.0, range_param=5.0)
 
         for n_folds in [3, 5, 10]:
-        for n_folds in [3, 5, 10]:
 
-        predictions = results['predictions']
+            predictions = results['predictions']
         assert predictions.shape == z.shape
         assert 'metrics' in results
 
     def test_k_fold_metrics(self):
-        """Test k-fold CV metrics"""
+    def test_k_fold_metrics(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 35)
         y = np.random.uniform(0, 10, 35)
@@ -137,10 +136,10 @@ class TestKFoldCrossValidation:
         assert results['metrics']['mse'] >= 0
 
 class TestSpatialCrossValidation:
-    """Test spatial cross-validation"""
+class TestSpatialCrossValidation:
 
     def test_spatial_cv_basic(self):
-        """Test basic spatial CV"""
+    def test_spatial_cv_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
         y = np.random.uniform(0, 10, 40)
@@ -159,7 +158,7 @@ class TestSpatialCrossValidation:
         assert 'metrics' in results
 
     def test_spatial_cv_different_blocks(self):
-        """Test spatial CV with different number of blocks"""
+    def test_spatial_cv_different_blocks(self):
         np.random.seed(42)
         x = np.random.uniform(0, 20, 60)
         y = np.random.uniform(0, 20, 60)
@@ -168,8 +167,7 @@ class TestSpatialCrossValidation:
         variogram = ExponentialModel(sill=1.0, range_param=5.0)
 
         for n_blocks in [2, 4]:
-            results = k_fold_cross_validation(
-                x, y, z, OrdinaryKriging, variogram,
+        for n_blocks in [2, 4]:
                 n_blocks=n_blocks
             )
 
@@ -178,7 +176,7 @@ class TestSpatialCrossValidation:
         assert 'metrics' in results
 
     def test_spatial_cv_respects_spatial_structure(self):
-        """Test that spatial CV respects spatial blocks"""
+    def test_spatial_cv_respects_spatial_structure(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -196,10 +194,10 @@ class TestSpatialCrossValidation:
         assert 'metrics' in results
 
 class TestCrossValidationComparison:
-    """Compare different CV methods"""
+class TestCrossValidationComparison:
 
     def test_compare_cv_methods(self):
-        """Compare LOO, k-fold, and spatial CV"""
+    def test_compare_cv_methods(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
         y = np.random.uniform(0, 10, 40)
@@ -232,10 +230,10 @@ class TestCrossValidationComparison:
         assert 0.1 < mse_loo / mse_spatial < 10
 
 class TestMetrics:
-    """Test validation metrics"""
+class TestMetrics:
 
     def test_all_metrics(self):
-        """Test all available metrics"""
+    def test_all_metrics(self):
         np.random.seed(42)
         y_true = np.random.uniform(0, 10, 50)
         y_pred = y_true + np.random.normal(0, 0.5, 50)
@@ -252,7 +250,7 @@ class TestMetrics:
         assert 0 <= r2 <= 1
 
     def test_perfect_prediction(self):
-        """Test metrics with perfect prediction"""
+    def test_perfect_prediction(self):
         y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         y_pred = y_true.copy()
 
@@ -262,7 +260,7 @@ class TestMetrics:
         assert root_mean_squared_error(y_true, y_pred) == 0
 
     def test_worst_prediction(self):
-        """Test metrics with constant prediction"""
+    def test_worst_prediction(self):
         y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         y_pred = np.array([3.0, 3.0, 3.0, 3.0, 3.0]) # Mean
 

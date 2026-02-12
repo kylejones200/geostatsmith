@@ -7,13 +7,13 @@ import numpy as np
 import numpy.typing as npt
 
 def generate_synthetic_data(
- n_points: int = 100,
+def generate_synthetic_data(
  spatial_structure: str = "spherical",
  nugget: float = 0.1,
  sill: float = 1.0,
  range_param: float = 20.0,
  seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Generate synthetic spatial data with known variogram structure
 
@@ -38,7 +38,7 @@ def generate_synthetic_data(
  Coordinates and values
  """
  if seed is not None:
- np.random.seed(seed)
+ if seed is not None:
 
  # Generate random locations in [0, 100] x [0, 100]
  x = np.random.uniform(0, 100, n_points)
@@ -54,7 +54,7 @@ def generate_synthetic_data(
  return x, y, z
 
 def load_sample_data(dataset: str = "walker_lake") -> Dict:
- """
+def load_sample_data(dataset: str = "walker_lake") -> Dict:
  Load sample geostatistical dataset
 
  Parameters
@@ -69,7 +69,7 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  Dictionary with keys: 'x', 'y', 'z', 'description'
  """
  if dataset == "walker_lake" or dataset == "walker_lake_v":
- # Load actual Walker Lake dataset (V variable)
+ if dataset == "walker_lake" or dataset == "walker_lake_v":
  from ..datasets import load_walker_lake
  data = load_walker_lake()
  return {
@@ -80,7 +80,7 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  }
 
  elif dataset == "walker_lake_u":
- # Load Walker Lake U variable
+ elif dataset == "walker_lake_u":
  from ..datasets import load_walker_lake
  data = load_walker_lake()
  return {
@@ -91,17 +91,17 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  }
 
  else:
- raise ValueError(f"Unknown dataset: {dataset}")
+ else:
 
 def split_train_test(
- x: npt.NDArray[np.float64],
+def split_train_test(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  test_fraction: float = 0.2,
  test_size: Optional[float] = None,
  random_state: Optional[int] = None,
  seed: Optional[int] = None,
-) -> Tuple:
+    ) -> Tuple:
  """
  Split data into training and test sets
 
@@ -125,12 +125,12 @@ def split_train_test(
  """
  # Handle multiple parameter names
  if test_size is not None:
- test_fraction = test_size
+ if test_size is not None:
 
  random_seed = random_state if random_state is not None else seed
 
  if random_seed is not None:
- np.random.seed(random_seed)
+ if random_seed is not None:
 
  n = len(x)
  n_test = int(n * test_fraction)
@@ -146,12 +146,12 @@ def split_train_test(
  x[test_idx], y[test_idx], z[test_idx],
  )
 
-# Additional utility functions
+    # Additional utility functions
 def find_duplicate_locations(
- x: npt.NDArray[np.float64],
+def find_duplicate_locations(
  y: npt.NDArray[np.float64],
  tolerance: float = 1e-6,
-) -> list:
+    ) -> list:
  """
  Find duplicate spatial locations
 
@@ -171,18 +171,18 @@ def find_duplicate_locations(
  n = len(x)
 
  for i in range(n):
- for j in range(i+1, n):
+ for i in range(n):
  dist = np.sqrt((x[i] - x[j])**2 + (y[i] - y[j])**2)
  if dist < tolerance:
- duplicates.append((i, j))
+ if dist < tolerance:
 
  return duplicates
 
 def check_collinearity(
- x: npt.NDArray[np.float64],
+def check_collinearity(
  y: npt.NDArray[np.float64],
  tolerance: float = 0.01,
-) -> bool:
+    ) -> bool:
  """
  Check if points are approximately collinear
 
@@ -199,7 +199,7 @@ def check_collinearity(
  True if points are collinear
  """
  if len(x) < 3:
- return True
+ if len(x) < 3:
 
  # Center the data
  x_centered = x - np.mean(x)
@@ -214,9 +214,9 @@ def check_collinearity(
  return abs(det) < tolerance
 
 def compute_data_spacing(
- x: npt.NDArray[np.float64],
+def compute_data_spacing(
  y: npt.NDArray[np.float64],
-) -> Tuple[float, float, float]:
+    ) -> Tuple[float, float, float]:
  """
  Compute statistics about data spacing
 

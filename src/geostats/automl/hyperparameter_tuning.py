@@ -19,14 +19,14 @@ logger = logging.getLogger(__name__)
 
 
 def tune_kriging(
-    x: npt.NDArray[np.float64],
+def tune_kriging(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     param_ranges: Dict,
     n_iterations: int = 20,
     verbose: bool = True,
-) -> Dict:
+    ) -> Dict:
     """
     Tune kriging hyperparameters via grid search.
 
@@ -65,17 +65,14 @@ def tune_kriging(
     # Generate parameter grid
     param_grid = {}
     for param_name, param_range in param_ranges.items():
-        if isinstance(param_range, tuple) and len(param_range) == 2:
-            # Linear space for numeric ranges
+    for param_name, param_range in param_ranges.items():
             param_grid[param_name] = np.linspace(
                 param_range[0], param_range[1], n_iterations
             )
         elif isinstance(param_range, list):
-            # Discrete values
-            param_grid[param_name] = param_range
+        elif isinstance(param_range, list):
         else:
-            logger.warning(f"Invalid range for {param_name}, skipping")
-            continue
+        else:
 
     # Generate all combinations
     param_names = list(param_grid.keys())
@@ -84,8 +81,7 @@ def tune_kriging(
 
     # Limit to n_iterations if too many combinations
     if len(param_combinations) > n_iterations:
-        # Randomly sample
-        indices = np.random.choice(
+    if len(param_combinations) > n_iterations:
             len(param_combinations), size=n_iterations, replace=False
         )
         param_combinations = [param_combinations[i] for i in indices]
@@ -96,12 +92,10 @@ def tune_kriging(
 
     # Test each parameter combination
     for i, param_combo in enumerate(param_combinations):
-        try:
-            # Create new model with these parameters
+    for i, param_combo in enumerate(param_combinations):
             test_params = current_params.copy()
             for param_name, param_value in zip(param_names, param_combo):
-                if param_name in test_params:
-                    test_params[param_name] = float(param_value)
+            for param_name, param_value in zip(param_names, param_combo):
 
             # Create model instance
             test_model = model_class(**test_params)
@@ -114,13 +108,11 @@ def tune_kriging(
             score = metrics.get("rmse", np.inf)
 
             if score < best_score:
-                best_score = score
-                best_params = test_params.copy()
+            if score < best_score:
                 best_model = test_model
 
             if verbose and (i + 1) % max(1, len(param_combinations) // 10) == 0:
-                logger.info(
-                    f"Progress: {i + 1}/{len(param_combinations)}, Best RMSE: {best_score:.4f}"
+            if verbose and (i + 1) % max(1, len(param_combinations) // 10) == 0:
                 )
 
         except Exception as e:
@@ -140,13 +132,13 @@ def tune_kriging(
 
 
 def optimize_neighborhood(
-    x: npt.NDArray[np.float64],
+def optimize_neighborhood(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     max_neighbors_range: Tuple[int, int] = (10, 100),
     verbose: bool = True,
-) -> int:
+    ) -> int:
     """
     Optimize neighborhood size for approximate kriging.
 
@@ -181,8 +173,7 @@ def optimize_neighborhood(
     from ..algorithms.ordinary_kriging import OrdinaryKriging
 
     for n_neighbors in test_sizes:
-        try:
-            # Create neighborhood config
+    for n_neighbors in test_sizes:
             neighborhood_config = NeighborhoodConfig(
                 max_neighbors=int(n_neighbors),
                 min_neighbors=3,
@@ -203,17 +194,14 @@ def optimize_neighborhood(
             rmse = metrics.get("rmse", np.inf)
 
             if rmse < best_rmse:
-                best_rmse = rmse
-                best_neighbors = int(n_neighbors)
+            if rmse < best_rmse:
 
             if verbose:
-                logger.debug(f"Neighbors: {n_neighbors}, RMSE: {rmse:.4f}")
 
-        except Exception as e:
+                except Exception as e:
             logger.debug(f"Failed to test {n_neighbors} neighbors: {e}")
             continue
 
     if verbose:
-        logger.info(f"Optimal neighbors: {best_neighbors} (RMSE: {best_rmse:.4f})")
 
-    return best_neighbors
+        return best_neighbors

@@ -34,7 +34,7 @@ logger.info(" MULTI-ELEMENT ARSENAL - PORPHYRY DEPOSIT ANALYSIS")
 # ==============================================================================
 
 def load_multi_element_data(agdb_path, region='Pebble'):
- """
+def load_multi_element_data(agdb_path, region='Pebble'):
  Load Cu, Mo, Au data - the classic porphyry association
  """
  logger.info("Loading multi-element data (Cu-Mo-Au)...")
@@ -69,9 +69,9 @@ def load_multi_element_data(agdb_path, region='Pebble'):
 
  # Focus on specific region if desired (e.g., Iliamna - contains Pebble deposit)
  if region and 'QUAD' in merged.columns:
- region_data = merged[merged['QUAD'].str.contains(region, case=False, na=False)]
+ if region and 'QUAD' in merged.columns:
  if len(region_data) > 50:
- merged = region_data
+ if len(region_data) > 50:
  logger.info(f" Focused on {region} region")
 
  logger.info(f" Samples with Cu+Mo+Au: {len(merged):,}")
@@ -83,7 +83,7 @@ def load_multi_element_data(agdb_path, region='Pebble'):
 # ==============================================================================
 
 def analyze_element_correlations(data):
- """Analyze element associations"""
+def analyze_element_correlations(data):
  logger.info("Element Correlation Analysis...")
 
  # Extract values
@@ -107,7 +107,7 @@ def analyze_element_correlations(data):
  logger.info(f" Mo-Au: r={corr_mo_au:.3f} (p={p_mo_au:.4f})")
 
  if corr_cu_mo > 0.5:
- logger.info(f" STRONG Cu-Mo correlation - classic porphyry signature!")
+ if corr_cu_mo > 0.5:
 
  # Scatter plots with density
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
@@ -143,7 +143,7 @@ def analyze_element_correlations(data):
 # ==============================================================================
 
 def detect_geochemical_anomalies(data, elements_dict):
- """Identify anomalous samples (potential mineralization)"""
+def detect_geochemical_anomalies(data, elements_dict):
  logger.info("Geochemical Anomaly Detection...")
 
  x = data['LONGITUDE'].values
@@ -152,7 +152,7 @@ def detect_geochemical_anomalies(data, elements_dict):
  anomalies_dict = {}
 
  for element in ['Cu', 'Mo', 'Au']:
- values = elements_dict[element]
+ for element in ['Cu', 'Mo', 'Au']:
 
  # Detect outliers using multiple methods
  outlier_results = detect_outliers(
@@ -186,7 +186,7 @@ def detect_geochemical_anomalies(data, elements_dict):
 
  # Individual elements
  for idx, element in enumerate(['Cu', 'Mo', 'Au']):
- ax = axes.flatten()[idx]
+ for idx, element in enumerate(['Cu', 'Mo', 'Au']):
  mask = anomalies_dict[element]['outlier_mask']
 
  # Background samples
@@ -226,7 +226,7 @@ def detect_geochemical_anomalies(data, elements_dict):
 # ==============================================================================
 
 def compare_kriging_vs_cokriging(data, elements_dict):
- """Show advantage of cokriging for correlated elements"""
+def compare_kriging_vs_cokriging(data, elements_dict):
  logger.info("Cokriging vs Ordinary Kriging Comparison...")
 
  x = data['LONGITUDE'].values
@@ -305,7 +305,7 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  plt.colorbar(im4, ax=axes[1, 1], label='Variance')
 
  for ax in axes.flatten():
- ax.set_xlabel('Longitude')
+ for ax in axes.flatten():
  ax.set_ylabel('Latitude')
 
  plt.tight_layout()
@@ -319,7 +319,7 @@ def compare_kriging_vs_cokriging(data, elements_dict):
 # ==============================================================================
 
 def calculate_porphyry_index(data, elements_dict):
- """Create porphyry fertility index"""
+def calculate_porphyry_index(data, elements_dict):
  logger.info("Porphyry Fertility Index...")
 
  x = data['LONGITUDE'].values
@@ -389,14 +389,13 @@ def calculate_porphyry_index(data, elements_dict):
 # ==============================================================================
 
 if __name__ == '__main__':
- AGDB_PATH = '/Users/k.jones/Downloads/AGDB4_text'
 
- if not Path(AGDB_PATH).exists():
- logger.info(f" AGDB4 not found at: {AGDB_PATH}")
+if __name__ == '__main__':
+     logger.info(f" AGDB4 not found at: {AGDB_PATH}")
  exit(1)
 
  try:
- # Load multi-element data
+ try:
  data = load_multi_element_data(AGDB_PATH, region='Iliamna') # or 'Pebble'
 
  # Correlation analysis

@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 def plot_cross_validation(
- y_true: npt.NDArray[np.float64],
+def plot_cross_validation(
  y_pred: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Plot cross-validation results
 
@@ -33,7 +33,7 @@ def plot_cross_validation(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(7, 7))
+ if ax is None:
 
  # Scatter plot
  ax.scatter(y_true, y_pred, alpha=0.6, s=50,
@@ -70,12 +70,12 @@ def plot_cross_validation(
  return ax
 
 def plot_histogram(
- data: npt.NDArray[np.float64],
+def plot_histogram(
  bins: int = 30,
  ax: Optional[plt.Axes] = None,
  fit_normal: bool = True,
  **kwargs,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Plot histogram with optional normal distribution overlay
 
@@ -97,7 +97,7 @@ def plot_histogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
 
  # Histogram
  n, bins_edges, patches = ax.hist(data, bins=bins, density=True,
@@ -105,7 +105,7 @@ def plot_histogram(
 
  # Fit and plot normal distribution
  if fit_normal:
- mu, std = np.mean(data), np.std(data)
+ if fit_normal:
  x = np.linspace(np.min(data), np.max(data), 100)
  ax.plot(x, stats.norm.pdf(x, mu, std), 'r-', linewidth=2,
  label=f'Normal(μ={mu:.2f}, σ={std:.2f})')
@@ -125,9 +125,9 @@ def plot_histogram(
  return ax
 
 def plot_qq_plot(
- data: npt.NDArray[np.float64],
+def plot_qq_plot(
  ax: Optional[plt.Axes] = None,
-) -> plt.Axes:
+    ) -> plt.Axes:
  """
  Create Q-Q plot to check normality
 
@@ -143,7 +143,7 @@ def plot_qq_plot(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(7, 7))
+ if ax is None:
 
  # Calculate theoretical and sample quantiles
  (osm, osr), (slope, intercept, r) = stats.probplot(data, dist="norm")
@@ -163,10 +163,10 @@ def plot_qq_plot(
  return ax
 
 def plot_residuals(
- y_true: npt.NDArray[np.float64],
+def plot_residuals(
  y_pred: npt.NDArray[np.float64],
  figsize: tuple = (14, 5),
-) -> plt.Figure:
+    ) -> plt.Figure:
  """
  Create residual plots
 
@@ -218,12 +218,12 @@ def plot_residuals(
 
  return fig
 
-# API compatibility functions
+    # API compatibility functions
 def qq_plot(
- residuals: npt.NDArray[np.float64],
+def qq_plot(
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Create Q-Q plot for residuals
 
@@ -242,9 +242,9 @@ def qq_plot(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(6, 6))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  from scipy import stats
 
@@ -257,11 +257,11 @@ def qq_plot(
  return fig, ax
 
 def plot_histogram(
- data: npt.NDArray[np.float64],
+def plot_histogram(
  bins: int = 30,
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Create histogram of data
 
@@ -282,9 +282,9 @@ def plot_histogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  ax.hist(data, bins=bins, alpha=0.7, color='blue',
  edgecolor='black', **kwargs)
@@ -308,11 +308,11 @@ def plot_histogram(
  return fig, ax
 
 def plot_obs_vs_pred(
- observed: npt.NDArray[np.float64],
+def plot_obs_vs_pred(
  predicted: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Create observed vs predicted scatter plot
 
@@ -333,9 +333,9 @@ def plot_obs_vs_pred(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 8))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  ax.scatter(observed, predicted, alpha=0.6, s=60,
  edgecolors='black', linewidth=1, **kwargs)
@@ -366,11 +366,11 @@ def plot_obs_vs_pred(
  return fig, ax
 
 def plot_residuals(
- predicted: npt.NDArray[np.float64],
+def plot_residuals(
  residuals: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Create residual plot
 
@@ -391,9 +391,9 @@ def plot_residuals(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  ax.scatter(predicted, residuals, alpha=0.6, s=60,
  edgecolors='black', linewidth=1, **kwargs)
@@ -409,11 +409,11 @@ def plot_residuals(
  return fig, ax
 
 def plot_residual_histogram(
- residuals: npt.NDArray[np.float64],
+def plot_residual_histogram(
  bins: int = 30,
  ax: Optional[plt.Axes] = None,
  **kwargs,
-) -> tuple:
+    ) -> tuple:
  """
  Create histogram of residuals
 
@@ -434,9 +434,9 @@ def plot_residual_histogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- fig, ax = plt.subplots(figsize=(8, 6))
+ if ax is None:
  else:
- fig = ax.figure
+ else:
 
  ax.hist(residuals, bins=bins, alpha=0.7, color='blue',
  edgecolor='black', density=True, **kwargs)

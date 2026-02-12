@@ -19,10 +19,10 @@ from geostats.models.variogram_models import SphericalModel
 
 
 class TestBootstrapUncertainty:
-    """Tests for bootstrap uncertainty estimation"""
+class TestBootstrapUncertainty:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
         self.x = np.random.uniform(0, 100, self.n_samples)
@@ -41,7 +41,7 @@ class TestBootstrapUncertainty:
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
     def test_bootstrap_uncertainty_basic(self):
-        """Test basic bootstrap uncertainty"""
+    def test_bootstrap_uncertainty_basic(self):
         results = bootstrap_uncertainty(
             self.x,
             self.y,
@@ -71,7 +71,7 @@ class TestBootstrapUncertainty:
         assert np.all(results["std"] >= 0)
 
     def test_bootstrap_uncertainty_residual_method(self):
-        """Test bootstrap with residual method"""
+    def test_bootstrap_uncertainty_residual_method(self):
         results = bootstrap_uncertainty(
             self.x,
             self.y,
@@ -87,7 +87,7 @@ class TestBootstrapUncertainty:
         assert np.all(np.isfinite(results["mean"]))
 
     def test_bootstrap_uncertainty_pairs_method(self):
-        """Test bootstrap with pairs method"""
+    def test_bootstrap_uncertainty_pairs_method(self):
         results = bootstrap_uncertainty(
             self.x,
             self.y,
@@ -103,7 +103,7 @@ class TestBootstrapUncertainty:
         assert np.all(np.isfinite(results["mean"]))
 
     def test_bootstrap_uncertainty_different_confidence(self):
-        """Test bootstrap with different confidence levels"""
+    def test_bootstrap_uncertainty_different_confidence(self):
         results_90 = bootstrap_uncertainty(
             self.x,
             self.y,
@@ -132,10 +132,9 @@ class TestBootstrapUncertainty:
         assert np.all(width_95 >= width_90)
 
     def test_bootstrap_uncertainty_invalid_method(self):
-        """Test that invalid method raises error"""
+    def test_bootstrap_uncertainty_invalid_method(self):
         with pytest.raises(ValueError, match="Unknown method"):
-             with pytest.raises(ValueError, match="Unknown method"):
-                self.y,
+        with pytest.raises(ValueError, match="Unknown method"):
                 self.z,
                 self.x_pred,
                 self.y_pred,
@@ -145,10 +144,10 @@ class TestBootstrapUncertainty:
 
 
 class TestConfidenceIntervals:
-    """Tests for confidence intervals"""
+class TestConfidenceIntervals:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
         self.x = np.random.uniform(0, 100, self.n_samples)
@@ -167,7 +166,7 @@ class TestConfidenceIntervals:
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
     def test_confidence_intervals_basic(self):
-        """Test basic confidence intervals"""
+    def test_confidence_intervals_basic(self):
         results = confidence_intervals(
             self.x,
             self.y,
@@ -196,7 +195,7 @@ class TestConfidenceIntervals:
         assert np.all(results["std_errors"] >= 0)
 
     def test_confidence_intervals_different_levels(self):
-        """Test confidence intervals with different levels"""
+    def test_confidence_intervals_different_levels(self):
         results_90 = confidence_intervals(
             self.x,
             self.y,
@@ -223,7 +222,7 @@ class TestConfidenceIntervals:
         assert np.all(width_95 >= width_90)
 
     def test_confidence_intervals_properties(self):
-        """Test that confidence intervals have expected properties"""
+    def test_confidence_intervals_properties(self):
         results = confidence_intervals(
             self.x, self.y, self.z, self.x_pred, self.y_pred, variogram_model=self.model
         )
@@ -239,10 +238,10 @@ class TestConfidenceIntervals:
 
 
 class TestProbabilityMaps:
-    """Tests for probability maps"""
+class TestProbabilityMaps:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n_samples = 40
         self.x = np.random.uniform(0, 100, self.n_samples)
@@ -259,7 +258,7 @@ class TestProbabilityMaps:
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
     def test_probability_map_basic(self):
-        """Test basic probability map"""
+    def test_probability_map_basic(self):
         threshold = 60.0
         prob = probability_map(
             self.x,
@@ -279,7 +278,7 @@ class TestProbabilityMaps:
         assert np.all(np.isfinite(prob))
 
     def test_probability_map_different_operators(self):
-        """Test probability map with different operators"""
+    def test_probability_map_different_operators(self):
         threshold = 60.0
 
         prob_gt = probability_map(
@@ -311,7 +310,7 @@ class TestProbabilityMaps:
         assert np.all(prob_gt + prob_lt <= 1.1)  # Allow some tolerance
 
     def test_probability_map_different_thresholds(self):
-        """Test probability map with different thresholds"""
+    def test_probability_map_different_thresholds(self):
         prob_low = probability_map(
             self.x,
             self.y,
@@ -338,10 +337,9 @@ class TestProbabilityMaps:
         assert np.mean(prob_low) >= np.mean(prob_high)
 
     def test_probability_map_invalid_operator(self):
-        """Test that invalid operator raises error"""
+    def test_probability_map_invalid_operator(self):
         with pytest.raises(ValueError, match="Unknown operator"):
-             with pytest.raises(ValueError, match="Unknown operator"):
-                self.y,
+        with pytest.raises(ValueError, match="Unknown operator"):
                 self.z,
                 self.x_pred,
                 self.y_pred,

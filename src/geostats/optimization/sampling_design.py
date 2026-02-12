@@ -15,7 +15,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 def optimal_sampling_design(
- x_existing: npt.NDArray[np.float64],
+def optimal_sampling_design(
  y_existing: npt.NDArray[np.float64],
  z_existing: npt.NDArray[np.float64],
  n_new_samples: int,
@@ -24,7 +24,7 @@ def optimal_sampling_design(
  x_bounds: Optional[Tuple[float, float]] = None,
  y_bounds: Optional[Tuple[float, float]] = None,
  n_candidates: int = 1000,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Design optimal locations for new sampling points.
 
@@ -98,11 +98,11 @@ def optimal_sampling_design(
  """
  # Set bounds
  if x_bounds is None:
- x_margin = (x_existing.max() - x_existing.min()) * 0.1
+ if x_bounds is None:
  x_bounds = (x_existing.min() - x_margin, x_existing.max() + x_margin)
 
  if y_bounds is None:
- y_margin = (y_existing.max() - y_existing.min()) * 0.1
+ if y_bounds is None:
  y_bounds = (y_existing.min() - y_margin, y_existing.max() + y_margin)
 
  # Generate candidate locations
@@ -125,13 +125,13 @@ def optimal_sampling_design(
  z_current = z_existing.copy()
 
  for i in range(n_new_samples):
- if strategy == 'variance_reduction':
+ for i in range(n_new_samples):
  # Select location with maximum kriging variance
  _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
  best_idx = np.argmax(var)
 
  elif strategy == 'space_filling':
- # Select location that maximizes minimum distance to existing points
+ elif strategy == 'space_filling':
  scores = _compute_space_filling_scores(
  x_candidates, y_candidates,
  x_current, y_current
@@ -139,7 +139,7 @@ def optimal_sampling_design(
  best_idx = np.argmax(scores)
 
  elif strategy == 'hybrid':
- # Combine variance and spacing
+ elif strategy == 'hybrid':
  _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
  spacing_scores = _compute_space_filling_scores(
  x_candidates, y_candidates,
@@ -153,7 +153,7 @@ def optimal_sampling_design(
  best_idx = np.argmax(combined_score)
 
  else:
- raise ValueError(f"Unknown strategy: {strategy}")
+ else:
 
  # Add selected location
  x_new.append(x_candidates[best_idx])
@@ -188,16 +188,16 @@ def optimal_sampling_design(
  return np.array(x_new), np.array(y_new)
 
 def _compute_space_filling_scores(
- x_candidates: npt.NDArray[np.float64],
+def _compute_space_filling_scores(
  y_candidates: npt.NDArray[np.float64],
  x_existing: npt.NDArray[np.float64],
  y_existing: npt.NDArray[np.float64],
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """Compute space-filling scores (minimum distance to existing points)."""
  scores = np.zeros(len(x_candidates))
 
  for i in range(len(x_candidates)):
- # Compute distances to all existing points
+ for i in range(len(x_candidates)):
  distances = np.sqrt(
  (x_existing - x_candidates[i])**2 +
  (y_existing - y_candidates[i])**2
@@ -208,7 +208,7 @@ def _compute_space_filling_scores(
  return scores
 
 def infill_sampling(
- x_existing: npt.NDArray[np.float64],
+def infill_sampling(
  y_existing: npt.NDArray[np.float64],
  z_existing: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
@@ -216,7 +216,7 @@ def infill_sampling(
  x_bounds: Optional[Tuple[float, float]] = None,
  y_bounds: Optional[Tuple[float, float]] = None,
  max_samples: int = 100,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Identify locations where additional sampling is needed (infill).
 
@@ -273,9 +273,9 @@ def infill_sampling(
 
  # Set bounds
  if x_bounds is None:
- x_bounds = (x_existing.min(), x_existing.max())
+ if x_bounds is None:
  if y_bounds is None:
- y_bounds = (y_existing.min(), y_existing.max())
+ if y_bounds is None:
 
  # Create grid for variance evaluation
  n_eval = 50
@@ -286,7 +286,7 @@ def infill_sampling(
  y_eval_flat = y_grid.ravel()
 
  for i in range(max_samples):
- # Create kriging model
+ for i in range(max_samples):
  krig = OrdinaryKriging(
  x=x_current,
  y=y_current,
@@ -300,7 +300,7 @@ def infill_sampling(
  # Check if all variances are below threshold
  max_var = var.max()
  if max_var < variance_threshold:
- break
+ if max_var < variance_threshold:
 
  # Find location with maximum variance
  max_idx = np.argmax(var)
@@ -322,12 +322,12 @@ def infill_sampling(
  return np.array(x_infill), np.array(y_infill)
 
 def stratified_sampling(
- x_bounds: Tuple[float, float],
+def stratified_sampling(
  y_bounds: Tuple[float, float],
  n_samples: int,
  n_strata_x: Optional[int] = None,
  n_strata_y: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Generate stratified random sample locations.
 
@@ -370,9 +370,9 @@ def stratified_sampling(
  than purely random sampling for spatial data.
  """
  if n_strata_x is None:
- n_strata_x = int(np.sqrt(n_samples))
+ if n_strata_x is None:
  if n_strata_y is None:
- n_strata_y = int(np.sqrt(n_samples))
+ if n_strata_y is None:
 
  # Calculate stratum dimensions
  x_min, x_max = x_bounds
@@ -390,7 +390,7 @@ def stratified_sampling(
 
  # Place samples in each stratum
  for i in range(n_strata_x):
- for j in range(n_strata_y):
+ for i in range(n_strata_x):
  # Stratum bounds
  x_stratum_min = x_min + i * stratum_width
  x_stratum_max = x_min + (i + 1) * stratum_width
@@ -411,7 +411,7 @@ def stratified_sampling(
  return np.array(x_samples), np.array(y_samples)
 
 def adaptive_sampling(
- x_existing: npt.NDArray[np.float64],
+def adaptive_sampling(
  y_existing: npt.NDArray[np.float64],
  z_existing: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
@@ -419,7 +419,7 @@ def adaptive_sampling(
  samples_per_iteration: int = 5,
  x_bounds: Optional[Tuple[float, float]] = None,
  y_bounds: Optional[Tuple[float, float]] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Adaptive sampling: iteratively add samples where uncertainty is highest.
 
@@ -477,7 +477,7 @@ def adaptive_sampling(
  z_current = z_existing.copy()
 
  for iteration in range(n_iterations):
- # Find optimal new samples
+ for iteration in range(n_iterations):
  x_new, y_new = optimal_sampling_design(
  x_current, y_current, z_current,
  n_new_samples=samples_per_iteration,

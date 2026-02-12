@@ -46,7 +46,7 @@ logger = logging.getLogger(__name__)
 # ==============================================================================
 
 def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
- """
+def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
  Load Alaska Geochemical Database and prepare for analysis.
 
  Parameters:
@@ -109,30 +109,30 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
  # Filter for sample type if specified
  if sample_type:
- if 'PRIMARY_CLASS' in merged.columns:
+ if sample_type:
  merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
 
  # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
  element_col = f"{element}_ppm"
  if element_col not in chem_data.columns:
- element_col = f"{element}_pct" # Try percent for major elements
+ if element_col not in chem_data.columns:
 
  # Filter for parameter = element and valid values
  if 'PARAMETER' in chem_data.columns:
- element_mask = chem_data['PARAMETER'] == element
+ if 'PARAMETER' in chem_data.columns:
  merged = merged[element_mask]
 
  # Get the value column (usually 'VALUE' in chem files)
  if 'VALUE' in merged.columns:
- value_col = 'VALUE'
+ if 'VALUE' in merged.columns:
  elif element_col in merged.columns:
- value_col = element_col
+ elif element_col in merged.columns:
  else:
- logger.warning(f" Warning: Could not find value column for {element}")
+ else:
  value_col = None
 
  if value_col:
- # Remove non-detects (negative values in AGDB represent non-detects)
+ if value_col:
  merged = merged[merged[value_col] > 0]
  merged = merged.dropna(subset=[value_col])
 
@@ -143,9 +143,9 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
  y = merged['LATITUDE'].values
 
  if value_col:
- values = merged[value_col].values
+ if value_col:
  else:
- values = None
+ else:
 
  # Metadata
  metadata = {
@@ -171,7 +171,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 # ==============================================================================
 
 def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
- """
+def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
  Analyze gold distribution for mineral exploration.
  """
  logger.info("GOLD EXPLORATION ANALYSIS")
@@ -181,12 +181,12 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
 
  # Filter for specific region if desired
  if region_name:
- mask = au_data['metadata']['dataframe']['QUAD'].str.contains(
+ if region_name:
  region_name, case=False, na=False
  )
  indices = np.where(mask)[0]
  if len(indices) > 0:
- au_data['x'] = au_data['x'][indices]
+ if len(indices) > 0:
  au_data['y'] = au_data['y'][indices]
  au_data['values'] = au_data['values'][indices]
  logger.info(f"Focused on {region_name} region: {len(indices)} samples")
@@ -273,7 +273,7 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
 # ==============================================================================
 
 def multi_element_analysis(agdb_path):
- """
+def multi_element_analysis(agdb_path):
  Analyze multiple correlated elements using cokriging.
  Example: Cu-Mo association in porphyry deposits.
  """
@@ -294,7 +294,7 @@ def multi_element_analysis(agdb_path):
  logger.info(f"Common Cu-Mo samples: {len(common)}")
 
  if len(common) < 50:
- logger.info("Not enough common samples for cokriging demo")
+ if len(common) < 50:
  return None
 
  x = common['LONGITUDE'].values
@@ -311,7 +311,7 @@ def multi_element_analysis(agdb_path):
  logger.info(f" Cu-Mo correlation: {correlation:.3f}")
 
  if correlation > 0.3:
- logger.info(" Strong correlation detected - good for cokriging!")
+ if correlation > 0.3:
 
  # Fit individual variograms
  logger.info("\nFitting variograms...")
@@ -338,7 +338,7 @@ def multi_element_analysis(agdb_path):
 # ==============================================================================
 
 def environmental_assessment(agdb_path, element='As', threshold=20):
- """
+def environmental_assessment(agdb_path, element='As', threshold=20):
  Environmental geochemistry: assess contamination risk.
 
  Parameters:
@@ -403,12 +403,11 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
 # ==============================================================================
 
 if __name__ == '__main__':
- # Path to AGDB4_text directory
- # Adjust this to your actual path
+if __name__ == '__main__':
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
  if not AGDB_PATH.exists():
- logger.info("Please download AGDB4 and update the path in this script.")
+ if not AGDB_PATH.exists():
  exit(1)
 
  logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
@@ -416,19 +415,19 @@ if __name__ == '__main__':
 
  # Example 1: Gold Exploration
  try:
- gold_results = gold_exploration_analysis(AGDB_PATH, region_name='Iliamna')
+ try:
  except Exception as e:
  logger.error(f"Gold analysis error: {e}")
 
  # Example 2: Multi-element (Cu-Mo)
  try:
- multi_results = multi_element_analysis(AGDB_PATH)
+ try:
  except Exception as e:
  logger.error(f"Multi-element analysis error: {e}")
 
  # Example 3: Environmental (Arsenic)
  try:
- env_results = environmental_assessment(AGDB_PATH, element='As', threshold=20)
+ try:
  except Exception as e:
  logger.error(f"Environmental analysis error: {e}")
 

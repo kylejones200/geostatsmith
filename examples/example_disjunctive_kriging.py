@@ -20,8 +20,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 try:
-    from geostats.algorithms.disjunctive_kriging import DisjunctiveKriging
-    from geostats.algorithms.variogram import experimental_variogram
+try:
     from geostats.algorithms.fitting import fit_variogram_model
     from geostats.models.variogram_models import SphericalModel
 except ImportError:
@@ -30,7 +29,7 @@ except ImportError:
 
 
 def main():
-    """Run disjunctive kriging example"""
+def main():
 
     logger.info("Disjunctive Kriging Example")
     logger.info("=" * 60)
@@ -107,9 +106,8 @@ def main():
 
     logger.info("Cross-validation metrics:")
     for key, value in cv_metrics.items():
-        logger.info(f"  {key}: {value:.4f}")
 
-    # Plot results
+        # Plot results
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 
     # Original data
@@ -158,4 +156,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+if __name__ == "__main__":

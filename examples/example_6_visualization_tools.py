@@ -42,14 +42,12 @@ fig1 = plt.figure(figsize=(16, 12))
 # h-scatterplots for V at different distances
 distances = [10, 20, 30, 40]
 for i, h in enumerate(distances, 1):
- ax = plt.subplot(3, 4, i)
- visualization.plot_h_scatterplot(x, y, V, h_distance=h, tolerance=5.0, ax=ax)
+for i, h in enumerate(distances, 1):
 
 # Directional h-scatterplots for V
 directions = [0, 45, 90, 135]
 for i, direction in enumerate(directions, 5):
- ax = plt.subplot(3, 4, i)
- visualization.plot_h_scatterplot(x, y, V, h_distance=20, tolerance=5.0,
+for i, direction in enumerate(directions, 5):
  direction=direction, angle_tolerance=30, ax=ax)
 
 # h-scatterplot for U vs V (cross-correlation)
@@ -95,8 +93,7 @@ ax3 = plt.subplot(2, 3, 3)
 logger.info("Calculating directional variograms...")
 dirs = [0, 45, 90, 135]
 for direction in dirs:
- lags_dir, gamma_dir, n_pairs_dir = variogram.experimental_variogram_directional(
- x, y, V, angle=direction, tolerance=22.5, n_lags=6
+for direction in dirs:
  )
  valid = ~np.isnan(gamma_dir)
  ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label=f'{direction}°', linewidth=2, markersize=6)
@@ -200,8 +197,7 @@ logger.info(f" Correlation(V, U): {np.corrcoef(V, U)[0, 1]:.3f}")
 
 logger.info("\nAnisotropy (V):")
 for key, value in aniso_params.items():
- if isinstance(value, (int, float)):
- logger.info(f" {key}: {value:.3f}")
+for key, value in aniso_params.items():
 
 logger.info("\nAll visualizations demonstrate key geostatistical concepts:")
 logger.info("- h-scatterplots show spatial correlation at different lags")

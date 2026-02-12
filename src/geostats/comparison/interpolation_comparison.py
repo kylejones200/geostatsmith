@@ -38,9 +38,9 @@ DEFAULT_N_FOLDS = 5
 MIN_TRAINING_SAMPLES = 10
 
 def interpolation_error_metrics(
- y_true: npt.NDArray[np.float64],
+def interpolation_error_metrics(
  y_pred: npt.NDArray[np.float64],
-) -> Dict[str, float]:
+    ) -> Dict[str, float]:
  """
  Calculate error metrics for interpolation methods.
 
@@ -70,7 +70,7 @@ def interpolation_error_metrics(
  y_pred = y_pred[mask]
 
  if len(y_true) == 0:
- logger.warning("No valid data points for error calculation")
+ if len(y_true) == 0:
  return {
  'mae': np.nan,
  'mse': np.nan,
@@ -91,9 +91,9 @@ def interpolation_error_metrics(
  ss_tot = np.sum((y_true - np.mean(y_true))**2)
 
  if ss_tot < 1e-10:
- r2 = np.nan
+ if ss_tot < 1e-10:
  else:
- r2 = 1.0 - (ss_res / ss_tot)
+ else:
 
  return {
  'mae': mae,
@@ -104,14 +104,14 @@ def interpolation_error_metrics(
  }
 
 def cross_validate_interpolation(
- x: npt.NDArray[np.float64],
+def cross_validate_interpolation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  method: str = 'ordinary_kriging',
  n_folds: int = DEFAULT_N_FOLDS,
  seed: int = 42,
  **method_kwargs,
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Perform k-fold cross-validation for an interpolation method.
 
@@ -148,7 +148,7 @@ def cross_validate_interpolation(
  n = len(x)
 
  if n < MIN_TRAINING_SAMPLES:
- raise ValidationError(
+ if n < MIN_TRAINING_SAMPLES:
  f"Insufficient data for cross-validation: need at least {MIN_TRAINING_SAMPLES} points, got {n}. "
  "Add more sample points or use a simpler validation approach."
  )
@@ -162,11 +162,11 @@ def cross_validate_interpolation(
  fold_metrics = []
 
  for fold in range(n_folds):
- # Split data
+ for fold in range(n_folds):
  if fold == n_folds - 1:
- test_idx = indices[fold * fold_size:]
+ if fold == n_folds - 1:
  else:
- test_idx = indices[fold * fold_size:(fold + 1) * fold_size]
+ else:
 
  train_idx = np.setdiff1d(indices, test_idx)
 
@@ -176,7 +176,7 @@ def cross_validate_interpolation(
 
  # Predict
  try:
- z_pred = _predict_with_method(
+ try:
  x_train, y_train, z_train,
  x_test, y_test,
  method, **method_kwargs
@@ -201,14 +201,14 @@ def cross_validate_interpolation(
  }
 
 def benchmark_interpolation_speed(
- x: npt.NDArray[np.float64],
+def benchmark_interpolation_speed(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  methods: Optional[List[str]] = None,
  n_runs: int = 3,
-) -> Dict[str, Dict[str, float]]:
+    ) -> Dict[str, Dict[str, float]]:
  """
  Benchmark the speed of different interpolation methods.
 
@@ -235,18 +235,18 @@ def benchmark_interpolation_speed(
  - 'max_time': Maximum execution time
  """
  if methods is None:
- methods = ['ordinary_kriging', 'idw', 'rbf', 'natural_neighbor']
+ if methods is None:
 
  results = {}
 
  for method in methods:
- times = []
+ for method in methods:
 
  for _ in range(n_runs):
- start_time = time.time()
+ for _ in range(n_runs):
 
  try:
- _ = _predict_with_method(x, y, z, x_pred, y_pred, method)
+ try:
  elapsed = time.time() - start_time
  times.append(elapsed)
  except Exception as e:
@@ -263,7 +263,7 @@ def benchmark_interpolation_speed(
  return results
 
 def compare_interpolation_methods(
- x: npt.NDArray[np.float64],
+def compare_interpolation_methods(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -272,7 +272,7 @@ def compare_interpolation_methods(
  cross_validate: bool = True,
  benchmark_speed: bool = True,
  plot: bool = True,
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Comparison of interpolation methods.
 
@@ -341,7 +341,7 @@ def compare_interpolation_methods(
  - Natural Neighbor: Locally adaptive, no parameters
  """
  if methods is None:
- methods = ['ordinary_kriging', 'idw', 'rbf', 'natural_neighbor']
+ if methods is None:
 
  results = {
  'predictions': {},
@@ -352,9 +352,9 @@ def compare_interpolation_methods(
  logger.info(f"Comparing {len(methods)} interpolation methods...")
 
  for method in methods:
- logger.info(f" Running {method}...")
+ for method in methods:
  try:
- z_pred = _predict_with_method(x, y, z, x_pred, y_pred, method)
+ try:
  results['predictions'][method] = z_pred
  except Exception as e:
  logger.error(f" {method} failed: {e}")
@@ -362,10 +362,10 @@ def compare_interpolation_methods(
 
  # Cross-validation
  if cross_validate:
- logger.info("Performing cross-validation...")
+ if cross_validate:
  results['cv_results'] = {}
  for method in methods:
- try:
+ for method in methods:
  cv_result = cross_validate_interpolation(x, y, z, method=method)
  results['cv_results'][method] = cv_result
  results['summary'][method] = cv_result['metrics']
@@ -374,31 +374,31 @@ def compare_interpolation_methods(
 
  # Speed benchmark
  if benchmark_speed:
- logger.info("Benchmarking speed...")
+ if benchmark_speed:
  results['speed_results'] = benchmark_interpolation_speed(
  x, y, z, x_pred, y_pred, methods=methods
  )
 
  # Generate comparison plot
  if plot:
- _plot_comparison(results, x, y, z, x_pred, y_pred)
+ if plot:
 
  logger.info("Comparison complete!")
  return results
 
 def _predict_with_method(
- x_train: npt.NDArray[np.float64],
+def _predict_with_method(
  y_train: npt.NDArray[np.float64],
  z_train: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  method: str,
  **kwargs,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """Helper function to predict with a specific method."""
 
  if method == 'ordinary_kriging':
- # Fit variogram
+ if method == 'ordinary_kriging':
  lags, gamma, n_pairs = variogram.experimental_variogram(
  x_train, y_train, z_train, n_lags=10
  )
@@ -409,7 +409,7 @@ def _predict_with_method(
  z_pred = krig.predict(x_pred, y_pred, return_variance=False)
 
  elif method == 'simple_kriging':
- # Fit variogram
+ elif method == 'simple_kriging':
  lags, gamma, n_pairs = variogram.experimental_variogram(
  x_train, y_train, z_train, n_lags=10
  )
@@ -421,39 +421,39 @@ def _predict_with_method(
  z_pred = krig.predict(x_pred, y_pred, return_variance=False)
 
  elif method == 'idw':
- z_pred = inverse_distance_weighting(
+ elif method == 'idw':
  x_train, y_train, z_train, x_pred, y_pred, **kwargs
  )
 
  elif method == 'rbf':
- z_pred = radial_basis_function_interpolation(
+ elif method == 'rbf':
  x_train, y_train, z_train, x_pred, y_pred, **kwargs
  )
 
  elif method == 'natural_neighbor':
- z_pred = natural_neighbor_interpolation(
+ elif method == 'natural_neighbor':
  x_train, y_train, z_train, x_pred, y_pred
  )
 
  else:
- raise ValueError(f"Unknown method: {method}")
+ else:
 
  return z_pred
 
 def _plot_comparison(
- results: Dict[str, Any],
+def _plot_comparison(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
-) -> None:
+    ) -> None:
  """Generate comparison plots."""
  methods = list(results['predictions'].keys())
  n_methods = len(methods)
 
  if n_methods == 0:
- return
+ if n_methods == 0:
 
  # Create figure
  fig = plt.figure(figsize=(15, 4 * ((n_methods + 1) // 2)))
@@ -464,7 +464,7 @@ def _plot_comparison(
  vmin, vmax = np.nanpercentile(all_values, [2, 98])
 
  for idx, method in enumerate(methods):
- ax = fig.add_subplot(gs[idx // 2, idx % 2])
+ for idx, method in enumerate(methods):
 
  # Create scatter plot of predictions
  scatter = ax.scatter(
@@ -484,7 +484,7 @@ def _plot_comparison(
  # Add metrics if available
  title = method.replace('_', ' ').title()
  if 'cv_results' in results and method in results['cv_results']:
- metrics = results['cv_results'][method]['metrics']
+ if 'cv_results' in results and method in results['cv_results']:
  title += f"\nRMSE: {metrics['rmse']:.3f}, R²: {metrics['r2']:.3f}"
 
  ax.set_title(title)

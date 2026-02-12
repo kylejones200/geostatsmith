@@ -204,8 +204,7 @@ gamma_nugget = np.full_like(h_plot, nested_model.nugget)
 plt.plot(h_plot, gamma_nugget, '--', alpha=0.5, label=f'Nugget: {nested_model.nugget:.3f}')
 cumulative = nested_model.nugget
 for i, struct in enumerate(nested_model.structures, 1):
- from geostats.models.variogram_models import spherical_model
- gamma_struct = struct.sill * spherical_model(h_plot / struct.range)
+for i, struct in enumerate(nested_model.structures, 1):
  cumulative_next = cumulative + gamma_struct
  plt.fill_between(h_plot, cumulative, cumulative_next, alpha=0.2,
  label=f'Structure {i}: {struct.model_type}')
@@ -326,11 +325,11 @@ values_3d = 10 + 0.05 * x_3d - 0.1 * z_3d_coord + np.random.normal(0, 2, 30)
 # Note: For 3D variogram, would need to compute distances in 3D
 # Using a simple model for demonstration
 class Simple3DVariogram:
- def __init__(self):
+class Simple3DVariogram:
  self.sill = 10.0
  self.range_val = 30.0
  def __call__(self, h):
- return self.sill * (1 - np.exp(-3 * h / self.range_val))
+ def __call__(self, h):
 
 variogram_3d = Simple3DVariogram()
 ok3d = OrdinaryKriging3D(x_3d, y_3d, z_3d_coord, values_3d, variogram_3d)
@@ -414,8 +413,7 @@ axes[0].set_ylabel('Y')
 
 # Show blocks with predictions
 for i in range(len(x_grid_bk)):
- for j in range(len(y_grid_bk)):
- rect = plt.Rectangle((x_grid_bk[i]-5, y_grid_bk[j]-5), 10, 10,
+for i in range(len(x_grid_bk)):
  fill=True, facecolor=plt.cm.coolwarm((pred_bk[j,i] - pred_bk.min())/(pred_bk.max() - pred_bk.min())),
  edgecolor='black', linewidth=0.5, alpha=0.7)
  axes[1].add_patch(rect)

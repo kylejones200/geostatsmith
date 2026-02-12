@@ -8,7 +8,7 @@ from geostats import kriging, variogram
 
 
 def test_ordinary_kriging_basic():
-    """Test basic Ordinary Kriging functionality"""
+def test_ordinary_kriging_basic():
     # Create simple test data
     np.random.seed(42)
     x = np.array([0, 10, 20, 30, 40])
@@ -31,7 +31,7 @@ def test_ordinary_kriging_basic():
 
 
 def test_simple_kriging_basic():
-    """Test basic Simple Kriging functionality"""
+def test_simple_kriging_basic():
     np.random.seed(42)
     x = np.array([0, 10, 20, 30, 40])
     y = np.array([0, 10, 20, 30, 40])
@@ -56,7 +56,7 @@ def test_simple_kriging_basic():
 
 
 def test_universal_kriging_basic():
-    """Test basic Universal Kriging functionality"""
+def test_universal_kriging_basic():
     np.random.seed(42)
     n = 30
     x = np.random.uniform(0, 100, n)
@@ -83,7 +83,7 @@ def test_universal_kriging_basic():
 
 
 def test_cross_validation():
-    """Test cross-validation"""
+def test_cross_validation():
     np.random.seed(42)
     x = np.array([0, 10, 20, 30, 40, 50])
     y = np.array([0, 10, 20, 30, 40, 50])
@@ -105,7 +105,7 @@ def test_cross_validation():
 
 
 def test_block_kriging():
-    """Test block kriging"""
+def test_block_kriging():
     np.random.seed(42)
     x = np.linspace(0, 100, 20)
     y = np.linspace(0, 100, 20)
@@ -138,4 +138,4 @@ def test_block_kriging():
 
 
 if __name__ == "__main__":
-     if __name__ == "__main__":
+if __name__ == "__main__":

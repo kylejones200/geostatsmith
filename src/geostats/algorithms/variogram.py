@@ -17,13 +17,13 @@ from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance_matrix, directional_distance
 
 def experimental_variogram(
- x: npt.NDArray[np.float64],
+def experimental_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_lags: int = 15,
  maxlag: Optional[float] = None,
  lag_tol: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
  """
  Calculate experimental (empirical) variogram
 
@@ -69,21 +69,21 @@ def experimental_variogram(
 
  # Determine lag bins
  if maxlag is None:
- maxlag = np.max(dist) / 2.0
+ if maxlag is None:
 
  lag_width = maxlag / n_lags
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
  if lag_tol is None:
- lag_tol = lag_width / 2
+ if lag_tol is None:
 
  # Compute variogram for each lag
  gamma = np.zeros(n_lags)
  n_pairs = np.zeros(n_lags, dtype=np.int64)
 
  for i in range(n_lags):
- # Find pairs in this lag bin
+ for i in range(n_lags):
  lag_min = lag_bins[i]
  lag_max = lag_bins[i + 1]
 
@@ -94,24 +94,24 @@ def experimental_variogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- # Matheron's estimator: γ(h) = 1/(2*N(h)) * Σ(z_i - z_j)²
+ if n_pairs_lag > 0:
  gamma[i] = np.sum(z_diff_sq[mask]) / (2.0 * n_pairs_lag)
  n_pairs[i] = n_pairs_lag
  else:
- gamma[i] = np.nan
+ else:
  n_pairs[i] = 0
 
  return lag_centers, gamma, n_pairs
 
 def experimental_variogram_directional(
- x: npt.NDArray[np.float64],
+def experimental_variogram_directional(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  angle: float = 0.0,
  tolerance: float = 22.5,
  n_lags: int = 15,
  maxlag: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
  """
  Calculate directional experimental variogram
 
@@ -155,7 +155,7 @@ def experimental_variogram_directional(
 
  # Determine lag bins
  if maxlag is None:
- maxlag = np.max(dist[dir_mask]) if np.any(dir_mask) else np.max(dist) / 2.0
+ if maxlag is None:
 
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
@@ -165,7 +165,7 @@ def experimental_variogram_directional(
  n_pairs = np.zeros(n_lags, dtype=np.int64)
 
  for i in range(n_lags):
- lag_min = lag_bins[i]
+ for i in range(n_lags):
  lag_max = lag_bins[i + 1]
 
  # Find pairs in this lag bin and direction
@@ -175,20 +175,20 @@ def experimental_variogram_directional(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- gamma[i] = np.sum(z_diff_sq[mask]) / (2.0 * n_pairs_lag)
+ if n_pairs_lag > 0:
  n_pairs[i] = n_pairs_lag
  else:
- gamma[i] = np.nan
+ else:
  n_pairs[i] = 0
 
  return lag_centers, gamma, n_pairs
 
 def variogram_cloud(
- x: npt.NDArray[np.float64],
+def variogram_cloud(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  maxlag: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Calculate variogram cloud (all pairwise points)
 
@@ -226,7 +226,7 @@ def variogram_cloud(
  mask = np.triu(np.ones_like(dist, dtype=bool), k=1)
 
  if maxlag is not None:
- mask = mask & (dist <= maxlag)
+ if maxlag is not None:
 
  distances = dist[mask]
  semivariances = semivar[mask]
@@ -234,13 +234,13 @@ def variogram_cloud(
  return distances, semivariances
 
 def robust_variogram(
- x: npt.NDArray[np.float64],
+def robust_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_lags: int = 15,
  maxlag: Optional[float] = None,
  estimator: str = "cressie",
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
  """
  Calculate robust experimental variogram
 
@@ -283,7 +283,7 @@ def robust_variogram(
 
  # Determine lag bins
  if maxlag is None:
- maxlag = np.max(dist) / 2.0
+ if maxlag is None:
 
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
  lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
@@ -293,7 +293,7 @@ def robust_variogram(
  n_pairs = np.zeros(n_lags, dtype=np.int64)
 
  for i in range(n_lags):
- lag_min = lag_bins[i]
+ for i in range(n_lags):
  lag_max = lag_bins[i + 1]
 
  mask = (dist >= lag_min) & (dist < lag_max)
@@ -302,37 +302,37 @@ def robust_variogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- z_diff = np.abs(z[:, np.newaxis] - z[np.newaxis, :])[mask]
+ if n_pairs_lag > 0:
 
  if estimator == "cressie":
- # Cressie-Hawkins robust estimator
+ if estimator == "cressie":
  # γ(h) = [(1/N(h) * Σ|z_i - z_j|^0.5)^4] / [0.457 + 0.494/N(h)]
  mean_fourth_root = np.mean(z_diff ** 0.5)
  gamma[i] = (mean_fourth_root ** 4) / (0.457 + 0.494 / n_pairs_lag)
 
  elif estimator == "dowd":
- # Dowd's median-based estimator
+ elif estimator == "dowd":
  # γ(h) = 2.198 * median(|z_i - z_j|)²
  median_diff = np.median(z_diff)
  gamma[i] = 2.198 * (median_diff ** 2)
 
  else:
- raise ValueError(f"Unknown estimator: {estimator}")
+ else:
 
  n_pairs[i] = n_pairs_lag
  else:
- gamma[i] = np.nan
+ else:
  n_pairs[i] = 0
 
  return lag_centers, gamma, n_pairs
 
 def madogram(
- x: npt.NDArray[np.float64],
+def madogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_lags: int = 15,
  maxlag: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
  """
  Calculate Madogram (median-based variogram)
 
@@ -392,7 +392,7 @@ def madogram(
 
  # Determine lag bins
  if maxlag is None:
- maxlag = np.max(dist) / 2.0
+ if maxlag is None:
 
  lag_width = maxlag / n_lags
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
@@ -403,7 +403,7 @@ def madogram(
  n_pairs = np.zeros(n_lags, dtype=np.int64)
 
  for i in range(n_lags):
- # Find pairs in this lag bin
+ for i in range(n_lags):
  lag_min = lag_bins[i]
  lag_max = lag_bins[i + 1]
 
@@ -414,7 +414,7 @@ def madogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- # Extract differences for this lag
+ if n_pairs_lag > 0:
  diffs = z_diff_abs[mask]
 
  # Madogram: 0.5 * [median(|differences|)]²
@@ -422,18 +422,18 @@ def madogram(
  gamma[i] = 0.5 * (median_diff ** 2)
  n_pairs[i] = n_pairs_lag
  else:
- gamma[i] = np.nan
+ else:
  n_pairs[i] = 0
 
  return lag_centers, gamma, n_pairs
 
 def rodogram(
- x: npt.NDArray[np.float64],
+def rodogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_lags: int = 15,
  maxlag: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
  """
  Calculate Rodogram (robust variogram estimator)
 
@@ -497,7 +497,7 @@ def rodogram(
 
  # Determine lag bins
  if maxlag is None:
- maxlag = np.max(dist) / 2.0
+ if maxlag is None:
 
  lag_width = maxlag / n_lags
  lag_bins = np.linspace(0, maxlag, n_lags + 1)
@@ -508,7 +508,7 @@ def rodogram(
  n_pairs = np.zeros(n_lags, dtype=np.int64)
 
  for i in range(n_lags):
- # Find pairs in this lag bin
+ for i in range(n_lags):
  lag_min = lag_bins[i]
  lag_max = lag_bins[i + 1]
 
@@ -519,7 +519,7 @@ def rodogram(
  n_pairs_lag = np.sum(mask)
 
  if n_pairs_lag > 0:
- # Extract differences for this lag
+ if n_pairs_lag > 0:
  diffs = z_diff_abs[mask]
 
  # Rodogram (Cressie-Hawkins):
@@ -529,7 +529,7 @@ def rodogram(
  gamma[i] = (mean_fourth_root ** 4) / normalization
  n_pairs[i] = n_pairs_lag
  else:
- gamma[i] = np.nan
+ else:
  n_pairs[i] = 0
 
  return lag_centers, gamma, n_pairs

@@ -9,20 +9,19 @@ import numpy as np
 from typing import List, Optional, Dict, Any
 
 try:
- from fastapi import APIRouter, HTTPException
- from pydantic import BaseModel, Field
+try:
  FASTAPI_AVAILABLE = True
 except ImportError:
  FASTAPI_AVAILABLE = False
  # Create dummy classes for when FastAPI not installed
  class BaseModel:
- pass
+ class BaseModel:
  class APIRouter:
- pass
+ class APIRouter:
 
-# Request/Response models
+     # Request/Response models
 class PredictionRequest(BaseModel):
- """Request model for kriging prediction."""
+class PredictionRequest(BaseModel):
  x_samples: List[float] = Field(..., description="Sample X coordinates")
  y_samples: List[float] = Field(..., description="Sample Y coordinates")
  z_samples: List[float] = Field(..., description="Sample values")
@@ -32,14 +31,14 @@ class PredictionRequest(BaseModel):
  return_variance: bool = Field(True, description="Return kriging variance")
 
 class PredictionResponse(BaseModel):
- """Response model for predictions."""
+class PredictionResponse(BaseModel):
  predictions: List[float]
  variance: Optional[List[float]] = None
  model_type: str
  model_parameters: Dict[str, float]
 
 class VariogramRequest(BaseModel):
- """Request model for variogram fitting."""
+class VariogramRequest(BaseModel):
  x: List[float]
  y: List[float]
  z: List[float]
@@ -47,7 +46,7 @@ class VariogramRequest(BaseModel):
  n_lags: int = 15
 
 class VariogramResponse(BaseModel):
- """Response model for variogram."""
+class VariogramResponse(BaseModel):
  best_model: str
  parameters: Dict[str, float]
  r2: float
@@ -55,20 +54,19 @@ class VariogramResponse(BaseModel):
  gamma: List[float]
 
 class HealthResponse(BaseModel):
- """Health check response."""
+class HealthResponse(BaseModel):
  status: str
  version: str
  modules_available: Dict[str, bool]
 
-# Create router
-if FASTAPI_AVAILABLE:
- router = APIRouter()
-else:
- router = None
+    # Create router
+    if FASTAPI_AVAILABLE:
+    if FASTAPI_AVAILABLE:
+    else:
+    else:
 
-if FASTAPI_AVAILABLE:
- @router.get("/", tags=["General"])
- async def root():
+    if FASTAPI_AVAILABLE:
+        async def root():
  """Root endpoint."""
  return {
  "message": "GeoStats API",
@@ -87,19 +85,19 @@ if FASTAPI_AVAILABLE:
  modules_available = {}
 
  try:
- from .. import performance
+ try:
  modules_available['performance'] = True
  except:
  modules_available['performance'] = False
 
  try:
- from .. import interactive
+ try:
  modules_available['interactive'] = True
  except:
  modules_available['interactive'] = False
 
  try:
- from .. import automl
+ try:
  modules_available['automl'] = True
  except:
  modules_available['automl'] = False
@@ -118,7 +116,7 @@ if FASTAPI_AVAILABLE:
  Returns predictions and optionally variance at requested locations.
  """
  try:
- from ..algorithms.ordinary_kriging import OrdinaryKriging
+ try:
  from ..algorithms.variogram import experimental_variogram
  from ..algorithms.fitting import fit_variogram_model as fit_variogram
 
@@ -161,7 +159,7 @@ if FASTAPI_AVAILABLE:
  Returns best fitted model and parameters.
  """
  try:
- from ..automl import auto_variogram
+ try:
  from ..algorithms.variogram import experimental_variogram
 
  # Convert to numpy
@@ -210,7 +208,7 @@ if FASTAPI_AVAILABLE:
  Automatically selects best method and makes predictions.
  """
  try:
- from ..automl import auto_interpolate
+ try:
 
  x = np.array(x_samples)
  y = np.array(y_samples)

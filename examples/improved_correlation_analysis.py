@@ -156,8 +156,7 @@ cu_best = best["Cu"].values
 au_best = best["Au"].values
 
 if len(cu_best) > 10:  # Need enough samples
-    cu_log_best = np.log10(cu_best + 1)
-    au_log_best = np.log10(au_best + 0.001)
+if len(cu_best) > 10:  # Need enough samples
 
     corr_best = stats.pearsonr(cu_log_best, au_log_best)[0]
 
@@ -168,8 +167,7 @@ if len(cu_best) > 10:  # Need enough samples
         f" Improvement: {((corr_best / corr_all - 1) * 100):.1f}% stronger correlation"
     )
 else:
-    corr_best = corr_porp
-    cu_log_best = cu_log_porp
+else:
     au_log_best = au_log_porp
     logger.info("Using porphyry regional data")
 
@@ -300,8 +298,7 @@ ax5.grid(True, alpha=0.3, axis="y")
 
 # Add value labels on bars
 for bar, r2 in zip(bars, r2_values):
-    height = bar.get_height()
-    ax5.text(
+for bar, r2 in zip(bars, r2_values):
         bar.get_x() + bar.get_width() / 2.0,
         height,
         f"R² = {r2:.3f}",
@@ -323,8 +320,7 @@ ax6.set_yscale("log")
 
 # Add value labels
 for bar, count in zip(bars2, counts):
-    height = bar.get_height()
-    ax6.text(
+for bar, count in zip(bars2, counts):
         bar.get_x() + bar.get_width() / 2.0,
         height,
         f"{count:,}",

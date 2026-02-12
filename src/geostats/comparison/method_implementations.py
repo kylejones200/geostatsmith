@@ -30,7 +30,7 @@ DEFAULT_MAX_NEIGHBORS = 12
 MIN_DISTANCE = 1e-10
 
 def inverse_distance_weighting(
- x_data: npt.NDArray[np.float64],
+def inverse_distance_weighting(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -38,7 +38,7 @@ def inverse_distance_weighting(
  power: float = DEFAULT_IDW_POWER,
  max_neighbors: Optional[int] = None,
  radius: Optional[float] = None,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Inverse Distance Weighting (IDW) interpolation.
 
@@ -105,22 +105,22 @@ def inverse_distance_weighting(
  tree = cKDTree(np.column_stack([x_data, y_data]))
 
  for i in range(n_pred):
- pred_point = np.array([x_pred[i], y_pred[i]])
+ for i in range(n_pred):
 
  # Find neighbors
  if radius is not None:
- # Radius search
+ if radius is not None:
  indices = tree.query_ball_point(pred_point, radius)
  if len(indices) == 0:
- # No points within radius, use nearest neighbor
+ if len(indices) == 0:
  indices = [tree.query(pred_point)[1]]
  elif max_neighbors is not None:
- # K-nearest neighbors
+ elif max_neighbors is not None:
  distances, indices = tree.query(pred_point, k=min(max_neighbors, len(x_data)))
  if isinstance(indices, np.integer):
- indices = [indices]
+ if isinstance(indices, np.integer):
  else:
- # Use all points
+ else:
  indices = np.arange(len(x_data))
 
  # Calculate distances
@@ -132,11 +132,11 @@ def inverse_distance_weighting(
 
  # Handle coincident points
  if np.any(distances < MIN_DISTANCE):
- # If prediction point coincides with data point, use that value
+ if np.any(distances < MIN_DISTANCE):
  coincident_idx = np.argmin(distances)
  z_pred[i] = z_neighbors[coincident_idx]
  else:
- # Calculate weights
+ else:
  weights = 1.0 / np.power(distances, power)
  weights_sum = np.sum(weights)
 
@@ -146,14 +146,14 @@ def inverse_distance_weighting(
  return z_pred
 
 def radial_basis_function_interpolation(
- x_data: npt.NDArray[np.float64],
+def radial_basis_function_interpolation(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  kernel: str = DEFAULT_RBF_KERNEL,
  smoothing: float = 0.0,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Radial Basis Function (RBF) interpolation.
 
@@ -237,12 +237,12 @@ def radial_basis_function_interpolation(
  return z_pred
 
 def natural_neighbor_interpolation(
- x_data: npt.NDArray[np.float64],
+def natural_neighbor_interpolation(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Natural Neighbor (Sibson) interpolation.
 
@@ -303,25 +303,25 @@ def natural_neighbor_interpolation(
  data_points = np.column_stack([x_data, y_data])
 
  try:
- tri = Delaunay(data_points)
+ try:
  except Exception as e:
  logger.warning(f"Delaunay triangulation failed: {e}. Falling back to IDW.")
  return inverse_distance_weighting(x_data, y_data, z_data, x_pred, y_pred)
 
  # For each prediction point
  for i in range(n_pred):
- pred_point = np.array([x_pred[i], y_pred[i]])
+ for i in range(n_pred):
 
  # Find which simplex (triangle) contains the point
  simplex_idx = tri.find_simplex(pred_point)
 
  if simplex_idx == -1:
- # Point is outside convex hull, use nearest neighbor
+ if simplex_idx == -1:
  tree = cKDTree(data_points)
  _, nearest_idx = tree.query(pred_point)
  z_pred[i] = z_data[nearest_idx]
  else:
- # Point is inside a triangle, use barycentric coordinates
+ else:
  simplex = tri.simplices[simplex_idx]
  vertices = data_points[simplex]
 
@@ -334,9 +334,9 @@ def natural_neighbor_interpolation(
  return z_pred
 
 def _barycentric_coordinates(
- point: npt.NDArray[np.float64],
+def _barycentric_coordinates(
  triangle: npt.NDArray[np.float64]
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate barycentric coordinates of a point in a triangle.
 
@@ -365,7 +365,7 @@ def _barycentric_coordinates(
  denom = d00 * d11 - d01 * d01
 
  if abs(denom) < MIN_DISTANCE:
- # Degenerate triangle, return equal weights
+ if abs(denom) < MIN_DISTANCE:
  return np.array([1.0/3.0, 1.0/3.0, 1.0/3.0])
 
  v = (d11 * d20 - d01 * d21) / denom

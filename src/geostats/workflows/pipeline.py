@@ -33,11 +33,11 @@ from ..visualization.minimal_style import set_minimalist_rcparams
 from ..core.exceptions import GeoStatsError
 
 class PipelineError(GeoStatsError):
- """Pipeline execution error"""
+class PipelineError(GeoStatsError):
  pass
 
 class AnalysisPipeline:
- """
+class AnalysisPipeline:
  Config-driven geostatistical analysis pipeline
 
  Executes complete workflow based on configuration:
@@ -63,29 +63,29 @@ class AnalysisPipeline:
  """
 
  def __init__(self, config: AnalysisConfig):
- self.config = config
- self.logger = self._setup_logging()
- self.output_dir = Path(config.project.output_dir)
- self.output_dir.mkdir(parents=True, exist_ok=True)
+ def __init__(self, config: AnalysisConfig):
+     self.logger = self._setup_logging()
+     self.output_dir = Path(config.project.output_dir)
+     self.output_dir.mkdir(parents=True, exist_ok=True)
 
- # Pipeline state
- self.data = None
- self.x = None
- self.y = None
- self.z = None
- self.z_secondary = None
- self.weights = None
- self.transform = None
- self.variogram_model = None
- self.kriging_model = None
- self.predictions = None
- self.variance = None
- self.cv_results = None
+     # Pipeline state
+     self.data = None
+     self.x = None
+     self.y = None
+     self.z = None
+     self.z_secondary = None
+     self.weights = None
+     self.transform = None
+     self.variogram_model = None
+     self.kriging_model = None
+     self.predictions = None
+     self.variance = None
+     self.cv_results = None
 
  def _setup_logging(self) -> logging.Logger:
- """Setup logging"""
- logger = logging.getLogger('geostats.pipeline')
- logger.setLevel(logging.DEBUG if self.config.verbose else logging.INFO)
+ def _setup_logging(self) -> logging.Logger:
+     logger = logging.getLogger('geostats.pipeline')
+     logger.setLevel(logging.DEBUG if self.config.verbose else logging.INFO)
 
  # Console handler
  console = logging.StreamHandler()
@@ -96,8 +96,7 @@ class AnalysisPipeline:
 
  # File handler
  if self.config.log_file:
- file_handler = logging.FileHandler(self.config.log_file)
- file_handler.setLevel(logging.DEBUG)
+     file_handler.setLevel(logging.DEBUG)
  detailed_formatter = logging.Formatter(
  '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
  )
@@ -107,30 +106,26 @@ class AnalysisPipeline:
  return logger
 
  def run(self):
- """Execute complete pipeline"""
- self.logger.info(f"=== Starting analysis: {self.config.project.name} ===")
- start_time = datetime.now()
+ def run(self):
+     self.logger.info(f"=== Starting analysis: {self.config.project.name} ===")
+     start_time = datetime.now()
 
  try:
- # Set random seed
- if self.config.random_seed is not None:
- np.random.seed(self.config.random_seed)
+     if self.config.random_seed is not None:
  self.logger.info(f"Random seed set to: {self.config.random_seed}")
 
  # Set visualization style
  if self.config.visualization.style == 'minimalist':
- set_minimalist_rcparams()
 
- # Execute pipeline steps
+     # Execute pipeline steps
  self.load_data()
  self.preprocess_data()
  self.model_variogram()
  self.perform_kriging()
 
  if self.config.validation.cross_validation:
- self.validate()
 
- self.visualize()
+     self.visualize()
  self.save_outputs()
 
  # Summary
@@ -138,58 +133,48 @@ class AnalysisPipeline:
  self.logger.info(f"=== Analysis complete in {elapsed} ===")
 
  if self.config.output.save_report:
- self._generate_report(elapsed)
 
- except Exception as e:
+     except Exception as e:
  self.logger.error(f"Pipeline failed: {e}")
  raise PipelineError(f"Pipeline execution failed: {e}")
 
  def load_data(self):
- """Load and filter data"""
- self.logger.info("Loading data...")
+ def load_data(self):
+     self.logger.info("Loading data...")
 
  # Read data - handle both CSV and TXT files
  try:
- # Read the file - Alaska AGDB4 is tab-delimited txt
- file_path = self.config.data.input_file
+     file_path = self.config.data.input_file
  if file_path.endswith('.csv'):
- self.data = pd.read_csv(file_path)
- else:
- # Try tab-delimited for .txt files with various encodings
+     else:
  for encoding in ['utf-8', 'latin-1', 'iso-8859-1', 'cp1252']:
- try:
- self.data = pd.read_csv(file_path, sep='\t', low_memory=False, encoding=encoding)
+     self.data = pd.read_csv(file_path, sep='\t', low_memory=False, encoding=encoding)
  self.logger.info(f"Successfully loaded with {encoding} encoding")
  break
  except UnicodeDecodeError:
  continue
  else:
- raise Exception("Could not decode file with any standard encoding")
 
- self.logger.info(f"Loaded {len(self.data)} records from {file_path}")
+     self.logger.info(f"Loaded {len(self.data)} records from {file_path}")
  except Exception as e:
  raise PipelineError(f"Failed to load data: {e}")
 
  # Apply filters
  if self.config.data.filter_column and self.config.data.filter_value is not None:
- if self.config.data.filter_column in self.data.columns:
- mask = self.data[self.config.data.filter_column] == self.config.data.filter_value
+     mask = self.data[self.config.data.filter_column] == self.config.data.filter_value
  self.data = self.data[mask].copy()
  self.logger.info(f"Filtered to {len(self.data)} records where {self.config.data.filter_column}={self.config.data.filter_value}")
  else:
- self.logger.warning(f"Filter column '{self.config.data.filter_column}' not found in data")
 
- # Extract coordinates and values
+     # Extract coordinates and values
  try:
- # Check if columns exist
- for col_name, col_config in [
+     for col_name, col_config in [
  ('X', self.config.data.x_column),
  ('Y', self.config.data.y_column),
  ('Value', self.config.data.z_column)
  ]:
  if col_config not in self.data.columns:
- raise PipelineError(
- f"{col_name} column '{col_config}' not found. Available columns: {list(self.data.columns[:20])}"
+     f"{col_name} column '{col_config}' not found. Available columns: {list(self.data.columns[:20])}"
  )
 
  self.x = pd.to_numeric(self.data[self.config.data.x_column], errors='coerce').values
@@ -197,46 +182,39 @@ class AnalysisPipeline:
  self.z = pd.to_numeric(self.data[self.config.data.z_column], errors='coerce').values
 
  if self.config.data.z_secondary:
- if self.config.data.z_secondary in self.data.columns:
- self.z_secondary = pd.to_numeric(
+     self.z_secondary = pd.to_numeric(
  self.data[self.config.data.z_secondary], errors='coerce'
  ).values
  else:
- self.logger.warning(f"Secondary variable '{self.config.data.z_secondary}' not found")
 
- except KeyError as e:
+     except KeyError as e:
  raise PipelineError(f"Column not found in data: {e}")
 
  # Remove NaNs
  mask = ~(np.isnan(self.x) | np.isnan(self.y) | np.isnan(self.z))
  if self.z_secondary is not None:
- mask &= ~np.isnan(self.z_secondary)
 
- n_removed = (~mask).sum()
+     n_removed = (~mask).sum()
  if n_removed > 0:
- self.logger.warning(f"Removed {n_removed} records with NaN values")
- self.x = self.x[mask]
+     self.x = self.x[mask]
  self.y = self.y[mask]
  self.z = self.z[mask]
  if self.z_secondary is not None:
- self.z_secondary = self.z_secondary[mask]
- self.data = self.data[mask].reset_index(drop=True)
+     self.data = self.data[mask].reset_index(drop=True)
 
  if len(self.z) == 0:
- raise PipelineError("No valid data points after filtering")
 
- self.logger.info(f"Final dataset: {len(self.z)} valid points")
+     self.logger.info(f"Final dataset: {len(self.z)} valid points")
  self.logger.info(f"Value range: [{self.z.min():.4f}, {self.z.max():.4f}]")
  self.logger.info(f"Value mean: {self.z.mean():.4f}, std: {self.z.std():.4f}")
 
  def preprocess_data(self):
- """Preprocess data (outliers, transforms, declustering)"""
- self.logger.info("Preprocessing data...")
+ def preprocess_data(self):
+     self.logger.info("Preprocessing data...")
 
  # Outlier removal
  if self.config.preprocessing.remove_outliers:
- self.logger.info(f"Detecting outliers using {self.config.preprocessing.outlier_method}...")
- results = outlier_analysis(
+     results = outlier_analysis(
  self.x, self.y, self.z,
  method=self.config.preprocessing.outlier_method,
  threshold=self.config.preprocessing.outlier_threshold
@@ -245,76 +223,61 @@ class AnalysisPipeline:
  n_outliers = len(outlier_indices)
 
  if n_outliers > 0:
- self.logger.info(f"Removing {n_outliers} outliers ({100*n_outliers/len(self.z):.1f}%)")
- mask = np.ones(len(self.z), dtype=bool)
+     mask = np.ones(len(self.z), dtype=bool)
  mask[outlier_indices] = False
  self.x = self.x[mask]
  self.y = self.y[mask]
  self.z = self.z[mask]
  if self.z_secondary is not None:
- self.z_secondary = self.z_secondary[mask]
 
- # Handle negative values if needed
+     # Handle negative values if needed
  if self.config.preprocessing.transform in ['log', 'boxcox']:
- if (self.z <= 0).any():
- self.logger.warning(f"Found {(self.z <= 0).sum()} non-positive values")
+     self.logger.warning(f"Found {(self.z <= 0).sum()} non-positive values")
  if self.config.preprocessing.handle_negatives == 'shift':
- shift = abs(self.z.min()) + 1e-6
- self.z = self.z + shift
+     self.z = self.z + shift
  self.logger.info(f"Shifted data by {shift:.6f}")
  elif self.config.preprocessing.handle_negatives == 'remove':
- mask = self.z > 0
- self.x = self.x[mask]
+     self.x = self.x[mask]
  self.y = self.y[mask]
  self.z = self.z[mask]
  self.logger.info(f"Removed {(~mask).sum()} non-positive values")
  elif self.config.preprocessing.handle_negatives == 'absolute':
- self.z = np.abs(self.z)
- self.logger.info("Took absolute values")
+     self.logger.info("Took absolute values")
 
  # Data transformation
  if self.config.preprocessing.transform:
- self.logger.info(f"Applying {self.config.preprocessing.transform} transform...")
 
- if self.config.preprocessing.transform == 'log':
- self.transform = LogTransform()
+     if self.config.preprocessing.transform == 'log':
  self.z = self.transform.fit_transform(self.z)
 
  elif self.config.preprocessing.transform == 'boxcox':
- self.transform = BoxCoxTransform()
- self.z = self.transform.fit_transform(self.z)
+     self.z = self.transform.fit_transform(self.z)
  self.logger.info(f"Box-Cox lambda: {self.transform.lmbda:.4f}")
 
  elif self.config.preprocessing.transform == 'normal_score':
- self.transform = NormalScoreTransform()
- self.z = self.transform.fit_transform(self.z)
+     self.z = self.transform.fit_transform(self.z)
 
  elif self.config.preprocessing.transform == 'sqrt':
- # Simple sqrt doesn't need a class
- self.z = np.sqrt(self.z)
+     self.z = np.sqrt(self.z)
  self.transform = None # Mark that we did transform but no inverse needed
 
  # Declustering
  if self.config.preprocessing.declustering:
- self.logger.info(f"Computing {self.config.preprocessing.declustering_method} declustering weights...")
 
- if self.config.preprocessing.declustering_method == 'cell':
- self.weights, info = cell_declustering(self.x, self.y, self.z)
+     if self.config.preprocessing.declustering_method == 'cell':
  self.logger.info(f"Optimal cell size: {info.get('optimal_cell_size', 'N/A')}")
  else:
- self.weights = polygonal_declustering(self.x, self.y)
 
- self.logger.info(f"Weight range: [{self.weights.min():.4f}, {self.weights.max():.4f}]")
+     self.logger.info(f"Weight range: [{self.weights.min():.4f}, {self.weights.max():.4f}]")
 
  def model_variogram(self):
- """Model variogram"""
- self.logger.info("Modeling variogram...")
+ def model_variogram(self):
+     self.logger.info("Modeling variogram...")
 
  # Compute experimental variogram
  max_lag = self.config.variogram.max_lag
  if max_lag is None:
- # Auto: 1/3 of max distance
- dx = self.x.max() - self.x.min()
+     dx = self.x.max() - self.x.min()
  dy = self.y.max() - self.y.min()
  max_lag = np.sqrt(dx**2 + dy**2) / 3
  self.logger.info(f"Auto max_lag: {max_lag:.2f}")
@@ -322,37 +285,32 @@ class AnalysisPipeline:
         # Use specified estimator
         estimator = self.config.variogram.estimator
         if estimator == 'matheron':
-            lags, gamma, n_pairs = experimental_variogram(
-                self.x, self.y, self.z,
+        if estimator == 'matheron':
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag
             )
         elif estimator == 'cressie':
-            from ..algorithms.variogram import robust_variogram
-            lags, gamma, n_pairs = robust_variogram(
+        elif estimator == 'cressie':
                 self.x, self.y, self.z,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag,
                 estimator='cressie'
             )
         elif estimator == 'dowd':
-            from ..algorithms.variogram import robust_variogram
-            lags, gamma, n_pairs = robust_variogram(
+        elif estimator == 'dowd':
                 self.x, self.y, self.z,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag,
                 estimator='dowd'
             )
         elif estimator == 'madogram':
-            from ..algorithms.variogram import madogram
-            lags, gamma, n_pairs = madogram(
+        elif estimator == 'madogram':
                 self.x, self.y, self.z,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag
             )
         else:
-            self.logger.warning(f"Unknown estimator '{estimator}', using Matheron")
-            lags, gamma, n_pairs = experimental_variogram(
+        else:
                 self.x, self.y, self.z,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag
@@ -362,22 +320,16 @@ class AnalysisPipeline:
 
  # Fit model
  if self.config.variogram.auto_fit:
- self.logger.info(f"Auto-fitting variogram models: {self.config.variogram.models}")
 
- best_model = None
+     best_model = None
  best_score = float('inf') if self.config.variogram.fit_criterion != 'r2' else float('-inf')
 
  for model_type in self.config.variogram.models:
- try:
- # Create model instance
+     # Create model instance
  if model_type == 'spherical':
- model = SphericalModel()
- elif model_type == 'exponential':
- model = ExponentialModel()
+     elif model_type == 'exponential':
  elif model_type == 'gaussian':
- model = GaussianModel()
- else:
- self.logger.warning(f"Model type '{model_type}' not recognized, skipping")
+     else:
  continue
 
  # Fit the model
@@ -388,30 +340,25 @@ class AnalysisPipeline:
  rmse = np.sqrt(np.mean((gamma - gamma_pred)**2))
 
  if self.config.variogram.fit_criterion == 'rmse':
- score = rmse
- is_better = score < best_score
+     is_better = score < best_score
  elif self.config.variogram.fit_criterion == 'r2':
- ss_res = np.sum((gamma - gamma_pred)**2)
- ss_tot = np.sum((gamma - gamma.mean())**2)
+     ss_tot = np.sum((gamma - gamma.mean())**2)
  score = 1 - ss_res / ss_tot if ss_tot > 0 else 0
  is_better = score > best_score
  else:
- score = rmse # Fallback
- is_better = score < best_score
+     is_better = score < best_score
 
  self.logger.info(f" {model_type}: {self.config.variogram.fit_criterion}={score:.4f}")
 
  if is_better:
- best_model = fitted_model
- best_score = score
+     best_score = score
 
  except Exception as e:
  self.logger.warning(f" {model_type}: fitting failed ({e})")
 
  if best_model is None:
- raise PipelineError("No variogram model could be fitted")
 
- self.variogram_model = best_model
+     self.variogram_model = best_model
  model_name = best_model.__class__.__name__.replace('Model', '').lower()
  self.logger.info(f"Selected model: {model_name}")
  self.logger.info(f" Nugget: {best_model._parameters['nugget']:.4f}")
@@ -419,13 +366,11 @@ class AnalysisPipeline:
  self.logger.info(f" Range: {best_model._parameters['range']:.4f}")
 
         else:
-            # Manual model
-            self.logger.info("Using manual variogram parameters")
+        else:
             
             if not self.config.variogram.manual_model:
-                raise PipelineError("manual_model must be specified when auto_fit=False")
             
-            if (self.config.variogram.manual_nugget is None or 
+                if (self.config.variogram.manual_nugget is None or 
                 self.config.variogram.manual_sill is None or 
                 self.config.variogram.manual_range is None):
                 raise PipelineError("manual_nugget, manual_sill, and manual_range must be specified when auto_fit=False")
@@ -433,59 +378,51 @@ class AnalysisPipeline:
             # Create model with manual parameters
             model_type = self.config.variogram.manual_model.lower()
             if model_type == 'spherical':
-                model = SphericalModel(
-                    nugget=self.config.variogram.manual_nugget,
+            if model_type == 'spherical':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range
                 )
             elif model_type == 'exponential':
-                model = ExponentialModel(
-                    nugget=self.config.variogram.manual_nugget,
+            elif model_type == 'exponential':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range
                 )
             elif model_type == 'gaussian':
-                model = GaussianModel(
-                    nugget=self.config.variogram.manual_nugget,
+            elif model_type == 'gaussian':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range
                 )
             elif model_type == 'matern':
-                model = MaternModel(
-                    nugget=self.config.variogram.manual_nugget,
+            elif model_type == 'matern':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range
                 )
             elif model_type == 'cubic':
-                model = CubicModel(
-                    nugget=self.config.variogram.manual_nugget,
+            elif model_type == 'cubic':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range
                 )
             elif model_type == 'stable':
-                model = StableModel(
-                    nugget=self.config.variogram.manual_nugget,
+            elif model_type == 'stable':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range
                 )
             elif model_type == 'linear':
-                model = LinearModel(
-                    nugget=self.config.variogram.manual_nugget,
+            elif model_type == 'linear':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range
                 )
             else:
-                raise PipelineError(f"Unknown manual model type: {model_type}")
             
-            self.variogram_model = model
+                self.variogram_model = model
             self.logger.info(f"Manual model: {model_type}")
             self.logger.info(f" Nugget: {self.config.variogram.manual_nugget:.4f}")
             self.logger.info(f" Sill: {self.config.variogram.manual_sill:.4f}")
             self.logger.info(f" Range: {self.config.variogram.manual_range:.4f}")
 
  def perform_kriging(self):
- """Perform kriging prediction"""
- self.logger.info(f"Performing {self.config.kriging.method} kriging...")
+ def perform_kriging(self):
+     self.logger.info(f"Performing {self.config.kriging.method} kriging...")
 
  # Create prediction grid
  grid_cfg = self.config.kriging.grid
@@ -496,9 +433,7 @@ class AnalysisPipeline:
  y_max = grid_cfg.y_max if grid_cfg.y_max is not None else self.y.max() + grid_cfg.buffer
 
  if grid_cfg.nx and grid_cfg.ny:
- nx, ny = grid_cfg.nx, grid_cfg.ny
- else:
- nx = int((x_max - x_min) / grid_cfg.resolution)
+     else:
  ny = int((y_max - y_min) / grid_cfg.resolution)
 
  grid_x = np.linspace(x_min, x_max, nx)
@@ -509,34 +444,29 @@ class AnalysisPipeline:
 
  # Initialize kriging model
  if self.config.kriging.method == 'ordinary':
- self.kriging_model = OrdinaryKriging(
- self.x, self.y, self.z,
+     self.x, self.y, self.z,
  variogram_model=self.variogram_model
  )
  elif self.config.kriging.method == 'simple':
- mean = self.config.kriging.mean if self.config.kriging.mean else self.z.mean()
- self.kriging_model = SimpleKriging(
+     self.kriging_model = SimpleKriging(
  self.x, self.y, self.z,
  variogram_model=self.variogram_model,
  mean=mean
  )
         elif self.config.kriging.method == 'universal':
-            self.kriging_model = UniversalKriging(
-                self.x, self.y, self.z,
+        elif self.config.kriging.method == 'universal':
                 variogram_model=self.variogram_model,
                 drift_terms=self.config.kriging.drift_terms
             )
         elif self.config.kriging.method == 'indicator':
-            if not self.config.kriging.thresholds:
-                raise PipelineError("thresholds must be specified for indicator kriging")
+        elif self.config.kriging.method == 'indicator':
             self.kriging_model = IndicatorKriging(
                 self.x, self.y, self.z,
                 variogram_model=self.variogram_model,
                 thresholds=self.config.kriging.thresholds
             )
         elif self.config.kriging.method == 'cokriging':
-            if not hasattr(self, 'z_secondary') or self.z_secondary is None:
-                raise PipelineError("Secondary variable (z_secondary) required for cokriging")
+        elif self.config.kriging.method == 'cokriging':
             # For cokriging, we need variogram models for both variables
             # Use same model for both (could be enhanced)
             self.kriging_model = Cokriging(
@@ -546,9 +476,8 @@ class AnalysisPipeline:
                 variogram_models=[self.variogram_model, self.variogram_model]
             )
         else:
-            raise PipelineError(f"Unsupported kriging method: '{self.config.kriging.method}'")
 
- # Predict
+            # Predict
  self.predictions, self.variance = self.kriging_model.predict(
  grid_xx.ravel(),
  grid_yy.ravel(),
@@ -561,19 +490,17 @@ class AnalysisPipeline:
 
  # Back-transform if needed
  if self.transform:
- self.logger.info("Back-transforming predictions...")
- self.predictions = self.transform.inverse_transform(self.predictions.ravel()).reshape(grid_yy.shape)
+     self.predictions = self.transform.inverse_transform(self.predictions.ravel()).reshape(grid_yy.shape)
 
  self.logger.info(f"Prediction range: [{np.nanmin(self.predictions):.4f}, {np.nanmax(self.predictions):.4f}]")
  self.logger.info(f"Variance range: [{np.nanmin(self.variance):.4f}, {np.nanmax(self.variance):.4f}]")
 
  def validate(self):
- """Perform cross-validation"""
- self.logger.info("Performing cross-validation...")
+ def validate(self):
+     self.logger.info("Performing cross-validation...")
 
  try:
- # Use the kriging object's built-in cross-validation
- cv_predictions, cv_metrics = leave_one_out(self.kriging_model)
+     cv_predictions, cv_metrics = leave_one_out(self.kriging_model)
 
  self.cv_results = {
  'predicted': cv_predictions,
@@ -583,15 +510,14 @@ class AnalysisPipeline:
 
  # Log metrics
  for metric_name, metric_val in cv_metrics.items():
- self.logger.info(f" {metric_name.upper()}: {metric_val:.4f}")
 
- except Exception as e:
+     except Exception as e:
  self.logger.warning(f"Cross-validation failed: {e}")
  self.cv_results = None
 
  def visualize(self):
- """Create visualizations"""
- self.logger.info("Visualization generation...")
+ def visualize(self):
+     self.logger.info("Visualization generation...")
 
  # For now, just log what would be created
  self.logger.info(f"Plots to create: {self.config.visualization.plots}")
@@ -604,31 +530,27 @@ class AnalysisPipeline:
  # - Handling plot saving
 
  def save_outputs(self):
- """Save outputs"""
- self.logger.info("Saving outputs...")
+ def save_outputs(self):
+     self.logger.info("Saving outputs...")
 
  # Save predictions
  if self.config.output.save_predictions and self.predictions is not None:
- pred_path = self.output_dir / 'predictions.npy'
- np.save(pred_path, self.predictions)
+     np.save(pred_path, self.predictions)
  self.logger.info(f"Saved predictions to {pred_path}")
 
  if 'csv' in self.config.output.formats:
- # Flatten and save as CSV
- pred_csv = self.output_dir / 'predictions.csv'
+     pred_csv = self.output_dir / 'predictions.csv'
  np.savetxt(pred_csv, self.predictions.ravel(), delimiter=',')
  self.logger.info(f"Saved predictions to {pred_csv}")
 
  # Save variance
  if self.config.output.save_variance and self.variance is not None:
- var_path = self.output_dir / 'variance.npy'
- np.save(var_path, self.variance)
+     np.save(var_path, self.variance)
  self.logger.info(f"Saved variance to {var_path}")
 
  # Save cross-validation results
  if self.cv_results is not None and self.config.validation.save_predictions:
- cv_path = self.output_dir / 'cv_results.csv'
- cv_df = pd.DataFrame({
+     cv_df = pd.DataFrame({
  'observed': self.cv_results['observed'],
  'predicted': self.cv_results['predicted']
  })
@@ -636,12 +558,11 @@ class AnalysisPipeline:
  self.logger.info(f"Saved CV results to {cv_path}")
 
  def _generate_report(self, elapsed):
- """Generate text report"""
- report_path = self.output_dir / 'analysis_report.txt'
+ def _generate_report(self, elapsed):
+     report_path = self.output_dir / 'analysis_report.txt'
 
 with open(report_path, 'w') as f:
-    f.write(f"Geostatistical Analysis Report\n\n")
- f.write(f"Project: {self.config.project.name}\n")
+with open(report_path, 'w') as f:
  f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
  f.write(f"Elapsed Time: {elapsed}\n\n")
 
@@ -655,8 +576,7 @@ with open(report_path, 'w') as f:
  f.write(f"Std: {self.z.std():.4f}\n\n")
 
  if self.variogram_model:
- f.write(f"Variogram Model\n")
- f.write(f"{'-'*70}\n")
+     f.write(f"{'-'*70}\n")
  model_name = self.variogram_model.__class__.__name__.replace('Model', '')
  f.write(f"Type: {model_name}\n")
  f.write(f"Nugget: {self.variogram_model._parameters['nugget']:.4f}\n")
@@ -664,21 +584,15 @@ with open(report_path, 'w') as f:
  f.write(f"Range: {self.variogram_model._parameters['range']:.4f}\n\n")
 
  if self.cv_results:
- f.write(f"Cross-Validation\n")
- f.write(f"{'-'*70}\n")
+     f.write(f"{'-'*70}\n")
  for metric in self.config.validation.metrics:
- if metric == 'rmse':
- val = np.sqrt(np.mean((self.cv_results['observed'] - self.cv_results['predicted'])**2))
+     val = np.sqrt(np.mean((self.cv_results['observed'] - self.cv_results['predicted'])**2))
  elif metric == 'mae':
- val = np.mean(np.abs(self.cv_results['observed'] - self.cv_results['predicted']))
- elif metric == 'r2':
- ss_res = np.sum((self.cv_results['observed'] - self.cv_results['predicted'])**2)
+     elif metric == 'r2':
  ss_tot = np.sum((self.cv_results['observed'] - self.cv_results['observed'].mean())**2)
  val = 1 - ss_res / ss_tot
  elif metric == 'bias':
- val = np.mean(self.cv_results['predicted'] - self.cv_results['observed'])
- else:
- continue
+     else:
  f.write(f"{metric.upper()}: {val:.4f}\n")
 
  self.logger.info(f"Report saved to {report_path}")

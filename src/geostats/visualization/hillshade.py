@@ -20,13 +20,13 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 def hillshade(
- elevation: npt.NDArray[np.float64],
+def hillshade(
  azimuth: float = 315.0,
  altitude: float = 45.0,
  z_factor: float = 1.0,
  dx: float = 1.0,
  dy: float = 1.0,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate hillshade from elevation data.
 
@@ -91,7 +91,7 @@ def hillshade(
  elevation = np.asarray(elevation, dtype=np.float64)
 
  if elevation.ndim != 2:
- raise ValueError("Elevation must be a 2D array")
+ if elevation.ndim != 2:
 
  # Convert angles to radians
  azimuth_rad = np.deg2rad(azimuth)
@@ -124,7 +124,7 @@ def hillshade(
  return hillshade_8bit
 
 def plot_hillshaded_dem(
- x: npt.NDArray[np.float64],
+def plot_hillshaded_dem(
  y: npt.NDArray[np.float64],
  elevation: npt.NDArray[np.float64],
  azimuth: float = 315.0,
@@ -132,7 +132,7 @@ def plot_hillshaded_dem(
  cmap: str = 'terrain',
  alpha: float = 0.6,
  figsize: Tuple[int, int] = (12, 10),
-) -> Tuple[plt.Figure, plt.Axes]:
+    ) -> Tuple[plt.Figure, plt.Axes]:
  """
  Create a hillshaded DEM visualization.
 
@@ -187,9 +187,9 @@ def plot_hillshaded_dem(
 
  # Create meshgrid if needed
  if x.ndim == 1 and y.ndim == 1:
- X, Y = np.meshgrid(x, y)
+ if x.ndim == 1 and y.ndim == 1:
  else:
- X, Y = x, y
+ else:
 
  # Plot hillshade (grayscale base)
  ax.imshow(hs, extent=[X.min(), X.max(), Y.min(), Y.max()],
@@ -210,10 +210,10 @@ def plot_hillshaded_dem(
  return fig, ax
 
 def create_multi_azimuth_hillshade(
- elevation: npt.NDArray[np.float64],
+def create_multi_azimuth_hillshade(
  azimuths: Optional[list] = None,
  altitude: float = 45.0,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Create combined hillshade from multiple sun azimuths.
 
@@ -258,12 +258,12 @@ def create_multi_azimuth_hillshade(
  Common in professional cartography and GIS.
  """
  if azimuths is None:
- azimuths = [315, 45, 135, 225] # NW, NE, SE, SW
+ if azimuths is None:
 
  # Calculate hillshade for each azimuth
  hillshades = []
  for az in azimuths:
- hs = hillshade(elevation, azimuth=az, altitude=altitude)
+ for az in azimuths:
  hillshades.append(hs.astype(float))
 
  # Average
@@ -273,11 +273,11 @@ def create_multi_azimuth_hillshade(
  return combined.astype(np.uint8)
 
 def slope_map(
- elevation: npt.NDArray[np.float64],
+def slope_map(
  dx: float = 1.0,
  dy: float = 1.0,
  units: str = 'degrees',
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate slope from elevation data.
 
@@ -331,7 +331,7 @@ def slope_map(
  }
 
  if units not in unit_conversions:
- valid_units = ', '.join(unit_conversions.keys())
+ if units not in unit_conversions:
  raise ValueError(
  f"Unknown units '{units}'. "
  f"Valid units: {valid_units}"
@@ -340,10 +340,10 @@ def slope_map(
  return unit_conversions[units](slope_rad)
 
 def aspect_map(
- elevation: npt.NDArray[np.float64],
+def aspect_map(
  dx: float = 1.0,
  dy: float = 1.0,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate aspect (slope direction) from elevation data.
 

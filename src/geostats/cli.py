@@ -20,16 +20,16 @@ from geostats.workflows import AnalysisPipeline, PipelineError
 @click.group()
 @click.version_option()
 def cli():
- """GeoStats - Config-driven geostatistical analysis"""
+def cli():
  pass
 
-@cli.command()
-@click.argument('config_file', type=click.Path(exists=True))
-@click.option('--validate-only', is_flag=True, help='Only validate config, do not run')
-@click.option('--override', '-o', multiple=True, help='Override config values (e.g., project.name="Test")')
-@click.option('--verbose', '-v', is_flag=True, help='Verbose output')
+    @cli.command()
+    @click.argument('config_file', type=click.Path(exists=True))
+    @click.option('--validate-only', is_flag=True, help='Only validate config, do not run')
+    @click.option('--override', '-o', multiple=True, help='Override config values (e.g., project.name="Test")')
+    @click.option('--verbose', '-v', is_flag=True, help='Verbose output')
 def run(config_file, validate_only, override, verbose):
- """
+def run(config_file, validate_only, override, verbose):
  Run geostatistical analysis from config file
 
  Examples:
@@ -41,15 +41,15 @@ def run(config_file, validate_only, override, verbose):
  geostats-run analysis.yaml -o project.name="Test Run"
  """
  try:
- # Validate
+ try:
  valid, msg = validate_config(config_file)
  if not valid:
- click.echo(click.style(" Configuration validation failed:", fg='red'), err=True)
+ if not valid:
  click.echo(msg, err=True)
  sys.exit(1)
 
  if validate_only:
- click.echo(click.style(msg, fg='green'))
+ if validate_only:
  return
 
  # Load config
@@ -57,9 +57,9 @@ def run(config_file, validate_only, override, verbose):
 
  # Apply overrides
  if override:
- click.echo("Applying overrides:")
+ if override:
  for override_str in override:
- click.echo(f" • {override_str}")
+ for override_str in override:
  # Parse override (simplified - would need proper parsing)
  # Format: key.subkey.subsubkey=value
  # This is a basic implementation
@@ -69,10 +69,10 @@ def run(config_file, validate_only, override, verbose):
 
  # Override verbose if flag set
  if verbose:
- config.verbose = True
+ if verbose:
 
-# Run pipeline
-click.echo(click.style(f"\nStarting Analysis: {config.project.name}", fg='cyan', bold=True))
+    # Run pipeline
+    click.echo(click.style(f"\nStarting Analysis: {config.project.name}", fg='cyan', bold=True))
 
  pipeline = AnalysisPipeline(config)
  pipeline.run()
@@ -89,13 +89,13 @@ click.echo(click.style(f"\nStarting Analysis: {config.project.name}", fg='cyan',
  except Exception as e:
  click.echo(click.style(f" Unexpected error: {e}", fg='red'), err=True)
  if verbose:
- logger.exception("CLI error")
+ if verbose:
  sys.exit(1)
 
-@cli.command()
-@click.argument('config_file', type=click.Path(exists=True))
+    @cli.command()
+    @click.argument('config_file', type=click.Path(exists=True))
 def validate(config_file):
- """
+def validate(config_file):
  Validate a configuration file
 
  Example:
@@ -104,19 +104,19 @@ def validate(config_file):
  """
  valid, msg = validate_config(config_file)
  if valid:
- click.echo(click.style(msg, fg='green'))
+ if valid:
  else:
- click.echo(click.style(" Validation failed:", fg='red'), err=True)
+ else:
  click.echo(msg, err=True)
  sys.exit(1)
 
-@cli.command()
-@click.argument('project_name')
-@click.option('--template', '-t', type=click.Choice(['basic', 'advanced', 'gold_exploration']),
+    @cli.command()
+    @click.argument('project_name')
+    @click.option('--template', '-t', type=click.Choice(['basic', 'advanced', 'gold_exploration']),
  default='basic', help='Config template to use')
-@click.option('--output-dir', '-o', default='.', help='Output directory')
+    @click.option('--output-dir', '-o', default='.', help='Output directory')
 def init(project_name, template, output_dir):
- """
+def init(project_name, template, output_dir):
  Initialize a new project with template configuration
 
  Example:
@@ -128,7 +128,7 @@ def init(project_name, template, output_dir):
  output_path = Path(output_dir) / f"{project_name}.yaml"
 
  if output_path.exists():
- click.echo(click.style(f" File already exists: {output_path}", fg='red'), err=True)
+ if output_path.exists():
  sys.exit(1)
 
  # Load template
@@ -136,7 +136,7 @@ def init(project_name, template, output_dir):
  template_file = templates_dir / f"{template}_template.yaml"
 
  if not template_file.exists():
- # Create basic template inline
+ if not template_file.exists():
  template_config = {
  'project': {
  'name': project_name,
@@ -188,7 +188,7 @@ def init(project_name, template, output_dir):
  }
  }
  else:
- with open(template_file, 'r') as f:
+ else:
  template_config = yaml.safe_load(f)
  # Update project name
  template_config['project']['name'] = project_name
@@ -196,7 +196,7 @@ def init(project_name, template, output_dir):
 
  # Write config
  with open(output_path, 'w') as f:
- yaml.dump(template_config, f, default_flow_style=False, sort_keys=False)
+ with open(output_path, 'w') as f:
 
  click.echo(click.style(f" Created config file: {output_path}", fg='green'))
  click.echo("\nNext steps:")
@@ -204,9 +204,9 @@ def init(project_name, template, output_dir):
  click.echo(f" 2. Validate: geostats-validate {output_path}")
  click.echo(f" 3. Run: geostats-run {output_path}")
 
-@cli.command()
+    @cli.command()
 def templates():
- """List available config templates"""
+def templates():
  click.echo("Available templates:\n")
 
  templates_info = {
@@ -216,10 +216,10 @@ def templates():
  }
 
  for name, desc in templates_info.items():
- click.echo(f" {click.style(name, fg='cyan', bold=True)}")
+ for name, desc in templates_info.items():
  click.echo(f" {desc}\n")
 
  click.echo("Usage: geostats-init PROJECT_NAME --template TEMPLATE_NAME")
 
-if __name__ == '__main__':
- cli()
+    if __name__ == '__main__':
+    if __name__ == '__main__':

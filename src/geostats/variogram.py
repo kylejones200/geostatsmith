@@ -41,12 +41,12 @@ __all__ = [
 
 
 def experimental_variogram(
-    x: npt.NDArray[np.float64],
+def experimental_variogram(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 15,
     maxlag: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate experimental variogram
 
@@ -83,14 +83,14 @@ def experimental_variogram(
 
 
 def experimental_variogram_directional(
-    x: npt.NDArray[np.float64],
+def experimental_variogram_directional(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     angle: float = 0.0,
     tolerance: float = 22.5,
     n_lags: int = 15,
     maxlag: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate directional experimental variogram
 
@@ -124,11 +124,11 @@ def experimental_variogram_directional(
 
 
 def variogram_cloud(
-    x: npt.NDArray[np.float64],
+def variogram_cloud(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     maxlag: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Calculate variogram cloud
 
@@ -154,13 +154,13 @@ def variogram_cloud(
 
 
 def robust_variogram(
-    x: npt.NDArray[np.float64],
+def robust_variogram(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 15,
     maxlag: Optional[float] = None,
     estimator: str = "cressie",
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate robust experimental variogram
 
@@ -192,12 +192,12 @@ def robust_variogram(
 
 
 def fit_model(
-    model_type: str,
+def fit_model(
     lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
     weights: Optional[npt.NDArray[np.float64]] = None,
     **kwargs: Any,
-):
+    ):
     """
     Fit a variogram model to experimental data
 
@@ -238,8 +238,7 @@ def fit_model(
 
     model_type_lower = model_type.lower()
     if model_type_lower not in model_map:
-        raise ValueError(
-            f"Unknown model type: {model_type}. Choose from: {list(model_map.keys())}"
+    if model_type_lower not in model_map:
         )
 
     # Create and fit model
@@ -248,11 +247,11 @@ def fit_model(
 
 
 def auto_fit(
-    lags: npt.NDArray[np.float64],
+def auto_fit(
     gamma: npt.NDArray[np.float64],
     weights: Optional[npt.NDArray[np.float64]] = None,
     criterion: str = "rmse",
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
     """
     Automatically select and fit the best variogram model
 

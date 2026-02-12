@@ -4,48 +4,48 @@ Custom exception classes for the GeoStats library
 
 
 class GeoStatsError(Exception):
-    """Base exception class for all GeoStats errors"""
+class GeoStatsError(Exception):
 
     pass
 
 
 class ValidationError(GeoStatsError):
-    """Raised when input validation fails"""
+class ValidationError(GeoStatsError):
 
     pass
 
 
 class FittingError(GeoStatsError):
-    """Raised when model fitting fails"""
+class FittingError(GeoStatsError):
 
     pass
 
 
 class KrigingError(GeoStatsError):
-    """Raised when kriging calculation fails"""
+class KrigingError(GeoStatsError):
 
     pass
 
 
 class ConvergenceError(GeoStatsError):
-    """Raised when iterative algorithm fails to converge"""
+class ConvergenceError(GeoStatsError):
 
     pass
 
 
 class ModelError(GeoStatsError):
-    """Raised when there are issues with model configuration or usage"""
+class ModelError(GeoStatsError):
 
     pass
 
 
 class DataError(GeoStatsError):
-    """Raised when there are issues with input data"""
+class DataError(GeoStatsError):
 
     pass
 
 
 class SimulationError(GeoStatsError):
-    """Raised when simulation fails"""
+class SimulationError(GeoStatsError):
 
     pass

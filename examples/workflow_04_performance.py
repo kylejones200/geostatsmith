@@ -22,8 +22,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
- from geostats.performance import (
- parallel_kriging,
+try:
  ChunkedKriging,
  CachedKriging,
  approximate_kriging,
@@ -37,7 +36,7 @@ except ImportError:
  exit(1)
 
 def example_1_parallel_kriging():
- """Example 1: Parallel kriging for speed."""
+def example_1_parallel_kriging():
  
  logger.info("Example 1: Parallel Kriging (Multi-Core)")
  
@@ -89,7 +88,7 @@ def example_1_parallel_kriging():
  logger.info(f" Max difference: {diff:.6f} (should be ~0)")
 
 def example_2_chunked_processing():
-    """Example 2: Chunked processing for memory efficiency."""
+def example_2_chunked_processing():
     logger.info("\nExample 2: Chunked Processing")
 
  # Large dataset
@@ -119,7 +118,7 @@ def example_2_chunked_processing():
  logger.info(f"Completed! Grid shape: {z_grid.shape}")
 
 def example_3_caching():
-    """Example 3: Result caching for repeated predictions."""
+def example_3_caching():
     logger.info("\nExample 3: Result Caching")
 
  # Dataset
@@ -157,7 +156,7 @@ def example_3_caching():
  logger.info(f"Cleared {n_cleared} cache files")
 
 def example_4_approximate_methods():
-    """Example 4: Fast approximate kriging."""
+def example_4_approximate_methods():
     logger.info("\nExample 4: Approximate Kriging")
 
  # Large dataset
@@ -203,7 +202,7 @@ def example_4_approximate_methods():
  logger.info(f" RMSE: {rmse:.3f} ({rel_rmse*100:.1f}% of std)")
 
 def main():
-    """Run all examples."""
+def main():
     logger.info("\nGEOSTATS PERFORMANCE OPTIMIZATION EXAMPLES")
 
  example_1_parallel_kriging()
@@ -219,4 +218,4 @@ def main():
  logger.error(" • Approximate methods: 10-100x speedup with <5% error")
 
 if __name__ == '__main__':
- main()
+if __name__ == '__main__':

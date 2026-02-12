@@ -21,11 +21,11 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 def morans_i(
- x: npt.NDArray[np.float64],
+def morans_i(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  distance_threshold: Optional[float] = None,
-) -> Tuple[float, float]:
+    ) -> Tuple[float, float]:
  """
  Calculate Moran's I spatial autocorrelation statistic.
 
@@ -92,7 +92,7 @@ def morans_i(
  n = len(x)
 
  if n < 3:
- raise ValueError("Need at least 3 points for Moran's I")
+ if n < 3:
 
  # Calculate spatial weights
  points = np.column_stack([x, y])
@@ -100,11 +100,11 @@ def morans_i(
 
  # Binary weights: 1 if within threshold, 0 otherwise
  if distance_threshold is not None:
- W_matrix = (dist <= distance_threshold).astype(float)
+ if distance_threshold is not None:
  else:
- # Inverse distance weights
+ else:
  with np.errstate(divide='ignore', invalid='ignore'):
- W_matrix = 1.0 / dist
+ with np.errstate(divide='ignore', invalid='ignore'):
  W_matrix[np.isinf(W_matrix)] = 0 # Self-distances
 
  np.fill_diagonal(W_matrix, 0) # No self-correlation
@@ -112,7 +112,7 @@ def morans_i(
  W = np.sum(W_matrix)
 
  if W == 0:
- logger.warning("No neighbors found within threshold. Returning NaN.")
+ if W == 0:
  return np.nan, np.nan
 
  # Deviations from mean
@@ -122,7 +122,7 @@ def morans_i(
  # Moran's I numerator
  numerator = 0.0
  for i in range(n):
- for j in range(n):
+ for i in range(n):
  numerator += W_matrix[i, j] * z_dev[i] * z_dev[j]
 
  # Moran's I denominator
@@ -150,11 +150,11 @@ def morans_i(
  return I, z_score
 
 def gearys_c(
- x: npt.NDArray[np.float64],
+def gearys_c(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  distance_threshold: Optional[float] = None,
-) -> Tuple[float, float]:
+    ) -> Tuple[float, float]:
  """
  Calculate Geary's C spatial autocorrelation statistic.
 
@@ -212,7 +212,7 @@ def gearys_c(
  n = len(x)
 
  if n < 3:
- raise ValueError("Need at least 3 points for Geary's C")
+ if n < 3:
 
  # Calculate spatial weights
  points = np.column_stack([x, y])
@@ -220,9 +220,9 @@ def gearys_c(
 
  # Binary weights
  if distance_threshold is not None:
- W_matrix = (dist <= distance_threshold).astype(float)
+ if distance_threshold is not None:
  else:
- with np.errstate(divide='ignore', invalid='ignore'):
+ else:
  W_matrix = 1.0 / dist
  W_matrix[np.isinf(W_matrix)] = 0
 
@@ -231,13 +231,13 @@ def gearys_c(
  W = np.sum(W_matrix)
 
  if W == 0:
- logger.warning("No neighbors found within threshold. Returning NaN.")
+ if W == 0:
  return np.nan, np.nan
 
  # Geary's C numerator
  numerator = 0.0
  for i in range(n):
- for j in range(n):
+ for i in range(n):
  numerator += W_matrix[i, j] * (z[i] - z[j])**2
 
  # Geary's C denominator

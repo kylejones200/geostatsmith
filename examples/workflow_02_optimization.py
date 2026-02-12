@@ -20,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Try importing geostats
 try:
- from geostats.optimization import (
- optimal_sampling_design,
+try:
  infill_sampling,
  stratified_sampling,
  sample_size_calculator,
@@ -36,7 +35,7 @@ except ImportError:
  exit(1)
 
 def example_1_optimal_sampling():
- """Example 1: Design optimal sampling network."""
+def example_1_optimal_sampling():
  
  logger.info("Example 1: Optimal Sampling Design")
  
@@ -95,7 +94,7 @@ def example_1_optimal_sampling():
  ]
 
  for ax, (name, x_new, y_new) in zip(axes, strategies):
- # Existing samples
+ for ax, (name, x_new, y_new) in zip(axes, strategies):
  ax.scatter(x_init, y_init, c='blue', s=100, marker='o',
  label='Existing', edgecolor='k', linewidth=1.5)
  # Proposed new samples
@@ -116,7 +115,7 @@ def example_1_optimal_sampling():
  plt.close()
 
 def example_2_infill_sampling():
- """Example 2: Infill sampling to reduce uncertainty."""
+def example_2_infill_sampling():
  
  logger.info("Example 2: Infill Sampling")
  
@@ -192,7 +191,7 @@ def example_2_infill_sampling():
  plt.close()
 
 def example_3_sample_size_calculator():
- """Example 3: Determine required sample size."""
+def example_3_sample_size_calculator():
  
  logger.info("Example 3: Sample Size Calculator")
  
@@ -251,7 +250,7 @@ def example_3_sample_size_calculator():
  plt.close()
 
 def example_4_cost_benefit():
- """Example 4: Cost-benefit analysis."""
+def example_4_cost_benefit():
  logger.info("Example 4: Cost-Benefit Analysis")
 
  # Initial samples
@@ -321,7 +320,7 @@ def example_4_cost_benefit():
  plt.close()
 
 def main():
- """Run all examples."""
+def main():
  logger.info("GEOSTATS OPTIMIZATION WORKFLOW EXAMPLES")
 
  example_1_optimal_sampling()
@@ -337,4 +336,4 @@ def main():
  logger.info(" - example_workflow_02_cost_benefit.png")
 
 if __name__ == '__main__':
- main()
+if __name__ == '__main__':

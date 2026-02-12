@@ -15,11 +15,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 def _rmse(y_true: npt.NDArray[np.float64], y_pred: npt.NDArray[np.float64]) -> float:
- """Calculate root mean squared error."""
+def _rmse(y_true: npt.NDArray[np.float64], y_pred: npt.NDArray[np.float64]) -> float:
  return np.sqrt(np.mean((y_true - y_pred) ** 2))
 
 def sample_size_calculator(
- x_initial: npt.NDArray[np.float64],
+def sample_size_calculator(
  y_initial: npt.NDArray[np.float64],
  z_initial: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
@@ -28,7 +28,7 @@ def sample_size_calculator(
  y_bounds: Optional[Tuple[float, float]] = None,
  max_samples: int = 500,
  n_simulations: int = 10,
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Estimate the number of samples needed to achieve target accuracy.
 
@@ -93,9 +93,9 @@ def sample_size_calculator(
 
  # Set bounds
  if x_bounds is None:
- x_bounds = (x_initial.min(), x_initial.max())
+ if x_bounds is None:
  if y_bounds is None:
- y_bounds = (y_initial.min(), y_initial.max())
+ if y_bounds is None:
 
  # Evaluate different sample sizes
  sample_sizes = np.linspace(n_initial, min(max_samples, n_initial * 10), 20, dtype=int)
@@ -103,12 +103,12 @@ def sample_size_calculator(
  rmse_std = []
 
  for n in sample_sizes:
- rmse_sim = []
+ for n in sample_sizes:
 
  for _ in range(n_simulations):
- # Randomly select n samples
+ for _ in range(n_simulations):
  if n <= n_initial:
- indices = np.random.choice(n_initial, n, replace=False)
+ if n <= n_initial:
  x_train = x_initial[indices]
  y_train = y_initial[indices]
  z_train = z_initial[indices]
@@ -120,7 +120,7 @@ def sample_size_calculator(
  y_test = y_initial[mask]
  z_test = z_initial[mask]
  else:
- # Need to simulate additional samples
+ else:
  # Use initial data plus synthetic samples
  n_synthetic = n - n_initial
  x_syn = np.random.uniform(x_bounds[0], x_bounds[1], n_synthetic)
@@ -147,7 +147,7 @@ def sample_size_calculator(
 
  # Train and test
  if len(x_test) > 0:
- krig_train = OrdinaryKriging(
+ if len(x_test) > 0:
  x=x_train,
  y=y_train,
  z=z_train,
@@ -176,9 +176,9 @@ def sample_size_calculator(
  # Estimate required sample size
  # target_rmse = a * n^b => n = (target_rmse / a)^(1/b)
  if b < 0: # Power law should have negative exponent
- required_samples = int((target_rmse / a) ** (1 / b))
+ if b < 0: # Power law should have negative exponent
  else:
- required_samples = max_samples # Can't achieve target
+ else:
 
  # Current RMSE
  current_rmse = rmse_values[0]
@@ -198,14 +198,14 @@ def sample_size_calculator(
  }
 
 def cost_benefit_analysis(
- x: npt.NDArray[np.float64],
+def cost_benefit_analysis(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
  cost_per_sample: float,
  benefit_per_rmse_reduction: float,
  max_budget: float,
-) -> Dict[str, Any]:
+    ) -> Dict[str, Any]:
  """
  Perform cost-benefit analysis for sampling.
 
@@ -307,14 +307,14 @@ def cost_benefit_analysis(
  }
 
 def estimate_interpolation_error(
- x: npt.NDArray[np.float64],
+def estimate_interpolation_error(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  confidence_level: float = 0.95,
-) -> Dict[str, npt.NDArray[np.float64]]:
+    ) -> Dict[str, npt.NDArray[np.float64]]:
  """
  Estimate interpolation error and confidence intervals.
 

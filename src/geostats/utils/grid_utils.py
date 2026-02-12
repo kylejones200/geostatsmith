@@ -7,14 +7,14 @@ import numpy as np
 import numpy.typing as npt
 
 def create_grid(
- x_min: float,
+def create_grid(
  x_max: float,
  y_min: float,
  y_max: float,
  nx: int = 100,
  ny: Optional[int] = None,
  resolution: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Create a regular grid for interpolation
 
@@ -38,10 +38,10 @@ def create_grid(
  """
  # Handle multiple parameter names
  if resolution is not None:
- nx = resolution
+ if resolution is not None:
 
  if ny is None:
- ny = nx
+ if ny is None:
 
  x_grid = np.linspace(x_min, x_max, nx)
  y_grid = np.linspace(y_min, y_max, ny)
@@ -50,14 +50,14 @@ def create_grid(
  return X, Y
 
 def interpolate_to_grid(
- kriging_obj,
+def interpolate_to_grid(
  x_min: float,
  x_max: float,
  y_min: float,
  y_max: float,
  resolution: int = 100,
  return_variance: bool = True,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
  """
  Interpolate kriging predictions to a regular grid
 

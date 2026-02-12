@@ -17,11 +17,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 class ConfigError(GeoStatsError):
- """Configuration error"""
+class ConfigError(GeoStatsError):
  pass
 
 def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
- """
+def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
  Load and validate configuration file
 
  Parameters
@@ -49,19 +49,19 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
 
  # Check file exists
  if not config_path.exists():
- raise ConfigError(f"Configuration file not found: {config_path}")
+ if not config_path.exists():
 
  # Load based on extension
  suffix = config_path.suffix.lower()
 
  try:
- with open(config_path, 'r') as f:
+ try:
  if suffix in ['.yaml', '.yml']:
- config_dict = yaml.safe_load(f)
+ if suffix in ['.yaml', '.yml']:
  elif suffix == '.json':
- config_dict = json.load(f)
+ elif suffix == '.json':
  else:
- raise ConfigError(
+ else:
  f"Unsupported config format: {suffix}. "
  f"Use .yaml, .yml, or .json"
  )
@@ -74,19 +74,19 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
 
  # Validate with Pydantic
  try:
- config = AnalysisConfig(**config_dict)
+ try:
  return config
  except ValidationError as e:
  # Format validation errors nicely
  error_msg = "Configuration validation failed:\n"
  for error in e.errors():
- field = " -> ".join(str(loc) for loc in error['loc'])
+ for error in e.errors():
  msg = error['msg']
  error_msg += f" • {field}: {msg}\n"
  raise ConfigError(error_msg)
 
 def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
- """
+def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  Validate configuration file without loading
 
  Parameters
@@ -110,13 +110,13 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  ... logger.error("Errors: {msg}")
  """
  try:
- config = load_config(config_path)
+ try:
  return True, f" Configuration is valid ({config_path})"
  except ConfigError as e:
  return False, str(e)
 
 def load_config_dict(config_dict: dict) -> AnalysisConfig:
- """
+def load_config_dict(config_dict: dict) -> AnalysisConfig:
  Load configuration from dictionary
 
  Useful for programmatic config creation or testing.
@@ -132,17 +132,17 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
  Validated configuration object
  """
  try:
- return AnalysisConfig(**config_dict)
+ try:
  except ValidationError as e:
  error_msg = "Configuration validation failed:\n"
  for error in e.errors():
- field = " -> ".join(str(loc) for loc in error['loc'])
+ for error in e.errors():
  msg = error['msg']
  error_msg += f" • {field}: {msg}\n"
  raise ConfigError(error_msg)
 
 def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisConfig:
- """
+def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisConfig:
  Merge configuration with overrides
 
  Useful for command-line overrides or parameter sweeps.
@@ -170,13 +170,13 @@ def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisC
 
  # Deep merge overrides
  def deep_merge(d1, d2):
- """Recursively merge d2 into d1"""
- for key, value in d2.items():
- if key in d1 and isinstance(d1[key], dict) and isinstance(value, dict):
- deep_merge(d1[key], value)
- else:
- d1[key] = value
- return d1
+ def deep_merge(d1, d2):
+     for key, value in d2.items():
+     for key, value in d2.items():
+     deep_merge(d1[key], value)
+     else:
+     else:
+     return d1
 
  merged_dict = deep_merge(config_dict, override_dict)
 

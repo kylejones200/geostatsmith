@@ -29,7 +29,7 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class OrdinaryKriging(BaseKriging):
- """
+class OrdinaryKriging(BaseKriging):
  Ordinary Kriging interpolation
 
  Most commonly used kriging variant. Does not assume a known mean,
@@ -37,38 +37,38 @@ class OrdinaryKriging(BaseKriging):
  """
 
  def __init__(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- variogram_model: Optional[object] = None,
- ):
- """
- Initialize Ordinary Kriging
+ def __init__(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     variogram_model: Optional[object] = None,
+     ):
+     """
+     Initialize Ordinary Kriging
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- variogram_model : VariogramModelBase, optional
- Fitted variogram model
- """
- super().__init__(x, y, z, variogram_model)
+     Parameters
+     ----------
+     x, y : np.ndarray
+     Coordinates of sample points
+     z : np.ndarray
+     Values at sample points
+     variogram_model : VariogramModelBase, optional
+     Fitted variogram model
+     """
+     super().__init__(x, y, z, variogram_model)
 
- # Validate inputs
- self.x, self.y = validate_coordinates(x, y)
- self.z = validate_values(z, n_expected=len(self.x))
+     # Validate inputs
+     self.x, self.y = validate_coordinates(x, y)
+     self.z = validate_values(z, n_expected=len(self.x))
 
- # Build kriging matrix
- if self.variogram_model is not None:
- self._build_kriging_matrix()
+     # Build kriging matrix
+     if self.variogram_model is not None:
+     if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
- """Build the augmented kriging matrix with Lagrange multiplier"""
- # Calculate pairwise distances
- dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
+ def _build_kriging_matrix(self) -> None:
+     # Calculate pairwise distances
+     dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
  # Get variogram values
  gamma_matrix = self.variogram_model(dist_matrix)
@@ -90,96 +90,96 @@ class OrdinaryKriging(BaseKriging):
  )
 
  def predict(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- return_variance: bool = True,
- ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
- """
- Perform Ordinary Kriging prediction
+ def predict(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     return_variance: bool = True,
+     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+     """
+     Perform Ordinary Kriging prediction
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates for prediction
- return_variance : bool
- Whether to return kriging variance
+     Parameters
+     ----------
+     x, y : np.ndarray
+     Coordinates for prediction
+     return_variance : bool
+     Whether to return kriging variance
 
- Returns
- -------
- predictions : np.ndarray
- Predicted values
- variance : np.ndarray or None
- Kriging variance (if return_variance=True)
- """
- if self.variogram_model is None:
- raise KrigingError("Variogram model must be set before prediction")
+     Returns
+     -------
+     predictions : np.ndarray
+     Predicted values
+     variance : np.ndarray or None
+     Kriging variance (if return_variance=True)
+     """
+     if self.variogram_model is None:
+     if self.variogram_model is None:
 
- x_pred, y_pred = validate_coordinates(x, y)
- n_pred = len(x_pred)
+     x_pred, y_pred = validate_coordinates(x, y)
+     n_pred = len(x_pred)
 
- predictions = np.zeros(n_pred)
- variances = np.zeros(n_pred) if return_variance else None
+     predictions = np.zeros(n_pred)
+     variances = np.zeros(n_pred) if return_variance else None
 
- # Predict at each location
- for i in range(n_pred):
- # Distance from prediction point to sample points
- dist_to_samples = euclidean_distance(
- np.array([x_pred[i]]),
- np.array([y_pred[i]]),
- self.x,
- self.y,
- ).flatten()
+     # Predict at each location
+     for i in range(n_pred):
+     for i in range(n_pred):
+     dist_to_samples = euclidean_distance(
+     np.array([x_pred[i]]),
+     np.array([y_pred[i]]),
+     self.x,
+     self.y,
+     ).flatten()
 
- # Variogram vector
- gamma_vec = self.variogram_model(dist_to_samples)
+     # Variogram vector
+     gamma_vec = self.variogram_model(dist_to_samples)
 
- # Augmented right-hand side: [γ(h), 1]ᵀ
- rhs = np.zeros(self.n_points + 1)
- rhs[:self.n_points] = gamma_vec
- rhs[self.n_points] = 1.0
+     # Augmented right-hand side: [γ(h), 1]ᵀ
+     rhs = np.zeros(self.n_points + 1)
+     rhs[:self.n_points] = gamma_vec
+     rhs[self.n_points] = 1.0
 
- # Solve for weights and Lagrange multiplier
- try:
- solution = solve_kriging_system(self.kriging_matrix, rhs)
- except KrigingError:
- # Fallback: use nearest neighbor
- nearest_idx = np.argmin(dist_to_samples)
- predictions[i] = self.z[nearest_idx]
- if return_variance:
- variances[i] = 0.0
- continue
+     # Solve for weights and Lagrange multiplier
+     try:
+     try:
+     except KrigingError:
+     # Fallback: use nearest neighbor
+     nearest_idx = np.argmin(dist_to_samples)
+     predictions[i] = self.z[nearest_idx]
+     if return_variance:
+     if return_variance:
+     continue
 
- weights = solution[:self.n_points]
- lagrange = solution[self.n_points]
+     weights = solution[:self.n_points]
+     lagrange = solution[self.n_points]
 
- # Ordinary kriging prediction: ẑ(x₀) = Σλᵢz(xᵢ)
- predictions[i] = np.dot(weights, self.z)
+     # Ordinary kriging prediction: ẑ(x₀) = Σλᵢz(xᵢ)
+     predictions[i] = np.dot(weights, self.z)
 
- # Kriging variance: σ²(x₀) = Σλᵢγ(xᵢ, x₀) + μ
- if return_variance:
- variances[i] = np.dot(weights, gamma_vec) + lagrange
- # Kriging variance should theoretically be non-negative
- # Negative values indicate numerical issues or invalid variogram
- if variances[i] < 0.0:
- if variances[i] < -1e-6: # More than just numerical noise
- import warnings
- warnings.warn(
- f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
- "This may indicate numerical instability or an invalid variogram model. "
- "Variance will be clamped to 0.",
- RuntimeWarning
- )
- variances[i] = 0.0
+     # Kriging variance: σ²(x₀) = Σλᵢγ(xᵢ, x₀) + μ
+     if return_variance:
+     if return_variance:
+     # Kriging variance should theoretically be non-negative
+     # Negative values indicate numerical issues or invalid variogram
+     if variances[i] < 0.0:
+     if variances[i] < 0.0:
+     import warnings
+     warnings.warn(
+     f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
+     "This may indicate numerical instability or an invalid variogram model. "
+     "Variance will be clamped to 0.",
+     RuntimeWarning
+     )
+     variances[i] = 0.0
 
- if return_variance:
- return predictions, variances
- else:
- return predictions, None
+     if return_variance:
+     if return_variance:
+     else:
+     else:
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- """
- Perform leave-one-out cross-validation
+ def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+     Perform leave-one-out cross-validation
 
  Returns
  -------
@@ -189,14 +189,12 @@ class OrdinaryKriging(BaseKriging):
  Dictionary of validation metrics (MSE, RMSE, MAE, R², bias)
  """
  if self.variogram_model is None:
- raise KrigingError("Variogram model must be set before cross-validation")
 
- predictions = np.zeros(self.n_points)
+     predictions = np.zeros(self.n_points)
 
  # Leave-one-out cross-validation
  for i in range(self.n_points):
- # Remove point i
- mask = np.ones(self.n_points, dtype=bool)
+     mask = np.ones(self.n_points, dtype=bool)
  mask[i] = False
 
  x_train = self.x[mask]
@@ -225,42 +223,42 @@ class OrdinaryKriging(BaseKriging):
  return predictions, metrics
 
  def predict_block(
- self,
- x_block: Tuple[float, float],
- y_block: Tuple[float, float],
- discretization: int = 10,
- ) -> Tuple[float, float]:
- """
- Block kriging: predict average value over a block
+ def predict_block(
+     x_block: Tuple[float, float],
+     y_block: Tuple[float, float],
+     discretization: int = 10,
+     ) -> Tuple[float, float]:
+     """
+     Block kriging: predict average value over a block
 
- Parameters
- ----------
- x_block : tuple
- (x_min, x_max) of block
- y_block : tuple
- (y_min, y_max) of block
- discretization : int
- Number of points per dimension for discretization
+     Parameters
+     ----------
+     x_block : tuple
+     (x_min, x_max) of block
+     y_block : tuple
+     (y_min, y_max) of block
+     discretization : int
+     Number of points per dimension for discretization
 
- Returns
- -------
- prediction : float
- Predicted block average
- variance : float
- Block kriging variance
- """
- # Create grid of points within block
- x_grid = np.linspace(x_block[0], x_block[1], discretization)
- y_grid = np.linspace(y_block[0], y_block[1], discretization)
- X, Y = np.meshgrid(x_grid, y_grid)
- x_points = X.flatten()
- y_points = Y.flatten()
+     Returns
+     -------
+     prediction : float
+     Predicted block average
+     variance : float
+     Block kriging variance
+     """
+     # Create grid of points within block
+     x_grid = np.linspace(x_block[0], x_block[1], discretization)
+     y_grid = np.linspace(y_block[0], y_block[1], discretization)
+     X, Y = np.meshgrid(x_grid, y_grid)
+     x_points = X.flatten()
+     y_points = Y.flatten()
 
- # Predict at all discretization points
- predictions, variances = self.predict(x_points, y_points, return_variance=True)
+     # Predict at all discretization points
+     predictions, variances = self.predict(x_points, y_points, return_variance=True)
 
- # Block average
- block_prediction = np.mean(predictions)
- block_variance = np.mean(variances)
+     # Block average
+     block_prediction = np.mean(predictions)
+     block_variance = np.mean(variances)
 
- return block_prediction, block_variance
+     return block_prediction, block_variance

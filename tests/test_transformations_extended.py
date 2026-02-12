@@ -16,10 +16,10 @@ from geostats.transformations.boxcox import BoxCoxTransform
 from geostats.transformations.declustering import cell_declustering
 
 class TestNormalScoreTransform:
-    """Tests for Normal Score Transform"""
+class TestNormalScoreTransform:
 
     def test_basic_transform(self):
-        """Test basic normal score transformation"""
+    def test_basic_transform(self):
         np.random.seed(42)
         # Skewed data
         data = np.random.exponential(scale=2.0, size=100)
@@ -36,7 +36,7 @@ class TestNormalScoreTransform:
         assert abs(np.std(transformed) - 1.0) < 0.3
 
     def test_inverse_transform(self):
-        """Test inverse transformation"""
+    def test_inverse_transform(self):
         np.random.seed(42)
         data = np.random.exponential(scale=2.0, size=100)
 
@@ -48,7 +48,7 @@ class TestNormalScoreTransform:
         np.testing.assert_array_almost_equal(np.sort(data), np.sort(back), decimal=5)
 
     def test_transform_handles_duplicates(self):
-        """Test handling of duplicate values"""
+    def test_transform_handles_duplicates(self):
         data = np.array([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
 
         ns = NormalScoreTransform()
@@ -58,7 +58,7 @@ class TestNormalScoreTransform:
         assert all(np.isfinite(transformed))
 
     def test_transform_preserves_order(self):
-        """Test that transform preserves rank order"""
+    def test_transform_preserves_order(self):
         data = np.array([1, 5, 2, 8, 3, 9, 4, 6, 7])
 
         ns = NormalScoreTransform()
@@ -71,7 +71,7 @@ class TestNormalScoreTransform:
         np.testing.assert_array_equal(original_ranks, transformed_ranks)
 
     def test_transform_with_ties(self):
-        """Test transformation with tied values"""
+    def test_transform_with_ties(self):
         data = np.array([1, 2, 2, 2, 3, 4, 5, 5, 5, 6])
 
         ns = NormalScoreTransform()
@@ -83,24 +83,23 @@ class TestNormalScoreTransform:
         assert all(np.diff(transformed) >= -1e-10)
 
     def test_transform_single_value(self):
-        """Test with all same values"""
+    def test_transform_single_value(self):
         data = np.array([5.0] * 10)
 
         ns = NormalScoreTransform()
         # Should handle constant data gracefully
         try:
-             try:
-        # If it succeeds, all values should be the same
+            # If it succeeds, all values should be the same
         assert np.std(transformed) < 0.1
         except ValueError:
         # Also acceptable to raise error for constant data
         pass
 
 class TestLogTransformExtended:
-    """Extended tests for Log Transform"""
+class TestLogTransformExtended:
 
     def test_fit_and_transform_separate(self):
-        """Test fit and transform as separate steps"""
+    def test_fit_and_transform_separate(self):
         data = np.array([1, 2, 3, 4, 5, 10, 20, 30])
 
         lt = LogTransform()
@@ -112,7 +111,7 @@ class TestLogTransformExtended:
         assert np.var(transformed) < np.var(data)
 
     def test_back_transform(self):
-        """Test inverse transformation"""
+    def test_back_transform(self):
         data = np.array([1, 2, 3, 4, 5, 10, 20, 30])
 
         lt = LogTransform()
@@ -123,7 +122,7 @@ class TestLogTransformExtended:
         np.testing.assert_array_almost_equal(data, back, decimal=10)
 
     def test_with_zeros_and_offset(self):
-        """Test handling of zeros with offset"""
+    def test_with_zeros_and_offset(self):
         data = np.array([0, 1, 2, 3, 4, 5])
 
         lt = LogTransform(offset=0.01)
@@ -136,7 +135,7 @@ class TestLogTransformExtended:
         np.testing.assert_array_almost_equal(data, back, decimal=10)
 
     def test_reduces_skewness(self):
-        """Test that log transform reduces skewness"""
+    def test_reduces_skewness(self):
         np.random.seed(42)
         # Highly skewed data
         data = np.random.lognormal(mean=0, sigma=1, size=200)
@@ -155,7 +154,7 @@ class TestLogTransformExtended:
         assert abs(skew_after) < abs(skew_before)
 
     def test_base_parameter(self):
-        """Test with different log bases"""
+    def test_base_parameter(self):
         data = np.array([1, 10, 100, 1000])
 
         lt10 = LogTransform(base=10)
@@ -167,10 +166,10 @@ class TestLogTransformExtended:
         np.testing.assert_array_almost_equal(transformed, expected, decimal=10)
 
 class TestBoxCoxTransform:
-    """Tests for Box-Cox transformation"""
+class TestBoxCoxTransform:
 
     def test_basic_boxcox(self):
-        """Test basic Box-Cox transformation"""
+    def test_basic_boxcox(self):
         np.random.seed(42)
         # Positive data only
         data = np.random.gamma(shape=2, scale=2, size=100)
@@ -182,7 +181,7 @@ class TestBoxCoxTransform:
         assert all(np.isfinite(transformed))
 
     def test_finds_optimal_lambda(self):
-        """Test that optimal lambda is found"""
+    def test_finds_optimal_lambda(self):
         np.random.seed(42)
         data = np.random.exponential(scale=2.0, size=100)
 
@@ -194,7 +193,7 @@ class TestBoxCoxTransform:
         assert np.isfinite(bc.lambda_)
 
     def test_inverse_transform(self):
-        """Test inverse Box-Cox transformation"""
+    def test_inverse_transform(self):
         np.random.seed(42)
         data = np.random.gamma(shape=2, scale=2, size=50)
 
@@ -205,7 +204,7 @@ class TestBoxCoxTransform:
         np.testing.assert_array_almost_equal(data, back, decimal=8)
 
     def test_normality_improvement(self):
-        """Test that Box-Cox improves normality"""
+    def test_normality_improvement(self):
         np.random.seed(42)
         # Skewed data
         data = np.random.exponential(scale=2.0, size=200)
@@ -226,10 +225,10 @@ class TestBoxCoxTransform:
         assert p_after > p_before or p_after > 0.01
 
 class TestDeclustering:
-    """Tests for declustering methods"""
+class TestDeclustering:
 
     def test_cell_declustering_basic(self):
-        """Test basic cell declustering"""
+    def test_cell_declustering_basic(self):
         np.random.seed(42)
 
         # Create clustered data
@@ -256,7 +255,7 @@ class TestDeclustering:
         assert 'optimal_cell_size' in info
 
     def test_declustering_reduces_bias(self):
-        """Test that declustering reduces sampling bias"""
+    def test_declustering_reduces_bias(self):
         np.random.seed(42)
 
         # Create heavily clustered data with known mean
@@ -286,7 +285,7 @@ class TestDeclustering:
         assert abs(declust_mean - 10) < abs(naive_mean - 10)
 
     def test_uniform_data_gets_uniform_weights(self):
-        """Test that uniformly distributed data gets equal weights"""
+    def test_uniform_data_gets_uniform_weights(self):
         np.random.seed(42)
 
         # Uniformly distributed data
@@ -302,7 +301,7 @@ class TestDeclustering:
         assert all(np.abs(weights - mean_weight) < 2.0 * mean_weight)
 
     def test_declustering_different_cell_sizes(self):
-        """Test declustering with different numbers of cell sizes"""
+    def test_declustering_different_cell_sizes(self):
         np.random.seed(42)
 
         # Create clustered data
@@ -328,38 +327,36 @@ class TestDeclustering:
         assert len(weights_many) == len(z)
 
 class TestTransformationEdgeCases:
-    """Test edge cases for transformations"""
+class TestTransformationEdgeCases:
 
     def test_empty_data(self):
-        """Test transformations with empty data"""
+    def test_empty_data(self):
         data = np.array([])
 
         ns = NormalScoreTransform()
 
         # Should handle empty data gracefully
         try:
-             try:
-        assert len(transformed) == 0
+            assert len(transformed) == 0
         except ValueError:
         # Also acceptable to raise error
         pass
 
     def test_single_point(self):
-        """Test transformations with single point"""
+    def test_single_point(self):
         data = np.array([5.0])
 
         ns = NormalScoreTransform()
 
         # Should handle single point
         try:
-             try:
-        assert len(transformed) == 1
+            assert len(transformed) == 1
         except ValueError:
         # Also acceptable to raise error
         pass
 
     def test_negative_values_log_transform(self):
-        """Test log transform with negative values"""
+    def test_negative_values_log_transform(self):
         data = np.array([-5, -2, 0, 1, 2, 5])
 
         # Should either shift or raise error
@@ -367,11 +364,10 @@ class TestTransformationEdgeCases:
         lt.fit(data)
 
         try:
-             try:
-        assert all(np.isfinite(transformed))
+            assert all(np.isfinite(transformed))
         except ValueError:
         # Acceptable to raise error for negative values
         pass
 
 if __name__ == "__main__":
-     if __name__ == "__main__":
+if __name__ == "__main__":

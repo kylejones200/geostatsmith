@@ -19,7 +19,7 @@ from geostats.config import (
 )
 
 def test_minimal_config():
- """Test minimal valid configuration"""
+def test_minimal_config():
  config_dict = {
  'project': {
  'name': 'Test',
@@ -39,18 +39,16 @@ def test_minimal_config():
  assert config.kriging.method == 'ordinary' # Default
 
 def test_config_validation():
- """Test configuration validation"""
+def test_config_validation():
  # Invalid: missing required fields
         with pytest.raises(ConfigError):
-            load_config({
-                'project': {'name': 'Test'}
+        with pytest.raises(ConfigError):
                 # Missing data section
             })
 
  # Invalid: wrong type
  with pytest.raises(ConfigError):
-     'project': {'name': 'Test', 'output_dir': './results'},
- 'data': {
+     'data': {
  'input_file': __file__,
  'x_column': 'X',
  'y_column': 'Y',
@@ -63,8 +61,7 @@ def test_config_validation():
 
  # Invalid: value out of range
  with pytest.raises(ConfigError):
-     'project': {'name': 'Test', 'output_dir': './results'},
- 'data': {
+     'data': {
  'input_file': __file__,
  'x_column': 'X',
  'y_column': 'Y',
@@ -76,7 +73,7 @@ def test_config_validation():
  })
 
 def test_yaml_loading():
- """Test loading config from YAML file"""
+def test_yaml_loading():
  config_dict = {
  'project': {'name': 'YAML Test', 'output_dir': './results'},
  'data': {
@@ -89,10 +86,8 @@ def test_yaml_loading():
 
  # Write to temp file
  with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
-     temp_path = f.name
 
- try:
- try:
+     try:
  config = load_config(temp_path)
  assert config.project.name == 'YAML Test'
 
@@ -104,7 +99,7 @@ def test_yaml_loading():
  Path(temp_path).unlink()
 
 def test_config_merging():
- """Test config merging with overrides"""
+def test_config_merging():
      base_dict = {
  'project': {'name': 'Base', 'output_dir': './results'},
  'data': {
@@ -138,7 +133,7 @@ def test_config_merging():
  assert merged.data.x_column == 'X' # Preserved from base
 
 def test_default_values():
- """Test that default values are applied correctly"""
+def test_default_values():
  config_dict = {
  'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
@@ -164,11 +159,10 @@ def test_default_values():
  assert config.output.save_predictions == True
 
 def test_cross_field_validation():
- """Test cross-field validation rules"""
+def test_cross_field_validation():
  # Cokriging without secondary variable
  with pytest.raises(ConfigError) as excinfo:
-     'project': {'name': 'Test', 'output_dir': './results'},
- 'data': {
+     'data': {
  'input_file': __file__,
  'x_column': 'X',
  'y_column': 'Y',
@@ -183,8 +177,7 @@ def test_cross_field_validation():
 
  # Indicator kriging without thresholds
  with pytest.raises(ConfigError) as excinfo:
-     'project': {'name': 'Test', 'output_dir': './results'},
- 'data': {
+     'data': {
  'input_file': __file__,
  'x_column': 'X',
  'y_column': 'Y',
@@ -198,11 +191,10 @@ def test_cross_field_validation():
  assert 'indicator' in str(excinfo.value).lower()
 
 def test_neighborhood_validation():
- """Test neighborhood parameter validation"""
+def test_neighborhood_validation():
  # max_neighbors < min_neighbors
  with pytest.raises(ConfigError):
-     'project': {'name': 'Test', 'output_dir': './results'},
- 'data': {
+     'data': {
  'input_file': __file__,
  'x_column': 'X',
  'y_column': 'Y',
@@ -217,10 +209,9 @@ def test_neighborhood_validation():
  })
 
 def test_file_not_found_validation():
- """Test that non-existent input files are caught"""
+def test_file_not_found_validation():
  with pytest.raises(ConfigError) as excinfo:
-     'project': {'name': 'Test', 'output_dir': './results'},
- 'data': {
+     'data': {
  'input_file': '/nonexistent/file.csv',
  'x_column': 'X',
  'y_column': 'Y',

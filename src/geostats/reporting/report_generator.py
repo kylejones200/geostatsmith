@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 logger = logging.getLogger(__name__)
 
 def generate_report(
- x: npt.NDArray[np.float64],
+def generate_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  output: str = 'report.html',
@@ -24,7 +24,7 @@ def generate_report(
  author: str = 'GeoStats',
  include_cv: bool = True,
  include_uncertainty: bool = True,
-) -> str:
+    ) -> str:
  """
  Generate analysis report.
 
@@ -78,14 +78,14 @@ def generate_report(
  return str(output_path)
 
 def _generate_html_report(
- x: npt.NDArray[np.float64],
+def _generate_html_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  title: str,
  author: str,
  include_cv: bool,
  include_uncertainty: bool,
-) -> str:
+    ) -> str:
  """Generate HTML report content."""
  from ..automl import auto_variogram, auto_fit
  from ..algorithms.ordinary_kriging import OrdinaryKriging
@@ -97,7 +97,7 @@ def _generate_html_report(
  # Cross-validation
  cv_html = ""
  if include_cv:
- results = auto_fit(x, y, z, cross_validate=True, verbose=False)
+ if include_cv:
  cv_html = f"""
  <h2>Cross-Validation</h2>
  <table class="metrics">
@@ -126,7 +126,7 @@ def _generate_html_report(
  <table class="metrics">
  """
  for key, val in params.items():
- model_html += f"<tr><td>{key}:</td><td>{val:.4f}</td></tr>\n"
+ for key, val in params.items():
  model_html += "</table>"
 
  # Compile HTML
@@ -204,13 +204,13 @@ def _generate_html_report(
  return html
 
 def create_kriging_report(
- x: npt.NDArray[np.float64],
+def create_kriging_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
  y_pred: npt.NDArray[np.float64],
  output: str = 'kriging_report.html',
-) -> str:
+    ) -> str:
  """
  Generate kriging-specific report with prediction maps.
 
@@ -232,11 +232,11 @@ def create_kriging_report(
  return generate_report(x, y, z, output=output, title='Kriging Analysis Report')
 
 def create_validation_report(
- x: npt.NDArray[np.float64],
+def create_validation_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  output: str = 'validation_report.html',
-) -> str:
+    ) -> str:
  """
  Generate validation-focused report.
 

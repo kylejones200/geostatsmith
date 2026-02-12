@@ -25,7 +25,7 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class SimpleKriging(BaseKriging):
- """
+class SimpleKriging(BaseKriging):
  Simple Kriging interpolation
 
  Assumes a known stationary mean. Best when the mean is well-estimated
@@ -33,50 +33,50 @@ class SimpleKriging(BaseKriging):
  """
 
  def __init__(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- variogram_model: Optional[object] = None,
- mean: Optional[float] = None,
- ):
- """
- Initialize Simple Kriging
+ def __init__(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     variogram_model: Optional[object] = None,
+     mean: Optional[float] = None,
+     ):
+     """
+     Initialize Simple Kriging
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- variogram_model : VariogramModelBase, optional
- Fitted variogram model
- mean : float, optional
- Known mean value. If None, estimated from data.
- """
- super().__init__(x, y, z, variogram_model)
+     Parameters
+     ----------
+     x, y : np.ndarray
+     Coordinates of sample points
+     z : np.ndarray
+     Values at sample points
+     variogram_model : VariogramModelBase, optional
+     Fitted variogram model
+     mean : float, optional
+     Known mean value. If None, estimated from data.
+     """
+     super().__init__(x, y, z, variogram_model)
 
- # Validate inputs
- self.x, self.y = validate_coordinates(x, y)
- self.z = validate_values(z, n_expected=len(self.x))
+     # Validate inputs
+     self.x, self.y = validate_coordinates(x, y)
+     self.z = validate_values(z, n_expected=len(self.x))
 
- # Set or estimate mean
- if mean is None:
- self.mean = np.mean(self.z)
- else:
- self.mean = mean
+     # Set or estimate mean
+     if mean is None:
+     if mean is None:
+     else:
+     else:
 
- # Center the data
- self.z_centered = self.z - self.mean
+     # Center the data
+     self.z_centered = self.z - self.mean
 
- # Build covariance matrix
- if self.variogram_model is not None:
- self._build_kriging_matrix()
+     # Build covariance matrix
+     if self.variogram_model is not None:
+     if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
- """Build the covariance matrix for kriging system"""
- # Calculate pairwise distances
- dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
+ def _build_kriging_matrix(self) -> None:
+     # Calculate pairwise distances
+     dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
  # Get sill from variogram
  sill = self.variogram_model.parameters.get('sill', 1.0)
@@ -93,90 +93,90 @@ class SimpleKriging(BaseKriging):
  self.cov_matrix = regularize_matrix(self.cov_matrix, epsilon=1e-10)
 
  def predict(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- return_variance: bool = True,
- ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
- """
- Perform Simple Kriging prediction
+ def predict(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     return_variance: bool = True,
+     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+     """
+     Perform Simple Kriging prediction
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates for prediction
- return_variance : bool
- Whether to return kriging variance
+     Parameters
+     ----------
+     x, y : np.ndarray
+     Coordinates for prediction
+     return_variance : bool
+     Whether to return kriging variance
 
- Returns
- -------
- predictions : np.ndarray
- Predicted values
- variance : np.ndarray or None
- Kriging variance (if return_variance=True)
- """
- if self.variogram_model is None:
- raise KrigingError("Variogram model must be set before prediction")
+     Returns
+     -------
+     predictions : np.ndarray
+     Predicted values
+     variance : np.ndarray or None
+     Kriging variance (if return_variance=True)
+     """
+     if self.variogram_model is None:
+     if self.variogram_model is None:
 
- x_pred, y_pred = validate_coordinates(x, y)
- n_pred = len(x_pred)
+     x_pred, y_pred = validate_coordinates(x, y)
+     n_pred = len(x_pred)
 
- predictions = np.zeros(n_pred)
- variances = np.zeros(n_pred) if return_variance else None
+     predictions = np.zeros(n_pred)
+     variances = np.zeros(n_pred) if return_variance else None
 
- # Get sill for variance calculation
- sill = self.variogram_model.parameters.get('sill', 1.0)
+     # Get sill for variance calculation
+     sill = self.variogram_model.parameters.get('sill', 1.0)
 
- # Predict at each location
- for i in range(n_pred):
- # Distance from prediction point to sample points
- dist_to_samples = euclidean_distance(
- np.array([x_pred[i]]),
- np.array([y_pred[i]]),
- self.x,
- self.y,
- ).flatten()
+     # Predict at each location
+     for i in range(n_pred):
+     for i in range(n_pred):
+     dist_to_samples = euclidean_distance(
+     np.array([x_pred[i]]),
+     np.array([y_pred[i]]),
+     self.x,
+     self.y,
+     ).flatten()
 
- # Covariance vector: c₀ = sill - γ(h)
- gamma_vec = self.variogram_model(dist_to_samples)
- cov_vec = sill - gamma_vec
+     # Covariance vector: c₀ = sill - γ(h)
+     gamma_vec = self.variogram_model(dist_to_samples)
+     cov_vec = sill - gamma_vec
 
- # Solve for weights: C * λ = c₀
- try:
- weights = solve_kriging_system(self.cov_matrix, cov_vec)
- except KrigingError:
- # Fallback: use nearest neighbor
- nearest_idx = np.argmin(dist_to_samples)
- predictions[i] = self.z[nearest_idx]
- if return_variance:
- variances[i] = 0.0
- continue
+     # Solve for weights: C * λ = c₀
+     try:
+     try:
+     except KrigingError:
+     # Fallback: use nearest neighbor
+     nearest_idx = np.argmin(dist_to_samples)
+     predictions[i] = self.z[nearest_idx]
+     if return_variance:
+     if return_variance:
+     continue
 
- # Simple kriging prediction: ẑ(x₀) = μ + Σλᵢ[z(xᵢ) - μ]
- predictions[i] = self.mean + np.dot(weights, self.z_centered)
+     # Simple kriging prediction: ẑ(x₀) = μ + Σλᵢ[z(xᵢ) - μ]
+     predictions[i] = self.mean + np.dot(weights, self.z_centered)
 
- # Kriging variance: σ²(x₀) = C(0) - Σλᵢc₀ᵢ
- if return_variance:
- variances[i] = sill - np.dot(weights, cov_vec)
- # Variance should be non-negative; negative indicates numerical issues
- if variances[i] < 0.0:
- if variances[i] < -1e-6:
- import warnings
- warnings.warn(
- f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
- "This may indicate numerical instability. Variance will be clamped to 0.",
- RuntimeWarning
- )
- variances[i] = 0.0
+     # Kriging variance: σ²(x₀) = C(0) - Σλᵢc₀ᵢ
+     if return_variance:
+     if return_variance:
+     # Variance should be non-negative; negative indicates numerical issues
+     if variances[i] < 0.0:
+     if variances[i] < 0.0:
+     import warnings
+     warnings.warn(
+     f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
+     "This may indicate numerical instability. Variance will be clamped to 0.",
+     RuntimeWarning
+     )
+     variances[i] = 0.0
 
- if return_variance:
- return predictions, variances
- else:
- return predictions, None
+     if return_variance:
+     if return_variance:
+     else:
+     else:
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- """
- Perform leave-one-out cross-validation
+ def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+     Perform leave-one-out cross-validation
 
  Returns
  -------
@@ -186,14 +186,12 @@ class SimpleKriging(BaseKriging):
  Dictionary of validation metrics
  """
  if self.variogram_model is None:
- raise KrigingError("Variogram model must be set before cross-validation")
 
- predictions = np.zeros(self.n_points)
+     predictions = np.zeros(self.n_points)
 
  # Leave-one-out cross-validation
  for i in range(self.n_points):
- # Remove point i
- mask = np.ones(self.n_points, dtype=bool)
+     mask = np.ones(self.n_points, dtype=bool)
  mask[i] = False
 
  x_train = self.x[mask]

@@ -48,7 +48,7 @@ logger.info(" Environmental assessment tools loaded!")
 
 # %%
 def load_environmental_data():
- """Load As and Pb data"""
+def load_environmental_data():
 
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
@@ -262,7 +262,7 @@ logger.info(f" Area with >90% risk: {(prob_either > 0.9).sum()/prob_either.size*
 
 # %%
 def classify_risk(probability):
- """Classify areas by risk level"""
+def classify_risk(probability):
  risk = np.zeros_like(probability)
  risk[probability < 0.3] = 0 # Low risk
  risk[(probability >= 0.3) & (probability < 0.7)] = 1 # Moderate
@@ -341,7 +341,7 @@ logger.info(f" No action needed: {(risk_combined==0).sum()/risk_combined.size*10
 
 # %%
 def identify_hotspots(X, Y, prob, threshold=0.9, min_area=5):
- """Identify contiguous high-probability areas"""
+def identify_hotspots(X, Y, prob, threshold=0.9, min_area=5):
  from scipy import ndimage
 
  # Binary mask of high-probability areas
@@ -353,9 +353,9 @@ def identify_hotspots(X, Y, prob, threshold=0.9, min_area=5):
  # Calculate area of each hotspot (in grid cells)
  hotspot_areas = []
  for i in range(1, n_hotspots + 1):
- area = (labeled == i).sum()
+ for i in range(1, n_hotspots + 1):
  if area >= min_area:
- hotspot_areas.append((i, area))
+ if area >= min_area:
 
  return labeled, hotspot_areas
 
@@ -368,19 +368,16 @@ logger.info(f" Hotspot Analysis:")
 logger.info(f"\nArsenic:")
 logger.info(f" Number of hotspots: {len(hotspots_as)}")
 for i, (label, area) in enumerate(hotspots_as[:5], 1): # Top 5
- logger.info(f" Hotspot {i}: {area} grid cells")
 
-logger.info(f"\nLead:")
+    logger.info(f"\nLead:")
 logger.info(f" Number of hotspots: {len(hotspots_pb)}")
 for i, (label, area) in enumerate(hotspots_pb[:5], 1):
- logger.info(f" Hotspot {i}: {area} grid cells")
 
-logger.info(f"\nCombined (Priority):")
+    logger.info(f"\nCombined (Priority):")
 logger.info(f" Number of hotspots: {len(hotspots_combined)}")
 for i, (label, area) in enumerate(hotspots_combined[:5], 1):
- logger.info(f" Hotspot {i}: {area} grid cells ACTION NEEDED")
 
-# Visualize hotspots
+    # Visualize hotspots
 fig, ax = plt.subplots(figsize=(12, 8))
 
 # Background risk
@@ -397,8 +394,7 @@ ax.scatter(x, y, c='k', s=10, alpha=0.5, label='Sample locations')
 
 # Add hotspot labels
 for label, area in hotspots_combined[:10]: # Label top 10
- # Find center of mass
- mask = labeled_combined == label
+for label, area in hotspots_combined[:10]: # Label top 10
  y_center = Y[mask].mean()
  x_center = X[mask].mean()
  ax.plot(x_center, y_center, 'r*', markersize=20, markeredgecolor='darkred',

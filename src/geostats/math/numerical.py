@@ -10,14 +10,14 @@ from scipy.optimize import curve_fit, minimize, OptimizeResult
 from ..core.exceptions import FittingError, ConvergenceError
 
 def weighted_least_squares(
- func: Callable,
+def weighted_least_squares(
  xdata: npt.NDArray[np.float64],
  ydata: npt.NDArray[np.float64],
  weights: Optional[npt.NDArray[np.float64]] = None,
  p0: Optional[npt.NDArray[np.float64]] = None,
  bounds: Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
  **kwargs: Any,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Perform weighted least squares fitting
 
@@ -51,10 +51,10 @@ def weighted_least_squares(
  If fitting fails
  """
  try:
- if weights is not None:
+ try:
  sigma = 1.0 / np.sqrt(weights)
  else:
- sigma = None
+ else:
 
  params, cov = curve_fit(
  func,
@@ -73,13 +73,13 @@ def weighted_least_squares(
  raise FittingError(f"Weighted least squares fitting failed: {e}")
 
 def ordinary_least_squares(
- func: Callable,
+def ordinary_least_squares(
  xdata: npt.NDArray[np.float64],
  ydata: npt.NDArray[np.float64],
  p0: Optional[npt.NDArray[np.float64]] = None,
  bounds: Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
  **kwargs: Any,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Perform ordinary least squares fitting
 
@@ -108,12 +108,12 @@ def ordinary_least_squares(
  return weighted_least_squares(func, xdata, ydata, weights=None, p0=p0, bounds=bounds, **kwargs)
 
 def optimize_parameters(
- objective: Callable[[npt.NDArray[np.float64]], float],
+def optimize_parameters(
  x0: npt.NDArray[np.float64],
  bounds: Optional[Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]] = None,
  method: str = "L-BFGS-B",
  **kwargs: Any,
-) -> OptimizeResult:
+    ) -> OptimizeResult:
  """
  Optimize parameters using scipy.optimize.minimize
 
@@ -149,14 +149,14 @@ def optimize_parameters(
  )
 
  if not result.success:
- raise ConvergenceError(f"Optimization failed: {result.message}")
+ if not result.success:
 
  return result
 
 def cross_validation_score(
- y_true: npt.NDArray[np.float64],
+def cross_validation_score(
  y_pred: npt.NDArray[np.float64],
-) -> Dict[str, float]:
+    ) -> Dict[str, float]:
  """
  Calculate cross-validation metrics
 
@@ -198,9 +198,9 @@ def cross_validation_score(
  }
 
 def compute_weights(
- distances: npt.NDArray[np.float64],
+def compute_weights(
  n_lags: int,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Compute weights for variogram fitting based on number of pairs per lag
 
@@ -221,7 +221,7 @@ def compute_weights(
 
  weights = np.zeros(n_lags)
  for i in range(n_lags):
- mask = (distances >= lag_bins[i]) & (distances < lag_bins[i + 1])
+ for i in range(n_lags):
  weights[i] = np.sum(mask)
 
  # Normalize weights

@@ -20,10 +20,10 @@ from geostats.utils.outliers import (
 )
 
 class TestCellDeclustering:
-    """Test cell declustering"""
+class TestCellDeclustering:
 
     def test_cell_declustering_basic(self):
-        """Test basic cell declustering"""
+    def test_cell_declustering_basic(self):
         np.random.seed(42)
         # Create clustered data
         cluster1_x = np.random.normal(2, 0.5, 30)
@@ -44,7 +44,7 @@ class TestCellDeclustering:
         assert np.mean(weights[:30]) < np.mean(weights[30:])
 
     def test_cell_declustering_different_cell_sizes(self):
-        """Test cell declustering with different cell sizes"""
+    def test_cell_declustering_different_cell_sizes(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -57,7 +57,7 @@ class TestCellDeclustering:
         assert np.all(weights <= 1.0)
 
     def test_cell_declustering_uniform_data(self):
-        """Test that uniform data gets uniform weights"""
+    def test_cell_declustering_uniform_data(self):
         np.random.seed(42)
         # Uniformly distributed data
         x = np.random.uniform(0, 10, 50)
@@ -70,7 +70,7 @@ class TestCellDeclustering:
         assert np.std(weights) < 0.2
 
     def test_cell_declustering_reduces_bias(self):
-        """Test that declustering reduces bias"""
+    def test_cell_declustering_reduces_bias(self):
         np.random.seed(42)
         # Create heavily clustered low values
         cluster_x = np.random.normal(2, 0.3, 80)
@@ -96,10 +96,10 @@ class TestCellDeclustering:
         assert declustered_mean > naive_mean
 
 class TestPolygonalDeclustering:
-    """Test polygonal declustering"""
+class TestPolygonalDeclustering:
 
     def test_polygonal_declustering_basic(self):
-        """Test basic polygonal declustering"""
+    def test_polygonal_declustering_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
         y = np.random.uniform(0, 10, 40)
@@ -112,10 +112,10 @@ class TestPolygonalDeclustering:
         assert np.sum(weights) > 0
 
 class TestDetectClustering:
-    """Test clustering detection"""
+class TestDetectClustering:
 
     def test_detect_clustering_clustered_data(self):
-        """Test detecting clustered data"""
+    def test_detect_clustering_clustered_data(self):
         np.random.seed(42)
         # Create clustered data
         cluster1 = np.random.normal(2, 0.3, 30)
@@ -129,7 +129,7 @@ class TestDetectClustering:
         assert is_clustered # Should detect clustering
 
     def test_detect_clustering_uniform_data(self):
-        """Test detecting uniform data"""
+    def test_detect_clustering_uniform_data(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -141,10 +141,10 @@ class TestDetectClustering:
         assert not is_clustered
 
 class TestIQROutlierDetection:
-    """Test IQR-based outlier detection"""
+class TestIQROutlierDetection:
 
     def test_iqr_outliers_basic(self):
-        """Test basic IQR outlier detection"""
+    def test_iqr_outliers_basic(self):
         np.random.seed(42)
         # Normal data with outliers
         data = np.random.normal(5, 1, 100)
@@ -158,7 +158,7 @@ class TestIQROutlierDetection:
         assert np.sum(outliers) < len(data) # Not all points are outliers
 
     def test_iqr_outliers_no_outliers(self):
-        """Test IQR with no outliers"""
+    def test_iqr_outliers_no_outliers(self):
         np.random.seed(42)
         data = np.random.normal(5, 1, 50)
 
@@ -168,7 +168,7 @@ class TestIQROutlierDetection:
         assert np.sum(outliers) < 5
 
     def test_iqr_outliers_different_factors(self):
-        """Test IQR with different factors"""
+    def test_iqr_outliers_different_factors(self):
         np.random.seed(42)
         data = np.random.normal(5, 1, 100)
         data = np.append(data, [15, 20])
@@ -180,10 +180,10 @@ class TestIQROutlierDetection:
         assert np.sum(outliers_strict) >= np.sum(outliers_lenient)
 
 class TestZScoreOutlierDetection:
-    """Test Z-score based outlier detection"""
+class TestZScoreOutlierDetection:
 
     def test_zscore_outliers_basic(self):
-        """Test basic Z-score outlier detection"""
+    def test_zscore_outliers_basic(self):
         np.random.seed(42)
         data = np.random.normal(10, 2, 100)
         data = np.append(data, [25, 30, -5]) # Add outliers
@@ -195,7 +195,7 @@ class TestZScoreOutlierDetection:
         assert np.sum(outliers) > 0
 
     def test_zscore_outliers_different_thresholds(self):
-        """Test Z-score with different thresholds"""
+    def test_zscore_outliers_different_thresholds(self):
         np.random.seed(42)
         data = np.random.normal(5, 1, 100)
         data = np.append(data, [10, 12, 15])
@@ -206,7 +206,7 @@ class TestZScoreOutlierDetection:
         assert np.sum(outliers_strict) >= np.sum(outliers_lenient)
 
     def test_zscore_vs_modified_zscore(self):
-        """Compare Z-score and modified Z-score"""
+    def test_zscore_vs_modified_zscore(self):
         np.random.seed(42)
         data = np.random.normal(5, 1, 100)
         data = np.append(data, [15, 20])
@@ -219,10 +219,10 @@ class TestZScoreOutlierDetection:
         assert np.sum(outliers_modified) > 0
 
 class TestSpatialOutliers:
-    """Test spatial outlier detection"""
+class TestSpatialOutliers:
 
     def test_spatial_outliers_basic(self):
-        """Test basic spatial outlier detection"""
+    def test_spatial_outliers_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -240,10 +240,10 @@ class TestSpatialOutliers:
         assert np.sum(outliers) > 0 # Should detect the outlier
 
 class TestEnsembleOutlierDetection:
-    """Test ensemble outlier detection"""
+class TestEnsembleOutlierDetection:
 
     def test_ensemble_outliers_basic(self):
-        """Test basic ensemble outlier detection"""
+    def test_ensemble_outliers_basic(self):
         np.random.seed(42)
         data = np.random.normal(5, 1, 100)
         data = np.append(data, [15, 20, -5])
@@ -255,10 +255,10 @@ class TestEnsembleOutlierDetection:
         assert np.sum(outliers) > 0
 
 class TestIntegration:
-    """Integration tests for declustering and outlier detection"""
+class TestIntegration:
 
     def test_decluster_then_detect_outliers(self):
-        """Test workflow: decluster then detect outliers"""
+    def test_decluster_then_detect_outliers(self):
         np.random.seed(42)
         # Clustered data with outliers
         cluster_x = np.random.normal(2, 0.5, 40)
@@ -296,4 +296,4 @@ class TestIntegration:
         assert declustered_mean > np.mean(cluster_z) # Corrected for clustering
 
 if __name__ == "__main__":
-     if __name__ == "__main__":
+if __name__ == "__main__":

@@ -53,7 +53,7 @@ LAMBDA_TOLERANCE = 1e-4
 MIN_POSITIVE_VALUE = EPSILON
 
 class BoxCoxTransform:
- """
+class BoxCoxTransform:
  Box-Cox power transformation for data normalization
 
  Transforms data to approximate normality using:
@@ -80,44 +80,44 @@ class BoxCoxTransform:
  """
 
  def __init__(
- self,
- lmbda: Optional[float] = None,
- method: str = 'mle',
- standardize: bool = True
- ):
- """
- Initialize Box-Cox transformation
+ def __init__(
+     lmbda: Optional[float] = None,
+     method: str = 'mle',
+     standardize: bool = True
+     ):
+     """
+     Initialize Box-Cox transformation
 
- Parameters
- ----------
- lmbda : float, optional
- Transformation parameter. If None, will be estimated from data.
- Special values:
- λ = 1: identity (no transform)
- λ = 0.5: square root
- λ = 0: log
- λ = -1: reciprocal
- method : str
- Method to estimate lambda if not provided:
- 'mle': Maximum likelihood (default)
- 'pearsonr': Maximize correlation with normal distribution
- 'min_skew': Minimize skewness
- standardize : bool
- If True, standardize transformed data to mean=0, std=1
- """
- self.lmbda = lmbda
- self.method = method
- self.standardize = standardize
+     Parameters
+     ----------
+     lmbda : float, optional
+     Transformation parameter. If None, will be estimated from data.
+     Special values:
+     λ = 1: identity (no transform)
+     λ = 0.5: square root
+     λ = 0: log
+     λ = -1: reciprocal
+     method : str
+     Method to estimate lambda if not provided:
+     'mle': Maximum likelihood (default)
+     'pearsonr': Maximize correlation with normal distribution
+     'min_skew': Minimize skewness
+     standardize : bool
+     If True, standardize transformed data to mean=0, std=1
+     """
+     self.lmbda = lmbda
+     self.method = method
+     self.standardize = standardize
 
- self.is_fitted = False
- self.fitted_lambda = None
- self.shift = 0.0
- self.mean = 0.0
- self.std = 1.0
+     self.is_fitted = False
+     self.fitted_lambda = None
+     self.shift = 0.0
+     self.mean = 0.0
+     self.std = 1.0
 
  def fit(self, data: npt.NDArray[np.float64]) -> 'BoxCoxTransform':
- """
- Fit the Box-Cox transformation to data
+ def fit(self, data: npt.NDArray[np.float64]) -> 'BoxCoxTransform':
+     Fit the Box-Cox transformation to data
 
  Estimates optimal λ parameter and calculates any necessary shifts.
 
@@ -135,30 +135,25 @@ class BoxCoxTransform:
  valid_data = data[~np.isnan(data)]
 
  if valid_data.size == 0:
- logger.error("No valid data points for Box-Cox transformation")
- raise GeoStatsError("No valid data for Box-Cox transform")
+     raise GeoStatsError("No valid data for Box-Cox transform")
 
  # Check for non-positive values and apply shift if needed
  min_val = np.min(valid_data)
  if min_val <= 0:
- self.shift = abs(min_val) + MIN_POSITIVE_VALUE
- valid_data = valid_data + self.shift
+     valid_data = valid_data + self.shift
  logger.warning(
  f"Data contains non-positive values. Applying shift of {self.shift:.6f}"
  )
 
  # Estimate lambda if not provided
  if self.lmbda is None:
- self.fitted_lambda = self._estimate_lambda(valid_data)
- logger.info(f"Estimated optimal λ = {self.fitted_lambda:.4f} using {self.method}")
+     logger.info(f"Estimated optimal λ = {self.fitted_lambda:.4f} using {self.method}")
  else:
- self.fitted_lambda = self.lmbda
- logger.info(f"Using specified λ = {self.fitted_lambda:.4f}")
+     logger.info(f"Using specified λ = {self.fitted_lambda:.4f}")
 
  # Calculate transformation statistics for standardization
  if self.standardize:
- transformed_data = self._transform_array(valid_data, self.fitted_lambda)
- self.mean = np.mean(transformed_data)
+     self.mean = np.mean(transformed_data)
  self.std = np.std(transformed_data)
  logger.debug(f"Standardization: mean={self.mean:.4f}, std={self.std:.4f}")
 
@@ -166,8 +161,8 @@ class BoxCoxTransform:
  return self
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Apply Box-Cox transformation to data
+ def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Apply Box-Cox transformation to data
 
  Parameters
  ----------
@@ -180,8 +175,7 @@ class BoxCoxTransform:
  Transformed data
  """
  if not self.is_fitted:
- logger.error("BoxCoxTransform not fitted. Call .fit() first.")
- raise GeoStatsError("BoxCoxTransform not fitted. Call .fit() first.")
+     raise GeoStatsError("BoxCoxTransform not fitted. Call .fit() first.")
 
  data = np.asarray(data, dtype=np.float64)
  original_shape = data.shape
@@ -189,12 +183,10 @@ class BoxCoxTransform:
 
  # Apply shift if needed
  if self.shift > 0:
- data = data + self.shift
 
- # Check for non-positive values
+     # Check for non-positive values
  if np.any(data <= 0):
- logger.error("Data contains non-positive values after shift")
- raise GeoStatsError(
+     raise GeoStatsError(
  "Box-Cox requires positive data. "
  f"Shift of {self.shift} was insufficient."
  )
@@ -204,53 +196,52 @@ class BoxCoxTransform:
 
  # Standardize if requested
  if self.standardize:
- transformed_data = (transformed_data - self.mean) / self.std
 
- logger.debug(f"Transformed {len(data)} points using Box-Cox (λ={self.fitted_lambda:.4f})")
+     logger.debug(f"Transformed {len(data)} points using Box-Cox (λ={self.fitted_lambda:.4f})")
  return transformed_data.reshape(original_shape)
 
  def inverse_transform(
- self,
- transformed_data: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """
- Apply inverse Box-Cox transformation (back-transform)
+ def inverse_transform(
+     transformed_data: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """
+     Apply inverse Box-Cox transformation (back-transform)
 
- Parameters
- ----------
- transformed_data : np.ndarray
- Transformed data
+     Parameters
+     ----------
+     transformed_data : np.ndarray
+     Transformed data
 
- Returns
- -------
- np.ndarray
- Original scale data
- """
- if not self.is_fitted:
- logger.error("BoxCoxTransform not fitted. Call .fit() first.")
- raise GeoStatsError("BoxCoxTransform not fitted. Call .fit() first.")
+     Returns
+     -------
+     np.ndarray
+     Original scale data
+     """
+     if not self.is_fitted:
+     if not self.is_fitted:
+     raise GeoStatsError("BoxCoxTransform not fitted. Call .fit() first.")
 
- transformed_data = np.asarray(transformed_data, dtype=np.float64)
- original_shape = transformed_data.shape
- transformed_data = transformed_data.flatten()
+     transformed_data = np.asarray(transformed_data, dtype=np.float64)
+     original_shape = transformed_data.shape
+     transformed_data = transformed_data.flatten()
 
- # Un-standardize if needed
- if self.standardize:
- transformed_data = transformed_data * self.std + self.mean
+     # Un-standardize if needed
+     if self.standardize:
+     if self.standardize:
 
- # Inverse transform
- original_data = self._inverse_transform_array(transformed_data, self.fitted_lambda)
+     # Inverse transform
+     original_data = self._inverse_transform_array(transformed_data, self.fitted_lambda)
 
- # Remove shift
- if self.shift > 0:
- original_data = original_data - self.shift
+     # Remove shift
+     if self.shift > 0:
+     if self.shift > 0:
 
- logger.debug(f"Inverse transformed {len(original_data)} points")
- return original_data.reshape(original_shape)
+     logger.debug(f"Inverse transformed {len(original_data)} points")
+     return original_data.reshape(original_shape)
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Fit and transform in one step
+ def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Fit and transform in one step
 
  Parameters
  ----------
@@ -266,53 +257,53 @@ class BoxCoxTransform:
  return self.transform(data)
 
  def _transform_array(
- self,
- x: npt.NDArray[np.float64],
- lmbda: float
- ) -> npt.NDArray[np.float64]:
- """Vectorized Box-Cox transformation"""
- if np.abs(lmbda) < LAMBDA_TOLERANCE:
- # λ ≈ 0: log transformation
- return np.log(x)
- else:
- # λ ≠ 0: power transformation
- return (np.power(x, lmbda) - 1.0) / lmbda
+ def _transform_array(
+     x: npt.NDArray[np.float64],
+     lmbda: float
+     ) -> npt.NDArray[np.float64]:
+     """Vectorized Box-Cox transformation"""
+     if np.abs(lmbda) < LAMBDA_TOLERANCE:
+     if np.abs(lmbda) < LAMBDA_TOLERANCE:
+     return np.log(x)
+     else:
+     else:
+     return (np.power(x, lmbda) - 1.0) / lmbda
 
  def _inverse_transform_array(
- self,
- y: npt.NDArray[np.float64],
- lmbda: float
- ) -> npt.NDArray[np.float64]:
- """
- Vectorized inverse Box-Cox transformation
+ def _inverse_transform_array(
+     y: npt.NDArray[np.float64],
+     lmbda: float
+     ) -> npt.NDArray[np.float64]:
+     """
+     Vectorized inverse Box-Cox transformation
 
- For λ ≠ 0: x = (λy + 1)^(1/λ)
- This requires λy + 1 > 0, i.e., y > -1/λ
+     For λ ≠ 0: x = (λy + 1)^(1/λ)
+     This requires λy + 1 > 0, i.e., y > -1/λ
 
- For negative λ, we need to check domain validity.
- """
- if np.abs(lmbda) < LAMBDA_TOLERANCE:
- # λ ≈ 0: inverse log
- return np.exp(y)
- else:
- # λ ≠ 0: inverse power
- arg = lmbda * y + 1.0
+     For negative λ, we need to check domain validity.
+     """
+     if np.abs(lmbda) < LAMBDA_TOLERANCE:
+     if np.abs(lmbda) < LAMBDA_TOLERANCE:
+     return np.exp(y)
+     else:
+     else:
+     arg = lmbda * y + 1.0
 
- # Check for domain violations
- if np.any(arg <= 0):
- n_invalid = np.sum(arg <= 0)
- logger.warning(
- f"Box-Cox inverse transform: {n_invalid} values outside valid domain. "
- f"Values will be clamped to prevent NaN/complex results."
- )
- # Clamp to small positive value to prevent NaN
- arg = np.maximum(arg, EPSILON)
+     # Check for domain violations
+     if np.any(arg <= 0):
+     if np.any(arg <= 0):
+     logger.warning(
+     f"Box-Cox inverse transform: {n_invalid} values outside valid domain. "
+     f"Values will be clamped to prevent NaN/complex results."
+     )
+     # Clamp to small positive value to prevent NaN
+     arg = np.maximum(arg, EPSILON)
 
- return np.power(arg, 1.0 / lmbda)
+     return np.power(arg, 1.0 / lmbda)
 
  def _estimate_lambda(self, data: npt.NDArray[np.float64]) -> float:
- """
- Estimate optimal lambda parameter
+ def _estimate_lambda(self, data: npt.NDArray[np.float64]) -> float:
+     Estimate optimal lambda parameter
 
  Uses dict dispatch pattern for method selection
  """
@@ -323,53 +314,51 @@ class BoxCoxTransform:
  }
 
  if self.method not in estimation_methods:
- logger.warning(f"Unknown method '{self.method}', using 'mle'")
- method = 'mle'
+     method = 'mle'
  else:
- method = self.method
 
- return estimation_methods[method](data)
+     return estimation_methods[method](data)
 
  def _estimate_lambda_mle(self, data: npt.NDArray[np.float64]) -> float:
- """Estimate lambda using maximum likelihood (scipy implementation)"""
- # scipy.stats.boxcox returns (transformed_data, lambda)
- _, lmbda = stats.boxcox(data)
- return lmbda
+ def _estimate_lambda_mle(self, data: npt.NDArray[np.float64]) -> float:
+     # scipy.stats.boxcox returns (transformed_data, lambda)
+     _, lmbda = stats.boxcox(data)
+     return lmbda
 
  def _estimate_lambda_pearsonr(self, data: npt.NDArray[np.float64]) -> float:
- """Estimate lambda by maximizing correlation with normal distribution"""
+ def _estimate_lambda_pearsonr(self, data: npt.NDArray[np.float64]) -> float:
  def neg_correlation(lmbda):
- transformed = self._transform_array(data, lmbda)
- # Correlation with theoretical normal quantiles
- sorted_data = np.sort(transformed)
- n = len(sorted_data)
- theoretical_quantiles = stats.norm.ppf((np.arange(1, n + 1) - 0.5) / n)
- correlation = np.corrcoef(sorted_data, theoretical_quantiles)[0, 1]
- return -correlation # Minimize negative correlation
+ def neg_correlation(lmbda):
+     # Correlation with theoretical normal quantiles
+     sorted_data = np.sort(transformed)
+     n = len(sorted_data)
+     theoretical_quantiles = stats.norm.ppf((np.arange(1, n + 1) - 0.5) / n)
+     correlation = np.corrcoef(sorted_data, theoretical_quantiles)[0, 1]
+     return -correlation # Minimize negative correlation
 
- result = optimize.minimize_scalar(
- neg_correlation,
- bounds=LAMBDA_SEARCH_BOUNDS,
- method='bounded'
- )
- return result.x
+     result = optimize.minimize_scalar(
+     neg_correlation,
+     bounds=LAMBDA_SEARCH_BOUNDS,
+     method='bounded'
+     )
+     return result.x
 
  def _estimate_lambda_min_skew(self, data: npt.NDArray[np.float64]) -> float:
- """Estimate lambda by minimizing skewness"""
+ def _estimate_lambda_min_skew(self, data: npt.NDArray[np.float64]) -> float:
  def abs_skewness(lmbda):
- transformed = self._transform_array(data, lmbda)
- return np.abs(stats.skew(transformed))
+ def abs_skewness(lmbda):
+     return np.abs(stats.skew(transformed))
 
- result = optimize.minimize_scalar(
- abs_skewness,
- bounds=LAMBDA_SEARCH_BOUNDS,
- method='bounded'
- )
- return result.x
+     result = optimize.minimize_scalar(
+     abs_skewness,
+     bounds=LAMBDA_SEARCH_BOUNDS,
+     method='bounded'
+     )
+     return result.x
 
  def get_diagnostics(self) -> Dict[str, float]:
- """
- Get diagnostic information about the transformation
+ def get_diagnostics(self) -> Dict[str, float]:
+     Get diagnostic information about the transformation
 
  Returns
  -------
@@ -377,9 +366,8 @@ class BoxCoxTransform:
  Diagnostic statistics
  """
  if not self.is_fitted:
- raise GeoStatsError("Transform not fitted yet")
 
- return {
+     return {
  'lambda': self.fitted_lambda,
  'shift': self.shift,
  'mean': self.mean if self.standardize else None,
@@ -388,10 +376,10 @@ class BoxCoxTransform:
  }
 
 def boxcox_transform(
- data: npt.NDArray[np.float64],
+def boxcox_transform(
  lmbda: Optional[float] = None,
  return_lambda: bool = False
-) -> Tuple[npt.NDArray[np.float64], Optional[float]]:
+    ) -> Tuple[npt.NDArray[np.float64], Optional[float]]:
  """
  Convenience function for Box-Cox transformation
 
@@ -424,5 +412,5 @@ def boxcox_transform(
  transformed = bc.fit_transform(data)
 
  if return_lambda:
- return transformed, bc.fitted_lambda
+ if return_lambda:
  return transformed

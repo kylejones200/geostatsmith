@@ -68,22 +68,20 @@ logger = setup_logger(__name__)
 
 # Optional ML dependencies
 try:
- from sklearn.ensemble import RandomForestRegressor
- from sklearn.base import BaseEstimator
+try:
  SKLEARN_AVAILABLE = True
 except ImportError:
  SKLEARN_AVAILABLE = False
  logger.warning("scikit-learn not available. ML-based kriging will be limited.")
 
 try:
- import xgboost as xgb
- XGBOOST_AVAILABLE = True
+try:
 except ImportError:
  XGBOOST_AVAILABLE = False
  logger.debug("XGBoost not available")
 
 class RegressionKriging(BaseKriging):
- """
+class RegressionKriging(BaseKriging):
  Regression Kriging with Machine Learning Models
 
  Combines any sklearn-compatible regression model with kriging of residuals.
@@ -148,203 +146,203 @@ class RegressionKriging(BaseKriging):
  """
 
  def __init__(
- self,
- ml_model,
- kriging_type: str = 'simple',
- variogram_model: str = 'spherical',
- n_lags: int = 15
- ):
- """
- Initialize Regression Kriging
+ def __init__(
+     ml_model,
+     kriging_type: str = 'simple',
+     variogram_model: str = 'spherical',
+     n_lags: int = 15
+     ):
+     """
+     Initialize Regression Kriging
 
- Parameters
- ----------
- ml_model : regressor
- sklearn-compatible regression model
- kriging_type : str
- 'simple' or 'ordinary' kriging for residuals
- variogram_model : str
- Variogram model type for residuals
- n_lags : int
- Number of lags for variogram fitting
- """
- if not SKLEARN_AVAILABLE:
- raise ImportError("scikit-learn is required for RegressionKriging")
+     Parameters
+     ----------
+     ml_model : regressor
+     sklearn-compatible regression model
+     kriging_type : str
+     'simple' or 'ordinary' kriging for residuals
+     variogram_model : str
+     Variogram model type for residuals
+     n_lags : int
+     Number of lags for variogram fitting
+     """
+     if not SKLEARN_AVAILABLE:
+     if not SKLEARN_AVAILABLE:
 
- self.ml_model = ml_model
- self.kriging_type = kriging_type.lower()
- self.variogram_model_type = variogram_model
- self.n_lags = n_lags
+     self.ml_model = ml_model
+     self.kriging_type = kriging_type.lower()
+     self.variogram_model_type = variogram_model
+     self.n_lags = n_lags
 
- self.kriging_model = None
- self.residuals = None
- self.fitted = False
+     self.kriging_model = None
+     self.residuals = None
+     self.fitted = False
 
- logger.info(
- f"Regression Kriging initialized with {type(ml_model).__name__}, "
- f"kriging_type={kriging_type}"
- )
+     logger.info(
+     f"Regression Kriging initialized with {type(ml_model).__name__}, "
+     f"kriging_type={kriging_type}"
+     )
 
  def fit(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- covariates: Optional[npt.NDArray[np.float64]] = None
- ):
- """
- Fit the Regression Kriging model
+ def fit(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     covariates: Optional[npt.NDArray[np.float64]] = None
+     ):
+     """
+     Fit the Regression Kriging model
 
- Parameters
- ----------
- x, y : np.ndarray
- Spatial coordinates
- z : np.ndarray
- Target values
- covariates : np.ndarray, optional
- Covariate matrix (n_samples, n_features)
- If None, uses only coordinates [x, y]
- """
- self.x, self.y = validate_coordinates(x, y)
- self.z = validate_values(z, n_expected=len(self.x))
+     Parameters
+     ----------
+     x, y : np.ndarray
+     Spatial coordinates
+     z : np.ndarray
+     Target values
+     covariates : np.ndarray, optional
+     Covariate matrix (n_samples, n_features)
+     If None, uses only coordinates [x, y]
+     """
+     self.x, self.y = validate_coordinates(x, y)
+     self.z = validate_values(z, n_expected=len(self.x))
 
- # Prepare feature matrix
- if covariates is None:
- X = np.column_stack([self.x, self.y])
- logger.info("No covariates provided, using only coordinates [x, y]")
- else:
- X = np.asarray(covariates, dtype=np.float64)
- if X.shape[0] != len(self.x):
- raise ValueError(
- f"Covariates shape mismatch: {X.shape[0]} != {len(self.x)}"
- )
- logger.info(f"Using {X.shape[1]} covariates for ML model")
+     # Prepare feature matrix
+     if covariates is None:
+     if covariates is None:
+     logger.info("No covariates provided, using only coordinates [x, y]")
+     else:
+     else:
+     if X.shape[0] != len(self.x):
+     if X.shape[0] != len(self.x):
+     f"Covariates shape mismatch: {X.shape[0]} != {len(self.x)}"
+     )
+     logger.info(f"Using {X.shape[1]} covariates for ML model")
 
- self.X = X
+     self.X = X
 
- # Step 1: Fit ML model for trend
- logger.info("Fitting ML model for trend...")
- self.ml_model.fit(X, self.z)
+     # Step 1: Fit ML model for trend
+     logger.info("Fitting ML model for trend...")
+     self.ml_model.fit(X, self.z)
 
- # Step 2: Calculate residuals
- ml_predictions = self.ml_model.predict(X)
- self.residuals = self.z - ml_predictions
+     # Step 2: Calculate residuals
+     ml_predictions = self.ml_model.predict(X)
+     self.residuals = self.z - ml_predictions
 
- logger.info(
- f"ML model R² = {self.ml_model.score(X, self.z):.4f}, "
- f"Residual std = {np.std(self.residuals):.4f}"
- )
+     logger.info(
+     f"ML model R² = {self.ml_model.score(X, self.z):.4f}, "
+     f"Residual std = {np.std(self.residuals):.4f}"
+     )
 
- # Step 3: Fit variogram to residuals
- logger.info("Fitting variogram to residuals...")
- lag_dist, semivar, pairs = experimental_variogram(
- self.x, self.y, self.residuals, n_lags=self.n_lags
- )
+     # Step 3: Fit variogram to residuals
+     logger.info("Fitting variogram to residuals...")
+     lag_dist, semivar, pairs = experimental_variogram(
+     self.x, self.y, self.residuals, n_lags=self.n_lags
+     )
 
- from ..models.variogram_models import get_variogram_model
- fitted_model = fit_variogram_model(
- lag_dist, semivar,
- model_type=self.variogram_model_type
- )
+     from ..models.variogram_models import get_variogram_model
+     fitted_model = fit_variogram_model(
+     lag_dist, semivar,
+     model_type=self.variogram_model_type
+     )
 
- logger.info(
- f"Residual variogram: {self.variogram_model_type}, "
- f"nugget={fitted_model.nugget:.4f}, sill={fitted_model.sill:.4f}, "
- f"range={fitted_model.range:.2f}"
- )
+     logger.info(
+     f"Residual variogram: {self.variogram_model_type}, "
+     f"nugget={fitted_model.nugget:.4f}, sill={fitted_model.sill:.4f}, "
+     f"range={fitted_model.range:.2f}"
+     )
 
- # Step 4: Create kriging model for residuals
- mean_residual = np.mean(self.residuals)
+     # Step 4: Create kriging model for residuals
+     mean_residual = np.mean(self.residuals)
 
- if self.kriging_type == 'simple':
- self.kriging_model = SimpleKriging(
- self.x, self.y, self.residuals,
- variogram_model=fitted_model,
- mean=mean_residual
- )
- elif self.kriging_type == 'ordinary':
- self.kriging_model = OrdinaryKriging(
- self.x, self.y, self.residuals,
- variogram_model=fitted_model
- )
- else:
- raise ValueError(f"Unknown kriging_type: {self.kriging_type}")
+     if self.kriging_type == 'simple':
+     if self.kriging_type == 'simple':
+     self.x, self.y, self.residuals,
+     variogram_model=fitted_model,
+     mean=mean_residual
+     )
+     elif self.kriging_type == 'ordinary':
+     elif self.kriging_type == 'ordinary':
+     self.x, self.y, self.residuals,
+     variogram_model=fitted_model
+     )
+     else:
+     else:
 
- self.fitted = True
- logger.info("Regression Kriging model fitted successfully")
+     self.fitted = True
+     logger.info("Regression Kriging model fitted successfully")
 
  def predict(
- self,
- x_new: npt.NDArray[np.float64],
- y_new: npt.NDArray[np.float64],
- covariates_new: Optional[npt.NDArray[np.float64]] = None,
- return_variance: bool = True
- ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
- """
- Predict at new locations using Regression Kriging
+ def predict(
+     x_new: npt.NDArray[np.float64],
+     y_new: npt.NDArray[np.float64],
+     covariates_new: Optional[npt.NDArray[np.float64]] = None,
+     return_variance: bool = True
+     ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+     """
+     Predict at new locations using Regression Kriging
 
- Parameters
- ----------
- x_new, y_new : np.ndarray
- Prediction coordinates
- covariates_new : np.ndarray, optional
- Covariates at prediction locations
- Must have same number of features as training
- return_variance : bool
- Whether to return prediction variance
+     Parameters
+     ----------
+     x_new, y_new : np.ndarray
+     Prediction coordinates
+     covariates_new : np.ndarray, optional
+     Covariates at prediction locations
+     Must have same number of features as training
+     return_variance : bool
+     Whether to return prediction variance
 
- Returns
- -------
- predictions : np.ndarray
- Predicted values
- variance : np.ndarray, optional
- Prediction variance (kriging variance only)
- """
- if not self.fitted:
- raise RuntimeError("Model not fitted. Call fit() first.")
+     Returns
+     -------
+     predictions : np.ndarray
+     Predicted values
+     variance : np.ndarray, optional
+     Prediction variance (kriging variance only)
+     """
+     if not self.fitted:
+     if not self.fitted:
 
- x_new, y_new = validate_coordinates(x_new, y_new)
+     x_new, y_new = validate_coordinates(x_new, y_new)
 
- # Prepare feature matrix for new points
- if covariates_new is None:
- X_new = np.column_stack([x_new, y_new])
- else:
- X_new = np.asarray(covariates_new, dtype=np.float64)
- if X_new.shape[0] != len(x_new):
- raise ValueError("Covariates shape mismatch")
- if X_new.shape[1] != self.X.shape[1]:
- raise ValueError(
- f"Feature count mismatch: expected {self.X.shape[1]}, "
- f"got {X_new.shape[1]}"
- )
+     # Prepare feature matrix for new points
+     if covariates_new is None:
+     if covariates_new is None:
+     else:
+     else:
+     if X_new.shape[0] != len(x_new):
+     if X_new.shape[0] != len(x_new):
+     if X_new.shape[1] != self.X.shape[1]:
+     if X_new.shape[1] != self.X.shape[1]:
+     f"Feature count mismatch: expected {self.X.shape[1]}, "
+     f"got {X_new.shape[1]}"
+     )
 
- # Step 1: ML prediction for trend
- ml_pred = self.ml_model.predict(X_new)
+     # Step 1: ML prediction for trend
+     ml_pred = self.ml_model.predict(X_new)
 
- # Step 2: Krige residuals
- if return_variance:
- residual_pred, residual_var = self.kriging_model.predict(
- x_new, y_new, return_variance=True
- )
- else:
- residual_pred = self.kriging_model.predict(
- x_new, y_new, return_variance=False
- )
+     # Step 2: Krige residuals
+     if return_variance:
+     if return_variance:
+     x_new, y_new, return_variance=True
+     )
+     else:
+     else:
+     x_new, y_new, return_variance=False
+     )
 
- # Step 3: Combine trend and residuals
- predictions = ml_pred + residual_pred
+     # Step 3: Combine trend and residuals
+     predictions = ml_pred + residual_pred
 
- logger.debug(f"Regression Kriging prediction complete for {len(x_new)} points")
+     logger.debug(f"Regression Kriging prediction complete for {len(x_new)} points")
 
- if return_variance:
- # Note: This is only the kriging variance on residuals
- # Full variance should include ML model uncertainty
- return predictions, residual_var
- return predictions
+     if return_variance:
+     if return_variance:
+     # Full variance should include ML model uncertainty
+     return predictions, residual_var
+     return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- """
- Perform leave-one-out cross-validation
+ def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+     Perform leave-one-out cross-validation
 
  Returns
  -------
@@ -354,9 +352,8 @@ class RegressionKriging(BaseKriging):
  Dictionary of performance metrics
  """
  if not self.fitted:
- raise KrigingError("Model must be fitted before cross-validation")
 
- from ..validation.cross_validation import leave_one_out
+     from ..validation.cross_validation import leave_one_out
  from ..validation.metrics import mean_squared_error, r_squared
 
  predictions = leave_one_out(self, self.x, self.y, self.z)
@@ -369,7 +366,7 @@ class RegressionKriging(BaseKriging):
  return predictions, metrics
 
 class RandomForestKriging(RegressionKriging):
- """
+class RandomForestKriging(RegressionKriging):
  Regression Kriging with Random Forest
 
  Convenience class that uses Random Forest for trend modeling.
@@ -401,41 +398,41 @@ class RandomForestKriging(RegressionKriging):
  """
 
  def __init__(
- self,
- n_estimators: int = 100,
- max_depth: Optional[int] = None,
- kriging_type: str = 'simple',
- variogram_model: str = 'spherical',
- random_state: Optional[int] = None,
- **rf_kwargs
- ):
- if not SKLEARN_AVAILABLE:
- raise ImportError("scikit-learn is required for RandomForestKriging")
+ def __init__(
+     n_estimators: int = 100,
+     max_depth: Optional[int] = None,
+     kriging_type: str = 'simple',
+     variogram_model: str = 'spherical',
+     random_state: Optional[int] = None,
+     **rf_kwargs
+     ):
+     if not SKLEARN_AVAILABLE:
+     if not SKLEARN_AVAILABLE:
 
- rf_model = RandomForestRegressor(
- n_estimators=n_estimators,
- max_depth=max_depth,
- random_state=random_state,
- **rf_kwargs
- )
+     rf_model = RandomForestRegressor(
+     n_estimators=n_estimators,
+     max_depth=max_depth,
+     random_state=random_state,
+     **rf_kwargs
+     )
 
- super().__init__(
- ml_model=rf_model,
- kriging_type=kriging_type,
- variogram_model=variogram_model
- )
+     super().__init__(
+     ml_model=rf_model,
+     kriging_type=kriging_type,
+     variogram_model=variogram_model
+     )
 
- logger.info(f"Random Forest Kriging initialized with {n_estimators} trees")
+     logger.info(f"Random Forest Kriging initialized with {n_estimators} trees")
 
  def get_feature_importance(self) -> Optional[npt.NDArray[np.float64]]:
- """Get feature importances from the Random Forest model"""
- if not self.fitted:
- logger.warning("Model not fitted yet")
- return None
- return self.ml_model.feature_importances_
+ def get_feature_importance(self) -> Optional[npt.NDArray[np.float64]]:
+     if not self.fitted:
+     if not self.fitted:
+     return None
+     return self.ml_model.feature_importances_
 
 class XGBoostKriging(RegressionKriging):
- """
+class XGBoostKriging(RegressionKriging):
  Regression Kriging with XGBoost
 
  Convenience class that uses XGBoost for trend modeling.
@@ -468,55 +465,55 @@ class XGBoostKriging(RegressionKriging):
  """
 
  def __init__(
- self,
- n_estimators: int = 100,
- max_depth: int = 6,
- learning_rate: float = 0.1,
- kriging_type: str = 'simple',
- variogram_model: str = 'spherical',
- random_state: Optional[int] = None,
- **xgb_kwargs
- ):
- if not XGBOOST_AVAILABLE:
- raise ImportError("xgboost is required for XGBoostKriging")
+ def __init__(
+     n_estimators: int = 100,
+     max_depth: int = 6,
+     learning_rate: float = 0.1,
+     kriging_type: str = 'simple',
+     variogram_model: str = 'spherical',
+     random_state: Optional[int] = None,
+     **xgb_kwargs
+     ):
+     if not XGBOOST_AVAILABLE:
+     if not XGBOOST_AVAILABLE:
 
- xgb_model = xgb.XGBRegressor(
- n_estimators=n_estimators,
- max_depth=max_depth,
- learning_rate=learning_rate,
- random_state=random_state,
- **xgb_kwargs
- )
+     xgb_model = xgb.XGBRegressor(
+     n_estimators=n_estimators,
+     max_depth=max_depth,
+     learning_rate=learning_rate,
+     random_state=random_state,
+     **xgb_kwargs
+     )
 
- super().__init__(
- ml_model=xgb_model,
- kriging_type=kriging_type,
- variogram_model=variogram_model
- )
+     super().__init__(
+     ml_model=xgb_model,
+     kriging_type=kriging_type,
+     variogram_model=variogram_model
+     )
 
- logger.info(
- f"XGBoost Kriging initialized with {n_estimators} estimators, "
- f"max_depth={max_depth}, lr={learning_rate}"
- )
+     logger.info(
+     f"XGBoost Kriging initialized with {n_estimators} estimators, "
+     f"max_depth={max_depth}, lr={learning_rate}"
+     )
 
  def get_feature_importance(
- self,
- importance_type: str = 'weight'
- ) -> Optional[Dict[str, float]]:
- """
- Get feature importances from XGBoost model
+ def get_feature_importance(
+     importance_type: str = 'weight'
+     ) -> Optional[Dict[str, float]]:
+     """
+     Get feature importances from XGBoost model
 
- Parameters
- ----------
- importance_type : str
- Type of importance: 'weight', 'gain', 'cover'
+     Parameters
+     ----------
+     importance_type : str
+     Type of importance: 'weight', 'gain', 'cover'
 
- Returns
- -------
- importance : dict
- Feature importance scores
- """
- if not self.fitted:
- logger.warning("Model not fitted yet")
- return None
- return self.ml_model.get_booster().get_score(importance_type=importance_type)
+     Returns
+     -------
+     importance : dict
+     Feature importance scores
+     """
+     if not self.fitted:
+     if not self.fitted:
+     return None
+     return self.ml_model.get_booster().get_score(importance_type=importance_type)

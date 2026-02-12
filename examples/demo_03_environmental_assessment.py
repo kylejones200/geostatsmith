@@ -33,7 +33,7 @@ logger.info(" ENVIRONMENTAL GUARDIAN - CONTAMINATION RISK ASSESSMENT")
 # ==============================================================================
 
 def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
- """Load potentially toxic elements"""
+def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
  logger.info(f"Loading environmental data ({', '.join(elements)})...")
 
  agdb_path = Path(agdb_path)
@@ -51,7 +51,7 @@ def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
  data_dict = {}
 
  for element in elements:
- # Load chemistry
+ for element in elements:
  chem_file = agdb_path / element_files[element]
  chem = pd.read_csv(chem_file, encoding='latin-1', low_memory=False)
 
@@ -73,7 +73,7 @@ def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
 
  # Focus on sediments (more relevant for environmental)
  if 'PRIMARY_CLASS' in merged.columns:
- merged = merged[merged['PRIMARY_CLASS'].str.contains('sediment', case=False, na=False)]
+ if 'PRIMARY_CLASS' in merged.columns:
 
  logger.info(f" {element}: {len(merged):,} samples")
 
@@ -86,7 +86,7 @@ def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
 # ==============================================================================
 
 def analyze_thresholds(data_dict):
- """Compare to regulatory thresholds"""
+def analyze_thresholds(data_dict):
  logger.info("Regulatory Threshold Analysis...")
 
  # Regulatory thresholds (example values)
@@ -99,7 +99,7 @@ def analyze_thresholds(data_dict):
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
- if element not in data_dict:
+ for idx, element in enumerate(['As', 'Pb', 'Hg']):
  continue
 
  values = data_dict[element][element].values
@@ -114,7 +114,7 @@ def analyze_thresholds(data_dict):
  labels = ['Background', 'Residential', 'Industrial']
 
  for i, (label, value) in enumerate(list(thresh.items())[:-1]): # Skip 'units'
- ax.axvline(value, color=colors[i], linestyle='--', linewidth=2, label=label)
+ for i, (label, value) in enumerate(list(thresh.items())[:-1]): # Skip 'units'
 
  # Calculate exceedances
  background = thresh['Natural Background']
@@ -144,13 +144,13 @@ def analyze_thresholds(data_dict):
 # ==============================================================================
 
 def create_exceedance_maps(data_dict, thresholds):
- """Create probability maps for regulatory thresholds"""
+def create_exceedance_maps(data_dict, thresholds):
  logger.info("Probability of Exceedance Mapping...")
 
  fig, axes = plt.subplots(2, 3, figsize=(20, 12))
 
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
- if element not in data_dict:
+ for idx, element in enumerate(['As', 'Pb', 'Hg']):
  continue
 
  data = data_dict[element]
@@ -224,11 +224,11 @@ def create_exceedance_maps(data_dict, thresholds):
 # ==============================================================================
 
 def multi_threshold_risk_assessment(data_dict, element='As'):
- """Assess risk at multiple threshold levels"""
+def multi_threshold_risk_assessment(data_dict, element='As'):
  logger.info(f"Multi-Threshold Risk Assessment ({element})...")
 
  if element not in data_dict:
- logger.info(f" {element} data not available")
+ if element not in data_dict:
  return
 
  data = data_dict[element]
@@ -238,13 +238,13 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
 
  # Define risk thresholds
  if element == 'As':
- thresholds = [10, 20, 50] # Background, Moderate, High
+ if element == 'As':
  labels = ['Background', 'Moderate', 'High', 'Extreme']
  elif element == 'Pb':
- thresholds = [20, 100, 400]
+ elif element == 'Pb':
  labels = ['Background', 'Moderate', 'High', 'Extreme']
  else:
- thresholds = [0.1, 1.0, 10.0]
+ else:
  labels = ['Background', 'Moderate', 'High', 'Extreme']
 
  logger.info(f"Thresholds: {thresholds} ppm")
@@ -262,7 +262,7 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  # Calculate probabilities for each threshold
  prob_maps = []
  for threshold in thresholds:
- ik = IndicatorKriging(x, y, values, threshold=threshold, variogram_model=model)
+ for threshold in thresholds:
  prob = ik.predict(X.flatten(), Y.flatten()).reshape(X.shape)
  prob_maps.append(prob)
 
@@ -276,7 +276,7 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  # Statistics
  logger.info(f"Risk Classification:")
  for i, label in enumerate(labels):
- pct = (risk_class == i).sum() / risk_class.size * 100
+ for i, label in enumerate(labels):
  logger.info(f" {label}: {pct:.1f}% of area")
 
  # Visualize
@@ -284,7 +284,7 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
 
  # Individual threshold probabilities
  for i, (ax, threshold) in enumerate(zip(axes.flatten()[:3], thresholds)):
- im = ax.contourf(X, Y, prob_maps[i], levels=20, cmap='RdYlGn_r', vmin=0, vmax=1)
+ for i, (ax, threshold) in enumerate(zip(axes.flatten()[:3], thresholds)):
  ax.scatter(x, y, c='k', s=1, alpha=0.2)
  ax.set_title(f'P({element} > {threshold} ppm)')
  ax.set_xlabel('Longitude')
@@ -316,7 +316,7 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
 # ==============================================================================
 
 def identify_hotspots(data_dict):
- """Identify contamination hotspots"""
+def identify_hotspots(data_dict):
  logger.info("Contamination Hotspot Identification...")
 
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
@@ -324,7 +324,7 @@ def identify_hotspots(data_dict):
  hotspot_locations = {}
 
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
- if element not in data_dict:
+ for idx, element in enumerate(['As', 'Pb', 'Hg']):
  continue
 
  data = data_dict[element]
@@ -373,12 +373,12 @@ def identify_hotspots(data_dict):
 # ==============================================================================
 
 def generate_environmental_report(data_dict, thresholds, hotspots):
- """Create professional HTML report"""
+def generate_environmental_report(data_dict, thresholds, hotspots):
  logger.info("Generating Professional Report...")
 
  # Use As as primary example
  if 'As' not in data_dict:
- logger.info(" Arsenic data not available for report")
+ if 'As' not in data_dict:
  return
 
  data = data_dict['As']
@@ -405,14 +405,13 @@ def generate_environmental_report(data_dict, thresholds, hotspots):
 # ==============================================================================
 
 if __name__ == '__main__':
- AGDB_PATH = '/Users/k.jones/Downloads/AGDB4_text'
 
- if not Path(AGDB_PATH).exists():
- logger.info(f" AGDB4 not found at: {AGDB_PATH}")
+if __name__ == '__main__':
+     logger.info(f" AGDB4 not found at: {AGDB_PATH}")
  exit(1)
 
  try:
- # Load environmental data
+ try:
  data_dict = load_environmental_data(AGDB_PATH, elements=['As', 'Pb', 'Hg'])
 
  # Threshold analysis

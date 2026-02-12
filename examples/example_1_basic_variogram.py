@@ -52,8 +52,7 @@ models_to_fit = ["spherical", "exponential", "gaussian"]
 fitted_models = {}
 
 for model_name in models_to_fit:
-    model = variogram.fit_model(model_name, lags, gamma, weights=n_pairs)
-    fitted_models[model_name] = model
+for model_name in models_to_fit:
     logger.info(f"\n{model_name.capitalize()} Model:")
     logger.info(f" Parameters: {model.parameters}")
 
@@ -86,8 +85,7 @@ ax2.scatter(
 
 h_plot = np.linspace(0, np.max(lags), 100)
 for model_name, model in fitted_models.items():
-    gamma_plot = model(h_plot)
-    ax2.plot(h_plot, gamma_plot, label=model_name.capitalize(), linewidth=2)
+for model_name, model in fitted_models.items():
 
 ax2.set_xlabel("Distance (h)", fontsize=12)
 ax2.set_ylabel("Semivariance γ(h)", fontsize=12)

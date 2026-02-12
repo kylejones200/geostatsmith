@@ -49,7 +49,7 @@ CDF_EXTRAPOLATION_FACTOR = 0.1
 
 @dataclass
 class SISConfig:
- """Configuration for Sequential Indicator Simulation"""
+class SISConfig:
  n_realizations: int = DEFAULT_N_REALIZATIONS
  thresholds: Optional[List[float]] = None # If None, use quantiles
  n_thresholds: int = DEFAULT_N_THRESHOLDS
@@ -59,7 +59,7 @@ class SISConfig:
  correct_order_relations: bool = True # Enforce P(z1) <= P(z2) for z1 < z2
 
 class SequentialIndicatorSimulation:
- """
+class SequentialIndicatorSimulation:
  Sequential Indicator Simulation (SIS)
 
  Generates conditional stochastic realizations using indicator approach.
@@ -77,259 +77,259 @@ class SequentialIndicatorSimulation:
  """
 
  def __init__(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- config: Optional[SISConfig] = None
- ):
- """
- Initialize Sequential Indicator Simulation
+ def __init__(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     z: npt.NDArray[np.float64],
+     config: Optional[SISConfig] = None
+     ):
+     """
+     Initialize Sequential Indicator Simulation
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- config : SISConfig, optional
- Simulation configuration
- """
- self.x = np.asarray(x, dtype=np.float64)
- self.y = np.asarray(y, dtype=np.float64)
- self.z = np.asarray(z, dtype=np.float64)
+     Parameters
+     ----------
+     x, y : np.ndarray
+     Coordinates of sample points
+     z : np.ndarray
+     Values at sample points
+     config : SISConfig, optional
+     Simulation configuration
+     """
+     self.x = np.asarray(x, dtype=np.float64)
+     self.y = np.asarray(y, dtype=np.float64)
+     self.z = np.asarray(z, dtype=np.float64)
 
- if len(self.x) != len(self.y) or len(self.x) != len(self.z):
- raise ValueError("x, y, z must have same length")
+     if len(self.x) != len(self.y) or len(self.x) != len(self.z):
+     if len(self.x) != len(self.y) or len(self.x) != len(self.z):
 
- self.config = config if config is not None else SISConfig()
+     self.config = config if config is not None else SISConfig()
 
- # Set random seed
- if self.config.random_seed is not None:
- np.random.seed(self.config.random_seed)
+     # Set random seed
+     if self.config.random_seed is not None:
+     if self.config.random_seed is not None:
 
- # Determine thresholds
- if self.config.thresholds is not None:
- self.thresholds = np.array(sorted(self.config.thresholds))
- else:
- # Use quantiles
- probabilities = np.linspace(0, 1, self.config.n_thresholds + 2)[1:-1]
- self.thresholds = np.quantile(self.z, probabilities)
+     # Determine thresholds
+     if self.config.thresholds is not None:
+     if self.config.thresholds is not None:
+     else:
+     else:
+     probabilities = np.linspace(0, 1, self.config.n_thresholds + 2)[1:-1]
+     self.thresholds = np.quantile(self.z, probabilities)
 
- self.n_thresholds = len(self.thresholds)
+     self.n_thresholds = len(self.thresholds)
 
- # Transform data to indicators
- self.indicators = self._compute_indicators(self.z)
+     # Transform data to indicators
+     self.indicators = self._compute_indicators(self.z)
 
- # Indicator kriging objects (to be fitted with variogram models)
- self.indicator_krigers: List[Optional[IndicatorKriging]] = [None] * self.n_thresholds
+     # Indicator kriging objects (to be fitted with variogram models)
+     self.indicator_krigers: List[Optional[IndicatorKriging]] = [None] * self.n_thresholds
 
  def _compute_indicators(
- self,
- values: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """
- Transform values to indicators
+ def _compute_indicators(
+     values: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """
+     Transform values to indicators
 
- Parameters
- ----------
- values : np.ndarray
- Values to transform
+     Parameters
+     ----------
+     values : np.ndarray
+     Values to transform
 
- Returns
- -------
- np.ndarray
- Indicator array, shape (n_values, n_thresholds)
- indicators[i, k] = 1 if values[i] <= thresholds[k], else 0
- """
- values = values.reshape(-1, 1)
- thresholds = self.thresholds.reshape(1, -1)
- indicators = (values <= thresholds).astype(np.float64)
- return indicators
+     Returns
+     -------
+     np.ndarray
+     Indicator array, shape (n_values, n_thresholds)
+     indicators[i, k] = 1 if values[i] <= thresholds[k], else 0
+     """
+     values = values.reshape(-1, 1)
+     thresholds = self.thresholds.reshape(1, -1)
+     indicators = (values <= thresholds).astype(np.float64)
+     return indicators
 
  def fit_indicator_variograms(
- self,
- variogram_models: List[object]
- ):
- """
- Fit indicator variogram models
+ def fit_indicator_variograms(
+     variogram_models: List[object]
+     ):
+     """
+     Fit indicator variogram models
 
- Parameters
- ----------
- variogram_models : list
- List of fitted variogram models, one for each threshold
- Length must equal n_thresholds
- """
- if len(variogram_models) != self.n_thresholds:
- raise ValueError(
- f"Need {self.n_thresholds} variogram models, got {len(variogram_models)}"
- )
+     Parameters
+     ----------
+     variogram_models : list
+     List of fitted variogram models, one for each threshold
+     Length must equal n_thresholds
+     """
+     if len(variogram_models) != self.n_thresholds:
+     if len(variogram_models) != self.n_thresholds:
+     f"Need {self.n_thresholds} variogram models, got {len(variogram_models)}"
+     )
 
- # Create indicator kriging objects
- for k in range(self.n_thresholds):
- self.indicator_krigers[k] = IndicatorKriging(
- self.x,
- self.y,
- self.z,
- threshold=self.thresholds[k],
- variogram_model=variogram_models[k]
- )
+     # Create indicator kriging objects
+     for k in range(self.n_thresholds):
+     for k in range(self.n_thresholds):
+     self.x,
+     self.y,
+     self.z,
+     threshold=self.thresholds[k],
+     variogram_model=variogram_models[k]
+     )
 
  def simulate(
- self,
- x_grid: npt.NDArray[np.float64],
- y_grid: npt.NDArray[np.float64]
- ) -> npt.NDArray[np.float64]:
- """
- Generate conditional realizations
+ def simulate(
+     x_grid: npt.NDArray[np.float64],
+     y_grid: npt.NDArray[np.float64]
+     ) -> npt.NDArray[np.float64]:
+     """
+     Generate conditional realizations
 
- Parameters
- ----------
- x_grid, y_grid : np.ndarray
- Coordinates of grid points to simulate (can be 1D or 2D arrays)
+     Parameters
+     ----------
+     x_grid, y_grid : np.ndarray
+     Coordinates of grid points to simulate (can be 1D or 2D arrays)
 
- Returns
- -------
- np.ndarray
- Simulated values, shape (n_realizations, *grid_shape)
- """
- # Ensure indicator krigers are fitted
- if any(k is None for k in self.indicator_krigers):
- raise RuntimeError(
- "Must call fit_indicator_variograms() before simulate()"
- )
+     Returns
+     -------
+     np.ndarray
+     Simulated values, shape (n_realizations, *grid_shape)
+     """
+     # Ensure indicator krigers are fitted
+     if any(k is None for k in self.indicator_krigers):
+     if any(k is None for k in self.indicator_krigers):
+     "Must call fit_indicator_variograms() before simulate()"
+     )
 
- x_grid = np.asarray(x_grid, dtype=np.float64)
- y_grid = np.asarray(y_grid, dtype=np.float64)
+     x_grid = np.asarray(x_grid, dtype=np.float64)
+     y_grid = np.asarray(y_grid, dtype=np.float64)
 
- original_shape = x_grid.shape
- x_flat = x_grid.flatten()
- y_flat = y_grid.flatten()
- n_nodes = len(x_flat)
+     original_shape = x_grid.shape
+     x_flat = x_grid.flatten()
+     y_flat = y_grid.flatten()
+     n_nodes = len(x_flat)
 
- # Storage for realizations
- realizations = np.zeros((self.config.n_realizations, n_nodes))
+     # Storage for realizations
+     realizations = np.zeros((self.config.n_realizations, n_nodes))
 
- # Generate each realization
- for r in range(self.config.n_realizations):
- # Random path through grid nodes
- path = np.random.permutation(n_nodes)
+     # Generate each realization
+     for r in range(self.config.n_realizations):
+     for r in range(self.config.n_realizations):
+     path = np.random.permutation(n_nodes)
 
- # Simulated values for this realization
- sim_values = np.zeros(n_nodes)
+     # Simulated values for this realization
+     sim_values = np.zeros(n_nodes)
 
- # Working copy of conditioning data
- x_cond = self.x.copy()
- y_cond = self.y.copy()
- z_cond = self.z.copy()
+     # Working copy of conditioning data
+     x_cond = self.x.copy()
+     y_cond = self.y.copy()
+     z_cond = self.z.copy()
 
- # Sequential simulation along random path
- for idx in path:
- x_loc = x_flat[idx]
- y_loc = y_flat[idx]
+     # Sequential simulation along random path
+     for idx in path:
+     for idx in path:
+     y_loc = y_flat[idx]
 
- # Krige indicator probabilities at all thresholds (vectorized where possible)
- probabilities = np.zeros(self.n_thresholds, dtype=np.float64)
+     # Krige indicator probabilities at all thresholds (vectorized where possible)
+     probabilities = np.zeros(self.n_thresholds, dtype=np.float64)
 
- # Batch predict all thresholds (vectorized threshold loop)
- for k in range(self.n_thresholds):
- try:
- prob, _ = self.indicator_krigers[k].predict(
- np.array([x_loc]),
- np.array([y_loc]),
- return_variance=True
- )
- probabilities[k] = prob[0]
- except Exception:
- # Fallback to marginal probability
- probabilities[k] = np.mean(self.indicators[:, k])
+     # Batch predict all thresholds (vectorized threshold loop)
+     for k in range(self.n_thresholds):
+     for k in range(self.n_thresholds):
+     prob, _ = self.indicator_krigers[k].predict(
+     np.array([x_loc]),
+     np.array([y_loc]),
+     return_variance=True
+     )
+     probabilities[k] = prob[0]
+     except Exception:
+     # Fallback to marginal probability
+     probabilities[k] = np.mean(self.indicators[:, k])
 
- # Clip probabilities (vectorized)
- probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
+     # Clip probabilities (vectorized)
+     probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
 
- # Correct order relations: P(z1) <= P(z2) for z1 < z2 (vectorized)
- if self.config.correct_order_relations:
- probabilities = np.maximum.accumulate(probabilities)
- probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
+     # Correct order relations: P(z1) <= P(z2) for z1 < z2 (vectorized)
+     if self.config.correct_order_relations:
+     if self.config.correct_order_relations:
+     probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
 
- # Build conditional CDF and sample from it
- sim_value = self._sample_from_cdf(probabilities)
- sim_values[idx] = sim_value
+     # Build conditional CDF and sample from it
+     sim_value = self._sample_from_cdf(probabilities)
+     sim_values[idx] = sim_value
 
- # Add simulated value to conditioning data for next nodes
- x_cond = np.append(x_cond, x_loc)
- y_cond = np.append(y_cond, y_loc)
- z_cond = np.append(z_cond, sim_value)
+     # Add simulated value to conditioning data for next nodes
+     x_cond = np.append(x_cond, x_loc)
+     y_cond = np.append(y_cond, y_loc)
+     z_cond = np.append(z_cond, sim_value)
 
- realizations[r, :] = sim_values
+     realizations[r, :] = sim_values
 
- # Reshape to original grid shape
- if len(original_shape) > 1:
- realizations = realizations.reshape(self.config.n_realizations, *original_shape)
+     # Reshape to original grid shape
+     if len(original_shape) > 1:
+     if len(original_shape) > 1:
 
- return realizations
+     return realizations
 
  def _sample_from_cdf(
- self,
- probabilities: npt.NDArray[np.float64]
- ) -> float:
- """
- Sample a value from conditional CDF
+ def _sample_from_cdf(
+     probabilities: npt.NDArray[np.float64]
+     ) -> float:
+     """
+     Sample a value from conditional CDF
 
- Parameters
- ----------
- probabilities : np.ndarray
- Indicator probabilities at thresholds
- P(Z <= z_k) for k = 0, ..., n_thresholds-1
+     Parameters
+     ----------
+     probabilities : np.ndarray
+     Indicator probabilities at thresholds
+     P(Z <= z_k) for k = 0, ..., n_thresholds-1
 
- Returns
- -------
- float
- Sampled value
- """
- # Build CDF: (threshold, probability) pairs (vectorized)
- z_range = self.z.max() - self.z.min()
- cdf_z = np.concatenate([
- [self.z.min() - z_range * CDF_EXTRAPOLATION_FACTOR],
- self.thresholds,
- [self.z.max() + z_range * CDF_EXTRAPOLATION_FACTOR]
- ])
+     Returns
+     -------
+     float
+     Sampled value
+     """
+     # Build CDF: (threshold, probability) pairs (vectorized)
+     z_range = self.z.max() - self.z.min()
+     cdf_z = np.concatenate([
+     [self.z.min() - z_range * CDF_EXTRAPOLATION_FACTOR],
+     self.thresholds,
+     [self.z.max() + z_range * CDF_EXTRAPOLATION_FACTOR]
+     ])
 
- cdf_p = np.concatenate([
- [0.0],
- probabilities,
- [1.0]
- ])
+     cdf_p = np.concatenate([
+     [0.0],
+     probabilities,
+     [1.0]
+     ])
 
- # Draw random uniform value
- u = np.random.uniform(0, 1)
+     # Draw random uniform value
+     u = np.random.uniform(0, 1)
 
- # Interpolate to find corresponding z value
- # Use linear interpolation (could use more sophisticated methods)
- try:
- interp = interp1d(cdf_p, cdf_z, kind='linear', fill_value='extrapolate')
- sampled_value = float(interp(u))
- except Exception:
- # Fallback: simple linear search
- idx = np.searchsorted(cdf_p, u)
- if idx == 0:
- sampled_value = cdf_z[0]
- elif idx >= len(cdf_z):
- sampled_value = cdf_z[-1]
- else:
- # Linear interpolation between cdf_z[idx-1] and cdf_z[idx]
- p1, p2 = cdf_p[idx-1], cdf_p[idx]
- z1, z2 = cdf_z[idx-1], cdf_z[idx]
- if p2 > p1:
- sampled_value = z1 + (z2 - z1) * (u - p1) / (p2 - p1)
- else:
- sampled_value = z1
+     # Interpolate to find corresponding z value
+     # Use linear interpolation (could use more sophisticated methods)
+     try:
+     try:
+     sampled_value = float(interp(u))
+     except Exception:
+     # Fallback: simple linear search
+     idx = np.searchsorted(cdf_p, u)
+     if idx == 0:
+     if idx == 0:
+     elif idx >= len(cdf_z):
+     elif idx >= len(cdf_z):
+     else:
+     else:
+     p1, p2 = cdf_p[idx-1], cdf_p[idx]
+     z1, z2 = cdf_z[idx-1], cdf_z[idx]
+     if p2 > p1:
+     if p2 > p1:
+     else:
+     else:
 
- return sampled_value
+     return sampled_value
 
  def get_statistics(self, realizations: npt.NDArray[np.float64]) -> dict:
- """
- Calculate statistics of realizations
+ def get_statistics(self, realizations: npt.NDArray[np.float64]) -> dict:
+     Calculate statistics of realizations
 
  Parameters
  ----------
@@ -344,9 +344,8 @@ class SequentialIndicatorSimulation:
  # Flatten to (n_realizations, n_nodes)
  original_shape = realizations.shape
  if realizations.ndim > 2:
- realizations = realizations.reshape(realizations.shape[0], -1)
 
- # E-type estimate (mean of realizations)
+     # E-type estimate (mean of realizations)
  e_type = np.mean(realizations, axis=0)
 
  # Uncertainty (std of realizations)
@@ -369,7 +368,6 @@ class SequentialIndicatorSimulation:
 
  # Reshape if needed
  if len(original_shape) > 2:
- for key in ['e_type', 'uncertainty', 'p10', 'p50', 'p90']:
- stats[key] = stats[key].reshape(original_shape[1:])
+     stats[key] = stats[key].reshape(original_shape[1:])
 
  return stats

@@ -32,8 +32,7 @@ logger = logging.getLogger(__name__)
 
 # Performance features - skip if not available
 try:
- from geostats.performance import parallel_kriging, cache_results
- PERFORMANCE_AVAILABLE = True
+try:
 except:
  PERFORMANCE_AVAILABLE = False
 
@@ -47,7 +46,7 @@ logger.info(" GOLD RUSH ALASKA - COMPLETE EXPLORATION WORKFLOW")
 # ==============================================================================
 
 def load_fairbanks_gold_data(agdb_path):
- """Load gold data from Fairbanks mining district"""
+def load_fairbanks_gold_data(agdb_path):
  logger.info("Loading Alaska gold data...")
 
  agdb_path = Path(agdb_path)
@@ -85,11 +84,11 @@ def load_fairbanks_gold_data(agdb_path):
 
  # Or use district name
  if 'DISTRICT_NAME' in fairbanks.columns:
- district_data = data[
+ if 'DISTRICT_NAME' in fairbanks.columns:
  data['DISTRICT_NAME'].str.contains('Fairbanks', case=False, na=False)
  ]
  if len(district_data) > 100:
- fairbanks = district_data
+ if len(district_data) > 100:
 
  logger.info(f" Fairbanks district samples: {len(fairbanks):,}")
 
@@ -112,7 +111,7 @@ def load_fairbanks_gold_data(agdb_path):
 # ==============================================================================
 
 def analyze_variogram_anisotropy(x, y, z):
- """Check for directional trends (common in geology)"""
+def analyze_variogram_anisotropy(x, y, z):
  logger.info("Directional Variogram Analysis (Anisotropy)...")
 
  # Log-transform for stationarity
@@ -126,7 +125,7 @@ def analyze_variogram_anisotropy(x, y, z):
 
  models = {}
  for i, angle in enumerate(directions):
- lags, gamma, n_pairs = experimental_variogram_directional(
+ for i, angle in enumerate(directions):
  x, y, z_log,
  angle=angle,
  tolerance=22.5,
@@ -159,10 +158,10 @@ def analyze_variogram_anisotropy(x, y, z):
  # Check if anisotropic
  ranges = [models[a]._parameters['range'] for a in directions]
  if max(ranges) / min(ranges) > 1.5:
- logger.info(f" Anisotropy detected! Range ratio: {max(ranges)/min(ranges):.2f}")
+ if max(ranges) / min(ranges) > 1.5:
  logger.info(f" Consider using anisotropic kriging for better results")
  else:
- logger.info(f" Isotropic (uniform in all directions)")
+ else:
 
  return models[0] # Return default model
 
@@ -171,7 +170,7 @@ def analyze_variogram_anisotropy(x, y, z):
 # ==============================================================================
 
 def compare_kriging_methods(x, y, au, model):
- """Compare different kriging approaches"""
+def compare_kriging_methods(x, y, au, model):
  logger.info("Comparing Kriging Methods...")
 
  # Create prediction grid
@@ -241,7 +240,7 @@ def compare_kriging_methods(x, y, au, model):
  plt.colorbar(im3, ax=axes[2], label='Probability')
 
  for ax in axes:
- ax.set_xlabel('Longitude')
+ for ax in axes:
  ax.set_ylabel('Latitude')
 
  plt.tight_layout()
@@ -255,7 +254,7 @@ def compare_kriging_methods(x, y, au, model):
 # ==============================================================================
 
 def quantify_uncertainty(x, y, au, model, X, Y):
- """Multiple uncertainty methods"""
+def quantify_uncertainty(x, y, au, model, X, Y):
  logger.info("Uncertainty Quantification...")
 
  au_log = np.log10(au + 0.001)
@@ -308,7 +307,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  plt.colorbar(im3, ax=axes[2], label='CV (%)')
 
  for ax in axes:
- ax.set_xlabel('Longitude')
+ for ax in axes:
  ax.set_ylabel('Latitude')
 
  plt.tight_layout()
@@ -322,7 +321,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
 # ==============================================================================
 
 def design_infill_sampling(x, y, au, model, X, Y):
- """Identify where additional sampling would be most valuable"""
+def design_infill_sampling(x, y, au, model, X, Y):
  logger.info("Optimal Infill Sampling Design...")
 
  # Find high-uncertainty areas that need more samples
@@ -365,7 +364,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
 
  # Add numbers to new samples
  for i, (nx, ny) in enumerate(new_locations, 1):
- ax.annotate(str(i), (nx, ny), fontsize=10, fontweight='bold',
+ for i, (nx, ny) in enumerate(new_locations, 1):
  ha='center', va='center')
 
  ax.set_title('Optimal Infill Sampling Design\n(targeting high-uncertainty areas)')
@@ -389,7 +388,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
 # ==============================================================================
 
 def performance_comparison(x, y, au, model, X, Y):
- """Show performance improvements"""
+def performance_comparison(x, y, au, model, X, Y):
  logger.info("Performance Showcase...")
 
  au_log = np.log10(au + 0.001)
@@ -422,7 +421,7 @@ def performance_comparison(x, y, au, model, X, Y):
 # ==============================================================================
 
 def validate_predictions(x, y, au, model):
- """Validation"""
+def validate_predictions(x, y, au, model):
  logger.info("Model Validation & Quality Assessment...")
 
  au_log = np.log10(au + 0.001)
@@ -437,11 +436,11 @@ def validate_predictions(x, y, au, model):
  logger.info(f" Overall Quality Score: {results['overall_score']:.0f}/100")
 
  if results['overall_score'] > 80:
- logger.info(f" EXCELLENT quality!")
+ if results['overall_score'] > 80:
  elif results['overall_score'] > 60:
- logger.info(f" GOOD quality")
+ elif results['overall_score'] > 60:
  else:
- logger.info(f" Fair quality - consider more samples")
+ else:
 
  return results
 
@@ -450,16 +449,15 @@ def validate_predictions(x, y, au, model):
 # ==============================================================================
 
 if __name__ == '__main__':
- # Path to AGDB4
- AGDB_PATH = '/Users/k.jones/Downloads/AGDB4_text'
+if __name__ == '__main__':
 
  if not Path(AGDB_PATH).exists():
- logger.info(f" AGDB4 not found at: {AGDB_PATH}")
+ if not Path(AGDB_PATH).exists():
  logger.info("Please download from: https://doi.org/10.5066/F7445KBJ")
  exit(1)
 
  try:
- # Load data
+ try:
  x, y, au, data_df = load_fairbanks_gold_data(AGDB_PATH)
 
  # Variogram analysis

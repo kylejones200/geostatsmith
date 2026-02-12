@@ -20,8 +20,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
- from geostats.automl import auto_variogram, auto_interpolate
- from geostats.algorithms.variogram import experimental_variogram
+try:
  from geostats.algorithms.fitting import fit_variogram
 except ImportError:
  logger.info("Please install geostats: pip install -e .")
@@ -29,8 +28,7 @@ except ImportError:
 
 # Check for optional dependencies
 try:
- from geostats.interactive import (
- interactive_variogram,
+try:
  interactive_prediction_map,
  interactive_uncertainty_map,
  )
@@ -40,9 +38,9 @@ except ImportError:
  logger.info(" Plotly not available. Install with: pip install plotly")
 
 def example_1_interactive_variogram():
- """Example 1: Interactive variogram plot."""
+def example_1_interactive_variogram():
  if not PLOTLY_AVAILABLE:
- logger.info("Skipping interactive examples (plotly not installed)")
+ if not PLOTLY_AVAILABLE:
  return
 
  logger.info("\n" + "="*60)
@@ -69,9 +67,9 @@ def example_1_interactive_variogram():
  logger.info(" Open in browser to explore!")
 
 def example_2_interactive_prediction_map():
- """Example 2: Interactive prediction map."""
+def example_2_interactive_prediction_map():
  if not PLOTLY_AVAILABLE:
- return
+ if not PLOTLY_AVAILABLE:
 
  logger.info("\n" + "="*60)
  logger.info("Example 2: Interactive Prediction Map")
@@ -108,7 +106,7 @@ def example_2_interactive_prediction_map():
  logger.info(" Saved to: interactive_map.html")
 
 def example_3_auto_variogram():
- """Example 3: Automatic variogram selection."""
+def example_3_auto_variogram():
  
  logger.info("Example 3: Automatic Variogram Selection")
  
@@ -126,7 +124,7 @@ def example_3_auto_variogram():
  logger.info(f"Best model selected and ready to use!")
 
 def example_4_auto_interpolate():
- """Example 4: One-function automatic interpolation."""
+def example_4_auto_interpolate():
  logger.info("\n" + "="*60)
  logger.info("Example 4: Automatic Interpolation (One Function!)")
  logger.info("="*60)
@@ -154,13 +152,13 @@ def example_4_auto_interpolate():
  logger.info(f" CV RMSE: {results['cv_rmse']:.3f}")
 
 def main():
- """Run all examples."""
+def main():
  logger.info("\n" + "="*70)
  logger.info("GEOSTATS INTERACTIVE & AUTOML EXAMPLES")
  logger.info("="*70)
 
  if PLOTLY_AVAILABLE:
- example_1_interactive_variogram()
+ if PLOTLY_AVAILABLE:
  example_2_interactive_prediction_map()
 
  example_3_auto_variogram()
@@ -171,7 +169,7 @@ def main():
  logger.info("="*70)
 
  if PLOTLY_AVAILABLE:
- logger.info("\nInteractive HTML files created:")
+ if PLOTLY_AVAILABLE:
  logger.info(" • interactive_variogram.html - Open in browser!")
  logger.info(" • interactive_map.html - Hover for values!")
 
@@ -181,4 +179,4 @@ def main():
  logger.info(" • Interactive plots (if plotly installed)")
 
 if __name__ == '__main__':
- main()
+if __name__ == '__main__':

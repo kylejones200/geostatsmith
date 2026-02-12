@@ -61,8 +61,7 @@ lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=15)
 # Try different models
 models = {}
 for model_type in ['spherical', 'exponential', 'gaussian']:
- try:
- model = variogram.fit_model(model_type, lags, gamma, weights=n_pairs)
+for model_type in ['spherical', 'exponential', 'gaussian']:
  models[model_type] = model
  logger.info(f"{model_type.capitalize()}: sill={model.sill:.2f}, range={model.range_param:.2f}")
  except Exception as e:
@@ -93,15 +92,13 @@ results = compare_interpolation_methods(
 # Print cross-validation results
 logger.info("Cross-validation results:")
 for method, cv_result in results['cv_results'].items():
- metrics = cv_result['metrics']
- logger.info(f"{method:20s}: RMSE={metrics['rmse']:6.2f}, R²={metrics['r2']:5.3f}, MAE={metrics['mae']:6.2f}")
+for method, cv_result in results['cv_results'].items():
 
 # Print speed results
 logger.info("Speed benchmark:")
 for method, timing in results['speed_results'].items():
- logger.info(f"{method:20s}: {timing['mean_time']:6.3f}s (±{timing['std_time']:.3f}s)")
 
-# Step 5: Visualize results
+    # Step 5: Visualize results
 logger.info("\nStep 5: Visualizing results...")
 
 fig = plt.figure(figsize=(16, 12))
@@ -143,9 +140,8 @@ methods_to_plot = ['ordinary_kriging', 'idw', 'rbf']
 titles = ['Ordinary Kriging', 'Inverse Distance Weighting', 'Radial Basis Function']
 
 for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
- ax = fig.add_subplot(gs[1, idx])
 
- Z_pred = results['predictions'][method].reshape(X_grid.shape)
+for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  im = ax.contourf(X_grid, Y_grid, Z_pred, levels=15, cmap='terrain')
  ax.scatter(x, y, c='red', s=5, alpha=0.5, marker='x')
  ax.set_title(f'{title}', fontsize=12, fontweight='bold')
@@ -156,7 +152,7 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
 
  # Add metrics
  if method in results['cv_results']:
- metrics = results['cv_results'][method]['metrics']
+ if method in results['cv_results']:
  textstr = f"RMSE={metrics['rmse']:.2f}\nR²={metrics['r2']:.3f}"
  ax.text(0.02, 0.98, textstr, transform=ax.transAxes,
  fontsize=9, verticalalignment='top',
@@ -164,9 +160,8 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
 
 # Plot 7-9: Error maps
 for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
- ax = fig.add_subplot(gs[2, idx])
 
- Z_pred = results['predictions'][method].reshape(X_grid.shape)
+for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  error = Z_pred - Z_true
 
  vmax = np.max(np.abs(error))

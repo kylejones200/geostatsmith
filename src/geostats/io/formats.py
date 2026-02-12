@@ -13,25 +13,23 @@ from pathlib import Path
 import json
 
 try:
- import netCDF4 as nc
- NETCDF_AVAILABLE = True
+try:
 except ImportError:
  NETCDF_AVAILABLE = False
 
 try:
- import geopandas as gpd
- from shapely.geometry import Point
+try:
  GEOPANDAS_AVAILABLE = True
 except ImportError:
  GEOPANDAS_AVAILABLE = False
 
 def read_netcdf(
- filename: str,
+def read_netcdf(
  z_var: str,
  x_var: str = 'x',
  y_var: str = 'y',
  time_index: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
  """
  Read spatial data from NetCDF file.
 
@@ -78,23 +76,23 @@ def read_netcdf(
  If file doesn't exist
  """
  if not NETCDF_AVAILABLE:
- raise ImportError(
+ if not NETCDF_AVAILABLE:
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
 
  if not Path(filename).exists():
- raise FileNotFoundError(f"File not found: {filename}")
+ if not Path(filename).exists():
 
  # Open NetCDF file
  with nc.Dataset(filename, 'r') as dataset:
- # Check variables exist
+ with nc.Dataset(filename, 'r') as dataset:
  if x_var not in dataset.variables:
- raise KeyError(f"Variable '{x_var}' not found. Available: {list(dataset.variables.keys())}")
+ if x_var not in dataset.variables:
  if y_var not in dataset.variables:
- raise KeyError(f"Variable '{y_var}' not found")
+ if y_var not in dataset.variables:
  if z_var not in dataset.variables:
- raise KeyError(f"Variable '{z_var}' not found")
+ if z_var not in dataset.variables:
 
  # Read coordinates
  x = dataset.variables[x_var][:].data
@@ -105,16 +103,16 @@ def read_netcdf(
 
  # Handle time dimension if present
  if time_index is not None and 'time' in z_data.dimensions:
- z = z_data[time_index, :, :].data
+ if time_index is not None and 'time' in z_data.dimensions:
  elif len(z_data.shape) == 3:
- # If 3D but no time_index specified, take first slice
+ elif len(z_data.shape) == 3:
  z = z_data[0, :, :].data
  else:
- z = z_data[:].data
+ else:
 
  # Handle masked arrays
  if hasattr(z, 'mask'):
- z = np.ma.filled(z, np.nan)
+ if hasattr(z, 'mask'):
 
  # Collect metadata
  metadata = {
@@ -126,7 +124,7 @@ def read_netcdf(
  return x, y, z, metadata
 
 def write_netcdf(
- filename: str,
+def write_netcdf(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -135,7 +133,7 @@ def write_netcdf(
  y_varname: str = 'y',
  units: Optional[str] = None,
  long_name: Optional[str] = None,
-) -> None:
+    ) -> None:
  """
  Write spatial data to NetCDF file.
 
@@ -176,17 +174,17 @@ def write_netcdf(
  If netCDF4 is not installed
  """
  if not NETCDF_AVAILABLE:
- raise ImportError(
+ if not NETCDF_AVAILABLE:
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
 
  if z.ndim != 2:
- raise ValueError("z must be 2D array")
+ if z.ndim != 2:
 
  # Create NetCDF file
  with nc.Dataset(filename, 'w', format='NETCDF4') as dataset:
- # Create dimensions
+ with nc.Dataset(filename, 'w', format='NETCDF4') as dataset:
  dataset.createDimension(y_varname, len(y))
  dataset.createDimension(x_varname, len(x))
 
@@ -202,18 +200,18 @@ def write_netcdf(
 
  # Add attributes
  if units:
- z_var.units = units
+ if units:
  if long_name:
- z_var.long_name = long_name
+ if long_name:
 
  # Global attributes
  dataset.description = 'Geostatistics output'
  dataset.source = 'geostats library'
 
 def read_geojson(
- filename: str,
+def read_geojson(
  z_property: str,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
  Read point data from GeoJSON file.
 
@@ -245,20 +243,20 @@ def read_geojson(
  If file doesn't exist
  """
  if not GEOPANDAS_AVAILABLE:
- raise ImportError(
+ if not GEOPANDAS_AVAILABLE:
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
  )
 
  if not Path(filename).exists():
- raise FileNotFoundError(f"File not found: {filename}")
+ if not Path(filename).exists():
 
  # Read GeoJSON
  gdf = gpd.read_file(filename)
 
  # Check property exists
  if z_property not in gdf.columns:
- raise KeyError(f"Property '{z_property}' not found. Available: {list(gdf.columns)}")
+ if z_property not in gdf.columns:
 
  # Extract coordinates
  x = gdf.geometry.x.values
@@ -268,13 +266,13 @@ def read_geojson(
  return x, y, z
 
 def write_geojson(
- filename: str,
+def write_geojson(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  z_property: str = 'value',
  crs: str = 'EPSG:4326',
-) -> None:
+    ) -> None:
  """
  Write point data to GeoJSON file.
 
@@ -303,7 +301,7 @@ def write_geojson(
  If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
- raise ImportError(
+ if not GEOPANDAS_AVAILABLE:
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
  )
@@ -320,14 +318,14 @@ def write_geojson(
  gdf.to_file(filename, driver='GeoJSON')
 
 def to_dataframe(
- x: npt.NDArray[np.float64],
+def to_dataframe(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_col: str = 'x',
  y_col: str = 'y',
  z_col: str = 'z',
  **extra_cols,
-) -> pd.DataFrame:
+    ) -> pd.DataFrame:
  """
  Convert spatial data to pandas DataFrame.
 
@@ -366,18 +364,18 @@ def to_dataframe(
 
  # Add extra columns
  for col_name, col_data in extra_cols.items():
- df[col_name] = col_data
+ for col_name, col_data in extra_cols.items():
 
  return df
 
 def to_geopandas(
- x: npt.NDArray[np.float64],
+def to_geopandas(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  z_col: str = 'value',
  crs: str = 'EPSG:4326',
  **extra_cols,
-) -> 'gpd.GeoDataFrame':
+    ) -> 'gpd.GeoDataFrame':
  """
  Convert spatial data to GeoPandas GeoDataFrame.
 
@@ -412,7 +410,7 @@ def to_geopandas(
  If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
- raise ImportError(
+ if not GEOPANDAS_AVAILABLE:
  "geopandas is required. "
  "Install with: pip install geopandas"
  )

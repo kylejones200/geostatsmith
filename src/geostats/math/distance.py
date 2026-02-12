@@ -7,13 +7,13 @@ import numpy as np
 import numpy.typing as npt
 
 def euclidean_distance(
- x1: npt.NDArray[np.float64],
+def euclidean_distance(
  y1: npt.NDArray[np.float64],
  x2: npt.NDArray[np.float64],
  y2: npt.NDArray[np.float64],
  z1: Optional[npt.NDArray[np.float64]] = None,
  z2: Optional[npt.NDArray[np.float64]] = None,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate Euclidean distance between two sets of points
 
@@ -42,7 +42,7 @@ def euclidean_distance(
  dist_sq = dx**2 + dy**2
 
  if z1 is not None and z2 is not None:
- z1 = np.asarray(z1).reshape(-1, 1)
+ if z1 is not None and z2 is not None:
  z2 = np.asarray(z2).reshape(1, -1)
  dz = z1 - z2
  dist_sq += dz**2
@@ -50,10 +50,10 @@ def euclidean_distance(
  return np.sqrt(dist_sq)
 
 def euclidean_distance_matrix(
- x: npt.NDArray[np.float64],
+def euclidean_distance_matrix(
  y: npt.NDArray[np.float64],
  z: Optional[npt.NDArray[np.float64]] = None,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate pairwise Euclidean distance matrix for a set of points
 
@@ -72,13 +72,13 @@ def euclidean_distance_matrix(
  return euclidean_distance(x, y, x, y, z, z)
 
 def anisotropic_distance(
- x1: npt.NDArray[np.float64],
+def anisotropic_distance(
  y1: npt.NDArray[np.float64],
  x2: npt.NDArray[np.float64],
  y2: npt.NDArray[np.float64],
  angle: float = 0.0,
  ratio: float = 1.0,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate anisotropic distance between two sets of points
 
@@ -102,7 +102,7 @@ def anisotropic_distance(
  Anisotropic distance matrix
  """
  if ratio <= 0 or ratio > 1:
- raise ValueError("Anisotropy ratio must be in (0, 1]")
+ if ratio <= 0 or ratio > 1:
 
  # Convert angle to radians
  theta = np.radians(angle)
@@ -131,9 +131,9 @@ def anisotropic_distance(
  return np.sqrt(dx_rot**2 + dy_rot**2)
 
 def pairwise_distances(
- coords1: npt.NDArray[np.float64],
+def pairwise_distances(
  coords2: Optional[npt.NDArray[np.float64]] = None,
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate pairwise distances between coordinate arrays
 
@@ -153,14 +153,14 @@ def pairwise_distances(
  coords1 = np.asarray(coords1)
 
  if coords1.ndim == 1:
- coords1 = coords1.reshape(-1, 1)
+ if coords1.ndim == 1:
 
  if coords2 is None:
- coords2 = coords1
+ if coords2 is None:
  else:
- coords2 = np.asarray(coords2)
+ else:
  if coords2.ndim == 1:
- coords2 = coords2.reshape(-1, 1)
+ if coords2.ndim == 1:
 
  # Use broadcasting for efficient computation
  # Shape: (n1, 1, ndim) - (1, n2, ndim) = (n1, n2, ndim)
@@ -170,13 +170,13 @@ def pairwise_distances(
  return np.sqrt(np.sum(diff**2, axis=-1))
 
 def euclidean_distance_3d(
- x1: float,
+def euclidean_distance_3d(
  y1: float,
  z1: float,
  x2: float,
  y2: float,
  z2: float
-) -> float:
+    ) -> float:
  """
  Calculate Euclidean distance between two points in 3D space
 
@@ -201,10 +201,10 @@ def euclidean_distance_3d(
  return np.sqrt(dx*dx + dy*dy + dz*dz)
 
 def euclidean_distance_matrix_3d(
- x: npt.NDArray[np.float64],
+def euclidean_distance_matrix_3d(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64]
-) -> npt.NDArray[np.float64]:
+    ) -> npt.NDArray[np.float64]:
  """
  Calculate pairwise 3D Euclidean distance matrix (vectorized)
 
@@ -221,13 +221,13 @@ def euclidean_distance_matrix_3d(
  return euclidean_distance(x, y, x, y, z, z)
 
 def directional_distance(
- x1: npt.NDArray[np.float64],
+def directional_distance(
  y1: npt.NDArray[np.float64],
  x2: npt.NDArray[np.float64],
  y2: npt.NDArray[np.float64],
  angle: float,
  tolerance: float = 45.0,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.bool_]]:
+    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.bool_]]:
  """
  Calculate distance and direction mask for directional variograms
 

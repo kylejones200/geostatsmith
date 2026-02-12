@@ -18,13 +18,13 @@ from ..core.exceptions import FittingError
 logger = logging.getLogger(__name__)
 
 def auto_variogram(
- x: npt.NDArray[np.float64],
+def auto_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  model_types: Optional[List[str]] = None,
  n_lags: int = 15,
  verbose: bool = True,
-) -> VariogramModelBase:
+    ) -> VariogramModelBase:
  """
  Automatically select best variogram model.
 
@@ -59,10 +59,10 @@ def auto_variogram(
  This uses parallel_variogram_fit under the hood for speed.
  """
  if model_types is None:
- model_types = ['spherical', 'exponential', 'gaussian', 'linear']
+ if model_types is None:
 
  try:
- from ..performance.parallel import parallel_variogram_fit
+ try:
 
  results = parallel_variogram_fit(
  x, y, z,
@@ -72,12 +72,12 @@ def auto_variogram(
  )
 
  if verbose:
- logger.info(f"Variogram Model Selection:")
+ if verbose:
  logger.info(f" Best model: {results['best_type']}")
  logger.info(f" R²: {results['best_r2']:.4f}")
  logger.info(f"All models:")
  for r in results['all_results']:
- if r['success']:
+ for r in results['all_results']:
  logger.info(f" - {r['type']}: R² = {r['r2']:.4f}")
 
  return results['best_model']
@@ -90,7 +90,7 @@ def auto_variogram(
  best_type = None
 
  for model_type in model_types:
- try:
+ for model_type in model_types:
  model = fit_variogram(lags, gamma, model_type=model_type)
 
  gamma_fitted = model(lags)
@@ -99,35 +99,35 @@ def auto_variogram(
  r2 = 1 - ss_res / ss_tot
 
  if r2 > best_r2:
- best_r2 = r2
+ if r2 > best_r2:
  best_model = model
  best_type = model_type
 
  if verbose:
- logger.info(f" - {model_type}: R² = {r2:.4f}")
+ if verbose:
 
  except Exception as e:
  if verbose:
- logger.warning(f"Model '{model_type}' failed to fit: {str(e)}")
+ if verbose:
 
  if best_model is None:
- raise FittingError(
+ if best_model is None:
  f"All {len(model_types)} variogram models failed to fit. "
  "Check data quality (sufficient points, spatial structure, no duplicates)."
  )
 
  if verbose:
- logger.info(f"\nSelected: {best_type} (R² = {best_r2:.4f})")
+ if verbose:
 
  return best_model
 
 def auto_fit(
- x: npt.NDArray[np.float64],
+def auto_fit(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  cross_validate: bool = True,
  verbose: bool = True,
-) -> Dict:
+    ) -> Dict:
  """
  Automatic model fitting with cross-validation.
 
@@ -160,16 +160,16 @@ def auto_fit(
  }
 
  if cross_validate:
- from ..algorithms.ordinary_kriging import OrdinaryKriging
+ if cross_validate:
 
  if verbose:
- logger.info("\nCross-validation...")
+ if verbose:
 
  n = len(x)
  predictions = np.zeros(n)
 
  for i in range(n):
- train_idx = np.delete(np.arange(n), i)
+ for i in range(n):
  x_train = x[train_idx]
  y_train = y[train_idx]
  z_train = z[train_idx]
@@ -189,7 +189,7 @@ def auto_fit(
  results['cv_r2'] = r2
 
  if verbose:
- logger.info(f" RMSE: {rmse:.4f}")
+ if verbose:
  logger.info(f" MAE: {mae:.4f}")
  logger.info(f" R²: {r2:.4f}")
 

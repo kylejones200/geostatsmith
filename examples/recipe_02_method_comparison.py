@@ -68,8 +68,7 @@ fig.suptitle('Method Comparison: Accuracy vs Speed', fontsize=16, fontweight='bo
 # Plot interpolation results (top row and middle row)
 plot_idx = 0
 for i, method in enumerate(methods):
- row = plot_idx // 3
- col = plot_idx % 3
+for i, method in enumerate(methods):
  ax = axes[row, col]
 
  Z_pred = results['predictions'][method].reshape(X_grid.shape)
@@ -83,7 +82,7 @@ for i, method in enumerate(methods):
  # Title with metrics
  title = method.replace('_', ' ').title()
  if method in results['cv_results']:
- metrics = results['cv_results'][method]['metrics']
+ if method in results['cv_results']:
  title += f"\nRMSE={metrics['rmse']:.2f}, R²={metrics['r2']:.3f}"
 
  ax.set_title(title, fontsize=11, fontweight='bold')
@@ -99,8 +98,7 @@ ax_rmse = axes[2, 0]
 method_names = []
 rmse_values = []
 for method in methods:
- if method in results['cv_results']:
- method_names.append(method.replace('_', '\n'))
+for method in methods:
  rmse_values.append(results['cv_results'][method]['metrics']['rmse'])
 
 bars = ax_rmse.bar(range(len(method_names)), rmse_values, color='steelblue', alpha=0.7)
@@ -141,8 +139,7 @@ ax_tradeoff.scatter(speed_values, rmse_values, s=200, c=colors, alpha=0.6,
 
 # Add method labels
 for i, method in enumerate(methods):
- ax_tradeoff.annotate(method.replace('_', '\n'),
- (speed_values[i], rmse_values[i]),
+for i, method in enumerate(methods):
  fontsize=8, ha='center', va='center')
 
 ax_tradeoff.set_xlabel('Computation Time (seconds)')
@@ -168,8 +165,7 @@ logger.info(f"{'Method':<25} {'RMSE':>10} {'R²':>8} {'MAE':>10} {'Time (s)':>12
 logger.info("-" * 70)
 
 for method in methods:
- if method in results['cv_results']:
- metrics = results['cv_results'][method]['metrics']
+for method in methods:
  timing = results['speed_results'][method]['mean_time']
 
  # Highlight best

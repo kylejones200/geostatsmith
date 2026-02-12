@@ -43,8 +43,7 @@ logger.info("PART 1: DATA LOADING AND EXPLORATION")
 AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
 if not AGDB_PATH.exists():
- logger.error(f"AGDB4 data not found at {AGDB_PATH}")
- logger.error("Please ensure the Alaska Geochemical Database is available.")
+if not AGDB_PATH.exists():
  sys.exit(1)
 
 logger.info(f"AGDB4 data found at: {AGDB_PATH}")
@@ -53,19 +52,17 @@ logger.info(f"AGDB4 data found at: {AGDB_PATH}")
 logger.debug("Available data files:")
 data_files = sorted(AGDB_PATH.glob('*.txt'))
 for file in data_files[:15]:
- size_mb = file.stat().st_size / (1024 * 1024)
- logger.debug(f"  {file.name:35s} {size_mb:>8.1f} MB")
+for file in data_files[:15]:
 
 # Load location data
 logger.info("Loading sample location data...")
 try:
- geol = pd.read_csv(AGDB_PATH / 'Geol_DeDuped.txt', low_memory=False, encoding='latin-1')
- logger.info(f"Loaded {len(geol):,} deduplicated samples")
+try:
  logger.debug(f"Columns: {list(geol.columns[:15])}")
 
  # Geographic extent
  if 'LATITUDE' in geol.columns and 'LONGITUDE' in geol.columns:
- valid_coords = geol[(geol['LATITUDE'].notna()) & (geol['LONGITUDE'].notna())]
+ if 'LATITUDE' in geol.columns and 'LONGITUDE' in geol.columns:
  logger.info(f"Geographic coverage: {len(valid_coords):,} samples with coordinates")
  logger.info(f"Latitude: {valid_coords['LATITUDE'].min():.2f}° to {valid_coords['LATITUDE'].max():.2f}°N")
  logger.info(f"Longitude: {valid_coords['LONGITUDE'].min():.2f}° to {valid_coords['LONGITUDE'].max():.2f}°W")
@@ -81,8 +78,7 @@ except Exception as e:
 logger.info("PART 2: GOLD EXPLORATION ANALYSIS - FAIRBANKS DISTRICT")
 
 try:
- # Load gold chemistry
- logger.info("Loading gold (Au) data...")
+try:
  chem_file = AGDB_PATH / 'Chem_A_Br.txt'
  chem = pd.read_csv(chem_file, low_memory=False, encoding='latin-1')
 
@@ -153,9 +149,8 @@ except Exception as e:
 logger.info("PART 3: MULTI-ELEMENT ANALYSIS - Cu, Mo, Au")
 
 try:
- logger.info("Loading multi-element data...")
 
- # Load copper data
+try:
  chem_c = pd.read_csv(AGDB_PATH / 'Chem_C_Gd.txt', low_memory=False, encoding='latin-1')
  cu_chem = chem_c[chem_c['PARAMETER'].str.contains('Cu_', case=False, na=False)][['AGDB_ID', 'DATA_VALUE']].copy()
  cu_chem = cu_chem.rename(columns={'DATA_VALUE': 'Cu'})
@@ -230,9 +225,8 @@ except Exception as e:
 logger.info("PART 4: ENVIRONMENTAL ASSESSMENT - ARSENIC (As)")
 
 try:
- logger.info("Loading arsenic data...")
 
- # Load arsenic from Chem_A_Br
+try:
  as_chem = chem[chem['PARAMETER'].str.contains('As_', case=False, na=False)][['AGDB_ID', 'DATA_VALUE']].copy()
  as_chem = as_chem.rename(columns={'DATA_VALUE': 'As'})
  logger.info(f"As: {len(as_chem):,} analyses")
@@ -298,8 +292,7 @@ logger.info("Completed Analyses: Gold exploration (Fairbanks), Multi-element cor
 logger.info("Output Files Created:")
 output_files = sorted(OUTPUT_DIR.glob('*'))
 for f in output_files:
- size_kb = f.stat().st_size / 1024
- logger.info(f"  {f.name:50s} {size_kb:>8.1f} KB")
+for f in output_files:
 
 logger.info(f"Analysis completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 logger.info(f"Full analysis complete! Results saved to: {OUTPUT_DIR}")

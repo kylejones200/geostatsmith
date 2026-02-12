@@ -23,12 +23,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 def cell_declustering(
- x: npt.NDArray[np.float64],
+def cell_declustering(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  cell_sizes: Optional[npt.NDArray[np.float64]] = None,
  n_sizes: int = 10
-) -> Tuple[npt.NDArray[np.float64], Dict]:
+    ) -> Tuple[npt.NDArray[np.float64], Dict]:
  """
  Cell Declustering
 
@@ -85,7 +85,7 @@ def cell_declustering(
  z = np.asarray(z, dtype=np.float64)
 
  if len(x) != len(y) or len(x) != len(z):
- raise ValueError("x, y, z must have same length")
+ if len(x) != len(y) or len(x) != len(z):
 
  n = len(x)
 
@@ -98,7 +98,7 @@ def cell_declustering(
 
  # Generate cell sizes to try if not provided
  if cell_sizes is None:
- # Try sizes from 1/20 to 2x the data range
+ if cell_sizes is None:
  min_size = max_range / 20
  max_size = max_range * 2
  cell_sizes = np.linspace(min_size, max_size, n_sizes)
@@ -108,7 +108,7 @@ def cell_declustering(
  variances = []
 
  for cell_size in cell_sizes:
- # Compute cell indices for each sample
+ for cell_size in cell_sizes:
  ix = np.floor((x - x_min) / cell_size).astype(int)
  iy = np.floor((y - y_min) / cell_size).astype(int)
 
@@ -156,11 +156,11 @@ def cell_declustering(
  return optimal_weights, info
 
 def polygonal_declustering(
- x: npt.NDArray[np.float64],
+def polygonal_declustering(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  power: float = 2.0
-) -> Tuple[npt.NDArray[np.float64], Dict]:
+    ) -> Tuple[npt.NDArray[np.float64], Dict]:
  """
  Polygonal (Voronoi-based) Declustering
 
@@ -197,12 +197,12 @@ def polygonal_declustering(
  z = np.asarray(z, dtype=np.float64)
 
  if len(x) != len(y) or len(x) != len(z):
- raise ValueError("x, y, z must have same length")
+ if len(x) != len(y) or len(x) != len(z):
 
  n = len(x)
 
  if n < 2:
- # Single point, weight = n
+ if n < 2:
  return np.array([float(n)]), {'method': 'single_point'}
 
  # Build KD-tree for efficient nearest neighbor search
@@ -235,9 +235,9 @@ def polygonal_declustering(
  return weights, info
 
 def detect_clustering(
- x: npt.NDArray[np.float64],
+def detect_clustering(
  y: npt.NDArray[np.float64]
-) -> Dict[str, float]:
+    ) -> Dict[str, float]:
  """
  Detect presence of spatial clustering
 

@@ -25,8 +25,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 try:
- from geostats.io import (
- read_geotiff, write_geotiff,
+try:
  read_csv_spatial, write_csv_spatial,
  to_dataframe, to_geopandas
  )
@@ -39,7 +38,7 @@ except ImportError:
  exit(1)
 
 def example_1_read_csv_and_interpolate():
- """Example 1: Read CSV, interpolate, and export to GeoTIFF."""
+def example_1_read_csv_and_interpolate():
  
  logger.info("Example 1: CSV → Kriging → GeoTIFF")
  
@@ -125,13 +124,13 @@ def example_1_read_csv_and_interpolate():
  plt.close()
 
 def example_2_geotiff_workflow():
- """Example 2: Read GeoTIFF, sample points, validate."""
+def example_2_geotiff_workflow():
  
  logger.info("Example 2: GeoTIFF Validation Workflow")
  
 
  try:
- logger.info("Reading elevation_kriging.tif...")
+ try:
  x_grid, y_grid, z_grid, metadata = read_geotiff(
  'elevation_kriging.tif',
  as_grid=True
@@ -162,7 +161,7 @@ def example_2_geotiff_workflow():
  logger.info(f"\n{df.head()}")
 
  try:
- gdf = to_geopandas(x_valid, y_valid, z_valid, crs='EPSG:32633')
+ try:
  logger.info(f"Converted to GeoDataFrame with CRS: {gdf.crs}")
  gdf.to_file('validation_points.geojson', driver='GeoJSON')
  logger.info(" Saved validation_points.geojson")
@@ -173,7 +172,7 @@ def example_2_geotiff_workflow():
  logger.warning(" elevation_kriging.tif not found. Run Example 1 first.")
 
 def example_3_format_comparison():
- """Example 3: Compare different file formats."""
+def example_3_format_comparison():
  
  logger.info("Example 3: Format Comparison")
  
@@ -192,7 +191,7 @@ def example_3_format_comparison():
  x_grid, y_grid = np.meshgrid(np.linspace(0, 100, 50), np.linspace(0, 100, 50))
  z_grid = np.random.rand(50, 50)
  try:
- start = time.time()
+ try:
  write_geotiff('test.tif', np.linspace(0, 100, 50), np.linspace(0, 100, 50), z_grid)
  formats.append(('GeoTIFF', time.time() - start, os.path.getsize('test.tif') / 1024))
  except ImportError:
@@ -202,10 +201,10 @@ def example_3_format_comparison():
  logger.info(f"{'Format':<15} {'Write Time (s)':<15} {'File Size (KB)':<15}")
  logger.info("-" * 45)
  for fmt, t, s in formats:
- logger.info(f"{fmt:<15} {t:<15.4f} {s:<15.2f}")
+ for fmt, t, s in formats:
 
 def main():
- """Run all examples."""
+def main():
  logger.info("GEOSTATS DATA I/O WORKFLOW EXAMPLES")
 
  example_1_read_csv_and_interpolate()
@@ -221,4 +220,4 @@ def main():
  logger.info(" - example_workflow_01_io.png")
 
 if __name__ == '__main__':
- main()
+if __name__ == '__main__':

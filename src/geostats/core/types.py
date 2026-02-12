@@ -20,11 +20,11 @@ VariogramFunction = callable # (distance: np.ndarray) -> np.ndarray
 
 @runtime_checkable
 class VariogramModel(Protocol):
- """Protocol for variogram models"""
+class VariogramModel(Protocol):
 
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- """
- Compute variogram value at distance h
+ def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     Compute variogram value at distance h
 
  Parameters
  ----------
@@ -40,12 +40,12 @@ class VariogramModel(Protocol):
 
  @property
  def parameters(self) -> dict:
- """Get model parameters"""
- ...
+ def parameters(self) -> dict:
+     ...
 
  def fit(self, lags: npt.NDArray[np.float64], gamma: npt.NDArray[np.float64]) -> None:
- """
- Fit model to experimental variogram data
+ def fit(self, lags: npt.NDArray[np.float64], gamma: npt.NDArray[np.float64]) -> None:
+     Fit model to experimental variogram data
 
  Parameters
  ----------
@@ -58,31 +58,31 @@ class VariogramModel(Protocol):
 
 @runtime_checkable
 class KrigingPredictor(Protocol):
- """Protocol for kriging predictors"""
+class KrigingPredictor(Protocol):
 
  def predict(
- self,
- x: npt.NDArray[np.float64],
- y: npt.NDArray[np.float64],
- return_variance: bool = True,
- ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
- """
- Perform kriging prediction
+ def predict(
+     x: npt.NDArray[np.float64],
+     y: npt.NDArray[np.float64],
+     return_variance: bool = True,
+     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+     """
+     Perform kriging prediction
 
- Parameters
- ----------
- x : np.ndarray
- X coordinates for prediction
- y : np.ndarray
- Y coordinates for prediction
- return_variance : bool
- Whether to return kriging variance
+     Parameters
+     ----------
+     x : np.ndarray
+     X coordinates for prediction
+     y : np.ndarray
+     Y coordinates for prediction
+     return_variance : bool
+     Whether to return kriging variance
 
- Returns
- -------
- predictions : np.ndarray
- Predicted values
- variance : np.ndarray
- Kriging variance (if return_variance=True)
- """
- ...
+     Returns
+     -------
+     predictions : np.ndarray
+     Predicted values
+     variance : np.ndarray
+     Kriging variance (if return_variance=True)
+     """
+     ...

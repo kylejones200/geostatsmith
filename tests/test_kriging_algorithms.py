@@ -18,10 +18,10 @@ from geostats.models.variogram_models import SphericalModel, ExponentialModel
 from geostats.core.exceptions import KrigingError
 
 class TestSimpleKriging:
-    """Tests for Simple Kriging"""
+class TestSimpleKriging:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n = 50
         self.x = np.random.uniform(0, 100, self.n)
@@ -33,7 +33,7 @@ class TestSimpleKriging:
         self.model = SphericalModel(nugget=0.5, sill=4.0, range_param=30.0)
 
     def test_initialization(self):
-        """Test Simple Kriging initialization"""
+    def test_initialization(self):
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
         variogram_model=self.model,
@@ -44,7 +44,7 @@ class TestSimpleKriging:
         assert sk.variogram_model is not None
 
     def test_prediction_single_point(self):
-        """Test prediction at single point"""
+    def test_prediction_single_point(self):
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
         variogram_model=self.model,
@@ -60,7 +60,7 @@ class TestSimpleKriging:
         assert var[0] >= 0
 
     def test_prediction_multiple_points(self):
-        """Test prediction at multiple points"""
+    def test_prediction_multiple_points(self):
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
         variogram_model=self.model,
@@ -78,7 +78,7 @@ class TestSimpleKriging:
         assert all(var >= 0)
 
     def test_prediction_at_data_point(self):
-        """Test prediction at exact data location"""
+    def test_prediction_at_data_point(self):
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
         variogram_model=self.model,
@@ -97,7 +97,7 @@ class TestSimpleKriging:
         assert var[0] < 0.5
 
     def test_prediction_returns_mean_at_infinity(self):
-        """Test that predictions approach mean far from data"""
+    def test_prediction_returns_mean_at_infinity(self):
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
         variogram_model=self.model,
@@ -111,7 +111,7 @@ class TestSimpleKriging:
         assert abs(pred[0] - self.mean) < 1.0
 
     def test_without_variogram_model(self):
-        """Test that kriging requires variogram model"""
+    def test_without_variogram_model(self):
         sk = simple_kriging.SimpleKriging(
         self.x, self.y, self.z,
         variogram_model=None,
@@ -145,10 +145,10 @@ class TestSimpleKriging:
         assert Z_pred.shape == (10, 10)
 
 class TestOrdinaryKrigingExtended:
-    """Extended tests for Ordinary Kriging beyond basic tests"""
+class TestOrdinaryKrigingExtended:
 
     def setup_method(self):
-        """Set up test data"""
+    def setup_method(self):
         np.random.seed(42)
         self.n = 100
         self.x = np.random.uniform(0, 100, self.n)
@@ -162,7 +162,7 @@ class TestOrdinaryKrigingExtended:
         self.model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
 
     def test_weights_sum_to_one(self):
-        """Test that kriging weights sum to 1 (unbiasedness constraint)"""
+    def test_weights_sum_to_one(self):
         ok = ordinary_kriging.OrdinaryKriging(
         self.x, self.y, self.z,
         variogram_model=self.model
@@ -175,7 +175,7 @@ class TestOrdinaryKrigingExtended:
         assert np.isfinite(pred[0])
 
     def test_handles_duplicate_locations(self):
-        """Test handling of duplicate data locations"""
+    def test_handles_duplicate_locations(self):
         # Create data with duplicates
         x_dup = np.array([0, 10, 20, 20, 30])
         y_dup = np.array([0, 10, 20, 20, 30])
@@ -193,7 +193,7 @@ class TestOrdinaryKrigingExtended:
         assert np.isfinite(pred[0])
 
     def test_anisotropic_data(self):
-        """Test with anisotropic spatial structure"""
+    def test_anisotropic_data(self):
         # Create anisotropic data (stronger correlation in x direction)
         np.random.seed(42)
         n = 80
@@ -211,10 +211,10 @@ class TestOrdinaryKrigingExtended:
         assert var[0] > 0
 
 class TestUniversalKrigingExtended:
-    """Extended tests for Universal Kriging"""
+class TestUniversalKrigingExtended:
 
     def test_linear_drift_recovery(self):
-        """Test that UK recovers linear trend"""
+    def test_linear_drift_recovery(self):
         np.random.seed(42)
         n = 100
         x = np.random.uniform(0, 100, n)
@@ -244,7 +244,7 @@ class TestUniversalKrigingExtended:
         assert all(np.abs(pred - expected) < 5.0)
 
     def test_quadratic_drift(self):
-        """Test UK with quadratic drift terms"""
+    def test_quadratic_drift(self):
         np.random.seed(42)
         n = 80
         x = np.random.uniform(0, 50, n)
@@ -268,10 +268,10 @@ class TestUniversalKrigingExtended:
         assert var[0] > 0
 
 class TestBlockKriging:
-    """Tests for block kriging (support change)"""
+class TestBlockKriging:
 
     def test_block_kriging_basic(self):
-        """Test basic block kriging"""
+    def test_block_kriging_basic(self):
         np.random.seed(42)
         n = 60
         x = np.random.uniform(0, 100, n)
@@ -295,7 +295,7 @@ class TestBlockKriging:
         assert block_var > 0
 
     def test_block_variance_smaller_than_point(self):
-        """Test that block variance is smaller than point variance (support effect)"""
+    def test_block_variance_smaller_than_point(self):
         np.random.seed(42)
         n = 60
         x = np.random.uniform(0, 100, n)
@@ -319,10 +319,10 @@ class TestBlockKriging:
         assert block_var < point_var[0]
 
 class TestKrigingEdgeCases:
-    """Test edge cases and error handling"""
+class TestKrigingEdgeCases:
 
     def test_single_data_point(self):
-        """Test kriging with only one data point"""
+    def test_single_data_point(self):
         x = np.array([50.0])
         y = np.array([50.0])
         z = np.array([10.0])
@@ -337,7 +337,7 @@ class TestKrigingEdgeCases:
         assert np.isfinite(pred[0])
 
     def test_collinear_points(self):
-        """Test with collinear data points"""
+    def test_collinear_points(self):
         x = np.array([0, 10, 20, 30, 40])
         y = np.array([0, 0, 0, 0, 0]) # All on same line
         z = np.array([1, 2, 3, 4, 5])
@@ -351,7 +351,7 @@ class TestKrigingEdgeCases:
         assert np.isfinite(pred[0])
 
     def test_extrapolation_far_from_data(self):
-        """Test extrapolation very far from data"""
+    def test_extrapolation_far_from_data(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
         y = np.random.uniform(0, 10, 20)
@@ -372,7 +372,7 @@ class TestKrigingEdgeCases:
         assert var[0] > 0.5
 
     def test_empty_prediction_arrays(self):
-        """Test with empty prediction arrays"""
+    def test_empty_prediction_arrays(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
         y = np.random.uniform(0, 10, 20)
@@ -388,7 +388,7 @@ class TestKrigingEdgeCases:
         assert len(var) == 0
 
     def test_invalid_coordinates(self):
-        """Test handling of invalid coordinates"""
+    def test_invalid_coordinates(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
         y = np.random.uniform(0, 10, 20)
@@ -404,7 +404,7 @@ class TestKrigingEdgeCases:
     """Test kriging variance properties"""
 
     def test_variance_at_data_point_is_small(self):
-        """Test that variance is small at data locations"""
+    def test_variance_at_data_point_is_small(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 50)
         y = np.random.uniform(0, 100, 50)
@@ -420,7 +420,7 @@ class TestKrigingEdgeCases:
         assert var[0] < 0.5
 
     def test_variance_increases_with_distance(self):
-        """Test that variance increases with distance from data"""
+    def test_variance_increases_with_distance(self):
         np.random.seed(42)
         x = np.array([50.0])
         y = np.array([50.0])
@@ -434,15 +434,14 @@ class TestKrigingEdgeCases:
         variances = []
 
         for d in distances:
-             for d in distances:
-        variances.append(var[0])
+            variances.append(var[0])
 
         # Variance should generally increase with distance
         # (may not be strictly monotonic due to kriging system)
         assert variances[-1] > variances[0]
 
     def test_variance_reaches_sill(self):
-        """Test that variance approaches sill far from data"""
+    def test_variance_reaches_sill(self):
         x = np.array([50.0])
         y = np.array([50.0])
         z = np.array([10.0])
@@ -457,4 +456,4 @@ class TestKrigingEdgeCases:
         assert var[0] > 0.8 # Close to sill of 1.0
 
 if __name__ == "__main__":
-     if __name__ == "__main__":
+if __name__ == "__main__":
