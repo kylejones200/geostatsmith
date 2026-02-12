@@ -33,7 +33,13 @@ jobs:
     - name: Format check with ruff
       run: |
         # Only check formatting, not linting errors
+        # Skip syntax checking (Python compiler handles that)
         uv run ruff format --check . || true
+    - name: Lint with ruff (optional, non-blocking)
+      continue-on-error: true
+      run: |
+        # Optional linting - won't fail CI
+        uv run ruff check . || true
     
     - name: Lint with flake8
       run: |
