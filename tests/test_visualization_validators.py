@@ -346,20 +346,19 @@ class TestPlotSaving:
         fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z)
 
         # Save to temporary file
-        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
-            tmp_path = tmp.name
-            fig.savefig(tmp_path)
-            
-            # Check file was created
-            assert os.path.exists(tmp_path)
-            assert os.path.getsize(tmp_path) > 0
-        
-        # Clean up
+        tmp_path = None
         try:
-            if os.path.exists(tmp_path):
+            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+                tmp_path = tmp.name
+                fig.savefig(tmp_path)
+                
+                # Check file was created
+                assert os.path.exists(tmp_path)
+                assert os.path.getsize(tmp_path) > 0
+        finally:
+            # Clean up
+            if tmp_path and os.path.exists(tmp_path):
                 os.remove(tmp_path)
-        except:
-            pass
 
 
                     if __name__ == "__main__":

@@ -275,6 +275,7 @@ class TestRasterIO:
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def test_read_geotiff_file_not_found(self):
         with pytest.raises(FileNotFoundError):
+            read_geotiff('/nonexistent/file.tif')
 
     def test_write_ascii_grid(self):
         asc_file = self.temp_dir / "test.asc"

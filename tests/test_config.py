@@ -72,29 +72,31 @@ def test_config_validation():
         })
 
 def test_yaml_loading():
- config_dict = {
- 'project': {'name': 'YAML Test', 'output_dir': './results'},
- 'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
+    config_dict = {
+        'project': {'name': 'YAML Test', 'output_dir': './results'},
+        'data': {
+            'input_file': __file__,
+            'x_column': 'X',
+            'y_column': 'Y',
+            'z_column': 'Z'
+        }
+    }
 
- # Write to temp file
- with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+    # Write to temp file
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        temp_path = f.name
+        yaml.dump(config_dict, f)
 
-     try:
-         pass
- config = load_config(temp_path)
- assert config.project.name == 'YAML Test'
+    try:
+        config = load_config(temp_path)
+        assert config.project.name == 'YAML Test'
 
- # Validate
- valid, msg = validate_config(temp_path)
- assert valid
- assert 'valid' in msg.lower()
- finally:
-     pass
- Path(temp_path).unlink()
+        # Validate
+        valid, msg = validate_config(temp_path)
+        assert valid
+        assert 'valid' in msg.lower()
+    finally:
+        Path(temp_path).unlink()
 
 def test_config_merging():
     base_dict = {
@@ -144,31 +146,32 @@ def test_default_values():
 
     # Check defaults
     assert config.preprocessing.remove_outliers == False
- assert config.preprocessing.transform is None
- assert config.variogram.n_lags == 15
- assert config.variogram.estimator == 'matheron'
- assert config.variogram.auto_fit == True
- assert config.kriging.method == 'ordinary'
- assert config.kriging.neighborhood.max_neighbors == 25
- assert config.validation.cross_validation == True
- assert config.visualization.style == 'minimalist'
- assert config.output.save_predictions == True
+    assert config.preprocessing.transform is None
+    assert config.variogram.n_lags == 15
+    assert config.variogram.estimator == 'matheron'
+    assert config.variogram.auto_fit == True
+    assert config.kriging.method == 'ordinary'
+    assert config.kriging.neighborhood.max_neighbors == 25
+    assert config.validation.cross_validation == True
+    assert config.visualization.style == 'minimalist'
+    assert config.output.save_predictions == True
 
 def test_cross_field_validation():
- # Cokriging without secondary variable
- with pytest.raises(ConfigError) as excinfo:
-     'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
- # Missing z_secondary
- },
- 'kriging': {
- 'method': 'cokriging' # Requires z_secondary
-
- })
- assert 'cokriging' in str(excinfo.value).lower()
+    # Cokriging without secondary variable
+    with pytest.raises(ConfigError) as excinfo:
+        load_config({
+            'data': {
+                'input_file': __file__,
+                'x_column': 'X',
+                'y_column': 'Y',
+                'z_column': 'Z'
+                # Missing z_secondary
+            },
+            'kriging': {
+                'method': 'cokriging'  # Requires z_secondary
+            }
+        })
+    assert 'cokriging' in str(excinfo.value).lower()
 
  # Indicator kriging without thresholds
  with pytest.raises(ConfigError) as excinfo:
