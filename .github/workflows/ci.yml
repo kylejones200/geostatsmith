@@ -30,14 +30,15 @@ jobs:
       run: |
         uv sync --frozen --dev
     
-    - name: Format check with ruff
+    - name: Syntax check with Python
       run: |
-        # Only check formatting, not linting errors
+        # Use Python's compiler for syntax checking (reliable)
+        find . -name "*.py" -not -path "./.git/*" -not -path "./venv/*" -not -path "./.venv/*" -not -path "./htmlcov/*" | xargs python3 -m py_compile
+    - name: Format check with ruff (optional)
+      continue-on-error: true
+      run: |
+        # Optional formatting check - won't fail CI
         uv run ruff format --check . || true
-    - name: Syntax check with Python (not ruff)
-      run: |
-        # Use Python's compiler for syntax checking (more reliable than ruff)
-        find . -name "*.py" -not -path "./.git/*" -not -path "./venv/*" -not -path "./.venv/*" | xargs python3 -m py_compile || true
     
     - name: Lint with flake8
       run: |
