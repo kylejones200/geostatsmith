@@ -62,7 +62,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Filter for sample type if specified
     if sample_type:
-        merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
+    if sample_type:
 
     # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
     element_col = f"{element}_ppm"
@@ -70,19 +70,16 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     # Filter for parameter = element and valid values
     if 'PARAMETER' in chem_data.columns:
     if 'PARAMETER' in chem_data.columns:
-     merged = merged[element_mask]
 
     # Get the value column (usually 'VALUE' in chem files)
     if 'VALUE' in merged.columns:
-    if 'VALUE' in merged.columns:
-    elif element_col in merged.columns:
+        elif element_col in merged.columns:
      value_col = element_col
     else:
-     value_col = None
+    else:
 
     if value_col:
     if value_col:
-     merged = merged.dropna(subset=[value_col])
 
     logger.info(f" After filtering: {len(merged):,} samples with valid {element} data")
 
@@ -91,8 +88,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     y = merged['LATITUDE'].values
 
     if value_col:
-    if value_col:
-    else:
+        else:
      values = None
 
     # Metadata
@@ -130,14 +126,10 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     # Filter for specific region if desired
     if region_name:
     if region_name:
-     if 'metadata' in au_data and 'dataframe' in au_data['metadata']:
-     if 'metadata' in au_data and 'dataframe' in au_data['metadata']:
          if 'DISTRICT_NAME' in df.columns:
          if 'DISTRICT_NAME' in df.columns:
-             indices = np.where(mask.values)[0]
              if len(indices) > 0:
              if len(indices) > 0:
-                 au_data['y'] = au_data['y'][indices]
                  au_data['values'] = au_data['values'][indices]
                  logger.info(f"Focused on {region_name} region: {len(indices)} samples")
 
@@ -244,9 +236,8 @@ def multi_element_analysis(agdb_path):
     logger.info(f"Common Cu-Mo samples: {len(common)}")
 
     if len(common) < 50:
-    if len(common) < 50:
 
-    x = common['LONGITUDE'].values
+        x = common['LONGITUDE'].values
     y = common['LATITUDE'].values
     cu = common['VALUE_cu'].values
     mo = common['VALUE_mo'].values
@@ -261,7 +252,6 @@ def multi_element_analysis(agdb_path):
 
     if correlation > 0.3:
     if correlation > 0.3:
-        logger.info("\nFitting variograms...")
     lags_cu, gamma_cu = experimental_variogram(x, y, cu_log, n_lags=12)
     model_cu = fit_variogram(lags_cu, gamma_cu, model_type='spherical')
 
@@ -350,29 +340,29 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
     # ==============================================================================
 
     if __name__ == '__main__':
-        AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
+    if __name__ == '__main__':
 
     if not AGDB_PATH.exists():
-        exit(1)
+    if not AGDB_PATH.exists():
 
     logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
     logger.info("Using GeoStats Library")
 
     # Example 1: Gold Exploration
     try:
-        gold_exploration_analysis(AGDB_PATH)
+    try:
     except Exception as e:
         logger.error(f"Gold analysis error: {e}")
 
     # Example 2: Multi-element (Cu-Mo)
     try:
-        multi_element_analysis(AGDB_PATH)
+    try:
     except Exception as e:
         logger.error(f"Multi-element analysis error: {e}")
 
     # Example 3: Environmental (Arsenic)
     try:
-        environmental_assessment(AGDB_PATH, element='As', threshold=20)
+    try:
     except Exception as e:
         logger.error(f"Environmental analysis error: {e}")
 
