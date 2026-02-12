@@ -94,25 +94,24 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
         values = merged[value_col].values
     else:
         values = None
-     values = None
 
     # Metadata
     metadata = {
-    'element': element,
-    'sample_type': sample_type,
-    'n_samples': len(merged),
-    'units': 'ppm' if '_ppm' in value_col else 'pct' if value_col else 'unknown',
-    'x_range': (x.min(), x.max()),
-    'y_range': (y.min(), y.max()),
-    'value_range': (values.min(), values.max()) if values is not None else None,
-    'dataframe': merged # Keep full dataframe for advanced analysis
+        'element': element,
+        'sample_type': sample_type,
+        'n_samples': len(merged),
+        'units': 'ppm' if '_ppm' in value_col else 'pct' if value_col else 'unknown',
+        'x_range': (x.min(), x.max()),
+        'y_range': (y.min(), y.max()),
+        'value_range': (values.min(), values.max()) if values is not None else None,
+        'dataframe': merged # Keep full dataframe for advanced analysis
     }
 
     return {
-    'x': x,
-    'y': y,
-    'values': values,
-    'metadata': metadata
+        'x': x,
+        'y': y,
+        'values': values,
+        'metadata': metadata
     }
 
     # ==============================================================================
