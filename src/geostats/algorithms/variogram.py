@@ -184,43 +184,43 @@ def variogram_cloud(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
- maxlag: Optional[float] = None,
+    maxlag: Optional[float] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
- """
- Calculate variogram cloud (all pairwise points)
+    """
+    Calculate variogram cloud (all pairwise points)
 
- The variogram cloud shows all individual squared differences
- vs. distances, useful for detecting outliers and spatial patterns.
+    The variogram cloud shows all individual squared differences
+    vs. distances, useful for detecting outliers and spatial patterns.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of sample points
- z : np.ndarray
- Values at sample points
- maxlag : float, optional
- Maximum lag distance to include
+    Parameters
+    ----------
+    x, y : np.ndarray
+        Coordinates of sample points
+    z : np.ndarray
+        Values at sample points
+    maxlag : float, optional
+        Maximum lag distance to include
 
- Returns
- -------
- distances : np.ndarray
- All pairwise distances
- semivariances : np.ndarray
- Squared differences / 2 for each pair
- """
- # Validate inputs
- x, y = validate_coordinates(x, y)
- z = validate_values(z, n_expected=len(x))
+    Returns
+    -------
+    distances : np.ndarray
+        All pairwise distances
+    semivariances : np.ndarray
+        Squared differences / 2 for each pair
+    """
+    # Validate inputs
+    x, y = validate_coordinates(x, y)
+    z = validate_values(z, n_expected=len(x))
 
- # Calculate all pairwise distances
- dist = euclidean_distance_matrix(x, y)
+    # Calculate all pairwise distances
+    dist = euclidean_distance_matrix(x, y)
 
- # Calculate semivariances (squared differences / 2)
- z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
- semivar = z_diff_sq / 2.0
+    # Calculate semivariances (squared differences / 2)
+    z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
+    semivar = z_diff_sq / 2.0
 
- # Extract upper triangle (avoid duplicates and self-pairs)
- mask = np.triu(np.ones_like(dist, dtype=bool), k=1)
+    # Extract upper triangle (avoid duplicates and self-pairs)
+    mask = np.triu(np.ones_like(dist, dtype=bool), k=1)
 
     if maxlag is not None:
         mask = mask & (dist <= maxlag)
