@@ -23,7 +23,7 @@ def experimental_variogram(
     maxlag: Optional[float] = None,
     lag_tol: Optional[float] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
- """
+    """
     Calculate experimental (empirical) variogram
 
     Uses Matheron's classical estimator for the semivariogram.
@@ -31,26 +31,26 @@ def experimental_variogram(
     Parameters
     ----------
     x, y : np.ndarray
-    Coordinates of sample points
+        Coordinates of sample points
     z : np.ndarray
-    Values at sample points
+        Values at sample points
     n_lags : int
-    Number of lag bins
+        Number of lag bins
     maxlag : float, optional
-    Maximum lag distance to consider
-    If None, uses half the maximum distance
+        Maximum lag distance to consider
+        If None, uses half the maximum distance
     lag_tol : float, optional
-    Tolerance for lag binning
-    If None, uses lag_width / 2
+        Tolerance for lag binning
+        If None, uses lag_width / 2
 
     Returns
     -------
     lags : np.ndarray
-    Lag distances (bin centers)
+        Lag distances (bin centers)
     gamma : np.ndarray
-    Semivariance values
+        Semivariance values
     n_pairs : np.ndarray
-    Number of pairs in each lag bin
+        Number of pairs in each lag bin
 
     References
     ----------
