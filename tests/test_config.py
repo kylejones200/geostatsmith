@@ -57,18 +57,19 @@ def test_config_validation():
             }
         })
 
- # Invalid: value out of range
- with pytest.raises(ConfigError):
-     'data': {
- 'input_file': __file__,
- 'x_column': 'X',
- 'y_column': 'Y',
- 'z_column': 'Z'
- },
- 'variogram': {
- 'n_lags': 2 # Must be >= 5
-
- })
+    # Invalid: value out of range
+    with pytest.raises(ConfigError):
+        load_config({
+            'data': {
+                'input_file': __file__,
+                'x_column': 'X',
+                'y_column': 'Y',
+                'z_column': 'Z'
+            },
+            'variogram': {
+                'n_lags': 2  # Must be >= 5
+            }
+        })
 
 def test_yaml_loading():
  config_dict = {

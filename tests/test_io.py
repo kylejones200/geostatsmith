@@ -57,11 +57,11 @@ if RASTERIO_AVAILABLE:
 
 # Import NetCDF functions if available
 if NETCDF_AVAILABLE:
-    )
+    from geostats.io.formats import read_netcdf, write_netcdf
 
-    # Import GeoJSON functions if available
+# Import GeoJSON functions if available
 if GEOPANDAS_AVAILABLE:
-    )
+    from geostats.io.formats import read_geojson, write_geojson
 
 
 class TestCSVIO:

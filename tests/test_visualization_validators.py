@@ -239,9 +239,11 @@ class TestValidators:
     def test_validate_values_with_nan(self):
         z = np.array([10, 20, np.nan, 40, 50])
 
+        from geostats.validation.validators import validate_values
         with pytest.raises((ValueError, AssertionError)):
+            validate_values(z)
 
-        with pytest.raises((ValueError, AssertionError)):
+    def test_validate_values_infinite_values(self):
         """Test validation catches infinite values"""
         z = np.array([10, 20, np.inf, 40, 50])
 
