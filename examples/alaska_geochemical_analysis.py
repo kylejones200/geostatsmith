@@ -62,18 +62,20 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Filter for sample type if specified
     if sample_type:
-    if sample_type:
+        merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
 
     # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
     element_col = f"{element}_ppm"
  
     # Filter for parameter = element and valid values
     if 'PARAMETER' in chem_data.columns:
-    if 'PARAMETER' in chem_data.columns:
+        element_mask = merged['PARAMETER'].str.contains(f'{element}_', case=False, na=False)
+        merged = merged[element_mask]
 
     # Get the value column (usually 'VALUE' in chem files)
     if 'VALUE' in merged.columns:
-        elif element_col in merged.columns:
+        value_col = 'VALUE'
+    elif element_col in merged.columns:
      value_col = element_col
     else:
     else:
