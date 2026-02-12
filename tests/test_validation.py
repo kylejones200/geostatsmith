@@ -104,5 +104,6 @@ class TestCrossValidation:
         assert 'mae' in cv_metrics
         assert 'r2' in cv_metrics
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])
