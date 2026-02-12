@@ -96,5 +96,5 @@ class TestLogTransform:
         # Skip this test if the transform doesn't validate input
         pytest.skip("LogTransform input validation not implemented yet")
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

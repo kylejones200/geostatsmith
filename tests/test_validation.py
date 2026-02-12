@@ -72,7 +72,7 @@ class TestMetrics:
         y_pred = np.array([1, 2, 3, 4])
 
         with pytest.raises((ValueError, IndexError)):
-            metrics.root_mean_squared_error(y_true, y_pred)
+        with pytest.raises((ValueError, IndexError)):
 
 class TestCrossValidation:
     """Test cross-validation methods"""
@@ -106,4 +106,4 @@ class TestCrossValidation:
 
 
 if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+if __name__ == "__main__":

@@ -111,7 +111,7 @@ class TestKFoldCrossValidation:
         variogram = ExponentialModel(sill=1.0, range_param=5.0)
 
         for n_folds in [3, 5, 10]:
-        results = k_fold_cross_validation(x, y, z, OrdinaryKriging, variogram, n_folds=n_folds)
+            results = k_fold_cross_validation(x, y, z, OrdinaryKriging, variogram, n_folds=n_folds)
 
         predictions = results['predictions']
         assert predictions.shape == z.shape
@@ -168,7 +168,7 @@ class TestSpatialCrossValidation:
         variogram = ExponentialModel(sill=1.0, range_param=5.0)
 
         for n_blocks in [2, 4]:
-        results = spatial_cross_validation(
+            results = spatial_cross_validation(
         x, y, z, OrdinaryKriging, variogram,
         n_blocks=n_blocks
         )
@@ -270,5 +270,5 @@ class TestMetrics:
         r2 = r_squared(y_true, y_pred)
         assert np.abs(r2) < 0.01 # Close to 0
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

@@ -138,4 +138,4 @@ def test_block_kriging():
 
 
 if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+if __name__ == "__main__":

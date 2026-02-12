@@ -326,5 +326,5 @@ class TestBlockKriging:
         # Larger blocks should have lower variance
         assert var_large[0] < var_small[0]
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

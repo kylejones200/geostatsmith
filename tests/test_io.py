@@ -30,21 +30,21 @@ from geostats.io.formats import (
 
 # Check for optional dependencies
 try:
-    import rasterio
+try:
 
     RASTERIO_AVAILABLE = True
 except ImportError:
     RASTERIO_AVAILABLE = False
 
 try:
-    import netCDF4
+try:
 
     NETCDF_AVAILABLE = True
 except ImportError:
     NETCDF_AVAILABLE = False
 
 try:
-    import geopandas as gpd
+try:
 
     GEOPANDAS_AVAILABLE = True
 except ImportError:
@@ -52,7 +52,7 @@ except ImportError:
 
 # Import raster functions if available
 if RASTERIO_AVAILABLE:
-    from geostats.io.raster import (
+if RASTERIO_AVAILABLE:
         read_geotiff,
         write_geotiff,
         read_ascii_grid,
@@ -61,14 +61,14 @@ if RASTERIO_AVAILABLE:
 
 # Import NetCDF functions if available
 if NETCDF_AVAILABLE:
-    from geostats.io.formats import (
+if NETCDF_AVAILABLE:
         read_netcdf,
         write_netcdf,
     )
 
 # Import GeoJSON functions if available
 if GEOPANDAS_AVAILABLE:
-    from geostats.io.formats import (
+if GEOPANDAS_AVAILABLE:
         read_geojson,
         write_geojson,
     )
@@ -90,7 +90,7 @@ class TestCSVIO:
     def teardown_method(self):
         """Clean up temporary directory"""
         if self.temp_dir.exists():
-            shutil.rmtree(self.temp_dir)
+        if self.temp_dir.exists():
 
     def test_read_csv_spatial_basic(self):
         """Test basic CSV reading"""
@@ -160,7 +160,7 @@ class TestCSVIO:
     def test_read_csv_spatial_file_not_found(self):
         """Test that missing file raises error"""
         with pytest.raises(FileNotFoundError):
-            read_csv_spatial("nonexistent_file.csv")
+        with pytest.raises(FileNotFoundError):
 
     def test_read_csv_spatial_missing_columns(self):
         """Test that missing columns raise error"""
@@ -169,7 +169,7 @@ class TestCSVIO:
         df.to_csv(csv_file, index=False)
 
         with pytest.raises(KeyError, match="Missing columns"):
-            read_csv_spatial(str(csv_file))
+        with pytest.raises(KeyError, match="Missing columns"):
 
     def test_write_csv_spatial_basic(self):
         """Test basic CSV writing"""
@@ -223,7 +223,7 @@ class TestCSVIO:
     def test_read_excel_spatial(self):
         """Test Excel reading (if openpyxl available)"""
         try:
-            excel_file = self.temp_dir / "test.xlsx"
+        try:
             df = pd.DataFrame({"x": self.x, "y": self.y, "z": self.z})
             df.to_excel(excel_file, index=False)
 
@@ -255,7 +255,7 @@ class TestRasterIO:
     def teardown_method(self):
         """Clean up"""
         if self.temp_dir.exists():
-            shutil.rmtree(self.temp_dir)
+        if self.temp_dir.exists():
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def test_write_read_geotiff(self):
@@ -307,7 +307,7 @@ class TestRasterIO:
     def test_read_geotiff_file_not_found(self):
         """Test that missing GeoTIFF raises error"""
         with pytest.raises(FileNotFoundError):
-            read_geotiff("nonexistent.tif")
+        with pytest.raises(FileNotFoundError):
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def test_write_ascii_grid(self):
@@ -361,7 +361,7 @@ class TestNetCDFIO:
     def teardown_method(self):
         """Clean up"""
         if self.temp_dir.exists():
-            shutil.rmtree(self.temp_dir)
+        if self.temp_dir.exists():
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def test_write_read_netcdf(self):
@@ -392,7 +392,7 @@ class TestNetCDFIO:
     def test_read_netcdf_file_not_found(self):
         """Test that missing NetCDF raises error"""
         with pytest.raises(FileNotFoundError):
-            read_netcdf("nonexistent.nc", z_var="temp")
+        with pytest.raises(FileNotFoundError):
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def test_read_netcdf_missing_variable(self):
@@ -401,7 +401,7 @@ class TestNetCDFIO:
         write_netcdf(str(nc_file), self.x, self.y, self.z, z_var="temp")
 
         with pytest.raises(KeyError, match="Variable"):
-            read_netcdf(str(nc_file), z_var="nonexistent_var")
+        with pytest.raises(KeyError, match="Variable"):
 
 
 class TestDataConversion:
@@ -451,7 +451,7 @@ class TestDataConversion:
         geojson_file = temp_dir / "test.geojson"
 
         try:
-            # Write
+        try:
             write_geojson(str(geojson_file), self.x, self.y, self.z)
 
             assert geojson_file.exists()

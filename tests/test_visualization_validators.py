@@ -234,7 +234,7 @@ class TestValidators:
         y = np.array([1, 2, 3])
 
         with pytest.raises((ValueError, AssertionError)):
-            validate_coordinates(x, y)
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_validate_coordinates_with_nan(self):
         """Test validation catches NaN values"""
@@ -242,7 +242,7 @@ class TestValidators:
         y = np.array([1, 2, 3, 4, 5])
 
         with pytest.raises((ValueError, AssertionError)):
-            validate_coordinates(x, y)
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_validate_coordinates_with_inf(self):
         """Test validation catches infinite values"""
@@ -250,7 +250,7 @@ class TestValidators:
         y = np.array([1, 2, np.inf, 4, 5])
 
         with pytest.raises((ValueError, AssertionError)):
-            validate_coordinates(x, y)
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_validate_values_valid(self):
         """Test validation of valid values"""
@@ -264,14 +264,14 @@ class TestValidators:
         z = np.array([10, 20, np.nan, 40, 50])
 
         with pytest.raises((ValueError, AssertionError)):
-            validate_values(z, name="z")
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_validate_values_with_inf(self):
         """Test validation catches infinite values"""
         z = np.array([10, 20, np.inf, 40, 50])
 
         with pytest.raises((ValueError, AssertionError)):
-            validate_values(z, name="z")
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_validate_positive(self):
         """Test validation of positive values"""
@@ -284,12 +284,12 @@ class TestValidators:
     def test_validate_positive_rejects_negative(self):
         """Test that negative values are rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            validate_positive(-5.0, name="test_value")
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_validate_positive_rejects_zero(self):
         """Test that zero is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            validate_positive(0.0, name="test_value")
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_validate_array_shapes_match(self):
         """Test array shape validation"""
@@ -305,7 +305,7 @@ class TestValidators:
         b = np.array([6, 7, 8])
 
         with pytest.raises((ValueError, AssertionError)):
-            validate_array_shapes_match(a, b)
+        with pytest.raises((ValueError, AssertionError)):
 
 
 class TestParameterValidation:
@@ -314,22 +314,22 @@ class TestParameterValidation:
     def test_negative_nugget_rejected(self):
         """Test that negative nugget is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            SphericalModel(nugget=-0.5, sill=1.0, range_param=30.0)
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_negative_sill_rejected(self):
         """Test that negative sill is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            SphericalModel(nugget=0.1, sill=-1.0, range_param=30.0)
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_negative_range_rejected(self):
         """Test that negative range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            SphericalModel(nugget=0.1, sill=1.0, range_param=-30.0)
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_zero_range_rejected(self):
         """Test that zero range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            SphericalModel(nugget=0.1, sill=1.0, range_param=0.0)
+        with pytest.raises((ValueError, AssertionError)):
 
     def test_valid_parameters_accepted(self):
         """Test that valid parameters are accepted"""
@@ -380,10 +380,10 @@ class TestPlotSaving:
 
         # Save to temporary file
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
-            tmp_path = tmp.name
+        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
 
             try:
-                fig.savefig(tmp_path)
+            try:
 
                 # Check file was created
                 assert os.path.exists(tmp_path)
@@ -391,9 +391,9 @@ class TestPlotSaving:
             finally:
                 # Clean up
                 if os.path.exists(tmp_path):
-                    os.remove(tmp_path)
+                if os.path.exists(tmp_path):
                 plt.close(fig)
 
 
 if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+if __name__ == "__main__":

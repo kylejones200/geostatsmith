@@ -308,7 +308,7 @@ class TestEdgeCases:
 
         # Should either regularize or raise error
         try:
-        x = matrices.solve_kriging_system(A, b)
+            x = matrices.solve_kriging_system(A, b)
         # If it succeeds, solution should satisfy equation approximately
         residual = np.linalg.norm(A @ x - b)
         assert residual < 1.0
@@ -379,5 +379,5 @@ class TestComputationalEfficiency:
         assert elapsed < 0.1
         assert len(x) == n
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

@@ -138,7 +138,7 @@ class TestUnconditionalSimulation:
         y = np.array([0, 10, 20])
 
         with pytest.raises(ValueError, match="Unknown method"):
-            unconditional_gaussian_simulation(
+        with pytest.raises(ValueError, match="Unknown method"):
         x, y,
         covariance_model=self.model,
         method="invalid_method"
@@ -373,5 +373,5 @@ class TestSimulationEdgeCases:
         assert realizations.shape == (1, 9)
         assert all(np.isfinite(realizations.flatten()))
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

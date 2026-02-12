@@ -107,7 +107,7 @@ class TestSamplingDesign:
     def test_optimal_sampling_design_invalid_strategy(self):
         """Test that invalid strategy raises error"""
         with pytest.raises(ValueError, match="Unknown strategy"):
-            optimal_sampling_design(
+        with pytest.raises(ValueError, match="Unknown strategy"):
                 self.x_existing,
                 self.y_existing,
                 self.z_existing,

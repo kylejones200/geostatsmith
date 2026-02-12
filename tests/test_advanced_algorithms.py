@@ -434,5 +434,5 @@ class TestAdvancedKrigingEdgeCases:
         # Should return all 3 points
         assert len(indices) == 3
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

@@ -224,7 +224,7 @@ class TestParallelKriging:
     def test_parallel_cross_validation_invalid_method(self):
         """Test that invalid method raises error"""
         with pytest.raises(ValueError, match="Unknown method"):
-            parallel_cross_validation(
+        with pytest.raises(ValueError, match="Unknown method"):
                 self.x,
                 self.y,
                 self.z,
@@ -258,7 +258,7 @@ class TestCaching:
     def teardown_method(self):
         """Clean up temporary cache directory"""
         if self.temp_cache.exists():
-            shutil.rmtree(self.temp_cache)
+        if self.temp_cache.exists():
 
     def test_cached_kriging_initialization(self):
         """Test CachedKriging initialization"""

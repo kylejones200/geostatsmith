@@ -51,7 +51,7 @@ class TestCellDeclustering:
         z = x + y + np.random.normal(0, 0.5, 50)
 
         for cell_size in [0.5, 1.0, 2.0]:
-        weights = cell_declustering(x, y, z, cell_size=cell_size)
+        for cell_size in [0.5, 1.0, 2.0]:
 
         assert weights.shape == z.shape
         assert np.all(weights > 0)
@@ -296,5 +296,5 @@ class TestIntegration:
         assert weights.shape == z_clean.shape
         assert declustered_mean > np.mean(cluster_z) # Corrected for clustering
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

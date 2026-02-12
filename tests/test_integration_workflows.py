@@ -470,5 +470,5 @@ class TestRobustnessAndEdgeCases:
         # Should be close to constant value
         assert abs(pred[0] - 10.0) < 1.0
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":

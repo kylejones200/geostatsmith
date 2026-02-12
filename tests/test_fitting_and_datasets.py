@@ -304,7 +304,7 @@ class TestVariogramComputation:
         z = np.random.randn(60)
 
         for n_lags in [5, 10, 15, 20]:
-        lags, gamma, n_pairs = variogram.experimental_variogram(
+            lags, gamma, n_pairs = variogram.experimental_variogram(
         x, y, z, n_lags=n_lags
         )
 
@@ -363,7 +363,7 @@ class TestVariogramComputation:
         # (though not strictly monotonic due to sampling variation)
         # Check that later lags are generally larger than early lags
         if len(gamma) >= 5:
-        early_mean = np.mean(gamma[:2])
+            early_mean = np.mean(gamma[:2])
         late_mean = np.mean(gamma[-2:])
         # Late lags should generally be larger (more variance)
         assert late_mean >= early_mean * 0.5 # Allow some flexibility
@@ -379,7 +379,7 @@ class TestEdgeCases:
 
         # Should handle constant variogram
         try:
-        fitted_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
+            fitted_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
         # If successful, should have large nugget, small sill
         assert fitted_model.nugget > 0
         except (ValueError, RuntimeError):
@@ -421,5 +421,5 @@ class TestEdgeCases:
 
         assert fitted_model is not None
 
-        if __name__ == "__main__":
-        pytest.main([__file__, "-v"])
+if __name__ == "__main__":
+if __name__ == "__main__":
