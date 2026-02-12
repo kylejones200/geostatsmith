@@ -111,61 +111,57 @@ def analyze_element_correlations(data):
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # Cu vs Mo
  axes[0].hexbin(cu_log, mo_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
+ axes[0].spines['top'].set_visible(False)
+ axes[0].spines['right'].set_visible(False)
+ # Remove top and right spines
  axes[0].hexbin(cu_log, mo_log, gridsize.spines['top'].set_visible(False)
- axes[0].hexbin(cu_log, mo_log, gridsize.spines['right'].set_visible(False)
  axes[0].set_xlabel('log10(Cu, ppm)')
  # Remove top and right spines
  axes[0].set_xlabel('log10(Cu, ppm)').spines['top'].set_visible(False)
- axes[0].set_xlabel('log10(Cu, ppm)').spines['right'].set_visible(False)
  axes[0].set_ylabel('log10(Mo, ppm)')
  # Remove top and right spines
  axes[0].set_ylabel('log10(Mo, ppm)').spines['top'].set_visible(False)
- axes[0].set_ylabel('log10(Mo, ppm)').spines['right'].set_visible(False)
  axes[0].set_title(f'Cu vs Mo\nr = {corr_cu_mo:.3f}')
  # Remove top and right spines
  axes[0].set_title(f'Cu vs Mo\nr.spines['top'].set_visible(False)
- axes[0].set_title(f'Cu vs Mo\nr.spines['right'].set_visible(False)
 
  # Cu vs Au
  axes[1].hexbin(cu_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
+ axes[1].spines['top'].set_visible(False)
+ axes[1].spines['right'].set_visible(False)
+ # Remove top and right spines
  axes[1].hexbin(cu_log, au_log, gridsize.spines['top'].set_visible(False)
- axes[1].hexbin(cu_log, au_log, gridsize.spines['right'].set_visible(False)
  axes[1].set_xlabel('log10(Cu, ppm)')
  # Remove top and right spines
  axes[1].set_xlabel('log10(Cu, ppm)').spines['top'].set_visible(False)
- axes[1].set_xlabel('log10(Cu, ppm)').spines['right'].set_visible(False)
  axes[1].set_ylabel('log10(Au, ppm)')
  # Remove top and right spines
  axes[1].set_ylabel('log10(Au, ppm)').spines['top'].set_visible(False)
- axes[1].set_ylabel('log10(Au, ppm)').spines['right'].set_visible(False)
  axes[1].set_title(f'Cu vs Au\nr = {corr_cu_au:.3f}')
  # Remove top and right spines
  axes[1].set_title(f'Cu vs Au\nr.spines['top'].set_visible(False)
- axes[1].set_title(f'Cu vs Au\nr.spines['right'].set_visible(False)
 
  # Mo vs Au
  axes[2].hexbin(mo_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
+ axes[2].spines['top'].set_visible(False)
+ axes[2].spines['right'].set_visible(False)
+ # Remove top and right spines
  axes[2].hexbin(mo_log, au_log, gridsize.spines['top'].set_visible(False)
- axes[2].hexbin(mo_log, au_log, gridsize.spines['right'].set_visible(False)
  axes[2].set_xlabel('log10(Mo, ppm)')
  # Remove top and right spines
  axes[2].set_xlabel('log10(Mo, ppm)').spines['top'].set_visible(False)
- axes[2].set_xlabel('log10(Mo, ppm)').spines['right'].set_visible(False)
  axes[2].set_ylabel('log10(Au, ppm)')
  # Remove top and right spines
  axes[2].set_ylabel('log10(Au, ppm)').spines['top'].set_visible(False)
- axes[2].set_ylabel('log10(Au, ppm)').spines['right'].set_visible(False)
  axes[2].set_title(f'Mo vs Au\nr = {corr_mo_au:.3f}')
  # Remove top and right spines
  axes[2].set_title(f'Mo vs Au\nr.spines['top'].set_visible(False)
- axes[2].set_title(f'Mo vs Au\nr.spines['right'].set_visible(False)
 
  plt.tight_layout()
  plt.savefig('alaska_element_correlations.png', dpi=150)
@@ -221,7 +217,6 @@ def detect_geochemical_anomalies(data, elements_dict):
  fig, axes = plt.subplots(2, 2, figsize=(16, 14))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # Individual elements
  for idx, element in enumerate(['Cu', 'Mo', 'Au']):
@@ -244,7 +239,6 @@ def detect_geochemical_anomalies(data, elements_dict):
  ax = axes[1, 1]
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
  ax.scatter(x[~combined_anomaly], y[~combined_anomaly],
  c='lightgray', s=10, alpha=0.5, label='Background')
  ax.scatter(x[combined_anomaly], y[combined_anomaly],
@@ -322,59 +316,54 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  fig, axes = plt.subplots(2, 2, figsize=(14, 12))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # OK prediction
  im1 = axes[0, 0].contourf(X, Y, cu_ok, levels=20, cmap='YlOrRd')
  axes[0, 0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
+ axes[0, 0].spines['top'].set_visible(False)
+ axes[0, 0].spines['right'].set_visible(False)
+ # Remove top and right spines
  axes[0, 0].scatter(x, y, c.spines['top'].set_visible(False)
- axes[0, 0].scatter(x, y, c.spines['right'].set_visible(False)
  axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)')
  # Remove top and right spines
  axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)').spines['top'].set_visible(False)
- axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)').spines['right'].set_visible(False)
  plt.colorbar(im1, ax=axes[0, 0], label='log10(Cu)')
  # Remove top and right spines
  axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)').spines['right'].set_visible(False).spines['top'].set_visible(False)
- axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # OK variance
  im2 = axes[0, 1].contourf(X, Y, var_ok, levels=20, cmap='viridis')
  axes[0, 1].set_title('OK Variance')
  # Remove top and right spines
  axes[0, 1].set_title('OK Variance').spines['top'].set_visible(False)
- axes[0, 1].set_title('OK Variance').spines['right'].set_visible(False)
  plt.colorbar(im2, ax=axes[0, 1], label='Variance')
  # Remove top and right spines
  axes[0, 1].set_title('OK Variance').spines['right'].set_visible(False).spines['top'].set_visible(False)
- axes[0, 1].set_title('OK Variance').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # Cokriging prediction
  im3 = axes[1, 0].contourf(X, Y, cu_cok, levels=20, cmap='YlOrRd')
  axes[1, 0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
+ axes[1, 0].spines['top'].set_visible(False)
+ axes[1, 0].spines['right'].set_visible(False)
+ # Remove top and right spines
  axes[1, 0].scatter(x, y, c.spines['top'].set_visible(False)
- axes[1, 0].scatter(x, y, c.spines['right'].set_visible(False)
  axes[1, 0].set_title('Cokriging\n(Cu with Mo)')
  # Remove top and right spines
  axes[1, 0].set_title('Cokriging\n(Cu with Mo)').spines['top'].set_visible(False)
- axes[1, 0].set_title('Cokriging\n(Cu with Mo)').spines['right'].set_visible(False)
  plt.colorbar(im3, ax=axes[1, 0], label='log10(Cu)')
  # Remove top and right spines
  axes[1, 0].set_title('Cokriging\n(Cu with Mo)').spines['right'].set_visible(False).spines['top'].set_visible(False)
- axes[1, 0].set_title('Cokriging\n(Cu with Mo)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  # Cokriging variance
  im4 = axes[1, 1].contourf(X, Y, var_cok, levels=20, cmap='viridis')
  axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)')
  # Remove top and right spines
  axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)').spines['top'].set_visible(False)
- axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)').spines['right'].set_visible(False)
  plt.colorbar(im4, ax=axes[1, 1], label='Variance')
  # Remove top and right spines
  axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)').spines['right'].set_visible(False).spines['top'].set_visible(False)
- axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)').spines['right'].set_visible(False).spines['right'].set_visible(False)
 
  for ax in axes.flatten():
  for ax in axes.flatten():
@@ -432,19 +421,19 @@ def calculate_porphyry_index(data, elements_dict):
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # Porphyry index map
  im1 = ax1.contourf(X, Y, index_pred, levels=20, cmap='RdYlGn')
  ax1.scatter(x, y, c=porphyry_index, s=30, cmap='RdYlGn',
  # Remove top and right spines
+ ax1.spines['top'].set_visible(False)
+ ax1.spines['right'].set_visible(False)
+ # Remove top and right spines
  ax1.scatter(x, y, c.spines['top'].set_visible(False)
- ax1.scatter(x, y, c.spines['right'].set_visible(False)
  edgecolors='k', linewidths=0.5)
  ax1.contour(X, Y, index_pred, levels=[np.percentile(index_pred, 90)],
  # Remove top and right spines
  ax1.contour(X, Y, index_pred, levels.spines['top'].set_visible(False)
- ax1.contour(X, Y, index_pred, levels.spines['right'].set_visible(False)
  colors='red', linewidths=3, linestyles='--')
  ax1.set_title('Porphyry Fertility Index\n(Combined Cu-Mo-Au signature)')
  ax1.set_xlabel('Longitude')
@@ -452,14 +441,15 @@ def calculate_porphyry_index(data, elements_dict):
  plt.colorbar(im1, ax=ax1, label='Fertility Index')
  # Remove top and right spines
  ax1.set_ylabel('Latitude').spines['top'].set_visible(False)
- ax1.set_ylabel('Latitude').spines['right'].set_visible(False)
 
  # High-potential zones
  im2 = ax2.contourf(X, Y, high_potential.astype(int), levels=1, colors=['white', 'red'], alpha=0.5)
  ax2.scatter(x, y, c=porphyry_index, s=20, cmap='RdYlGn', alpha=0.6)
  # Remove top and right spines
+ ax2.spines['top'].set_visible(False)
+ ax2.spines['right'].set_visible(False)
+ # Remove top and right spines
  ax2.scatter(x, y, c.spines['top'].set_visible(False)
- ax2.scatter(x, y, c.spines['right'].set_visible(False)
  ax2.set_title('High-Potential Zones\n(Top 10% fertility)')
  ax2.set_xlabel('Longitude')
  ax2.set_ylabel('Latitude')

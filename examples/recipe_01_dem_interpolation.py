@@ -108,61 +108,56 @@ gs = GridSpec(3, 3, figure=fig, hspace=0.3, wspace=0.3)
 ax1 = fig.add_subplot(gs[0, 0])
 # Remove top and right spines
 ax1.spines['top'].set_visible(False)
-ax1.spines['right'].set_visible(False)
 scatter = ax1.scatter(x, y, c=z, cmap='terrain', s=30, edgecolors='black', linewidths=0.5)
 ax1.set_title('Sample Points (Measured)', fontsize=12, fontweight='bold')
 # Remove top and right spines
-ax1.set_title('Sample Points (Measured)', fontsize.spines['top'].set_visible(False)
-ax1.set_title('Sample Points (Measured)', fontsize.spines['right'].set_visible(False)
+ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
+# Remove top and right spines
 ax1.set_xlabel('X (m)')
 ax1.set_ylabel('Y (m)')
 ax1.set_aspect('equal')
 plt.colorbar(scatter, ax=ax1, label='Elevation (m)')
 # Remove top and right spines
 ax1.set_aspect('equal').spines['top'].set_visible(False)
-ax1.set_aspect('equal').spines['right'].set_visible(False)
 
 # Plot 2: True DEM (ground truth)
 ax2 = fig.add_subplot(gs[0, 1])
 # Remove top and right spines
 ax2.spines['top'].set_visible(False)
-ax2.spines['right'].set_visible(False)
 im = ax2.contourf(X_grid, Y_grid, Z_true, levels=15, cmap='terrain')
 ax2.scatter(x, y, c='red', s=10, alpha=0.5, marker='x')
 # Remove top and right spines
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+# Remove top and right spines
 ax2.scatter(x, y, c.spines['top'].set_visible(False)
-ax2.scatter(x, y, c.spines['right'].set_visible(False)
 ax2.set_title('True DEM (Ground Truth)', fontsize=12, fontweight='bold')
 # Remove top and right spines
-ax2.set_title('True DEM (Ground Truth)', fontsize.spines['top'].set_visible(False)
-ax2.set_title('True DEM (Ground Truth)', fontsize.spines['right'].set_visible(False)
 ax1.set_xlabel('X (m)')
 ax2.set_ylabel('Y (m)')
 ax2.set_aspect('equal')
 plt.colorbar(im, ax=ax2, label='Elevation (m)')
 # Remove top and right spines
 ax2.set_aspect('equal').spines['top'].set_visible(False)
-ax2.set_aspect('equal').spines['right'].set_visible(False)
 
 # Plot 3: Experimental variogram
 ax3 = fig.add_subplot(gs[0, 2])
 # Remove top and right spines
 ax3.spines['top'].set_visible(False)
-ax3.spines['right'].set_visible(False)
 ax3.plot(lags, gamma, 'o-', label='Experimental', linewidth=2, markersize=8)
 # Remove top and right spines
+ax3.spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False)
+# Remove top and right spines
 ax3.plot(lags, gamma, 'o-', label.spines['top'].set_visible(False)
-ax3.plot(lags, gamma, 'o-', label.spines['right'].set_visible(False)
 h_model = np.linspace(0, np.max(lags), 100)
 gamma_model = best_model(h_model)
 ax3.plot(h_model, gamma_model, 'r--', label='Fitted Model', linewidth=2)
 # Remove top and right spines
 ax3.plot(h_model, gamma_model, 'r--', label.spines['top'].set_visible(False)
-ax3.plot(h_model, gamma_model, 'r--', label.spines['right'].set_visible(False)
 ax3.set_title('Variogram Analysis', fontsize=12, fontweight='bold')
 # Remove top and right spines
-ax3.set_title('Variogram Analysis', fontsize.spines['top'].set_visible(False)
-ax3.set_title('Variogram Analysis', fontsize.spines['right'].set_visible(False)
 ax3.set_xlabel('Distance (h)')
 ax3.set_ylabel('Semivariance γ(h)')
 ax3.legend()
@@ -183,7 +178,6 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  plt.colorbar(im, ax=ax, label='Elevation (m)')
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # Add metrics
  if method in results['cv_results']:
@@ -202,12 +196,10 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  vmax = np.max(np.abs(error))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
  im = ax.contourf(X_grid, Y_grid, error, levels=15, cmap='RdBu_r',
  vmin=-vmax, vmax=vmax)
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
  ax.scatter(x, y, c='black', s=5, alpha=0.3, marker='x')
  ax.set_title(f'{title} Error', fontsize=12, fontweight='bold')
  ax.set_xlabel('X (m)')
@@ -216,7 +208,6 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  plt.colorbar(im, ax=ax, label='Error (m)')
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # Add error statistics
  mae = np.mean(np.abs(error))

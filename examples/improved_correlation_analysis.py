@@ -183,66 +183,51 @@ fig = plt.figure(figsize=(20, 12))
 ax1 = plt.subplot(2, 3, 1)
 # Remove top and right spines
 ax1.spines['top'].set_visible(False)
-ax1.spines['right'].set_visible(False)
 # Remove top and right spines
 ax1.spines['right'].set_visible(False).spines['top'].set_visible(False)
-ax1.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax2 = plt.subplot(2, 3, 2)
 # Remove top and right spines
 ax2.spines['top'].set_visible(False)
-ax2.spines['right'].set_visible(False)
 # Remove top and right spines
 ax2.spines['right'].set_visible(False).spines['top'].set_visible(False)
-ax2.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax3 = plt.subplot(2, 3, 3)
 # Remove top and right spines
 ax3.spines['top'].set_visible(False)
-ax3.spines['right'].set_visible(False)
 # Remove top and right spines
 ax3.spines['right'].set_visible(False).spines['top'].set_visible(False)
-ax3.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax4 = plt.subplot(2, 3, 4)
 # Remove top and right spines
 ax4.spines['top'].set_visible(False)
-ax4.spines['right'].set_visible(False)
 # Remove top and right spines
 ax4.spines['right'].set_visible(False).spines['top'].set_visible(False)
-ax4.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax5 = plt.subplot(2, 3, 5)
 # Remove top and right spines
 ax5.spines['top'].set_visible(False)
-ax5.spines['right'].set_visible(False)
 # Remove top and right spines
 ax5.spines['right'].set_visible(False).spines['top'].set_visible(False)
-ax5.spines['right'].set_visible(False).spines['right'].set_visible(False)
 ax6 = plt.subplot(2, 3, 6)
 # Remove top and right spines
 ax6.spines['top'].set_visible(False)
-ax6.spines['right'].set_visible(False)
 # Remove top and right spines
 ax6.spines['right'].set_visible(False).spines['top'].set_visible(False)
-ax6.spines['right'].set_visible(False).spines['right'].set_visible(False)
 
 # 1. Statewide (weak)
 ax1.scatter(cu_log_all, au_log_all, alpha=0.3, s=10, c="lightgray", edgecolors="none")
 # Remove top and right spines
+ax1.spines['top'].set_visible(False)
+ax1.spines['right'].set_visible(False)
+# Remove top and right spines
 ax1.scatter(cu_log_all, au_log_all, alpha.spines['top'].set_visible(False)
-ax1.scatter(cu_log_all, au_log_all, alpha.spines['right'].set_visible(False)
 z1 = np.polyfit(cu_log_all, au_log_all, 1)
 p1 = np.poly1d(z1)
 x_trend1 = np.linspace(cu_log_all.min(), cu_log_all.max(), 100)
 ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
 ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth.spines['top'].set_visible(False)
-ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth.spines['right'].set_visible(False)
 ax1.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
-ax1.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['top'].set_visible(False)
-ax1.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['right'].set_visible(False)
 ax1.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
 # Remove top and right spines
-ax1.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['top'].set_visible(False)
-ax1.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['right'].set_visible(False)
 ax1.set_title(
     f"1. Statewide (All Alaska)\nr = {corr_all:.3f}, R² = {corr_all**2:.3f}\n WEAK",
     fontsize=12,
@@ -266,16 +251,14 @@ p2 = np.poly1d(z2)
 x_trend2 = np.linspace(cu_log_porp.min(), cu_log_porp.max(), 100)
 ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+# Remove top and right spines
 ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth.spines['top'].set_visible(False)
-ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth.spines['right'].set_visible(False)
 ax2.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
-ax2.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['top'].set_visible(False)
-ax2.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['right'].set_visible(False)
 ax2.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
 # Remove top and right spines
-ax2.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['top'].set_visible(False)
-ax2.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['right'].set_visible(False)
 ax2.set_title(
     f"2. Porphyry Districts Only\nr = {corr_porp:.3f}, R² = {corr_porp**2:.3f}\n BETTER",
     fontsize=12,
@@ -293,16 +276,14 @@ p3 = np.poly1d(z3)
 x_trend3 = np.linspace(cu_log_anom.min(), cu_log_anom.max(), 100)
 ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
+ax3.spines['top'].set_visible(False)
+ax3.spines['right'].set_visible(False)
+# Remove top and right spines
 ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth.spines['top'].set_visible(False)
-ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth.spines['right'].set_visible(False)
 ax3.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
-ax3.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['top'].set_visible(False)
-ax3.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['right'].set_visible(False)
 ax3.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
 # Remove top and right spines
-ax3.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['top'].set_visible(False)
-ax3.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['right'].set_visible(False)
 ax3.set_title(
     f"3. Anomalous Samples (Top 10%)\nr = {corr_anom:.3f}, R² = {corr_anom**2:.3f}\n BETTER",
     fontsize=12,
@@ -326,16 +307,14 @@ p4 = np.poly1d(z4)
 x_trend4 = np.linspace(cu_log_best.min(), cu_log_best.max(), 100)
 ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth=3, label="Trend")
 # Remove top and right spines
+ax4.spines['top'].set_visible(False)
+ax4.spines['right'].set_visible(False)
+# Remove top and right spines
 ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth.spines['top'].set_visible(False)
-ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth.spines['right'].set_visible(False)
 ax4.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
-ax4.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['top'].set_visible(False)
-ax4.set_xlabel("log₁₀(Cu + 1)", fontsize.spines['right'].set_visible(False)
 ax4.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
 # Remove top and right spines
-ax4.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['top'].set_visible(False)
-ax4.set_ylabel("log₁₀(Au + 0.001)", fontsize.spines['right'].set_visible(False)
 ax4.set_title(
     f"4. Porphyry Districts + Anomalous\nr = {corr_best:.3f}, R² = {corr_best**2:.3f}\n BEST",
     fontsize=12,
@@ -360,8 +339,9 @@ bars = ax5.bar(
 )
 ax5.set_ylabel("R² (Coefficient of Determination)", fontsize=11, fontweight="bold")
 # Remove top and right spines
-ax5.set_ylabel("R² (Coefficient of Determination)", fontsize.spines['top'].set_visible(False)
-ax5.set_ylabel("R² (Coefficient of Determination)", fontsize.spines['right'].set_visible(False)
+ax5.spines['top'].set_visible(False)
+ax5.spines['right'].set_visible(False)
+# Remove top and right spines
 ax5.set_title(
     "Correlation Strength Comparison\n(Higher is Better)",
     fontsize=12,
@@ -388,12 +368,11 @@ bars2 = ax6.bar(
 )
 ax6.set_ylabel("Number of Samples", fontsize=11, fontweight="bold")
 # Remove top and right spines
-ax6.set_ylabel("Number of Samples", fontsize.spines['top'].set_visible(False)
-ax6.set_ylabel("Number of Samples", fontsize.spines['right'].set_visible(False)
+ax6.spines['top'].set_visible(False)
+ax6.spines['right'].set_visible(False)
+# Remove top and right spines
 ax6.set_title("Sample Counts\n(Fewer but Better)", fontsize=12, fontweight="bold")
 # Remove top and right spines
-ax6.set_title("Sample Counts\n(Fewer but Better)", fontsize.spines['top'].set_visible(False)
-ax6.set_title("Sample Counts\n(Fewer but Better)", fontsize.spines['right'].set_visible(False)
 ax6.set_yscale("log")
 
 # Add value labels

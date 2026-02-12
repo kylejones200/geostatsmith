@@ -117,25 +117,23 @@ try:
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # Linear scale
  scatter1 = ax1.scatter(x, y, c=au, s=30, cmap='YlOrRd',
  vmin=0, vmax=np.percentile(au, 95),
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax1.set_title('Gold Distribution - Fairbanks\n(Linear Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax1.set_title('Gold Distribution - Fairbanks\n(Linear Scale)', fontsize.spines['top'].set_visible(False)
- ax1.set_title('Gold Distribution - Fairbanks\n(Linear Scale)', fontsize.spines['right'].set_visible(False)
+ ax1.spines['top'].set_visible(False)
+ ax1.spines['right'].set_visible(False)
+ # Remove top and right spines
  ax1.set_xlabel('Longitude')
  ax1.set_ylabel('Latitude')
  plt.colorbar(scatter1, ax=ax1, label='Au (ppm)')
  # Remove top and right spines
  ax1.set_ylabel('Latitude').spines['top'].set_visible(False)
- ax1.set_ylabel('Latitude').spines['right'].set_visible(False)
 
  # Log scale
  au_log = np.log10(au + 0.001)
@@ -143,13 +141,13 @@ try:
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax2.set_title('Gold Distribution - Fairbanks\n(Log Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax2.set_title('Gold Distribution - Fairbanks\n(Log Scale)', fontsize.spines['top'].set_visible(False)
- ax2.set_title('Gold Distribution - Fairbanks\n(Log Scale)', fontsize.spines['right'].set_visible(False)
+ ax2.spines['top'].set_visible(False)
+ ax2.spines['right'].set_visible(False)
+ # Remove top and right spines
  ax2.set_xlabel('Longitude')
  plt.colorbar(scatter2, ax=ax2, label='log₁₀(Au + 0.001)')
  # Remove top and right spines
  ax2.set_xlabel('Longitude').spines['top'].set_visible(False)
- ax2.set_xlabel('Longitude').spines['right'].set_visible(False)
 
  plt.tight_layout()
  output_file = OUTPUT_DIR / 'figure_01_gold_distribution.png'
@@ -206,31 +204,23 @@ try:
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  # Raw correlation
  ax1.scatter(cu_vals, au_vals, alpha=0.4, s=20, c='steelblue', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
  ax1.scatter(cu_vals, au_vals, alpha.spines['top'].set_visible(False)
- ax1.scatter(cu_vals, au_vals, alpha.spines['right'].set_visible(False)
  ax1.set_xlabel('Cu (ppm)', fontsize=12)
  # Remove top and right spines
- ax1.set_xlabel('Cu (ppm)', fontsize.spines['top'].set_visible(False)
- ax1.set_xlabel('Cu (ppm)', fontsize.spines['right'].set_visible(False)
  ax1.set_ylabel('Au (ppm)', fontsize=12)
  # Remove top and right spines
- ax1.set_ylabel('Au (ppm)', fontsize.spines['top'].set_visible(False)
- ax1.set_ylabel('Au (ppm)', fontsize.spines['right'].set_visible(False)
  ax1.set_title(f'Cu vs Au Correlation\n(r = {corr_raw:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
  ax1.set_title(f'Cu vs Au Correlation\n(r.spines['top'].set_visible(False)
- ax1.set_title(f'Cu vs Au Correlation\n(r.spines['right'].set_visible(False)
 
  # Log-transformed
  ax2.scatter(cu_log, au_log, alpha=0.4, s=20, c='coral', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
  ax2.scatter(cu_log, au_log, alpha.spines['top'].set_visible(False)
- ax2.scatter(cu_log, au_log, alpha.spines['right'].set_visible(False)
 
  # Trend line
  z = np.polyfit(cu_log, au_log, 1)
@@ -239,20 +229,14 @@ try:
  ax2.plot(x_trend, p(x_trend), 'r--', linewidth=2, label='Trend line')
  # Remove top and right spines
  ax2.plot(x_trend, p(x_trend), 'r--', linewidth.spines['top'].set_visible(False)
- ax2.plot(x_trend, p(x_trend), 'r--', linewidth.spines['right'].set_visible(False)
 
  ax2.set_xlabel('log₁₀(Cu + 1)', fontsize=12)
  # Remove top and right spines
- ax2.set_xlabel('log₁₀(Cu + 1)', fontsize.spines['top'].set_visible(False)
- ax2.set_xlabel('log₁₀(Cu + 1)', fontsize.spines['right'].set_visible(False)
  ax2.set_ylabel('log₁₀(Au + 0.001)', fontsize=12)
  # Remove top and right spines
- ax2.set_ylabel('log₁₀(Au + 0.001)', fontsize.spines['top'].set_visible(False)
- ax2.set_ylabel('log₁₀(Au + 0.001)', fontsize.spines['right'].set_visible(False)
  ax2.set_title(f'Log-Transformed Correlation\n(r = {corr_log:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
  ax2.set_title(f'Log-Transformed Correlation\n(r.spines['top'].set_visible(False)
- ax2.set_title(f'Log-Transformed Correlation\n(r.spines['right'].set_visible(False)
  ax2.legend()
 
  plt.tight_layout()
@@ -307,7 +291,6 @@ try:
  fig, ax = plt.subplots(figsize=(12, 8))
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  x_as = as_data['LONGITUDE'].values
  y_as = as_data['LATITUDE'].values
@@ -316,7 +299,6 @@ try:
  vmin=0, vmax=np.percentile(as_vals, 95),
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
  alpha=0.5, edgecolors='none')
 
  ax.set_title('Arsenic Distribution - Alaska\n(EPA Residential Threshold: 0.39 ppm)',
@@ -326,7 +308,6 @@ try:
  cbar = plt.colorbar(scatter, ax=ax, label='As (ppm)')
  # Remove top and right spines
  ax.spines['top'].set_visible(False)
- ax.spines['right'].set_visible(False)
 
  plt.tight_layout()
  output_file = OUTPUT_DIR / 'figure_03_arsenic_distribution.png'
