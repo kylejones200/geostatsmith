@@ -1,50 +1,3 @@
-"""
-Alaska Geochemical Database (AGDB4) Analysis Example
-=====================================================
-
-This example demonstrates how to use GeoStats with the Alaska Geochemical
-Database (AGDB4), a database of geochemical analyses from Alaska.
-
-AGDB4 contains:
-- 375,000+ samples (deduplicated)
-- 400,000+ total samples
-- 70+ elements analyzed
-- Lat/Long coordinates
-- Stream sediments, rocks, soils
-- Multiple analytical methods
-- Historical data from USGS, DGGS, and other agencies
-
-This workflow shows:
-1. Loading and preparing AGDB4 data
-2. Spatial analysis of specific elements (Au, Cu, Pb, As, etc.)
-3. Multi-element cokriging
-4. Probability mapping for mineral exploration
-5. Environmental contamination assessment
-"""
-
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from pathlib import Path
-
-# GeoStats imports
-from geostats.algorithms.variogram import experimental_variogram
-from geostats.algorithms.fitting import fit_variogram_model as fit_variogram
-from geostats.algorithms.ordinary_kriging import OrdinaryKriging
-from geostats.algorithms.cokriging import Cokriging
-from geostats.algorithms.indicator_kriging import IndicatorKriging
-from geostats.uncertainty import probability_of_exceedance
-from geostats.diagnostics import comprehensive_validation
-from geostats.optimization import optimal_sampling
-from geostats.visualization import plot_variogram, plot_prediction_surface
-import logging
-
-logger = logging.getLogger(__name__)
-
-# ==============================================================================
-# PART 1: Load and Prepare AGDB4 Data
-# ==============================================================================
-
 def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     """
     Load Alaska Geochemical Database and prepare for analysis.
@@ -274,59 +227,59 @@ def multi_element_analysis(agdb_path):
     Analyze multiple correlated elements using cokriging.
     Example: Cu-Mo association in porphyry deposits.
     """
- logger.info("MULTI-ELEMENT COKRIGING ANALYSIS (Cu-Au-Mo)")
+    logger.info("MULTI-ELEMENT COKRIGING ANALYSIS (Cu-Au-Mo)")
 
- # Load Cu and Mo data
- cu_data = load_agdb4_data(agdb_path, element='Cu', sample_type='sediment')
- mo_data = load_agdb4_data(agdb_path, element='Mo', sample_type='sediment')
+    # Load Cu and Mo data
+    cu_data = load_agdb4_data(agdb_path, element='Cu', sample_type='sediment')
+    mo_data = load_agdb4_data(agdb_path, element='Mo', sample_type='sediment')
 
- # Find common samples
- cu_df = cu_data['metadata']['dataframe']
- mo_df = mo_data['metadata']['dataframe']
+    # Find common samples
+    cu_df = cu_data['metadata']['dataframe']
+    mo_df = mo_data['metadata']['dataframe']
 
- # Merge on AGDB_ID
- common = cu_df.merge(mo_df, on=['AGDB_ID', 'LATITUDE', 'LONGITUDE'],
- suffixes=('_cu', '_mo'))
+    # Merge on AGDB_ID
+    common = cu_df.merge(mo_df, on=['AGDB_ID', 'LATITUDE', 'LONGITUDE'],
+    suffixes=('_cu', '_mo'))
 
- logger.info(f"Common Cu-Mo samples: {len(common)}")
+    logger.info(f"Common Cu-Mo samples: {len(common)}")
 
- if len(common) < 50:
- return None
+    if len(common) < 50:
+    return None
 
- x = common['LONGITUDE'].values
- y = common['LATITUDE'].values
- cu = common['VALUE_cu'].values
- mo = common['VALUE_mo'].values
+    x = common['LONGITUDE'].values
+    y = common['LATITUDE'].values
+    cu = common['VALUE_cu'].values
+    mo = common['VALUE_mo'].values
 
- # Log-transform
- cu_log = np.log10(cu + 1)
- mo_log = np.log10(mo + 1)
+    # Log-transform
+    cu_log = np.log10(cu + 1)
+    mo_log = np.log10(mo + 1)
 
- logger.info(f"\nElement Correlation:")
- correlation = np.corrcoef(cu_log, mo_log)[0, 1]
- logger.info(f" Cu-Mo correlation: {correlation:.3f}")
+    logger.info(f"\nElement Correlation:")
+    correlation = np.corrcoef(cu_log, mo_log)[0, 1]
+    logger.info(f" Cu-Mo correlation: {correlation:.3f}")
 
- if correlation > 0.3:
+    if correlation > 0.3:
 
- # Fit individual variograms
- logger.info("\nFitting variograms...")
- lags_cu, gamma_cu = experimental_variogram(x, y, cu_log, n_lags=12)
- model_cu = fit_variogram(lags_cu, gamma_cu, model_type='spherical')
+    # Fit individual variograms
+    logger.info("\nFitting variograms...")
+    lags_cu, gamma_cu = experimental_variogram(x, y, cu_log, n_lags=12)
+    model_cu = fit_variogram(lags_cu, gamma_cu, model_type='spherical')
 
- lags_mo, gamma_mo = experimental_variogram(x, y, mo_log, n_lags=12)
- model_mo = fit_variogram(lags_mo, gamma_mo, model_type='spherical')
+    lags_mo, gamma_mo = experimental_variogram(x, y, mo_log, n_lags=12)
+    model_mo = fit_variogram(lags_mo, gamma_mo, model_type='spherical')
 
- logger.info(f" Cu variogram range: {model_cu['range']:.2f}°")
- logger.info(f" Mo variogram range: {model_mo['range']:.2f}°")
+    logger.info(f" Cu variogram range: {model_cu['range']:.2f}°")
+    logger.info(f" Mo variogram range: {model_mo['range']:.2f}°")
 
- # For demonstration: compare Ordinary Kriging vs Cokriging
- # (Full cokriging requires cross-variogram, which is more complex)
+    # For demonstration: compare Ordinary Kriging vs Cokriging
+    # (Full cokriging requires cross-variogram, which is more complex)
 
- return {
- 'x': x, 'y': y,
- 'cu': cu, 'mo': mo,
- 'correlation': correlation
- }
+    return {
+    'x': x, 'y': y,
+    'cu': cu, 'mo': mo,
+    'correlation': correlation
+    }
 
     # ==============================================================================
     # PART 4: Environmental Assessment (As, Pb contamination)
@@ -343,68 +296,68 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
     threshold : float
         Regulatory or background threshold (ppm)
     """
- logger.info(f"{element.upper()} ENVIRONMENTAL ASSESSMENT")
+    logger.info(f"{element.upper()} ENVIRONMENTAL ASSESSMENT")
 
- # Load data
- data = load_agdb4_data(agdb_path, element=element, sample_type='sediment')
+    # Load data
+    data = load_agdb4_data(agdb_path, element=element, sample_type='sediment')
 
- x, y, values = data['x'], data['y'], data['values']
+    x, y, values = data['x'], data['y'], data['values']
 
- logger.info(f"\n{element} Statistics:")
- logger.info(f" Mean: {values.mean():.2f} ppm")
- logger.info(f" Median: {np.median(values):.2f} ppm")
- logger.info(f" Max: {values.max():.2f} ppm")
- logger.info(f">{threshold} ppm: {(values > threshold).sum()} samples ({(values > threshold).sum()/len(values)*100:.1f}%)")
+    logger.info(f"\n{element} Statistics:")
+    logger.info(f" Mean: {values.mean():.2f} ppm")
+    logger.info(f" Median: {np.median(values):.2f} ppm")
+    logger.info(f" Max: {values.max():.2f} ppm")
+    logger.info(f">{threshold} ppm: {(values > threshold).sum()} samples ({(values > threshold).sum()/len(values)*100:.1f}%)")
 
- # Indicator kriging for exceedance probability
- logger.info(f"\nIndicator Kriging (threshold = {threshold} ppm)...")
+    # Indicator kriging for exceedance probability
+    logger.info(f"\nIndicator Kriging (threshold = {threshold} ppm)...")
 
- # Create indicators
- indicators = (values > threshold).astype(int)
+    # Create indicators
+    indicators = (values > threshold).astype(int)
 
- # Variogram of indicators
- lags, gamma = experimental_variogram(x, y, indicators, n_lags=15)
- model = fit_variogram(lags, gamma, model_type='spherical')
+    # Variogram of indicators
+    lags, gamma = experimental_variogram(x, y, indicators, n_lags=15)
+    model = fit_variogram(lags, gamma, model_type='spherical')
 
- # Simple indicator kriging (for demo)
- ik = IndicatorKriging(x, y, values, threshold=threshold, variogram_model=model)
+    # Simple indicator kriging (for demo)
+    ik = IndicatorKriging(x, y, values, threshold=threshold, variogram_model=model)
 
- # Prediction grid
- x_grid = np.linspace(x.min(), x.max(), 100)
- y_grid = np.linspace(y.min(), y.max(), 100)
- X, Y = np.meshgrid(x_grid, y_grid)
+    # Prediction grid
+    x_grid = np.linspace(x.min(), x.max(), 100)
+    y_grid = np.linspace(y.min(), y.max(), 100)
+    X, Y = np.meshgrid(x_grid, y_grid)
 
- prob_exceed = ik.predict(X.flatten(), Y.flatten()).reshape(X.shape)
+    prob_exceed = ik.predict(X.flatten(), Y.flatten()).reshape(X.shape)
 
- # Risk classification
- risk = np.zeros_like(prob_exceed)
- risk[prob_exceed < 0.1] = 0 # Low
- risk[(prob_exceed >= 0.1) & (prob_exceed < 0.5)] = 1 # Medium
- risk[prob_exceed >= 0.5] = 2 # High
+    # Risk classification
+    risk = np.zeros_like(prob_exceed)
+    risk[prob_exceed < 0.1] = 0 # Low
+    risk[(prob_exceed >= 0.1) & (prob_exceed < 0.5)] = 1 # Medium
+    risk[prob_exceed >= 0.5] = 2 # High
 
- logger.info(f"\nRisk Assessment (P({element} > {threshold} ppm)):")
- logger.info(f" Low risk (<10%): {(risk==0).sum()/risk.size*100:.1f}%")
- logger.info(f" Medium risk (10-50%): {(risk==1).sum()/risk.size*100:.1f}%")
- logger.info(f" High risk (>50%): {(risk==2).sum()/risk.size*100:.1f}%")
+    logger.info(f"\nRisk Assessment (P({element} > {threshold} ppm)):")
+    logger.info(f" Low risk (<10%): {(risk==0).sum()/risk.size*100:.1f}%")
+    logger.info(f" Medium risk (10-50%): {(risk==1).sum()/risk.size*100:.1f}%")
+    logger.info(f" High risk (>50%): {(risk==2).sum()/risk.size*100:.1f}%")
 
- return {
- 'x': x, 'y': y, 'values': values,
- 'X': X, 'Y': Y, 'prob_exceed': prob_exceed,
- 'risk': risk
- }
+    return {
+    'x': x, 'y': y, 'values': values,
+    'X': X, 'Y': Y, 'prob_exceed': prob_exceed,
+    'risk': risk
+    }
 
     # ==============================================================================
     # MAIN EXECUTION
     # ==============================================================================
 
-if __name__ == '__main__':
- AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
+    if __name__ == '__main__':
+    AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
- if not AGDB_PATH.exists():
- exit(1)
+    if not AGDB_PATH.exists():
+    exit(1)
 
- logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
- logger.info("Using GeoStats Library")
+    logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
+    logger.info("Using GeoStats Library")
 
     # Example 1: Gold Exploration
     try:
@@ -424,11 +377,11 @@ if __name__ == '__main__':
     except Exception as e:
         logger.error(f"Environmental analysis error: {e}")
 
- logger.info("ANALYSIS COMPLETE!")
- logger.info("\nThis example demonstrates:")
- logger.info(" Loading large-scale geochemical databases")
- logger.info(" Mineral exploration workflows (Au)")
- logger.info(" Multi-element cokriging (Cu-Mo)")
- logger.info(" Environmental risk assessment (As)")
- logger.info(" Probability mapping and uncertainty quantification")
- logger.info("\nGeoStats + AGDB4 = Powerful Geochemical Analysis!")
+    logger.info("ANALYSIS COMPLETE!")
+    logger.info("\nThis example demonstrates:")
+    logger.info(" Loading large-scale geochemical databases")
+    logger.info(" Mineral exploration workflows (Au)")
+    logger.info(" Multi-element cokriging (Cu-Mo)")
+    logger.info(" Environmental risk assessment (As)")
+    logger.info(" Probability mapping and uncertainty quantification")
+    logger.info("\nGeoStats + AGDB4 = Powerful Geochemical Analysis!")
