@@ -31,25 +31,25 @@ from geostats.io.formats import (
 # Check for optional dependencies
 try:
 
-try:
+     try:
 except ImportError:
     RASTERIO_AVAILABLE = False
 
 try:
 
-try:
+     try:
 except ImportError:
     NETCDF_AVAILABLE = False
 
 try:
 
-try:
+     try:
 except ImportError:
     GEOPANDAS_AVAILABLE = False
 
 # Import raster functions if available
 if RASTERIO_AVAILABLE:
-if RASTERIO_AVAILABLE:
+     if RASTERIO_AVAILABLE:
         write_geotiff,
         read_ascii_grid,
         write_ascii_grid,
@@ -57,13 +57,13 @@ if RASTERIO_AVAILABLE:
 
 # Import NetCDF functions if available
 if NETCDF_AVAILABLE:
-if NETCDF_AVAILABLE:
+     if NETCDF_AVAILABLE:
         write_netcdf,
     )
 
 # Import GeoJSON functions if available
 if GEOPANDAS_AVAILABLE:
-if GEOPANDAS_AVAILABLE:
+     if GEOPANDAS_AVAILABLE:
         write_geojson,
     )
 
@@ -85,7 +85,7 @@ class TestCSVIO:
         """Clean up temporary directory"""
         if self.temp_dir.exists():
 
-            def test_read_csv_spatial_basic(self):
+        if self.temp_dir.exists():
         """Test basic CSV reading"""
         # Create CSV file
         df = pd.DataFrame({"x": self.x, "y": self.y, "z": self.z})
@@ -154,7 +154,7 @@ class TestCSVIO:
         """Test that missing file raises error"""
         with pytest.raises(FileNotFoundError):
 
-            def test_read_csv_spatial_missing_columns(self):
+        with pytest.raises(FileNotFoundError):
         """Test that missing columns raise error"""
         df = pd.DataFrame({"x": self.x, "y": self.y})  # Missing 'z'
         csv_file = self.temp_dir / "test.csv"
@@ -162,7 +162,7 @@ class TestCSVIO:
 
         with pytest.raises(KeyError, match="Missing columns"):
 
-            def test_write_csv_spatial_basic(self):
+        with pytest.raises(KeyError, match="Missing columns"):
         """Test basic CSV writing"""
         csv_file = self.temp_dir / "output.csv"
 
@@ -214,7 +214,7 @@ class TestCSVIO:
     def test_read_excel_spatial(self):
         """Test Excel reading (if openpyxl available)"""
         try:
-        try:
+             try:
             df.to_excel(excel_file, index=False)
 
             x_read, y_read, z_read, _ = read_excel_spatial(str(excel_file))
@@ -246,7 +246,7 @@ class TestRasterIO:
         """Clean up"""
         if self.temp_dir.exists():
 
-            @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
+        if self.temp_dir.exists():
     def test_write_read_geotiff(self):
         """Test writing and reading GeoTIFF"""
         tif_file = self.temp_dir / "test.tif"
@@ -297,7 +297,7 @@ class TestRasterIO:
         """Test that missing GeoTIFF raises error"""
         with pytest.raises(FileNotFoundError):
 
-            @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
+        with pytest.raises(FileNotFoundError):
     def test_write_ascii_grid(self):
         """Test writing ASCII Grid"""
         asc_file = self.temp_dir / "test.asc"
@@ -350,7 +350,7 @@ class TestNetCDFIO:
         """Clean up"""
         if self.temp_dir.exists():
 
-            @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
+        if self.temp_dir.exists():
     def test_write_read_netcdf(self):
         """Test writing and reading NetCDF"""
         nc_file = self.temp_dir / "test.nc"
@@ -380,7 +380,7 @@ class TestNetCDFIO:
         """Test that missing NetCDF raises error"""
         with pytest.raises(FileNotFoundError):
 
-            @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
+        with pytest.raises(FileNotFoundError):
     def test_read_netcdf_missing_variable(self):
         """Test that missing variable raises error"""
         nc_file = self.temp_dir / "test.nc"
@@ -389,7 +389,7 @@ class TestNetCDFIO:
         with pytest.raises(KeyError, match="Variable"):
 
 
-            class TestDataConversion:
+        with pytest.raises(KeyError, match="Variable"):
     """Tests for data conversion utilities"""
 
     def setup_method(self):
@@ -436,7 +436,7 @@ class TestNetCDFIO:
         geojson_file = temp_dir / "test.geojson"
 
         try:
-        try:
+             try:
 
             assert geojson_file.exists()
 

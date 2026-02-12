@@ -7,14 +7,14 @@ import numpy as np
 
 # Check if sklearn is available
 try:
-try:
+     try:
  SKLEARN_AVAILABLE = True
 except ImportError:
  SKLEARN_AVAILABLE = False
 
 # Check if xgboost is available
 try:
-try:
+     try:
 except ImportError:
  XGBOOST_AVAILABLE = False
 
@@ -178,7 +178,7 @@ class TestGaussianProcessGeostat:
         z = x + y + np.random.normal(0, 0.1, 25)
 
         for kernel in ['rbf', 'matern', 'rational_quadratic']:
-        for kernel in ['rbf', 'matern', 'rational_quadratic']:
+             for kernel in ['rbf', 'matern', 'rational_quadratic']:
         gp.fit(x, y, z)
 
         predictions, _ = gp.predict(np.array([5.0]), np.array([5.0]), return_std=True)
@@ -307,13 +307,13 @@ class TestMLIntegration:
 
         predictions = []
         for method in methods:
-        for method in methods:
+             for method in methods:
         X = np.column_stack([x, y])
         X_new = np.column_stack([x_new, y_new])
         method.fit(X, z)
         pred, _ = method.predict(X_new, return_std=True)
         else:
-        else:
+             else:
         pred, _ = method.predict(x_new, y_new, covariates_new=cov_new)
 
         predictions.append(pred[0])
@@ -324,4 +324,4 @@ class TestMLIntegration:
         assert np.std(predictions) < 10.0
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+     if __name__ == "__main__":

@@ -308,7 +308,7 @@ class TestEdgeCases:
 
         # Should either regularize or raise error
         try:
-        try:
+             try:
         # If it succeeds, solution should satisfy equation approximately
         residual = np.linalg.norm(A @ x - b)
         assert residual < 1.0
@@ -380,4 +380,4 @@ class TestComputationalEfficiency:
         assert len(x) == n
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+     if __name__ == "__main__":

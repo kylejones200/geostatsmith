@@ -41,10 +41,11 @@ def test_minimal_config():
 def test_config_validation():
  """Test configuration validation"""
  # Invalid: missing required fields
- with pytest.raises(ConfigError):
-     'project': {'name': 'Test'}
- # Missing data section
- })
+        with pytest.raises(ConfigError):
+            load_config({
+                'project': {'name': 'Test'}
+                # Missing data section
+            })
 
  # Invalid: wrong type
  with pytest.raises(ConfigError):

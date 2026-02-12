@@ -97,4 +97,4 @@ class TestLogTransform:
         pytest.skip("LogTransform input validation not implemented yet")
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+     if __name__ == "__main__":

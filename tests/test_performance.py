@@ -224,7 +224,7 @@ class TestParallelKriging:
     def test_parallel_cross_validation_invalid_method(self):
         """Test that invalid method raises error"""
         with pytest.raises(ValueError, match="Unknown method"):
-        with pytest.raises(ValueError, match="Unknown method"):
+             with pytest.raises(ValueError, match="Unknown method"):
                 self.y,
                 self.z,
                 variogram_model=self.model,
@@ -258,7 +258,7 @@ class TestCaching:
         """Clean up temporary cache directory"""
         if self.temp_cache.exists():
 
-            def test_cached_kriging_initialization(self):
+        if self.temp_cache.exists():
         """Test CachedKriging initialization"""
         cached = CachedKriging(
             self.x,

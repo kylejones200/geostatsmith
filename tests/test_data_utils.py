@@ -79,4 +79,4 @@ class TestSplitTrainTest:
 
         for r1, r2 in zip(result1, result2):
 
-            if __name__ == "__main__":
+        for r1, r2 in zip(result1, result2):

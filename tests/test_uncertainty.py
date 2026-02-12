@@ -134,7 +134,7 @@ class TestBootstrapUncertainty:
     def test_bootstrap_uncertainty_invalid_method(self):
         """Test that invalid method raises error"""
         with pytest.raises(ValueError, match="Unknown method"):
-        with pytest.raises(ValueError, match="Unknown method"):
+             with pytest.raises(ValueError, match="Unknown method"):
                 self.y,
                 self.z,
                 self.x_pred,
@@ -340,7 +340,7 @@ class TestProbabilityMaps:
     def test_probability_map_invalid_operator(self):
         """Test that invalid operator raises error"""
         with pytest.raises(ValueError, match="Unknown operator"):
-        with pytest.raises(ValueError, match="Unknown operator"):
+             with pytest.raises(ValueError, match="Unknown operator"):
                 self.y,
                 self.z,
                 self.x_pred,

@@ -94,9 +94,8 @@ class TestDisjunctiveKriging:
 
     def test_initialization_invalid_kriging_type(self):
         """Test that invalid kriging_type raises error"""
-        with pytest.raises(
-            ):
-            DisjunctiveKriging(
+        with pytest.raises(ValueError, match="kriging_type must be 'simple' or 'ordinary'"):
+        with pytest.raises(ValueError, match="kriging_type must be 'simple' or 'ordinary'"):
                 self.x,
                 self.y,
                 self.z,
@@ -243,16 +242,16 @@ class TestDisjunctiveKriging:
 
         with pytest.raises(KrigingError, match="Variogram model must be set"):
 
-            def test_prediction_without_variogram(self):
+        with pytest.raises(KrigingError, match="Variogram model must be set"):
         """Test that prediction requires variogram model"""
         dk = DisjunctiveKriging(self.x, self.y, self.z, variogram_model=None)
 
         with pytest.raises(KrigingError, match="Variogram model must be set"):
 
-            def test_different_hermite_orders(self):
+        with pytest.raises(KrigingError, match="Variogram model must be set"):
         """Test that different Hermite orders work"""
         for order in [5, 10, 15, 20]:
-        for order in [5, 10, 15, 20]:
+             for order in [5, 10, 15, 20]:
                 self.y,
                 self.z,
                 variogram_model=self.model,

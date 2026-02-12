@@ -168,10 +168,10 @@ class TestSpatialCrossValidation:
         variogram = ExponentialModel(sill=1.0, range_param=5.0)
 
         for n_blocks in [2, 4]:
-        for n_blocks in [2, 4]:
-        x, y, z, OrdinaryKriging, variogram,
-        n_blocks=n_blocks
-        )
+            results = k_fold_cross_validation(
+                x, y, z, OrdinaryKriging, variogram,
+                n_blocks=n_blocks
+            )
 
         predictions = results['predictions']
         assert predictions.shape == z.shape

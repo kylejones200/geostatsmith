@@ -121,7 +121,7 @@ class TestPowerModel:
         # Exponent must be in (0, 2) for valid variogram
         with pytest.raises(ValueError):
 
-            class TestMaternModel:
+        with pytest.raises(ValueError):
     """Test Matérn variogram model"""
 
     def test_initialization(self):
@@ -164,4 +164,4 @@ class TestModelFitting:
         assert abs(fitted_model.parameters['range'] - 30.0) < 10.0
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+     if __name__ == "__main__":

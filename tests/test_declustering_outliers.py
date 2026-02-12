@@ -52,7 +52,7 @@ class TestCellDeclustering:
 
         for cell_size in [0.5, 1.0, 2.0]:
 
-            assert weights.shape == z.shape
+        for cell_size in [0.5, 1.0, 2.0]:
         assert np.all(weights > 0)
         assert np.all(weights <= 1.0)
 
@@ -296,4 +296,4 @@ class TestIntegration:
         assert declustered_mean > np.mean(cluster_z) # Corrected for clustering
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+     if __name__ == "__main__":

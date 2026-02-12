@@ -235,21 +235,21 @@ class TestValidators:
 
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_validate_coordinates_with_nan(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test validation catches NaN values"""
         x = np.array([1, 2, np.nan, 4, 5])
         y = np.array([1, 2, 3, 4, 5])
 
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_validate_coordinates_with_inf(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test validation catches infinite values"""
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, np.inf, 4, 5])
 
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_validate_values_valid(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test validation of valid values"""
         z = np.array([10, 20, 30, 40, 50])
 
@@ -262,13 +262,13 @@ class TestValidators:
 
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_validate_values_with_inf(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test validation catches infinite values"""
         z = np.array([10, 20, np.inf, 40, 50])
 
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_validate_positive(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test validation of positive values"""
         value = 5.0
 
@@ -280,11 +280,11 @@ class TestValidators:
         """Test that negative values are rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_validate_positive_rejects_zero(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test that zero is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_validate_array_shapes_match(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test array shape validation"""
         a = np.array([1, 2, 3, 4, 5])
         b = np.array([6, 7, 8, 9, 10])
@@ -300,26 +300,26 @@ class TestValidators:
         with pytest.raises((ValueError, AssertionError)):
 
 
-            class TestParameterValidation:
+        with pytest.raises((ValueError, AssertionError)):
     """Tests for parameter validation"""
 
     def test_negative_nugget_rejected(self):
         """Test that negative nugget is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_negative_sill_rejected(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test that negative sill is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_negative_range_rejected(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test that negative range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_zero_range_rejected(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test that zero range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
 
-            def test_valid_parameters_accepted(self):
+        with pytest.raises((ValueError, AssertionError)):
         """Test that valid parameters are accepted"""
         model = SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
 
@@ -369,7 +369,7 @@ class TestPlotSaving:
         # Save to temporary file
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
 
-        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+             with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
 
                 # Check file was created
                 assert os.path.exists(tmp_path)
@@ -377,8 +377,8 @@ class TestPlotSaving:
             finally:
                 # Clean up
                 if os.path.exists(tmp_path):
-                    plt.close(fig)
+                if os.path.exists(tmp_path):
 
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+     if __name__ == "__main__":

@@ -89,7 +89,7 @@ class TestNormalScoreTransform:
         ns = NormalScoreTransform()
         # Should handle constant data gracefully
         try:
-        try:
+             try:
         # If it succeeds, all values should be the same
         assert np.std(transformed) < 0.1
         except ValueError:
@@ -338,7 +338,7 @@ class TestTransformationEdgeCases:
 
         # Should handle empty data gracefully
         try:
-        try:
+             try:
         assert len(transformed) == 0
         except ValueError:
         # Also acceptable to raise error
@@ -352,7 +352,7 @@ class TestTransformationEdgeCases:
 
         # Should handle single point
         try:
-        try:
+             try:
         assert len(transformed) == 1
         except ValueError:
         # Also acceptable to raise error
@@ -367,11 +367,11 @@ class TestTransformationEdgeCases:
         lt.fit(data)
 
         try:
-        try:
+             try:
         assert all(np.isfinite(transformed))
         except ValueError:
         # Acceptable to raise error for negative values
         pass
 
 if __name__ == "__main__":
-if __name__ == "__main__":
+     if __name__ == "__main__":
