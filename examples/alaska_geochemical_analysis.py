@@ -188,86 +188,86 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
                  au_data['values'] = au_data['values'][indices]
                  logger.info(f"Focused on {region_name} region: {len(indices)} samples")
 
- x, y, au = au_data['x'], au_data['y'], au_data['values']
+    x, y, au = au_data['x'], au_data['y'], au_data['values']
 
- # Log-transform for lognormal distribution (typical for Au)
- au_log = np.log10(au + 1) # +1 to handle zeros
+    # Log-transform for lognormal distribution (typical for Au)
+    au_log = np.log10(au + 1) # +1 to handle zeros
 
- logger.info(f"\nGold Statistics:")
- logger.info(f" Mean: {au.mean():.3f} ppm")
- logger.info(f" Median: {np.median(au):.3f} ppm")
- logger.info(f" Max: {au.max():.3f} ppm")
- logger.info(f" >100 ppb: {(au > 0.1).sum()} samples ({(au > 0.1).sum()/len(au)*100:.1f}%)")
+    logger.info(f"\nGold Statistics:")
+    logger.info(f" Mean: {au.mean():.3f} ppm")
+    logger.info(f" Median: {np.median(au):.3f} ppm")
+    logger.info(f" Max: {au.max():.3f} ppm")
+    logger.info(f" >100 ppb: {(au > 0.1).sum()} samples ({(au > 0.1).sum()/len(au)*100:.1f}%)")
 
- # Variogram analysis on log-transformed data
- logger.info("\nVariogram Analysis...")
- lags, gamma = experimental_variogram(x, y, au_log, n_lags=15)
- model = fit_variogram(lags, gamma, model_type='spherical')
+    # Variogram analysis on log-transformed data
+    logger.info("\nVariogram Analysis...")
+    lags, gamma = experimental_variogram(x, y, au_log, n_lags=15)
+    model = fit_variogram(lags, gamma, model_type='spherical')
 
- logger.info(f" Model: {model['model']}")
- logger.info(f" Range: {model['range']:.2f} degrees")
- logger.info(f" Sill: {model['sill']:.3f}")
+    logger.info(f" Model: {model['model']}")
+    logger.info(f" Range: {model['range']:.2f} degrees")
+    logger.info(f" Sill: {model['sill']:.3f}")
 
- # Kriging
- logger.info("\nKriging...")
- kriging = OrdinaryKriging(x, y, au_log, variogram_model=model)
+    # Kriging
+    logger.info("\nKriging...")
+    kriging = OrdinaryKriging(x, y, au_log, variogram_model=model)
 
- # Create prediction grid
- x_grid = np.linspace(x.min(), x.max(), 100)
- y_grid = np.linspace(y.min(), y.max(), 100)
- X, Y = np.meshgrid(x_grid, y_grid)
+    # Create prediction grid
+    x_grid = np.linspace(x.min(), x.max(), 100)
+    y_grid = np.linspace(y.min(), y.max(), 100)
+    X, Y = np.meshgrid(x_grid, y_grid)
 
- au_pred_log, variance = kriging.predict(X.flatten(), Y.flatten(), return_variance=True)
+    au_pred_log, variance = kriging.predict(X.flatten(), Y.flatten(), return_variance=True)
 
- # Back-transform to original units
- au_pred = 10**au_pred_log.reshape(X.shape) - 1
- variance = variance.reshape(X.shape)
+    # Back-transform to original units
+    au_pred = 10**au_pred_log.reshape(X.shape) - 1
+    variance = variance.reshape(X.shape)
 
- # Identify high-potential zones (>100 ppb Au)
- high_potential = au_pred > 0.1
+    # Identify high-potential zones (>100 ppb Au)
+    high_potential = au_pred > 0.1
 
- logger.info(f"\nExploration Targets:")
- logger.info(f" High potential area: {high_potential.sum() / high_potential.size * 100:.1f}% of region")
- logger.info(f" Max predicted Au: {au_pred.max():.3f} ppm")
+    logger.info(f"\nExploration Targets:")
+    logger.info(f" High potential area: {high_potential.sum() / high_potential.size * 100:.1f}% of region")
+    logger.info(f" Max predicted Au: {au_pred.max():.3f} ppm")
 
- # Visualization
- fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    # Visualization
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
- # Sample locations
- axes[0].scatter(x, y, c=au, s=10, cmap='YlOrRd', vmin=0, vmax=np.percentile(au, 95))
- axes[0].set_title(f'Gold Sample Locations (n={len(au)})')
- axes[0].set_xlabel('Longitude')
- axes[0].set_ylabel('Latitude')
- plt.colorbar(axes[0].collections[0], ax=axes[0], label='Au (ppm)')
+    # Sample locations
+    axes[0].scatter(x, y, c=au, s=10, cmap='YlOrRd', vmin=0, vmax=np.percentile(au, 95))
+    axes[0].set_title(f'Gold Sample Locations (n={len(au)})')
+    axes[0].set_xlabel('Longitude')
+    axes[0].set_ylabel('Latitude')
+    plt.colorbar(axes[0].collections[0], ax=axes[0], label='Au (ppm)')
 
- # Kriged surface
- im = axes[1].contourf(X, Y, au_pred, levels=20, cmap='YlOrRd')
- axes[1].scatter(x, y, c='k', s=1, alpha=0.3)
- axes[1].set_title('Kriged Gold Distribution')
- axes[1].set_xlabel('Longitude')
- axes[1].set_ylabel('Latitude')
- plt.colorbar(im, ax=axes[1], label='Predicted Au (ppm)')
+    # Kriged surface
+    im = axes[1].contourf(X, Y, au_pred, levels=20, cmap='YlOrRd')
+    axes[1].scatter(x, y, c='k', s=1, alpha=0.3)
+    axes[1].set_title('Kriged Gold Distribution')
+    axes[1].set_xlabel('Longitude')
+    axes[1].set_ylabel('Latitude')
+    plt.colorbar(im, ax=axes[1], label='Predicted Au (ppm)')
 
- # Uncertainty (standard deviation)
- im = axes[2].contourf(X, Y, np.sqrt(variance), levels=20, cmap='viridis')
- axes[2].set_title('Prediction Uncertainty (Std Dev)')
- axes[2].set_xlabel('Longitude')
- axes[2].set_ylabel('Latitude')
- plt.colorbar(im, ax=axes[2], label='Std Dev (log ppm)')
+    # Uncertainty (standard deviation)
+    im = axes[2].contourf(X, Y, np.sqrt(variance), levels=20, cmap='viridis')
+    axes[2].set_title('Prediction Uncertainty (Std Dev)')
+    axes[2].set_xlabel('Longitude')
+    axes[2].set_ylabel('Latitude')
+    plt.colorbar(im, ax=axes[2], label='Std Dev (log ppm)')
 
- plt.tight_layout()
- plt.savefig('alaska_gold_analysis.png', dpi=150)
- logger.info("\nSaved: alaska_gold_analysis.png")
+    plt.tight_layout()
+    plt.savefig('alaska_gold_analysis.png', dpi=150)
+    logger.info("\nSaved: alaska_gold_analysis.png")
 
- return {
- 'x': x, 'y': y, 'au': au,
- 'X': X, 'Y': Y, 'au_pred': au_pred,
- 'variance': variance, 'model': model
- }
+    return {
+    'x': x, 'y': y, 'au': au,
+    'X': X, 'Y': Y, 'au_pred': au_pred,
+    'variance': variance, 'model': model
+    }
 
-# ==============================================================================
-# PART 3: Multi-element Cokriging (Cu-Au-Mo)
-# ==============================================================================
+    # ==============================================================================
+    # PART 3: Multi-element Cokriging (Cu-Au-Mo)
+    # ==============================================================================
 
 def multi_element_analysis(agdb_path):
     """
