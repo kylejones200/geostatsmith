@@ -399,8 +399,7 @@ class TestNetCDFIO:
         geojson_file = temp_dir / "test.geojson"
 
         try:
-
-        try:
+            pass
 
             # Read back
             x_read, y_read, z_read, meta = read_geojson(str(geojson_file))
