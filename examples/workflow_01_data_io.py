@@ -198,11 +198,11 @@ def example_3_format_comparison():
 def main():
     logger.info("GEOSTATS DATA I/O WORKFLOW EXAMPLES")
 
- example_1_read_csv_and_interpolate()
- example_2_geotiff_workflow()
- example_3_format_comparison()
+    example_1_read_csv_and_interpolate()
+    example_2_geotiff_workflow()
+    example_3_format_comparison()
 
- logger.info("ALL EXAMPLES COMPLETE!")
+    logger.info("ALL EXAMPLES COMPLETE!")
  logger.info("\nFiles created:")
  logger.info(" - sample_elevation.csv")
  logger.info(" - elevation_kriging.tif")
