@@ -64,106 +64,106 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     """
     agdb_path = Path(agdb_path)
 
- logger.info(f"Loading AGDB4 data for {element}...")
+    logger.info(f"Loading AGDB4 data for {element}...")
 
- # Load geological/location data
- geol_file = agdb_path / 'Geol_DeDuped.txt'
- geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)
+    # Load geological/location data
+    geol_file = agdb_path / 'Geol_DeDuped.txt'
+    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)
 
- logger.info(f" Loaded {len(geol_data):,} samples from Geol_DeDuped")
+    logger.info(f" Loaded {len(geol_data):,} samples from Geol_DeDuped")
 
- # Determine which chemistry file to use based on element
- element_to_file = {
- # A-Br file
- 'Ag': 'Chem_A_Br', 'Al': 'Chem_A_Br', 'As': 'Chem_A_Br', 'Au': 'Chem_A_Br',
- 'B': 'Chem_A_Br', 'Ba': 'Chem_A_Br', 'Be': 'Chem_A_Br', 'Bi': 'Chem_A_Br',
- 'Br': 'Chem_A_Br',
- # C-Gd file
- 'Ca': 'Chem_C_Gd', 'Cd': 'Chem_C_Gd', 'Ce': 'Chem_C_Gd', 'Cl': 'Chem_C_Gd',
- 'Co': 'Chem_C_Gd', 'Cr': 'Chem_C_Gd', 'Cs': 'Chem_C_Gd', 'Cu': 'Chem_C_Gd',
- # Ge-Os file
- 'Fe': 'Chem_Ge_Os', 'Ga': 'Chem_Ge_Os', 'Ge': 'Chem_Ge_Os', 'Hf': 'Chem_Ge_Os',
- 'Hg': 'Chem_Ge_Os', 'In': 'Chem_Ge_Os', 'K': 'Chem_Ge_Os', 'La': 'Chem_Ge_Os',
- # P-Te file
- 'P': 'Chem_P_Te', 'Pb': 'Chem_P_Te', 'Pd': 'Chem_P_Te', 'Pt': 'Chem_P_Te',
- 'Rb': 'Chem_P_Te', 'Re': 'Chem_P_Te', 'S': 'Chem_P_Te', 'Sb': 'Chem_P_Te',
- # Th-Zr file
- 'Th': 'Chem_Th_Zr', 'Ti': 'Chem_Th_Zr', 'Tl': 'Chem_Th_Zr', 'U': 'Chem_Th_Zr',
- 'V': 'Chem_Th_Zr', 'W': 'Chem_Th_Zr', 'Y': 'Chem_Th_Zr', 'Zn': 'Chem_Th_Zr',
- 'Zr': 'Chem_Th_Zr'
- }
+    # Determine which chemistry file to use based on element
+    element_to_file = {
+    # A-Br file
+    'Ag': 'Chem_A_Br', 'Al': 'Chem_A_Br', 'As': 'Chem_A_Br', 'Au': 'Chem_A_Br',
+    'B': 'Chem_A_Br', 'Ba': 'Chem_A_Br', 'Be': 'Chem_A_Br', 'Bi': 'Chem_A_Br',
+    'Br': 'Chem_A_Br',
+    # C-Gd file
+    'Ca': 'Chem_C_Gd', 'Cd': 'Chem_C_Gd', 'Ce': 'Chem_C_Gd', 'Cl': 'Chem_C_Gd',
+    'Co': 'Chem_C_Gd', 'Cr': 'Chem_C_Gd', 'Cs': 'Chem_C_Gd', 'Cu': 'Chem_C_Gd',
+    # Ge-Os file
+    'Fe': 'Chem_Ge_Os', 'Ga': 'Chem_Ge_Os', 'Ge': 'Chem_Ge_Os', 'Hf': 'Chem_Ge_Os',
+    'Hg': 'Chem_Ge_Os', 'In': 'Chem_Ge_Os', 'K': 'Chem_Ge_Os', 'La': 'Chem_Ge_Os',
+    # P-Te file
+    'P': 'Chem_P_Te', 'Pb': 'Chem_P_Te', 'Pd': 'Chem_P_Te', 'Pt': 'Chem_P_Te',
+    'Rb': 'Chem_P_Te', 'Re': 'Chem_P_Te', 'S': 'Chem_P_Te', 'Sb': 'Chem_P_Te',
+    # Th-Zr file
+    'Th': 'Chem_Th_Zr', 'Ti': 'Chem_Th_Zr', 'Tl': 'Chem_Th_Zr', 'U': 'Chem_Th_Zr',
+    'V': 'Chem_Th_Zr', 'W': 'Chem_Th_Zr', 'Y': 'Chem_Th_Zr', 'Zn': 'Chem_Th_Zr',
+    'Zr': 'Chem_Th_Zr'
+    }
 
- chem_filename = element_to_file.get(element, 'Chem_A_Br') + '.txt'
- chem_file = agdb_path / chem_filename
+    chem_filename = element_to_file.get(element, 'Chem_A_Br') + '.txt'
+    chem_file = agdb_path / chem_filename
 
- # Load chemistry data
- chem_data = pd.read_csv(chem_file, sep=',', quotechar='"', low_memory=False)
- logger.info(f" Loaded {len(chem_data):,} analyses from {chem_filename}")
+    # Load chemistry data
+    chem_data = pd.read_csv(chem_file, sep=',', quotechar='"', low_memory=False)
+    logger.info(f" Loaded {len(chem_data):,} analyses from {chem_filename}")
 
- # Merge on AGDB_ID
- merged = geol_data.merge(chem_data, on='AGDB_ID', how='inner')
+    # Merge on AGDB_ID
+    merged = geol_data.merge(chem_data, on='AGDB_ID', how='inner')
 
- # Filter for valid coordinates
- merged = merged.dropna(subset=['LATITUDE', 'LONGITUDE'])
- merged = merged[(merged['LATITUDE'] > 0) & (merged['LONGITUDE'] < 0)]
+    # Filter for valid coordinates
+    merged = merged.dropna(subset=['LATITUDE', 'LONGITUDE'])
+    merged = merged[(merged['LATITUDE'] > 0) & (merged['LONGITUDE'] < 0)]
 
- # Filter for sample type if specified
- if sample_type:
- merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
+    # Filter for sample type if specified
+    if sample_type:
+    merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
 
- # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
- element_col = f"{element}_ppm"
+    # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
+    element_col = f"{element}_ppm"
  
- # Filter for parameter = element and valid values
- if 'PARAMETER' in chem_data.columns:
+    # Filter for parameter = element and valid values
+    if 'PARAMETER' in chem_data.columns:
      element_mask = merged['PARAMETER'].str.contains(f'{element}_', case=False, na=False)
      merged = merged[element_mask]
 
- # Get the value column (usually 'VALUE' in chem files)
- if 'VALUE' in merged.columns:
+    # Get the value column (usually 'VALUE' in chem files)
+    if 'VALUE' in merged.columns:
      value_col = 'VALUE'
- elif element_col in merged.columns:
+    elif element_col in merged.columns:
      value_col = element_col
- else:
+    else:
      value_col = None
 
- if value_col:
+    if value_col:
      merged = merged[merged[value_col] > 0]
      merged = merged.dropna(subset=[value_col])
 
- logger.info(f" After filtering: {len(merged):,} samples with valid {element} data")
+    logger.info(f" After filtering: {len(merged):,} samples with valid {element} data")
 
- # Extract coordinates and values
- x = merged['LONGITUDE'].values
- y = merged['LATITUDE'].values
+    # Extract coordinates and values
+    x = merged['LONGITUDE'].values
+    y = merged['LATITUDE'].values
 
- if value_col:
+    if value_col:
      values = merged[value_col].values
- else:
+    else:
      values = None
 
- # Metadata
- metadata = {
- 'element': element,
- 'sample_type': sample_type,
- 'n_samples': len(merged),
- 'units': 'ppm' if '_ppm' in value_col else 'pct' if value_col else 'unknown',
- 'x_range': (x.min(), x.max()),
- 'y_range': (y.min(), y.max()),
- 'value_range': (values.min(), values.max()) if values is not None else None,
- 'dataframe': merged # Keep full dataframe for advanced analysis
- }
+    # Metadata
+    metadata = {
+    'element': element,
+    'sample_type': sample_type,
+    'n_samples': len(merged),
+    'units': 'ppm' if '_ppm' in value_col else 'pct' if value_col else 'unknown',
+    'x_range': (x.min(), x.max()),
+    'y_range': (y.min(), y.max()),
+    'value_range': (values.min(), values.max()) if values is not None else None,
+    'dataframe': merged # Keep full dataframe for advanced analysis
+    }
 
- return {
- 'x': x,
- 'y': y,
- 'values': values,
- 'metadata': metadata
- }
+    return {
+    'x': x,
+    'y': y,
+    'values': values,
+    'metadata': metadata
+    }
 
-# ==============================================================================
-# PART 2: Gold Exploration Example
-# ==============================================================================
+    # ==============================================================================
+    # PART 2: Gold Exploration Example
+    # ==============================================================================
 
 def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
  Analyze gold distribution for mineral exploration.
