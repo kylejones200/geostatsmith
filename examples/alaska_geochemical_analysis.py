@@ -167,8 +167,11 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
 def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
  Analyze gold distribution for mineral exploration.
- """
- logger.info("GOLD EXPLORATION ANALYSIS")
+def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
+    """
+    Analyze gold distribution for mineral exploration.
+    """
+    logger.info("GOLD EXPLORATION ANALYSIS")
 
  # Load Au data
  au_data = load_agdb4_data(agdb_path, element='Au', sample_type='sediment')
@@ -269,9 +272,10 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
 # ==============================================================================
 
 def multi_element_analysis(agdb_path):
- Analyze multiple correlated elements using cokriging.
- Example: Cu-Mo association in porphyry deposits.
- """
+    """
+    Analyze multiple correlated elements using cokriging.
+    Example: Cu-Mo association in porphyry deposits.
+    """
  logger.info("MULTI-ELEMENT COKRIGING ANALYSIS (Cu-Au-Mo)")
 
  # Load Cu and Mo data
@@ -331,15 +335,16 @@ def multi_element_analysis(agdb_path):
 # ==============================================================================
 
 def environmental_assessment(agdb_path, element='As', threshold=20):
- Environmental geochemistry: assess contamination risk.
+    """
+    Environmental geochemistry: assess contamination risk.
 
- Parameters:
- -----------
- element : str
- Element to assess (As, Pb, Hg, etc.)
- threshold : float
- Regulatory or background threshold (ppm)
- """
+    Parameters:
+    -----------
+    element : str
+        Element to assess (As, Pb, Hg, etc.)
+    threshold : float
+        Regulatory or background threshold (ppm)
+    """
  logger.info(f"{element.upper()} ENVIRONMENTAL ASSESSMENT")
 
  # Load data
@@ -403,23 +408,23 @@ if __name__ == '__main__':
  logger.info("ALASKA GEOCHEMICAL DATABASE (AGDB4) ANALYSIS")
  logger.info("Using GeoStats Library")
 
- # Example 1: Gold Exploration
- try:
- try:
- except Exception as e:
- logger.error(f"Gold analysis error: {e}")
+    # Example 1: Gold Exploration
+    try:
+        gold_exploration_analysis(AGDB_PATH)
+    except Exception as e:
+        logger.error(f"Gold analysis error: {e}")
 
- # Example 2: Multi-element (Cu-Mo)
- try:
- try:
- except Exception as e:
- logger.error(f"Multi-element analysis error: {e}")
+    # Example 2: Multi-element (Cu-Mo)
+    try:
+        multi_element_analysis(AGDB_PATH)
+    except Exception as e:
+        logger.error(f"Multi-element analysis error: {e}")
 
- # Example 3: Environmental (Arsenic)
- try:
- try:
- except Exception as e:
- logger.error(f"Environmental analysis error: {e}")
+    # Example 3: Environmental (Arsenic)
+    try:
+        environmental_assessment(AGDB_PATH, element='As', threshold=20)
+    except Exception as e:
+        logger.error(f"Environmental analysis error: {e}")
 
  logger.info("ANALYSIS COMPLETE!")
  logger.info("\nThis example demonstrates:")
