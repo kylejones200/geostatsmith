@@ -46,7 +46,8 @@ logger = logging.getLogger(__name__)
 # ==============================================================================
 
 def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
- Load Alaska Geochemical Database and prepare for analysis.
+    """
+    Load Alaska Geochemical Database and prepare for analysis.
 
  Parameters:
  -----------
@@ -108,32 +109,27 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
  # Filter for sample type if specified
  if sample_type:
- if sample_type:
  merged = merged[merged['PRIMARY_CLASS'].str.contains(sample_type, case=False, na=False)]
 
  # Get element column name (e.g., 'Au_ppm', 'Cu_ppm')
  element_col = f"{element}_ppm"
- if element_col not in chem_data.columns:
- if element_col not in chem_data.columns:
-
+ 
  # Filter for parameter = element and valid values
  if 'PARAMETER' in chem_data.columns:
- if 'PARAMETER' in chem_data.columns:
- merged = merged[element_mask]
+     element_mask = merged['PARAMETER'].str.contains(f'{element}_', case=False, na=False)
+     merged = merged[element_mask]
 
  # Get the value column (usually 'VALUE' in chem files)
  if 'VALUE' in merged.columns:
- if 'VALUE' in merged.columns:
+     value_col = 'VALUE'
  elif element_col in merged.columns:
- elif element_col in merged.columns:
+     value_col = element_col
  else:
- else:
- value_col = None
+     value_col = None
 
  if value_col:
- if value_col:
- merged = merged[merged[value_col] > 0]
- merged = merged.dropna(subset=[value_col])
+     merged = merged[merged[value_col] > 0]
+     merged = merged.dropna(subset=[value_col])
 
  logger.info(f" After filtering: {len(merged):,} samples with valid {element} data")
 
@@ -142,9 +138,9 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
  y = merged['LATITUDE'].values
 
  if value_col:
- if value_col:
+     values = merged[value_col].values
  else:
- else:
+     values = None
 
  # Metadata
  metadata = {
@@ -179,15 +175,17 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
 
  # Filter for specific region if desired
  if region_name:
- if region_name:
- region_name, case=False, na=False
- )
- indices = np.where(mask)[0]
- if len(indices) > 0:
- if len(indices) > 0:
- au_data['y'] = au_data['y'][indices]
- au_data['values'] = au_data['values'][indices]
- logger.info(f"Focused on {region_name} region: {len(indices)} samples")
+     # Try to filter by district name if available
+     if 'metadata' in au_data and 'dataframe' in au_data['metadata']:
+         df = au_data['metadata']['dataframe']
+         if 'DISTRICT_NAME' in df.columns:
+             mask = df['DISTRICT_NAME'].str.contains(region_name, case=False, na=False)
+             indices = np.where(mask.values)[0]
+             if len(indices) > 0:
+                 au_data['x'] = au_data['x'][indices]
+                 au_data['y'] = au_data['y'][indices]
+                 au_data['values'] = au_data['values'][indices]
+                 logger.info(f"Focused on {region_name} region: {len(indices)} samples")
 
  x, y, au = au_data['x'], au_data['y'], au_data['values']
 
@@ -291,7 +289,6 @@ def multi_element_analysis(agdb_path):
  logger.info(f"Common Cu-Mo samples: {len(common)}")
 
  if len(common) < 50:
- if len(common) < 50:
  return None
 
  x = common['LONGITUDE'].values
@@ -307,7 +304,6 @@ def multi_element_analysis(agdb_path):
  correlation = np.corrcoef(cu_log, mo_log)[0, 1]
  logger.info(f" Cu-Mo correlation: {correlation:.3f}")
 
- if correlation > 0.3:
  if correlation > 0.3:
 
  # Fit individual variograms
@@ -399,10 +395,8 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
 # ==============================================================================
 
 if __name__ == '__main__':
-if __name__ == '__main__':
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
- if not AGDB_PATH.exists():
  if not AGDB_PATH.exists():
  exit(1)
 
