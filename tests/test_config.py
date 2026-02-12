@@ -38,11 +38,12 @@ def test_minimal_config():
  assert config.kriging.method == 'ordinary' # Default
 
 def test_config_validation():
- # Invalid: missing required fields
-        with pytest.raises(ConfigError):
-        with pytest.raises(ConfigError):
-                # Missing data section
-            })
+    # Invalid: missing required fields
+    with pytest.raises(ConfigError):
+        # Missing data section
+        load_config({
+            'project': {'name': 'test'}
+        })
 
             # Invalid: wrong type
  with pytest.raises(ConfigError):

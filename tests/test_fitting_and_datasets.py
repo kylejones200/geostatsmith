@@ -282,8 +282,7 @@ class TestVariogramComputation:
         z = np.random.randn(60)
 
         for n_lags in [5, 10, 15, 20]:
-        for n_lags in [5, 10, 15, 20]:
-            )
+            lags, gamma, n_pairs = experimental_variogram(x, y, z, n_lags=n_lags)
 
         assert len(lags) <= n_lags
         assert len(gamma) == len(lags)
