@@ -29,7 +29,6 @@ def test_minimal_config():
  'x_column': 'X',
  'y_column': 'Y',
  'z_column': 'Z'
- }
 
  config = load_config_dict(config_dict)
  assert config.project.name == 'Test'
@@ -55,7 +54,7 @@ def test_config_validation():
             },
             'variogram': {
                 'n_lags': 'invalid'  # Should be int
-            }
+
         })
 
  # Invalid: value out of range
@@ -68,7 +67,7 @@ def test_config_validation():
  },
  'variogram': {
  'n_lags': 2 # Must be >= 5
- }
+
  })
 
 def test_yaml_loading():
@@ -79,12 +78,12 @@ def test_yaml_loading():
  'x_column': 'X',
  'y_column': 'Y',
  'z_column': 'Z'
- }
 
  # Write to temp file
  with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
 
      try:
+         pass
  config = load_config(temp_path)
  assert config.project.name == 'YAML Test'
 
@@ -93,6 +92,7 @@ def test_yaml_loading():
  assert valid
  assert 'valid' in msg.lower()
  finally:
+     pass
  Path(temp_path).unlink()
 
 def test_config_merging():
@@ -107,7 +107,6 @@ def test_config_merging():
  'kriging': {
  'method': 'ordinary',
  'grid': {'resolution': 1.0}
- }
 
  base_config = load_config_dict(base_dict)
 
@@ -117,7 +116,6 @@ def test_config_merging():
  'kriging': {
  'method': 'simple',
  'grid': {'resolution': 0.5}
- }
 
  merged = merge_configs(base_config, overrides)
 
@@ -134,7 +132,6 @@ def test_default_values():
  'x_column': 'X',
  'y_column': 'Y',
  'z_column': 'Z'
- }
 
  config = load_config_dict(config_dict)
 
@@ -162,7 +159,7 @@ def test_cross_field_validation():
  },
  'kriging': {
  'method': 'cokriging' # Requires z_secondary
- }
+
  })
  assert 'cokriging' in str(excinfo.value).lower()
 
@@ -177,7 +174,7 @@ def test_cross_field_validation():
  'kriging': {
  'method': 'indicator'
  # Missing thresholds
- }
+
  })
  assert 'indicator' in str(excinfo.value).lower()
 
@@ -194,7 +191,7 @@ def test_neighborhood_validation():
  'neighborhood': {
  'max_neighbors': 5,
  'min_neighbors': 10 # Invalid: max < min
- }
+
  })
 
 def test_file_not_found_validation():
@@ -204,7 +201,7 @@ def test_file_not_found_validation():
  'x_column': 'X',
  'y_column': 'Y',
  'z_column': 'Z'
- }
+
  })
  assert 'not found' in str(excinfo.value).lower()
 

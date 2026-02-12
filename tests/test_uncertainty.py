@@ -2,6 +2,7 @@
 Tests for Uncertainty Quantification Module
 
 Tests:
+    pass
 - Bootstrap uncertainty estimation
 - Confidence intervals
 - Probability maps

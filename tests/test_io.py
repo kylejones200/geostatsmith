@@ -2,6 +2,7 @@
 Tests for I/O Module
 
 Tests:
+    pass
 - CSV reading/writing
 - Excel reading
 - GeoTIFF reading/writing (if rasterio available)

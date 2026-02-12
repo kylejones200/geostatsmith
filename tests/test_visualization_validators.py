@@ -2,6 +2,7 @@
 Tests for visualization and validation utilities
 
 Tests:
+    pass
 - Spatial plots
 - Variogram plots
 - Diagnostic plots
@@ -347,4 +348,5 @@ class TestPlotSaving:
 
 
                     if __name__ == "__main__":
+                        pass
     pytest.main([__file__])
