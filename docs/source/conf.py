@@ -57,6 +57,9 @@ autodoc_mock_imports = [
 ]
 # Continue building even if there are import errors
 autodoc_continue_on_import_error = True
+
+# Suppress warnings for missing imports
+suppress_warnings = ['autodoc.import_object']
 autodoc_mock_imports = [
     "rasterio",
     "netCDF4",
