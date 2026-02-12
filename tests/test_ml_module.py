@@ -12,10 +12,12 @@ try:
 except ImportError:
     SKLEARN_AVAILABLE = False
 
-    # Check if xgboost is available
+# Check if xgboost is available
 try:
-    except ImportError:
- XGBOOST_AVAILABLE = False
+    import xgboost
+    XGBOOST_AVAILABLE = True
+except ImportError:
+    XGBOOST_AVAILABLE = False
 
 from geostats.ml.regression_kriging import RegressionKriging, RandomForestKriging
 from geostats.ml.gaussian_process import GaussianProcessGeostat

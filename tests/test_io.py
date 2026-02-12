@@ -47,8 +47,7 @@ try:
 except ImportError:
     GEOPANDAS_AVAILABLE = False
 
-    # Import raster functions if available
-if RASTERIO_AVAILABLE:
+# Import raster functions if available
 if RASTERIO_AVAILABLE:
         read_ascii_grid,
         write_ascii_grid,
