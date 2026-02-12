@@ -234,49 +234,49 @@ def robust_variogram(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
- n_lags: int = 15,
- maxlag: Optional[float] = None,
- estimator: str = "cressie",
+    n_lags: int = 15,
+    maxlag: Optional[float] = None,
+    estimator: str = "cressie",
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
- """
- Calculate robust experimental variogram
+    """
+    Calculate robust experimental variogram
 
- Uses robust estimators less sensitive to outliers.
+    Uses robust estimators less sensitive to outliers.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates
- z : np.ndarray
- Values
- n_lags : int
- Number of lag bins
- maxlag : float, optional
- Maximum lag distance
- estimator : str
- Robust estimator to use:
- - 'cressie': Cressie-Hawkins estimator
- - 'dowd': Dowd's estimator
+    Parameters
+    ----------
+    x, y : np.ndarray
+        Coordinates
+    z : np.ndarray
+        Values
+    n_lags : int
+        Number of lag bins
+    maxlag : float, optional
+        Maximum lag distance
+    estimator : str
+        Robust estimator to use:
+        - 'cressie': Cressie-Hawkins estimator
+        - 'dowd': Dowd's estimator
 
- Returns
- -------
- lags : np.ndarray
- Lag distances
- gamma : np.ndarray
- Robust semivariance values
- n_pairs : np.ndarray
- Number of pairs in each lag
+    Returns
+    -------
+    lags : np.ndarray
+        Lag distances
+    gamma : np.ndarray
+        Robust semivariance values
+    n_pairs : np.ndarray
+        Number of pairs in each lag
 
- References
- ----------
- Cressie, N. & Hawkins, D.M. (1980). Robust estimation of the variogram.
- """
- # Validate inputs
- x, y = validate_coordinates(x, y)
- z = validate_values(z, n_expected=len(x))
+    References
+    ----------
+    Cressie, N. & Hawkins, D.M. (1980). Robust estimation of the variogram.
+    """
+    # Validate inputs
+    x, y = validate_coordinates(x, y)
+    z = validate_values(z, n_expected=len(x))
 
- # Calculate distances
- dist = euclidean_distance_matrix(x, y)
+    # Calculate distances
+    dist = euclidean_distance_matrix(x, y)
 
     # Determine lag bins
     if maxlag is None:
@@ -320,7 +320,7 @@ def robust_variogram(
         else:
             n_pairs[i] = 0
 
- return lag_centers, gamma, n_pairs
+    return lag_centers, gamma, n_pairs
 
 def madogram(
     x: npt.NDArray[np.float64],
