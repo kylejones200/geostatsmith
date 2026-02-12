@@ -356,3 +356,4 @@ class TestSimulationEdgeCases:
         assert all(np.isfinite(realizations.flatten()))
 
 if __name__ == "__main__":
+    pytest.main([__file__])

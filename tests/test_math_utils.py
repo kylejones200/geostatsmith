@@ -290,7 +290,6 @@ class TestEdgeCases:
         except np.linalg.LinAlgError:
             # Acceptable to raise error for singular matrix
             pass
-            pass
 
     def test_grid_single_point(self):
         x_grid, y_grid = grid_utils.create_grid(
@@ -351,3 +350,4 @@ class TestComputationalEfficiency:
         assert len(x) == n
 
 if __name__ == "__main__":
+    pytest.main([__file__])

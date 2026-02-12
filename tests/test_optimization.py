@@ -109,7 +109,6 @@ class TestSamplingDesign:
                 variogram_model=self.model,
                 strategy="invalid",
             )
-            )
 
 
 class TestCostBenefit:

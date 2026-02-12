@@ -30,7 +30,6 @@ def test_minimal_config():
  'y_column': 'Y',
  'z_column': 'Z'
  }
- }
 
  config = load_config_dict(config_dict)
  assert config.project.name == 'Test'
@@ -81,7 +80,6 @@ def test_yaml_loading():
  'y_column': 'Y',
  'z_column': 'Z'
  }
- }
 
  # Write to temp file
  with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
@@ -110,7 +108,6 @@ def test_config_merging():
  'method': 'ordinary',
  'grid': {'resolution': 1.0}
  }
- }
 
  base_config = load_config_dict(base_dict)
 
@@ -120,7 +117,6 @@ def test_config_merging():
  'kriging': {
  'method': 'simple',
  'grid': {'resolution': 0.5}
- }
  }
 
  merged = merge_configs(base_config, overrides)
@@ -138,7 +134,6 @@ def test_default_values():
  'x_column': 'X',
  'y_column': 'Y',
  'z_column': 'Z'
- }
  }
 
  config = load_config_dict(config_dict)
@@ -200,7 +195,6 @@ def test_neighborhood_validation():
  'max_neighbors': 5,
  'min_neighbors': 10 # Invalid: max < min
  }
- }
  })
 
 def test_file_not_found_validation():
@@ -215,3 +209,4 @@ def test_file_not_found_validation():
  assert 'not found' in str(excinfo.value).lower()
 
 if __name__ == '__main__':
+    pytest.main([__file__])

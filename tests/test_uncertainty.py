@@ -137,8 +137,6 @@ class TestBootstrapUncertainty:
                 variogram_model=self.model,
                 method="invalid_method"
             )
-                method="invalid",
-            )
 
 
 class TestConfidenceIntervals:

@@ -256,3 +256,4 @@ class TestMetrics:
         assert np.abs(r2) < 0.01 # Close to 0
 
 if __name__ == "__main__":
+    pytest.main([__file__])

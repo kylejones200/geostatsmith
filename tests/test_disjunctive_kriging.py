@@ -98,8 +98,6 @@ class TestDisjunctiveKriging:
                 variogram_model=self.model,
                 kriging_type='invalid'
             )
-                kriging_type="invalid",
-            )
 
     def test_hermite_expansion_fitting(self):
         dk = DisjunctiveKriging(

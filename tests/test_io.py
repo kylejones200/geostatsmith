@@ -55,11 +55,9 @@ if RASTERIO_AVAILABLE:
 
     # Import NetCDF functions if available
 if NETCDF_AVAILABLE:
-if NETCDF_AVAILABLE:
     )
 
     # Import GeoJSON functions if available
-if GEOPANDAS_AVAILABLE:
 if GEOPANDAS_AVAILABLE:
     )
 
@@ -199,7 +197,6 @@ class TestCSVIO:
         assert len(df) == self.n
 
     def test_read_excel_spatial(self):
-        try:
         try:
 
             x_read, y_read, z_read, _ = read_excel_spatial(str(excel_file))
