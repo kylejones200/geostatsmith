@@ -203,12 +203,12 @@ def main():
     example_3_format_comparison()
 
     logger.info("ALL EXAMPLES COMPLETE!")
- logger.info("\nFiles created:")
- logger.info(" - sample_elevation.csv")
- logger.info(" - elevation_kriging.tif")
- logger.info(" - validation_points.csv")
- logger.info(" - validation_points.geojson (if geopandas available)")
- logger.info(" - example_workflow_01_io.png")
+    logger.info("\nFiles created:")
+    logger.info(" - sample_elevation.csv")
+    logger.info(" - elevation_kriging.tif")
+    logger.info(" - validation_points.csv")
+    logger.info(" - validation_points.geojson (if geopandas available)")
+    logger.info(" - example_workflow_01_io.png")
 
 if __name__ == '__main__':
     main()
