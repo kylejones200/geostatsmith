@@ -55,16 +55,16 @@ def experimental_variogram(
  References
  ----------
  Matheron, G. (1963). Principles of geostatistics.
- """
- # Validate inputs
- x, y = validate_coordinates(x, y)
- z = validate_values(z, n_expected=len(x))
+    """
+    # Validate inputs
+    x, y = validate_coordinates(x, y)
+    z = validate_values(z, n_expected=len(x))
 
- # Calculate all pairwise distances
- dist = euclidean_distance_matrix(x, y)
+    # Calculate all pairwise distances
+    dist = euclidean_distance_matrix(x, y)
 
- # Calculate squared differences
- z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
+    # Calculate squared differences
+    z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
 
     # Determine lag bins
     if maxlag is None:
