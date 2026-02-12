@@ -21,15 +21,12 @@ from geostats.transformations.normal_score import NormalScoreTransform
 from geostats.models.variogram_models import SphericalModel, ExponentialModel
 
 class TestUnconditionalSimulation:
-class TestUnconditionalSimulation:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         # Variogram model (convert to covariance)
         self.model = SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
 
-    def test_unconditional_basic(self):
     def test_unconditional_basic(self):
         # Create simulation grid
         x_sim = np.linspace(0, 100, 20)
@@ -51,7 +48,6 @@ class TestUnconditionalSimulation:
         assert all(np.isfinite(realizations.flatten()))
 
     def test_unconditional_multiple_realizations(self):
-    def test_unconditional_multiple_realizations(self):
         x_sim = np.linspace(0, 100, 10)
         y_sim = np.linspace(0, 100, 10)
         X, Y = np.meshgrid(x_sim, y_sim)
@@ -72,7 +68,6 @@ class TestUnconditionalSimulation:
         assert not np.allclose(realizations[0], realizations[1])
 
     def test_unconditional_statistics(self):
-    def test_unconditional_statistics(self):
         x_sim = np.linspace(0, 100, 30)
         y_sim = np.linspace(0, 100, 30)
         X, Y = np.meshgrid(x_sim, y_sim)
@@ -91,7 +86,6 @@ class TestUnconditionalSimulation:
         overall_mean = np.mean(realizations)
         assert abs(overall_mean - 5.0) < 1.0
 
-    def test_unconditional_reproducibility(self):
     def test_unconditional_reproducibility(self):
         x_sim = np.linspace(0, 100, 15)
         y_sim = np.linspace(0, 100, 15)
@@ -114,7 +108,6 @@ class TestUnconditionalSimulation:
         np.testing.assert_array_equal(real1, real2)
 
     def test_unconditional_turning_bands(self):
-    def test_unconditional_turning_bands(self):
         x = np.linspace(0, 50, 20)
         y = np.linspace(0, 50, 20)
         X, Y = np.meshgrid(x, y)
@@ -133,7 +126,6 @@ class TestUnconditionalSimulation:
         assert not np.any(np.isnan(realization))
 
     def test_unconditional_invalid_method(self):
-    def test_unconditional_invalid_method(self):
         x = np.array([0, 10, 20])
         y = np.array([0, 10, 20])
 
@@ -144,9 +136,7 @@ class TestUnconditionalSimulation:
             )
 
 class TestSequentialGaussianSimulation:
-class TestSequentialGaussianSimulation:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n_data = 30
@@ -160,7 +150,6 @@ class TestSequentialGaussianSimulation:
         )
         self.model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
 
-    def test_sgs_basic(self):
     def test_sgs_basic(self):
         # Simulation grid
         x_sim = np.linspace(0, 100, 15)
@@ -183,7 +172,6 @@ class TestSequentialGaussianSimulation:
         assert all(np.isfinite(realizations.flatten()))
 
     def test_sgs_multiple_realizations(self):
-    def test_sgs_multiple_realizations(self):
         x_sim = np.linspace(0, 100, 10)
         y_sim = np.linspace(0, 100, 10)
         X, Y = np.meshgrid(x_sim, y_sim)
@@ -204,7 +192,6 @@ class TestSequentialGaussianSimulation:
         # Different realizations
         assert not np.allclose(realizations[0], realizations[1])
 
-    def test_sgs_class_interface(self):
     def test_sgs_class_interface(self):
         x_sim = np.linspace(0, 100, 12)
         y_sim = np.linspace(0, 100, 12)
@@ -227,7 +214,6 @@ class TestSequentialGaussianSimulation:
         assert realizations.shape == (2, 144)
         assert all(np.isfinite(realizations.flatten()))
 
-    def test_sgs_etype(self):
     def test_sgs_etype(self):
         x_sim = np.linspace(0, 100, 10)
         y_sim = np.linspace(0, 100, 10)
@@ -254,7 +240,6 @@ class TestSequentialGaussianSimulation:
         # E-type should be smoother (lower variance)
         assert np.std(etype) < np.mean([np.std(r) for r in realizations])
 
-    def test_sgs_reproducibility(self):
     def test_sgs_reproducibility(self):
         x_sim = np.linspace(0, 100, 10)
         y_sim = np.linspace(0, 100, 10)
@@ -285,9 +270,7 @@ class TestSequentialGaussianSimulation:
         np.testing.assert_array_almost_equal(real1, real2)
 
 class TestSimulationStatistics:
-class TestSimulationStatistics:
 
-    def test_histogram_reproduction(self):
     def test_histogram_reproduction(self):
         np.random.seed(42)
 
@@ -324,9 +307,7 @@ class TestSimulationStatistics:
         assert abs(np.std(all_values) - 2.0) < 1.0
 
 class TestSimulationEdgeCases:
-class TestSimulationEdgeCases:
 
-    def test_simulation_single_conditioning_point(self):
     def test_simulation_single_conditioning_point(self):
         x_data = np.array([50.0])
         y_data = np.array([50.0])
@@ -353,7 +334,6 @@ class TestSimulationEdgeCases:
         assert realizations.shape == (1, 100)
         assert all(np.isfinite(realizations.flatten()))
 
-    def test_unconditional_small_grid(self):
     def test_unconditional_small_grid(self):
         x = np.array([0, 10, 20])
         y = np.array([0, 10, 20])

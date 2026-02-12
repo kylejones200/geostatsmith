@@ -20,13 +20,13 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 def hillshade(
-def hillshade(
- azimuth: float = 315.0,
- altitude: float = 45.0,
- z_factor: float = 1.0,
- dx: float = 1.0,
- dy: float = 1.0,
-    ) -> npt.NDArray[np.float64]:
+    elevation: npt.NDArray[np.float64],
+    azimuth: float = 315.0,
+    altitude: float = 45.0,
+    z_factor: float = 1.0,
+    dx: float = 1.0,
+    dy: float = 1.0,
+) -> npt.NDArray[np.float64]:
  """
  Calculate hillshade from elevation data.
 
@@ -124,7 +124,6 @@ def hillshade(
  return hillshade_8bit
 
 def plot_hillshaded_dem(
-def plot_hillshaded_dem(
  y: npt.NDArray[np.float64],
  elevation: npt.NDArray[np.float64],
  azimuth: float = 315.0,
@@ -210,7 +209,6 @@ def plot_hillshaded_dem(
  return fig, ax
 
 def create_multi_azimuth_hillshade(
-def create_multi_azimuth_hillshade(
  azimuths: Optional[list] = None,
  altitude: float = 45.0,
     ) -> npt.NDArray[np.float64]:
@@ -272,7 +270,6 @@ def create_multi_azimuth_hillshade(
  # Convert back to uint8
  return combined.astype(np.uint8)
 
-def slope_map(
 def slope_map(
  dx: float = 1.0,
  dy: float = 1.0,
@@ -339,7 +336,6 @@ def slope_map(
 
  return unit_conversions[units](slope_rad)
 
-def aspect_map(
 def aspect_map(
  dx: float = 1.0,
  dy: float = 1.0,

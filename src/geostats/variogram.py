@@ -41,7 +41,6 @@ __all__ = [
 
 
 def experimental_variogram(
-def experimental_variogram(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 15,
@@ -83,7 +82,6 @@ def experimental_variogram(
 
 
 def experimental_variogram_directional(
-def experimental_variogram_directional(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     angle: float = 0.0,
@@ -124,7 +122,6 @@ def experimental_variogram_directional(
 
 
 def variogram_cloud(
-def variogram_cloud(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     maxlag: Optional[float] = None,
@@ -153,7 +150,6 @@ def variogram_cloud(
     return _variogram_cloud(x, y, z, maxlag=maxlag)
 
 
-def robust_variogram(
 def robust_variogram(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
@@ -191,7 +187,6 @@ def robust_variogram(
     return _robust_variogram(x, y, z, n_lags=n_lags, maxlag=maxlag, estimator=estimator)
 
 
-def fit_model(
 def fit_model(
     lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
@@ -246,7 +241,6 @@ def fit_model(
     return fit_variogram_model(model, lags, gamma, weights=weights)
 
 
-def auto_fit(
 def auto_fit(
     gamma: npt.NDArray[np.float64],
     weights: Optional[npt.NDArray[np.float64]] = None,

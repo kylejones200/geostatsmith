@@ -67,7 +67,6 @@ except ImportError:
  logger.warning("scikit-learn not available. GP will have limited functionality.")
 
 class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
-class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  Gaussian Process Regression with Geostatistical Kernels
 
  sklearn-compatible Gaussian Process using variogram-based kernels.
@@ -143,7 +142,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  """
 
  def __init__(
- def __init__(
      kernel: Optional[Union[str, Callable]] = 'spherical',
      mean_type: str = 'constant',
      alpha: float = 1e-8,
@@ -186,7 +184,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      f"optimize={optimize_kernel}"
      )
 
- def fit(
  def fit(
      X: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64]
@@ -256,7 +253,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      return self
 
  def _build_covariance_matrix(
- def _build_covariance_matrix(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64]
      ):
@@ -294,7 +290,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      self.K_ = regularize_matrix(K, factor=REGULARIZATION_FACTOR)
      logger.debug("Covariance matrix built and regularized")
 
- def predict(
  def predict(
      X: npt.NDArray[np.float64],
      return_std: bool = False,
@@ -425,7 +420,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         return predictions
 
  def score(
- def score(
      X: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64]
      ) -> float:
@@ -455,7 +449,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
      return r2
 
- def log_marginal_likelihood(self) -> float:
  def log_marginal_likelihood(self) -> float:
      Compute log marginal likelihood of the model
 
@@ -495,7 +488,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  logger.warning("Cholesky decomposition failed for LML computation")
  return -np.inf
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], dict]:
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], dict]:
      Perform leave-one-out cross-validation
 

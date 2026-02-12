@@ -18,7 +18,6 @@ from matplotlib import gridspec
 from .minimal_style import apply_minimalist_style
 
 def plot_variogram(
-def plot_variogram(
  gamma: npt.NDArray[np.float64],
  n_pairs: Optional[npt.NDArray[np.int64]] = None,
  model=None,
@@ -85,7 +84,6 @@ def plot_variogram(
  return ax
 
 def plot_variogram_cloud(
-def plot_variogram_cloud(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  maxlag: Optional[float] = None,
@@ -134,7 +132,6 @@ def plot_variogram_cloud(
 
  return ax
 
-def plot_h_scatterplot(
 def plot_h_scatterplot(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -228,7 +225,6 @@ def plot_h_scatterplot(
  return ax
 
 def plot_directional_variograms(
-def plot_directional_variograms(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  directions: List[float] = [0, 45, 90, 135],
@@ -293,7 +289,6 @@ def plot_directional_variograms(
 
  return fig
 
-def plot_variogram_map(
 def plot_variogram_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -381,7 +376,6 @@ def plot_variogram_map(
 
     # API compatibility functions
 def plot_experimental_variogram(
-def plot_experimental_variogram(
  gamma: npt.NDArray[np.float64],
  n_pairs: Optional[npt.NDArray[np.int64]] = None,
  ax: Optional[plt.Axes] = None,
@@ -430,7 +424,6 @@ def plot_experimental_variogram(
 
  return fig, ax
 
-def plot_variogram_model(
 def plot_variogram_model(
  max_distance: float = 100.0,
  ax: Optional[plt.Axes] = None,
@@ -485,7 +478,6 @@ def plot_variogram_model(
 
  return fig, ax
 
-def plot_variogram_with_model(
 def plot_variogram_with_model(
  gamma: npt.NDArray[np.float64],
  model,
@@ -551,7 +543,6 @@ def plot_variogram_with_model(
 
  return fig, ax
 
-def plot_variogram_map(
 def plot_variogram_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

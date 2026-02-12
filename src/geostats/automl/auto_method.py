@@ -17,7 +17,6 @@ from .auto_variogram import auto_variogram
 logger = logging.getLogger(__name__)
 
 def auto_interpolate(
-def auto_interpolate(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -179,7 +178,6 @@ def auto_interpolate(
  'all_results': all_results,
  }
 
-def suggest_method(
 def suggest_method(
  n_predictions: int,
  data_characteristics: Optional[Dict] = None,

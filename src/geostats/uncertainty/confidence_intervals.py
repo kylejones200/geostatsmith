@@ -12,7 +12,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 def confidence_intervals(
-def confidence_intervals(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -104,7 +103,6 @@ def confidence_intervals(
  }
 
 def prediction_bands(
-def prediction_bands(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -195,7 +193,6 @@ def prediction_bands(
 
  return results
 
-def uncertainty_ellipse(
 def uncertainty_ellipse(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

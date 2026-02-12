@@ -16,9 +16,7 @@ from geostats.transformations.boxcox import BoxCoxTransform
 from geostats.transformations.declustering import cell_declustering
 
 class TestNormalScoreTransform:
-class TestNormalScoreTransform:
 
-    def test_basic_transform(self):
     def test_basic_transform(self):
         np.random.seed(42)
         # Skewed data
@@ -36,7 +34,6 @@ class TestNormalScoreTransform:
         assert abs(np.std(transformed) - 1.0) < 0.3
 
     def test_inverse_transform(self):
-    def test_inverse_transform(self):
         np.random.seed(42)
         data = np.random.exponential(scale=2.0, size=100)
 
@@ -48,7 +45,6 @@ class TestNormalScoreTransform:
         np.testing.assert_array_almost_equal(np.sort(data), np.sort(back), decimal=5)
 
     def test_transform_handles_duplicates(self):
-    def test_transform_handles_duplicates(self):
         data = np.array([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
 
         ns = NormalScoreTransform()
@@ -57,7 +53,6 @@ class TestNormalScoreTransform:
         assert len(transformed) == 10
         assert all(np.isfinite(transformed))
 
-    def test_transform_preserves_order(self):
     def test_transform_preserves_order(self):
         data = np.array([1, 5, 2, 8, 3, 9, 4, 6, 7])
 
@@ -71,7 +66,6 @@ class TestNormalScoreTransform:
         np.testing.assert_array_equal(original_ranks, transformed_ranks)
 
     def test_transform_with_ties(self):
-    def test_transform_with_ties(self):
         data = np.array([1, 2, 2, 2, 3, 4, 5, 5, 5, 6])
 
         ns = NormalScoreTransform()
@@ -82,7 +76,6 @@ class TestNormalScoreTransform:
         # Values should still be ordered
         assert all(np.diff(transformed) >= -1e-10)
 
-    def test_transform_single_value(self):
     def test_transform_single_value(self):
         data = np.array([5.0] * 10)
 
@@ -96,9 +89,7 @@ class TestNormalScoreTransform:
         pass
 
 class TestLogTransformExtended:
-class TestLogTransformExtended:
 
-    def test_fit_and_transform_separate(self):
     def test_fit_and_transform_separate(self):
         data = np.array([1, 2, 3, 4, 5, 10, 20, 30])
 
@@ -111,7 +102,6 @@ class TestLogTransformExtended:
         assert np.var(transformed) < np.var(data)
 
     def test_back_transform(self):
-    def test_back_transform(self):
         data = np.array([1, 2, 3, 4, 5, 10, 20, 30])
 
         lt = LogTransform()
@@ -121,7 +111,6 @@ class TestLogTransformExtended:
 
         np.testing.assert_array_almost_equal(data, back, decimal=10)
 
-    def test_with_zeros_and_offset(self):
     def test_with_zeros_and_offset(self):
         data = np.array([0, 1, 2, 3, 4, 5])
 
@@ -134,7 +123,6 @@ class TestLogTransformExtended:
         back = lt.back_transform(transformed)
         np.testing.assert_array_almost_equal(data, back, decimal=10)
 
-    def test_reduces_skewness(self):
     def test_reduces_skewness(self):
         np.random.seed(42)
         # Highly skewed data
@@ -154,7 +142,6 @@ class TestLogTransformExtended:
         assert abs(skew_after) < abs(skew_before)
 
     def test_base_parameter(self):
-    def test_base_parameter(self):
         data = np.array([1, 10, 100, 1000])
 
         lt10 = LogTransform(base=10)
@@ -166,9 +153,7 @@ class TestLogTransformExtended:
         np.testing.assert_array_almost_equal(transformed, expected, decimal=10)
 
 class TestBoxCoxTransform:
-class TestBoxCoxTransform:
 
-    def test_basic_boxcox(self):
     def test_basic_boxcox(self):
         np.random.seed(42)
         # Positive data only
@@ -181,7 +166,6 @@ class TestBoxCoxTransform:
         assert all(np.isfinite(transformed))
 
     def test_finds_optimal_lambda(self):
-    def test_finds_optimal_lambda(self):
         np.random.seed(42)
         data = np.random.exponential(scale=2.0, size=100)
 
@@ -193,7 +177,6 @@ class TestBoxCoxTransform:
         assert np.isfinite(bc.lambda_)
 
     def test_inverse_transform(self):
-    def test_inverse_transform(self):
         np.random.seed(42)
         data = np.random.gamma(shape=2, scale=2, size=50)
 
@@ -203,7 +186,6 @@ class TestBoxCoxTransform:
 
         np.testing.assert_array_almost_equal(data, back, decimal=8)
 
-    def test_normality_improvement(self):
     def test_normality_improvement(self):
         np.random.seed(42)
         # Skewed data
@@ -225,9 +207,7 @@ class TestBoxCoxTransform:
         assert p_after > p_before or p_after > 0.01
 
 class TestDeclustering:
-class TestDeclustering:
 
-    def test_cell_declustering_basic(self):
     def test_cell_declustering_basic(self):
         np.random.seed(42)
 
@@ -254,7 +234,6 @@ class TestDeclustering:
         assert all(np.isfinite(weights))
         assert 'optimal_cell_size' in info
 
-    def test_declustering_reduces_bias(self):
     def test_declustering_reduces_bias(self):
         np.random.seed(42)
 
@@ -285,7 +264,6 @@ class TestDeclustering:
         assert abs(declust_mean - 10) < abs(naive_mean - 10)
 
     def test_uniform_data_gets_uniform_weights(self):
-    def test_uniform_data_gets_uniform_weights(self):
         np.random.seed(42)
 
         # Uniformly distributed data
@@ -300,7 +278,6 @@ class TestDeclustering:
         mean_weight = np.mean(weights)
         assert all(np.abs(weights - mean_weight) < 2.0 * mean_weight)
 
-    def test_declustering_different_cell_sizes(self):
     def test_declustering_different_cell_sizes(self):
         np.random.seed(42)
 
@@ -327,9 +304,7 @@ class TestDeclustering:
         assert len(weights_many) == len(z)
 
 class TestTransformationEdgeCases:
-class TestTransformationEdgeCases:
 
-    def test_empty_data(self):
     def test_empty_data(self):
         data = np.array([])
 
@@ -343,7 +318,6 @@ class TestTransformationEdgeCases:
         pass
 
     def test_single_point(self):
-    def test_single_point(self):
         data = np.array([5.0])
 
         ns = NormalScoreTransform()
@@ -355,7 +329,6 @@ class TestTransformationEdgeCases:
         # Also acceptable to raise error
         pass
 
-    def test_negative_values_log_transform(self):
     def test_negative_values_log_transform(self):
         data = np.array([-5, -2, 0, 1, 2, 5])
 

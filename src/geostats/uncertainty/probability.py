@@ -13,7 +13,6 @@ from ..models.base_model import VariogramModelBase
 from ..simulation.gaussian_simulation import SequentialGaussianSimulation
 
 def probability_map(
-def probability_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -118,7 +117,6 @@ def probability_map(
  return probability
 
 def conditional_probability(
-def conditional_probability(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -195,7 +193,6 @@ def conditional_probability(
 
  return results
 
-def risk_assessment(
 def risk_assessment(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

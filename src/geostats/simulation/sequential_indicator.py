@@ -49,7 +49,6 @@ CDF_EXTRAPOLATION_FACTOR = 0.1
 
 @dataclass
 class SISConfig:
-class SISConfig:
  n_realizations: int = DEFAULT_N_REALIZATIONS
  thresholds: Optional[List[float]] = None # If None, use quantiles
  n_thresholds: int = DEFAULT_N_THRESHOLDS
@@ -58,7 +57,6 @@ class SISConfig:
  random_seed: Optional[int] = None
  correct_order_relations: bool = True # Enforce P(z1) <= P(z2) for z1 < z2
 
-class SequentialIndicatorSimulation:
 class SequentialIndicatorSimulation:
  Sequential Indicator Simulation (SIS)
 
@@ -76,7 +74,6 @@ class SequentialIndicatorSimulation:
  - Sample category from multinomial distribution
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -125,7 +122,6 @@ class SequentialIndicatorSimulation:
      self.indicator_krigers: List[Optional[IndicatorKriging]] = [None] * self.n_thresholds
 
  def _compute_indicators(
- def _compute_indicators(
      values: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
      """
@@ -147,7 +143,6 @@ class SequentialIndicatorSimulation:
      indicators = (values <= thresholds).astype(np.float64)
      return indicators
 
- def fit_indicator_variograms(
  def fit_indicator_variograms(
      variogram_models: List[object]
      ):
@@ -175,7 +170,6 @@ class SequentialIndicatorSimulation:
      variogram_model=variogram_models[k]
      )
 
- def simulate(
  def simulate(
      x_grid: npt.NDArray[np.float64],
      y_grid: npt.NDArray[np.float64]
@@ -270,7 +264,6 @@ class SequentialIndicatorSimulation:
      return realizations
 
  def _sample_from_cdf(
- def _sample_from_cdf(
      probabilities: npt.NDArray[np.float64]
      ) -> float:
      """
@@ -327,7 +320,6 @@ class SequentialIndicatorSimulation:
 
      return sampled_value
 
- def get_statistics(self, realizations: npt.NDArray[np.float64]) -> dict:
  def get_statistics(self, realizations: npt.NDArray[np.float64]) -> dict:
      Calculate statistics of realizations
 

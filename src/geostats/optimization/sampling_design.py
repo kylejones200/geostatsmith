@@ -15,7 +15,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def optimal_sampling_design(
-def optimal_sampling_design(
  y_existing: npt.NDArray[np.float64],
  z_existing: npt.NDArray[np.float64],
  n_new_samples: int,
@@ -188,7 +187,6 @@ def optimal_sampling_design(
  return np.array(x_new), np.array(y_new)
 
 def _compute_space_filling_scores(
-def _compute_space_filling_scores(
  y_candidates: npt.NDArray[np.float64],
  x_existing: npt.NDArray[np.float64],
  y_existing: npt.NDArray[np.float64],
@@ -207,7 +205,6 @@ def _compute_space_filling_scores(
 
  return scores
 
-def infill_sampling(
 def infill_sampling(
  y_existing: npt.NDArray[np.float64],
  z_existing: npt.NDArray[np.float64],
@@ -322,7 +319,6 @@ def infill_sampling(
  return np.array(x_infill), np.array(y_infill)
 
 def stratified_sampling(
-def stratified_sampling(
  y_bounds: Tuple[float, float],
  n_samples: int,
  n_strata_x: Optional[int] = None,
@@ -410,7 +406,6 @@ def stratified_sampling(
 
  return np.array(x_samples), np.array(y_samples)
 
-def adaptive_sampling(
 def adaptive_sampling(
  y_existing: npt.NDArray[np.float64],
  z_existing: npt.NDArray[np.float64],

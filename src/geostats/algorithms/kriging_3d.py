@@ -36,7 +36,6 @@ from ..core.logging_config import get_logger
 logger = get_logger(__name__)
 
 def validate_coordinates_3d(
-def validate_coordinates_3d(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64]
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
@@ -51,14 +50,12 @@ def validate_coordinates_3d(
  return x, y, z
 
 class SimpleKriging3D(BaseKriging):
-class SimpleKriging3D(BaseKriging):
  Simple Kriging in 3D space
 
  Assumes known constant mean. Kriging equations are identical to 2D,
  but distances are computed in 3D Euclidean space.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -100,7 +97,6 @@ class SimpleKriging3D(BaseKriging):
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self):
- def _build_kriging_matrix(self):
      n = len(self.x)
 
  # Build covariance matrix (vectorized distance calculation)
@@ -122,7 +118,6 @@ class SimpleKriging3D(BaseKriging):
  self.kriging_matrix = K
  logger.debug(f"3D Simple Kriging matrix built (vectorized): {n}x{n}")
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -191,14 +186,12 @@ class SimpleKriging3D(BaseKriging):
      return predictions
 
 class OrdinaryKriging3D(BaseKriging):
-class OrdinaryKriging3D(BaseKriging):
  Ordinary Kriging in 3D space
 
  Accounts for unknown mean through Lagrange multiplier.
  Most common kriging variant for 3D applications.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -226,7 +219,6 @@ class OrdinaryKriging3D(BaseKriging):
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self):
- def _build_kriging_matrix(self):
      n = len(self.x)
 
  # Build variogram matrix with Lagrange constraint
@@ -249,7 +241,6 @@ class OrdinaryKriging3D(BaseKriging):
  self.kriging_matrix = K
  logger.debug(f"3D Ordinary Kriging matrix built (vectorized): {n+1}x{n+1}")
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -319,7 +310,6 @@ class OrdinaryKriging3D(BaseKriging):
      if return_variance:
      return predictions
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      n = len(self.x)
      predictions = np.zeros(n)

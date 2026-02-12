@@ -46,7 +46,6 @@ logger.info(" GOLD RUSH ALASKA - COMPLETE EXPLORATION WORKFLOW")
 # ==============================================================================
 
 def load_fairbanks_gold_data(agdb_path):
-def load_fairbanks_gold_data(agdb_path):
  logger.info("Loading Alaska gold data...")
 
  agdb_path = Path(agdb_path)
@@ -111,7 +110,6 @@ def load_fairbanks_gold_data(agdb_path):
 # ==============================================================================
 
 def analyze_variogram_anisotropy(x, y, z):
-def analyze_variogram_anisotropy(x, y, z):
  logger.info("Directional Variogram Analysis (Anisotropy)...")
 
  # Log-transform for stationarity
@@ -169,7 +167,6 @@ def analyze_variogram_anisotropy(x, y, z):
 # STEP 3: Compare Multiple Kriging Methods
 # ==============================================================================
 
-def compare_kriging_methods(x, y, au, model):
 def compare_kriging_methods(x, y, au, model):
  logger.info("Comparing Kriging Methods...")
 
@@ -254,7 +251,6 @@ def compare_kriging_methods(x, y, au, model):
 # ==============================================================================
 
 def quantify_uncertainty(x, y, au, model, X, Y):
-def quantify_uncertainty(x, y, au, model, X, Y):
  logger.info("Uncertainty Quantification...")
 
  au_log = np.log10(au + 0.001)
@@ -320,7 +316,6 @@ def quantify_uncertainty(x, y, au, model, X, Y):
 # STEP 5: Optimal Sampling (Where to collect more samples?)
 # ==============================================================================
 
-def design_infill_sampling(x, y, au, model, X, Y):
 def design_infill_sampling(x, y, au, model, X, Y):
  logger.info("Optimal Infill Sampling Design...")
 
@@ -388,7 +383,6 @@ def design_infill_sampling(x, y, au, model, X, Y):
 # ==============================================================================
 
 def performance_comparison(x, y, au, model, X, Y):
-def performance_comparison(x, y, au, model, X, Y):
  logger.info("Performance Showcase...")
 
  au_log = np.log10(au + 0.001)
@@ -420,7 +414,6 @@ def performance_comparison(x, y, au, model, X, Y):
 # STEP 7: Cross-Validation & Quality Assessment
 # ==============================================================================
 
-def validate_predictions(x, y, au, model):
 def validate_predictions(x, y, au, model):
  logger.info("Model Validation & Quality Assessment...")
 

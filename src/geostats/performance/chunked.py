@@ -16,7 +16,6 @@ from ..models.base_model import VariogramModelBase
 logger = logging.getLogger(__name__)
 
 class ChunkedKriging:
-class ChunkedKriging:
  Kriging with chunked processing for large prediction grids.
 
  Processes predictions in chunks to avoid memory issues with
@@ -47,7 +46,6 @@ class ChunkedKriging:
  """
 
  def __init__(
- def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      z: npt.NDArray[np.float64],
@@ -64,7 +62,6 @@ class ChunkedKriging:
      variogram_model=variogram_model
      )
 
- def predict_chunked(
  def predict_chunked(
      x_pred: npt.NDArray[np.float64],
      y_pred: npt.NDArray[np.float64],
@@ -130,7 +127,6 @@ class ChunkedKriging:
      return predictions, variance
 
  def predict_large_grid(
- def predict_large_grid(
      x_grid: npt.NDArray[np.float64],
      y_grid: npt.NDArray[np.float64],
      chunk_size: int = 10000,
@@ -182,7 +178,6 @@ class ChunkedKriging:
      else:
      else:
 
-def chunked_predict(
 def chunked_predict(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

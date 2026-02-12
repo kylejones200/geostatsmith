@@ -23,7 +23,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def cell_declustering(
-def cell_declustering(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  cell_sizes: Optional[npt.NDArray[np.float64]] = None,
@@ -156,7 +155,6 @@ def cell_declustering(
  return optimal_weights, info
 
 def polygonal_declustering(
-def polygonal_declustering(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  power: float = 2.0
@@ -234,7 +232,6 @@ def polygonal_declustering(
 
  return weights, info
 
-def detect_clustering(
 def detect_clustering(
  y: npt.NDArray[np.float64]
     ) -> Dict[str, float]:

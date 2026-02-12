@@ -10,7 +10,6 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 import numpy as np
 
 class ProjectConfig(BaseModel):
-class ProjectConfig(BaseModel):
  name: str = Field(..., description="Project name")
  output_dir: str = Field("./results", description="Output directory path")
  description: Optional[str] = Field(None, description="Project description")
@@ -19,11 +18,9 @@ class ProjectConfig(BaseModel):
  @field_validator('output_dir')
  @classmethod
  def validate_output_dir(cls, v):
- def validate_output_dir(cls, v):
      Path(v).mkdir(parents=True, exist_ok=True)
      return v
 
-class DataConfig(BaseModel):
 class DataConfig(BaseModel):
  input_file: str = Field(..., description="Path to input data file")
  x_column: str = Field(..., description="X coordinate column name")
@@ -36,12 +33,10 @@ class DataConfig(BaseModel):
  @field_validator('input_file')
  @classmethod
  def validate_file_exists(cls, v):
- def validate_file_exists(cls, v):
      if not Path(v).exists():
      if not Path(v).exists():
      return v
 
-class PreprocessingConfig(BaseModel):
 class PreprocessingConfig(BaseModel):
  remove_outliers: bool = Field(False, description="Remove outliers")
  outlier_method: Literal['iqr', 'zscore', 'isolation_forest'] = Field('iqr', description="Outlier detection method")
@@ -55,7 +50,6 @@ class PreprocessingConfig(BaseModel):
 
  handle_negatives: Literal['shift', 'remove', 'absolute'] = Field('shift', description="How to handle negative values for log/boxcox")
 
-class VariogramConfig(BaseModel):
 class VariogramConfig(BaseModel):
  n_lags: int = Field(15, ge=5, le=50, description="Number of lag bins")
  max_lag: Optional[float] = Field(None, description="Maximum lag distance (auto if None)")
@@ -84,7 +78,6 @@ class VariogramConfig(BaseModel):
  anisotropy_tolerance: float = Field(22.5, description="Angular tolerance")
 
 class NeighborhoodConfig(BaseModel):
-class NeighborhoodConfig(BaseModel):
  max_neighbors: int = Field(25, ge=1, description="Maximum neighbors to use")
  min_neighbors: int = Field(3, ge=1, description="Minimum neighbors required")
  search_radius: Optional[float] = Field(None, description="Search radius (auto if None)")
@@ -92,12 +85,10 @@ class NeighborhoodConfig(BaseModel):
 
  @model_validator(mode='after')
  def validate_neighbors(self):
- def validate_neighbors(self):
      if self.max_neighbors < self.min_neighbors:
      if self.max_neighbors < self.min_neighbors:
      return self
 
-class GridConfig(BaseModel):
 class GridConfig(BaseModel):
  x_min: Optional[float] = Field(None, description="Grid X minimum (auto from data if None)")
  x_max: Optional[float] = Field(None, description="Grid X maximum")
@@ -109,7 +100,6 @@ class GridConfig(BaseModel):
 
  buffer: float = Field(0.0, ge=0, description="Buffer around data extent (in data units)")
 
-class KrigingConfig(BaseModel):
 class KrigingConfig(BaseModel):
  method: Literal['ordinary', 'simple', 'universal', 'indicator', 'cokriging'] = Field(
  'ordinary',
@@ -133,7 +123,6 @@ class KrigingConfig(BaseModel):
  n_jobs: int = Field(-1, description="Number of parallel jobs (-1 = all cores)")
 
 class ValidationConfig(BaseModel):
-class ValidationConfig(BaseModel):
  cross_validation: bool = Field(True, description="Perform cross-validation")
  cv_method: Literal['loo', 'kfold', 'spatial'] = Field('loo', description="Cross-validation method")
  n_folds: int = Field(5, ge=2, description="Number of folds for k-fold CV")
@@ -146,14 +135,12 @@ class ValidationConfig(BaseModel):
  save_predictions: bool = Field(True, description="Save CV predictions")
 
 class PlotConfig(BaseModel):
-class PlotConfig(BaseModel):
  enabled: bool = Field(True, description="Create this plot")
  dpi: int = Field(300, description="Plot DPI")
  figsize: Optional[tuple] = Field(None, description="Figure size (width, height)")
  colormap: str = Field('viridis', description="Colormap name")
  title: Optional[str] = Field(None, description="Custom plot title")
 
-class VisualizationConfig(BaseModel):
 class VisualizationConfig(BaseModel):
  style: Literal['minimalist', 'default', 'seaborn'] = Field('minimalist', description="Plot style")
 
@@ -180,7 +167,6 @@ class VisualizationConfig(BaseModel):
  cross_validation: PlotConfig = Field(default_factory=PlotConfig, description="CV plot config")
 
 class OutputConfig(BaseModel):
-class OutputConfig(BaseModel):
  save_predictions: bool = Field(True, description="Save prediction grid")
  save_variance: bool = Field(True, description="Save variance grid")
  save_weights: bool = Field(False, description="Save declustering weights")
@@ -195,7 +181,6 @@ class OutputConfig(BaseModel):
  compression: bool = Field(True, description="Compress output files")
  precision: Literal['float32', 'float64'] = Field('float32', description="Numerical precision")
 
-class AnalysisConfig(BaseModel):
 class AnalysisConfig(BaseModel):
 
  project: ProjectConfig = Field(..., description="Project metadata")
@@ -213,12 +198,10 @@ class AnalysisConfig(BaseModel):
  log_file: Optional[str] = Field(None, description="Log file path")
 
  class Config:
- class Config:
      extra = 'forbid' # Don't allow extra fields
      validate_assignment = True
 
  @model_validator(mode='after')
- def validate_config(self):
  def validate_config(self):
      # Check cokriging requirements
      if self.kriging.method == 'cokriging' and self.data.z_secondary is None:
@@ -234,11 +217,9 @@ class AnalysisConfig(BaseModel):
  return self
 
  def model_dump_yaml(self) -> str:
- def model_dump_yaml(self) -> str:
      import yaml
      return yaml.dump(self.model_dump(), default_flow_style=False, sort_keys=False)
 
- def save_yaml(self, path: str):
  def save_yaml(self, path: str):
      with open(path, 'w') as f:
      with open(path, 'w') as f:

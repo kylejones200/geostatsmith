@@ -36,7 +36,6 @@ except ImportError:
  exit(1)
 
 def example_1_parallel_kriging():
-def example_1_parallel_kriging():
  
  logger.info("Example 1: Parallel Kriging (Multi-Core)")
  
@@ -88,7 +87,6 @@ def example_1_parallel_kriging():
  logger.info(f" Max difference: {diff:.6f} (should be ~0)")
 
 def example_2_chunked_processing():
-def example_2_chunked_processing():
     logger.info("\nExample 2: Chunked Processing")
 
  # Large dataset
@@ -117,7 +115,6 @@ def example_2_chunked_processing():
 
  logger.info(f"Completed! Grid shape: {z_grid.shape}")
 
-def example_3_caching():
 def example_3_caching():
     logger.info("\nExample 3: Result Caching")
 
@@ -155,7 +152,6 @@ def example_3_caching():
  n_cleared = clear_cache()
  logger.info(f"Cleared {n_cleared} cache files")
 
-def example_4_approximate_methods():
 def example_4_approximate_methods():
     logger.info("\nExample 4: Approximate Kriging")
 
@@ -201,7 +197,6 @@ def example_4_approximate_methods():
  rel_rmse = rmse / np.std(z)
  logger.info(f" RMSE: {rmse:.3f} ({rel_rmse*100:.1f}% of std)")
 
-def main():
 def main():
     logger.info("\nGEOSTATS PERFORMANCE OPTIMIZATION EXAMPLES")
 

@@ -15,7 +15,6 @@ except ImportError:
  PLOTLY_AVAILABLE = False
 
 def interactive_prediction_map(
-def interactive_prediction_map(
  y_grid: npt.NDArray[np.float64],
  z_grid: npt.NDArray[np.float64],
  samples: Optional[Tuple] = None,
@@ -104,7 +103,6 @@ def interactive_prediction_map(
  return fig
 
 def interactive_uncertainty_map(
-def interactive_uncertainty_map(
  y_grid: npt.NDArray[np.float64],
  z_grid: npt.NDArray[np.float64],
  var_grid: npt.NDArray[np.float64],
@@ -188,7 +186,6 @@ def interactive_uncertainty_map(
 
  return fig
 
-def interactive_3d_surface(
 def interactive_3d_surface(
  y_grid: npt.NDArray[np.float64],
  z_grid: npt.NDArray[np.float64],

@@ -51,7 +51,6 @@ from ..core.logging_config import setup_logger
 logger = setup_logger(__name__)
 
 def validate_coordinates_spacetime(
-def validate_coordinates_spacetime(
  y: npt.NDArray[np.float64],
  t: npt.NDArray[np.float64]
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
@@ -78,7 +77,6 @@ def validate_coordinates_spacetime(
 
  return x, y, t
 
-class SpaceTimeOrdinaryKriging(BaseKriging):
 class SpaceTimeOrdinaryKriging(BaseKriging):
  Ordinary Kriging for Space-Time Data
 
@@ -135,7 +133,6 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
  """
 
  def __init__(
- def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      t: npt.NDArray[np.float64],
@@ -154,7 +151,6 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
      f"separable={spacetime_model.is_separable()}"
      )
 
- def _build_kriging_matrix(self):
  def _build_kriging_matrix(self):
      n = len(self.x)
      K = np.zeros((n + 1, n + 1), dtype=np.float64)
@@ -180,7 +176,6 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
  self.kriging_matrix = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
  logger.debug("Space-time kriging matrix built and regularized.")
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -255,7 +250,6 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 
  Returns
@@ -277,7 +271,6 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
 
  return predictions, metrics
 
-class SpaceTimeSimpleKriging(BaseKriging):
 class SpaceTimeSimpleKriging(BaseKriging):
  Simple Kriging for Space-Time Data
 
@@ -304,7 +297,6 @@ class SpaceTimeSimpleKriging(BaseKriging):
  """
 
  def __init__(
- def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      t: npt.NDArray[np.float64],
@@ -328,7 +320,6 @@ class SpaceTimeSimpleKriging(BaseKriging):
      )
 
  def _build_kriging_matrix(self):
- def _build_kriging_matrix(self):
      n = len(self.x)
      K = np.zeros((n, n), dtype=np.float64)
 
@@ -344,7 +335,6 @@ class SpaceTimeSimpleKriging(BaseKriging):
  self.kriging_matrix = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
  logger.debug("Space-time simple kriging matrix built.")
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -390,7 +380,6 @@ class SpaceTimeSimpleKriging(BaseKriging):
      if return_variance:
      return predictions
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 

@@ -8,7 +8,6 @@ from geostats import kriging, variogram
 
 
 def test_ordinary_kriging_basic():
-def test_ordinary_kriging_basic():
     # Create simple test data
     np.random.seed(42)
     x = np.array([0, 10, 20, 30, 40])
@@ -30,7 +29,6 @@ def test_ordinary_kriging_basic():
     assert all(var >= 0)  # Variance should be non-negative
 
 
-def test_simple_kriging_basic():
 def test_simple_kriging_basic():
     np.random.seed(42)
     x = np.array([0, 10, 20, 30, 40])
@@ -55,7 +53,6 @@ def test_simple_kriging_basic():
     assert all(np.isfinite(var))
 
 
-def test_universal_kriging_basic():
 def test_universal_kriging_basic():
     np.random.seed(42)
     n = 30
@@ -83,7 +80,6 @@ def test_universal_kriging_basic():
 
 
 def test_cross_validation():
-def test_cross_validation():
     np.random.seed(42)
     x = np.array([0, 10, 20, 30, 40, 50])
     y = np.array([0, 10, 20, 30, 40, 50])
@@ -104,7 +100,6 @@ def test_cross_validation():
     assert metrics["rmse"] >= 0
 
 
-def test_block_kriging():
 def test_block_kriging():
     np.random.seed(42)
     x = np.linspace(0, 100, 20)

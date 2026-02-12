@@ -13,9 +13,7 @@ from geostats.algorithms.support_change import BlockKriging
 from geostats.models.variogram_models import SphericalModel, ExponentialModel
 
 class TestCokriging:
-class TestCokriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
@@ -34,7 +32,6 @@ class TestCokriging:
         )
         assert ck is not None
 
-    def test_predict(self):
     def test_predict(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
@@ -62,9 +59,7 @@ class TestCokriging:
         assert variance[0] >= 0
 
 class TestCollocatedCokriging:
-class TestCollocatedCokriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         np.random.seed(42)
         x_primary = np.random.uniform(0, 10, 15)
@@ -85,9 +80,7 @@ class TestCollocatedCokriging:
         assert cck is not None
 
 class TestExternalDriftKriging:
-class TestExternalDriftKriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
@@ -100,7 +93,6 @@ class TestExternalDriftKriging:
         edk = ExternalDriftKriging(x, y, z, drift, variogram_model=variogram)
         assert edk is not None
 
-    def test_predict_single_drift(self):
     def test_predict_single_drift(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -121,7 +113,6 @@ class TestExternalDriftKriging:
         assert variance.shape == (2,)
         assert np.all(variance >= 0)
 
-    def test_predict_multiple_drifts(self):
     def test_predict_multiple_drifts(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
@@ -146,9 +137,7 @@ class TestExternalDriftKriging:
         assert variance.shape == (1,)
 
 class TestFactorialKriging:
-class TestFactorialKriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 20, 50)
@@ -159,7 +148,6 @@ class TestFactorialKriging:
         assert fk is not None
         assert fk.n_structures == 2
 
-    def test_predict_two_structures(self):
     def test_predict_two_structures(self):
         np.random.seed(42)
         x = np.random.uniform(0, 20, 60)
@@ -180,9 +168,7 @@ class TestFactorialKriging:
         assert variance[0] >= 0
 
 class TestSpaceTimeKriging:
-class TestSpaceTimeKriging:
 
-    def test_ordinary_kriging_initialization(self):
     def test_ordinary_kriging_initialization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
@@ -200,7 +186,6 @@ class TestSpaceTimeKriging:
         )
         assert stok is not None
 
-    def test_ordinary_kriging_predict(self):
     def test_ordinary_kriging_predict(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -228,7 +213,6 @@ class TestSpaceTimeKriging:
         assert np.all(variance >= 0)
 
     def test_simple_kriging_initialization(self):
-    def test_simple_kriging_initialization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
         y = np.random.uniform(0, 10, 30)
@@ -247,9 +231,7 @@ class TestSpaceTimeKriging:
         assert stsk is not None
 
 class TestBlockKriging:
-class TestBlockKriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
@@ -266,7 +248,6 @@ class TestBlockKriging:
         )
         assert bk is not None
 
-    def test_predict_block(self):
     def test_predict_block(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -292,7 +273,6 @@ class TestBlockKriging:
         # Block variance should be lower than point variance
         assert variance[0] >= 0
 
-    def test_different_block_sizes(self):
     def test_different_block_sizes(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)

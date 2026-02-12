@@ -21,14 +21,12 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class Cokriging(BaseKriging):
-class Cokriging(BaseKriging):
  Ordinary Cokriging with secondary variable
 
  Uses both primary and secondary variables for estimation.
  The secondary variable must be sampled at the same or more locations.
  """
 
- def __init__(
  def __init__(
      x_primary: npt.NDArray[np.float64],
      y_primary: npt.NDArray[np.float64],
@@ -81,7 +79,6 @@ class Cokriging(BaseKriging):
      if all([variogram_primary, variogram_secondary, cross_variogram]):
      if all([variogram_primary, variogram_secondary, cross_variogram]):
 
- def _build_cokriging_matrix(self) -> None:
  def _build_cokriging_matrix(self) -> None:
      n1 = self.n_primary
      n2 = self.n_secondary
@@ -144,7 +141,6 @@ class Cokriging(BaseKriging):
  epsilon=1e-10
  )
 
- def predict(
  def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -243,7 +239,6 @@ class Cokriging(BaseKriging):
      else:
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      # Simplified: only validate primary variable
      predictions = np.zeros(self.n_primary)
 
@@ -268,14 +263,12 @@ class Cokriging(BaseKriging):
  return predictions, metrics
 
 class CollocatedCokriging(BaseKriging):
-class CollocatedCokriging(BaseKriging):
  Collocated Cokriging (simplified cokriging)
 
  Uses only the colocated secondary value at the prediction location.
  Much simpler than full cokriging while retaining most benefits.
  """
 
- def __init__(
  def __init__(
      x_primary: npt.NDArray[np.float64],
      y_primary: npt.NDArray[np.float64],
@@ -307,7 +300,6 @@ class CollocatedCokriging(BaseKriging):
      if variogram_primary is not None:
 
  def _build_kriging_matrix(self) -> None:
- def _build_kriging_matrix(self) -> None:
      dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
      gamma_matrix = self.variogram_model(dist_matrix)
 
@@ -321,7 +313,6 @@ class CollocatedCokriging(BaseKriging):
  self.kriging_matrix[:n, :n], epsilon=1e-10
  )
 
- def predict_with_secondary(
  def predict_with_secondary(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -373,12 +364,10 @@ class CollocatedCokriging(BaseKriging):
      else:
 
  def predict(self, x, y, return_variance=True):
- def predict(self, x, y, return_variance=True):
      from .ordinary_kriging import OrdinaryKriging
      ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)
      return ok.predict(x, y, return_variance)
 
- def cross_validate(self):
  def cross_validate(self):
      from .ordinary_kriging import OrdinaryKriging
      ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)

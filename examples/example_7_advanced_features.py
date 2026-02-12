@@ -325,10 +325,8 @@ values_3d = 10 + 0.05 * x_3d - 0.1 * z_3d_coord + np.random.normal(0, 2, 30)
 # Note: For 3D variogram, would need to compute distances in 3D
 # Using a simple model for demonstration
 class Simple3DVariogram:
-class Simple3DVariogram:
  self.sill = 10.0
  self.range_val = 30.0
- def __call__(self, h):
  def __call__(self, h):
 
 variogram_3d = Simple3DVariogram()

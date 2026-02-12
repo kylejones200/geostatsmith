@@ -15,14 +15,12 @@ from .base_model import VariogramModelBase
 from ..math.distance import anisotropic_distance
 
 class AnisotropicModel:
-class AnisotropicModel:
  Wrapper for anisotropic variogram models
 
  Handles geometric anisotropy by transforming distances
  before applying the base isotropic model.
  """
 
- def __init__(
  def __init__(
      base_model: VariogramModelBase,
      angle: float = 0.0,
@@ -48,7 +46,6 @@ class AnisotropicModel:
      if not (0 < ratio <= 1):
      if not (0 < ratio <= 1):
 
- def __call__(
  def __call__(
      x1: npt.NDArray[np.float64],
      y1: npt.NDArray[np.float64],
@@ -84,7 +81,6 @@ class AnisotropicModel:
 
      @property
  def parameters(self):
- def parameters(self):
      params = self.base_model.parameters.copy()
      params.update({
      "angle": self.angle,
@@ -94,10 +90,8 @@ class AnisotropicModel:
 
  @property
  def is_fitted(self):
- def is_fitted(self):
      return self.base_model.is_fitted
 
- def fit(
  def fit(
      lags: npt.NDArray[np.float64],
      gamma: npt.NDArray[np.float64],
@@ -113,7 +107,6 @@ class AnisotropicModel:
      return self
 
  def __repr__(self):
- def __repr__(self):
      return (
      f"AnisotropicModel("
      f"base={self.base_model.__class__.__name__}, "
@@ -122,13 +115,11 @@ class AnisotropicModel:
      )
 
 class DirectionalVariogram:
-class DirectionalVariogram:
  Compute and analyze directional variograms
 
  Used to detect and quantify anisotropy in spatial data.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -148,7 +139,6 @@ class DirectionalVariogram:
      self.y = np.asarray(y, dtype=np.float64)
      self.z = np.asarray(z, dtype=np.float64)
 
- def compute(
  def compute(
      angle: float,
      tolerance: float = 22.5,
@@ -191,7 +181,6 @@ class DirectionalVariogram:
      maxlag=maxlag,
      )
 
- def fit_anisotropy(
  def fit_anisotropy(
      angles: Optional[npt.NDArray[np.float64]] = None,
      n_lags: int = 15,

@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 class NormalScoreTransform:
-class NormalScoreTransform:
  Normal Score Transform for geostatistical data
 
  Transforms data to follow a standard normal distribution while
@@ -41,14 +40,12 @@ class NormalScoreTransform:
  """
 
  def __init__(self):
- def __init__(self):
      self.original_values: Optional[npt.NDArray[np.float64]] = None
      self.normal_scores: Optional[npt.NDArray[np.float64]] = None
      self.forward_interp: Optional[interp1d] = None
      self.backward_interp: Optional[interp1d] = None
      self.is_fitted: bool = False
 
- def fit(self, data: npt.NDArray[np.float64]) -> 'NormalScoreTransform':
  def fit(self, data: npt.NDArray[np.float64]) -> 'NormalScoreTransform':
      Fit the normal score transform to data
 
@@ -115,7 +112,6 @@ class NormalScoreTransform:
  return self
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Transform data to normal scores
 
  Parameters
@@ -139,7 +135,6 @@ class NormalScoreTransform:
 
  return transformed.reshape(original_shape)
 
- def inverse_transform(self, normal_scores: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def inverse_transform(self, normal_scores: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Back-transform normal scores to original scale
 
@@ -172,7 +167,6 @@ class NormalScoreTransform:
  return back_transformed.reshape(original_shape)
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Fit and transform data in one step
 
  Parameters
@@ -188,7 +182,6 @@ class NormalScoreTransform:
  self.fit(data)
  return self.transform(data)
 
- def get_statistics(self) -> Dict[str, float]:
  def get_statistics(self) -> Dict[str, float]:
      Get statistics of the fitted transform
 
@@ -214,7 +207,6 @@ class NormalScoreTransform:
  'scores_max': float(np.max(self.normal_scores)),
  }
 
-def normal_score_transform(
 def normal_score_transform(
     ) -> Tuple[npt.NDArray[np.float64], NormalScoreTransform]:
  """
@@ -245,7 +237,6 @@ def normal_score_transform(
  transformed = transformer.fit_transform(data)
  return transformed, transformer
 
-def back_transform(
 def back_transform(
  transformer: NormalScoreTransform
     ) -> npt.NDArray[np.float64]:

@@ -27,7 +27,6 @@ from dataclasses import dataclass
 
 @dataclass
 class NeighborhoodConfig:
-class NeighborhoodConfig:
  max_neighbors: int = 25 # Maximum samples to use (ofr: "25 are more than adequate")
  min_neighbors: int = 3 # Minimum samples required (ofr: "3 are a reasonable bare minimum")
  search_radius: Optional[float] = None # Maximum search distance
@@ -37,7 +36,6 @@ class NeighborhoodConfig:
  use_quadrants: bool = False # Simpler quadrant search
  max_per_quadrant: Optional[int] = None # Max samples per quadrant
 
-class NeighborhoodSearch:
 class NeighborhoodSearch:
  Efficient neighborhood search for kriging
 
@@ -50,7 +48,6 @@ class NeighborhoodSearch:
  distribution" to avoid clustering of samples in one direction.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -79,7 +76,6 @@ class NeighborhoodSearch:
      self.points = np.column_stack([self.x, self.y])
      self.kdtree = KDTree(self.points)
 
- def find_neighbors(
  def find_neighbors(
      x0: float,
      y0: float
@@ -150,7 +146,6 @@ class NeighborhoodSearch:
      return indices, distances
 
  def _in_search_ellipse(
- def _in_search_ellipse(
      x0: float,
      y0: float,
      indices: npt.NDArray[np.int64]
@@ -190,7 +185,6 @@ class NeighborhoodSearch:
      dist_ellipse = (dx_rot / major)**2 + (dy_rot / minor)**2
      return dist_ellipse <= 1.0
 
- def _octant_search(
  def _octant_search(
      x0: float,
      y0: float,
@@ -249,7 +243,6 @@ class NeighborhoodSearch:
      return np.array(selected_indices, dtype=np.int64), np.array(selected_distances)
 
  def _quadrant_search(
- def _quadrant_search(
      x0: float,
      y0: float,
      indices: npt.NDArray[np.int64],
@@ -291,7 +284,6 @@ class NeighborhoodSearch:
 
      return np.array(selected_indices, dtype=np.int64), np.array(selected_distances)
 
- def get_neighborhood_stats(self, x0: float, y0: float) -> Dict:
  def get_neighborhood_stats(self, x0: float, y0: float) -> Dict:
      Get statistics about the neighborhood
 

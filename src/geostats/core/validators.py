@@ -9,7 +9,6 @@ import numpy.typing as npt
 from .exceptions import ValidationError
 
 def validate_coordinates(
-def validate_coordinates(
  y: Optional[npt.NDArray[np.float64]] = None,
  z: Optional[npt.NDArray[np.float64]] = None,
     ) -> Tuple[npt.NDArray[np.float64], ...]:
@@ -65,7 +64,6 @@ def validate_coordinates(
  return x, y
 
 def validate_values(
-def validate_values(
  n_expected: Optional[int] = None,
  allow_nan: bool = False,
     ) -> npt.NDArray[np.float64]:
@@ -110,7 +108,6 @@ def validate_values(
  return values
 
 def validate_positive(value: float, name: str = "value") -> float:
-def validate_positive(value: float, name: str = "value") -> float:
  Validate that a value is positive
 
  Parameters
@@ -134,7 +131,6 @@ def validate_positive(value: float, name: str = "value") -> float:
  if value <= 0:
  return value
 
-def validate_in_range(
 def validate_in_range(
  min_val: Optional[float] = None,
  max_val: Optional[float] = None,
@@ -172,7 +168,6 @@ def validate_in_range(
 
  return value
 
-def validate_array_shapes_match(
 def validate_array_shapes_match(
  names: Optional[Tuple[str, ...]] = None,
     ) -> None:

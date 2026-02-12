@@ -49,7 +49,6 @@ logger.info(" GeoStats loaded successfully!")
 
 # %%
 def load_fairbanks_gold():
-def load_fairbanks_gold():
 
  # Path to AGDB4
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')

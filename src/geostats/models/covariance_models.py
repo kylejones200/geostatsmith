@@ -14,7 +14,6 @@ from scipy.special import gamma as gamma_func, kv
 from .base_model import CovarianceModelBase
 
 class SphericalCovariance(CovarianceModelBase):
-class SphericalCovariance(CovarianceModelBase):
  Spherical covariance model
 
  Formula:
@@ -23,7 +22,6 @@ class SphericalCovariance(CovarianceModelBase):
  C(0) = sill
  """
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      sill = self._parameters["sill"]
@@ -45,7 +43,6 @@ class SphericalCovariance(CovarianceModelBase):
      return result
 
 class ExponentialCovariance(CovarianceModelBase):
-class ExponentialCovariance(CovarianceModelBase):
  Exponential covariance model
 
  Formula:
@@ -55,14 +52,12 @@ class ExponentialCovariance(CovarianceModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      sill = self._parameters["sill"]
      range_param = self._parameters["range"]
 
  return sill * np.exp(-h / range_param)
 
-class GaussianCovariance(CovarianceModelBase):
 class GaussianCovariance(CovarianceModelBase):
  Gaussian covariance model
 
@@ -73,7 +68,6 @@ class GaussianCovariance(CovarianceModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      sill = self._parameters["sill"]
      range_param = self._parameters["range"]
@@ -82,7 +76,6 @@ class GaussianCovariance(CovarianceModelBase):
  return sill * np.exp(-(h_norm**2))
 
 class MaternCovariance(CovarianceModelBase):
-class MaternCovariance(CovarianceModelBase):
  Matérn covariance model
 
  Formula:
@@ -90,7 +83,6 @@ class MaternCovariance(CovarianceModelBase):
  C(0) = sill
  """
 
- def __init__(self, sill: float = 1.0, range_param: float = 1.0, nu: float = 0.5):
  def __init__(self, sill: float = 1.0, range_param: float = 1.0, nu: float = 0.5):
      Initialize Matérn covariance
 
@@ -107,7 +99,6 @@ class MaternCovariance(CovarianceModelBase):
  if nu <= 0:
      self._parameters["nu"] = nu
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      sill = self._parameters["sill"]
@@ -135,7 +126,6 @@ class MaternCovariance(CovarianceModelBase):
      return result
 
 class LinearCovariance(CovarianceModelBase):
-class LinearCovariance(CovarianceModelBase):
  Linear covariance model (decreasing)
 
  Formula:
@@ -143,7 +133,6 @@ class LinearCovariance(CovarianceModelBase):
  C(h) = 0 for h > a
  """
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      sill = self._parameters["sill"]

@@ -12,7 +12,6 @@ except ImportError:
  FASTAPI_AVAILABLE = False
 
 def create_app() -> 'FastAPI':
-def create_app() -> 'FastAPI':
  Create FastAPI application.
 
  Returns

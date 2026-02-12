@@ -48,7 +48,6 @@ logger.info(" Environmental assessment tools loaded!")
 
 # %%
 def load_environmental_data():
-def load_environmental_data():
 
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
@@ -262,7 +261,6 @@ logger.info(f" Area with >90% risk: {(prob_either > 0.9).sum()/prob_either.size*
 
 # %%
 def classify_risk(probability):
-def classify_risk(probability):
  risk = np.zeros_like(probability)
  risk[probability < 0.3] = 0 # Low risk
  risk[(probability >= 0.3) & (probability < 0.7)] = 1 # Moderate
@@ -340,7 +338,6 @@ logger.info(f" No action needed: {(risk_combined==0).sum()/risk_combined.size*10
 # Where are the **contamination hotspots** requiring immediate attention?
 
 # %%
-def identify_hotspots(X, Y, prob, threshold=0.9, min_area=5):
 def identify_hotspots(X, Y, prob, threshold=0.9, min_area=5):
  from scipy import ndimage
 

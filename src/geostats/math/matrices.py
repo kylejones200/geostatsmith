@@ -10,7 +10,6 @@ from scipy import linalg
 from ..core.exceptions import KrigingError
 
 def build_covariance_matrix(
-def build_covariance_matrix(
  covariance_func: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
     ) -> npt.NDArray[np.float64]:
  """
@@ -31,7 +30,6 @@ def build_covariance_matrix(
  return covariance_func(distances)
 
 def build_variogram_matrix(
-def build_variogram_matrix(
  variogram_func: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
     ) -> npt.NDArray[np.float64]:
  """
@@ -51,7 +49,6 @@ def build_variogram_matrix(
  """
  return variogram_func(distances)
 
-def solve_kriging_system(
 def solve_kriging_system(
  b: npt.NDArray[np.float64],
  method: str = "auto",
@@ -109,7 +106,6 @@ def solve_kriging_system(
  raise KrigingError(f"Failed to solve kriging system: {e}")
 
 def is_positive_definite(
-def is_positive_definite(
  tol: float = 1e-10,
     ) -> bool:
  """
@@ -137,7 +133,6 @@ def is_positive_definite(
  return np.all(eigenvalues > tol)
 
 def regularize_matrix(
-def regularize_matrix(
  epsilon: float = 1e-10,
     ) -> npt.NDArray[np.float64]:
  """
@@ -163,7 +158,6 @@ def regularize_matrix(
  return result
 
 def condition_number(matrix: npt.NDArray[np.float64]) -> float:
-def condition_number(matrix: npt.NDArray[np.float64]) -> float:
  Calculate condition number of a matrix
 
  High condition numbers indicate ill-conditioned matrices
@@ -182,7 +176,6 @@ def condition_number(matrix: npt.NDArray[np.float64]) -> float:
  return np.linalg.cond(matrix)
 
 def make_symmetric(matrix: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
-def make_symmetric(matrix: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  Make a matrix symmetric by averaging with its transpose
 
  Parameters
@@ -197,7 +190,6 @@ def make_symmetric(matrix: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  """
  return (matrix + matrix.T) / 2
 
-def add_nugget_effect(
 def add_nugget_effect(
  nugget: float,
     ) -> npt.NDArray[np.float64]:

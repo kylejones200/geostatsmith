@@ -12,7 +12,6 @@ import numpy.typing as npt
 from .conditional_simulation import cholesky_simulation, turning_bands_simulation
 
 def unconditional_gaussian_simulation(
-def unconditional_gaussian_simulation(
  y: npt.NDArray[np.float64],
  covariance_model,
  n_realizations: int = 1,

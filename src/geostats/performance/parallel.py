@@ -20,7 +20,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def parallel_kriging(
-def parallel_kriging(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -96,7 +95,6 @@ def parallel_kriging(
 
  # Process batches in parallel
  def process_batch(x_batch, y_batch, start, end):
- def process_batch(x_batch, y_batch, start, end):
      x=x,
      y=y,
      z=z,
@@ -118,7 +116,6 @@ def parallel_kriging(
      else:
      return predictions, None
 
-def parallel_cross_validation(
 def parallel_cross_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -168,7 +165,6 @@ def parallel_cross_validation(
  if n_jobs == -1:
  if n_jobs == -1:
 
- def predict_single(i, train_indices):
  def predict_single(i, train_indices):
      x_train = x[train_indices]
      y_train = y[train_indices]
@@ -233,7 +229,6 @@ def parallel_cross_validation(
  }
 
 def parallel_variogram_fit(
-def parallel_variogram_fit(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  model_types: List[str] = None,
@@ -283,7 +278,6 @@ def parallel_variogram_fit(
  lags, gamma = experimental_variogram(x, y, z, n_lags=n_lags)
 
  # Fit models in parallel
- def fit_single_model(model_type):
  def fit_single_model(model_type):
          model = fit_variogram(lags, gamma, model_type=model_type)
 

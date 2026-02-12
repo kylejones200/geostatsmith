@@ -12,14 +12,12 @@ from ..core.validators import validate_positive
 from ..math.numerical import weighted_least_squares
 
 class VariogramModelBase(BaseModel):
-class VariogramModelBase(BaseModel):
  Base class for all variogram models
 
  A variogram model describes spatial correlation as a function of distance.
  The semivariance γ(h) typically increases with distance h.
  """
 
- def __init__(
  def __init__(
      nugget: float = 0.0,
      sill: Optional[float] = None,
@@ -46,7 +44,6 @@ class VariogramModelBase(BaseModel):
 
      @abstractmethod
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Core model function (without nugget)
 
  Parameters
@@ -61,7 +58,6 @@ class VariogramModelBase(BaseModel):
  """
  pass
 
- def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Evaluate variogram at distance h
 
@@ -89,7 +85,6 @@ class VariogramModelBase(BaseModel):
 
  return result
 
- def fit(
  def fit(
      lags: npt.NDArray[np.float64],
      gamma: npt.NDArray[np.float64],
@@ -163,7 +158,6 @@ class VariogramModelBase(BaseModel):
      return self
 
  def _prepare_fitting(
- def _prepare_fitting(
      nugget_init: float,
      sill_init: float,
      range_init: float,
@@ -182,7 +176,6 @@ class VariogramModelBase(BaseModel):
      return p0, bounds_lower, bounds_upper
 
  def _fitting_function(self, h: npt.NDArray[np.float64], *params: float) -> npt.NDArray[np.float64]:
- def _fitting_function(self, h: npt.NDArray[np.float64], *params: float) -> npt.NDArray[np.float64]:
      # Temporarily set parameters
      old_params = self._parameters.copy()
 
@@ -198,7 +191,6 @@ class VariogramModelBase(BaseModel):
  return result
 
  def _update_parameters_from_fit(self, params: npt.NDArray[np.float64], fit_nugget: bool) -> None:
- def _update_parameters_from_fit(self, params: npt.NDArray[np.float64], fit_nugget: bool) -> None:
      if fit_nugget:
      if fit_nugget:
      self._parameters["sill"] = max(0.0, params[1])
@@ -208,14 +200,12 @@ class VariogramModelBase(BaseModel):
      self._parameters["range"] = max(0.0, params[1])
 
 class CovarianceModelBase(BaseModel):
-class CovarianceModelBase(BaseModel):
  Base class for covariance models
 
  A covariance model describes spatial correlation as a function of distance.
  The covariance C(h) typically decreases with distance h.
  """
 
- def __init__(
  def __init__(
      sill: float = 1.0,
      range_param: float = 1.0,
@@ -238,10 +228,8 @@ class CovarianceModelBase(BaseModel):
 
      @abstractmethod
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      pass
 
- def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Evaluate covariance at distance h
 
@@ -258,7 +246,6 @@ class CovarianceModelBase(BaseModel):
  h = np.asarray(h, dtype=np.float64)
  return self._model_function(h)
 
- def fit(
  def fit(
      lags: npt.NDArray[np.float64],
      cov: npt.NDArray[np.float64],

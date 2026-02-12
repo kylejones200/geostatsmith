@@ -19,9 +19,7 @@ from geostats.algorithms.neighborhood_search import NeighborhoodSearch, Neighbor
 from geostats.models.variogram_models import SphericalModel, ExponentialModel
 
 class TestKriging3D:
-class TestKriging3D:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -34,7 +32,6 @@ class TestKriging3D:
         self.model = SphericalModel(nugget=0.2, sill=4.0, range_param=30.0)
 
     def test_kriging3d_initialization(self):
-    def test_kriging3d_initialization(self):
         ok3d = OrdinaryKriging3D(
         self.x, self.y, self.z_coord, self.values,
         variogram_model=self.model
@@ -43,7 +40,6 @@ class TestKriging3D:
         assert ok3d.n_points == self.n
         assert ok3d.variogram_model is not None
 
-    def test_kriging3d_prediction_single_point(self):
     def test_kriging3d_prediction_single_point(self):
         ok3d = OrdinaryKriging3D(
         self.x, self.y, self.z_coord, self.values,
@@ -64,7 +60,6 @@ class TestKriging3D:
         assert var[0] >= 0
 
     def test_kriging3d_multiple_points(self):
-    def test_kriging3d_multiple_points(self):
         ok3d = OrdinaryKriging3D(
         self.x, self.y, self.z_coord, self.values,
         variogram_model=self.model
@@ -81,7 +76,6 @@ class TestKriging3D:
         assert all(np.isfinite(pred))
         assert all(var >= 0)
 
-    def test_kriging3d_at_data_location(self):
     def test_kriging3d_at_data_location(self):
         ok3d = OrdinaryKriging3D(
         self.x, self.y, self.z_coord, self.values,
@@ -101,9 +95,7 @@ class TestKriging3D:
         assert var[0] < 1.0
 
 class TestIndicatorKriging:
-class TestIndicatorKriging:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n = 60
@@ -118,7 +110,6 @@ class TestIndicatorKriging:
         self.model = SphericalModel(nugget=0.05, sill=0.25, range_param=30.0)
 
     def test_indicator_kriging_initialization(self):
-    def test_indicator_kriging_initialization(self):
         threshold = 1.5 # Between low (1) and medium (2)
         ik = IndicatorKriging(
         self.x, self.y, self.z,
@@ -130,7 +121,6 @@ class TestIndicatorKriging:
         # z should be transformed to indicators (0 or 1)
         assert all((ik.z == 0) | (ik.z == 1))
 
-    def test_indicator_kriging_probability_estimation(self):
     def test_indicator_kriging_probability_estimation(self):
         threshold = 1.5
         ik = IndicatorKriging(
@@ -150,7 +140,6 @@ class TestIndicatorKriging:
         assert 0 <= prob[0] <= 1
 
     def test_indicator_kriging_most_likely_category(self):
-    def test_indicator_kriging_most_likely_category(self):
         threshold = 1.5
         ik = IndicatorKriging(
         self.x, self.y, self.z,
@@ -169,7 +158,6 @@ class TestIndicatorKriging:
         # All predictions should be valid categories
         assert all(cat in self.categories for cat in pred_categories)
 
-    def test_indicator_kriging_binary_case(self):
     def test_indicator_kriging_binary_case(self):
         # Binary data (0 or 1)
         z_binary = np.random.choice([0.0, 1.0], size=self.n, p=[0.6, 0.4])
@@ -192,9 +180,7 @@ class TestIndicatorKriging:
         assert 0 <= prob[0] <= 1
 
 class TestLognormalKriging:
-class TestLognormalKriging:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -212,7 +198,6 @@ class TestLognormalKriging:
         self.model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
 
     def test_lognormal_kriging_initialization(self):
-    def test_lognormal_kriging_initialization(self):
         lk = LognormalKriging(
         self.x, self.y, self.z,
         variogram_model=self.model
@@ -222,7 +207,6 @@ class TestLognormalKriging:
         assert hasattr(lk, 'log_z')
         assert hasattr(lk, 'mean_log')
 
-    def test_lognormal_kriging_prediction(self):
     def test_lognormal_kriging_prediction(self):
         lk = LognormalKriging(
         self.x, self.y, self.z,
@@ -239,7 +223,6 @@ class TestLognormalKriging:
         assert pred[0] > 0 # Lognormal predictions should be positive
         assert np.isfinite(pred[0])
 
-    def test_lognormal_kriging_median_vs_mean(self):
     def test_lognormal_kriging_median_vs_mean(self):
         lk = LognormalKriging(
         self.x, self.y, self.z,
@@ -262,9 +245,7 @@ class TestLognormalKriging:
         assert np.isfinite(pred_simple[0])
 
 class TestNeighborhoodSearch:
-class TestNeighborhoodSearch:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n = 100
@@ -273,7 +254,6 @@ class TestNeighborhoodSearch:
         self.z = np.random.randn(self.n)
 
     def test_neighborhood_search_initialization(self):
-    def test_neighborhood_search_initialization(self):
         config = NeighborhoodConfig(max_neighbors=20, min_neighbors=5)
         ns = NeighborhoodSearch(self.x, self.y, config=config)
 
@@ -281,7 +261,6 @@ class TestNeighborhoodSearch:
         assert ns.config.max_neighbors == 20
         assert ns.config.min_neighbors == 5
 
-    def test_find_neighbors_basic(self):
     def test_find_neighbors_basic(self):
         config = NeighborhoodConfig(max_neighbors=10)
         ns = NeighborhoodSearch(self.x, self.y, config=config)
@@ -299,7 +278,6 @@ class TestNeighborhoodSearch:
         assert all(0 <= idx < self.n for idx in indices)
 
     def test_find_neighbors_with_radius(self):
-    def test_find_neighbors_with_radius(self):
         config = NeighborhoodConfig(
         max_neighbors=50,
         search_radius=20.0
@@ -311,7 +289,6 @@ class TestNeighborhoodSearch:
         # All found points should be within radius
         assert all(d <= 20.0 for d in distances)
 
-    def test_find_neighbors_min_constraint(self):
     def test_find_neighbors_min_constraint(self):
         config = NeighborhoodConfig(
         max_neighbors=5,
@@ -325,7 +302,6 @@ class TestNeighborhoodSearch:
         assert len(indices) >= min(3, self.n)
 
     def test_moving_neighborhood(self):
-    def test_moving_neighborhood(self):
         config = NeighborhoodConfig(max_neighbors=10)
         ns = NeighborhoodSearch(self.x, self.y, config=config)
 
@@ -336,7 +312,6 @@ class TestNeighborhoodSearch:
         # Neighborhoods should differ
         assert not np.array_equal(indices1, indices2)
 
-    def test_neighborhood_search_edge_cases(self):
     def test_neighborhood_search_edge_cases(self):
         # Very few points
         x_small = np.array([0, 10, 20])
@@ -351,9 +326,7 @@ class TestNeighborhoodSearch:
         assert len(indices) == 3
 
 class TestAdvancedKrigingEdgeCases:
-class TestAdvancedKrigingEdgeCases:
 
-    def test_3d_kriging_with_planar_data(self):
     def test_3d_kriging_with_planar_data(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 30)
@@ -374,7 +347,6 @@ class TestAdvancedKrigingEdgeCases:
 
         assert np.isfinite(pred[0])
 
-    def test_indicator_kriging_single_category_dominant(self):
     def test_indicator_kriging_single_category_dominant(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 50)
@@ -405,7 +377,6 @@ class TestAdvancedKrigingEdgeCases:
         assert probs[0, 0] > 0.5
 
     def test_neighborhood_search_no_neighbors_within_radius(self):
-    def test_neighborhood_search_no_neighbors_within_radius(self):
         x = np.array([0, 100])
         y = np.array([0, 100])
 
@@ -421,7 +392,6 @@ class TestAdvancedKrigingEdgeCases:
         # Should find no neighbors (or very few)
         assert len(indices) <= 2 # May find 0, 1, or 2 depending on implementation
 
-    def test_neighborhood_search_many_neighbors_requested(self):
     def test_neighborhood_search_many_neighbors_requested(self):
         x = np.array([0, 10, 20])
         y = np.array([0, 10, 20])

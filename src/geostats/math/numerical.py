@@ -10,7 +10,6 @@ from scipy.optimize import curve_fit, minimize, OptimizeResult
 from ..core.exceptions import FittingError, ConvergenceError
 
 def weighted_least_squares(
-def weighted_least_squares(
  xdata: npt.NDArray[np.float64],
  ydata: npt.NDArray[np.float64],
  weights: Optional[npt.NDArray[np.float64]] = None,
@@ -73,7 +72,6 @@ def weighted_least_squares(
  raise FittingError(f"Weighted least squares fitting failed: {e}")
 
 def ordinary_least_squares(
-def ordinary_least_squares(
  xdata: npt.NDArray[np.float64],
  ydata: npt.NDArray[np.float64],
  p0: Optional[npt.NDArray[np.float64]] = None,
@@ -107,7 +105,6 @@ def ordinary_least_squares(
  """
  return weighted_least_squares(func, xdata, ydata, weights=None, p0=p0, bounds=bounds, **kwargs)
 
-def optimize_parameters(
 def optimize_parameters(
  x0: npt.NDArray[np.float64],
  bounds: Optional[Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]] = None,
@@ -154,7 +151,6 @@ def optimize_parameters(
  return result
 
 def cross_validation_score(
-def cross_validation_score(
  y_pred: npt.NDArray[np.float64],
     ) -> Dict[str, float]:
  """
@@ -197,7 +193,6 @@ def cross_validation_score(
  "bias": bias,
  }
 
-def compute_weights(
 def compute_weights(
  n_lags: int,
     ) -> npt.NDArray[np.float64]:

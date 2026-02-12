@@ -17,7 +17,6 @@ from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance_matrix, directional_distance
 
 def experimental_variogram(
-def experimental_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  n_lags: int = 15,
@@ -104,7 +103,6 @@ def experimental_variogram(
  return lag_centers, gamma, n_pairs
 
 def experimental_variogram_directional(
-def experimental_variogram_directional(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  angle: float = 0.0,
@@ -184,7 +182,6 @@ def experimental_variogram_directional(
  return lag_centers, gamma, n_pairs
 
 def variogram_cloud(
-def variogram_cloud(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  maxlag: Optional[float] = None,
@@ -233,7 +230,6 @@ def variogram_cloud(
 
  return distances, semivariances
 
-def robust_variogram(
 def robust_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -326,7 +322,6 @@ def robust_variogram(
 
  return lag_centers, gamma, n_pairs
 
-def madogram(
 def madogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -427,7 +422,6 @@ def madogram(
 
  return lag_centers, gamma, n_pairs
 
-def rodogram(
 def rodogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

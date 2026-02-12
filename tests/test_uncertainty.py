@@ -19,9 +19,7 @@ from geostats.models.variogram_models import SphericalModel
 
 
 class TestBootstrapUncertainty:
-class TestBootstrapUncertainty:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
@@ -40,7 +38,6 @@ class TestBootstrapUncertainty:
         self.x_pred = np.random.uniform(0, 100, self.n_pred)
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
-    def test_bootstrap_uncertainty_basic(self):
     def test_bootstrap_uncertainty_basic(self):
         results = bootstrap_uncertainty(
             self.x,
@@ -71,7 +68,6 @@ class TestBootstrapUncertainty:
         assert np.all(results["std"] >= 0)
 
     def test_bootstrap_uncertainty_residual_method(self):
-    def test_bootstrap_uncertainty_residual_method(self):
         results = bootstrap_uncertainty(
             self.x,
             self.y,
@@ -87,7 +83,6 @@ class TestBootstrapUncertainty:
         assert np.all(np.isfinite(results["mean"]))
 
     def test_bootstrap_uncertainty_pairs_method(self):
-    def test_bootstrap_uncertainty_pairs_method(self):
         results = bootstrap_uncertainty(
             self.x,
             self.y,
@@ -102,7 +97,6 @@ class TestBootstrapUncertainty:
         assert len(results["mean"]) == self.n_pred
         assert np.all(np.isfinite(results["mean"]))
 
-    def test_bootstrap_uncertainty_different_confidence(self):
     def test_bootstrap_uncertainty_different_confidence(self):
         results_90 = bootstrap_uncertainty(
             self.x,
@@ -132,7 +126,6 @@ class TestBootstrapUncertainty:
         assert np.all(width_95 >= width_90)
 
     def test_bootstrap_uncertainty_invalid_method(self):
-    def test_bootstrap_uncertainty_invalid_method(self):
         with pytest.raises(ValueError, match="Unknown method"):
         with pytest.raises(ValueError, match="Unknown method"):
                 self.z,
@@ -144,9 +137,7 @@ class TestBootstrapUncertainty:
 
 
 class TestConfidenceIntervals:
-class TestConfidenceIntervals:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
@@ -165,7 +156,6 @@ class TestConfidenceIntervals:
         self.x_pred = np.random.uniform(0, 100, self.n_pred)
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
-    def test_confidence_intervals_basic(self):
     def test_confidence_intervals_basic(self):
         results = confidence_intervals(
             self.x,
@@ -195,7 +185,6 @@ class TestConfidenceIntervals:
         assert np.all(results["std_errors"] >= 0)
 
     def test_confidence_intervals_different_levels(self):
-    def test_confidence_intervals_different_levels(self):
         results_90 = confidence_intervals(
             self.x,
             self.y,
@@ -222,7 +211,6 @@ class TestConfidenceIntervals:
         assert np.all(width_95 >= width_90)
 
     def test_confidence_intervals_properties(self):
-    def test_confidence_intervals_properties(self):
         results = confidence_intervals(
             self.x, self.y, self.z, self.x_pred, self.y_pred, variogram_model=self.model
         )
@@ -238,9 +226,7 @@ class TestConfidenceIntervals:
 
 
 class TestProbabilityMaps:
-class TestProbabilityMaps:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 40
@@ -257,7 +243,6 @@ class TestProbabilityMaps:
         self.x_pred = np.random.uniform(0, 100, self.n_pred)
         self.y_pred = np.random.uniform(0, 100, self.n_pred)
 
-    def test_probability_map_basic(self):
     def test_probability_map_basic(self):
         threshold = 60.0
         prob = probability_map(
@@ -277,7 +262,6 @@ class TestProbabilityMaps:
         assert np.all(prob <= 1)
         assert np.all(np.isfinite(prob))
 
-    def test_probability_map_different_operators(self):
     def test_probability_map_different_operators(self):
         threshold = 60.0
 
@@ -310,7 +294,6 @@ class TestProbabilityMaps:
         assert np.all(prob_gt + prob_lt <= 1.1)  # Allow some tolerance
 
     def test_probability_map_different_thresholds(self):
-    def test_probability_map_different_thresholds(self):
         prob_low = probability_map(
             self.x,
             self.y,
@@ -336,7 +319,6 @@ class TestProbabilityMaps:
         # Lower threshold should have higher probability of exceedance
         assert np.mean(prob_low) >= np.mean(prob_high)
 
-    def test_probability_map_invalid_operator(self):
     def test_probability_map_invalid_operator(self):
         with pytest.raises(ValueError, match="Unknown operator"):
         with pytest.raises(ValueError, match="Unknown operator"):

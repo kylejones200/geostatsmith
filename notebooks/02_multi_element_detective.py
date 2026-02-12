@@ -46,7 +46,6 @@ logger.info(" Imports successful - Ready to hunt for porphyries!")
 
 # %%
 def load_porphyry_data():
-def load_porphyry_data():
 
  AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
@@ -307,7 +306,6 @@ logger.info(" Performing Cokriging (using Cu to improve Au predictions)...")
 
 # Calculate cross-variogram
 def cross_variogram_simple(x, y, z1, z2, n_lags=12):
-def cross_variogram_simple(x, y, z1, z2, n_lags=12):
  from scipy.spatial.distance import cdist
 
  # Distance matrix
@@ -428,7 +426,6 @@ plt.show()
 # Which areas are **anomalous** (significantly enriched)?
 
 # %%
-def detect_anomalies(values, method='iqr', threshold=1.5):
 def detect_anomalies(values, method='iqr', threshold=1.5):
 
  if method == 'iqr':

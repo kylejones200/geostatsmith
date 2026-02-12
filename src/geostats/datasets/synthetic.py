@@ -26,7 +26,6 @@ MIN_POINTS = 10
 MAX_POINTS = 100000
 
 def generate_random_field(
-def generate_random_field(
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  trend_type: str = 'linear',
@@ -118,7 +117,6 @@ def generate_random_field(
  return x, y, z
 
 def generate_clustered_samples(
-def generate_clustered_samples(
  points_per_cluster: int = 20,
  cluster_std: float = 5.0,
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
@@ -208,7 +206,6 @@ def generate_clustered_samples(
  return x, y, z
 
 def generate_elevation_like_data(
-def generate_elevation_like_data(
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  n_hills: int = 3,
@@ -292,7 +289,6 @@ def generate_elevation_like_data(
 
  return x, y, z
 
-def generate_anisotropic_field(
 def generate_anisotropic_field(
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
@@ -386,7 +382,6 @@ def generate_anisotropic_field(
 
  return x, y, z
 
-def generate_sparse_dense_mix(
 def generate_sparse_dense_mix(
  n_dense: int = 100,
  dense_region_center: Tuple[float, float] = (50.0, 50.0),

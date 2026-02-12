@@ -49,7 +49,6 @@ logger = get_logger(__name__)
 
 @dataclass
 class TGSConfig:
-class TGSConfig:
  n_realizations: int = DEFAULT_N_REALIZATIONS
  categories: List[int] = None # Category labels
  proportions: List[float] = None # Target proportions (must sum to 1)
@@ -58,7 +57,6 @@ class TGSConfig:
  max_neighbors: int = 12
  search_radius: Optional[float] = None
 
-class TruncatedGaussianSimulation:
 class TruncatedGaussianSimulation:
  Truncated Gaussian Simulation for categorical variables
 
@@ -85,7 +83,6 @@ class TruncatedGaussianSimulation:
  >>> realizations = tgs.simulate(x_grid, y_grid)
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -135,7 +132,6 @@ class TruncatedGaussianSimulation:
      )
 
  def _setup_categories(self):
- def _setup_categories(self):
      # Get unique categories from data
      unique_cats, counts = np.unique(self.categories, return_counts=True)
 
@@ -158,7 +154,6 @@ class TruncatedGaussianSimulation:
  logger.info(f"Estimated proportions from data: {self.proportions}")
 
  def _calculate_thresholds(self):
- def _calculate_thresholds(self):
      Calculate Gaussian thresholds from category proportions
 
  For k categories with proportions [p₁, p₂, ..., pₖ]:
@@ -180,7 +175,6 @@ class TruncatedGaussianSimulation:
  self.thresholds = norm.ppf(cumulative_props)
  logger.info(f"Calculated thresholds: {self.thresholds}")
 
- def _transform_conditioning_data(self):
  def _transform_conditioning_data(self):
      Transform categorical conditioning data to Gaussian scores
 
@@ -227,7 +221,6 @@ class TruncatedGaussianSimulation:
 
  logger.debug(f"Transformed {n_cond} conditioning points to Gaussian values")
 
- def simulate(
  def simulate(
      x_grid: npt.NDArray[np.float64],
      y_grid: npt.NDArray[np.float64]
@@ -302,7 +295,6 @@ class TruncatedGaussianSimulation:
      return realizations_categorical
 
  def _apply_thresholds(
- def _apply_thresholds(
      gaussian_field: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.int32]:
      """
@@ -338,7 +330,6 @@ class TruncatedGaussianSimulation:
 
      return categories
 
- def get_proportions_summary(
  def get_proportions_summary(
      realizations: npt.NDArray[np.int32]
      ) -> Dict[int, Dict[str, float]]:

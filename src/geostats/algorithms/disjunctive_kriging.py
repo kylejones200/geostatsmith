@@ -39,7 +39,6 @@ logger = logging.getLogger(__name__)
 
 
 class DisjunctiveKriging(BaseKriging):
-class DisjunctiveKriging(BaseKriging):
     Disjunctive Kriging for non-Gaussian data
 
     Disjunctive kriging uses Hermite polynomial expansions to transform
@@ -57,7 +56,6 @@ class DisjunctiveKriging(BaseKriging):
     This provides optimal non-linear prediction for skewed distributions.
     """
 
-    def __init__(
     def __init__(
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
@@ -153,7 +151,6 @@ class DisjunctiveKriging(BaseKriging):
         )
 
     def _transform_to_gaussian(
-    def _transform_to_gaussian(
         ) -> npt.NDArray[np.float64]:
         """
         Transform original values to Gaussian space
@@ -184,7 +181,6 @@ class DisjunctiveKriging(BaseKriging):
         return y_gaussian
 
     def _transform_from_gaussian(
-    def _transform_from_gaussian(
         ) -> npt.NDArray[np.float64]:
         """
         Transform Gaussian values back to original space using Hermite expansion
@@ -212,7 +208,6 @@ class DisjunctiveKriging(BaseKriging):
         return z_pred
 
     def _build_kriging_matrix(self) -> None:
-    def _build_kriging_matrix(self) -> None:
         # Calculate pairwise distances
         dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
@@ -236,7 +231,6 @@ class DisjunctiveKriging(BaseKriging):
                 self.kriging_matrix[:n, :n], epsilon=1e-10
             )
 
-    def predict(
     def predict(
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],

@@ -25,14 +25,12 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class SimpleKriging(BaseKriging):
-class SimpleKriging(BaseKriging):
  Simple Kriging interpolation
 
  Assumes a known stationary mean. Best when the mean is well-estimated
  from the data or known from theory.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -74,7 +72,6 @@ class SimpleKriging(BaseKriging):
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
- def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
      dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
@@ -92,7 +89,6 @@ class SimpleKriging(BaseKriging):
  # Regularize for numerical stability
  self.cov_matrix = regularize_matrix(self.cov_matrix, epsilon=1e-10)
 
- def predict(
  def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -174,7 +170,6 @@ class SimpleKriging(BaseKriging):
      else:
      else:
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 

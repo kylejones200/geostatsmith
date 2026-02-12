@@ -16,7 +16,6 @@ import matplotlib.pyplot as plt
 logger = logging.getLogger(__name__)
 
 def generate_report(
-def generate_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  output: str = 'report.html',
@@ -77,7 +76,6 @@ def generate_report(
  logger.info(f"Report generated: {output_path}")
  return str(output_path)
 
-def _generate_html_report(
 def _generate_html_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -204,7 +202,6 @@ def _generate_html_report(
  return html
 
 def create_kriging_report(
-def create_kriging_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -231,7 +228,6 @@ def create_kriging_report(
  # Simplified version - full implementation would include plots
  return generate_report(x, y, z, output=output, title='Kriging Analysis Report')
 
-def create_validation_report(
 def create_validation_report(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

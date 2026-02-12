@@ -15,9 +15,7 @@ from geostats.math import distance, matrices, numerical
 from geostats.utils import data_utils, grid_utils
 
 class TestDistanceCalculations:
-class TestDistanceCalculations:
 
-    def test_euclidean_distance_2d(self):
     def test_euclidean_distance_2d(self):
         x1 = np.array([0, 1, 2])
         y1 = np.array([0, 0, 0])
@@ -35,7 +33,6 @@ class TestDistanceCalculations:
         np.testing.assert_array_almost_equal(dist, expected)
 
     def test_euclidean_distance_single_point(self):
-    def test_euclidean_distance_single_point(self):
         x1 = np.array([0])
         y1 = np.array([0])
         x2 = np.array([3])
@@ -47,7 +44,6 @@ class TestDistanceCalculations:
         assert abs(dist[0, 0] - 5.0) < 1e-10
 
     def test_euclidean_distance_symmetry(self):
-    def test_euclidean_distance_symmetry(self):
         np.random.seed(42)
         x = np.random.rand(10)
         y = np.random.rand(10)
@@ -57,7 +53,6 @@ class TestDistanceCalculations:
         np.testing.assert_array_almost_equal(dist, dist.T)
 
     def test_euclidean_distance_diagonal_zero(self):
-    def test_euclidean_distance_diagonal_zero(self):
         np.random.seed(42)
         x = np.random.rand(10)
         y = np.random.rand(10)
@@ -66,7 +61,6 @@ class TestDistanceCalculations:
 
         np.testing.assert_array_almost_equal(np.diag(dist), np.zeros(10))
 
-    def test_distance_positive(self):
     def test_distance_positive(self):
         np.random.seed(42)
         x1 = np.random.rand(5)
@@ -79,9 +73,7 @@ class TestDistanceCalculations:
         assert np.all(dist >= 0)
 
 class TestMatrixOperations:
-class TestMatrixOperations:
 
-    def test_solve_kriging_system_basic(self):
     def test_solve_kriging_system_basic(self):
         # Create simple symmetric positive definite matrix
         A = np.array([
@@ -99,7 +91,6 @@ class TestMatrixOperations:
         np.testing.assert_array_almost_equal(A @ x, b)
 
     def test_regularize_matrix(self):
-    def test_regularize_matrix(self):
         # Create matrix that might be ill-conditioned
         A = np.array([
         [1.0, 0.999],
@@ -116,7 +107,6 @@ class TestMatrixOperations:
         assert A_reg[0, 1] == A[0, 1]
 
     def test_matrix_positive_definite_check(self):
-    def test_matrix_positive_definite_check(self):
         # Positive definite matrix
         A_pos = np.array([
         [2.0, 1.0],
@@ -127,7 +117,6 @@ class TestMatrixOperations:
         eigenvalues = np.linalg.eigvalsh(A_pos)
         assert all(eigenvalues > 0)
 
-    def test_covariance_matrix_properties(self):
     def test_covariance_matrix_properties(self):
         # Create covariance matrix
         np.random.seed(42)
@@ -142,9 +131,7 @@ class TestMatrixOperations:
         assert all(eigenvalues >= -1e-10) # Allow small numerical errors
 
 class TestNumericalMethods:
-class TestNumericalMethods:
 
-    def test_cross_validation_score_rmse(self):
     def test_cross_validation_score_rmse(self):
         y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1.1, 2.1, 2.9, 4.2, 4.8])
@@ -159,7 +146,6 @@ class TestNumericalMethods:
         assert 0 < metrics['rmse'] < 1.0
 
     def test_cross_validation_perfect(self):
-    def test_cross_validation_perfect(self):
         y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4, 5])
 
@@ -170,7 +156,6 @@ class TestNumericalMethods:
         assert abs(metrics['r2'] - 1.0) < 1e-10
 
     def test_numerical_stability_small_values(self):
-    def test_numerical_stability_small_values(self):
         y_true = np.array([1e-8, 2e-8, 3e-8])
         y_pred = np.array([1.1e-8, 2.1e-8, 2.9e-8])
 
@@ -180,9 +165,7 @@ class TestNumericalMethods:
         assert all(np.isfinite([metrics['rmse'], metrics['mae']]))
 
 class TestGridUtilities:
-class TestGridUtilities:
 
-    def test_create_regular_grid(self):
     def test_create_regular_grid(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=0, x_max=100,
@@ -200,7 +183,6 @@ class TestGridUtilities:
         assert y_grid[-1, -1] == 100
 
     def test_grid_spacing(self):
-    def test_grid_spacing(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=0, x_max=10,
         y_min=0, y_max=10,
@@ -214,7 +196,6 @@ class TestGridUtilities:
         assert abs(x_spacing - 1.0) < 1e-10
         assert abs(y_spacing - 1.0) < 1e-10
 
-    def test_grid_to_points(self):
     def test_grid_to_points(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=0, x_max=10,
@@ -234,9 +215,7 @@ class TestGridUtilities:
         assert 10 in x_flat
 
 class TestDataUtilities:
-class TestDataUtilities:
 
-    def test_generate_synthetic_data(self):
     def test_generate_synthetic_data(self):
         np.random.seed(42)
 
@@ -257,7 +236,6 @@ class TestDataUtilities:
         assert all(np.isfinite(z))
 
     def test_split_train_test(self):
-    def test_split_train_test(self):
         np.random.seed(42)
         n = 100
         x = np.random.rand(n)
@@ -274,7 +252,6 @@ class TestDataUtilities:
         assert len(x_train) + len(x_test) == n
 
     def test_data_statistics(self):
-    def test_data_statistics(self):
         data = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
         mean = np.mean(data)
@@ -284,9 +261,7 @@ class TestDataUtilities:
         assert abs(std - np.sqrt(8.25)) < 1e-10
 
 class TestEdgeCases:
-class TestEdgeCases:
 
-    def test_distance_empty_arrays(self):
     def test_distance_empty_arrays(self):
         x1 = np.array([])
         y1 = np.array([])
@@ -297,7 +272,6 @@ class TestEdgeCases:
 
         assert dist.shape == (0, 2)
 
-    def test_matrix_solve_singular(self):
     def test_matrix_solve_singular(self):
         # Singular matrix (rank deficient)
         A = np.array([
@@ -316,7 +290,6 @@ class TestEdgeCases:
         pass
 
     def test_grid_single_point(self):
-    def test_grid_single_point(self):
         x_grid, y_grid = grid_utils.create_grid(
         x_min=5, x_max=5,
         y_min=10, y_max=10,
@@ -327,7 +300,6 @@ class TestEdgeCases:
         assert x_grid[0, 0] == 5
         assert y_grid[0, 0] == 10
 
-    def test_very_large_distances(self):
     def test_very_large_distances(self):
         x1 = np.array([0, 1e6])
         y1 = np.array([0, 1e6])
@@ -340,9 +312,7 @@ class TestEdgeCases:
         assert all(np.isfinite(dist.flatten()))
 
 class TestComputationalEfficiency:
-class TestComputationalEfficiency:
 
-    def test_distance_vectorized(self):
     def test_distance_vectorized(self):
         np.random.seed(42)
         n = 100
@@ -361,7 +331,6 @@ class TestComputationalEfficiency:
         assert elapsed < 0.1
         assert dist.shape == (n, n)
 
-    def test_matrix_operations_efficient(self):
     def test_matrix_operations_efficient(self):
         np.random.seed(42)
         n = 50

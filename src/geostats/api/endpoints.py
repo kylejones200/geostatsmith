@@ -15,12 +15,9 @@ except ImportError:
  FASTAPI_AVAILABLE = False
  # Create dummy classes for when FastAPI not installed
  class BaseModel:
- class BaseModel:
- class APIRouter:
  class APIRouter:
 
      # Request/Response models
-class PredictionRequest(BaseModel):
 class PredictionRequest(BaseModel):
  x_samples: List[float] = Field(..., description="Sample X coordinates")
  y_samples: List[float] = Field(..., description="Sample Y coordinates")
@@ -31,13 +28,11 @@ class PredictionRequest(BaseModel):
  return_variance: bool = Field(True, description="Return kriging variance")
 
 class PredictionResponse(BaseModel):
-class PredictionResponse(BaseModel):
  predictions: List[float]
  variance: Optional[List[float]] = None
  model_type: str
  model_parameters: Dict[str, float]
 
-class VariogramRequest(BaseModel):
 class VariogramRequest(BaseModel):
  x: List[float]
  y: List[float]
@@ -46,14 +41,12 @@ class VariogramRequest(BaseModel):
  n_lags: int = 15
 
 class VariogramResponse(BaseModel):
-class VariogramResponse(BaseModel):
  best_model: str
  parameters: Dict[str, float]
  r2: float
  lags: List[float]
  gamma: List[float]
 
-class HealthResponse(BaseModel):
 class HealthResponse(BaseModel):
  status: str
  version: str

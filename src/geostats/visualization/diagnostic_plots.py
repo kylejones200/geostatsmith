@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 def plot_cross_validation(
-def plot_cross_validation(
  y_pred: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  **kwargs,
@@ -70,7 +69,6 @@ def plot_cross_validation(
  return ax
 
 def plot_histogram(
-def plot_histogram(
  bins: int = 30,
  ax: Optional[plt.Axes] = None,
  fit_normal: bool = True,
@@ -125,7 +123,6 @@ def plot_histogram(
  return ax
 
 def plot_qq_plot(
-def plot_qq_plot(
  ax: Optional[plt.Axes] = None,
     ) -> plt.Axes:
  """
@@ -162,7 +159,6 @@ def plot_qq_plot(
 
  return ax
 
-def plot_residuals(
 def plot_residuals(
  y_pred: npt.NDArray[np.float64],
  figsize: tuple = (14, 5),
@@ -220,7 +216,6 @@ def plot_residuals(
 
     # API compatibility functions
 def qq_plot(
-def qq_plot(
  ax: Optional[plt.Axes] = None,
  **kwargs,
     ) -> tuple:
@@ -256,7 +251,6 @@ def qq_plot(
 
  return fig, ax
 
-def plot_histogram(
 def plot_histogram(
  bins: int = 30,
  ax: Optional[plt.Axes] = None,
@@ -307,7 +301,6 @@ def plot_histogram(
 
  return fig, ax
 
-def plot_obs_vs_pred(
 def plot_obs_vs_pred(
  predicted: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
@@ -366,7 +359,6 @@ def plot_obs_vs_pred(
  return fig, ax
 
 def plot_residuals(
-def plot_residuals(
  residuals: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  **kwargs,
@@ -408,7 +400,6 @@ def plot_residuals(
 
  return fig, ax
 
-def plot_residual_histogram(
 def plot_residual_histogram(
  bins: int = 30,
  ax: Optional[plt.Axes] = None,

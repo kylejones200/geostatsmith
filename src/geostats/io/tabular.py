@@ -12,7 +12,6 @@ from typing import Tuple, Optional, List, Union
 from pathlib import Path
 
 def read_csv_spatial(
-def read_csv_spatial(
  x_col: str = 'x',
  y_col: str = 'y',
  z_col: str = 'z',
@@ -106,7 +105,6 @@ def read_csv_spatial(
  return x, y, z, extra
 
 def write_csv_spatial(
-def write_csv_spatial(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -171,7 +169,6 @@ def write_csv_spatial(
  # Write to CSV
  df.to_csv(filename, index=False, **kwargs)
 
-def read_excel_spatial(
 def read_excel_spatial(
  x_col: str = 'x',
  y_col: str = 'y',

@@ -27,14 +27,12 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class UniversalKriging(BaseKriging):
-class UniversalKriging(BaseKriging):
  Universal Kriging interpolation
 
  Accounts for large-scale trends (drift) in the data by modeling
  the mean as a function of coordinates.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -74,7 +72,6 @@ class UniversalKriging(BaseKriging):
      if self.variogram_model is not None:
      if self.variogram_model is not None:
 
- def _build_drift_matrix(
  def _build_drift_matrix(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -119,7 +116,6 @@ class UniversalKriging(BaseKriging):
      return F
 
  def _build_kriging_matrix(self) -> None:
- def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
      dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
@@ -144,7 +140,6 @@ class UniversalKriging(BaseKriging):
  epsilon=1e-10
  )
 
- def predict(
  def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -240,7 +235,6 @@ class UniversalKriging(BaseKriging):
      else:
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 
  Returns
@@ -285,7 +279,6 @@ class UniversalKriging(BaseKriging):
 
  return predictions, metrics
 
- def estimate_trend(self) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  def estimate_trend(self) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
      Estimate trend coefficients and residuals
 

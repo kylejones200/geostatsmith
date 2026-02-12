@@ -17,10 +17,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 class ConfigError(GeoStatsError):
-class ConfigError(GeoStatsError):
  pass
 
-def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
 def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
  Load and validate configuration file
 
@@ -86,7 +84,6 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
  raise ConfigError(error_msg)
 
 def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
-def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  Validate configuration file without loading
 
  Parameters
@@ -116,7 +113,6 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  return False, str(e)
 
 def load_config_dict(config_dict: dict) -> AnalysisConfig:
-def load_config_dict(config_dict: dict) -> AnalysisConfig:
  Load configuration from dictionary
 
  Useful for programmatic config creation or testing.
@@ -141,7 +137,6 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
  error_msg += f" • {field}: {msg}\n"
  raise ConfigError(error_msg)
 
-def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisConfig:
 def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisConfig:
  Merge configuration with overrides
 
@@ -169,7 +164,6 @@ def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisC
  config_dict = base_config.model_dump()
 
  # Deep merge overrides
- def deep_merge(d1, d2):
  def deep_merge(d1, d2):
      for key, value in d2.items():
      for key, value in d2.items():

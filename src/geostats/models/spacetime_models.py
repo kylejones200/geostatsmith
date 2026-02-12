@@ -53,7 +53,6 @@ from ..core.constants import EPSILON
 logger = get_logger(__name__)
 
 class SpaceTimeVariogramModel(ABC):
-class SpaceTimeVariogramModel(ABC):
  Base class for space-time variogram models
 
  All space-time models must implement:
@@ -63,7 +62,6 @@ class SpaceTimeVariogramModel(ABC):
 
  @abstractmethod
  def __call__(
- def __call__(
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
@@ -72,10 +70,8 @@ class SpaceTimeVariogramModel(ABC):
 
      @abstractmethod
  def is_separable(self) -> bool:
- def is_separable(self) -> bool:
      pass
 
-class SeparableModel(SpaceTimeVariogramModel):
 class SeparableModel(SpaceTimeVariogramModel):
  Separable space-time variogram model
 
@@ -109,7 +105,6 @@ class SeparableModel(SpaceTimeVariogramModel):
  """
 
  def __init__(
- def __init__(
      spatial_model: Callable,
      temporal_model: Callable
      ):
@@ -128,7 +123,6 @@ class SeparableModel(SpaceTimeVariogramModel):
 
      logger.info("Initialized separable space-time variogram model")
 
- def __call__(
  def __call__(
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
@@ -162,9 +156,7 @@ class SeparableModel(SpaceTimeVariogramModel):
      return gamma
 
  def is_separable(self) -> bool:
- def is_separable(self) -> bool:
 
-class ProductSumModel(SpaceTimeVariogramModel):
 class ProductSumModel(SpaceTimeVariogramModel):
  Product-Sum space-time variogram model (Cressie & Huang, 1999)
 
@@ -195,7 +187,6 @@ class ProductSumModel(SpaceTimeVariogramModel):
  ... )
  """
 
- def __init__(
  def __init__(
      spatial_model: Callable,
      temporal_model: Callable,
@@ -231,7 +222,6 @@ class ProductSumModel(SpaceTimeVariogramModel):
      )
 
  def __call__(
- def __call__(
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
@@ -262,9 +252,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
      return gamma
 
  def is_separable(self) -> bool:
- def is_separable(self) -> bool:
 
-class GneitingModel(SpaceTimeVariogramModel):
 class GneitingModel(SpaceTimeVariogramModel):
  Gneiting space-time covariance model (Gneiting, 2002)
 
@@ -294,7 +282,6 @@ class GneitingModel(SpaceTimeVariogramModel):
  for space-time data". JASA, 97:590-600.
  for space-time data". JASA, 97:590-600.
 
- def __init__(
  def __init__(
      sigma2: float = 1.0,
      a0: float = 1.0,
@@ -337,10 +324,8 @@ class GneitingModel(SpaceTimeVariogramModel):
      )
 
  def _temporal_scaling(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _temporal_scaling(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      return (self.a0 + np.abs(u) ** self.alpha) ** (1.0 / self.alpha)
 
- def _spatial_correlation(
  def _spatial_correlation(
      h: npt.NDArray[np.float64],
      a_u: npt.NDArray[np.float64]
@@ -352,11 +337,9 @@ class GneitingModel(SpaceTimeVariogramModel):
      return np.exp(-scaled_h)
 
  def _temporal_correlation(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _temporal_correlation(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      scaled_u = np.abs(u) / self.temporal_range
      return np.exp(-scaled_u)
 
- def __call__(
  def __call__(
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
@@ -398,9 +381,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      return gamma
 
  def is_separable(self) -> bool:
- def is_separable(self) -> bool:
 
-def create_spacetime_model(
 def create_spacetime_model(
  spatial_model: Callable,
  temporal_model: Optional[Callable] = None,

@@ -17,7 +17,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def bootstrap_uncertainty(
-def bootstrap_uncertainty(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -185,7 +184,6 @@ def bootstrap_uncertainty(
  }
 
 def bootstrap_variogram(
-def bootstrap_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  model_type: str,
@@ -275,7 +273,6 @@ def bootstrap_variogram(
  'n_bootstrap': n_bootstrap,
  }
 
-def bootstrap_kriging(
 def bootstrap_kriging(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

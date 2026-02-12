@@ -30,7 +30,6 @@ DEFAULT_MAX_NEIGHBORS = 12
 MIN_DISTANCE = 1e-10
 
 def inverse_distance_weighting(
-def inverse_distance_weighting(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -146,7 +145,6 @@ def inverse_distance_weighting(
  return z_pred
 
 def radial_basis_function_interpolation(
-def radial_basis_function_interpolation(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -236,7 +234,6 @@ def radial_basis_function_interpolation(
 
  return z_pred
 
-def natural_neighbor_interpolation(
 def natural_neighbor_interpolation(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
@@ -333,7 +330,6 @@ def natural_neighbor_interpolation(
 
  return z_pred
 
-def _barycentric_coordinates(
 def _barycentric_coordinates(
  triangle: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.float64]:

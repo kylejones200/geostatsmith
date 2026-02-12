@@ -38,7 +38,6 @@ except ImportError:
  logger.info(" Plotly not available. Install with: pip install plotly")
 
 def example_1_interactive_variogram():
-def example_1_interactive_variogram():
  if not PLOTLY_AVAILABLE:
  if not PLOTLY_AVAILABLE:
  return
@@ -66,7 +65,6 @@ def example_1_interactive_variogram():
  logger.info(" Saved to: interactive_variogram.html")
  logger.info(" Open in browser to explore!")
 
-def example_2_interactive_prediction_map():
 def example_2_interactive_prediction_map():
  if not PLOTLY_AVAILABLE:
  if not PLOTLY_AVAILABLE:
@@ -106,7 +104,6 @@ def example_2_interactive_prediction_map():
  logger.info(" Saved to: interactive_map.html")
 
 def example_3_auto_variogram():
-def example_3_auto_variogram():
  
  logger.info("Example 3: Automatic Variogram Selection")
  
@@ -123,7 +120,6 @@ def example_3_auto_variogram():
 
  logger.info(f"Best model selected and ready to use!")
 
-def example_4_auto_interpolate():
 def example_4_auto_interpolate():
  logger.info("\n" + "="*60)
  logger.info("Example 4: Automatic Interpolation (One Function!)")
@@ -151,7 +147,6 @@ def example_4_auto_interpolate():
  logger.info(f" Best method: {results['best_method']}")
  logger.info(f" CV RMSE: {results['cv_rmse']:.3f}")
 
-def main():
 def main():
  logger.info("\n" + "="*70)
  logger.info("GEOSTATS INTERACTIVE & AUTOML EXAMPLES")

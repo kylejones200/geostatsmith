@@ -16,7 +16,6 @@ from ..math.distance import euclidean_distance
 from ..math.matrices import regularize_matrix
 
 def cholesky_simulation(
-def cholesky_simulation(
  y: npt.NDArray[np.float64],
  covariance_model,
  n_realizations: int = 1,
@@ -99,7 +98,6 @@ def cholesky_simulation(
 
  return realizations
 
-def conditional_simulation(
 def conditional_simulation(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
@@ -217,7 +215,6 @@ def conditional_simulation(
 
  return conditional_sims
 
-def turning_bands_simulation(
 def turning_bands_simulation(
  y: npt.NDArray[np.float64],
  variogram_model,

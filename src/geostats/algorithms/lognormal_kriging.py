@@ -28,7 +28,6 @@ from .simple_kriging import SimpleKriging
 from .ordinary_kriging import OrdinaryKriging
 
 class LognormalKriging(BaseKriging):
-class LognormalKriging(BaseKriging):
  Lognormal Kriging
 
  Performs kriging in log-space and back-transforms to original space
@@ -42,7 +41,6 @@ class LognormalKriging(BaseKriging):
  This is critical for unbiased estimates in original space.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -102,7 +100,6 @@ class LognormalKriging(BaseKriging):
      else:
 
  def predict(
- def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
      return_variance: bool = True,
@@ -146,7 +143,6 @@ class LognormalKriging(BaseKriging):
 
      # Back-transform to original space using dispatch
  def unbiased_transform(log_pred, log_var):
- def unbiased_transform(log_pred, log_var):
          return np.exp(log_pred + log_var / 2)
      return np.exp(log_pred)
 
@@ -176,7 +172,6 @@ class LognormalKriging(BaseKriging):
 
      return predictions
 
- def cross_validate(
  def cross_validate(
      back_transform_method: str = 'unbiased'
      ) -> Tuple[npt.NDArray[np.float64], dict]:
@@ -236,7 +231,6 @@ class LognormalKriging(BaseKriging):
 
      return errors, metrics
 
- def get_log_statistics(self) -> dict:
  def get_log_statistics(self) -> dict:
      Get statistics of the log-transformed data
 

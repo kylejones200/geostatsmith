@@ -37,7 +37,6 @@ from ..core.logging_config import get_logger
 logger = get_logger(__name__)
 
 class ExternalDriftKriging(BaseKriging):
-class ExternalDriftKriging(BaseKriging):
  External Drift Kriging (also known as Regression Kriging)
 
  Uses external covariate(s) to improve estimation. The mean is modeled as
@@ -53,7 +52,6 @@ class ExternalDriftKriging(BaseKriging):
  - More flexible trend modeling
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -101,7 +99,6 @@ class ExternalDriftKriging(BaseKriging):
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
- def _build_kriging_matrix(self) -> None:
      Build the external drift kriging system matrix
 
  System (from geokniga §5974-5994):
@@ -148,7 +145,6 @@ class ExternalDriftKriging(BaseKriging):
 
  self.kriging_matrix = K
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -242,7 +238,6 @@ class ExternalDriftKriging(BaseKriging):
      if return_variance:
      return predictions
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Leave-one-out cross-validation for external drift kriging
 

@@ -21,7 +21,6 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class IndicatorKriging(BaseKriging):
-class IndicatorKriging(BaseKriging):
  Indicator Kriging for probability estimation
 
  Transforms data into indicators and estimates the probability
@@ -32,7 +31,6 @@ class IndicatorKriging(BaseKriging):
  The kriging estimate provides P{Z(x₀) > z_c}
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -70,7 +68,6 @@ class IndicatorKriging(BaseKriging):
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
- def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
      dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
@@ -91,7 +88,6 @@ class IndicatorKriging(BaseKriging):
  epsilon=1e-10
  )
 
- def predict(
  def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -174,7 +170,6 @@ class IndicatorKriging(BaseKriging):
      else:
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 
  Returns
@@ -220,14 +215,12 @@ class IndicatorKriging(BaseKriging):
  return predictions, metrics
 
 class MultiThresholdIndicatorKriging:
-class MultiThresholdIndicatorKriging:
  Multiple Indicator Kriging for full CDF estimation
 
  Estimates the complete cumulative distribution function (CDF)
  by performing indicator kriging at multiple threshold values.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -265,7 +258,6 @@ class MultiThresholdIndicatorKriging:
      self.variogram_models = []
 
  def fit(self) -> None:
- def fit(self) -> None:
      Fit indicator variogram models for each threshold
      """
      from ..algorithms.variogram import experimental_variogram
@@ -299,7 +291,6 @@ class MultiThresholdIndicatorKriging:
  self.variogram_models.append(model)
 
  def predict_cdf(
- def predict_cdf(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      ) -> Tuple[List[npt.NDArray[np.float64]], npt.NDArray[np.float64]]:
@@ -330,7 +321,6 @@ class MultiThresholdIndicatorKriging:
 
      return cdfs, self.thresholds
 
- def predict_quantile(
  def predict_quantile(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],

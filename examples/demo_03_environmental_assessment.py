@@ -33,7 +33,6 @@ logger.info(" ENVIRONMENTAL GUARDIAN - CONTAMINATION RISK ASSESSMENT")
 # ==============================================================================
 
 def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
-def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
  logger.info(f"Loading environmental data ({', '.join(elements)})...")
 
  agdb_path = Path(agdb_path)
@@ -85,7 +84,6 @@ def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
 # STEP 2: Regulatory Threshold Analysis
 # ==============================================================================
 
-def analyze_thresholds(data_dict):
 def analyze_thresholds(data_dict):
  logger.info("Regulatory Threshold Analysis...")
 
@@ -143,7 +141,6 @@ def analyze_thresholds(data_dict):
 # STEP 3: Probability of Exceedance Maps
 # ==============================================================================
 
-def create_exceedance_maps(data_dict, thresholds):
 def create_exceedance_maps(data_dict, thresholds):
  logger.info("Probability of Exceedance Mapping...")
 
@@ -223,7 +220,6 @@ def create_exceedance_maps(data_dict, thresholds):
 # STEP 4: Multi-Threshold Risk Classification
 # ==============================================================================
 
-def multi_threshold_risk_assessment(data_dict, element='As'):
 def multi_threshold_risk_assessment(data_dict, element='As'):
  logger.info(f"Multi-Threshold Risk Assessment ({element})...")
 
@@ -316,7 +312,6 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
 # ==============================================================================
 
 def identify_hotspots(data_dict):
-def identify_hotspots(data_dict):
  logger.info("Contamination Hotspot Identification...")
 
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
@@ -372,7 +367,6 @@ def identify_hotspots(data_dict):
 # STEP 6: Generate Professional Report
 # ==============================================================================
 
-def generate_environmental_report(data_dict, thresholds, hotspots):
 def generate_environmental_report(data_dict, thresholds, hotspots):
  logger.info("Generating Professional Report...")
 

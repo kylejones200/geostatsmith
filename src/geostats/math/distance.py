@@ -7,7 +7,6 @@ import numpy as np
 import numpy.typing as npt
 
 def euclidean_distance(
-def euclidean_distance(
  y1: npt.NDArray[np.float64],
  x2: npt.NDArray[np.float64],
  y2: npt.NDArray[np.float64],
@@ -50,7 +49,6 @@ def euclidean_distance(
  return np.sqrt(dist_sq)
 
 def euclidean_distance_matrix(
-def euclidean_distance_matrix(
  y: npt.NDArray[np.float64],
  z: Optional[npt.NDArray[np.float64]] = None,
     ) -> npt.NDArray[np.float64]:
@@ -71,7 +69,6 @@ def euclidean_distance_matrix(
  """
  return euclidean_distance(x, y, x, y, z, z)
 
-def anisotropic_distance(
 def anisotropic_distance(
  y1: npt.NDArray[np.float64],
  x2: npt.NDArray[np.float64],
@@ -131,7 +128,6 @@ def anisotropic_distance(
  return np.sqrt(dx_rot**2 + dy_rot**2)
 
 def pairwise_distances(
-def pairwise_distances(
  coords2: Optional[npt.NDArray[np.float64]] = None,
     ) -> npt.NDArray[np.float64]:
  """
@@ -170,7 +166,6 @@ def pairwise_distances(
  return np.sqrt(np.sum(diff**2, axis=-1))
 
 def euclidean_distance_3d(
-def euclidean_distance_3d(
  y1: float,
  z1: float,
  x2: float,
@@ -201,7 +196,6 @@ def euclidean_distance_3d(
  return np.sqrt(dx*dx + dy*dy + dz*dz)
 
 def euclidean_distance_matrix_3d(
-def euclidean_distance_matrix_3d(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.float64]:
@@ -220,7 +214,6 @@ def euclidean_distance_matrix_3d(
  """
  return euclidean_distance(x, y, x, y, z, z)
 
-def directional_distance(
 def directional_distance(
  y1: npt.NDArray[np.float64],
  x2: npt.NDArray[np.float64],

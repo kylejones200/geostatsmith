@@ -29,14 +29,12 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class OrdinaryKriging(BaseKriging):
-class OrdinaryKriging(BaseKriging):
  Ordinary Kriging interpolation
 
  Most commonly used kriging variant. Does not assume a known mean,
  making it more robust than Simple Kriging.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -66,7 +64,6 @@ class OrdinaryKriging(BaseKriging):
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
- def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
      dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
@@ -89,7 +86,6 @@ class OrdinaryKriging(BaseKriging):
  epsilon=1e-10
  )
 
- def predict(
  def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -178,7 +174,6 @@ class OrdinaryKriging(BaseKriging):
      else:
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 
  Returns
@@ -222,7 +217,6 @@ class OrdinaryKriging(BaseKriging):
 
  return predictions, metrics
 
- def predict_block(
  def predict_block(
      x_block: Tuple[float, float],
      y_block: Tuple[float, float],

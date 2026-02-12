@@ -9,7 +9,6 @@ from geostats.models import variogram_models
 
 
 def test_experimental_variogram():
-def test_experimental_variogram():
     # Create simple test data
     np.random.seed(42)
     x = np.array([0, 1, 2, 3, 4, 5])
@@ -26,7 +25,6 @@ def test_experimental_variogram():
 
 
 def test_spherical_model():
-def test_spherical_model():
     model = variogram_models.SphericalModel(nugget=0.1, sill=1.0, range_param=10.0)
 
     # Test at h=0
@@ -40,7 +38,6 @@ def test_spherical_model():
 
 
 def test_exponential_model():
-def test_exponential_model():
     model = variogram_models.ExponentialModel(nugget=0.0, sill=1.0, range_param=10.0)
 
     # Test at h=0
@@ -53,7 +50,6 @@ def test_exponential_model():
 
 
 def test_gaussian_model():
-def test_gaussian_model():
     model = variogram_models.GaussianModel(nugget=0.0, sill=1.0, range_param=10.0)
 
     # Test at h=0
@@ -65,7 +61,6 @@ def test_gaussian_model():
     assert all(gamma_small < 0.1)  # Should be very small near origin
 
 
-def test_variogram_fitting():
 def test_variogram_fitting():
     # Generate synthetic data
     np.random.seed(42)
@@ -86,7 +81,6 @@ def test_variogram_fitting():
     assert "range" in model.parameters
 
 
-def test_auto_fit():
 def test_auto_fit():
     # Generate synthetic data
     np.random.seed(42)

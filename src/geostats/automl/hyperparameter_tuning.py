@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 
 def tune_kriging(
-def tune_kriging(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
@@ -131,7 +130,6 @@ def tune_kriging(
     }
 
 
-def optimize_neighborhood(
 def optimize_neighborhood(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],

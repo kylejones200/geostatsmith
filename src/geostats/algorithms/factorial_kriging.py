@@ -56,7 +56,6 @@ from ..algorithms.nested_variogram import NestedVariogram
 logger = get_logger(__name__)
 
 class FactorialKriging(BaseKriging):
-class FactorialKriging(BaseKriging):
  Factorial Kriging for multi-scale spatial analysis
 
  Decomposes a spatial variable into independent components
@@ -81,7 +80,6 @@ class FactorialKriging(BaseKriging):
  >>> filtered = fk.filter(x_new, y_new, components_to_keep=['long_range'])
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -135,7 +133,6 @@ class FactorialKriging(BaseKriging):
      )
 
  def _build_kriging_matrices(self):
- def _build_kriging_matrices(self):
      Build separate kriging matrices for each spatial component
 
  For each structure i:
@@ -174,7 +171,6 @@ class FactorialKriging(BaseKriging):
 
  logger.debug(f"Built kriging matrix for structure {i}: {structure['model_type']}")
 
- def predict_components(
  def predict_components(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -277,7 +273,6 @@ class FactorialKriging(BaseKriging):
      return components
 
  def predict(
- def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
      return_variance: bool = True
@@ -321,7 +316,6 @@ class FactorialKriging(BaseKriging):
 
     return total
 
- def filter(
  def filter(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -390,7 +384,6 @@ class FactorialKriging(BaseKriging):
      return filtered
 
  def get_component_info(self) -> Dict[str, Dict[str, float]]:
- def get_component_info(self) -> Dict[str, Dict[str, float]]:
      Get information about each spatial component
 
  Returns
@@ -423,7 +416,6 @@ class FactorialKriging(BaseKriging):
 
  return info
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 

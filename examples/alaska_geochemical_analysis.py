@@ -46,7 +46,6 @@ logger = logging.getLogger(__name__)
 # ==============================================================================
 
 def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
-def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
  Load Alaska Geochemical Database and prepare for analysis.
 
  Parameters:
@@ -171,7 +170,6 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 # ==============================================================================
 
 def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
-def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
  Analyze gold distribution for mineral exploration.
  """
  logger.info("GOLD EXPLORATION ANALYSIS")
@@ -273,7 +271,6 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
 # ==============================================================================
 
 def multi_element_analysis(agdb_path):
-def multi_element_analysis(agdb_path):
  Analyze multiple correlated elements using cokriging.
  Example: Cu-Mo association in porphyry deposits.
  """
@@ -337,7 +334,6 @@ def multi_element_analysis(agdb_path):
 # PART 4: Environmental Assessment (As, Pb contamination)
 # ==============================================================================
 
-def environmental_assessment(agdb_path, element='As', threshold=20):
 def environmental_assessment(agdb_path, element='As', threshold=20):
  Environmental geochemistry: assess contamination risk.
 

@@ -19,7 +19,6 @@ from ..core.logging_config import get_logger
 logger = get_logger(__name__)
 
 def leave_one_out(kriging_obj) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
-def leave_one_out(kriging_obj) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
  Perform leave-one-out cross-validation
 
  Parameters
@@ -37,7 +36,6 @@ def leave_one_out(kriging_obj) -> Tuple[npt.NDArray[np.float64], Dict[str, float
  return kriging_obj.cross_validate()
 
 def _process_fold(args):
-def _process_fold(args):
  fold_idx, train_idx, test_idx, x, y, z, kriging_class, variogram_model = args
 
  # Train kriging model
@@ -53,7 +51,6 @@ def _process_fold(args):
 
  return fold_idx, test_idx, pred, z[test_idx]
 
-def k_fold_cross_validation(
 def k_fold_cross_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -136,7 +133,6 @@ def k_fold_cross_validation(
  }
 
 def _process_spatial_block(args):
-def _process_spatial_block(args):
  block_id, test_mask, train_mask, x, y, z, kriging_class, variogram_model = args
 
  if np.sum(test_mask) == 0 or np.sum(train_mask) == 0:
@@ -155,7 +151,6 @@ def _process_spatial_block(args):
 
  return block_id, pred, z[test_mask]
 
-def spatial_cross_validation(
 def spatial_cross_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

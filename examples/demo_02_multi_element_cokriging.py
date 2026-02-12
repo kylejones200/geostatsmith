@@ -34,7 +34,6 @@ logger.info(" MULTI-ELEMENT ARSENAL - PORPHYRY DEPOSIT ANALYSIS")
 # ==============================================================================
 
 def load_multi_element_data(agdb_path, region='Pebble'):
-def load_multi_element_data(agdb_path, region='Pebble'):
  Load Cu, Mo, Au data - the classic porphyry association
  """
  logger.info("Loading multi-element data (Cu-Mo-Au)...")
@@ -82,7 +81,6 @@ def load_multi_element_data(agdb_path, region='Pebble'):
 # STEP 2: Correlation & Association Analysis
 # ==============================================================================
 
-def analyze_element_correlations(data):
 def analyze_element_correlations(data):
  logger.info("Element Correlation Analysis...")
 
@@ -142,7 +140,6 @@ def analyze_element_correlations(data):
 # STEP 3: Geochemical Anomaly Detection
 # ==============================================================================
 
-def detect_geochemical_anomalies(data, elements_dict):
 def detect_geochemical_anomalies(data, elements_dict):
  logger.info("Geochemical Anomaly Detection...")
 
@@ -225,7 +222,6 @@ def detect_geochemical_anomalies(data, elements_dict):
 # STEP 4: Cokriging (Use correlation to improve predictions)
 # ==============================================================================
 
-def compare_kriging_vs_cokriging(data, elements_dict):
 def compare_kriging_vs_cokriging(data, elements_dict):
  logger.info("Cokriging vs Ordinary Kriging Comparison...")
 
@@ -318,7 +314,6 @@ def compare_kriging_vs_cokriging(data, elements_dict):
 # STEP 5: Porphyry Index (Combined Geochemical Signature)
 # ==============================================================================
 
-def calculate_porphyry_index(data, elements_dict):
 def calculate_porphyry_index(data, elements_dict):
  logger.info("Porphyry Fertility Index...")
 

@@ -35,7 +35,6 @@ except ImportError:
  exit(1)
 
 def example_1_optimal_sampling():
-def example_1_optimal_sampling():
  
  logger.info("Example 1: Optimal Sampling Design")
  
@@ -115,7 +114,6 @@ def example_1_optimal_sampling():
  plt.close()
 
 def example_2_infill_sampling():
-def example_2_infill_sampling():
  
  logger.info("Example 2: Infill Sampling")
  
@@ -191,7 +189,6 @@ def example_2_infill_sampling():
  plt.close()
 
 def example_3_sample_size_calculator():
-def example_3_sample_size_calculator():
  
  logger.info("Example 3: Sample Size Calculator")
  
@@ -249,7 +246,6 @@ def example_3_sample_size_calculator():
  logger.info(" Saved example_workflow_02_sample_size.png")
  plt.close()
 
-def example_4_cost_benefit():
 def example_4_cost_benefit():
  logger.info("Example 4: Cost-Benefit Analysis")
 
@@ -319,7 +315,6 @@ def example_4_cost_benefit():
  logger.info(" Saved example_workflow_02_cost_benefit.png")
  plt.close()
 
-def main():
 def main():
  logger.info("GEOSTATS OPTIMIZATION WORKFLOW EXAMPLES")
 

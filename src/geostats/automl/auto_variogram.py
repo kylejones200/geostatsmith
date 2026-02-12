@@ -18,7 +18,6 @@ from ..core.exceptions import FittingError
 logger = logging.getLogger(__name__)
 
 def auto_variogram(
-def auto_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  model_types: Optional[List[str]] = None,
@@ -121,7 +120,6 @@ def auto_variogram(
 
  return best_model
 
-def auto_fit(
 def auto_fit(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

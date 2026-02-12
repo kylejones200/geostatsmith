@@ -15,7 +15,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def comprehensive_validation(
-def comprehensive_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
@@ -129,7 +128,6 @@ def comprehensive_validation(
  return results
 
 def _generate_diagnostic_summary(results: Dict) -> str:
-def _generate_diagnostic_summary(results: Dict) -> str:
     summary = "VALIDATION DIAGNOSTICS\n\n"
 
  summary += f"Overall Score: {results['overall_score']}/100\n\n"
@@ -150,7 +148,6 @@ def _generate_diagnostic_summary(results: Dict) -> str:
 
  return summary
 
-def spatial_validation(
 def spatial_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -184,7 +181,6 @@ def spatial_validation(
  }
  return results
 
-def model_diagnostics(
 def model_diagnostics(
  lags: npt.NDArray[np.float64],
  gamma: npt.NDArray[np.float64],

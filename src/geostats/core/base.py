@@ -8,7 +8,6 @@ import numpy as np
 import numpy.typing as npt
 
 class BaseModel(ABC):
-class BaseModel(ABC):
  Abstract base class for all geostatistical models
 
  This provides a common interface for variogram models,
@@ -16,12 +15,10 @@ class BaseModel(ABC):
  """
 
  def __init__(self, **kwargs: Any) -> None:
- def __init__(self, **kwargs: Any) -> None:
      self._parameters: Dict[str, float] = {}
      self._is_fitted: bool = False
 
  @abstractmethod
- def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Evaluate the model at distance h
 
@@ -39,16 +36,13 @@ class BaseModel(ABC):
 
  @property
  def parameters(self) -> Dict[str, float]:
- def parameters(self) -> Dict[str, float]:
      return self._parameters.copy()
 
  @property
  def is_fitted(self) -> bool:
- def is_fitted(self) -> bool:
      return self._is_fitted
 
  @abstractmethod
- def fit(
  def fit(
      lags: npt.NDArray[np.float64],
      values: npt.NDArray[np.float64],
@@ -74,7 +68,6 @@ class BaseModel(ABC):
      pass
 
  def set_parameters(self, **params: float) -> None:
- def set_parameters(self, **params: float) -> None:
      Set model parameters manually
 
  Parameters
@@ -86,11 +79,9 @@ class BaseModel(ABC):
  self._is_fitted = True
 
  def __repr__(self) -> str:
- def __repr__(self) -> str:
      params_str = ", ".join(f"{k}={v:.4f}" for k, v in self._parameters.items())
      return f"{self.__class__.__name__}({params_str})"
 
-class BaseKriging(ABC):
 class BaseKriging(ABC):
  Abstract base class for all kriging methods
 
@@ -98,7 +89,6 @@ class BaseKriging(ABC):
  ordinary kriging, universal kriging, etc.
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -127,7 +117,6 @@ class BaseKriging(ABC):
 
      @abstractmethod
  def predict(
- def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      return_variance: bool = True,
@@ -155,7 +144,6 @@ class BaseKriging(ABC):
 
      @abstractmethod
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 
  Returns
@@ -167,7 +155,6 @@ class BaseKriging(ABC):
  """
  pass
 
- def __repr__(self) -> str:
  def __repr__(self) -> str:
      return (
      f"{self.__class__.__name__}("

@@ -53,7 +53,6 @@ LAMBDA_TOLERANCE = 1e-4
 MIN_POSITIVE_VALUE = EPSILON
 
 class BoxCoxTransform:
-class BoxCoxTransform:
  Box-Cox power transformation for data normalization
 
  Transforms data to approximate normality using:
@@ -79,7 +78,6 @@ class BoxCoxTransform:
  >>> original = bc.inverse_transform(transformed)
  """
 
- def __init__(
  def __init__(
      lmbda: Optional[float] = None,
      method: str = 'mle',
@@ -115,7 +113,6 @@ class BoxCoxTransform:
      self.mean = 0.0
      self.std = 1.0
 
- def fit(self, data: npt.NDArray[np.float64]) -> 'BoxCoxTransform':
  def fit(self, data: npt.NDArray[np.float64]) -> 'BoxCoxTransform':
      Fit the Box-Cox transformation to data
 
@@ -161,7 +158,6 @@ class BoxCoxTransform:
  return self
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Apply Box-Cox transformation to data
 
  Parameters
@@ -201,7 +197,6 @@ class BoxCoxTransform:
  return transformed_data.reshape(original_shape)
 
  def inverse_transform(
- def inverse_transform(
      transformed_data: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
      """
@@ -240,7 +235,6 @@ class BoxCoxTransform:
      return original_data.reshape(original_shape)
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Fit and transform in one step
 
  Parameters
@@ -257,7 +251,6 @@ class BoxCoxTransform:
  return self.transform(data)
 
  def _transform_array(
- def _transform_array(
      x: npt.NDArray[np.float64],
      lmbda: float
      ) -> npt.NDArray[np.float64]:
@@ -269,7 +262,6 @@ class BoxCoxTransform:
      else:
      return (np.power(x, lmbda) - 1.0) / lmbda
 
- def _inverse_transform_array(
  def _inverse_transform_array(
      y: npt.NDArray[np.float64],
      lmbda: float
@@ -302,7 +294,6 @@ class BoxCoxTransform:
      return np.power(arg, 1.0 / lmbda)
 
  def _estimate_lambda(self, data: npt.NDArray[np.float64]) -> float:
- def _estimate_lambda(self, data: npt.NDArray[np.float64]) -> float:
      Estimate optimal lambda parameter
 
  Uses dict dispatch pattern for method selection
@@ -320,14 +311,11 @@ class BoxCoxTransform:
      return estimation_methods[method](data)
 
  def _estimate_lambda_mle(self, data: npt.NDArray[np.float64]) -> float:
- def _estimate_lambda_mle(self, data: npt.NDArray[np.float64]) -> float:
      # scipy.stats.boxcox returns (transformed_data, lambda)
      _, lmbda = stats.boxcox(data)
      return lmbda
 
  def _estimate_lambda_pearsonr(self, data: npt.NDArray[np.float64]) -> float:
- def _estimate_lambda_pearsonr(self, data: npt.NDArray[np.float64]) -> float:
- def neg_correlation(lmbda):
  def neg_correlation(lmbda):
      # Correlation with theoretical normal quantiles
      sorted_data = np.sort(transformed)
@@ -344,8 +332,6 @@ class BoxCoxTransform:
      return result.x
 
  def _estimate_lambda_min_skew(self, data: npt.NDArray[np.float64]) -> float:
- def _estimate_lambda_min_skew(self, data: npt.NDArray[np.float64]) -> float:
- def abs_skewness(lmbda):
  def abs_skewness(lmbda):
      return np.abs(stats.skew(transformed))
 
@@ -356,7 +342,6 @@ class BoxCoxTransform:
      )
      return result.x
 
- def get_diagnostics(self) -> Dict[str, float]:
  def get_diagnostics(self) -> Dict[str, float]:
      Get diagnostic information about the transformation
 
@@ -375,7 +360,6 @@ class BoxCoxTransform:
  'method': self.method,
  }
 
-def boxcox_transform(
 def boxcox_transform(
  lmbda: Optional[float] = None,
  return_lambda: bool = False

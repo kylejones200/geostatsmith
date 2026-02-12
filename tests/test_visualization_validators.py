@@ -28,9 +28,7 @@ from geostats.models.variogram_models import SphericalModel
 
 
 class TestSpatialPlots:
-class TestSpatialPlots:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -39,10 +37,8 @@ class TestSpatialPlots:
         self.z = np.random.randn(self.n)
 
     def teardown_method(self):
-    def teardown_method(self):
         plt.close("all")
 
-    def test_scatter_plot(self):
     def test_scatter_plot(self):
         fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z)
 
@@ -51,13 +47,11 @@ class TestSpatialPlots:
         plt.close(fig)
 
     def test_scatter_plot_with_colorbar(self):
-    def test_scatter_plot_with_colorbar(self):
         fig, ax = spatial_plots.plot_data_points(self.x, self.y, self.z, colorbar=True)
 
         assert fig is not None
         plt.close(fig)
 
-    def test_contour_plot(self):
     def test_contour_plot(self):
         # Create grid data
         x_grid = np.linspace(0, 100, 20)
@@ -71,7 +65,6 @@ class TestSpatialPlots:
         plt.close(fig)
 
     def test_contourf_plot(self):
-    def test_contourf_plot(self):
         x_grid = np.linspace(0, 100, 20)
         y_grid = np.linspace(0, 100, 20)
         X, Y = np.meshgrid(x_grid, y_grid)
@@ -83,7 +76,6 @@ class TestSpatialPlots:
         plt.close(fig)
 
     def test_plot_with_title(self):
-    def test_plot_with_title(self):
         fig, ax = spatial_plots.plot_data_points(
             self.x, self.y, self.z, title="Test Plot"
         )
@@ -91,7 +83,6 @@ class TestSpatialPlots:
         assert ax.get_title() == "Test Plot"
         plt.close(fig)
 
-    def test_plot_with_labels(self):
     def test_plot_with_labels(self):
         fig, ax = spatial_plots.plot_data_points(
             self.x, self.y, self.z, xlabel="X Coordinate", ylabel="Y Coordinate"
@@ -103,9 +94,7 @@ class TestSpatialPlots:
 
 
 class TestVariogramPlots:
-class TestVariogramPlots:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         n = 100
@@ -124,10 +113,8 @@ class TestVariogramPlots:
         )
 
     def teardown_method(self):
-    def teardown_method(self):
         plt.close("all")
 
-    def test_plot_experimental_variogram(self):
     def test_plot_experimental_variogram(self):
         fig, ax = variogram_plots.plot_experimental_variogram(
             self.lags, self.gamma, n_pairs=self.n_pairs
@@ -138,13 +125,11 @@ class TestVariogramPlots:
         plt.close(fig)
 
     def test_plot_variogram_model(self):
-    def test_plot_variogram_model(self):
         fig, ax = variogram_plots.plot_variogram_model(self.model, max_distance=100)
 
         assert fig is not None
         plt.close(fig)
 
-    def test_plot_experimental_and_model(self):
     def test_plot_experimental_and_model(self):
         fig, ax = variogram_plots.plot_variogram_with_model(
             self.lags, self.gamma, self.model, n_pairs=self.n_pairs
@@ -153,7 +138,6 @@ class TestVariogramPlots:
         assert fig is not None
         plt.close(fig)
 
-    def test_plot_variogram_map(self):
     def test_plot_variogram_map(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 80)
@@ -167,9 +151,7 @@ class TestVariogramPlots:
 
 
 class TestDiagnosticPlots:
-class TestDiagnosticPlots:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -178,10 +160,8 @@ class TestDiagnosticPlots:
         self.residuals = self.observed - self.predicted
 
     def teardown_method(self):
-    def teardown_method(self):
         plt.close("all")
 
-    def test_qq_plot(self):
     def test_qq_plot(self):
         fig, ax = diagnostic_plots.qq_plot(self.residuals)
 
@@ -189,13 +169,11 @@ class TestDiagnosticPlots:
         plt.close(fig)
 
     def test_histogram(self):
-    def test_histogram(self):
         fig, ax = diagnostic_plots.plot_histogram(self.observed)
 
         assert fig is not None
         plt.close(fig)
 
-    def test_scatterplot_observed_vs_predicted(self):
     def test_scatterplot_observed_vs_predicted(self):
         fig, ax = diagnostic_plots.plot_obs_vs_pred(self.observed, self.predicted)
 
@@ -203,13 +181,11 @@ class TestDiagnosticPlots:
         plt.close(fig)
 
     def test_residual_plot(self):
-    def test_residual_plot(self):
         fig, ax = diagnostic_plots.plot_residuals(self.predicted, self.residuals)
 
         assert fig is not None
         plt.close(fig)
 
-    def test_residual_histogram(self):
     def test_residual_histogram(self):
         fig, ax = diagnostic_plots.plot_residual_histogram(self.residuals)
 
@@ -218,9 +194,7 @@ class TestDiagnosticPlots:
 
 
 class TestValidators:
-class TestValidators:
 
-    def test_validate_coordinates_valid(self):
     def test_validate_coordinates_valid(self):
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, 3, 4, 5])
@@ -228,7 +202,6 @@ class TestValidators:
         # Should not raise error
         validate_coordinates(x, y)
 
-    def test_validate_coordinates_mismatched_length(self):
     def test_validate_coordinates_mismatched_length(self):
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, 3])
@@ -257,7 +230,6 @@ class TestValidators:
         validate_values(z, name="z")
 
     def test_validate_values_with_nan(self):
-    def test_validate_values_with_nan(self):
         z = np.array([10, 20, np.nan, 40, 50])
 
         with pytest.raises((ValueError, AssertionError)):
@@ -277,7 +249,6 @@ class TestValidators:
         assert result == 5.0
 
     def test_validate_positive_rejects_negative(self):
-    def test_validate_positive_rejects_negative(self):
         with pytest.raises((ValueError, AssertionError)):
 
         with pytest.raises((ValueError, AssertionError)):
@@ -293,7 +264,6 @@ class TestValidators:
         validate_array_shapes_match(a, b)
 
     def test_validate_array_shapes_mismatch(self):
-    def test_validate_array_shapes_mismatch(self):
         a = np.array([1, 2, 3, 4, 5])
         b = np.array([6, 7, 8])
 
@@ -303,7 +273,6 @@ class TestValidators:
         with pytest.raises((ValueError, AssertionError)):
     """Tests for parameter validation"""
 
-    def test_negative_nugget_rejected(self):
     def test_negative_nugget_rejected(self):
         with pytest.raises((ValueError, AssertionError)):
 
@@ -329,9 +298,7 @@ class TestValidators:
 
 
 class TestDataQuality:
-class TestDataQuality:
 
-    def test_data_coverage_check(self):
     def test_data_coverage_check(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 50)
@@ -346,9 +313,7 @@ class TestDataQuality:
 
 
 class TestPlotSaving:
-class TestPlotSaving:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.x = np.random.uniform(0, 100, 50)
@@ -356,10 +321,8 @@ class TestPlotSaving:
         self.z = np.random.randn(50)
 
     def teardown_method(self):
-    def teardown_method(self):
         plt.close("all")
 
-    def test_save_plot_to_file(self):
     def test_save_plot_to_file(self):
         import os
         import tempfile

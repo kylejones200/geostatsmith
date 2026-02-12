@@ -23,7 +23,6 @@ CACHE_DIR = Path.home() / '.geostats_cache'
 CACHE_DIR.mkdir(exist_ok=True)
 
 class CachedKriging:
-class CachedKriging:
  Kriging with result caching to avoid recomputation.
 
  Useful when repeatedly predicting at the same locations
@@ -55,7 +54,6 @@ class CachedKriging:
  """
 
  def __init__(
- def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      z: npt.NDArray[np.float64],
@@ -80,7 +78,6 @@ class CachedKriging:
      self.data_hash = self._compute_data_hash()
 
  def _compute_data_hash(self) -> str:
- def _compute_data_hash(self) -> str:
      # Combine data arrays and model parameters
      params = self.variogram_model.get_parameters()
      data_str = (
@@ -92,7 +89,6 @@ class CachedKriging:
      return hashlib.md5(data_str.encode()).hexdigest()
 
  def _compute_pred_hash(
- def _compute_pred_hash(
      x_pred: npt.NDArray[np.float64],
      y_pred: npt.NDArray[np.float64],
      ) -> str:
@@ -101,10 +97,8 @@ class CachedKriging:
      return hashlib.md5(pred_str.encode()).hexdigest()
 
  def _get_cache_path(self, pred_hash: str) -> Path:
- def _get_cache_path(self, pred_hash: str) -> Path:
      return self.cache_dir / f"{self.data_hash}_{pred_hash}.pkl"
 
- def predict(
  def predict(
      x_pred: npt.NDArray[np.float64],
      y_pred: npt.NDArray[np.float64],
@@ -159,7 +153,6 @@ class CachedKriging:
 
      return predictions, variance
 
-def clear_cache(cache_dir: Optional[Path] = None) -> int:
 def clear_cache(cache_dir: Optional[Path] = None) -> int:
  Clear the kriging cache.
 

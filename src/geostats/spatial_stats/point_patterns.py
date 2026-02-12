@@ -27,7 +27,6 @@ logger = get_logger(__name__)
 EPSILON = 1e-10
 
 def nearest_neighbor_analysis(
-def nearest_neighbor_analysis(
  y: npt.NDArray[np.float64],
  study_area: Optional[Tuple[float, float, float, float]] = None,
     ) -> Dict[str, float]:
@@ -149,7 +148,6 @@ def nearest_neighbor_analysis(
  'interpretation': interpretation,
  }
 
-def ripley_k_function(
 def ripley_k_function(
  y: npt.NDArray[np.float64],
  distances: Optional[npt.NDArray[np.float64]] = None,
@@ -308,7 +306,6 @@ def ripley_k_function(
  'n_points': n,
  }
 
-def quadrat_analysis(
 def quadrat_analysis(
  y: npt.NDArray[np.float64],
  n_quadrats_x: int = 5,
@@ -487,7 +484,6 @@ def quadrat_analysis(
  }
 
 def spatial_randomness_test(
-def spatial_randomness_test(
  y: npt.NDArray[np.float64],
  method: str = 'all',
  **kwargs,
@@ -560,7 +556,6 @@ def spatial_randomness_test(
 
  return results
 
-def clustering_index(
 def clustering_index(
  y: npt.NDArray[np.float64],
  method: str = 'nearest_neighbor',

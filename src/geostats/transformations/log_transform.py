@@ -23,7 +23,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 class LogTransform:
-class LogTransform:
  Logarithmic Transform for geostatistical data
 
  Useful for data that follows a lognormal distribution, common in:
@@ -35,7 +34,6 @@ class LogTransform:
  Handles zero and negative values appropriately.
  """
 
- def __init__(self, base: str = 'natural', epsilon: Optional[float] = None):
  def __init__(self, base: str = 'natural', epsilon: Optional[float] = None):
      Initialize Log Transform
 
@@ -70,7 +68,6 @@ class LogTransform:
 
  self.log_func, self.exp_func = log_functions[base]
 
- def fit(self, data: npt.NDArray[np.float64]) -> 'LogTransform':
  def fit(self, data: npt.NDArray[np.float64]) -> 'LogTransform':
      Fit the log transform to data
 
@@ -119,7 +116,6 @@ class LogTransform:
  return self
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Transform data using logarithm
 
  Parameters
@@ -147,7 +143,6 @@ class LogTransform:
 
  return transformed.reshape(original_shape)
 
- def inverse_transform(self, log_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def inverse_transform(self, log_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Back-transform log data to original scale
 
@@ -178,7 +173,6 @@ class LogTransform:
  return back_transformed.reshape(original_shape)
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Fit and transform data in one step
 
  Parameters
@@ -194,7 +188,6 @@ class LogTransform:
  self.fit(data)
  return self.transform(data)
 
-def log_transform(
 def log_transform(
  base: str = 'natural'
     ) -> Tuple[npt.NDArray[np.float64], LogTransform]:
@@ -228,7 +221,6 @@ def log_transform(
  transformed = transformer.fit_transform(data)
  return transformed, transformer
 
-def log_back_transform(
 def log_back_transform(
  transformer: LogTransform
     ) -> npt.NDArray[np.float64]:

@@ -30,7 +30,6 @@ from ..algorithms.simple_kriging import SimpleKriging
 from ..core.exceptions import KrigingError
 
 def normal_score_transform(
-def normal_score_transform(
     ) -> Tuple[npt.NDArray[np.float64], callable]:
  """
  Transform data to standard normal distribution
@@ -67,13 +66,11 @@ def normal_score_transform(
  sorted_transformed = transformed[sorted_indices]
 
  def back_transform(y_gaussian):
- def back_transform(y_gaussian):
      return np.interp(y_gaussian, sorted_transformed, sorted_data,
      left=sorted_data[0], right=sorted_data[-1])
 
  return transformed, back_transform
 
-def sequential_gaussian_simulation(
 def sequential_gaussian_simulation(
  y_data: npt.NDArray[np.float64],
  z_data: npt.NDArray[np.float64],
@@ -175,13 +172,11 @@ def sequential_gaussian_simulation(
  return realizations
 
 class SequentialGaussianSimulation:
-class SequentialGaussianSimulation:
  Sequential Gaussian Simulation class
 
  Provides a class interface for SGS with additional features.
  """
 
- def __init__(
  def __init__(
      x_data: npt.NDArray[np.float64],
      y_data: npt.NDArray[np.float64],
@@ -208,7 +203,6 @@ class SequentialGaussianSimulation:
      # Perform normal score transform
      self.z_gaussian, self.back_transform = normal_score_transform(z_data)
 
- def simulate(
  def simulate(
      x_grid: npt.NDArray[np.float64],
      y_grid: npt.NDArray[np.float64],
@@ -243,7 +237,6 @@ class SequentialGaussianSimulation:
      seed=seed,
      )
 
- def simulate_grid(
  def simulate_grid(
      x_min: float,
      x_max: float,
@@ -295,7 +288,6 @@ class SequentialGaussianSimulation:
 
      return X, Y, realizations
 
- def get_statistics(
  def get_statistics(
      realizations: npt.NDArray[np.float64],
      ) -> Tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]:

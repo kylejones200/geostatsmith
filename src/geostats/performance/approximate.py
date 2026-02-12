@@ -14,7 +14,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 def approximate_kriging(
-def approximate_kriging(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -130,7 +129,6 @@ def approximate_kriging(
 
  return predictions, variance
 
-def coarse_to_fine(
 def coarse_to_fine(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

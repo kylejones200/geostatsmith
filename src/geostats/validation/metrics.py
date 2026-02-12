@@ -7,13 +7,11 @@ import numpy as np
 import numpy.typing as npt
 
 def mean_squared_error(
-def mean_squared_error(
  y_pred: npt.NDArray[np.float64],
     ) -> float:
  """Calculate Mean Squared Error"""
  return float(np.mean((y_true - y_pred) ** 2))
 
-def root_mean_squared_error(
 def root_mean_squared_error(
  y_pred: npt.NDArray[np.float64],
     ) -> float:
@@ -21,13 +19,11 @@ def root_mean_squared_error(
  return float(np.sqrt(mean_squared_error(y_true, y_pred)))
 
 def mean_absolute_error(
-def mean_absolute_error(
  y_pred: npt.NDArray[np.float64],
     ) -> float:
  """Calculate Mean Absolute Error"""
  return float(np.mean(np.abs(y_true - y_pred)))
 
-def r_squared(
 def r_squared(
  y_pred: npt.NDArray[np.float64],
     ) -> float:
@@ -40,7 +36,6 @@ def r_squared(
 
  return float(1.0 - (ss_res / ss_tot))
 
-def calculate_metrics(
 def calculate_metrics(
  y_pred: npt.NDArray[np.float64],
     ) -> Dict[str, float]:

@@ -26,16 +26,13 @@ from geostats.models.variogram_models import SphericalModel, ExponentialModel
 pytestmark = pytest.mark.skipif(not SKLEARN_AVAILABLE, reason="scikit-learn not installed")
 
 class TestRegressionKriging:
-class TestRegressionKriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         ml_model = LinearRegression()
         rk = RegressionKriging(ml_model=ml_model, variogram_model='spherical')
         assert rk is not None
         assert rk.variogram_model_type == 'spherical'
 
-    def test_fit_predict(self):
     def test_fit_predict(self):
         # Generate synthetic data
         np.random.seed(42)
@@ -62,7 +59,6 @@ class TestRegressionKriging:
         assert np.all(variance >= 0)
 
     def test_without_covariates(self):
-    def test_without_covariates(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
         y = np.random.uniform(0, 10, 20)
@@ -78,15 +74,12 @@ class TestRegressionKriging:
         assert variance.shape == (1,)
 
 class TestRandomForestKriging:
-class TestRandomForestKriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         rfk = RandomForestKriging(n_estimators=10, variogram_model='spherical')
         assert rfk is not None
         assert rfk.n_estimators == 10
 
-    def test_fit_predict_with_covariates(self):
     def test_fit_predict_with_covariates(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -111,15 +104,12 @@ class TestRandomForestKriging:
 
 @pytest.mark.skipif(not XGBOOST_AVAILABLE, reason="xgboost not installed")
 class TestXGBoostKriging:
-class TestXGBoostKriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         from geostats.ml.regression_kriging import XGBoostKriging
         xgbk = XGBoostKriging(n_estimators=10, variogram_model='gaussian')
         assert xgbk is not None
 
-    def test_fit_predict(self):
     def test_fit_predict(self):
         from geostats.ml.regression_kriging import XGBoostKriging
         np.random.seed(42)
@@ -142,14 +132,11 @@ class TestXGBoostKriging:
         assert variance.shape == (2,)
 
 class TestGaussianProcessGeostat:
-class TestGaussianProcessGeostat:
 
-    def test_initialization(self):
     def test_initialization(self):
         gp = GaussianProcessGeostat(kernel='rbf')
         assert gp is not None
 
-    def test_fit_predict(self):
     def test_fit_predict(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
@@ -169,7 +156,6 @@ class TestGaussianProcessGeostat:
         assert np.all(std >= 0)
 
     def test_different_kernels(self):
-    def test_different_kernels(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 25)
         y = np.random.uniform(0, 10, 25)
@@ -181,7 +167,6 @@ class TestGaussianProcessGeostat:
         predictions, _ = gp.predict(np.array([5.0]), np.array([5.0]), return_std=True)
         assert predictions.shape == (1,)
 
-    def test_hyperparameter_optimization(self):
     def test_hyperparameter_optimization(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -198,9 +183,7 @@ class TestGaussianProcessGeostat:
         assert predictions.shape == (1,)
 
 class TestEnsembleKriging:
-class TestEnsembleKriging:
 
-    def test_initialization(self):
     def test_initialization(self):
         # Create some simple kriging models
         np.random.seed(42)
@@ -215,7 +198,6 @@ class TestEnsembleKriging:
         assert ek is not None
         assert len(ek.models) == 2
 
-    def test_fit_predict(self):
     def test_fit_predict(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 35)
@@ -237,7 +219,6 @@ class TestEnsembleKriging:
         assert np.all(variance >= 0)
 
     def test_weighted_ensemble(self):
-    def test_weighted_ensemble(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
         y = np.random.uniform(0, 10, 30)
@@ -256,7 +237,6 @@ class TestEnsembleKriging:
         assert predictions.shape == (1,)
         assert variance.shape == (1,)
 
-    def test_inverse_variance_weighting(self):
     def test_inverse_variance_weighting(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -277,9 +257,7 @@ class TestEnsembleKriging:
         assert variance.shape == (2,)
 
 class TestMLIntegration:
-class TestMLIntegration:
 
-    def test_compare_methods(self):
     def test_compare_methods(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)

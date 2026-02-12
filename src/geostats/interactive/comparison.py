@@ -16,7 +16,6 @@ except ImportError:
  PLOTLY_AVAILABLE = False
 
 def interactive_comparison(
-def interactive_comparison(
  title: str = 'Method Comparison',
     ):
  """
@@ -98,7 +97,6 @@ def interactive_comparison(
 
  return fig
 
-def interactive_cross_validation(
 def interactive_cross_validation(
  predicted: npt.NDArray[np.float64],
  method_name: str = 'Kriging',

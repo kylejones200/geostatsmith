@@ -19,7 +19,6 @@ from geostats.config import (
 )
 
 def test_minimal_config():
-def test_minimal_config():
  config_dict = {
  'project': {
  'name': 'Test',
@@ -38,7 +37,6 @@ def test_minimal_config():
  assert config.data.x_column == 'X'
  assert config.kriging.method == 'ordinary' # Default
 
-def test_config_validation():
 def test_config_validation():
  # Invalid: missing required fields
         with pytest.raises(ConfigError):
@@ -73,7 +71,6 @@ def test_config_validation():
  })
 
 def test_yaml_loading():
-def test_yaml_loading():
  config_dict = {
  'project': {'name': 'YAML Test', 'output_dir': './results'},
  'data': {
@@ -98,7 +95,6 @@ def test_yaml_loading():
  finally:
  Path(temp_path).unlink()
 
-def test_config_merging():
 def test_config_merging():
      base_dict = {
  'project': {'name': 'Base', 'output_dir': './results'},
@@ -133,7 +129,6 @@ def test_config_merging():
  assert merged.data.x_column == 'X' # Preserved from base
 
 def test_default_values():
-def test_default_values():
  config_dict = {
  'project': {'name': 'Test', 'output_dir': './results'},
  'data': {
@@ -158,7 +153,6 @@ def test_default_values():
  assert config.visualization.style == 'minimalist'
  assert config.output.save_predictions == True
 
-def test_cross_field_validation():
 def test_cross_field_validation():
  # Cokriging without secondary variable
  with pytest.raises(ConfigError) as excinfo:
@@ -191,7 +185,6 @@ def test_cross_field_validation():
  assert 'indicator' in str(excinfo.value).lower()
 
 def test_neighborhood_validation():
-def test_neighborhood_validation():
  # max_neighbors < min_neighbors
  with pytest.raises(ConfigError):
      'data': {
@@ -208,7 +201,6 @@ def test_neighborhood_validation():
  }
  })
 
-def test_file_not_found_validation():
 def test_file_not_found_validation():
  with pytest.raises(ConfigError) as excinfo:
      'data': {

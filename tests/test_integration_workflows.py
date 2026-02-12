@@ -24,9 +24,7 @@ from geostats.utils.data_utils import split_train_test
 from geostats.simulation.gaussian_simulation import sequential_gaussian_simulation
 
 class TestBasicKrigingWorkflow:
-class TestBasicKrigingWorkflow:
 
-    def test_full_ok_workflow(self):
     def test_full_ok_workflow(self):
         np.random.seed(42)
 
@@ -70,7 +68,6 @@ class TestBasicKrigingWorkflow:
         assert np.mean(pred) < 2
 
     def test_sk_with_known_mean(self):
-    def test_sk_with_known_mean(self):
         np.random.seed(42)
 
         # Data with known mean
@@ -94,7 +91,6 @@ class TestBasicKrigingWorkflow:
         assert abs(pred[0] - true_mean) < 2.0
         assert var[0] > 0
 
-    def test_uk_with_trend(self):
     def test_uk_with_trend(self):
         np.random.seed(42)
 
@@ -127,9 +123,7 @@ class TestBasicKrigingWorkflow:
         assert all(np.abs(pred - expected) < 3.0)
 
 class TestTransformationWorkflow:
-class TestTransformationWorkflow:
 
-    def test_normal_score_transform_workflow(self):
     def test_normal_score_transform_workflow(self):
         np.random.seed(42)
 
@@ -163,7 +157,6 @@ class TestTransformationWorkflow:
         assert pred_original[0] > 0
 
     def test_log_transform_workflow(self):
-    def test_log_transform_workflow(self):
         np.random.seed(42)
 
         # Lognormal data
@@ -193,9 +186,7 @@ class TestTransformationWorkflow:
         assert pred_original[0] > 0
 
 class TestCrossValidationWorkflow:
-class TestCrossValidationWorkflow:
 
-    def test_leave_one_out_cross_validation(self):
     def test_leave_one_out_cross_validation(self):
         np.random.seed(42)
 
@@ -232,7 +223,6 @@ class TestCrossValidationWorkflow:
         assert rmse < 1.0 # Should have reasonable accuracy
 
     def test_k_fold_cross_validation(self):
-    def test_k_fold_cross_validation(self):
         np.random.seed(42)
 
         # Generate data
@@ -262,9 +252,7 @@ class TestCrossValidationWorkflow:
         assert all(np.isfinite(results['predictions']))
 
 class TestSimulationWorkflow:
-class TestSimulationWorkflow:
 
-    def test_sgs_workflow(self):
     def test_sgs_workflow(self):
         np.random.seed(42)
 
@@ -305,9 +293,7 @@ class TestSimulationWorkflow:
         assert np.std(etype) < np.mean([np.std(r) for r in realizations])
 
 class TestTrainTestWorkflow:
-class TestTrainTestWorkflow:
 
-    def test_train_test_split_workflow(self):
     def test_train_test_split_workflow(self):
         np.random.seed(42)
 
@@ -347,9 +333,7 @@ class TestTrainTestWorkflow:
         assert mae < 0.8
 
 class TestMultipleAlgorithmsComparison:
-class TestMultipleAlgorithmsComparison:
 
-    def test_compare_kriging_methods(self):
     def test_compare_kriging_methods(self):
         np.random.seed(42)
 
@@ -389,7 +373,6 @@ class TestMultipleAlgorithmsComparison:
         assert not np.allclose(pred_ok, pred_uk)
 
     def test_compare_variogram_models(self):
-    def test_compare_variogram_models(self):
         np.random.seed(42)
 
         n = 80
@@ -426,9 +409,7 @@ class TestMultipleAlgorithmsComparison:
         assert abs(pred_exp[0] - pred_gau[0]) < 2.0
 
 class TestRobustnessAndEdgeCases:
-class TestRobustnessAndEdgeCases:
 
-    def test_workflow_with_few_points(self):
     def test_workflow_with_few_points(self):
         x = np.array([0, 50, 100])
         y = np.array([0, 50, 100])
@@ -449,7 +430,6 @@ class TestRobustnessAndEdgeCases:
 
         assert np.isfinite(pred[0])
 
-    def test_workflow_with_constant_values(self):
     def test_workflow_with_constant_values(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 30)

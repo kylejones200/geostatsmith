@@ -24,7 +24,6 @@ except ImportError:
  GEOPANDAS_AVAILABLE = False
 
 def read_netcdf(
-def read_netcdf(
  z_var: str,
  x_var: str = 'x',
  y_var: str = 'y',
@@ -124,7 +123,6 @@ def read_netcdf(
  return x, y, z, metadata
 
 def write_netcdf(
-def write_netcdf(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -209,7 +207,6 @@ def write_netcdf(
  dataset.source = 'geostats library'
 
 def read_geojson(
-def read_geojson(
  z_property: str,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
  """
@@ -266,7 +263,6 @@ def read_geojson(
  return x, y, z
 
 def write_geojson(
-def write_geojson(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -318,7 +314,6 @@ def write_geojson(
  gdf.to_file(filename, driver='GeoJSON')
 
 def to_dataframe(
-def to_dataframe(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_col: str = 'x',
@@ -368,7 +363,6 @@ def to_dataframe(
 
  return df
 
-def to_geopandas(
 def to_geopandas(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

@@ -10,7 +10,6 @@ from typing import Optional
 
 
 def setup_logging(
-def setup_logging(
     format_string: Optional[str] = None,
     stream: Optional[object] = None,
     ) -> None:
@@ -44,7 +43,6 @@ def setup_logging(
     )
 
 
-def get_logger(name: str) -> logging.Logger:
 def get_logger(name: str) -> logging.Logger:
     Get a logger for a module.
 

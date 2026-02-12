@@ -16,7 +16,6 @@ except ImportError:
  PLOTLY_AVAILABLE = False
 
 def interactive_variogram(
-def interactive_variogram(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  fitted_model: Optional[object] = None,
@@ -126,7 +125,6 @@ def interactive_variogram(
 
  return fig
 
-def interactive_variogram_cloud(
 def interactive_variogram_cloud(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

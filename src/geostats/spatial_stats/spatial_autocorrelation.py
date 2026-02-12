@@ -21,7 +21,6 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 def morans_i(
-def morans_i(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  distance_threshold: Optional[float] = None,
@@ -149,7 +148,6 @@ def morans_i(
 
  return I, z_score
 
-def gearys_c(
 def gearys_c(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

@@ -15,10 +15,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 def _rmse(y_true: npt.NDArray[np.float64], y_pred: npt.NDArray[np.float64]) -> float:
-def _rmse(y_true: npt.NDArray[np.float64], y_pred: npt.NDArray[np.float64]) -> float:
  return np.sqrt(np.mean((y_true - y_pred) ** 2))
 
-def sample_size_calculator(
 def sample_size_calculator(
  y_initial: npt.NDArray[np.float64],
  z_initial: npt.NDArray[np.float64],
@@ -198,7 +196,6 @@ def sample_size_calculator(
  }
 
 def cost_benefit_analysis(
-def cost_benefit_analysis(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  variogram_model: VariogramModelBase,
@@ -306,7 +303,6 @@ def cost_benefit_analysis(
  'net_benefits': net_benefits,
  }
 
-def estimate_interpolation_error(
 def estimate_interpolation_error(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

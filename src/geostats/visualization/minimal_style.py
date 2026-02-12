@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 def apply_minimalist_style(ax, remove_spines=('top', 'right')):
-def apply_minimalist_style(ax, remove_spines=('top', 'right')):
  Apply minimalist style to matplotlib axes
 
  Parameters
@@ -46,7 +45,6 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
  if 'right' in remove_spines:
  if 'right' in remove_spines:
 
-def set_minimalist_rcparams():
 def set_minimalist_rcparams():
  mpl.rcParams.update({
  # Figure
@@ -100,7 +98,6 @@ def set_minimalist_rcparams():
  'font.sans-serif': ['Arial', 'DejaVu Sans', 'Liberation Sans'],
  })
 
-def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
 def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  Create figure with minimalist style applied
 

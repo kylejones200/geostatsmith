@@ -49,7 +49,6 @@ from ..core.logging_config import setup_logger
 logger = setup_logger(__name__)
 
 class EnsembleKriging(BaseKriging):
-class EnsembleKriging(BaseKriging):
  Ensemble Kriging: Combine Multiple Kriging Models
 
  Aggregates predictions from multiple kriging models using weighted
@@ -108,7 +107,6 @@ class EnsembleKriging(BaseKriging):
  """
 
  def __init__(
- def __init__(
      models: List[BaseKriging],
      weighting: str = 'equal',
      combine_variance: bool = True
@@ -144,7 +142,6 @@ class EnsembleKriging(BaseKriging):
      f"weighting={weighting}"
      )
 
- def _compute_weights(
  def _compute_weights(
      variances: Optional[npt.NDArray[np.float64]] = None,
      scores: Optional[npt.NDArray[np.float64]] = None
@@ -190,7 +187,6 @@ class EnsembleKriging(BaseKriging):
 
      return weights
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -272,7 +268,6 @@ class EnsembleKriging(BaseKriging):
      return ensemble_pred
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform cross-validation on the ensemble
 
  Returns
@@ -302,7 +297,6 @@ class EnsembleKriging(BaseKriging):
 
  return predictions, metrics
 
-class BootstrapKriging(BaseKriging):
 class BootstrapKriging(BaseKriging):
  Bootstrap Aggregating (Bagging) for Kriging
 
@@ -349,7 +343,6 @@ class BootstrapKriging(BaseKriging):
  """
 
  def __init__(
- def __init__(
      base_model_type: type,
      n_bootstrap: int = 100,
      sample_fraction: float = 1.0,
@@ -374,7 +367,6 @@ class BootstrapKriging(BaseKriging):
      f"sample_fraction={sample_fraction}"
      )
 
- def fit(
  def fit(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -428,7 +420,6 @@ class BootstrapKriging(BaseKriging):
      f"Bootstrap fitting complete: {len(self.bootstrap_models)} successful models"
      )
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -485,7 +476,6 @@ class BootstrapKriging(BaseKriging):
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform cross-validation on bootstrap ensemble
 
  Returns
@@ -511,7 +501,6 @@ class BootstrapKriging(BaseKriging):
 
  return predictions, metrics
 
-class StackingKriging(BaseKriging):
 class StackingKriging(BaseKriging):
  Stacking: Meta-Learning for Kriging Ensemble
 
@@ -555,7 +544,6 @@ class StackingKriging(BaseKriging):
  """
 
  def __init__(
- def __init__(
      base_models: List[BaseKriging],
      meta_model: Optional[Any] = None,
      cv_folds: int = 5
@@ -580,7 +568,6 @@ class StackingKriging(BaseKriging):
      f"cv_folds={cv_folds}"
      )
 
- def fit(
  def fit(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -656,7 +643,6 @@ class StackingKriging(BaseKriging):
     self.meta_features = meta_features
 
     def predict(
-    def predict(
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
         return_variance: bool = False
@@ -702,7 +688,6 @@ class StackingKriging(BaseKriging):
         
         return final_predictions
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform cross-validation on stacking ensemble
 

@@ -18,7 +18,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def example_1_cli_tools():
-def example_1_cli_tools():
  logger.info("Example 1: CLI Tools")
 
  logger.info("\nAvailable CLI commands:")
@@ -31,7 +30,6 @@ def example_1_cli_tools():
  logger.info(" $ geostats predict samples.csv predictions.csv --method kriging")
  logger.info(" $ geostats serve # Start API server at http://localhost:8000")
 
-def example_2_professional_reporting():
 def example_2_professional_reporting():
  logger.info("Example 2: Professional Reporting")
 
@@ -59,7 +57,6 @@ def example_2_professional_reporting():
 
  except Exception as e:
 
-def example_3_advanced_diagnostics():
 def example_3_advanced_diagnostics():
  logger.info("Example 3: Advanced Diagnostics")
 
@@ -89,7 +86,6 @@ def example_3_advanced_diagnostics():
 
  except Exception as e:
 
-def example_4_web_api():
 def example_4_web_api():
  logger.info("Example 4: Web API Deployment")
 
@@ -142,7 +138,6 @@ def example_4_web_api():
  """)
 
 def example_5_complete_workflow():
-def example_5_complete_workflow():
  logger.info("Example 5: Complete Enterprise Workflow")
 
  try:
@@ -184,7 +179,6 @@ def example_5_complete_workflow():
 
  except Exception as e:
 
-def main():
 def main():
  logger.info("GEOSTATS PHASE 3: ENTERPRISE DEPLOYMENT")
 

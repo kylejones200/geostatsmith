@@ -7,7 +7,6 @@ import numpy as np
 import numpy.typing as npt
 
 def create_grid(
-def create_grid(
  x_max: float,
  y_min: float,
  y_max: float,
@@ -49,7 +48,6 @@ def create_grid(
 
  return X, Y
 
-def interpolate_to_grid(
 def interpolate_to_grid(
  x_min: float,
  x_max: float,

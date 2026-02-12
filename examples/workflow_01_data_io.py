@@ -38,7 +38,6 @@ except ImportError:
  exit(1)
 
 def example_1_read_csv_and_interpolate():
-def example_1_read_csv_and_interpolate():
  
  logger.info("Example 1: CSV → Kriging → GeoTIFF")
  
@@ -124,7 +123,6 @@ def example_1_read_csv_and_interpolate():
  plt.close()
 
 def example_2_geotiff_workflow():
-def example_2_geotiff_workflow():
  
  logger.info("Example 2: GeoTIFF Validation Workflow")
  
@@ -172,7 +170,6 @@ def example_2_geotiff_workflow():
  logger.warning(" elevation_kriging.tif not found. Run Example 1 first.")
 
 def example_3_format_comparison():
-def example_3_format_comparison():
  
  logger.info("Example 3: Format Comparison")
  
@@ -203,7 +200,6 @@ def example_3_format_comparison():
  for fmt, t, s in formats:
  for fmt, t, s in formats:
 
-def main():
 def main():
  logger.info("GEOSTATS DATA I/O WORKFLOW EXAMPLES")
 

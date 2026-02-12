@@ -7,15 +7,12 @@ import numpy as np
 from geostats.validation import metrics
 
 class TestMetrics:
-class TestMetrics:
 
-    def test_rmse_perfect(self):
     def test_rmse_perfect(self):
         y_pred = np.array([1, 2, 3, 4, 5])
         rmse = metrics.root_mean_squared_error(y_true, y_pred)
         assert abs(rmse) < 1e-10
 
-    def test_rmse_calculation(self):
     def test_rmse_calculation(self):
         y_pred = np.array([1.5, 2.5, 3.5, 4.5, 5.5])
         rmse = metrics.root_mean_squared_error(y_true, y_pred)
@@ -23,30 +20,25 @@ class TestMetrics:
         assert abs(rmse - expected) < 1e-10
 
     def test_mae_perfect(self):
-    def test_mae_perfect(self):
         y_pred = np.array([1, 2, 3, 4, 5])
         mae = metrics.mean_absolute_error(y_true, y_pred)
         assert abs(mae) < 1e-10
 
-    def test_mae_calculation(self):
     def test_mae_calculation(self):
         y_pred = np.array([2, 3, 4, 5, 6])
         mae = metrics.mean_absolute_error(y_true, y_pred)
         assert abs(mae - 1.0) < 1e-10
 
     def test_r2_perfect(self):
-    def test_r2_perfect(self):
         y_pred = np.array([1, 2, 3, 4, 5])
         r2 = metrics.r_squared(y_true, y_pred)
         assert abs(r2 - 1.0) < 1e-10
 
     def test_r2_poor(self):
-    def test_r2_poor(self):
         y_pred = np.array([3, 3, 3, 3, 3]) # Just predict mean
         r2 = metrics.r_squared(y_true, y_pred)
         assert abs(r2) < 1e-10 # R² should be 0 for mean prediction
 
-    def test_bias_zero(self):
     def test_bias_zero(self):
         y_pred = np.array([1, 2, 3, 4, 5])
         # Bias is just mean(y_pred - y_true)
@@ -54,12 +46,10 @@ class TestMetrics:
         assert abs(bias) < 1e-10
 
     def test_bias_calculation(self):
-    def test_bias_calculation(self):
         y_pred = np.array([2, 3, 4, 5, 6])
         bias = np.mean(y_pred - y_true)
         assert abs(bias - 1.0) < 1e-10 # Consistently 1 unit too high
 
-    def test_metrics_with_nan(self):
     def test_metrics_with_nan(self):
         y_pred = np.array([1, 2, 3, 4, 5])
 
@@ -67,7 +57,6 @@ class TestMetrics:
         rmse = metrics.root_mean_squared_error(y_true, y_pred)
         assert np.isnan(rmse)
 
-    def test_metrics_different_lengths(self):
     def test_metrics_different_lengths(self):
         y_pred = np.array([1, 2, 3, 4])
 
@@ -78,13 +67,11 @@ class TestMetrics:
     """Test cross-validation methods"""
 
     def setup_method(self):
-    def setup_method(self):
         np.random.seed(42)
         self.x = np.random.rand(50) * 100
         self.y = np.random.rand(50) * 100
         self.z = np.sin(self.x / 20) + np.cos(self.y / 20) + np.random.randn(50) * 0.1
 
-    def test_leave_one_out_returns_correct_length(self):
     def test_leave_one_out_returns_correct_length(self):
         from geostats import kriging, variogram
 

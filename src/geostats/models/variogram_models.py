@@ -14,7 +14,6 @@ from scipy.special import gamma as gamma_func, kv
 from .base_model import VariogramModelBase
 
 class SphericalModel(VariogramModelBase):
-class SphericalModel(VariogramModelBase):
  Spherical variogram model
 
  The spherical model is one of the most commonly used variogram models.
@@ -27,7 +26,6 @@ class SphericalModel(VariogramModelBase):
  where a is the range parameter.
  """
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]
@@ -47,7 +45,6 @@ class SphericalModel(VariogramModelBase):
  return result
 
 class ExponentialModel(VariogramModelBase):
-class ExponentialModel(VariogramModelBase):
  Exponential variogram model
 
  The exponential model approaches the sill asymptotically.
@@ -60,7 +57,6 @@ class ExponentialModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]
      sill = self._parameters["sill"]
@@ -70,7 +66,6 @@ class ExponentialModel(VariogramModelBase):
 
  return result
 
-class GaussianModel(VariogramModelBase):
 class GaussianModel(VariogramModelBase):
  Gaussian variogram model
 
@@ -85,7 +80,6 @@ class GaussianModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]
      sill = self._parameters["sill"]
@@ -96,7 +90,6 @@ class GaussianModel(VariogramModelBase):
 
  return result
 
-class LinearModel(VariogramModelBase):
 class LinearModel(VariogramModelBase):
  Linear variogram model
 
@@ -110,7 +103,6 @@ class LinearModel(VariogramModelBase):
  """
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]
      slope = self._parameters["sill"] # Reinterpret sill as slope
@@ -119,7 +111,6 @@ class LinearModel(VariogramModelBase):
 
  return result
 
-class PowerModel(VariogramModelBase):
 class PowerModel(VariogramModelBase):
  Power variogram model
 
@@ -136,7 +127,6 @@ class PowerModel(VariogramModelBase):
  - 'range' is reinterpreted as 'exponent' (default 1.5)
  """
 
- def __init__(self, nugget: float = 0.0, scale: float = 1.0, exponent: float = 1.5):
  def __init__(self, nugget: float = 0.0, scale: float = 1.0, exponent: float = 1.5):
      Initialize Power model
 
@@ -164,7 +154,6 @@ class PowerModel(VariogramModelBase):
  return result
 
 class MaternModel(VariogramModelBase):
-class MaternModel(VariogramModelBase):
  Matérn variogram model
 
  A flexible model controlled by smoothness parameter ν (nu).
@@ -182,7 +171,6 @@ class MaternModel(VariogramModelBase):
  - Γ is the Gamma function
  """
 
- def __init__(
  def __init__(
      nugget: float = 0.0,
      sill: float = 1.0,
@@ -208,7 +196,6 @@ class MaternModel(VariogramModelBase):
      if nu <= 0:
      self._parameters["nu"] = nu
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]
@@ -237,7 +224,6 @@ class MaternModel(VariogramModelBase):
  return result
 
 class HoleEffectModel(VariogramModelBase):
-class HoleEffectModel(VariogramModelBase):
  Hole-effect (dampened oscillatory) variogram model
 
  Shows periodic behavior, useful for quasi-periodic phenomena.
@@ -249,7 +235,6 @@ class HoleEffectModel(VariogramModelBase):
  where a is the range parameter.
  """
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]
@@ -270,7 +255,6 @@ class HoleEffectModel(VariogramModelBase):
  return result
 
 class CubicModel(VariogramModelBase):
-class CubicModel(VariogramModelBase):
  Cubic variogram model
 
  Similar to spherical but with cubic polynomial.
@@ -281,7 +265,6 @@ class CubicModel(VariogramModelBase):
  γ(h) = sill for h > a
  """
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]
@@ -304,7 +287,6 @@ class CubicModel(VariogramModelBase):
  return result
 
 class StableModel(VariogramModelBase):
-class StableModel(VariogramModelBase):
  Stable (powered exponential) variogram model
 
  A generalization of the Gaussian and Exponential models.
@@ -317,7 +299,6 @@ class StableModel(VariogramModelBase):
  - s = 2: Gaussian model
  """
 
- def __init__(
  def __init__(
      nugget: float = 0.0,
      sill: float = 1.0,
@@ -343,7 +324,6 @@ class StableModel(VariogramModelBase):
      if not (0 < shape <= 2):
      self._parameters["shape"] = shape
 
- def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      h = np.asarray(h, dtype=np.float64)
      nugget = self._parameters["nugget"]

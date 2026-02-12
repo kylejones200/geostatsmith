@@ -40,7 +40,6 @@ SPATIAL_NEIGHBORS_MIN = 5 # Minimum neighbors for local outlier detection
 SPATIAL_THRESHOLD_FACTOR = 3.0 # Spatial outlier = >3 std from local mean
 
 def detect_outliers_zscore(
-def detect_outliers_zscore(
  threshold: float = Z_SCORE_THRESHOLD,
  return_scores: bool = False
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
@@ -98,7 +97,6 @@ def detect_outliers_zscore(
  if return_scores:
  return outlier_mask
 
-def detect_outliers_modified_zscore(
 def detect_outliers_modified_zscore(
  threshold: float = MODIFIED_Z_THRESHOLD,
  return_scores: bool = False
@@ -166,7 +164,6 @@ def detect_outliers_modified_zscore(
  return outlier_mask
 
 def detect_outliers_iqr(
-def detect_outliers_iqr(
  multiplier: float = IQR_MULTIPLIER,
  return_bounds: bool = False
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], Tuple[float, float]]]:
@@ -223,7 +220,6 @@ def detect_outliers_iqr(
  if return_bounds:
  return outlier_mask
 
-def detect_spatial_outliers(
 def detect_spatial_outliers(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -310,7 +306,6 @@ def detect_spatial_outliers(
 
  return outlier_mask
 
-def detect_outliers_ensemble(
 def detect_outliers_ensemble(
  y: Optional[npt.NDArray[np.float64]] = None,
  z: npt.NDArray[np.float64] = None,

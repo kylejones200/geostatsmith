@@ -60,7 +60,6 @@ logger = get_logger(__name__)
 
 @dataclass
 class PlurigaussianConfig:
-class PlurigaussianConfig:
  n_realizations: int = DEFAULT_N_REALIZATIONS
  n_gaussian_fields: int = 2 # Number of independent Gaussian fields
  categories: List[int] = None # Category labels
@@ -69,7 +68,6 @@ class PlurigaussianConfig:
  max_neighbors: int = 12
  search_radius: Optional[float] = None
 
-class PlurigaussianSimulation:
 class PlurigaussianSimulation:
  Plurigaussian Simulation for complex categorical variables
 
@@ -113,7 +111,6 @@ class PlurigaussianSimulation:
  >>> realizations = pgs.simulate(x_grid, y_grid)
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -174,7 +171,6 @@ class PlurigaussianSimulation:
      )
 
  def _setup_categories(self):
- def _setup_categories(self):
      unique_cats = np.unique(self.categories)
 
  if self.config.categories is not None:
@@ -184,7 +180,6 @@ class PlurigaussianSimulation:
 
  logger.debug(f"Categories: {self.unique_categories}")
 
- def _transform_conditioning_data(self):
  def _transform_conditioning_data(self):
      Transform categorical conditioning data to Gaussian field values
 
@@ -233,7 +228,6 @@ class PlurigaussianSimulation:
 
      logger.debug(f"Transformed {n_cond} conditioning points to {n_fields} Gaussian fields")
 
- def simulate(
  def simulate(
      x_grid: npt.NDArray[np.float64],
      y_grid: npt.NDArray[np.float64]
@@ -311,7 +305,6 @@ class PlurigaussianSimulation:
      return realizations_categorical
 
  def get_proportions_summary(
- def get_proportions_summary(
      realizations: npt.NDArray[np.int32]
      ) -> Dict[int, Dict[str, float]]:
      """
@@ -356,7 +349,6 @@ class PlurigaussianSimulation:
 
      return summary
 
-def create_rectangular_rule(
 def create_rectangular_rule(
  thresholds_y1: List[float],
  thresholds_y2: List[float],

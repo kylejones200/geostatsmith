@@ -6,9 +6,7 @@ import numpy as np
 from geostats.utils.data_utils import generate_synthetic_data, split_train_test
 
 class TestGenerateSyntheticData:
-class TestGenerateSyntheticData:
 
-    def test_generate_synthetic_data_basic(self):
     def test_generate_synthetic_data_basic(self):
         x, y, z = generate_synthetic_data(n_points=50, seed=42)
 
@@ -20,7 +18,6 @@ class TestGenerateSyntheticData:
         assert not np.any(np.isnan(z))
 
     def test_generate_synthetic_data_reproducible(self):
-    def test_generate_synthetic_data_reproducible(self):
         x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
         x2, y2, z2 = generate_synthetic_data(n_points=30, seed=42)
 
@@ -28,7 +25,6 @@ class TestGenerateSyntheticData:
         assert np.allclose(y1, y2)
         assert np.allclose(z1, z2)
 
-    def test_generate_synthetic_data_different_seeds(self):
     def test_generate_synthetic_data_different_seeds(self):
         x1, y1, z1 = generate_synthetic_data(n_points=30, seed=42)
         x2, y2, z2 = generate_synthetic_data(n_points=30, seed=123)
@@ -38,9 +34,7 @@ class TestGenerateSyntheticData:
         assert not np.allclose(z1, z2)
 
 class TestSplitTrainTest:
-class TestSplitTrainTest:
 
-    def test_split_train_test_basic(self):
     def test_split_train_test_basic(self):
         x = np.arange(100, dtype=float)
         y = np.arange(100, dtype=float)
@@ -55,7 +49,6 @@ class TestSplitTrainTest:
         assert len(x_train) + len(x_test) == len(x)
 
     def test_split_train_test_no_overlap(self):
-    def test_split_train_test_no_overlap(self):
         x = np.arange(50, dtype=float)
         y = np.arange(50, dtype=float)
         z = np.arange(50, dtype=float)
@@ -68,7 +61,6 @@ class TestSplitTrainTest:
         all_indices = np.concatenate([x_train, x_test])
         assert len(np.unique(all_indices)) == len(x)
 
-    def test_split_train_test_reproducible(self):
     def test_split_train_test_reproducible(self):
         x = np.random.rand(100)
         y = np.random.rand(100)

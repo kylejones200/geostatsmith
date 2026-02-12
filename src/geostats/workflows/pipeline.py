@@ -33,10 +33,8 @@ from ..visualization.minimal_style import set_minimalist_rcparams
 from ..core.exceptions import GeoStatsError
 
 class PipelineError(GeoStatsError):
-class PipelineError(GeoStatsError):
  pass
 
-class AnalysisPipeline:
 class AnalysisPipeline:
  Config-driven geostatistical analysis pipeline
 
@@ -63,7 +61,6 @@ class AnalysisPipeline:
  """
 
  def __init__(self, config: AnalysisConfig):
- def __init__(self, config: AnalysisConfig):
      self.logger = self._setup_logging()
      self.output_dir = Path(config.project.output_dir)
      self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -82,7 +79,6 @@ class AnalysisPipeline:
      self.variance = None
      self.cv_results = None
 
- def _setup_logging(self) -> logging.Logger:
  def _setup_logging(self) -> logging.Logger:
      logger = logging.getLogger('geostats.pipeline')
      logger.setLevel(logging.DEBUG if self.config.verbose else logging.INFO)
@@ -105,7 +101,6 @@ class AnalysisPipeline:
 
  return logger
 
- def run(self):
  def run(self):
      self.logger.info(f"=== Starting analysis: {self.config.project.name} ===")
      start_time = datetime.now()
@@ -138,7 +133,6 @@ class AnalysisPipeline:
  self.logger.error(f"Pipeline failed: {e}")
  raise PipelineError(f"Pipeline execution failed: {e}")
 
- def load_data(self):
  def load_data(self):
      self.logger.info("Loading data...")
 
@@ -209,7 +203,6 @@ class AnalysisPipeline:
  self.logger.info(f"Value mean: {self.z.mean():.4f}, std: {self.z.std():.4f}")
 
  def preprocess_data(self):
- def preprocess_data(self):
      self.logger.info("Preprocessing data...")
 
  # Outlier removal
@@ -270,7 +263,6 @@ class AnalysisPipeline:
 
      self.logger.info(f"Weight range: [{self.weights.min():.4f}, {self.weights.max():.4f}]")
 
- def model_variogram(self):
  def model_variogram(self):
      self.logger.info("Modeling variogram...")
 
@@ -421,7 +413,6 @@ class AnalysisPipeline:
             self.logger.info(f" Range: {self.config.variogram.manual_range:.4f}")
 
  def perform_kriging(self):
- def perform_kriging(self):
      self.logger.info(f"Performing {self.config.kriging.method} kriging...")
 
  # Create prediction grid
@@ -496,7 +487,6 @@ class AnalysisPipeline:
  self.logger.info(f"Variance range: [{np.nanmin(self.variance):.4f}, {np.nanmax(self.variance):.4f}]")
 
  def validate(self):
- def validate(self):
      self.logger.info("Performing cross-validation...")
 
  try:
@@ -516,7 +506,6 @@ class AnalysisPipeline:
  self.cv_results = None
 
  def visualize(self):
- def visualize(self):
      self.logger.info("Visualization generation...")
 
  # For now, just log what would be created
@@ -529,7 +518,6 @@ class AnalysisPipeline:
  # - Calling plot functions with correct signatures
  # - Handling plot saving
 
- def save_outputs(self):
  def save_outputs(self):
      self.logger.info("Saving outputs...")
 
@@ -557,7 +545,6 @@ class AnalysisPipeline:
  cv_df.to_csv(cv_path, index=False)
  self.logger.info(f"Saved CV results to {cv_path}")
 
- def _generate_report(self, elapsed):
  def _generate_report(self, elapsed):
      report_path = self.output_dir / 'analysis_report.txt'
 

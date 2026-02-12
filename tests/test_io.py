@@ -66,9 +66,7 @@ if GEOPANDAS_AVAILABLE:
 
 
 class TestCSVIO:
-class TestCSVIO:
 
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -78,7 +76,6 @@ class TestCSVIO:
 
         self.temp_dir = Path(tempfile.mkdtemp())
 
-    def teardown_method(self):
     def teardown_method(self):
         if self.temp_dir.exists():
 
@@ -98,7 +95,6 @@ class TestCSVIO:
         assert extra is None
 
     def test_read_csv_spatial_custom_columns(self):
-    def test_read_csv_spatial_custom_columns(self):
         df = pd.DataFrame({"lon": self.x, "lat": self.y, "value": self.z})
         csv_file = self.temp_dir / "test.csv"
         df.to_csv(csv_file, index=False)
@@ -111,7 +107,6 @@ class TestCSVIO:
         np.testing.assert_allclose(y_read, self.y)
         np.testing.assert_allclose(z_read, self.z)
 
-    def test_read_csv_spatial_with_additional_cols(self):
     def test_read_csv_spatial_with_additional_cols(self):
         extra_data = np.random.randn(self.n)
         df = pd.DataFrame(
@@ -128,7 +123,6 @@ class TestCSVIO:
         assert "covariate" in extra.columns
         np.testing.assert_allclose(extra["covariate"].values, extra_data)
 
-    def test_read_csv_spatial_handles_nan(self):
     def test_read_csv_spatial_handles_nan(self):
         df = pd.DataFrame({"x": self.x, "y": self.y, "z": self.z})
         # Add some NaN values
@@ -147,7 +141,6 @@ class TestCSVIO:
         assert not np.any(np.isnan(y_read))
         assert not np.any(np.isnan(z_read))
 
-    def test_read_csv_spatial_file_not_found(self):
     def test_read_csv_spatial_file_not_found(self):
         with pytest.raises(FileNotFoundError):
 
@@ -174,7 +167,6 @@ class TestCSVIO:
         np.testing.assert_allclose(z_read, self.z)
 
     def test_write_csv_spatial_custom_columns(self):
-    def test_write_csv_spatial_custom_columns(self):
         csv_file = self.temp_dir / "output.csv"
 
         write_csv_spatial(
@@ -194,7 +186,6 @@ class TestCSVIO:
         assert "temperature" in df.columns
 
     def test_write_csv_spatial_with_extra(self):
-    def test_write_csv_spatial_with_extra(self):
         csv_file = self.temp_dir / "output.csv"
         extra = pd.DataFrame(
             {"variance": np.random.rand(self.n), "std": np.random.rand(self.n)}
@@ -209,7 +200,6 @@ class TestCSVIO:
         assert len(df) == self.n
 
     def test_read_excel_spatial(self):
-    def test_read_excel_spatial(self):
         try:
         try:
 
@@ -223,10 +213,8 @@ class TestCSVIO:
 
 
 class TestRasterIO:
-class TestRasterIO:
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.temp_dir = Path(tempfile.mkdtemp())
@@ -239,11 +227,9 @@ class TestRasterIO:
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def teardown_method(self):
-    def teardown_method(self):
         if self.temp_dir.exists():
 
         if self.temp_dir.exists():
-    def test_write_read_geotiff(self):
     def test_write_read_geotiff(self):
         tif_file = self.temp_dir / "test.tif"
 
@@ -263,7 +249,6 @@ class TestRasterIO:
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def test_read_geotiff_as_points(self):
-    def test_read_geotiff_as_points(self):
         tif_file = self.temp_dir / "test.tif"
         write_geotiff(str(tif_file), self.x_grid, self.y_grid, self.z_grid)
 
@@ -275,7 +260,6 @@ class TestRasterIO:
         assert len(x_read) == len(y_read) == len(z_read)
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
-    def test_write_geotiff_handles_nan(self):
     def test_write_geotiff_handles_nan(self):
         z_with_nan = self.z_grid.copy()
         z_with_nan[10:15, 20:25] = np.nan
@@ -290,11 +274,9 @@ class TestRasterIO:
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def test_read_geotiff_file_not_found(self):
-    def test_read_geotiff_file_not_found(self):
         with pytest.raises(FileNotFoundError):
 
         with pytest.raises(FileNotFoundError):
-    def test_write_ascii_grid(self):
     def test_write_ascii_grid(self):
         asc_file = self.temp_dir / "test.asc"
 
@@ -303,7 +285,6 @@ class TestRasterIO:
         assert asc_file.exists()
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
-    def test_read_ascii_grid(self):
     def test_read_ascii_grid(self):
         asc_file = self.temp_dir / "test.asc"
         write_ascii_grid(str(asc_file), self.x_grid, self.y_grid, self.z_grid)
@@ -316,7 +297,6 @@ class TestRasterIO:
 
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def test_read_ascii_grid_as_points(self):
-    def test_read_ascii_grid_as_points(self):
         asc_file = self.temp_dir / "test.asc"
         write_ascii_grid(str(asc_file), self.x_grid, self.y_grid, self.z_grid)
 
@@ -328,10 +308,8 @@ class TestRasterIO:
 
 
 class TestNetCDFIO:
-class TestNetCDFIO:
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
-    def setup_method(self):
     def setup_method(self):
         np.random.seed(42)
         self.temp_dir = Path(tempfile.mkdtemp())
@@ -343,11 +321,9 @@ class TestNetCDFIO:
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def teardown_method(self):
-    def teardown_method(self):
         if self.temp_dir.exists():
 
         if self.temp_dir.exists():
-    def test_write_read_netcdf(self):
     def test_write_read_netcdf(self):
         nc_file = self.temp_dir / "test.nc"
 
@@ -373,11 +349,9 @@ class TestNetCDFIO:
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def test_read_netcdf_file_not_found(self):
-    def test_read_netcdf_file_not_found(self):
         with pytest.raises(FileNotFoundError):
 
         with pytest.raises(FileNotFoundError):
-    def test_read_netcdf_missing_variable(self):
     def test_read_netcdf_missing_variable(self):
         nc_file = self.temp_dir / "test.nc"
         write_netcdf(str(nc_file), self.x, self.y, self.z, z_var="temp")
@@ -389,14 +363,12 @@ class TestNetCDFIO:
     """Tests for data conversion utilities"""
 
     def setup_method(self):
-    def setup_method(self):
         np.random.seed(42)
         self.n = 50
         self.x = np.random.uniform(0, 100, self.n)
         self.y = np.random.uniform(0, 100, self.n)
         self.z = 50 + 0.3 * self.x + np.random.normal(0, 3, self.n)
 
-    def test_to_dataframe(self):
     def test_to_dataframe(self):
         df = to_dataframe(self.x, self.y, self.z)
 
@@ -406,7 +378,6 @@ class TestNetCDFIO:
         assert "z" in df.columns
         assert len(df) == self.n
 
-    def test_to_dataframe_custom_columns(self):
     def test_to_dataframe_custom_columns(self):
         df = to_dataframe(
             self.x, self.y, self.z, x_col="lon", y_col="lat", z_col="value"
@@ -418,7 +389,6 @@ class TestNetCDFIO:
 
     @pytest.mark.skipif(not GEOPANDAS_AVAILABLE, reason="geopandas not available")
     def test_to_geopandas(self):
-    def test_to_geopandas(self):
         gdf = to_geopandas(self.x, self.y, self.z)
 
         assert isinstance(gdf, gpd.GeoDataFrame)
@@ -426,7 +396,6 @@ class TestNetCDFIO:
         assert len(gdf) == self.n
 
     @pytest.mark.skipif(not GEOPANDAS_AVAILABLE, reason="geopandas not available")
-    def test_read_write_geojson(self):
     def test_read_write_geojson(self):
         temp_dir = Path(tempfile.mkdtemp())
         geojson_file = temp_dir / "test.geojson"

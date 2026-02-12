@@ -20,7 +20,6 @@ from geostats.workflows import AnalysisPipeline, PipelineError
 @click.group()
 @click.version_option()
 def cli():
-def cli():
  pass
 
     @cli.command()
@@ -28,7 +27,6 @@ def cli():
     @click.option('--validate-only', is_flag=True, help='Only validate config, do not run')
     @click.option('--override', '-o', multiple=True, help='Override config values (e.g., project.name="Test")')
     @click.option('--verbose', '-v', is_flag=True, help='Verbose output')
-def run(config_file, validate_only, override, verbose):
 def run(config_file, validate_only, override, verbose):
  Run geostatistical analysis from config file
 
@@ -95,7 +93,6 @@ def run(config_file, validate_only, override, verbose):
     @cli.command()
     @click.argument('config_file', type=click.Path(exists=True))
 def validate(config_file):
-def validate(config_file):
  Validate a configuration file
 
  Example:
@@ -115,7 +112,6 @@ def validate(config_file):
     @click.option('--template', '-t', type=click.Choice(['basic', 'advanced', 'gold_exploration']),
  default='basic', help='Config template to use')
     @click.option('--output-dir', '-o', default='.', help='Output directory')
-def init(project_name, template, output_dir):
 def init(project_name, template, output_dir):
  Initialize a new project with template configuration
 
@@ -205,7 +201,6 @@ def init(project_name, template, output_dir):
  click.echo(f" 3. Run: geostats-run {output_path}")
 
     @cli.command()
-def templates():
 def templates():
  click.echo("Available templates:\n")
 

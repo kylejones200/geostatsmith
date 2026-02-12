@@ -21,9 +21,7 @@ from geostats.algorithms.simple_kriging import SimpleKriging
 from geostats.models.variogram_models import SphericalModel, ExponentialModel
 
 class TestLeaveOneOut:
-class TestLeaveOneOut:
 
-    def test_leave_one_out_basic(self):
     def test_leave_one_out_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
@@ -41,7 +39,6 @@ class TestLeaveOneOut:
         assert 'mse' in metrics
         assert 'r2' in metrics
 
-    def test_leave_one_out_metrics(self):
     def test_leave_one_out_metrics(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 25)
@@ -65,7 +62,6 @@ class TestLeaveOneOut:
         assert metrics['mse'] >= 0
 
     def test_leave_one_out_simple_kriging(self):
-    def test_leave_one_out_simple_kriging(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 20)
         y = np.random.uniform(0, 10, 20)
@@ -83,9 +79,7 @@ class TestLeaveOneOut:
         assert 'mse' in metrics
 
 class TestKFoldCrossValidation:
-class TestKFoldCrossValidation:
 
-    def test_k_fold_basic(self):
     def test_k_fold_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -102,7 +96,6 @@ class TestKFoldCrossValidation:
         assert 'metrics' in results
 
     def test_k_fold_different_folds(self):
-    def test_k_fold_different_folds(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -116,7 +109,6 @@ class TestKFoldCrossValidation:
         assert predictions.shape == z.shape
         assert 'metrics' in results
 
-    def test_k_fold_metrics(self):
     def test_k_fold_metrics(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 35)
@@ -136,9 +128,7 @@ class TestKFoldCrossValidation:
         assert results['metrics']['mse'] >= 0
 
 class TestSpatialCrossValidation:
-class TestSpatialCrossValidation:
 
-    def test_spatial_cv_basic(self):
     def test_spatial_cv_basic(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -158,7 +148,6 @@ class TestSpatialCrossValidation:
         assert 'metrics' in results
 
     def test_spatial_cv_different_blocks(self):
-    def test_spatial_cv_different_blocks(self):
         np.random.seed(42)
         x = np.random.uniform(0, 20, 60)
         y = np.random.uniform(0, 20, 60)
@@ -175,7 +164,6 @@ class TestSpatialCrossValidation:
         assert predictions.shape == z.shape
         assert 'metrics' in results
 
-    def test_spatial_cv_respects_spatial_structure(self):
     def test_spatial_cv_respects_spatial_structure(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
@@ -194,9 +182,7 @@ class TestSpatialCrossValidation:
         assert 'metrics' in results
 
 class TestCrossValidationComparison:
-class TestCrossValidationComparison:
 
-    def test_compare_cv_methods(self):
     def test_compare_cv_methods(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 40)
@@ -230,9 +216,7 @@ class TestCrossValidationComparison:
         assert 0.1 < mse_loo / mse_spatial < 10
 
 class TestMetrics:
-class TestMetrics:
 
-    def test_all_metrics(self):
     def test_all_metrics(self):
         np.random.seed(42)
         y_true = np.random.uniform(0, 10, 50)
@@ -250,7 +234,6 @@ class TestMetrics:
         assert 0 <= r2 <= 1
 
     def test_perfect_prediction(self):
-    def test_perfect_prediction(self):
         y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         y_pred = y_true.copy()
 
@@ -259,7 +242,6 @@ class TestMetrics:
         assert r_squared(y_true, y_pred) == 1.0
         assert root_mean_squared_error(y_true, y_pred) == 0
 
-    def test_worst_prediction(self):
     def test_worst_prediction(self):
         y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         y_pred = np.array([3.0, 3.0, 3.0, 3.0, 3.0]) # Mean

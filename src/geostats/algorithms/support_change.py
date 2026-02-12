@@ -47,7 +47,6 @@ from ..core.logging_config import get_logger
 logger = get_logger(__name__)
 
 class BlockKriging(BaseKriging):
-class BlockKriging(BaseKriging):
  Block Kriging - Estimate block averages from point data
 
  Kriging for block support (volume V) requires:
@@ -59,7 +58,6 @@ class BlockKriging(BaseKriging):
  "As block size increases, estimation variance decreases."
  """
 
- def __init__(
  def __init__(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -105,7 +103,6 @@ class BlockKriging(BaseKriging):
      if self.variogram_model is not None:
 
  def _precompute_block_variance(self):
- def _precompute_block_variance(self):
      Precompute γ(V,V) - internal block variance (vectorized)
 
  γ(V,V) = 1/|V|² ∬∬ γ(u-v) du dv
@@ -122,7 +119,6 @@ class BlockKriging(BaseKriging):
  self.gamma_VV = np.mean(gamma_matrix)
  logger.debug(f"Precomputed block variance γ(V,V) = {self.gamma_VV:.6f} (vectorized)")
 
- def _point_to_block_variogram(
  def _point_to_block_variogram(
      x_point: float,
      y_point: float,
@@ -162,7 +158,6 @@ class BlockKriging(BaseKriging):
 
      return np.mean(gamma_vals)
 
- def predict(
  def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
@@ -249,7 +244,6 @@ class BlockKriging(BaseKriging):
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 
  Returns
@@ -272,7 +266,6 @@ class BlockKriging(BaseKriging):
  return predictions, metrics
 
 class SupportCorrection:
-class SupportCorrection:
  Support Correction Tools
 
  Provides methods for:
@@ -282,7 +275,6 @@ class SupportCorrection:
  """
 
  @staticmethod
- def regularize_variogram(
  def regularize_variogram(
      block_size: Tuple[float, float],
      n_disc: int = 10
@@ -325,7 +317,6 @@ class SupportCorrection:
      gamma_VV = np.mean(gamma_matrix_VV)
 
  def block_variogram(h: Union[float, npt.NDArray]) -> Union[float, npt.NDArray]:
- def block_variogram(h: Union[float, npt.NDArray]) -> Union[float, npt.NDArray]:
      h = np.asarray(h)
      scalar_input = h.ndim == 0
      h = np.atleast_1d(h)
@@ -349,7 +340,6 @@ class SupportCorrection:
  return block_variogram
 
  @staticmethod
- def dispersion_variance(
  def dispersion_variance(
      domain_size: Tuple[float, float],
      block_size: Tuple[float, float],

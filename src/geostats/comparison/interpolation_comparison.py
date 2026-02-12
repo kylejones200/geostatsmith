@@ -38,7 +38,6 @@ DEFAULT_N_FOLDS = 5
 MIN_TRAINING_SAMPLES = 10
 
 def interpolation_error_metrics(
-def interpolation_error_metrics(
  y_pred: npt.NDArray[np.float64],
     ) -> Dict[str, float]:
  """
@@ -103,7 +102,6 @@ def interpolation_error_metrics(
  'max_error': max_error,
  }
 
-def cross_validate_interpolation(
 def cross_validate_interpolation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -201,7 +199,6 @@ def cross_validate_interpolation(
  }
 
 def benchmark_interpolation_speed(
-def benchmark_interpolation_speed(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -262,7 +259,6 @@ def benchmark_interpolation_speed(
 
  return results
 
-def compare_interpolation_methods(
 def compare_interpolation_methods(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -387,7 +383,6 @@ def compare_interpolation_methods(
  return results
 
 def _predict_with_method(
-def _predict_with_method(
  y_train: npt.NDArray[np.float64],
  z_train: npt.NDArray[np.float64],
  x_pred: npt.NDArray[np.float64],
@@ -440,7 +435,6 @@ def _predict_with_method(
 
  return z_pred
 
-def _plot_comparison(
 def _plot_comparison(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],

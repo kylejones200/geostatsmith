@@ -16,7 +16,6 @@ from ..models.variogram_models import (
 from ..core.exceptions import FittingError
 
 def fit_variogram_model(
-def fit_variogram_model(
  lags: npt.NDArray[np.float64],
  gamma: npt.NDArray[np.float64],
  weights: Optional[npt.NDArray[np.float64]] = None,
@@ -62,7 +61,6 @@ def fit_variogram_model(
 
  return model
 
-def automatic_fit(
 def automatic_fit(
  gamma: npt.NDArray[np.float64],
  models: Optional[List[Type[VariogramModelBase]]] = None,
@@ -200,7 +198,6 @@ def automatic_fit(
  'all_results': results,
  }
 
-def cross_validation_fit(
 def cross_validation_fit(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

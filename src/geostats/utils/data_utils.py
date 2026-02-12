@@ -7,7 +7,6 @@ import numpy as np
 import numpy.typing as npt
 
 def generate_synthetic_data(
-def generate_synthetic_data(
  spatial_structure: str = "spherical",
  nugget: float = 0.1,
  sill: float = 1.0,
@@ -54,7 +53,6 @@ def generate_synthetic_data(
  return x, y, z
 
 def load_sample_data(dataset: str = "walker_lake") -> Dict:
-def load_sample_data(dataset: str = "walker_lake") -> Dict:
  Load sample geostatistical dataset
 
  Parameters
@@ -93,7 +91,6 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  else:
  else:
 
-def split_train_test(
 def split_train_test(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -148,7 +145,6 @@ def split_train_test(
 
     # Additional utility functions
 def find_duplicate_locations(
-def find_duplicate_locations(
  y: npt.NDArray[np.float64],
  tolerance: float = 1e-6,
     ) -> list:
@@ -178,7 +174,6 @@ def find_duplicate_locations(
 
  return duplicates
 
-def check_collinearity(
 def check_collinearity(
  y: npt.NDArray[np.float64],
  tolerance: float = 0.01,
@@ -213,7 +208,6 @@ def check_collinearity(
 
  return abs(det) < tolerance
 
-def compute_data_spacing(
 def compute_data_spacing(
  y: npt.NDArray[np.float64],
     ) -> Tuple[float, float, float]:

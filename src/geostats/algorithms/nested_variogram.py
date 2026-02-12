@@ -55,16 +55,13 @@ RANDOM_SEED = 42
 
 @dataclass
 class VariogramStructure:
-class VariogramStructure:
  model_type: str # 'spherical', 'exponential', 'gaussian', etc.
  sill: float # Partial sill (Cᵢ)
  range: float # Range parameter (aᵢ)
  nugget: float = 0.0 # Only used for first structure
 
  def __str__(self):
- def __str__(self):
 
-class NestedVariogram:
 class NestedVariogram:
  Nested Variogram Model
 
@@ -79,7 +76,6 @@ class NestedVariogram:
  All structures must be positive definite variogram models.
  """
 
- def __init__(self, nugget: float = 0.0):
  def __init__(self, nugget: float = 0.0):
      Initialize nested variogram
 
@@ -100,7 +96,6 @@ class NestedVariogram:
  'power': PowerModel,
  }
 
- def add_structure(
  def add_structure(
      model_type: str,
      sill: float,
@@ -138,7 +133,6 @@ class NestedVariogram:
      self.structures.append(structure)
 
  def __call__(self, h: Union[float, npt.NDArray[np.float64]]) -> Union[float, npt.NDArray[np.float64]]:
- def __call__(self, h: Union[float, npt.NDArray[np.float64]]) -> Union[float, npt.NDArray[np.float64]]:
      Evaluate nested variogram at distance h
 
  Parameters
@@ -163,16 +157,13 @@ class NestedVariogram:
  return gamma
 
  def total_sill(self) -> float:
- def total_sill(self) -> float:
      return self.nugget + sum(s.sill for s in self.structures)
 
- def effective_range(self) -> float:
  def effective_range(self) -> float:
      if not self.structures:
      if not self.structures:
      return max(s.range for s in self.structures)
 
- def get_parameters(self) -> Dict:
  def get_parameters(self) -> Dict:
      return {
      'nugget': self.nugget,
@@ -188,12 +179,10 @@ class NestedVariogram:
      }
 
  def __str__(self):
- def __str__(self):
      for i, struct in enumerate(self.structures, 1):
      for i, struct in enumerate(self.structures, 1):
      return "\n".join(parts)
 
-def fit_nested_variogram(
 def fit_nested_variogram(
  semivariance: npt.NDArray[np.float64],
  n_structures: int = 2,
@@ -272,7 +261,6 @@ def fit_nested_variogram(
 
  # Objective function (weighted sum of squared residuals)
  def objective(params: npt.NDArray[np.float64]) -> float:
- def objective(params: npt.NDArray[np.float64]) -> float:
 
      # Penalty for invalid parameters
      if nugget < 0:
@@ -350,7 +338,6 @@ def fit_nested_variogram(
 
      return final_model
 
-def auto_fit_nested_variogram(
 def auto_fit_nested_variogram(
  semivariance: npt.NDArray[np.float64],
  max_structures: int = 3,

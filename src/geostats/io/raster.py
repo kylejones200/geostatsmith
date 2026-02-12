@@ -20,7 +20,6 @@ except ImportError:
  RASTERIO_AVAILABLE = False
 
 def read_geotiff(
-def read_geotiff(
  band: int = 1,
  as_grid: bool = True,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
@@ -116,7 +115,6 @@ def read_geotiff(
  return x_flat[mask], y_flat[mask], z_flat[mask], metadata
 
 def write_geotiff(
-def write_geotiff(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
@@ -195,7 +193,6 @@ def write_geotiff(
  ) as dst:
  dst.write(z_out, 1)
 
-def read_ascii_grid(
 def read_ascii_grid(
  as_grid: bool = True,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
@@ -281,7 +278,6 @@ def read_ascii_grid(
  mask = ~np.isnan(z_flat)
  return x_flat[mask], y_flat[mask], z_flat[mask], metadata
 
-def write_ascii_grid(
 def write_ascii_grid(
  x: npt.NDArray[np.float64],
  y: npt.NDArray[np.float64],

@@ -13,7 +13,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 def outlier_analysis(
-def outlier_analysis(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  method: str = 'iqr',
@@ -93,7 +92,6 @@ def outlier_analysis(
  'threshold': threshold,
  }
 
-def robust_validation(
 def robust_validation(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],

@@ -81,7 +81,6 @@ except ImportError:
  logger.debug("XGBoost not available")
 
 class RegressionKriging(BaseKriging):
-class RegressionKriging(BaseKriging):
  Regression Kriging with Machine Learning Models
 
  Combines any sklearn-compatible regression model with kriging of residuals.
@@ -146,7 +145,6 @@ class RegressionKriging(BaseKriging):
  """
 
  def __init__(
- def __init__(
      ml_model,
      kriging_type: str = 'simple',
      variogram_model: str = 'spherical',
@@ -183,7 +181,6 @@ class RegressionKriging(BaseKriging):
      f"kriging_type={kriging_type}"
      )
 
- def fit(
  def fit(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
@@ -272,7 +269,6 @@ class RegressionKriging(BaseKriging):
      logger.info("Regression Kriging model fitted successfully")
 
  def predict(
- def predict(
      x_new: npt.NDArray[np.float64],
      y_new: npt.NDArray[np.float64],
      covariates_new: Optional[npt.NDArray[np.float64]] = None,
@@ -341,7 +337,6 @@ class RegressionKriging(BaseKriging):
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
 
  Returns
@@ -365,7 +360,6 @@ class RegressionKriging(BaseKriging):
 
  return predictions, metrics
 
-class RandomForestKriging(RegressionKriging):
 class RandomForestKriging(RegressionKriging):
  Regression Kriging with Random Forest
 
@@ -398,7 +392,6 @@ class RandomForestKriging(RegressionKriging):
  """
 
  def __init__(
- def __init__(
      n_estimators: int = 100,
      max_depth: Optional[int] = None,
      kriging_type: str = 'simple',
@@ -425,13 +418,11 @@ class RandomForestKriging(RegressionKriging):
      logger.info(f"Random Forest Kriging initialized with {n_estimators} trees")
 
  def get_feature_importance(self) -> Optional[npt.NDArray[np.float64]]:
- def get_feature_importance(self) -> Optional[npt.NDArray[np.float64]]:
      if not self.fitted:
      if not self.fitted:
      return None
      return self.ml_model.feature_importances_
 
-class XGBoostKriging(RegressionKriging):
 class XGBoostKriging(RegressionKriging):
  Regression Kriging with XGBoost
 
@@ -465,7 +456,6 @@ class XGBoostKriging(RegressionKriging):
  """
 
  def __init__(
- def __init__(
      n_estimators: int = 100,
      max_depth: int = 6,
      learning_rate: float = 0.1,
@@ -496,7 +486,6 @@ class XGBoostKriging(RegressionKriging):
      f"max_depth={max_depth}, lr={learning_rate}"
      )
 
- def get_feature_importance(
  def get_feature_importance(
      importance_type: str = 'weight'
      ) -> Optional[Dict[str, float]]:

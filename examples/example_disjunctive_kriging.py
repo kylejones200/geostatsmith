@@ -29,7 +29,6 @@ except ImportError:
 
 
 def main():
-def main():
 
     logger.info("Disjunctive Kriging Example")
     logger.info("=" * 60)

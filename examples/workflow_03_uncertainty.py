@@ -35,7 +35,6 @@ except ImportError:
 
 
 def example_1_bootstrap_confidence():
-def example_1_bootstrap_confidence():
     logger.info("Example 1: Bootstrap Confidence Intervals")
 
     # Create sample data
@@ -120,7 +119,6 @@ def example_1_bootstrap_confidence():
     plt.close()
 
 
-def example_2_probability_map():
 def example_2_probability_map():
     logger.info("Example 2: Probability Maps")
 
@@ -220,7 +218,6 @@ def example_2_probability_map():
     plt.close()
 
 
-def example_3_risk_assessment():
 def example_3_risk_assessment():
 
     logger.info("Example 3: Risk Assessment")
@@ -327,7 +324,6 @@ def example_3_risk_assessment():
     plt.close()
 
 
-def main():
 def main():
     logger.info("GEOSTATS UNCERTAINTY QUANTIFICATION EXAMPLES")
 

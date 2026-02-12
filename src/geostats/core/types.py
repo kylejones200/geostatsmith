@@ -20,9 +20,7 @@ VariogramFunction = callable # (distance: np.ndarray) -> np.ndarray
 
 @runtime_checkable
 class VariogramModel(Protocol):
-class VariogramModel(Protocol):
 
- def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Compute variogram value at distance h
 
@@ -40,10 +38,8 @@ class VariogramModel(Protocol):
 
  @property
  def parameters(self) -> dict:
- def parameters(self) -> dict:
      ...
 
- def fit(self, lags: npt.NDArray[np.float64], gamma: npt.NDArray[np.float64]) -> None:
  def fit(self, lags: npt.NDArray[np.float64], gamma: npt.NDArray[np.float64]) -> None:
      Fit model to experimental variogram data
 
@@ -58,9 +54,7 @@ class VariogramModel(Protocol):
 
 @runtime_checkable
 class KrigingPredictor(Protocol):
-class KrigingPredictor(Protocol):
 
- def predict(
  def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],

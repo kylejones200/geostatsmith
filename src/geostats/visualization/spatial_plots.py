@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 def plot_data_locations(
-def plot_data_locations(
  y: npt.NDArray[np.float64],
  z: Optional[npt.NDArray[np.float64]] = None,
  ax: Optional[plt.Axes] = None,
@@ -55,7 +54,6 @@ def plot_data_locations(
 
  return ax
 
-def plot_contour_map(
 def plot_contour_map(
  Y: npt.NDArray[np.float64],
  Z: npt.NDArray[np.float64],
@@ -118,7 +116,6 @@ def plot_contour_map(
  return ax
 
 def plot_symbol_map(
-def plot_symbol_map(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64],
  thresholds: Optional[list] = None,
@@ -166,7 +163,6 @@ def plot_symbol_map(
 
  return ax
 
-def plot_kriging_results(
 def plot_kriging_results(
  Y: npt.NDArray[np.float64],
  Z_pred: npt.NDArray[np.float64],
@@ -224,7 +220,6 @@ def plot_kriging_results(
  return fig
 
     # API compatibility aliases
-def plot_data_points(
 def plot_data_points(
  y: npt.NDArray[np.float64],
  z: Optional[npt.NDArray[np.float64]] = None,
@@ -284,7 +279,6 @@ def plot_data_points(
  return fig, ax
 
 def plot_contour(
-def plot_contour(
  Y: npt.NDArray[np.float64],
  Z: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
@@ -333,7 +327,6 @@ def plot_contour(
 
  return fig, ax
 
-def plot_filled_contour(
 def plot_filled_contour(
  Y: npt.NDArray[np.float64],
  Z: npt.NDArray[np.float64],
