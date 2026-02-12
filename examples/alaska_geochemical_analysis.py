@@ -91,7 +91,9 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     y = merged['LATITUDE'].values
 
     if value_col:
-        else:
+        values = merged[value_col].values
+    else:
+        values = None
      values = None
 
     # Metadata
