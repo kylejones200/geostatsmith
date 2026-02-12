@@ -30,8 +30,8 @@ from geostats.io.formats import (
 
 # Check for optional dependencies
 try:
-
-    try:
+    import rasterio
+    RASTERIO_AVAILABLE = True
 except ImportError:
     RASTERIO_AVAILABLE = False
 
