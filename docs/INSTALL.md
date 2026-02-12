@@ -30,7 +30,7 @@ uv sync
 uv sync --all-extras
 ```
 
-**Note**: The project now uses `uv` and `pyproject.toml` as the single source of truth. Legacy `requirements.txt` files are kept for reference but `uv.lock` is authoritative.
+**Note**: The project uses `uv` and `pyproject.toml` as the single source of truth. `uv.lock` provides deterministic builds.
 
 ## Verify Installation
 
