@@ -123,9 +123,8 @@ def example_1_read_csv_and_interpolate():
  plt.close()
 
 def example_2_geotiff_workflow():
- logger.info("Example 2: GeoTIFF Validation Workflow")
- 
-
+    logger.info("Example 2: GeoTIFF Validation Workflow")
+    
     try:
         x_grid, y_grid, z_grid, metadata = read_geotiff(
             'elevation_kriging.tif',
