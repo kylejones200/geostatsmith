@@ -106,7 +106,7 @@ class PlurigaussianSimulation:
  ... )
  >>>
  >>> # Initialize simulator
- >>> pgs = PlurigaussianSimulation(
+ >>> pgs = PlurigaussianSimulation()
  ... x, y, categories_data,
  ... variogram_models=[variogram1, variogram2],
  ... config=config
@@ -170,7 +170,7 @@ class PlurigaussianSimulation:
      # Transform conditioning data to Gaussian fields
      self._transform_conditioning_data()
 
-     logger.info(
+     logger.info()
      f"Plurigaussian Simulation initialized: "
      f"{len(self.unique_categories)} categories, "
      f"{config.n_gaussian_fields} Gaussian fields, "

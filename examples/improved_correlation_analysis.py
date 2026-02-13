@@ -79,7 +79,7 @@ logger.info("APPROACH 2: PORPHYRY DISTRICTS - REGIONAL FILTERING")
 
 porphyry_regions = multi_data[
     # Pebble/Iliamna region
-    (
+    ()
         (multi_data["LATITUDE"] > 59.0)
         & (multi_data["LATITUDE"] < 60.5)
         & (multi_data["LONGITUDE"] > -156.0)
@@ -87,7 +87,7 @@ porphyry_regions = multi_data[
     )
     |
     # Orange Hill / Nabesna region
-    (
+    ()
         (multi_data["LATITUDE"] > 61.5)
         & (multi_data["LATITUDE"] < 62.5)
         & (multi_data["LONGITUDE"] > -145.0)
@@ -106,7 +106,7 @@ corr_porp = stats.pearsonr(cu_log_porp, au_log_porp)[0]
 logger.info(f"Samples in porphyry districts: {len(cu_porp):,}")
 logger.info(f"Correlation (log-transformed): r = {corr_porp:.3f}")
 logger.info(f"R² = {corr_porp**2:.3f}")
-logger.info(
+logger.info()
     f" Improvement: {((corr_porp / corr_all - 1) * 100):.1f}% stronger correlation"
 )
 
@@ -136,7 +136,7 @@ logger.info(f"Au threshold (90th percentile): {au_p90:.4f} ppm")
 logger.info(f"Anomalous samples (both Cu & Au high): {len(cu_anom):,}")
 logger.info(f"Correlation (log-transformed): r = {corr_anom:.3f}")
 logger.info(f"R² = {corr_anom**2:.3f}")
-logger.info(
+logger.info()
     f" Improvement: {((corr_anom / corr_all - 1) * 100):.1f}% stronger correlation"
 )
 
@@ -163,7 +163,7 @@ if len(cu_best) > 10:  # Need enough samples
     logger.info(f"Porphyry district anomalous samples: {len(cu_best):,}")
     logger.info(f"Correlation (log-transformed): r = {corr_best:.3f}")
     logger.info(f"R² = {corr_best**2:.3f}")
-    logger.info(
+    logger.info()
         f" Improvement: {((corr_best / corr_all - 1) * 100):.1f}% stronger correlation"
     )
 else:
@@ -201,18 +201,18 @@ ax6 = plt.subplot(2, 3, 6)
 ax1.scatter(cu_log_all, au_log_all, alpha=0.3, s=10, c="lightgray", edgecolors="none")
 # Remove top and right spines
 # Remove top and right spines
-ax1.scatter(cu_log_all, au_log_all, alpha
+ax1.scatter(cu_log_all, au_log_all, alpha)
 z1 = np.polyfit(cu_log_all, au_log_all, 1)
 p1 = np.poly1d(z1)
 x_trend1 = np.linspace(cu_log_all.min(), cu_log_all.max(), 100)
 ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
-ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth
+ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth)
 ax1.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax1.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
 # Remove top and right spines
-ax1.set_title(
+ax1.set_title()
     f"1. Statewide (All Alaska)\nr = {corr_all:.3f}, R² = {corr_all**2:.3f}\n WEAK",
     fontsize=12,
     fontweight="bold",
@@ -221,7 +221,7 @@ ax1.set_title(
 ax1.legend()
 
 # 2. Porphyry districts (better)
-ax2.scatter(
+ax2.scatter()
     cu_log_porp,
     au_log_porp,
     alpha=0.5,
@@ -236,7 +236,7 @@ x_trend2 = np.linspace(cu_log_porp.min(), cu_log_porp.max(), 100)
 ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
 # Remove top and right spines
-ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth
+ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth)
 ax2.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax2.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
@@ -259,12 +259,12 @@ x_trend3 = np.linspace(cu_log_anom.min(), cu_log_anom.max(), 100)
 ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
 # Remove top and right spines
-ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth
+ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth)
 ax3.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax3.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
 # Remove top and right spines
-ax3.set_title(
+ax3.set_title()
     f"3. Anomalous Samples (Top 10%)\nr = {corr_anom:.3f}, R² = {corr_anom**2:.3f}\n BETTER",
     fontsize=12,
     fontweight="bold",
@@ -273,7 +273,7 @@ ax3.set_title(
 ax3.legend()
 
 # 4. Best approach (strongest)
-ax4.scatter(
+ax4.scatter()
     cu_log_best,
     au_log_best,
     alpha=0.6,
@@ -288,7 +288,7 @@ x_trend4 = np.linspace(cu_log_best.min(), cu_log_best.max(), 100)
 ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth=3, label="Trend")
 # Remove top and right spines
 # Remove top and right spines
-ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth
+ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth)
 ax4.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax4.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
@@ -318,7 +318,7 @@ bars = ax5.bar(
 ax5.set_ylabel("R² (Coefficient of Determination)", fontsize=11, fontweight="bold")
 # Remove top and right spines
 # Remove top and right spines
-ax5.set_title(
+ax5.set_title()
     "Correlation Strength Comparison\n(Higher is Better)",
     fontsize=12,
     fontweight="bold",
@@ -359,7 +359,7 @@ for bar, count in zip(bars2, counts):
         fontweight="bold",
     )
 
-plt.suptitle(
+plt.suptitle()
     "Cu-Au Correlation Improvement Strategies\nAlaska Geochemical Database (AGDB4)",
     fontsize=16,
     fontweight="bold",
@@ -379,13 +379,13 @@ plt.close()
 logger.info("SUMMARY: CORRELATION IMPROVEMENTS")
 
 logger.info(f"Baseline (Statewide): r = {corr_all:.3f}, R² = {corr_all**2:.3f}")
-logger.info(
+logger.info()
     f"Porphyry Districts: r = {corr_porp:.3f}, R² = {corr_porp**2:.3f} ({(corr_porp / corr_all - 1) * 100:+.0f}%)"
 )
-logger.info(
+logger.info()
     f"Anomalous Samples: r = {corr_anom:.3f}, R² = {corr_anom**2:.3f} ({(corr_anom / corr_all - 1) * 100:+.0f}%)"
 )
-logger.info(
+logger.info()
     f"Porphyry + Anomalous (BEST): r = {corr_best:.3f}, R² = {corr_best**2:.3f} ({(corr_best / corr_all - 1) * 100:+.0f}%)"
 )
 
@@ -393,7 +393,7 @@ logger.info("Key Insights:")
 logger.info(" Regional filtering improves correlation by focusing on deposit type")
 logger.info(" Anomaly filtering removes background noise")
 logger.info(" Combined approach yields strongest signal")
-logger.info(
+logger.info()
     f" R² improved from {corr_all**2:.3f} to {corr_best**2:.3f} ({(corr_best**2 / corr_all**2 - 1) * 100:.0f}% increase)"
 )
 

@@ -127,7 +127,7 @@ class BlockKriging(BaseKriging):
  self.gamma_VV = np.mean(gamma_matrix)
  logger.debug(f"Precomputed block variance γ(V,V) = {self.gamma_VV:.6f} (vectorized)")
 
- def _point_to_block_variogram(
+ def _point_to_block_variogram()
      x_point: float,
      y_point: float,
      x_block: float,

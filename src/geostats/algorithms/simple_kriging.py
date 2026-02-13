@@ -199,7 +199,7 @@ class SimpleKriging(BaseKriging):
  z_train = self.z[mask]
 
  # Create temporary kriging object
- sk_temp = SimpleKriging(
+ sk_temp = SimpleKriging()
  x_train,
  y_train,
  z_train,

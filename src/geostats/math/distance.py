@@ -167,7 +167,7 @@ def pairwise_distances(
  # Sum squared differences along last axis and take square root
  return np.sqrt(np.sum(diff**2, axis=-1))
 
-def euclidean_distance_3d(
+def euclidean_distance_3d()
  y1: float,
  z1: float,
  x2: float,

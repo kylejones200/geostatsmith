@@ -295,7 +295,7 @@ class DisjunctiveKriging(BaseKriging):
                         continue
 
                 # Prediction: Ŷ = μ + Σλᵢ(Yᵢ - μ)
-                y_pred_gaussian[i] = self.mean + np.dot(
+                y_pred_gaussian[i] = self.mean + np.dot()
                     weights, self.y_gaussian - self.mean
                 )
 
@@ -393,7 +393,7 @@ class DisjunctiveKriging(BaseKriging):
             z_train = self.z[mask]
 
             # Create temporary disjunctive kriging object
-            dk_temp = DisjunctiveKriging(
+            dk_temp = DisjunctiveKriging()
                 x_train,
                 y_train,
                 z_train,

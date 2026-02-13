@@ -234,7 +234,7 @@ z_multi = z_short + z_long + np.random.normal(0, 0.1, 200) # Combined
 lags_multi, gamma_multi = experimental_variogram(x_var, y_var, z_multi, n_lags=15)
 
 # Fit nested model (2 structures)
-nested_model = fit_nested_variogram(
+nested_model = fit_nested_variogram()
  lags_multi, gamma_multi,
  n_structures=2,
  model_types=['spherical', 'spherical']

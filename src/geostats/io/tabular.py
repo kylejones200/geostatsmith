@@ -20,8 +20,9 @@ def read_csv_spatial(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
         pass
  """
+ """
  Read spatial data from CSV file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -35,8 +36,9 @@ def read_csv_spatial(
  additional_cols : list of str, optional
  Additional columns to return (e.g., for covariates)
  **kwargs
+ """
  Additional arguments passed to pd.read_csv()
-
+ 
  Returns
  -------
  x : ndarray
@@ -46,15 +48,16 @@ def read_csv_spatial(
  z : ndarray
  Values
  extra : DataFrame, optional
+ """
  Additional columns (if requested)
-
+ 
  Examples
  --------
  >>> # Simple case
  >>> x, y, z, _ = read_csv_spatial('samples.csv')
 
  >>> # With covariates
- >>> x, y, z, extra = read_csv_spatial(
+ >>> x, y, z, extra = read_csv_spatial()
  ... 'samples.csv',
  ... x_col='longitude',
  ... y_col='latitude',
@@ -67,10 +70,12 @@ def read_csv_spatial(
 
  Raises
  ------
+ """
  FileNotFoundError
- If file doesn't exist'
+  If file doesn't exist'
+ """
  KeyError
- If specified columns don't exist'
+  If specified columns don't exist'
  """
  if not Path(filename).exists():
     pass
@@ -116,8 +121,9 @@ def write_csv_spatial(
     ) -> None:
         pass
  """
+ """
  Write spatial data to CSV file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -137,14 +143,15 @@ def write_csv_spatial(
  extra : DataFrame, optional
  Additional columns to write
  **kwargs
+ """
  Additional arguments passed to pd.DataFrame.to_csv()
-
+ 
  Examples
  --------
  >>> write_csv_spatial('output.csv', x, y, z)
 
  >>> # With custom column names
- >>> write_csv_spatial(
+ >>> write_csv_spatial()
  ... 'output.csv',
  ... x, y, z,
  ... x_col='longitude',
@@ -157,7 +164,7 @@ def write_csv_spatial(
  >>> write_csv_spatial('output.csv', x, y, z, extra=extra)
  """
  # Create DataFrame
- df = pd.DataFrame({
+ df = pd.DataFrame({)
  x_col: x,
  y_col: y,
  z_col: z,
@@ -180,8 +187,9 @@ def read_excel_spatial(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
         pass
  """
+ """
  Read spatial data from Excel file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -197,8 +205,9 @@ def read_excel_spatial(
  additional_cols : list of str, optional
  Additional columns to return
  **kwargs
+ """
  Additional arguments passed to pd.read_excel()
-
+ 
  Returns
  -------
  x : ndarray
@@ -208,18 +217,21 @@ def read_excel_spatial(
  z : ndarray
  Values
  extra : DataFrame, optional
+ """
  Additional columns (if requested)
-
+ 
  Examples
  --------
  >>> x, y, z, _ = read_excel_spatial('samples.xlsx', sheet_name='Data')
 
  Raises
  ------
+ """
  FileNotFoundError
- If file doesn't exist'
+  If file doesn't exist'
+ """
  ImportError
- If openpyxl is not installed
+  If openpyxl is not installed
  """
  if not Path(filename).exists():
     pass
@@ -229,7 +241,7 @@ def read_excel_spatial(
  df = pd.read_excel(filename, sheet_name=sheet_name, **kwargs)
  except ImportError:
      pass
- raise ImportError(
+ raise ImportError()
  "openpyxl is required for Excel I/O. "
  "Install with: pip install openpyxl"
  )

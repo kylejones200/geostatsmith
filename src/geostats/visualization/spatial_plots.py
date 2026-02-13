@@ -19,8 +19,9 @@ def plot_data_locations(
     ) -> plt.Axes:
         pass
  """
+ """
  Plot data locations (data posting)
-
+ 
  Parameters
  ----------
  x, y : np.ndarray
@@ -32,8 +33,9 @@ def plot_data_locations(
  cmap : str
  Colormap name
  **kwargs
+ """
  Additional scatter plot arguments
-
+ 
  Returns
  -------
  ax : matplotlib.Axes
@@ -56,8 +58,9 @@ def plot_data_locations(
  return ax
 
 def plot_contour_map(
+ """
  Y: npt.NDArray[np.float64],
- Z: npt.NDArray[np.float64],
+  Z: npt.NDArray[np.float64],
  x_data: Optional[npt.NDArray[np.float64]] = None,
  y_data: Optional[npt.NDArray[np.float64]] = None,
  z_data: Optional[npt.NDArray[np.float64]] = None,
@@ -68,14 +71,17 @@ def plot_contour_map(
     ) -> plt.Axes:
         pass
  """
+ """
  Create contour map
-
+ 
  Parameters
  ----------
+ """
  X, Y : np.ndarray
- Meshgrid coordinates
+  Meshgrid coordinates
+ """
  Z : np.ndarray
- Values on grid
+  Values on grid
  x_data, y_data, z_data : np.ndarray, optional
  Original data points to overlay
  n_levels : int
@@ -85,8 +91,9 @@ def plot_contour_map(
  cmap : str
  Colormap name
  **kwargs
+ """
  Additional contourf arguments
-
+ 
  Returns
  -------
  ax : matplotlib.Axes
@@ -126,8 +133,9 @@ def plot_symbol_map(
     ) -> plt.Axes:
         pass
  """
+ """
  Create symbol map with sized symbols
-
+ 
  Symbol size proportional to value magnitude.
 
  Parameters
@@ -141,8 +149,9 @@ def plot_symbol_map(
  ax : matplotlib.Axes, optional
  Axes to plot on
  **kwargs
+ """
  Additional scatter arguments
-
+ 
  Returns
  -------
  ax : matplotlib.Axes
@@ -167,8 +176,9 @@ def plot_symbol_map(
  return ax
 
 def plot_kriging_results(
+ """
  Y: npt.NDArray[np.float64],
- Z_pred: npt.NDArray[np.float64],
+  Z_pred: npt.NDArray[np.float64],
  Z_var: npt.NDArray[np.float64],
  x_data: npt.NDArray[np.float64],
  y_data: npt.NDArray[np.float64],
@@ -177,21 +187,26 @@ def plot_kriging_results(
     ) -> plt.Figure:
         pass
  """
+ """
  Plot kriging predictions and variance side-by-side
-
+ 
  Parameters
  ----------
+ """
  X, Y : np.ndarray
- Meshgrid coordinates
+  Meshgrid coordinates
+ """
  Z_pred : np.ndarray
- Kriging predictions
+  Kriging predictions
+ """
  Z_var : np.ndarray
- Kriging variance
+  Kriging variance
  x_data, y_data, z_data : np.ndarray
  Original sample data
  figsize : tuple
+ """
  Figure size
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -237,8 +252,9 @@ def plot_data_points(
     ) -> tuple:
         pass
  """
+ """
  Plot data points (API-compatible version)
-
+ 
  Parameters
  ----------
  x, y : np.ndarray
@@ -256,8 +272,9 @@ def plot_data_points(
  cmap : str
  Colormap name
  **kwargs
+ """
  Additional scatter plot arguments
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -282,8 +299,9 @@ def plot_data_points(
  return fig, ax
 
 def plot_contour(
+ """
  Y: npt.NDArray[np.float64],
- Z: npt.NDArray[np.float64],
+  Z: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  n_levels: int = 10,
  cmap: str = 'viridis',
@@ -291,14 +309,17 @@ def plot_contour(
     ) -> tuple:
         pass
  """
+ """
  Create contour plot (lines only)
-
+ 
  Parameters
  ----------
+ """
  X, Y : np.ndarray
- Meshgrid coordinates
+  Meshgrid coordinates
+ """
  Z : np.ndarray
- Values on grid
+  Values on grid
  ax : matplotlib.Axes, optional
  Axes to plot on
  n_levels : int
@@ -306,8 +327,9 @@ def plot_contour(
  cmap : str
  Colormap name
  **kwargs
+ """
  Additional contour arguments
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -331,8 +353,9 @@ def plot_contour(
  return fig, ax
 
 def plot_filled_contour(
+ """
  Y: npt.NDArray[np.float64],
- Z: npt.NDArray[np.float64],
+  Z: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  n_levels: int = 15,
  cmap: str = 'viridis',
@@ -340,14 +363,17 @@ def plot_filled_contour(
     ) -> tuple:
         pass
  """
+ """
  Create filled contour plot
-
+ 
  Parameters
  ----------
+ """
  X, Y : np.ndarray
- Meshgrid coordinates
+  Meshgrid coordinates
+ """
  Z : np.ndarray
- Values on grid
+  Values on grid
  ax : matplotlib.Axes, optional
  Axes to plot on
  n_levels : int
@@ -355,8 +381,9 @@ def plot_filled_contour(
  cmap : str
  Colormap name
  **kwargs
+ """
  Additional contourf arguments
-
+ 
  Returns
  -------
  fig : matplotlib.Figure

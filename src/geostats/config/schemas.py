@@ -101,7 +101,7 @@ class GridConfig(BaseModel):
  buffer: float = Field(0.0, ge=0, description="Buffer around data extent (in data units)")
 
 class KrigingConfig(BaseModel):
- method: Literal['ordinary', 'simple', 'universal', 'indicator', 'cokriging'] = Field(
+ method: Literal['ordinary', 'simple', 'universal', 'indicator', 'cokriging'] = Field()
  'ordinary',
  description="Kriging method"
  )

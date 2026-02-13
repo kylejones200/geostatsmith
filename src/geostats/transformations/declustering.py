@@ -32,8 +32,9 @@ def cell_declustering(
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
         pass
  """
+ """
  Cell Declustering
-
+ 
  Assigns weights to samples based on spatial distribution to correct for
  preferential clustering. Samples in densely sampled areas get lower weights.
 
@@ -51,11 +52,13 @@ def cell_declustering(
  z : np.ndarray
  Values at sample points
  cell_sizes : np.ndarray, optional
+ """
  Array of cell sizes to try
- If None, automatically generates sizes
+  If None, automatically generates sizes
  n_sizes : int
+ """
  Number of cell sizes to try (if cell_sizes not provided)
-
+ 
  Returns
  -------
  weights : np.ndarray
@@ -166,8 +169,9 @@ def polygonal_declustering(
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
         pass
  """
+ """
  Polygonal (Voronoi-based) Declustering
-
+ 
  Assigns weights based on the area of influence (Voronoi polygon) around
  each sample. Samples in dense areas have smaller polygons and lower weights.
 
@@ -182,15 +186,17 @@ def polygonal_declustering(
  z : np.ndarray
  Values at sample points
  power : float
+ """
  Power to raise distances to (default 2 for area approximation)
-
+ 
  Returns
  -------
  weights : np.ndarray
  Declustering weights (normalized to sum to n_samples)
  info : dict
+ """
  Information including statistics
-
+ 
  Notes
  -----
  This method approximates Voronoi polygon areas using the squared distance
@@ -244,8 +250,9 @@ def detect_clustering(
     ) -> Dict[str, float]:
         pass
  """
+ """
  Detect presence of spatial clustering
-
+ 
  Uses nearest neighbor distances to assess if data is clustered.
  From Olea (2009) §2009: "
  cumulative distribution of distance to nearest neighbor."
@@ -253,8 +260,9 @@ def detect_clustering(
  Parameters
  ----------
  x, y : np.ndarray
+ """
  Coordinates of sample points
-
+ 
  Returns
  -------
  dict

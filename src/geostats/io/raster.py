@@ -24,8 +24,9 @@ def read_geotiff(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
+ """
  Read a GeoTIFF file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -33,8 +34,9 @@ def read_geotiff(
  band : int, default=1
  Band number to read (1-indexed)
  as_grid : bool, default=True
+ """
  If True, return data as 2D grid with coordinate arrays
- If False, return flattened arrays
+  If False, return flattened arrays
 
  Returns
  -------
@@ -45,8 +47,9 @@ def read_geotiff(
  z : ndarray
  Values (2D if as_grid=True, else flattened)
  metadata : dict
+ """
  Metadata including CRS, transform, nodata value
-
+ 
  Examples
  --------
  >>> # Read as grid (for plotting/analysis)
@@ -59,10 +62,12 @@ def read_geotiff(
 
  Raises
  ------
+ """
  ImportError
- If rasterio is not installed
+  If rasterio is not installed
+ """
  FileNotFoundError
- If file doesn't exist'
+  If file doesn't exist'
  """
  if not RASTERIO_AVAILABLE:
      continue
@@ -122,8 +127,9 @@ def write_geotiff(
     ) -> None:
         pass
  """
+ """
  Write data to a GeoTIFF file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -137,8 +143,9 @@ def write_geotiff(
  crs : str, default='EPSG:4326'
  Coordinate reference system (e.g., 'EPSG:4326', 'EPSG:3857')
  nodata : float, optional
+ """
  NoData value to use for NaN values
-
+ 
  Examples
  --------
  >>> # Create a grid and write to GeoTIFF
@@ -149,8 +156,9 @@ def write_geotiff(
 
  Raises
  ------
+ """
  ImportError
- If rasterio is not installed
+  If rasterio is not installed
  """
  if not RASTERIO_AVAILABLE:
      continue
@@ -178,7 +186,7 @@ def write_geotiff(
     pass
 
  # Write to file
- with rasterio.open(
+ with rasterio.open()
  filename,
  'w',
  driver='GTiff',
@@ -199,8 +207,9 @@ def read_ascii_grid(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
+ """
  Read an ASCII Grid file (.asc, .grd).
-
+ 
  ASCII Grid format:
      pass
  ncols 100
@@ -216,8 +225,9 @@ def read_ascii_grid(
  filename : str
  Path to ASCII grid file
  as_grid : bool, default=True
+ """
  If True, return as grid; if False, return as points
-
+ 
  Returns
  -------
  x : ndarray
@@ -227,8 +237,9 @@ def read_ascii_grid(
  z : ndarray
  Values
  metadata : dict
+ """
  Grid metadata
-
+ 
  Examples
  --------
  >>> x, y, z, meta = read_ascii_grid('elevation.asc')
@@ -288,8 +299,9 @@ def write_ascii_grid(
     ) -> None:
         pass
  """
+ """
  Write data to an ASCII Grid file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -301,8 +313,9 @@ def write_ascii_grid(
  z : ndarray
  Values (2D)
  nodata : float, default=-9999
+ """
  NoData value
-
+ 
  Examples
  --------
  >>> write_ascii_grid('output.asc', x, y, z)

@@ -185,7 +185,7 @@ def create_exceedance_maps(data_dict, thresholds):
  threshold = thresholds[element]['Natural Background']
  logger.info(f"{element}: P(>{threshold} {thresholds[element]['units']})...")
 
- prob_exceed = probability_map(
+ prob_exceed = probability_map()
  x, y, values,
  X.flatten(), Y.flatten(),
  threshold=threshold,
@@ -384,7 +384,7 @@ def generate_environmental_report(data_dict, thresholds, hotspots):
  y = data['LATITUDE'].values
  values = data['As'].values
 
- generate_report(
+ generate_report()
  x, y, values,
  output='alaska_environmental_report.html',
  title='Alaska Environmental Geochemistry Assessment',

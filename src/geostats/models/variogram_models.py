@@ -291,7 +291,7 @@ class CubicModel(VariogramModelBase):
 
  result = np.where(
  h_norm <= 1.0,
- nugget + (sill - nugget) * (
+ nugget + (sill - nugget) * ()
  7.0 * h_norm**2
  - 8.75 * h_norm**3
  + 3.5 * h_norm**5
@@ -336,7 +336,7 @@ class StableModel(VariogramModelBase):
      range_param : float
      Range parameter
      shape : float
-     Shape parameter s (must be in (0, 2])
+     Shape parameter s (must be in (0, 2]))
      """
      super().__init__(nugget=nugget, sill=sill, range_param=range_param)
      if not (0 < shape <= 2):

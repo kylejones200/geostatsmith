@@ -197,32 +197,32 @@ try:
  # Raw correlation
  ax1.scatter(cu_vals, au_vals, alpha=0.4, s=20, c='steelblue', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
- ax1.scatter(cu_vals, au_vals, alpha
+ ax1.scatter(cu_vals, au_vals, alpha)
  ax1.set_xlabel('Cu (ppm)', fontsize=12)
  # Remove top and right spines
  ax1.set_ylabel('Au (ppm)', fontsize=12)
  # Remove top and right spines
  ax1.set_title(f'Cu vs Au Correlation\n(r = {corr_raw:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax1.set_title(f'
+ ax1.set_title(f')
  # Log-transformed
  ax2.scatter(cu_log, au_log, alpha=0.4, s=20, c='coral', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
- ax2.scatter(cu_log, au_log, alpha
+ ax2.scatter(cu_log, au_log, alpha)
  # Trend line
  z = np.polyfit(cu_log, au_log, 1)
  p = np.poly1d(z)
  x_trend = np.linspace(cu_log.min(), cu_log.max(), 100)
  ax2.plot(x_trend, p(x_trend), 'r--', linewidth=2, label='Trend line')
  # Remove top and right spines
- ax2.plot(x_trend, p(x_trend), 'r--', linewidth
+ ax2.plot(x_trend, p(x_trend), 'r--', linewidth)
  ax2.set_xlabel('log₁₀(Cu + 1)', fontsize=12)
  # Remove top and right spines
  ax2.set_ylabel('log₁₀(Au + 0.001)', fontsize=12)
  # Remove top and right spines
  ax2.set_title(f'Log-Transformed Correlation\n(r = {corr_log:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax2.set_title(f'
+ ax2.set_title(f')
  ax2.legend()
 
  plt.tight_layout()

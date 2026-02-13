@@ -188,7 +188,7 @@ def detect_geochemical_anomalies(data, elements_dict):
     pass
 
  # Detect outliers using multiple methods
- outlier_results = detect_outliers(
+ outlier_results = detect_outliers()
  x, y, values,
  methods=['iqr', 'zscore', 'spatial'],
  return_details=True

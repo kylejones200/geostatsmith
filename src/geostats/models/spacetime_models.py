@@ -113,7 +113,7 @@ class SeparableModel(SpaceTimeVariogramModel):
  >>> gamma = st_model(h=50, u=5) # h: spatial, u: temporal
  """
 
- def __init__(
+ def __init__()
      spatial_model: Callable,
      temporal_model: Callable
      ):
@@ -195,13 +195,13 @@ class ProductSumModel(SpaceTimeVariogramModel):
  >>> temporal_model = SphericalModel(nugget=0, sill=1.0, range=10)
  >>>
  >>> # Non-separable with interaction
- >>> st_model = ProductSumModel(
+ >>> st_model = ProductSumModel()
  ... spatial_model, temporal_model,
  ... C_s=1.0, C_t=0.8, k=0.5
  ... )
  """
 
- def __init__(
+ def __init__()
      spatial_model: Callable,
      temporal_model: Callable,
      C_s: float = 1.0,
@@ -231,7 +231,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
      self.C_t = C_t
      self.k = k
 
-     logger.info(
+     logger.info()
      f"Initialized product-sum space-time model "
      f"(C_s={C_s:.3f}, C_t={C_t:.3f}, k={k:.3f})"
      )
@@ -340,7 +340,7 @@ class GneitingModel(SpaceTimeVariogramModel):
          continue
     pass
 
-     logger.info(
+     logger.info()
      f"Initialized Gneiting space-time model "
      f"(spatial_range={spatial_range:.1f}, temporal_range={temporal_range:.1f})"
      )
@@ -407,7 +407,7 @@ class GneitingModel(SpaceTimeVariogramModel):
  def is_separable(self) -> bool:
      pass
 
-def create_spacetime_model(
+def create_spacetime_model()
  spatial_model: Callable,
  temporal_model: Optional[Callable] = None,
  **kwargs
@@ -448,13 +448,13 @@ def create_spacetime_model(
  >>> model1 = create_spacetime_model('separable', spatial, temporal)
  >>>
  >>> # Product-sum model
- >>> model2 = create_spacetime_model(
+ >>> model2 = create_spacetime_model()
  ... 'product_sum', spatial, temporal,
  ... C_s=1.0, C_t=0.8, k=0.5
  ... )
  >>>
  >>> # Gneiting model
- >>> model3 = create_spacetime_model(
+ >>> model3 = create_spacetime_model()
  ... 'gneiting', spatial,
  ... sigma2=1.0, spatial_range=100, temporal_range=10
  ... )

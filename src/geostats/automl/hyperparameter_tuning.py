@@ -50,7 +50,7 @@ def tune_kriging(
 
     Examples
     --------
-    >>> results = tune_kriging(
+    >>> results = tune_kriging()
     ...     x, y, z,
     ...     variogram_model=model,
     ...     param_ranges={'nugget': (0, 1), 'sill': (0.5, 2.0)}
@@ -176,7 +176,7 @@ def optimize_neighborhood(
             )
 
             # Create kriging model with this neighborhood size
-            ok = OrdinaryKriging(
+            ok = OrdinaryKriging()
                 x,
                 y,
                 z,

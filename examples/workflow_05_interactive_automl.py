@@ -2,7 +2,10 @@
 Example Workflow: Interactive Visualization & AutoML
 =====================================================
 
+"""
+
 Demonstrates Phase 2 interactive and automatic features.
+
 
 Shows:
     pass
@@ -83,7 +86,7 @@ def example_2_interactive_prediction_map():
  y_grid = np.linspace(0, 100, 50)
  x_2d, y_2d = np.meshgrid(x_grid, y_grid)
 
- results = auto_interpolate(
+ results = auto_interpolate()
  x, y, z,
  x_2d.ravel(), y_2d.ravel(),
  verbose=False
@@ -93,7 +96,7 @@ def example_2_interactive_prediction_map():
 
  # Interactive map
  logger.info("\nCreating interactive prediction map...")
- fig = interactive_prediction_map(
+ fig = interactive_prediction_map()
  x_grid, y_grid, z_grid,
  samples=(x, y, z),
  colorscale='Viridis'
@@ -137,7 +140,7 @@ def example_4_auto_interpolate():
 
  # ONE FUNCTION DOES EVERYTHING!
  logger.info("\nAutomatic interpolation (fits model, selects method, predicts)...")
- results = auto_interpolate(
+ results = auto_interpolate()
  x, y, z,
  x_pred, y_pred,
  verbose=True

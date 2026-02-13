@@ -28,8 +28,9 @@ def cli():
     @click.option('--override', '-o', multiple=True, help='Override config values (e.g., project.name="Test")')
     @click.option('--verbose', '-v', is_flag=True, help='Verbose output')
 def run(config_file, validate_only, override, verbose):
+ """
  Run geostatistical analysis from config file
-
+ 
  Examples:
      pass
 
@@ -96,8 +97,9 @@ def run(config_file, validate_only, override, verbose):
     @cli.command()
     @click.argument('config_file', type=click.Path(exists=True))
 def validate(config_file):
+ """
  Validate a configuration file
-
+ 
  Example:
      pass
 
@@ -116,8 +118,9 @@ def validate(config_file):
  default='basic', help='Config template to use')
     @click.option('--output-dir', '-o', default='.', help='Output directory')
 def init(project_name, template, output_dir):
+ """
  Initialize a new project with template configuration
-
+ 
  Example:
      pass
 

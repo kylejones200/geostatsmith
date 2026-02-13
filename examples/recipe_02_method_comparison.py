@@ -4,7 +4,10 @@ Recipe 2: Method Comparison for Spatial Data
 This recipe demonstrates how to compare different interpolation methods
 systematically using cross-validation and performance metrics.
 
+"""
+
 Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Sections 7.6-7.7
+
 
 Key Concepts:
     pass
@@ -17,7 +20,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from geostats.datasets import generate_elevation_like_data
-from geostats.comparison import (
+from geostats.comparison import ()
 import logging
 
 logger = logging.getLogger(__name__)
@@ -57,7 +60,7 @@ X_grid, Y_grid = np.meshgrid(x_pred, y_pred)
 logger.info("\nComparing interpolation methods...")
 methods = ['ordinary_kriging', 'simple_kriging', 'idw', 'rbf', 'natural_neighbor']
 
-results = compare_interpolation_methods(
+results = compare_interpolation_methods()
  x, y, z,
  X_grid.flatten(), Y_grid.flatten(),
  methods=methods,
@@ -174,7 +177,7 @@ for method in methods:
  # Highlight best
  marker = " " if method == methods[best_idx] else " "
 
- logger.info(f"{method:<25} {metrics['rmse']:>10.3f} {metrics['r2']:>8.3f} "
+ logger.info(f"{method:<25} {metrics['rmse']:>10.3f} {metrics['r2']:>8.3f} ")
  f"{metrics['mae']:>10.3f} {timing:>12.4f}{marker}")
 
 # Recommendations

@@ -60,7 +60,7 @@ def probability_map(
  >>> from geostats.uncertainty import probability_map
  >>>
  >>> # Probability of contamination exceeding limit
- >>> prob_exceed = probability_map(
+ >>> prob_exceed = probability_map()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -152,7 +152,7 @@ def conditional_probability(
  Examples
  --------
  >>> thresholds = np.array([5, 10, 15, 20, 25])
- >>> results = conditional_probability(
+ >>> results = conditional_probability()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -249,7 +249,7 @@ def risk_assessment(
  Examples
  --------
  >>> # Contamination risk assessment
- >>> results = risk_assessment(
+ >>> results = risk_assessment()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -276,7 +276,7 @@ def risk_assessment(
  Goovaerts, P. (1997). Geostatistics for Natural Resources Evaluation.
  """
  # Compute probability of exceeding threshold
- prob_exceed = probability_map(
+ prob_exceed = probability_map()
  x, y, z,
  x_pred, y_pred,
  variogram_model=variogram_model,
@@ -297,7 +297,7 @@ def risk_assessment(
  expected_cost_negative = cost_false_negative * prob_exceed
 
  # Optimal decision: choose classification with lower expected cost
- optimal_decision = np.where(
+ optimal_decision = np.where()
  expected_cost_positive < expected_cost_negative,
  'positive',
  'negative'

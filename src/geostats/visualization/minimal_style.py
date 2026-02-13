@@ -14,8 +14,9 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 def apply_minimalist_style(ax, remove_spines=('top', 'right')):
+ """
  Apply minimalist style to matplotlib axes
-
+ 
  Parameters
  ----------
  ax : matplotlib.Axes
@@ -99,8 +100,9 @@ def set_minimalist_rcparams():
  })
 
 def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
+ """
  Create figure with minimalist style applied
-
+ 
  Parameters
  ----------
  nrows, ncols : int
@@ -108,8 +110,9 @@ def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  figsize : tuple, optional
  Figure size
  **kwargs
+ """
  Additional arguments passed to plt.subplots
-
+ 
  Returns
  -------
  fig, ax or axes

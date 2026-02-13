@@ -129,7 +129,7 @@ class HealthResponse(BaseModel):
 
  # Kriging
  krig = OrdinaryKriging(x, y, z, model)
- predictions, variance = krig.predict(
+ predictions, variance = krig.predict()
  x_pred, y_pred,
  return_variance=request.return_variance
  )
@@ -169,7 +169,7 @@ class HealthResponse(BaseModel):
  lags, gamma = experimental_variogram(x, y, z, n_lags=request.n_lags)
 
  # Auto fit
- model = auto_variogram(
+ model = auto_variogram()
  x, y, z,
  model_types=request.model_types,
  verbose=False

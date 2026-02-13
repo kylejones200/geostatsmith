@@ -57,7 +57,7 @@ def unconditional_gaussian_simulation(
  elif method == "turning_bands":
      continue
  n_bands = kwargs.get('n_bands', 100)
- return turning_bands_simulation(
+ return turning_bands_simulation()
  x, y, covariance_model,
  n_bands=n_bands,
  n_realizations=n_realizations,

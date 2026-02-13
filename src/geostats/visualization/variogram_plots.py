@@ -1,7 +1,10 @@
 """
 Variogram visualization functions
 
+"""
+
 Based on Zhang, Y. (2010). Course Notes, Section 3.2
+
 
 Plotting style: Minimalist and clean
 - No gridlines
@@ -26,8 +29,9 @@ def plot_variogram(
     ) -> plt.Axes:
         pass
  """
+ """
  Plot experimental variogram with optional model fit
-
+ 
  Parameters
  ----------
  lags : np.ndarray
@@ -41,8 +45,9 @@ def plot_variogram(
  ax : matplotlib.Axes, optional
  Axes to plot on
  **kwargs
+ """
  Additional arguments passed to scatter plot
-
+ 
  Returns
  -------
  ax : matplotlib.Axes
@@ -93,11 +98,13 @@ def plot_variogram_cloud(
     ) -> plt.Axes:
         pass
  """
+ """
  Plot variogram cloud (all pairwise points)
-
+ 
  Shows individual squared differences vs. distance.
+ """
  Useful for detecting outliers and understanding spatial structure.
-
+ 
  Parameters
  ----------
  x, y : np.ndarray
@@ -109,8 +116,9 @@ def plot_variogram_cloud(
  ax : matplotlib.Axes, optional
  Axes to plot on
  **kwargs
+ """
  Additional scatter plot arguments
-
+ 
  Returns
  -------
  ax : matplotlib.Axes
@@ -145,11 +153,13 @@ def plot_h_scatterplot(
     ) -> plt.Axes:
         pass
  """
+ """
  Plot h-scatterplot: z(x) vs z(x+h)
-
+ 
  Shows correlation between values separated by distance h.
+ """
  The cloud of points should lie along a 45° line if strong correlation exists.
-
+ 
  Based on Zhang, Y. (2010). Course Notes, Section 3.2.2
 
  Parameters
@@ -167,8 +177,9 @@ def plot_h_scatterplot(
  angle_tolerance : float
  Angular tolerance in degrees
  ax : matplotlib.Axes, optional
+ """
  Axes to plot on
-
+ 
  Returns
  -------
  ax : matplotlib.Axes
@@ -186,7 +197,7 @@ def plot_h_scatterplot(
  else:
      pass
  dist_dir, dir_mask = directional_distance(x, y, x, y, direction, angle_tolerance)
- mask = ((dist_dir >= h_distance - tolerance) &
+ mask = ((dist_dir >= h_distance - tolerance) &)
  (dist_dir <= h_distance + tolerance) & dir_mask)
 
  # Extract upper triangle (avoid duplicates)
@@ -236,8 +247,9 @@ def plot_directional_variograms(
     ) -> plt.Figure:
         pass
  """
+ """
  Plot directional variograms to detect anisotropy
-
+ 
  Parameters
  ----------
  x, y : np.ndarray
@@ -251,8 +263,9 @@ def plot_directional_variograms(
  n_lags : int
  Number of lag bins
  figsize : tuple
+ """
  Figure size
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -267,7 +280,7 @@ def plot_directional_variograms(
     pass
 
  # Calculate directional variogram
- lags, gamma, n_pairs = experimental_variogram_directional(
+ lags, gamma, n_pairs = experimental_variogram_directional()
  x, y, z,
  angle=direction,
  tolerance=tolerance,
@@ -301,8 +314,9 @@ def plot_variogram_map(
     ) -> plt.Figure:
         pass
  """
+ """
  Create a variogram map (2D variogram surface)
-
+ 
  Shows how semivariance varies with direction and distance.
 
  Parameters
@@ -314,8 +328,9 @@ def plot_variogram_map(
  lag_size : float, optional
  Size of each lag
  figsize : tuple
+ """
  Figure size
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -387,8 +402,9 @@ def plot_experimental_variogram(
     ) -> tuple:
         pass
  """
+ """
  Plot experimental variogram points
-
+ 
  Parameters
  ----------
  lags : np.ndarray
@@ -400,8 +416,9 @@ def plot_experimental_variogram(
  ax : matplotlib.Axes, optional
  Axes to plot on
  **kwargs
+ """
  Additional scatter arguments
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -436,8 +453,9 @@ def plot_variogram_model(
     ) -> tuple:
         pass
  """
+ """
  Plot theoretical variogram model
-
+ 
  Parameters
  ----------
  model : VariogramModelBase
@@ -449,8 +467,9 @@ def plot_variogram_model(
  n_points : int
  Number of points for smooth curve
  **kwargs
+ """
  Additional plot arguments
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -491,8 +510,9 @@ def plot_variogram_with_model(
     ) -> tuple:
         pass
  """
+ """
  Plot experimental variogram with fitted model
-
+ 
  Parameters
  ----------
  lags : np.ndarray
@@ -506,8 +526,9 @@ def plot_variogram_with_model(
  ax : matplotlib.Axes, optional
  Axes to plot on
  **kwargs
+ """
  Additional arguments
-
+ 
  Returns
  -------
  fig : matplotlib.Figure
@@ -555,8 +576,9 @@ def plot_variogram_map(
     ) -> tuple:
         pass
  """
+ """
  Create variogram map (directional variography)
-
+ 
  Parameters
  ----------
  x, y : np.ndarray
@@ -566,8 +588,9 @@ def plot_variogram_map(
  n_lags : int
  Number of lag bins in each direction
  ax : matplotlib.Axes, optional
+ """
  Axes to plot on
-
+ 
  Returns
  -------
  fig : matplotlib.Figure

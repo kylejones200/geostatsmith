@@ -20,22 +20,26 @@ class ConfigError(GeoStatsError):
  pass
 
 def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
+ """
  Load and validate configuration file
-
+ 
  Parameters
  ----------
  config_path : str or Path
+ """
  Path to configuration file (.yaml, .yml, or .json)
-
+ 
  Returns
  -------
+ """
  AnalysisConfig
- Validated configuration object
+  Validated configuration object
 
  Raises
  ------
+ """
  ConfigError
- If file not found, invalid format, or validation fails
+  If file not found, invalid format, or validation fails
 
  Examples
  --------
@@ -85,20 +89,23 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
  raise ConfigError(error_msg)
 
 def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
+ """
  Validate configuration file without loading
-
+ 
  Parameters
  ----------
  config_path : str or Path
+ """
  Path to configuration file
-
+ 
  Returns
  -------
  is_valid : bool
  True if valid, False otherwise
  message : str
+ """
  Success message or error details
-
+ 
  Examples
  --------
  >>> valid, msg = validate_config('analysis.yaml')
@@ -117,19 +124,22 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  return False, str(e)
 
 def load_config_dict(config_dict: dict) -> AnalysisConfig:
+ """
  Load configuration from dictionary
-
+ 
  Useful for programmatic config creation or testing.
 
  Parameters
  ----------
  config_dict : dict
+ """
  Configuration dictionary
-
+ 
  Returns
  -------
+ """
  AnalysisConfig
- Validated configuration object
+  Validated configuration object
  """
  try:
  except ValidationError as e:
@@ -142,8 +152,9 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
  raise ConfigError(error_msg)
 
 def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisConfig:
+ """
  Merge configuration with overrides
-
+ 
  Useful for command-line overrides or parameter sweeps.
 
  Parameters
@@ -151,12 +162,14 @@ def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisC
  base_config : AnalysisConfig
  Base configuration
  override_dict : dict
+ """
  Dictionary with values to override
-
+ 
  Returns
  -------
+ """
  AnalysisConfig
- Merged configuration
+  Merged configuration
 
  Examples
  --------

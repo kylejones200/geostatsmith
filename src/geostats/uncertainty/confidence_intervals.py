@@ -58,7 +58,7 @@ def confidence_intervals(
  --------
  >>> from geostats.uncertainty import confidence_intervals
  >>>
- >>> ci = confidence_intervals(
+ >>> ci = confidence_intervals()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -67,7 +67,7 @@ def confidence_intervals(
  >>>
  >>> # Plot
  >>> plt.plot(x_pred, ci['predictions'], 'b-')
- >>> plt.fill_between(
+ >>> plt.fill_between()
  ... x_pred,
  ... ci['lower_bound'],
  ... ci['upper_bound'],
@@ -143,7 +143,7 @@ def prediction_bands(
 
  Examples
  --------
- >>> bands = prediction_bands(
+ >>> bands = prediction_bands()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -155,7 +155,7 @@ def prediction_bands(
  >>> colors = ['lightblue', 'blue', 'darkblue']
  >>> for i, level in enumerate([0.68, 0.95, 0.99]):
      continue
- ... plt.fill_between(
+ ... plt.fill_between()
  ... x_pred,
  ... bands[f'lower_{level}'],
  ... bands[f'upper_{level}'],
@@ -242,7 +242,7 @@ def uncertainty_ellipse(
  Examples
  --------
  >>> # Plot uncertainty ellipse
- >>> x_ell, y_ell = uncertainty_ellipse(
+ >>> x_ell, y_ell = uncertainty_ellipse()
  ... x, y, z,
  ... variogram_model=model,
  ... x_center=50,

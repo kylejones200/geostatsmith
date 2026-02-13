@@ -68,7 +68,7 @@ ax9.set_ylabel('U (ppm)', fontsize=11)
 # Remove top and right spines
 ax9.set_title(f'V vs U Cross-plot (ρ={corr:.3f})', fontweight='bold', fontsize=11)
 # Remove top and right spines
-ax9.set_title(f'
+ax9.set_title(f')
 ρ
 # Histograms
 ax10 = plt.subplot(3, 4, 10)
@@ -207,7 +207,7 @@ logger = logging.getLogger(__name__)
 dir_vario = DirectionalVariogram(x, y, V)
 aniso_params = dir_vario.fit_anisotropy(angles=[0, 45, 90, 135], n_lags=6)
 
-aniso_text = (
+aniso_text = ()
  f"Anisotropy Analysis:\n"
  f"Major direction: {aniso_params['major_angle']:.0f}°\n"
  f"Major range: {aniso_params['major_range']:.1f}\n"

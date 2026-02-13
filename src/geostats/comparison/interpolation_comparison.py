@@ -24,7 +24,7 @@ from ..algorithms.simple_kriging import SimpleKriging
 from ..models.variogram_models import SphericalModel
 from ..algorithms import variogram
 from ..core.exceptions import ValidationError
-from .method_implementations import (
+from .method_implementations import ()
  inverse_distance_weighting,
  radial_basis_function_interpolation,
  natural_neighbor_interpolation,
@@ -328,7 +328,7 @@ def compare_interpolation_methods(
  >>> X, Y = np.meshgrid(x_pred, y_pred)
  >>>
  >>> # Compare methods
- >>> results = compare_interpolation_methods(
+ >>> results = compare_interpolation_methods()
  ... x, y, z,
  ... X.flatten(), Y.flatten(),
  ... methods=['ordinary_kriging', 'idw', 'rbf']
@@ -475,7 +475,7 @@ def _plot_comparison(
     pass
 
  # Create scatter plot of predictions
- scatter = ax.scatter(
+ scatter = ax.scatter()
  x_pred, y_pred,
  c=results['predictions'][method],
  cmap='viridis',

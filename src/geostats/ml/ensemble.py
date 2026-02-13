@@ -364,7 +364,7 @@ class BootstrapKriging(BaseKriging):
  >>> z_pred, z_std = bk.predict(x_new, y_new)
  """
 
- def __init__(
+ def __init__()
      base_model_type: type,
      n_bootstrap: int = 100,
      sample_fraction: float = 1.0,
@@ -648,7 +648,7 @@ class StackingKriging(BaseKriging):
                 # Note: Base models should already be fitted, but we refit on fold
                 # For kriging models, we need to refit with fold data
                 if hasattr(base_model, 'variogram_model'):
-                    fold_model = model_class(
+                    fold_model = model_class()
                         x_train, y_train, z_train,
                         variogram_model=base_model.variogram_model
                     )

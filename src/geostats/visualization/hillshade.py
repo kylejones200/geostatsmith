@@ -28,8 +28,9 @@ def hillshade(
     dy: float = 1.0,
 ) -> npt.NDArray[np.float64]:
  """
+ """
  Calculate hillshade from elevation data.
-
+ 
  Creates a shaded relief representation of terrain by simulating
  illumination from a specified sun position.
 
@@ -44,8 +45,9 @@ def hillshade(
  z_factor : float, default=1.0
  Vertical exaggeration factor
  dx, dy : float
+ """
  Grid spacing in x and y directions
-
+ 
  Returns
  -------
  hillshade : np.ndarray
@@ -87,8 +89,9 @@ def hillshade(
 
  References
  ----------
+ """
  Horn, B.K.P. (1981). Hill shading and the reflectance map.
- Proceedings of the IEEE, 69(1), 14-47.
+  Proceedings of the IEEE, 69(1), 14-47.
  """
  elevation = np.asarray(elevation, dtype=np.float64)
 
@@ -113,7 +116,7 @@ def hillshade(
  # Formula: cos(zenith) * cos(slope) + sin(zenith) * sin(slope) * cos(sun_azimuth - aspect)
  zenith_rad = np.pi/2 - altitude_rad
 
- hillshade_value = (
+ hillshade_value = ()
  np.cos(zenith_rad) * np.cos(slope) +
  np.sin(zenith_rad) * np.sin(slope) *
  np.cos(azimuth_rad - np.pi/2 - aspect)
@@ -136,8 +139,9 @@ def plot_hillshaded_dem(
     ) -> Tuple[plt.Figure, plt.Axes]:
         pass
  """
+ """
  Create a hillshaded DEM visualization.
-
+ 
  Combines hillshading with color elevation map for enhanced visualization.
 
  Parameters
@@ -153,8 +157,9 @@ def plot_hillshaded_dem(
  alpha : float, default=0.6
  Transparency of color layer (0=transparent, 1=opaque)
  figsize : tuple, default=(12, 10)
+ """
  Figure size
-
+ 
  Returns
  -------
  fig, ax : matplotlib Figure and Axes
@@ -216,8 +221,9 @@ def create_multi_azimuth_hillshade(
     ) -> npt.NDArray[np.float64]:
         pass
  """
+ """
  Create combined hillshade from multiple sun azimuths.
-
+ 
  Averages hillshades from different sun positions to reduce
  directional bias and enhance terrain features.
 
@@ -228,13 +234,15 @@ def create_multi_azimuth_hillshade(
  azimuths : list of float, optional
  Sun azimuth angles. If None, uses [315, 45, 135, 225]
  altitude : float
+ """
  Sun altitude angle
-
+ 
  Returns
  -------
  hillshade : np.ndarray
+ """
  Combined hillshade (0-255)
-
+ 
  Examples
  --------
  >>> import numpy as np
@@ -281,8 +289,9 @@ def slope_map(
     ) -> npt.NDArray[np.float64]:
         pass
  """
+ """
  Calculate slope from elevation data.
-
+ 
  Parameters
  ----------
  elevation : np.ndarray
@@ -290,8 +299,9 @@ def slope_map(
  dx, dy : float
  Grid spacing
  units : str, default='degrees'
+ """
  Output units: 'degrees', 'radians', or 'percent'
-
+ 
  Returns
  -------
  slope : np.ndarray
@@ -348,15 +358,17 @@ def aspect_map(
     ) -> npt.NDArray[np.float64]:
         pass
  """
+ """
  Calculate aspect (slope direction) from elevation data.
-
+ 
  Parameters
  ----------
  elevation : np.ndarray
  2D elevation array
  dx, dy : float
+ """
  Grid spacing
-
+ 
  Returns
  -------
  aspect : np.ndarray

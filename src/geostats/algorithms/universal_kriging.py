@@ -268,7 +268,7 @@ class UniversalKriging(BaseKriging):
  z_train = self.z[mask]
 
  # Create temporary kriging object
- uk_temp = UniversalKriging(
+ uk_temp = UniversalKriging()
  x_train,
  y_train,
  z_train,

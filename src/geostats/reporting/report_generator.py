@@ -26,8 +26,9 @@ def generate_report(
     ) -> str:
         pass
  """
+ """
  Generate analysis report.
-
+ 
  Parameters
  ----------
  x, y, z : ndarray
@@ -41,18 +42,20 @@ def generate_report(
  include_cv : bool
  Include cross-validation
  include_uncertainty : bool
+ """
  Include uncertainty analysis
-
+ 
  Returns
  -------
  output_path : str
+ """
  Path to generated report
-
+ 
  Examples
  --------
  >>> from geostats.reporting import generate_report
  >>>
- >>> generate_report(
+ >>> generate_report()
  ... x, y, z,
  ... output='analysis.html',
  ... title='Contamination Analysis',
@@ -63,7 +66,7 @@ def generate_report(
  -----
  HTML reports are always generated. PDF requires wkhtmltopdf or similar.
  """
- html = _generate_html_report(
+ html = _generate_html_report()
  x, y, z,
  title=title,
  author=author,
@@ -212,8 +215,9 @@ def create_kriging_report(
     ) -> str:
         pass
  """
+ """
  Generate kriging-specific report with prediction maps.
-
+ 
  Parameters
  ----------
  x, y, z : ndarray
@@ -221,8 +225,9 @@ def create_kriging_report(
  x_pred, y_pred : ndarray
  Prediction locations
  output : str
+ """
  Output filename
-
+ 
  Returns
  -------
  output_path : str
@@ -238,21 +243,23 @@ def create_validation_report(
     ) -> str:
         pass
  """
+ """
  Generate validation-focused report.
-
+ 
  Parameters
  ----------
  x, y, z : ndarray
  Sample data
  output : str
+ """
  Output filename
-
+ 
  Returns
  -------
  output_path : str
  Path to report
  """
- return generate_report(
+ return generate_report()
  x, y, z,
  output=output,
  title='Model Validation Report',

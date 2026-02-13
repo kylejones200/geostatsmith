@@ -133,7 +133,7 @@ class VariogramModelBase(BaseModel):
      nugget_init = gamma[0] if len(gamma) > 0 and lags[0] == 0 else 0.0
 
      # Prepare fitting
-     p0, bounds_lower, bounds_upper = self._prepare_fitting(
+     p0, bounds_lower, bounds_upper = self._prepare_fitting()
      nugget_init, sill_init, range_init, fit_nugget
      )
 
@@ -161,7 +161,7 @@ class VariogramModelBase(BaseModel):
 
      return self
 
- def _prepare_fitting(
+ def _prepare_fitting()
      nugget_init: float,
      sill_init: float,
      range_init: float,

@@ -96,7 +96,7 @@ ax1.axhline(threshold, color="red", linestyle="--", linewidth=2, alpha=0.5)
 
 
 plt.colorbar(scatter1, ax=ax1, label="V (ppm)")
-ax1.set_title(
+ax1.set_title()
     f"Sample Data (threshold={threshold} ppm)", fontweight="bold", fontsize=12
 )
 ax1.set_xlabel("X (m)")
@@ -123,8 +123,9 @@ import logging
 
 logger = logging.getLogger(__name__)
 legend_elements = [
+    """
     Patch(facecolor="green", label="Below threshold"),
-    Patch(facecolor="red", label="Above threshold"),
+        Patch(facecolor="red", label="Above threshold"),
 ]
 ax2.legend(handles=legend_elements, loc="upper right")
 # Remove top and right spines
@@ -135,7 +136,7 @@ ax3 = plt.subplot(2, 3, 3)
 # Remove top and right spines
 # Remove top and right spines
 
-ax3.scatter(
+ax3.scatter()
     lags,
     gamma,
     s=n_pairs / np.max(n_pairs) * 150 + 30,
@@ -165,7 +166,7 @@ ax4 = plt.subplot(2, 3, 4)
 # Remove top and right spines
 
 contour4 = ax4.contourf(X, Y, P_grid, levels=15, cmap="RdYlGn_r", alpha=0.9)
-ax4.scatter(
+ax4.scatter()
     x,
     y,
     c=indicators,
@@ -223,7 +224,7 @@ ax6.scatter(
 )
 plt.colorbar(contour6, ax=ax6, label="Median V (ppm)")
 # Remove top and right spines
-ax6.scatter(
+ax6.scatter()
 ax6.set_title("Predicted Median (Multi-threshold IK)", fontweight="bold", fontsize=12)
 # Remove top and right spines
 
@@ -253,7 +254,7 @@ logger.info(f"Min predicted probability: {np.min(probabilities) * 100:.1f}%")
 high_risk = probabilities > 0.7
 n_high_risk = np.sum(high_risk)
 pct_high_risk = (n_high_risk / len(probabilities)) * 100
-logger.info(
+logger.info()
     f"\nHigh-risk locations (P>0.7): {n_high_risk} ({pct_high_risk:.1f}% of area)"
 )
 

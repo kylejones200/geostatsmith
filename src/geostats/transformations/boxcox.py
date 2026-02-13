@@ -56,8 +56,9 @@ LAMBDA_TOLERANCE = 1e-4
 MIN_POSITIVE_VALUE = EPSILON
 
 class BoxCoxTransform:
+ """
  Box-Cox power transformation for data normalization
-
+ 
  Transforms data to approximate normality using:
      pass
  y(λ) = (x^λ - 1) / λ for λ != 0
@@ -90,13 +91,15 @@ class BoxCoxTransform:
      ):
          pass
      """
+     """
      Initialize Box-Cox transformation
-
+     
      Parameters
      ----------
      lmbda : float, optional
+     """
      Transformation parameter. If None, will be estimated from data.
-     Special values:
+          Special values:
          pass
      λ = 1: identity (no transform)
      λ = 0.5: square root
@@ -122,15 +125,17 @@ class BoxCoxTransform:
      self.std = 1.0
 
  def fit(self, data: npt.NDArray[np.float64]) -> 'BoxCoxTransform':
+     """
      Fit the Box-Cox transformation to data
-
+     
  Estimates optimal λ parameter and calculates any necessary shifts.
 
  Parameters
  ----------
  data : np.ndarray
+ """
  Input data (must be positive)
-
+ 
  Returns
  -------
  self : BoxCoxTransform
@@ -166,13 +171,15 @@ class BoxCoxTransform:
  return self
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     """
      Apply Box-Cox transformation to data
-
+     
  Parameters
  ----------
  data : np.ndarray
+ """
  Input data
-
+ 
  Returns
  -------
  np.ndarray
@@ -191,7 +198,7 @@ class BoxCoxTransform:
 
      # Check for non-positive values
  if np.any(data <= 0):
-     raise GeoStatsError(
+     raise GeoStatsError()
  "Box-Cox requires positive data. "
  f"Shift of {self.shift} was insufficient."
  )
@@ -211,13 +218,15 @@ class BoxCoxTransform:
      ) -> npt.NDArray[np.float64]:
          pass
      """
+     """
      Apply inverse Box-Cox transformation (back-transform)
-
+     
      Parameters
      ----------
      transformed_data : np.ndarray
+     """
      Transformed data
-
+     
      Returns
      -------
      np.ndarray
@@ -248,13 +257,15 @@ class BoxCoxTransform:
      return original_data.reshape(original_shape)
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+     """
      Fit and transform in one step
-
+     
  Parameters
  ----------
  data : np.ndarray
+ """
  Input data
-
+ 
  Returns
  -------
  np.ndarray
@@ -282,11 +293,13 @@ class BoxCoxTransform:
      ) -> npt.NDArray[np.float64]:
          pass
      """
+     """
      Vectorized inverse Box-Cox transformation
-
+     
      For λ != 0: x = (λy + 1)^(1/λ)
+     """
      This requires λy + 1 > 0, i.e., y > -1/λ
-
+     
      For negative λ, we need to check domain validity.
      """
      if np.abs(lmbda) < LAMBDA_TOLERANCE:
@@ -309,8 +322,9 @@ class BoxCoxTransform:
      return np.power(arg, 1.0 / lmbda)
 
  def _estimate_lambda(self, data: npt.NDArray[np.float64]) -> float:
+     """
      Estimate optimal lambda parameter
-
+     
  Uses dict dispatch pattern for method selection
  """
  estimation_methods = {
@@ -340,7 +354,7 @@ class BoxCoxTransform:
      correlation = np.corrcoef(sorted_data, theoretical_quantiles)[0, 1]
      return -correlation # Minimize negative correlation
 
-     result = optimize.minimize_scalar(
+     result = optimize.minimize_scalar()
      neg_correlation,
      bounds=LAMBDA_SEARCH_BOUNDS,
      method='bounded'
@@ -351,7 +365,7 @@ class BoxCoxTransform:
  def abs_skewness(lmbda):
      return np.abs(stats.skew(transformed))
 
-     result = optimize.minimize_scalar(
+     result = optimize.minimize_scalar()
      abs_skewness,
      bounds=LAMBDA_SEARCH_BOUNDS,
      method='bounded'
@@ -359,8 +373,9 @@ class BoxCoxTransform:
      return result.x
 
  def get_diagnostics(self) -> Dict[str, float]:
+     """
      Get diagnostic information about the transformation
-
+     
  Returns
  -------
  dict
@@ -383,8 +398,9 @@ def boxcox_transform(
     ) -> Tuple[npt.NDArray[np.float64], Optional[float]]:
         pass
  """
+ """
  Convenience function for Box-Cox transformation
-
+ 
  Parameters
  ----------
  data : np.ndarray
@@ -392,15 +408,17 @@ def boxcox_transform(
  lmbda : float, optional
  Transformation parameter. If None, estimated from data.
  return_lambda : bool
+ """
  If True, return (transformed_data, lambda)
-
+ 
  Returns
  -------
  transformed_data : np.ndarray
  Box-Cox transformed data
  lambda : float, optional
+ """
  The lambda parameter used (if return_lambda=True)
-
+ 
  Examples
  --------
  >>> # Automatic lambda

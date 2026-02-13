@@ -26,7 +26,7 @@ DEFAULT_NOISE_LEVEL = 0.1
 MIN_POINTS = 10
 MAX_POINTS = 100000
 
-def generate_random_field(
+def generate_random_field()
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  trend_type: str = 'linear',
@@ -35,8 +35,9 @@ def generate_random_field(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Generate a synthetic random field with specified trend and noise.
-
+ 
  Parameters
  ----------
  n_points : int, default=100
@@ -54,13 +55,15 @@ def generate_random_field(
  noise_level : float, default=0.1
  Standard deviation of Gaussian noise
  seed : int, optional
+ """
  Random seed for reproducibility
-
+ 
  Returns
  -------
  x, y, z : np.ndarray
+ """
  Coordinates and values
-
+ 
  Examples
  --------
  >>> from geostats.datasets.synthetic import generate_random_field
@@ -71,8 +74,9 @@ def generate_random_field(
  ... seed=42
  ... )
  >>> logger.info(f"Generated {len(x)} points")
+ """
  Generated 50 points
-
+ 
  Notes
  -----
  Useful for:
@@ -130,8 +134,9 @@ def generate_clustered_samples(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Generate clustered spatial samples.
-
+ 
  Useful for testing declustering methods and demonstrating
  the effect of preferential sampling.
 
@@ -146,16 +151,19 @@ def generate_clustered_samples(
  x_range, y_range : tuple of float
  Spatial extent
  value_by_cluster : bool, default=True
+ """
  If True, values vary by cluster
- If False, values are spatially continuous
+  If False, values are spatially continuous
  seed : int, optional
+ """
  Random seed
-
+ 
  Returns
  -------
  x, y, z : np.ndarray
+ """
  Coordinates and values
-
+ 
  Examples
  --------
  >>> from geostats.datasets.synthetic import generate_clustered_samples
@@ -211,7 +219,7 @@ def generate_clustered_samples(
 
  return x, y, z
 
-def generate_elevation_like_data(
+def generate_elevation_like_data()
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  n_hills: int = 3,
@@ -220,8 +228,9 @@ def generate_elevation_like_data(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Generate synthetic elevation-like data with hills and valleys.
-
+ 
  Mimics digital elevation models (DEMs) for testing interpolation
  of topographic data.
 
@@ -236,13 +245,15 @@ def generate_elevation_like_data(
  roughness : float, default=0.1
  Terrain roughness (higher = more noise)
  seed : int, optional
+ """
  Random seed
-
+ 
  Returns
  -------
  x, y, z : np.ndarray
+ """
  Coordinates and elevation values
-
+ 
  Examples
  --------
  >>> from geostats.datasets.synthetic import generate_elevation_like_data
@@ -297,7 +308,7 @@ def generate_elevation_like_data(
 
  return x, y, z
 
-def generate_anisotropic_field(
+def generate_anisotropic_field()
  x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
  anisotropy_ratio: float = 3.0,
@@ -307,8 +318,9 @@ def generate_anisotropic_field(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Generate synthetic data with anisotropic spatial correlation.
-
+ 
  Useful for testing anisotropic kriging and demonstrating
  directional correlation structures.
 
@@ -325,13 +337,15 @@ def generate_anisotropic_field(
  correlation_length : float, default=20.0
  Base correlation length
  seed : int, optional
+ """
  Random seed
-
+ 
  Returns
  -------
  x, y, z : np.ndarray
+ """
  Coordinates and values with anisotropic correlation
-
+ 
  Examples
  --------
  >>> from geostats.datasets.synthetic import generate_anisotropic_field
@@ -402,8 +416,9 @@ def generate_sparse_dense_mix(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Generate dataset with both sparse and densely sampled regions.
-
+ 
  Demonstrates challenges in interpolation with uneven sampling
  and the importance of appropriate neighbor selection.
 
@@ -420,13 +435,15 @@ def generate_sparse_dense_mix(
  x_range, y_range : tuple of float
  Overall spatial extent
  seed : int, optional
+ """
  Random seed
-
+ 
  Returns
  -------
  x, y, z : np.ndarray
+ """
  Coordinates and values
-
+ 
  Examples
  --------
  >>> from geostats.datasets.synthetic import generate_sparse_dense_mix

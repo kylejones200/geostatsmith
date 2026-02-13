@@ -75,7 +75,7 @@ def bootstrap_uncertainty(
  >>> model = SphericalModel(nugget=0.1, sill=1.0, range_param=50)
  >>>
  >>> # Bootstrap uncertainty
- >>> results = bootstrap_uncertainty(
+ >>> results = bootstrap_uncertainty()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -84,7 +84,7 @@ def bootstrap_uncertainty(
  >>>
  >>> # Plot with confidence bands
  >>> plt.plot(x_pred, results['mean'], 'b-', label='Mean')
- >>> plt.fill_between(
+ >>> plt.fill_between()
  ... x_pred,
  ... results['lower_bound'],
  ... results['upper_bound'],
@@ -217,7 +217,7 @@ def bootstrap_variogram(
 
  Examples
  --------
- >>> results = bootstrap_variogram(
+ >>> results = bootstrap_variogram()
  ... x, y, z,
  ... model_type='spherical',
  ... n_bootstrap=200
@@ -240,7 +240,7 @@ def bootstrap_variogram(
 
  try:
      pass
- lags, gamma = experimental_variogram(
+ lags, gamma = experimental_variogram()
  x_boot, y_boot, z_boot,
  n_lags=n_lags
  )
@@ -315,7 +315,7 @@ def bootstrap_kriging(
 
  Examples
  --------
- >>> results = bootstrap_kriging(
+ >>> results = bootstrap_kriging()
  ... x, y, z,
  ... x_pred, y_pred,
  ... model_type='exponential',

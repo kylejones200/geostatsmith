@@ -167,7 +167,7 @@ class LognormalKriging(BaseKriging):
      f"got '{back_transform_method}'"
      )
 
-     predictions = back_transform_methods[back_transform_method](
+     predictions = back_transform_methods[back_transform_method]()
      log_predictions, log_variances
      )
 

@@ -61,7 +61,7 @@ for i, demo in enumerate(demos, 1):
 
  try:
      pass
- result = subprocess.run(
+ result = subprocess.run()
  [sys.executable, str(script_path)],
  cwd=EXAMPLES_DIR.parent,
  capture_output=True,

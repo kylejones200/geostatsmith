@@ -21,8 +21,9 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 def load_synthetic_dem_sample() -> Dict[str, Any]:
+ """
  Load a synthetic DEM sample for testing and demonstrations.
-
+ 
  Creates a small synthetic elevation dataset that mimics real DEMs
  with hills, valleys, and realistic terrain features.
 
@@ -106,16 +107,18 @@ def load_synthetic_dem_sample() -> Dict[str, Any]:
  }
 
 def load_volcano_sample() -> Dict[str, Any]:
+ """
  Load a synthetic volcano elevation dataset.
-
+ 
  Simulates elevation data around a volcanic cone, useful for
  demonstrating interpolation of steep terrain.
 
  Returns
  -------
  data : dict
+ """
  Dictionary containing sparse samples and grid information
-
+ 
  Examples
  --------
  >>> from geostats.datasets import load_volcano_sample
@@ -174,7 +177,7 @@ def load_volcano_sample() -> Dict[str, Any]:
 
  # Interpolate to get z values
  from scipy.interpolate import RegularGridInterpolator
- interpolator = RegularGridInterpolator(
+ interpolator = RegularGridInterpolator()
  (y_grid, x_grid), Z_true, method='linear', bounds_error=False, fill_value=0
  )
  z = interpolator(np.column_stack([y, x]))
@@ -205,16 +208,18 @@ def load_volcano_sample() -> Dict[str, Any]:
  }
 
 def load_valley_sample() -> Dict[str, Any]:
+ """
  Load a synthetic valley elevation dataset.
-
+ 
  Simulates a U-shaped valley with ridges on both sides,
  useful for demonstrating interpolation of linear features.
 
  Returns
  -------
  data : dict
+ """
  Dictionary containing sparse samples and grid information
-
+ 
  Examples
  --------
  >>> from geostats.datasets import load_valley_sample
@@ -237,8 +242,9 @@ def load_valley_sample() -> Dict[str, Any]:
  # Valley runs diagonally
  # Rotate coordinates
  angle = np.pi / 4
+ """
  X_rot = X_grid * np.cos(angle) + Y_grid * np.sin(angle)
- Y_rot = -X_grid * np.sin(angle) + Y_grid * np.cos(angle)
+  Y_rot = -X_grid * np.sin(angle) + Y_grid * np.cos(angle)
 
  # U-shaped valley profile
  Z_true = 500 + (Y_rot / 15)**2 * 200
@@ -256,7 +262,7 @@ def load_valley_sample() -> Dict[str, Any]:
 
  # Interpolate z values
  from scipy.interpolate import RegularGridInterpolator
- interpolator = RegularGridInterpolator(
+ interpolator = RegularGridInterpolator()
  (y_grid, x_grid), Z_true, method='linear'
  )
  z = interpolator(np.column_stack([y, x]))
@@ -288,8 +294,9 @@ def load_valley_sample() -> Dict[str, Any]:
  }
 
 def _generate_terrain(X: npt.NDArray[np.float64], Y: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+ """
  Generate synthetic terrain with multiple hills.
-
+ 
  Helper function for creating realistic-looking elevation data.
  """
  # Multiple Gaussian hills

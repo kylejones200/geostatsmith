@@ -228,7 +228,7 @@ def radial_basis_function_interpolation(
  pred_points = np.column_stack([x_pred, y_pred])
 
  # Create RBF interpolator
- rbf = RBFInterpolator(
+ rbf = RBFInterpolator()
  data_points,
  z_data,
  kernel=kernel,

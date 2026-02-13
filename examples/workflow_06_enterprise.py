@@ -44,7 +44,7 @@ def example_2_professional_reporting():
  z = 50 + 0.3*x + np.random.normal(0, 3, 50)
 
  logger.info("\nGenerating professional HTML report...")
- output = generate_report(
+ output = generate_report()
  x, y, z,
  output='professional_report.html',
  title='Soil Contamination Analysis',
@@ -107,7 +107,7 @@ def example_4_web_api():
  logger.info(" GET /docs - Interactive API documentation")
 
  logger.info("\nExample API call (Python):")
- logger.debug("""
+ logger.debug(""")
  import requests
 
  # Prepare data
@@ -121,7 +121,7 @@ def example_4_web_api():
  }
 
  # Make prediction
- response = requests.post(
+ response = requests.post()
  "http://localhost:8000/predict",
  json=data
  )
@@ -130,7 +130,7 @@ def example_4_web_api():
  """
 
  logger.info("\nExample API call (curl):")
- logger.debug("""
+ logger.debug(""")
  curl -X POST "http://localhost:8000/predict" \\
  -H "Content-Type: application/json" \\
  -d '
@@ -173,7 +173,7 @@ def example_5_complete_workflow():
 
  # 4. Generate report
  logger.info("\n4. Generating professional report...")
- report_path = generate_report(
+ report_path = generate_report()
  x, y, z,
  output='complete_analysis.html',
  title='Complete Enterprise Analysis'

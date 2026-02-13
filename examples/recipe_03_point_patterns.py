@@ -4,7 +4,10 @@ Recipe 3: Analyzing Spatial Point Patterns
 This recipe demonstrates how to analyze spatial point distributions to
 detect clustering, dispersion, or randomness using multiple statistical tests.
 
+"""
+
 Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Section 7.8
+
 
 Key Concepts:
     pass
@@ -19,7 +22,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
 from geostats.datasets import generate_clustered_samples
-from geostats.spatial_stats import (
+from geostats.spatial_stats import ()
     nearest_neighbor_analysis,
     ripley_k_function,
     quadrat_analysis,
@@ -77,9 +80,9 @@ for pattern_name, (x, y) in patterns.items():
     logger.info(f" P-value: {nn_results['p_value']:.4f}")
     logger.info(f" Interpretation: {nn_results['interpretation']}")
 
-    # Ripley's K function
+    # Ripley's K function'
     ripley_results = ripley_k_function(x, y, n_distances=30)
-    logger.info(f"\nRipley's K Function:")
+    logger.info(f"\nRipley's K Function:")'
     logger.info(f" Interpretation: {ripley_results['interpretation']}")
 
     # Quadrat analysis
@@ -134,7 +137,7 @@ for pattern_name, (x, y) in patterns.items():
     ax1.spines['top'].set_visible(False)
     ax1.spines['right'].set_visible(False)
 
-    # Column 2: Ripley's K function
+    # Column 2: Ripley's K function'
     ax2 = fig.add_subplot(gs[row, 1])
     # Remove top and right spines
     ax2.spines['top'].set_visible(False)
@@ -246,7 +249,7 @@ for pattern_name in patterns.keys():
 
 
 logger.info("\nKEY INSIGHTS")
-logger.debug("""
+logger.debug(""")
 1. Multiple tests provide robust conclusions
  - Agreement among tests strengthens interpretation
  - Disagreement suggests mixed patterns or edge effects

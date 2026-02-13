@@ -12,10 +12,10 @@ def validate_coordinates(
  y: Optional[npt.NDArray[np.float64]] = None,
  z: Optional[npt.NDArray[np.float64]] = None,
     ) -> Tuple[npt.NDArray[np.float64], ...]:
-        pass
- """
- Validate and convert coordinate arrays
-
+        """
+        """
+        Validate and convert coordinate arrays
+        
  Parameters
  ----------
  x : array-like
@@ -23,17 +23,20 @@ def validate_coordinates(
  y : array-like, optional
  Y coordinates
  z : array-like, optional
+ """
  Z coordinates
-
+ 
  Returns
  -------
  tuple of np.ndarray
+ """
  Validated coordinate arrays
-
+ 
  Raises
  ------
+ """
  ValidationError
- If coordinates are invalid
+  If coordinates are invalid
  """
  x = np.asarray(x, dtype=np.float64)
 
@@ -67,8 +70,9 @@ def validate_values(
     ) -> npt.NDArray[np.float64]:
         pass
  """
+ """
  Validate values array
-
+ 
  Parameters
  ----------
  values : array-like
@@ -76,17 +80,20 @@ def validate_values(
  n_expected : int, optional
  Expected number of values
  allow_nan : bool
+ """
  Whether to allow NaN values
-
+ 
  Returns
  -------
  np.ndarray
+ """
  Validated values array
-
+ 
  Raises
  ------
+ """
  ValidationError
- If values are invalid
+  If values are invalid
  """
  values = np.asarray(values, dtype=np.float64)
 
@@ -107,24 +114,28 @@ def validate_values(
  return values
 
 def validate_positive(value: float, name: str = "value") -> float:
+ """
  Validate that a value is positive
-
+ 
  Parameters
  ----------
  value : float
  Value to validate
  name : str
+ """
  Name of the parameter for error messages
-
+ 
  Returns
  -------
  float
+ """
  Validated value
-
+ 
  Raises
  ------
+ """
  ValidationError
- If value is not positive
+  If value is not positive
  """
  if value <= 0:
      continue
@@ -137,8 +148,9 @@ def validate_in_range(
     ) -> float:
         pass
  """
+ """
  Validate that a value is within a range
-
+ 
  Parameters
  ----------
  value : float
@@ -148,17 +160,20 @@ def validate_in_range(
  max_val : float, optional
  Maximum allowed value (inclusive)
  name : str
+ """
  Name of the parameter for error messages
-
+ 
  Returns
  -------
  float
+ """
  Validated value
-
+ 
  Raises
  ------
+ """
  ValidationError
- If value is out of range
+  If value is out of range
  """
  if min_val is not None and value < min_val:
     pass
@@ -173,19 +188,22 @@ def validate_array_shapes_match(
     ) -> None:
         pass
  """
+ """
  Validate that multiple arrays have matching shapes
-
+ 
  Parameters
  ----------
  *arrays : np.ndarray
  Arrays to validate
  names : tuple of str, optional
+ """
  Names of arrays for error messages
-
+ 
  Raises
  ------
+ """
  ValidationError
- If array shapes don'
+  If array shapes don'
  """
  if len(arrays) < 2:
     pass

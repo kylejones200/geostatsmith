@@ -29,8 +29,9 @@ def sample_size_calculator(
     ) -> Dict[str, Any]:
         pass
  """
+ """
  Estimate the number of samples needed to achieve target accuracy.
-
+ 
  Uses cross-validation to estimate how prediction error decreases
  with increasing sample size.
 
@@ -53,8 +54,9 @@ def sample_size_calculator(
  max_samples : int, default=500
  Maximum samples to consider
  n_simulations : int, default=10
+ """
  Number of Monte Carlo simulations
-
+ 
  Returns
  -------
  results : dict
@@ -71,7 +73,7 @@ def sample_size_calculator(
  --------
  >>> from geostats.optimization import sample_size_calculator
  >>>
- >>> results = sample_size_calculator(
+ >>> results = sample_size_calculator()
  ... x, y, z,
  ... variogram_model=model,
  ... target_rmse=0.5
@@ -86,8 +88,9 @@ def sample_size_calculator(
 
  References
  ----------
+ """
  Webster, R., & Oliver, M. A. (2007). Geostatistics for Environmental
- Scientists. Wiley.
+  Scientists. Wiley.
  """
  n_initial = len(x_initial)
 
@@ -204,8 +207,9 @@ def cost_benefit_analysis(
     ) -> Dict[str, Any]:
         pass
  """
+ """
  Perform cost-benefit analysis for sampling.
-
+ 
  Determines optimal number of samples by balancing cost of sampling
  against benefit of improved predictions.
 
@@ -224,8 +228,9 @@ def cost_benefit_analysis(
  benefit_per_rmse_reduction : float
  Benefit (in same units as cost) per unit RMSE reduction
  max_budget : float
+ """
  Maximum budget available
-
+ 
  Returns
  -------
  results : dict
@@ -239,7 +244,7 @@ def cost_benefit_analysis(
 
  Examples
  --------
- >>> results = cost_benefit_analysis(
+ >>> results = cost_benefit_analysis()
  ... x, y, z,
  ... variogram_model=model,
  ... cost_per_sample=100, # $100 per sample
@@ -251,15 +256,16 @@ def cost_benefit_analysis(
 
  Notes
  -----
+ """
  Net benefit = (RMSE_reduction * benefit_per_rmse) - (n_new * cost_per_sample)
-
+ 
  Optimal sample size maximizes net benefit subject to budget constraint.
  """
  n_current = len(x)
  max_samples = int(max_budget / cost_per_sample) + n_current
 
  # Get RMSE curve
- size_results = sample_size_calculator(
+ size_results = sample_size_calculator()
  x, y, z,
  variogram_model=variogram_model,
  target_rmse=0.1, # Arbitrary target
@@ -314,8 +320,9 @@ def estimate_interpolation_error(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
+ """
  Estimate interpolation error and confidence intervals.
-
+ 
  Parameters
  ----------
  x : ndarray
@@ -331,8 +338,9 @@ def estimate_interpolation_error(
  y_pred : ndarray
  Prediction Y coordinates
  confidence_level : float, default=0.95
+ """
  Confidence level for intervals (0-1)
-
+ 
  Returns
  -------
  results : dict
@@ -346,7 +354,7 @@ def estimate_interpolation_error(
 
  Examples
  --------
- >>> results = estimate_interpolation_error(
+ >>> results = estimate_interpolation_error()
  ... x, y, z,
  ... variogram_model=model,
  ... x_pred=x_grid,
@@ -356,7 +364,7 @@ def estimate_interpolation_error(
  >>>
  >>> # Plot with confidence bands
  >>> plt.plot(x_pred, results['predictions'], 'b-')
- >>> plt.fill_between(
+ >>> plt.fill_between()
  ... x_pred,
  ... results['lower_bound'],
  ... results['upper_bound'],
@@ -365,8 +373,9 @@ def estimate_interpolation_error(
 
  Notes
  -----
+ """
  Uses kriging variance to construct confidence intervals.
- Assumes Gaussian errors.
+  Assumes Gaussian errors.
  """
  # Perform kriging
  krig = OrdinaryKriging(

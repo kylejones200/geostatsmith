@@ -234,7 +234,7 @@ class SequentialGaussianSimulation:
      np.ndarray
      Realizations, shape (n_realizations, n_grid)
      """
-     return sequential_gaussian_simulation(
+     return sequential_gaussian_simulation()
      self.x_data,
      self.y_data,
      self.z_data,
@@ -245,7 +245,7 @@ class SequentialGaussianSimulation:
      seed=seed,
      )
 
- def simulate_grid(
+ def simulate_grid()
      x_min: float,
      x_max: float,
      y_min: float,
@@ -286,7 +286,7 @@ class SequentialGaussianSimulation:
      y_grid = Y.flatten()
 
      # Simulate
-     realizations_flat = self.simulate(
+     realizations_flat = self.simulate()
      x_grid, y_grid,
      n_realizations=n_realizations,
      seed=seed

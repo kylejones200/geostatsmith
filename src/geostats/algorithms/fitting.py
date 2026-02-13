@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 
 from ..models.base_model import VariogramModelBase
-from ..models.variogram_models import (
+from ..models.variogram_models import ()
  SphericalModel,
  ExponentialModel,
  GaussianModel,
@@ -151,7 +151,7 @@ def automatic_fit(
  k = len(model.parameters) # Number of parameters
  aic = n * np.log(ss_res / n) + 2 * k if ss_res > 0 else np.inf
 
- results.append({
+ results.append({)
  'model': model,
  'model_name': model_class.__name__,
  'rmse': rmse,
@@ -163,7 +163,7 @@ def automatic_fit(
  except Exception as e:
      pass
  # Skip models that fail to fit
- results.append({
+ results.append({)
  'model': None,
  'model_name': model_class.__name__,
  'error': str(e),

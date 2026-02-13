@@ -221,7 +221,7 @@ class AnalysisPipeline:
 
  # Outlier removal
  if self.config.preprocessing.remove_outliers:
-     results = outlier_analysis(
+     results = outlier_analysis()
  self.x, self.y, self.z,
  method=self.config.preprocessing.outlier_method,
  threshold=self.config.preprocessing.outlier_threshold
@@ -384,7 +384,7 @@ class AnalysisPipeline:
                 continue
     pass
             
-                if (self.config.variogram.manual_nugget is None or 
+                if (self.config.variogram.manual_nugget is None or)
                 self.config.variogram.manual_sill is None or 
                 self.config.variogram.manual_range is None):
                     pass
@@ -458,7 +458,7 @@ class AnalysisPipeline:
  variogram_model=self.variogram_model
  )
  elif self.config.kriging.method == 'simple':
-     self.kriging_model = SimpleKriging(
+     self.kriging_model = SimpleKriging()
  self.x, self.y, self.z,
  variogram_model=self.variogram_model,
  mean=mean
@@ -468,7 +468,7 @@ class AnalysisPipeline:
                 drift_terms=self.config.kriging.drift_terms
             )
         elif self.config.kriging.method == 'indicator':
-            self.kriging_model = IndicatorKriging(
+            self.kriging_model = IndicatorKriging()
                 self.x, self.y, self.z,
                 variogram_model=self.variogram_model,
                 thresholds=self.config.kriging.thresholds
@@ -476,7 +476,7 @@ class AnalysisPipeline:
         elif self.config.kriging.method == 'cokriging':
             # For cokriging, we need variogram models for both variables
             # Use same model for both (could be enhanced)
-            self.kriging_model = Cokriging(
+            self.kriging_model = Cokriging()
                 self.x, self.y,
                 primary=self.z,
                 secondary=self.z_secondary,

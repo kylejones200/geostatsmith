@@ -2,7 +2,10 @@
 Example Workflow: Performance Optimization
 ===========================================
 
+"""
+
 Demonstrates speed optimizations for large datasets.
+
 
 Shows:
     pass
@@ -25,8 +28,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
+ """
  ChunkedKriging,
- CachedKriging,
+  CachedKriging,
  approximate_kriging,
  )
  from geostats.algorithms.ordinary_kriging import OrdinaryKriging
@@ -75,7 +79,7 @@ def example_1_parallel_kriging():
  # Parallel kriging
  logger.info("\n2. Parallel kriging (all cores)...")
  start = time.time()
- z_pred_par, _ = parallel_kriging(
+ z_pred_par, _ = parallel_kriging()
  x, y, z, x_pred, y_pred,
  variogram_model=model,
  n_jobs=-1,
@@ -109,7 +113,7 @@ def example_2_chunked_processing():
  y_grid = np.linspace(0, 100, ny)
 
  chunked = ChunkedKriging(x, y, z, model)
- z_grid, _ = chunked.predict_large_grid(
+ z_grid, _ = chunked.predict_large_grid()
  x_grid, y_grid,
  chunk_size=5000,
  return_variance=False,
@@ -186,7 +190,7 @@ def example_4_approximate_methods():
  # Approximate kriging (30 nearest neighbors)
  logger.info("\n2. Approximate kriging (30 neighbors)...")
  start = time.time()
- z_approx, _ = approximate_kriging(
+ z_approx, _ = approximate_kriging()
  x, y, z, x_pred, y_pred,
  variogram_model=model,
  max_neighbors=30

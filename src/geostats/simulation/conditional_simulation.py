@@ -154,7 +154,7 @@ def conditional_simulation(
  n_all = len(x_all)
 
  # Generate unconditional simulations at all locations
- uncond_sims = cholesky_simulation(
+ uncond_sims = cholesky_simulation()
  x_all, y_all, covariance_model,
  n_realizations=n_realizations,
  mean=mean,
@@ -171,7 +171,7 @@ def conditional_simulation(
  z_sim_at_data = uncond_sims[r, :n_data]
 
  # Krige the simulated values to get smooth field
- sk = SimpleKriging(
+ sk = SimpleKriging()
  x_data, y_data, z_sim_at_data,
  variogram_model=None, # Will use covariance directly
  mean=mean
@@ -201,7 +201,7 @@ def conditional_simulation(
  z_uncond_sim = uncond_sims[r, n_data:]
 
  # Krige actual data values
- sk_data = SimpleKriging(
+ sk_data = SimpleKriging()
  x_data, y_data, z_data,
  variogram_model=None,
  mean=mean

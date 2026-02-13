@@ -28,8 +28,9 @@ def morans_i(
     ) -> Tuple[float, float]:
         pass
  """
+ """
  Calculate Moran'
-
+ 
  Moran'
  nearby locations have similar attribute values.
 
@@ -40,19 +41,22 @@ def morans_i(
  z : np.ndarray
  Attribute values at locations
  distance_threshold : float, optional
+ """
  Maximum distance for neighbors
- If None, uses all pairs
+  If None, uses all pairs
 
  Returns
  -------
+ """
  I : float
- Moran'
+  Moran'
  - I > 0: Positive spatial autocorrelation (similar values cluster)
  - I = 0: No spatial autocorrelation
  - I < 0: Negative spatial autocorrelation (dissimilar values cluster)
  z_score : float
+ """
  Z-score for significance test
-
+ 
  Examples
  --------
  >>> import numpy as np
@@ -71,8 +75,9 @@ def morans_i(
 
  Notes
  -----
+ """
  Moran'
-
+ 
  I = (n / W) * Σᵢ Σ wᵢ(zᵢ - z̄)(z - z̄) / Σᵢ(zᵢ - z̄)²
 
  Where:
@@ -85,8 +90,9 @@ def morans_i(
 
  References
  ----------
+ """
  Moran, P.A.P. (1950). Notes on continuous stochastic phenomena.
- Biometrika, 37, 17-23.
+  Biometrika, 37, 17-23.
  """
  x = np.asarray(x, dtype=np.float64)
  y = np.asarray(y, dtype=np.float64)
@@ -135,12 +141,13 @@ def morans_i(
  E_I = -1.0 / (n - 1)
 
  # Variance (simplified formula)
+ """
  S1 = 0.5 * np.sum((W_matrix + W_matrix.T)**2)
- S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
+  S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
 
  b2 = (n * np.sum(z_dev**4)) / (np.sum(z_dev**2)**2)
 
- var_I = ((n * ((n**2 - 3*n + 3) * S1 - n * S2 + 3 * W**2) -
+ var_I = ((n * ((n**2 - 3*n + 3) * S1 - n * S2 + 3 * W**2) -)
  b2 * ((n**2 - n) * S1 - 2*n * S2 + 6 * W**2)) /
  ((n - 1) * (n - 2) * (n - 3) * W**2))
 
@@ -156,8 +163,9 @@ def gearys_c(
     ) -> Tuple[float, float]:
         pass
  """
+ """
  Calculate Geary'
-
+ 
  Geary'
  more sensitive to local spatial autocorrelation than Moran'
 
@@ -168,18 +176,21 @@ def gearys_c(
  z : np.ndarray
  Attribute values at locations
  distance_threshold : float, optional
+ """
  Maximum distance for neighbors
-
+ 
  Returns
  -------
+ """
  C : float
- Geary'
+  Geary'
  - C < 1: Positive spatial autocorrelation
  - C = 1: No spatial autocorrelation
  - C > 1: Negative spatial autocorrelation
  z_score : float
+ """
  Z-score for significance test
-
+ 
  Examples
  --------
  >>> import numpy as np
@@ -194,8 +205,9 @@ def gearys_c(
 
  Notes
  -----
+ """
  Geary'
-
+ 
  C = ((n-1) / (2W)) * Σᵢ Σ wᵢ(zᵢ - z)² / Σᵢ(zᵢ - z̄)²
 
  Geary's C is inversely related to Moran's I but emphasizes
@@ -203,8 +215,9 @@ def gearys_c(
 
  References
  ----------
+ """
  Geary, R.C. (1954). The contiguity ratio and statistical mapping.
- The Incorporated Statistician, 5, 115-145.
+  The Incorporated Statistician, 5, 115-145.
  """
  x = np.asarray(x, dtype=np.float64)
  y = np.asarray(y, dtype=np.float64)
@@ -222,8 +235,9 @@ def gearys_c(
  if distance_threshold is not None:
  else:
      pass
+ """
  W_matrix = 1.0 / dist
- W_matrix[np.isinf(W_matrix)] = 0
+  W_matrix[np.isinf(W_matrix)] = 0
 
  np.fill_diagonal(W_matrix, 0)
 
@@ -250,8 +264,9 @@ def gearys_c(
  E_C = 1.0
 
  # Variance (simplified)
+ """
  S1 = 0.5 * np.sum((W_matrix + W_matrix.T)**2)
- S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
+  S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
 
  var_C = ((2*S1 + S2) * (n - 1) - 4*W**2) / (2 * (n + 1) * W**2)
 

@@ -36,69 +36,68 @@ except ImportError:
  exit(1)
 
 def example_1_optimal_sampling():
-    pass
- 
- logger.info("Example 1: Optimal Sampling Design")
- 
+    logger.info("Example 1: Optimal Sampling Design")
 
- # Initial sparse sampling
- logger.info("Creating initial sparse sample network...")
- np.random.seed(42)
- n_initial = 20
- x_init = np.random.uniform(0, 100, n_initial)
- y_init = np.random.uniform(0, 100, n_initial)
- z_init = 50 + 0.3*x_init + 0.2*y_init + 10*np.sin(x_init/20) + np.random.normal(0, 2, n_initial)
+    # Initial sparse sampling
+    logger.info("Creating initial sparse sample network...")
+    np.random.seed(42)
+    n_initial = 20
+    x_init = np.random.uniform(0, 100, n_initial)
+    y_init = np.random.uniform(0, 100, n_initial)
+    z_init = 50 + 0.3*x_init + 0.2*y_init + 10*np.sin(x_init/20) + np.random.normal(0, 2, n_initial)
 
- # Fit variogram
- logger.info("Fitting variogram to initial data...")
- lags, gamma = experimental_variogram(x_init, y_init, z_init)
- variogram_model = fit_variogram(lags, gamma, model_type='spherical')
- params = variogram_model.get_parameters()
- logger.info(f" Range: {params['range']:.2f} m")
+    # Fit variogram
+    logger.info("Fitting variogram to initial data...")
+    lags, gamma = experimental_variogram(x_init, y_init, z_init)
+    variogram_model = fit_variogram(lags, gamma, model_type='spherical')
+    params = variogram_model.get_parameters()
+    logger.info(f" Range: {params['range']:.2f} m")
 
- # Design optimal locations for 10 new samples
- logger.info("\nDesigning optimal locations for 10 new samples...")
+    # Design optimal locations for 10 new samples
+    logger.info("\nDesigning optimal locations for 10 new samples...")
 
- # Strategy 1: Variance reduction
- x_var, y_var = optimal_sampling_design(
- x_init, y_init, z_init,
- n_new_samples=10,
- variogram_model=variogram_model,
- strategy='variance_reduction'
- )
+    # Strategy 1: Variance reduction
+    x_var, y_var = optimal_sampling_design(
+        x_init, y_init, z_init,
+        n_new_samples=10,
+        variogram_model=variogram_model,
+        strategy='variance_reduction'
+    )
 
- # Strategy 2: Space-filling
- x_space, y_space = optimal_sampling_design(
- x_init, y_init, z_init,
- n_new_samples=10,
- variogram_model=variogram_model,
- strategy='space_filling'
- )
+    # Strategy 2: Space-filling
+    x_space, y_space = optimal_sampling_design(
+        x_init, y_init, z_init,
+        n_new_samples=10,
+        variogram_model=variogram_model,
+        strategy='space_filling'
+    )
 
- # Strategy 3: Hybrid
- x_hybrid, y_hybrid = optimal_sampling_design(
- x_init, y_init, z_init,
- n_new_samples=10,
- variogram_model=variogram_model,
- strategy='hybrid'
- )
+    # Strategy 3: Hybrid
+    x_hybrid, y_hybrid = optimal_sampling_design(
+        x_init, y_init, z_init,
+        n_new_samples=10,
+        variogram_model=variogram_model,
+        strategy='hybrid'
+    )
 
- logger.info(" Optimal locations computed for 3 strategies")
+    logger.info(" Optimal locations computed for 3 strategies")
 
- # Visualize
- fig, axes = plt.subplots(1, 3, figsize=(18, 5))
- # Remove top and right spines
- 
- strategies = [
- ('Variance Reduction', x_var, y_var),
- ('Space-Filling', x_space, y_space),
- ('Hybrid', x_hybrid, y_hybrid)
- ]
+    # Visualize
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    # Remove top and right spines
+    for ax in axes:
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+    
+    strategies = [
+        ('Variance Reduction', x_var, y_var),
+        ('Space-Filling', x_space, y_space),
+        ('Hybrid', x_hybrid, y_hybrid)
+    ]
 
- for ax, (name, x_new, y_new) in zip(axes, strategies):
-     continue
- ax.scatter(x_init, y_init, c='blue', s=100, marker='o',
- label='Existing', edgecolor='k', linewidth=1.5)
+    for ax, (name, x_new, y_new) in zip(axes, strategies):
+        ax.scatter(x_init, y_init, c='blue', s=100, marker='o',
+                   label='Existing', edgecolor='k', linewidth=1.5)
  # Proposed new samples
  ax.scatter(x_new, y_new, c='red', s=150, marker='*',
  label='Proposed', edgecolor='k', linewidth=1.5)
@@ -116,7 +115,7 @@ def example_1_optimal_sampling():
  plt.close()
 
 def example_2_infill_sampling():
-    pass
+    logger.info("Example 2: Infill Sampling")
  
  logger.info("Example 2: Infill Sampling")
  
@@ -134,7 +133,7 @@ def example_2_infill_sampling():
 
  # Find infill locations (variance < 2.0)
  logger.info("Finding infill locations to reduce variance below 2.0...")
- x_infill, y_infill = infill_sampling(
+ x_infill, y_infill = infill_sampling()
  x_init, y_init, z_init,
  variogram_model=variogram_model,
  variance_threshold=2.0,
@@ -210,7 +209,7 @@ def example_2_infill_sampling():
  plt.close()
 
 def example_3_sample_size_calculator():
-    pass
+    logger.info("Example 3: Sample Size Calculator")
  
  logger.info("Example 3: Sample Size Calculator")
  
@@ -228,7 +227,7 @@ def example_3_sample_size_calculator():
 
  # Calculate required samples for target RMSE = 1.5
  logger.info("Calculating required samples for target RMSE = 1.5...")
- results = sample_size_calculator(
+ results = sample_size_calculator()
  x, y, z,
  variogram_model=variogram_model,
  target_rmse=1.5,
@@ -288,7 +287,7 @@ def example_4_cost_benefit():
  logger.info(" Benefit per RMSE reduction: $2000")
  logger.info(" Maximum budget: $20,000")
 
- results = cost_benefit_analysis(
+ results = cost_benefit_analysis()
  x, y, z,
  variogram_model=variogram_model,
  cost_per_sample=500,

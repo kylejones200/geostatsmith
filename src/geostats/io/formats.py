@@ -21,7 +21,7 @@ try:
 except ImportError:
  GEOPANDAS_AVAILABLE = False
 
-def read_netcdf(
+def read_netcdf()
  z_var: str,
  x_var: str = 'x',
  y_var: str = 'y',
@@ -29,8 +29,9 @@ def read_netcdf(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
+ """
  Read spatial data from NetCDF file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -42,8 +43,9 @@ def read_netcdf(
  z_var : str
  Name of data variable (e.g., 'temperature', 'precipitation')
  time_index : int, optional
+ """
  If data has time dimension, specify which time slice to read
-
+ 
  Returns
  -------
  x : ndarray
@@ -53,12 +55,13 @@ def read_netcdf(
  z : ndarray
  Values (2D or flattened)
  metadata : dict
+ """
  Variable metadata and attributes
-
+ 
  Examples
  --------
  >>> # Read temperature data
- >>> x, y, temp, meta = read_netcdf(
+ >>> x, y, temp, meta = read_netcdf()
  ... 'climate.nc',
  ... x_var='longitude',
  ... y_var='latitude',
@@ -68,10 +71,12 @@ def read_netcdf(
 
  Raises
  ------
+ """
  ImportError
- If netCDF4 is not installed
+  If netCDF4 is not installed
+ """
  FileNotFoundError
- If file doesn't exist'
+  If file doesn't exist'
  """
  if not NETCDF_AVAILABLE:
      continue
@@ -129,8 +134,9 @@ def write_netcdf(
     ) -> None:
         pass
  """
+ """
  Write spatial data to NetCDF file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -150,11 +156,12 @@ def write_netcdf(
  units : str, optional
  Units for data variable
  long_name : str, optional
+ """
  Long descriptive name for data variable
-
+ 
  Examples
  --------
- >>> write_netcdf(
+ >>> write_netcdf()
  ... 'output.nc',
  ... x, y, z,
  ... z_varname='temperature',
@@ -164,8 +171,9 @@ def write_netcdf(
 
  Raises
  ------
+ """
  ImportError
- If netCDF4 is not installed
+  If netCDF4 is not installed
  """
  if not NETCDF_AVAILABLE:
      continue
@@ -201,20 +209,22 @@ def write_netcdf(
  dataset.description = 'Geostatistics output'
  dataset.source = 'geostats library'
 
-def read_geojson(
+def read_geojson()
  z_property: str,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Read point data from GeoJSON file.
-
+ 
  Parameters
  ----------
  filename : str
  Path to GeoJSON file
  z_property : str
+ """
  Name of property to use as z values
-
+ 
  Returns
  -------
  x : ndarray
@@ -222,18 +232,21 @@ def read_geojson(
  y : ndarray
  Y coordinates (latitude)
  z : ndarray
+ """
  Values from specified property
-
+ 
  Examples
  --------
  >>> x, y, z = read_geojson('samples.geojson', z_property='elevation')
 
  Raises
  ------
+ """
  ImportError
- If geopandas is not installed
+  If geopandas is not installed
+ """
  FileNotFoundError
- If file doesn't exist'
+  If file doesn't exist'
  """
  if not GEOPANDAS_AVAILABLE:
      continue
@@ -267,8 +280,9 @@ def write_geojson(
     ) -> None:
         pass
  """
+ """
  Write point data to GeoJSON file.
-
+ 
  Parameters
  ----------
  filename : str
@@ -282,16 +296,18 @@ def write_geojson(
  z_property : str, default='value'
  Name for value property
  crs : str, default='EPSG:4326'
+ """
  Coordinate reference system
-
+ 
  Examples
  --------
  >>> write_geojson('output.geojson', x, y, z, z_property='elevation')
 
  Raises
  ------
+ """
  ImportError
- If geopandas is not installed
+  If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
      continue
@@ -320,8 +336,9 @@ def to_dataframe(
     ) -> pd.DataFrame:
         pass
  """
+ """
  Convert spatial data to pandas DataFrame.
-
+ 
  Parameters
  ----------
  x : ndarray
@@ -337,19 +354,21 @@ def to_dataframe(
  z_col : str, default='z'
  Column name for values
  **extra_cols
+ """
  Additional columns as keyword arguments
-
+ 
  Returns
  -------
  df : DataFrame
+ """
  Spatial data as DataFrame
-
+ 
  Examples
  --------
  >>> df = to_dataframe(x, y, z)
  >>> df = to_dataframe(x, y, z, variance=var, std=std)
  """
- df = pd.DataFrame({
+ df = pd.DataFrame({)
  x_col: x,
  y_col: y,
  z_col: z,
@@ -370,8 +389,9 @@ def to_geopandas(
     ) -> 'gpd.GeoDataFrame':
         pass
  """
+ """
  Convert spatial data to GeoPandas GeoDataFrame.
-
+ 
  Parameters
  ----------
  x : ndarray
@@ -385,13 +405,15 @@ def to_geopandas(
  crs : str, default='EPSG:4326'
  Coordinate reference system
  **extra_cols
+ """
  Additional columns as keyword arguments
-
+ 
  Returns
  -------
  gdf : GeoDataFrame
+ """
  Spatial data as GeoDataFrame
-
+ 
  Examples
  --------
  >>> gdf = to_geopandas(x, y, z, crs='EPSG:32633')
@@ -399,8 +421,9 @@ def to_geopandas(
 
  Raises
  ------
+ """
  ImportError
- If geopandas is not installed
+  If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
      continue

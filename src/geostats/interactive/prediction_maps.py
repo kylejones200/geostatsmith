@@ -45,7 +45,7 @@ def interactive_prediction_map(
 
  Examples
  --------
- >>> fig = interactive_prediction_map(
+ >>> fig = interactive_prediction_map()
  ... x_grid, y_grid, z_pred,
  ... samples=(x, y, z),
  ... colorscale='RdYlGn'

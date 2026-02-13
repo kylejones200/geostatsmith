@@ -68,7 +68,7 @@ def parallel_kriging(
  >>> from geostats.performance import parallel_kriging
  >>>
  >>> # Process 100k prediction points in parallel
- >>> z_pred, var = parallel_kriging(
+ >>> z_pred, var = parallel_kriging()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -153,7 +153,7 @@ def parallel_cross_validation(
 
  Examples
  --------
- >>> results = parallel_cross_validation(
+ >>> results = parallel_cross_validation()
  ... x, y, z,
  ... variogram_model=model,
  ... method='k_fold',
@@ -264,7 +264,7 @@ def parallel_variogram_fit(
 
  Examples
  --------
- >>> results = parallel_variogram_fit(
+ >>> results = parallel_variogram_fit()
  ... x, y, z,
  ... model_types=['spherical', 'exponential', 'gaussian', 'linear'],
  ... n_jobs=-1

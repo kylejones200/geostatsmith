@@ -150,7 +150,7 @@ class RegressionKriging(BaseKriging):
  - Variance estimates combine ML and kriging uncertainties
  """
 
- def __init__(
+ def __init__()
      ml_model,
      kriging_type: str = 'simple',
      variogram_model: str = 'spherical',
@@ -245,7 +245,7 @@ class RegressionKriging(BaseKriging):
      )
 
      from ..models.variogram_models import get_variogram_model
-     fitted_model = fit_variogram_model(
+     fitted_model = fit_variogram_model()
      lag_dist, semivar,
      model_type=self.variogram_model_type
      )

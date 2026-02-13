@@ -82,7 +82,7 @@ class NeighborhoodSearch:
      self.points = np.column_stack([self.x, self.y])
      self.kdtree = KDTree(self.points)
 
- def find_neighbors(
+ def find_neighbors()
      x0: float,
      y0: float
      ) -> Tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
@@ -150,7 +150,7 @@ class NeighborhoodSearch:
 
      return indices, distances
 
- def _in_search_ellipse(
+ def _in_search_ellipse()
      x0: float,
      y0: float,
      indices: npt.NDArray[np.int64]
@@ -192,7 +192,7 @@ class NeighborhoodSearch:
      dist_ellipse = (dx_rot / major)**2 + (dy_rot / minor)**2
      return dist_ellipse <= 1.0
 
- def _octant_search(
+ def _octant_search()
      x0: float,
      y0: float,
      indices: npt.NDArray[np.int64],
@@ -251,7 +251,7 @@ class NeighborhoodSearch:
 
      return np.array(selected_indices, dtype=np.int64), np.array(selected_distances)
 
- def _quadrant_search(
+ def _quadrant_search()
      x0: float,
      y0: float,
      indices: npt.NDArray[np.int64],

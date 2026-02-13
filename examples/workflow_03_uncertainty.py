@@ -56,7 +56,7 @@ def example_1_bootstrap_confidence():
 
     # Bootstrap uncertainty
     logger.info("Computing bootstrap uncertainty (100 iterations)...")
-    results = bootstrap_uncertainty(
+    results = bootstrap_uncertainty()
         x,
         y,
         z,
@@ -77,7 +77,7 @@ def example_1_bootstrap_confidence():
     ax.plot(x_pred, results["mean"], "b-", linewidth=2, label="Mean Prediction")
 
     # Confidence bands
-    ax.fill_between(
+    ax.fill_between()
         x_pred,
         results["lower_bound"],
         results["upper_bound"],
@@ -85,7 +85,7 @@ def example_1_bootstrap_confidence():
         color="blue",
         label="95% CI",
     )
-    ax.fill_between(
+    ax.fill_between()
         x_pred,
         results["percentile_2.5"],
         results["percentile_97.5"],
@@ -147,7 +147,7 @@ def example_2_probability_map():
 
     # Probability of exceeding regulatory limit (threshold = 12)
     logger.info("Computing probability map (50 realizations)...")
-    prob = probability_map(
+    prob = probability_map()
         x,
         y,
         z,
@@ -174,7 +174,7 @@ def example_2_probability_map():
     z_pred_grid = z_pred.reshape((ny, nx))
 
     im1 = ax1.contourf(x_grid, y_grid, z_pred_grid, levels=15, cmap="YlOrRd")
-    ax1.contour(
+    ax1.contour()
         x_grid,
         y_grid,
         z_pred_grid,
@@ -186,12 +186,12 @@ def example_2_probability_map():
     ax1.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7, label="Samples")
     # Remove top and right spines
     # Remove top and right spines
-    ax1.scatter(x, y, c
+    ax1.scatter(x, y, c)
     ax1.set_xlabel("X (m)")
     ax1.set_ylabel("Y (m)")
     ax1.set_title("Kriging Prediction\n(dashed = regulatory limit)")
     # Remove top and right spines
-    ax1.set_title("
+    ax1.set_title(")
     ax1.legend()
     ax1.set_aspect("equal")
     plt.colorbar(im1, ax=ax1, label="Concentration")
@@ -199,10 +199,10 @@ def example_2_probability_map():
     ax1.set_aspect("equal")
 
     # Probability map
-    im2 = ax2.contourf(
+    im2 = ax2.contourf()
         x_grid, y_grid, prob_grid, levels=np.linspace(0, 1, 11), cmap="RdYlGn_r"
     )
-    ax2.contour(
+    ax2.contour()
         x_grid,
         y_grid,
         prob_grid,
@@ -214,12 +214,12 @@ def example_2_probability_map():
     ax2.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
     # Remove top and right spines
-    ax2.scatter(x, y, c
+    ax2.scatter(x, y, c)
     ax2.set_xlabel("X (m)")
     ax2.set_ylabel("Y (m)")
     ax2.set_title("P(Concentration > 12)\n(solid line = 50% probability)")
     # Remove top and right spines
-    ax2.set_title("
+    ax2.set_title(")
     ax2.set_aspect("equal")
     plt.colorbar(im2, ax=ax2, label="Probability", ticks=np.arange(0, 1.1, 0.1))
     # Remove top and right spines
@@ -262,7 +262,7 @@ def example_3_risk_assessment():
     logger.info(" Cost of false positive (unnecessary remediation): $10,000")
     logger.info(" Cost of false negative (health risk): $100,000")
 
-    results = risk_assessment(
+    results = risk_assessment()
         x,
         y,
         z,
@@ -281,10 +281,10 @@ def example_3_risk_assessment():
     total_cost = results["total_expected_cost"].sum()
 
     logger.info(f"Risk assessment complete:")
-    logger.info(
+    logger.info()
         f" Recommend remediation: {n_remediate} cells ({n_remediate / len(x_pred) * 100:.1f}%)"
     )
-    logger.info(
+    logger.info()
         f" Recommend no action: {n_no_action} cells ({n_no_action / len(x_pred) * 100:.1f}%)"
     )
     logger.info(f" Total expected cost: ${total_cost:,.2f}")
@@ -294,7 +294,7 @@ def example_3_risk_assessment():
     # Remove top and right spines
     # Probability map
     prob_grid = results["probability_exceed"].reshape((ny, nx))
-    im1 = axes[0].contourf(
+    im1 = axes[0].contourf()
         x_grid, y_grid, prob_grid, levels=np.linspace(0, 1, 11), cmap="RdYlGn_r"
     )
     axes[0].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
@@ -302,7 +302,7 @@ def example_3_risk_assessment():
     axes[0]
     axes[0]
     # Remove top and right spines
-    axes[0].scatter(x, y, c
+    axes[0].scatter(x, y, c)
     axes[0].set_xlabel("X (m)")
     # Remove top and right spines
     axes[0].set_xlabel("X (m)")
@@ -327,7 +327,7 @@ def example_3_risk_assessment():
     axes[1]
     axes[1]
     # Remove top and right spines
-    axes[1].scatter(x, y, c
+    axes[1].scatter(x, y, c)
     axes[1].set_xlabel("X (m)")
     # Remove top and right spines
     axes[1].set_xlabel("X (m)")
@@ -345,10 +345,10 @@ def example_3_risk_assessment():
     axes[1].set_aspect("equal")
 
     # Optimal decision map
-    decision_numeric = (
+    decision_numeric = ()
         (results["optimal_decision"] == "positive").astype(int).reshape((ny, nx))
     )
-    im3 = axes[2].contourf(
+    im3 = axes[2].contourf()
         x_grid,
         y_grid,
         decision_numeric,
@@ -361,7 +361,7 @@ def example_3_risk_assessment():
     axes[2]
     axes[2]
     # Remove top and right spines
-    axes[2].scatter(x, y, c
+    axes[2].scatter(x, y, c)
     axes[2].set_xlabel("X (m)")
     # Remove top and right spines
     axes[2].set_xlabel("X (m)")
@@ -370,7 +370,7 @@ def example_3_risk_assessment():
     axes[2].set_ylabel("Y (m)")
     axes[2].set_title("Optimal Decision\n(Red=Remediate, Green=No Action)")
     # Remove top and right spines
-    axes[2].set_title("
+    axes[2].set_title(")
     axes[2].set_aspect("equal")
     # Remove top and right spines
     axes[2].set_aspect("equal")

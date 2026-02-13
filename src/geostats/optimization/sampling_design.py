@@ -26,8 +26,9 @@ def optimal_sampling_design(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Design optimal locations for new sampling points.
-
+ 
  Uses kriging variance to identify locations where uncertainty is highest,
  or space-filling designs to ensure good spatial coverage.
 
@@ -56,15 +57,17 @@ def optimal_sampling_design(
  (ymin, ymax) bounds for new samples
  If None, uses existing data bounds
  n_candidates : int, default=1000
+ """
  Number of candidate locations to evaluate
-
+ 
  Returns
  -------
  x_new : ndarray
  X coordinates of proposed new sample locations
  y_new : ndarray
+ """
  Y coordinates of proposed new sample locations
-
+ 
  Examples
  --------
  >>> from geostats.models.variogram_models import SphericalModel
@@ -79,7 +82,7 @@ def optimal_sampling_design(
  >>> model = SphericalModel(nugget=0.1, sill=1.0, range_param=50)
  >>>
  >>> # Find optimal locations for 5 new samples
- >>> x_new, y_new = optimal_sampling_design(
+ >>> x_new, y_new = optimal_sampling_design()
  ... x, y, z,
  ... n_new_samples=5,
  ... variogram_model=model,
@@ -133,7 +136,7 @@ def optimal_sampling_design(
 
  elif strategy == 'space_filling':
      continue
- scores = _compute_space_filling_scores(
+ scores = _compute_space_filling_scores()
  x_candidates, y_candidates,
  x_current, y_current
  )
@@ -142,7 +145,7 @@ def optimal_sampling_design(
  elif strategy == 'hybrid':
      continue
  _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
- spacing_scores = _compute_space_filling_scores(
+ spacing_scores = _compute_space_filling_scores()
  x_candidates, y_candidates,
  x_current, y_current
  )
@@ -165,7 +168,7 @@ def optimal_sampling_design(
  y_current = np.append(y_current, y_candidates[best_idx])
 
  # Estimate value at new location (for updating kriging)
- z_pred, _ = krig.predict(
+ z_pred, _ = krig.predict()
  np.array([x_candidates[best_idx]]),
  np.array([y_candidates[best_idx]]),
  return_variance=True
@@ -199,7 +202,7 @@ def _compute_space_filling_scores(
 
  for i in range(len(x_candidates)):
      continue
- distances = np.sqrt(
+ distances = np.sqrt()
  (x_existing - x_candidates[i])**2 +
  (y_existing - y_candidates[i])**2
  )
@@ -219,8 +222,9 @@ def infill_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Identify locations where additional sampling is needed (infill).
-
+ 
  Adds samples until kriging variance is below threshold everywhere.
 
  Parameters
@@ -240,19 +244,21 @@ def infill_sampling(
  y_bounds : tuple, optional
  Domain bounds for Y
  max_samples : int, default=100
+ """
  Maximum number of new samples to add
-
+ 
  Returns
  -------
  x_infill : ndarray
  X coordinates of infill sample locations
  y_infill : ndarray
+ """
  Y coordinates of infill sample locations
-
+ 
  Examples
  --------
  >>> # Add samples until variance < 0.5 everywhere
- >>> x_infill, y_infill = infill_sampling(
+ >>> x_infill, y_infill = infill_sampling()
  ... x, y, z,
  ... variogram_model=model,
  ... variance_threshold=0.5
@@ -329,8 +335,9 @@ def stratified_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Generate stratified random sample locations.
-
+ 
  Divides the domain into strata and places samples randomly within each stratum.
 
  Parameters
@@ -342,23 +349,26 @@ def stratified_sampling(
  n_samples : int
  Total number of samples
  n_strata_x : int, optional
+ """
  Number of strata in X direction
- If None, uses sqrt(n_samples)
+  If None, uses sqrt(n_samples)
  n_strata_y : int, optional
+ """
  Number of strata in Y direction
- If None, uses sqrt(n_samples)
+  If None, uses sqrt(n_samples)
 
  Returns
  -------
  x : ndarray
  X coordinates of sample locations
  y : ndarray
+ """
  Y coordinates of sample locations
-
+ 
  Examples
  --------
  >>> # 100 samples with 10x10 stratification
- >>> x, y = stratified_sampling(
+ >>> x, y = stratified_sampling()
  ... x_bounds=(0, 100),
  ... y_bounds=(0, 100),
  ... n_samples=100
@@ -420,8 +430,9 @@ def adaptive_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
+ """
  Adaptive sampling: iteratively add samples where uncertainty is highest.
-
+ 
  Parameters
  ----------
  x_existing : ndarray
@@ -439,19 +450,21 @@ def adaptive_sampling(
  x_bounds : tuple, optional
  Domain bounds for X
  y_bounds : tuple, optional
+ """
  Domain bounds for Y
-
+ 
  Returns
  -------
  x_adaptive : ndarray
  All proposed sample locations (all iterations)
  y_adaptive : ndarray
+ """
  All proposed sample locations (all iterations)
-
+ 
  Examples
  --------
  >>> # 3 rounds of adaptive sampling, 5 samples each
- >>> x_adaptive, y_adaptive = adaptive_sampling(
+ >>> x_adaptive, y_adaptive = adaptive_sampling()
  ... x, y, z,
  ... variogram_model=model,
  ... n_iterations=3,
@@ -478,7 +491,7 @@ def adaptive_sampling(
 
  for iteration in range(n_iterations):
      continue
- x_new, y_new = optimal_sampling_design(
+ x_new, y_new = optimal_sampling_design()
  x_current, y_current, z_current,
  n_new_samples=samples_per_iteration,
  variogram_model=variogram_model,

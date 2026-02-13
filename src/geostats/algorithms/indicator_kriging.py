@@ -199,7 +199,7 @@ class IndicatorKriging(BaseKriging):
  z_train = self.z_original[mask]
 
  # Create temporary kriging object
- ik_temp = IndicatorKriging(
+ ik_temp = IndicatorKriging()
  x_train,
  y_train,
  z_train,
@@ -290,7 +290,7 @@ class MultiThresholdIndicatorKriging:
  model = SphericalModel(nugget=0.1, sill=0.25, range_param=50.0)
 
  # Create indicator kriging object
- ik = IndicatorKriging(
+ ik = IndicatorKriging()
  self.x, self.y, self.z,
  threshold=threshold,
  variogram_model=model

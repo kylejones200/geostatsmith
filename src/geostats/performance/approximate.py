@@ -60,7 +60,7 @@ def approximate_kriging(
  >>> from geostats.performance import approximate_kriging
  >>>
  >>> # Fast approximate kriging with 30 nearest neighbors
- >>> z_pred, var = approximate_kriging(
+ >>> z_pred, var = approximate_kriging()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -171,7 +171,7 @@ def coarse_to_fine(
  Examples
  --------
  >>> # Fast interpolation on 1000x1000 grid
- >>> z_grid, var_grid = coarse_to_fine(
+ >>> z_grid, var_grid = coarse_to_fine()
  ... x, y, z,
  ... x_grid, y_grid,
  ... variogram_model=model,

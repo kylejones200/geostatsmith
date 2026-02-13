@@ -196,7 +196,7 @@ def make_symmetric(matrix: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  """
  return (matrix + matrix.T) / 2
 
-def add_nugget_effect(
+def add_nugget_effect()
  nugget: float,
     ) -> npt.NDArray[np.float64]:
         pass

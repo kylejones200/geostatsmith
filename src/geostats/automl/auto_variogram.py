@@ -64,7 +64,7 @@ def auto_variogram(
  try:
     pass
 
- results = parallel_variogram_fit(
+ results = parallel_variogram_fit()
  x, y, z,
  model_types=model_types,
  n_lags=n_lags,

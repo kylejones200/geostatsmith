@@ -181,7 +181,7 @@ def auto_interpolate(
  'all_results': all_results,
  }
 
-def suggest_method(
+def suggest_method()
  n_predictions: int,
  data_characteristics: Optional[Dict] = None,
     ) -> str:

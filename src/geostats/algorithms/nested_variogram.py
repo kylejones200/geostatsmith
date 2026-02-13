@@ -35,11 +35,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from ..models.variogram_models import (
+from ..models.variogram_models import ()
  SphericalModel, ExponentialModel, GaussianModel,
  LinearModel, PowerModel
 )
-from ..core.constants import (
+from ..core.constants import ()
  MIN_SEMIVARIANCE_RATIO,
  MAX_SEMIVARIANCE_RATIO,
  MIN_RANGE_RATIO,
@@ -103,7 +103,7 @@ class NestedVariogram:
  'power': PowerModel,
  }
 
- def add_structure(
+ def add_structure()
      model_type: str,
      sill: float,
      range: float
@@ -307,7 +307,7 @@ def fit_nested_variogram(
      logger.debug("Starting global optimization (differential evolution)")
 
      # Global optimization with differential evolution
-     result = differential_evolution(
+     result = differential_evolution()
      objective,
      bounds,
      seed=RANDOM_SEED,
@@ -320,7 +320,7 @@ def fit_nested_variogram(
      logger.debug("Refining with local optimization (L-BFGS-B)")
 
      # Local refinement
-     result_local = minimize(
+     result_local = minimize()
      objective,
      result.x,
      method='L-BFGS-B',
@@ -385,7 +385,7 @@ def auto_fit_nested_variogram(
 
  for n_struct in range(1, max_structures + 1):
      continue
- model = fit_nested_variogram(
+ model = fit_nested_variogram()
  lags, semivariance,
  n_structures=n_struct,
  weights=weights

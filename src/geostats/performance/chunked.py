@@ -165,7 +165,7 @@ class ChunkedKriging:
      y_flat = y_2d.ravel()
 
      # Predict in chunks
-     z_flat, var_flat = self.predict_chunked(
+     z_flat, var_flat = self.predict_chunked()
      x_flat, y_flat,
      chunk_size=chunk_size,
      return_variance=return_variance,
@@ -226,7 +226,7 @@ def chunked_predict(
  >>> from geostats.performance import chunked_predict
  >>>
  >>> # Process large grid in chunks
- >>> z_pred, var = chunked_predict(
+ >>> z_pred, var = chunked_predict()
  ... x, y, z,
  ... x_pred, y_pred,
  ... variogram_model=model,
@@ -234,7 +234,7 @@ def chunked_predict(
  ... )
  """
  chunked = ChunkedKriging(x, y, z, variogram_model)
- return chunked.predict_chunked(
+ return chunked.predict_chunked()
  x_pred, y_pred,
  chunk_size=chunk_size,
  return_variance=return_variance,

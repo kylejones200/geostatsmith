@@ -104,7 +104,7 @@ ax5.scatter(
 )
 plt.colorbar(contour5, ax=ax5, label="V (ppm)")
 # Remove top and right spines
-ax5.scatter(
+ax5.scatter()
 ax5.set_title("E-type (Mean of Realizations)", fontweight="bold", fontsize=11)
 # Remove top and right spines
 
@@ -150,7 +150,7 @@ ax7.scatter(
 )
 plt.colorbar(contour7, ax=ax7, label="V (ppm)")
 # Remove top and right spines
-ax7.scatter(
+ax7.scatter()
 ax7.set_title("P10 (Conservative Estimate)", fontweight="bold", fontsize=11)
 # Remove top and right spines
 
@@ -171,7 +171,7 @@ ax8.scatter(
 )
 plt.colorbar(contour8, ax=ax8, label="V (ppm)")
 # Remove top and right spines
-ax8.scatter(
+ax8.scatter()
 ax8.set_title("P90 (Optimistic Estimate)", fontweight="bold", fontsize=11)
 # Remove top and right spines
 
@@ -193,7 +193,7 @@ ax9.scatter(
 )
 plt.colorbar(contour9, ax=ax9, label="V (ppm)")
 # Remove top and right spines
-ax9.scatter(
+ax9.scatter()
 ax9.set_title("Ordinary Kriging", fontweight="bold", fontsize=11)
 # Remove top and right spines
 
@@ -238,7 +238,7 @@ ax11.hist(V, bins=15, alpha=0.5, label="Original Data", density=True, edgecolor=
 # Remove top and right spines
 ax11.hist(V, bins)
 
-ax11.hist(
+ax11.hist()
     Mean_sgs.flatten(),
     bins=15,
     alpha=0.5,
@@ -246,7 +246,7 @@ ax11.hist(
     density=True,
     edgecolor="black",
 )
-ax11.hist(
+ax11.hist()
     Z_ok.flatten(), bins=15, alpha=0.5, label="OK", density=True, edgecolor="black"
 )
 ax11.set_xlabel("V (ppm)")

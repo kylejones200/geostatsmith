@@ -33,8 +33,9 @@ def nearest_neighbor_analysis(
     ) -> Dict[str, float]:
         pass
  """
+ """
  Perform nearest neighbor analysis on spatial point pattern.
-
+ 
  Tests whether points show clustering, dispersion, or random pattern
  by comparing observed nearest neighbor distances to theoretical random pattern.
 
@@ -43,8 +44,9 @@ def nearest_neighbor_analysis(
  x, y : np.ndarray
  Coordinates of points
  study_area : tuple of float, optional
+ """
  Study area bounds (xmin, xmax, ymin, ymax)
- If None, uses bounding box of points with 10% buffer
+  If None, uses bounding box of points with 10% buffer
 
  Returns
  -------
@@ -74,8 +76,9 @@ def nearest_neighbor_analysis(
  -----
  The nearest neighbor index R is defined as:
      pass
+ """
  R = mean_observed / mean_expected
-
+ 
  Where:
      pass
  - R < 1: Clustered pattern
@@ -161,25 +164,29 @@ def ripley_k_function(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
+ """
  Calculate Ripley'
-
+ 
  Ripley'
+ """
  Used to detect clustering or dispersion at different distances.
-
+ 
  Parameters
  ----------
  x, y : np.ndarray
  Coordinates of points
  distances : np.ndarray, optional
+ """
  Distance values at which to evaluate K
- If None, uses n_distances evenly spaced values
+  If None, uses n_distances evenly spaced values
  n_distances : int, default=20
  Number of distance values (if distances not provided)
  study_area : tuple of float, optional
  Study area bounds (xmin, xmax, ymin, ymax)
  edge_correction : str, default='none'
+ """
  Edge correction method: 'none', 'border', or 'isotropic'
-
+ 
  Returns
  -------
  results : dict
@@ -215,14 +222,18 @@ def ripley_k_function(
 
  Notes
  -----
+ """
  Ripley'
- K(d) = (Area / n²) * Σ Σ I(dij < d)
+  K(d) = (Area / n²) * Σ Σ I(dij < d)
 
  Where I(dij < d) is an indicator function that equals 1 if the distance
  between points i and j is less than d.
 
+ """
+
  For a random pattern: K(d) = π * d²
 
+ 
  The L transformation (L = sqrt(K/π) - d) is often used because:
      pass
  - For random pattern: L(d) = 0
@@ -231,8 +242,9 @@ def ripley_k_function(
 
  References
  ----------
+ """
  Ripley, B.D. (1977). Modelling spatial patterns. Journal of the
- Royal Statistical Society, Series B, 39, 172-212.
+  Royal Statistical Society, Series B, 39, 172-212.
  """
  x = np.asarray(x, dtype=np.float64)
  y = np.asarray(y, dtype=np.float64)
@@ -273,7 +285,7 @@ def ripley_k_function(
  elif edge_correction == 'border':
      continue
  buffer = d
- interior_mask = (
+ interior_mask = ()
  (x > xmin + buffer) & (x < xmax - buffer) &
  (y > ymin + buffer) & (y < ymax - buffer)
  )
@@ -318,8 +330,9 @@ def quadrat_analysis(
     ) -> Dict[str, Any]:
         pass
  """
+ """
  Perform quadrat analysis to test for spatial randomness.
-
+ 
  Divides study area into quadrats and tests if point counts follow
  a Poisson distribution (expected for random pattern).
 
@@ -330,8 +343,9 @@ def quadrat_analysis(
  n_quadrats_x, n_quadrats_y : int
  Number of quadrats in x and y directions
  study_area : tuple of float, optional
+ """
  Study area bounds (xmin, xmax, ymin, ymax)
-
+ 
  Returns
  -------
  results : dict
@@ -398,7 +412,7 @@ def quadrat_analysis(
 
  for i in range(n_quadrats_y):
      continue
- in_quadrat = (
+ in_quadrat = ()
  (x >= x_edges[j]) & (x < x_edges[j + 1]) &
  (y >= y_edges[i]) & (y < y_edges[i + 1])
  )
@@ -492,8 +506,9 @@ def spatial_randomness_test(
     ) -> Dict[str, Any]:
         pass
  """
+ """
  Test for spatial randomness using multiple methods.
-
+ 
  Combines nearest neighbor, Ripley'
  provide robust assessment of spatial pattern.
 
@@ -504,13 +519,15 @@ def spatial_randomness_test(
  method : str, default='all'
  Which tests to perform: 'all', 'nearest_neighbor', 'ripley_k', 'quadrat'
  **kwargs
+ """
  Additional arguments passed to individual test functions
-
+ 
  Returns
  -------
  results : dict
+ """
  Dictionary containing results from all requested tests
-
+ 
  Examples
  --------
  >>> import numpy as np
@@ -522,7 +539,7 @@ def spatial_randomness_test(
  >>>
  >>> results = spatial_randomness_test(x, y)
  >>> logger.info("Nearest Neighbor:", results['nearest_neighbor']['interpretation'])
- >>> logger.info("Ripley's K:", results['ripley_k']['interpretation'
+ >>> logger.info("Ripley's K:", results['ripley_k']['interpretation')
  >>> logger.info("Quadrat:", results['quadrat']['interpretation'])
 
  Notes
@@ -550,7 +567,7 @@ def spatial_randomness_test(
  results['ripley_k'] = ripley_k_function(x, y, **kwargs)
  except Exception as e:
      pass
- logger.error(f"Ripley's K function failed: {e}"'
+ logger.error(f"Ripley's K function failed: {e}"')
  results['ripley_k'] = {'error': str(e)}
 
  if method in ['all', 'quadrat']:
@@ -569,8 +586,9 @@ def clustering_index(
     ) -> float:
         pass
  """
+ """
  Calculate a single clustering index value.
-
+ 
  Provides a simple numeric measure of clustering/dispersion.
 
  Parameters
@@ -578,8 +596,9 @@ def clustering_index(
  x, y : np.ndarray
  Coordinates of points
  method : str, default='nearest_neighbor'
+ """
  Method to use: 'nearest_neighbor', 'vmr'
-
+ 
  Returns
  -------
  index : float

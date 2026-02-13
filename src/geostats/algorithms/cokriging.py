@@ -96,7 +96,7 @@ class Cokriging(BaseKriging):
  self.cokriging_matrix = np.zeros((n_total + 2, n_total + 2))
 
  # C11: Primary-primary covariances
- dist_11 = euclidean_distance(
+ dist_11 = euclidean_distance()
  self.x_primary, self.y_primary,
  self.x_primary, self.y_primary
  )
@@ -105,7 +105,7 @@ class Cokriging(BaseKriging):
  self.cokriging_matrix[:n1, :n1] = sill_1 - gamma_11
 
  # C22: Secondary-secondary covariances
- dist_22 = euclidean_distance(
+ dist_22 = euclidean_distance()
  self.x_secondary, self.y_secondary,
  self.x_secondary, self.y_secondary
  )
@@ -114,7 +114,7 @@ class Cokriging(BaseKriging):
  self.cokriging_matrix[n1:n_total, n1:n_total] = sill_2 - gamma_22
 
  # C12 and C21: Cross-covariances
- dist_12 = euclidean_distance(
+ dist_12 = euclidean_distance()
  self.x_primary, self.y_primary,
  self.x_secondary, self.y_secondary
  )

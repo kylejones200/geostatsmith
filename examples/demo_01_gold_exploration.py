@@ -312,7 +312,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  # Method 1: Bootstrap confidence intervals
  logger.info("Bootstrap (100 iterations)...")
  t0 = time.time()
- ci_lower, ci_upper = bootstrap_uncertainty(
+ ci_lower, ci_upper = bootstrap_uncertainty()
  x, y, au_log,
  X[0, :], Y[:, 0],
  model,
@@ -406,7 +406,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
  bounds = (x.min(), x.max(), y.min(), y.max())
 
  logger.info(f"Suggesting {n_new} optimal new sample locations...")
- new_locations = infill_sampling(
+ new_locations = infill_sampling()
  x, y, au_log,
  variogram_model=model,
  n_new_samples=n_new,
@@ -474,7 +474,7 @@ def performance_comparison(x, y, au, model, X, Y):
  # Parallel kriging (all cores)
  logger.info("Parallel Kriging (all cores)...")
  t0 = time.time()
- z_parallel, var_parallel = parallel_kriging(
+ z_parallel, var_parallel = parallel_kriging()
  x, y, au_log, x_pred, y_pred,
  model, n_jobs=-1
  )

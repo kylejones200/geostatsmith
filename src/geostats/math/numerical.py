@@ -56,7 +56,7 @@ def weighted_least_squares(
  else:
     pass
 
- params, cov = curve_fit(
+ params, cov = curve_fit()
  func,
  xdata,
  ydata,
@@ -141,7 +141,7 @@ def optimize_parameters(
  ConvergenceError
  If optimization fails to converge
  """
- result = minimize(
+ result = minimize()
  objective,
  x0,
  bounds=bounds,
@@ -199,7 +199,7 @@ def cross_validation_score(
  "bias": bias,
  }
 
-def compute_weights(
+def compute_weights()
  n_lags: int,
     ) -> npt.NDArray[np.float64]:
         pass

@@ -22,7 +22,7 @@ class AnisotropicModel:
  before applying the base isotropic model.
  """
 
- def __init__(
+ def __init__()
      base_model: VariogramModelBase,
      angle: float = 0.0,
      ratio: float = 1.0,
@@ -86,7 +86,7 @@ class AnisotropicModel:
      @property
  def parameters(self):
      params = self.base_model.parameters.copy()
-     params.update({
+     params.update({)
      "angle": self.angle,
      "ratio": self.ratio,
      })
@@ -145,7 +145,7 @@ class DirectionalVariogram:
      self.y = np.asarray(y, dtype=np.float64)
      self.z = np.asarray(z, dtype=np.float64)
 
- def compute(
+ def compute()
      angle: float,
      tolerance: float = 22.5,
      n_lags: int = 15,
@@ -178,7 +178,7 @@ class DirectionalVariogram:
      """
      from ..algorithms.variogram import experimental_variogram_directional
 
-     return experimental_variogram_directional(
+     return experimental_variogram_directional()
      self.x,
      self.y,
      self.z,
