@@ -184,93 +184,74 @@ def compare_kriging_methods(x, y, au, model):
     x_pred = X.flatten()
     y_pred = Y.flatten()
 
- results = {}
+    results = {}
 
- # Log-transform for some methods
- au_log = np.log10(au + 0.001)
+    # Log-transform for some methods
+    au_log = np.log10(au + 0.001)
 
- # Method 1: Ordinary Kriging (standard)
- logger.info("Ordinary Kriging (log-transformed)...")
- t0 = time.time()
- ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
- z_ok, var_ok = ok.predict(x_pred, y_pred, return_variance=True)
- z_ok = 10**z_ok - 0.001 # Back-transform
- t_ok = time.time() - t0
- results['Ordinary'] = {'pred': z_ok.reshape(X.shape), 'time': t_ok}
- logger.info(f" Time: {t_ok:.2f}s")
+    # Method 1: Ordinary Kriging (standard)
+    logger.info("Ordinary Kriging (log-transformed)...")
+    t0 = time.time()
+    ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
+    z_ok, var_ok = ok.predict(x_pred, y_pred, return_variance=True)
+    z_ok = 10**z_ok - 0.001 # Back-transform
+    t_ok = time.time() - t0
+    results['Ordinary'] = {'pred': z_ok.reshape(X.shape), 'time': t_ok}
+    logger.info(f" Time: {t_ok:.2f}s")
 
- # Method 2: Lognormal Kriging (handles skewness)
- logger.info("Lognormal Kriging (handles skewness)...")
- t0 = time.time()
- lk = LognormalKriging(x, y, au, variogram_model=model)
- z_lk, var_lk = lk.predict(x_pred, y_pred, return_variance=True)
- t_lk = time.time() - t0
- results['Lognormal'] = {'pred': z_lk.reshape(X.shape), 'time': t_lk}
- logger.info(f" Time: {t_lk:.2f}s")
+    # Method 2: Lognormal Kriging (handles skewness)
+    logger.info("Lognormal Kriging (handles skewness)...")
+    t0 = time.time()
+    lk = LognormalKriging(x, y, au, variogram_model=model)
+    z_lk, var_lk = lk.predict(x_pred, y_pred, return_variance=True)
+    t_lk = time.time() - t0
+    results['Lognormal'] = {'pred': z_lk.reshape(X.shape), 'time': t_lk}
+    logger.info(f" Time: {t_lk:.2f}s")
 
- # Method 3: Indicator Kriging (probability mapping)
- logger.info("Indicator Kriging (probability >0.1 ppm)...")
- t0 = time.time()
- threshold = 0.1 # Economic interest threshold
- ik = IndicatorKriging(x, y, au, threshold=threshold, variogram_model=model)
- z_ik = ik.predict(x_pred, y_pred)
- t_ik = time.time() - t0
- results['Indicator'] = {'pred': z_ik.reshape(X.shape), 'time': t_ik}
- logger.info(f" Time: {t_ik:.2f}s")
- logger.info(f" High probability areas: {(z_ik > 0.7).sum()/len(z_ik)*100:.1f}%")
+    # Method 3: Indicator Kriging (probability mapping)
+    logger.info("Indicator Kriging (probability >0.1 ppm)...")
+    t0 = time.time()
+    threshold = 0.1 # Economic interest threshold
+    ik = IndicatorKriging(x, y, au, threshold=threshold, variogram_model=model)
+    z_ik = ik.predict(x_pred, y_pred)
+    t_ik = time.time() - t0
+    results['Indicator'] = {'pred': z_ik.reshape(X.shape), 'time': t_ik}
+    logger.info(f" Time: {t_ik:.2f}s")
+    logger.info(f" High probability areas: {(z_ik > 0.7).sum()/len(z_ik)*100:.1f}%")
 
- # Visualize comparison
- fig, axes = plt.subplots(1, 3, figsize=(18, 5))
- # Remove top and right spines
- 
- # Ordinary Kriging
- im1 = axes[0].contourf(X, Y, results['Ordinary']['pred'], levels=20, cmap='YlOrRd')
- axes[0].scatter(x, y, c='k', s=2, alpha=0.3)
- # Remove top and right spines
- # Remove top and right spines
- 
- axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
- # Remove top and right spines
- axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
- plt.colorbar(im1, ax=axes[0], label='Au (ppm)')
- # Remove top and right spines
- axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
+    # Visualize comparison
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    # Remove top and right spines
+    for ax in axes:
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+    
+    # Ordinary Kriging
+    im1 = axes[0].contourf(X, Y, results['Ordinary']['pred'], levels=20, cmap='YlOrRd')
+    axes[0].scatter(x, y, c='k', s=2, alpha=0.3)
+    axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
+    plt.colorbar(im1, ax=axes[0], label='Au (ppm)')
 
- # Lognormal Kriging
- im2 = axes[1].contourf(X, Y, results['Lognormal']['pred'], levels=20, cmap='YlOrRd')
- axes[1].scatter(x, y, c='k', s=2, alpha=0.3)
- # Remove top and right spines
- # Remove top and right spines
- 
- axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
- # Remove top and right spines
- axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
- plt.colorbar(im2, ax=axes[1], label='Au (ppm)')
- # Remove top and right spines
- axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
+    # Lognormal Kriging
+    im2 = axes[1].contourf(X, Y, results['Lognormal']['pred'], levels=20, cmap='YlOrRd')
+    axes[1].scatter(x, y, c='k', s=2, alpha=0.3)
+    axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
+    plt.colorbar(im2, ax=axes[1], label='Au (ppm)')
 
- # Indicator Kriging
- im3 = axes[2].contourf(X, Y, results['Indicator']['pred'], levels=20, cmap='RdYlGn_r')
- axes[2].scatter(x, y, c='k', s=2, alpha=0.3)
- # Remove top and right spines
- # Remove top and right spines
- 
- axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
- # Remove top and right spines
- axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
- plt.colorbar(im3, ax=axes[2], label='Probability')
- # Remove top and right spines
- axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
+    # Indicator Kriging
+    im3 = axes[2].contourf(X, Y, results['Indicator']['pred'], levels=20, cmap='RdYlGn_r')
+    axes[2].scatter(x, y, c='k', s=2, alpha=0.3)
+    axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
+    plt.colorbar(im3, ax=axes[2], label='Probability')
 
- for ax in axes:
-     continue
-    ax.set_ylabel('Latitude')
+    for ax in axes:
+        ax.set_ylabel('Latitude')
 
- plt.tight_layout()
- plt.savefig('alaska_gold_methods_comparison.png', dpi=150)
- logger.info("Saved: alaska_gold_methods_comparison.png")
+    plt.tight_layout()
+    plt.savefig('alaska_gold_methods_comparison.png', dpi=150)
+    logger.info("Saved: alaska_gold_methods_comparison.png")
 
- return results, X, Y
+    return results, X, Y
 
 # ==============================================================================
 # STEP 4: Uncertainty Quantification (Bootstrap + Simulation)
