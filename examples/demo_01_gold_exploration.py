@@ -82,13 +82,13 @@ def load_fairbanks_gold_data(agdb_path):
  (data['LONGITUDE'] > -149.0) & (data['LONGITUDE'] < -145.0)
  ].copy()
 
- # Or use district name
- if 'DISTRICT_NAME' in fairbanks.columns:
-     continue
- data['DISTRICT_NAME'].str.contains('Fairbanks', case=False, na=False)
- ]
- if len(district_data) > 100:
-    pass
+    # Or use district name
+    if 'DISTRICT_NAME' in fairbanks.columns:
+        district_data = fairbanks[
+            fairbanks['DISTRICT_NAME'].str.contains('Fairbanks', case=False, na=False)
+        ]
+    if len(district_data) > 100:
+        pass
 
  logger.info(f" Fairbanks district samples: {len(fairbanks):,}")
 

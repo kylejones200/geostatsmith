@@ -2,7 +2,6 @@
     Example 4: Indicator Kriging for Probability Estimation
 
 This example demonstrates:
-    pass
 - Indicator transformation
 - Probability estimation with indicator kriging
 - Multiple threshold indicator kriging for CDF estimation
@@ -96,7 +95,7 @@ ax1.axhline(threshold, color="red", linestyle="--", linewidth=2, alpha=0.5)
 
 
 plt.colorbar(scatter1, ax=ax1, label="V (ppm)")
-ax1.set_title()
+ax1.set_title(
     f"Sample Data (threshold={threshold} ppm)", fontweight="bold", fontsize=12
 )
 ax1.set_xlabel("X (m)")
