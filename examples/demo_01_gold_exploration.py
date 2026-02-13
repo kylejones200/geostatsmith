@@ -77,10 +77,10 @@ def load_fairbanks_gold_data(agdb_path):
 
  # Focus on Fairbanks area (rich gold district!)
  # Fairbanks: ~64.5°N to 65.5°N, -148°W to -146°W
- fairbanks = data[
- (data['LATITUDE'] > 64.0) & (data['LATITUDE'] < 66.0) &
- (data['LONGITUDE'] > -149.0) & (data['LONGITUDE'] < -145.0)
- ].copy()
+fairbanks = data[
+    (data['LATITUDE'] > 64.0) & (data['LATITUDE'] < 66.0) &
+    (data['LONGITUDE'] > -149.0) & (data['LONGITUDE'] < -145.0)
+].copy()
 
     # Or use district name
     if 'DISTRICT_NAME' in fairbanks.columns:
@@ -90,7 +90,7 @@ def load_fairbanks_gold_data(agdb_path):
     if len(district_data) > 100:
         pass
 
- logger.info(f" Fairbanks district samples: {len(fairbanks):,}")
+    logger.info(f" Fairbanks district samples: {len(fairbanks):,}")
 
  # Extract arrays
  x = fairbanks['LONGITUDE'].values
