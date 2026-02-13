@@ -151,26 +151,19 @@ def analyze_variogram_anisotropy(x, y, z):
         
         axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
         axes[i].set_xlabel('Distance (degrees)')
- # Remove top and right spines
- axes[i].set_xlabel('Distance (degrees)')
- axes[i].set_ylabel('Semivariance')
- # Remove top and right spines
- axes[i].set_ylabel('Semivariance')
- axes[i].legend()
- # Remove top and right spines
- axes[i].legend()
+        axes[i].set_ylabel('Semivariance')
+        axes[i].legend()
 
- plt.tight_layout()
- plt.savefig('alaska_gold_anisotropy.png', dpi=150)
- logger.info(" Saved: alaska_gold_anisotropy.png")
+    plt.tight_layout()
+    plt.savefig('alaska_gold_anisotropy.png', dpi=150)
+    logger.info(" Saved: alaska_gold_anisotropy.png")
 
- # Check if anisotropic
- ranges = [models[a]._parameters['range'] for a in directions]
- if max(ranges) / min(ranges) > 1.5:
-     continue
- logger.info(f" Consider using anisotropic kriging for better results")
- else:
-    pass
+    # Check if anisotropic
+    ranges = [models[a]._parameters['range'] for a in directions]
+    if max(ranges) / min(ranges) > 1.5:
+        logger.info(f" Consider using anisotropic kriging for better results")
+    else:
+        pass
 
  return models[0] # Return default model
 
