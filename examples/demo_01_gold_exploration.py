@@ -278,8 +278,8 @@ def quantify_uncertainty(x, y, au, model, X, Y):
     ci_lower = 10**ci_lower - 0.001
     ci_upper = 10**ci_upper - 0.001
 
- # Method 2: Kriging variance
- logger.info("Kriging Variance...")
+    # Method 2: Kriging variance
+    logger.info("Kriging Variance...")
  ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
  z_pred, variance = ok.predict(X.flatten(), Y.flatten(), return_variance=True)
  variance = variance.reshape(X.shape)
