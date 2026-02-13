@@ -302,28 +302,18 @@ def quantify_uncertainty(x, y, au, model, X, Y):
     im2 = axes[1].contourf(X, Y, std_dev, levels=20, cmap='viridis')
     axes[1].scatter(x, y, c='k', s=1, alpha=0.5, label='Samples')
     axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
- # Remove top and right spines
- axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
- plt.colorbar(im2, ax=axes[1], label='Std Dev')
- # Remove top and right spines
- axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
- axes[1].legend()
- # Remove top and right spines
- axes[1].legend()
+    plt.colorbar(im2, ax=axes[1], label='Std Dev')
+    axes[1].legend()
 
- # Coefficient of variation (relative uncertainty)
- z_pred_reshaped = (10**z_pred.reshape(X.shape) - 0.001)
- cv = (std_dev / np.abs(z_pred_reshaped)) * 100
- cv = np.clip(cv, 0, 200) # Cap at 200% for visualization
- im3 = axes[2].contourf(X, Y, cv, levels=20, cmap='RdYlGn_r')
- axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
- # Remove top and right spines
- axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
- plt.colorbar(im3, ax=axes[2], label='CV (%)')
- # Remove top and right spines
- axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
+    # Coefficient of variation (relative uncertainty)
+    z_pred_reshaped = (10**z_pred.reshape(X.shape) - 0.001)
+    cv = (std_dev / np.abs(z_pred_reshaped)) * 100
+    cv = np.clip(cv, 0, 200) # Cap at 200% for visualization
+    im3 = axes[2].contourf(X, Y, cv, levels=20, cmap='RdYlGn_r')
+    axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
+    plt.colorbar(im3, ax=axes[2], label='CV (%)')
 
- for ax in axes:
+    for ax in axes:
      continue
  ax.set_ylabel('Latitude')
 
