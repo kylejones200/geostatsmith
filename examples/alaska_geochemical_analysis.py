@@ -276,10 +276,10 @@ def multi_element_analysis(agdb_path):
     logger.info(f"Common Cu-Mo samples: {len(common)}")
 
     if len(common) < 50:
+        logger.warning("Not enough common samples for analysis.")
         continue
-    pass
 
-        x = common['LONGITUDE'].values
+    x = common['LONGITUDE'].values
     y = common['LATITUDE'].values
     cu = common['VALUE_cu'].values
     mo = common['VALUE_mo'].values
