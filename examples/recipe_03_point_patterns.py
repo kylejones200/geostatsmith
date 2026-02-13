@@ -135,56 +135,40 @@ for pattern_name, (x, y) in patterns.items():
     ax1.spines['right'].set_visible(False)
 
     # Column 2: Ripley's K function
- ax2 = fig.add_subplot(gs[row, 1])
- # Remove top and right spines
- 
- ripley_res = results['ripley']
- ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth=2, label='Observed K')
- # Remove top and right spines
- 
- # Remove top and right spines
- ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth)
- 
- ax2.plot(ripley_res['d'], ripley_res['K_theoretical'], 'r--',
- linewidth=2, label='Theoretical (Random)')
- ax2.set_title('Ripley\'s K Function', fontsize=11, fontweight='bold')
- # Remove top and right spines
- ax2.set_xlabel('Distance (d)')
- ax2.set_ylabel('K(d)')
- ax2.legend(fontsize=9)
- # Remove top and right spines
+    ax2 = fig.add_subplot(gs[row, 1])
+    # Remove top and right spines
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
+    
+    ripley_res = results['ripley']
+    ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth=2, label='Observed K')
+    ax2.plot(ripley_res['d'], ripley_res['K_theoretical'], 'r--',
+             linewidth=2, label='Theoretical (Random)')
+    ax2.set_title('Ripley\'s K Function', fontsize=11, fontweight='bold')
+    ax2.set_xlabel('Distance (d)')
+    ax2.set_ylabel('K(d)')
+    ax2.legend(fontsize=9)
 
- # Column 3: L function (transformed K)
- ax3 = fig.add_subplot(gs[row, 2])
- # Remove top and right spines
- 
- ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth=2, label='Observed L')
- # Remove top and right spines
- 
- # Remove top and right spines
- ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth)
- 
- ax3.axhline(0, color='r', linestyle='--', linewidth=2, label='Random')
- # Remove top and right spines
- ax3.axhline(0, color)
- 
-    ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',
-                     label='±5 envelope')
+    # Column 3: L function (transformed K)
+    ax3 = fig.add_subplot(gs[row, 2])
     # Remove top and right spines
     ax3.spines['top'].set_visible(False)
     ax3.spines['right'].set_visible(False)
- ax3.set_title('L Function Transform', fontsize=11, fontweight='bold')
- # Remove top and right spines
- ax3.set_xlabel('Distance (d)')
- ax3.set_ylabel('L(d) = √(K/π) - d')
- ax3.legend(fontsize=9)
- # Remove top and right spines
+    
+    ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth=2, label='Observed L')
+    ax3.axhline(0, color='r', linestyle='--', linewidth=2, label='Random')
+    ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',
+                     label='±5 envelope')
+    ax3.set_title('L Function Transform', fontsize=11, fontweight='bold')
+    ax3.set_xlabel('Distance (d)')
+    ax3.set_ylabel('L(d) = √(K/π) - d')
+    ax3.legend(fontsize=9)
 
- # Add interpretation
- interp_text = ripley_res['interpretation']
+    # Add interpretation
+    interp_text = ripley_res['interpretation']
     ax3.text(0.5, 0.95, interp_text, transform=ax3.transAxes,
-             fontsize=9, verticalalignment='top', horizontalalignment='center',
-             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+              fontsize=9, verticalalignment='top', horizontalalignment='center',
+              bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
     # Remove top and right spines
     ax3.spines['top'].set_visible(False)
     ax3.spines['right'].set_visible(False)
