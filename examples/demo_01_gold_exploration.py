@@ -47,33 +47,33 @@ logger.info(" GOLD RUSH ALASKA - COMPLETE EXPLORATION WORKFLOW")
 # ==============================================================================
 
 def load_fairbanks_gold_data(agdb_path):
- logger.info("Loading Alaska gold data...")
+    logger.info("Loading Alaska gold data...")
 
- agdb_path = Path(agdb_path)
+    agdb_path = Path(agdb_path)
 
- # Load location data
- geol = pd.read_csv(agdb_path / 'Geol_DeDuped.txt', encoding='latin-1', low_memory=False)
- logger.info(f" Total samples in database: {len(geol):,}")
+    # Load location data
+    geol = pd.read_csv(agdb_path / 'Geol_DeDuped.txt', encoding='latin-1', low_memory=False)
+    logger.info(f" Total samples in database: {len(geol):,}")
 
- # Filter to Alaska geographic bounds
- geol = geol[(geol['LATITUDE'] >= 51) & (geol['LATITUDE'] <= 72) &
- (geol['LONGITUDE'] >= -180) & (geol['LONGITUDE'] <= -130)]
+    # Filter to Alaska geographic bounds
+    geol = geol[(geol['LATITUDE'] >= 51) & (geol['LATITUDE'] <= 72) &
+                (geol['LONGITUDE'] >= -180) & (geol['LONGITUDE'] <= -130)]
 
- # Load gold chemistry
- chem = pd.read_csv(agdb_path / 'Chem_A_Br.txt', encoding='latin-1', low_memory=False)
+    # Load gold chemistry
+    chem = pd.read_csv(agdb_path / 'Chem_A_Br.txt', encoding='latin-1', low_memory=False)
 
- # Filter for gold - PARAMETER column contains method info like "Au_ppm_ES_SQ"
- au_chem = chem[chem['PARAMETER'].str.contains('Au_', case=False, na=False)].copy()
- au_chem = au_chem[['AGDB_ID', 'DATA_VALUE']].copy()
- au_chem = au_chem.rename(columns={'DATA_VALUE': 'Au'})
- logger.info(f" Gold analyses: {len(au_chem):,}")
+    # Filter for gold - PARAMETER column contains method info like "Au_ppm_ES_SQ"
+    au_chem = chem[chem['PARAMETER'].str.contains('Au_', case=False, na=False)].copy()
+    au_chem = au_chem[['AGDB_ID', 'DATA_VALUE']].copy()
+    au_chem = au_chem.rename(columns={'DATA_VALUE': 'Au'})
+    logger.info(f" Gold analyses: {len(au_chem):,}")
 
- # Merge
- data = geol.merge(au_chem, on='AGDB_ID', how='inner')
+    # Merge
+    data = geol.merge(au_chem, on='AGDB_ID', how='inner')
 
- # Filter for valid coordinates and positive values
- data = data.dropna(subset=['LATITUDE', 'LONGITUDE', 'Au'])
- data = data[data['Au'] > 0] # Remove non-detects
+    # Filter for valid coordinates and positive values
+    data = data.dropna(subset=['LATITUDE', 'LONGITUDE', 'Au'])
+    data = data[data['Au'] > 0] # Remove non-detects
 
     # Focus on Fairbanks area (rich gold district!)
     # Fairbanks: ~64.5°N to 65.5°N, -148°W to -146°W
@@ -92,10 +92,10 @@ def load_fairbanks_gold_data(agdb_path):
 
     logger.info(f" Fairbanks district samples: {len(fairbanks):,}")
 
- # Extract arrays
- x = fairbanks['LONGITUDE'].values
- y = fairbanks['LATITUDE'].values
- au = fairbanks['Au'].values # ppm
+    # Extract arrays
+    x = fairbanks['LONGITUDE'].values
+    y = fairbanks['LATITUDE'].values
+    au = fairbanks['Au'].values # ppm
 
  logger.info(f"Gold Statistics:")
  logger.info(f" Mean: {au.mean():.3f} ppm")
