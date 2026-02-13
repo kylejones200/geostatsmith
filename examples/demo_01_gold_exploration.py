@@ -179,10 +179,10 @@ def compare_kriging_methods(x, y, au, model):
     y_min, y_max = y.min(), y.max()
  
     x_grid = np.linspace(x_min, x_max, 80)
- y_grid = np.linspace(y_min, y_max, 80)
- X, Y = np.meshgrid(x_grid, y_grid)
- x_pred = X.flatten()
- y_pred = Y.flatten()
+    y_grid = np.linspace(y_min, y_max, 80)
+    X, Y = np.meshgrid(x_grid, y_grid)
+    x_pred = X.flatten()
+    y_pred = Y.flatten()
 
  results = {}
 
@@ -264,7 +264,7 @@ def compare_kriging_methods(x, y, au, model):
 
  for ax in axes:
      continue
- ax.set_ylabel('Latitude')
+    ax.set_ylabel('Latitude')
 
  plt.tight_layout()
  plt.savefig('alaska_gold_methods_comparison.png', dpi=150)
