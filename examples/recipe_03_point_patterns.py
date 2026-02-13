@@ -102,38 +102,30 @@ gs = GridSpec(3, 4, figure=fig, hspace=0.35, wspace=0.4)
 
 row = 0
 for pattern_name, (x, y) in patterns.items():
-    pass
+    results = results_all[pattern_name]
+    ax1 = fig.add_subplot(gs[row, 0])
+    # Remove top and right spines
+    ax1.spines['top'].set_visible(False)
+    ax1.spines['right'].set_visible(False)
+    
+    ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
+    ax1.set_xlim(0, 100)
+    ax1.set_ylim(0, 100)
+    ax1.set_aspect('equal')
+    ax1.set_title(f'{pattern_name} Pattern\n({len(x)} points)',
+                  fontsize=11, fontweight='bold')
+    ax1.set_xlabel('X')
+    ax1.set_ylabel('Y')
 
-for pattern_name, (x, y) in patterns.items():
- ax1 = fig.add_subplot(gs[row, 0])
- # Remove top and right spines
- 
- ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
- # Remove top and right spines
- 
- # Remove top and right spines
- ax1.scatter(x, y, s)
- 
- ax1.set_xlim(0, 100)
- ax1.set_ylim(0, 100)
- ax1.set_aspect('equal')
- ax1.set_title(f'{pattern_name} Pattern\n({len(x)} points)',
- fontsize=11, fontweight='bold')
- ax1.set_xlabel('X')
- ax1.set_ylabel('Y')
-
- # Add R index annotation
- nn_res = results['nn']
- textstr = f"R = {nn_res['R']:.3f}\n"
- if nn_res['R'] < 1:
-     continue
- color = 'red'
- elif nn_res['R'] > 1:
-     continue
- color = 'blue'
- else:
-     pass
- color = 'green'
+    # Add R index annotation
+    nn_res = results['nn']
+    textstr = f"R = {nn_res['R']:.3f}\n"
+    if nn_res['R'] < 1:
+        color = 'red'
+    elif nn_res['R'] > 1:
+        color = 'blue'
+    else:
+        color = 'green'
 
     ax1.text(0.05, 0.95, textstr, transform=ax1.transAxes,
              fontsize=10, verticalalignment='top', fontweight='bold',
@@ -176,11 +168,11 @@ for pattern_name, (x, y) in patterns.items():
  # Remove top and right spines
  ax3.axhline(0, color)
  
- ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',)
- # Remove top and right spines
- ax3.fill_between(ripley_res['d'], -5, 5, alpha)
- 
- label='±5 envelope')
+    ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',
+                     label='±5 envelope')
+    # Remove top and right spines
+    ax3.spines['top'].set_visible(False)
+    ax3.spines['right'].set_visible(False)
  ax3.set_title('L Function Transform', fontsize=11, fontweight='bold')
  # Remove top and right spines
  ax3.set_xlabel('Distance (d)')
