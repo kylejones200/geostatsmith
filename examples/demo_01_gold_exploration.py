@@ -465,7 +465,7 @@ def validate_predictions(x, y, au, model):
 # MAIN EXECUTION
 # ==============================================================================
 
-if __name__ == '__main__':
+    if __name__ == '__main__':
     pass
 
  if not Path(AGDB_PATH).exists():
