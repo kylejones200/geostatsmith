@@ -23,7 +23,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Load geological/location data
     geol_file = agdb_path / 'Geol_DeDuped.txt'
-    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)"
+    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)
 
     logger.info(f" Loaded {len(geol_data):,} samples from Geol_DeDuped")
 
