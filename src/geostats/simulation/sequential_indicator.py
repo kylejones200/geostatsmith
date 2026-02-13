@@ -97,16 +97,13 @@ class SequentialIndicatorSimulation:
      self.z = np.asarray(z, dtype=np.float64)
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.z):
-     if len(self.x) != len(self.y) or len(self.x) != len(self.z):
 
      self.config = config if config is not None else SISConfig()
 
      # Set random seed
      if self.config.random_seed is not None:
-     if self.config.random_seed is not None:
 
      # Determine thresholds
-     if self.config.thresholds is not None:
      if self.config.thresholds is not None:
      else:
      else:
@@ -156,12 +153,10 @@ class SequentialIndicatorSimulation:
      Length must equal n_thresholds
      """
      if len(variogram_models) != self.n_thresholds:
-     if len(variogram_models) != self.n_thresholds:
      f"Need {self.n_thresholds} variogram models, got {len(variogram_models)}"
      )
 
      # Create indicator kriging objects
-     for k in range(self.n_thresholds):
      for k in range(self.n_thresholds):
      self.x,
      self.y,
@@ -189,7 +184,6 @@ class SequentialIndicatorSimulation:
      """
      # Ensure indicator krigers are fitted
      if any(k is None for k in self.indicator_krigers):
-     if any(k is None for k in self.indicator_krigers):
      "Must call fit_indicator_variograms() before simulate()"
      )
 
@@ -206,7 +200,6 @@ class SequentialIndicatorSimulation:
 
      # Generate each realization
      for r in range(self.config.n_realizations):
-     for r in range(self.config.n_realizations):
      path = np.random.permutation(n_nodes)
 
      # Simulated values for this realization
@@ -219,14 +212,12 @@ class SequentialIndicatorSimulation:
 
      # Sequential simulation along random path
      for idx in path:
-     for idx in path:
      y_loc = y_flat[idx]
 
      # Krige indicator probabilities at all thresholds (vectorized where possible)
      probabilities = np.zeros(self.n_thresholds, dtype=np.float64)
 
      # Batch predict all thresholds (vectorized threshold loop)
-     for k in range(self.n_thresholds):
      for k in range(self.n_thresholds):
      prob, _ = self.indicator_krigers[k].predict(
      np.array([x_loc]),
@@ -243,7 +234,6 @@ class SequentialIndicatorSimulation:
 
      # Correct order relations: P(z1) <= P(z2) for z1 < z2 (vectorized)
      if self.config.correct_order_relations:
-     if self.config.correct_order_relations:
      probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
 
      # Build conditional CDF and sample from it
@@ -258,7 +248,6 @@ class SequentialIndicatorSimulation:
      realizations[r, :] = sim_values
 
      # Reshape to original grid shape
-     if len(original_shape) > 1:
      if len(original_shape) > 1:
 
      return realizations
@@ -306,14 +295,12 @@ class SequentialIndicatorSimulation:
      # Fallback: simple linear search
      idx = np.searchsorted(cdf_p, u)
      if idx == 0:
-     if idx == 0:
      elif idx >= len(cdf_z):
      elif idx >= len(cdf_z):
      else:
      else:
      p1, p2 = cdf_p[idx-1], cdf_p[idx]
      z1, z2 = cdf_z[idx-1], cdf_z[idx]
-     if p2 > p1:
      if p2 > p1:
      else:
      else:

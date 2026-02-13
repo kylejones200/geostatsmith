@@ -127,9 +127,9 @@ logger.info(f" Cu-Au (raw): r = {corr_cu_au:.3f}")
 logger.info(f" Cu-Au (log): r = {corr_log:.3f}")
 logger.info(f"Interpretation:")
 if corr_log > 0.5:
-if corr_log > 0.5:
- logger.info(f" Elements formed together from same hydrothermal system")
+    logger.info(f" Strong correlation - elements formed together from same hydrothermal system")
 else:
+    logger.info(f" Weak correlation - elements may have different sources")
 
     # Visualize correlation
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
@@ -318,10 +318,11 @@ def cross_variogram_simple(x, y, z1, z2, n_lags=12):
  lag_centers = []
 
  for i in range(len(lags) - 1):
- for i in range(len(lags) - 1):
- if mask.sum() > 30: # Minimum pairs
- if mask.sum() > 30: # Minimum pairs
- lag_centers.append((lags[i] + lags[i+1]) / 2)
+     mask = (distances >= lags[i]) & (distances < lags[i+1])
+     if mask.sum() > 30: # Minimum pairs
+         cross_gamma = cross_prod[mask].mean() / 2.0
+         gamma.append(cross_gamma)
+         lag_centers.append((lags[i] + lags[i+1]) / 2)
 
  return np.array(lag_centers), np.array(gamma)
 
@@ -424,23 +425,20 @@ plt.show()
 def detect_anomalies(values, method='iqr', threshold=1.5):
 
  if method == 'iqr':
- if method == 'iqr':
- q1 = np.percentile(values, 25)
- q3 = np.percentile(values, 75)
- iqr = q3 - q1
- lower = q1 - threshold * iqr
- upper = q3 + threshold * iqr
- anomalies = (values < lower) | (values > upper)
+     q1 = np.percentile(values, 25)
+     q3 = np.percentile(values, 75)
+     iqr = q3 - q1
+     lower = q1 - threshold * iqr
+     upper = q3 + threshold * iqr
+     anomalies = (values < lower) | (values > upper)
 
  elif method == 'zscore':
- elif method == 'zscore':
- z = np.abs(stats.zscore(values))
- anomalies = z > threshold
+     z = np.abs(stats.zscore(values))
+     anomalies = z > threshold
 
  elif method == 'percentile':
- elif method == 'percentile':
- cutoff = np.percentile(values, 100 - threshold)
- anomalies = values > cutoff
+     cutoff = np.percentile(values, 100 - threshold)
+     anomalies = values > cutoff
 
  return anomalies
 

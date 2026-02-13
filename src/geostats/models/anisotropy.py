@@ -44,7 +44,6 @@ class AnisotropicModel:
      self.ratio = ratio
 
      if not (0 < ratio <= 1):
-     if not (0 < ratio <= 1):
 
  def __call__(
      x1: npt.NDArray[np.float64],
@@ -69,8 +68,6 @@ class AnisotropicModel:
      Variogram values
      """
      if x2 is None:
-     if x2 is None:
-     if y2 is None:
      if y2 is None:
 
      # Calculate anisotropic distances
@@ -207,11 +204,9 @@ class DirectionalVariogram:
      - 'ratio': Anisotropy ratio (minor/major)
      """
      if angles is None:
-     if angles is None:
 
      ranges = []
 
-     for angle in angles:
      for angle in angles:
 
      # Estimate range (distance where variogram reaches ~95% of sill)
@@ -219,7 +214,6 @@ class DirectionalVariogram:
      threshold = 0.95 * sill_est
      idx = np.where(gamma >= threshold)[0]
 
-     if len(idx) > 0:
      if len(idx) > 0:
      else:
      else:

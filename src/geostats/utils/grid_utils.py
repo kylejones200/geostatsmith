@@ -37,9 +37,7 @@ def create_grid(
  """
  # Handle multiple parameter names
  if resolution is not None:
- if resolution is not None:
 
- if ny is None:
  if ny is None:
 
  x_grid = np.linspace(x_min, x_max, nx)

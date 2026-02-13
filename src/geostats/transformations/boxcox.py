@@ -5,7 +5,7 @@ The Box-Cox transformation is a parametric power transformation that
 stabilizes variance and makes data more normal-like.
 
 Mathematical formulation:
- y(λ) = { (x^λ - 1) / λ if λ ≠ 0
+ y(λ) = { (x^λ - 1) / λ if λ != 0
  { log(x) if λ = 0
 
 where λ is the transformation parameter.
@@ -56,7 +56,7 @@ class BoxCoxTransform:
  Box-Cox power transformation for data normalization
 
  Transforms data to approximate normality using:
- y(λ) = (x^λ - 1) / λ for λ ≠ 0
+ y(λ) = (x^λ - 1) / λ for λ != 0
  y(λ) = log(x) for λ = 0
 
  The parameter λ can be:
@@ -213,7 +213,6 @@ class BoxCoxTransform:
      Original scale data
      """
      if not self.is_fitted:
-     if not self.is_fitted:
      raise GeoStatsError("BoxCoxTransform not fitted. Call .fit() first.")
 
      transformed_data = np.asarray(transformed_data, dtype=np.float64)
@@ -222,13 +221,11 @@ class BoxCoxTransform:
 
      # Un-standardize if needed
      if self.standardize:
-     if self.standardize:
 
      # Inverse transform
      original_data = self._inverse_transform_array(transformed_data, self.fitted_lambda)
 
      # Remove shift
-     if self.shift > 0:
      if self.shift > 0:
 
      logger.debug(f"Inverse transformed {len(original_data)} points")
@@ -256,7 +253,6 @@ class BoxCoxTransform:
      ) -> npt.NDArray[np.float64]:
      """Vectorized Box-Cox transformation"""
      if np.abs(lmbda) < LAMBDA_TOLERANCE:
-     if np.abs(lmbda) < LAMBDA_TOLERANCE:
      return np.log(x)
      else:
      else:
@@ -269,12 +265,11 @@ class BoxCoxTransform:
      """
      Vectorized inverse Box-Cox transformation
 
-     For λ ≠ 0: x = (λy + 1)^(1/λ)
+     For λ != 0: x = (λy + 1)^(1/λ)
      This requires λy + 1 > 0, i.e., y > -1/λ
 
      For negative λ, we need to check domain validity.
      """
-     if np.abs(lmbda) < LAMBDA_TOLERANCE:
      if np.abs(lmbda) < LAMBDA_TOLERANCE:
      return np.exp(y)
      else:
@@ -282,7 +277,6 @@ class BoxCoxTransform:
      arg = lmbda * y + 1.0
 
      # Check for domain violations
-     if np.any(arg <= 0):
      if np.any(arg <= 0):
      logger.warning(
      f"Box-Cox inverse transform: {n_invalid} values outside valid domain. "
@@ -395,6 +389,5 @@ def boxcox_transform(
  bc = BoxCoxTransform(lmbda=lmbda, standardize=False)
  transformed = bc.fit_transform(data)
 
- if return_lambda:
  if return_lambda:
  return transformed

@@ -114,12 +114,10 @@ def bootstrap_uncertainty(
  initial_pred, _ = krig.predict(x_pred, y_pred, return_variance=True)
 
  if method == 'residual':
- if method == 'residual':
  z_fitted, _ = krig.predict(x, y, return_variance=True)
  residuals = z - z_fitted
 
  # Bootstrap residuals
- for i in range(n_bootstrap):
  for i in range(n_bootstrap):
  resampled_residuals = np.random.choice(residuals, size=n, replace=True)
  z_bootstrap = z_fitted + resampled_residuals
@@ -138,7 +136,6 @@ def bootstrap_uncertainty(
 
  elif method == 'pairs':
  elif method == 'pairs':
- for i in range(n_bootstrap):
  for i in range(n_bootstrap):
  indices = np.random.choice(n, size=n, replace=True)
  x_boot = x[indices]
@@ -229,7 +226,6 @@ def bootstrap_variogram(
  sills = []
  ranges = []
 
- for i in range(n_bootstrap):
  for i in range(n_bootstrap):
  indices = np.random.choice(n, size=n, replace=True)
  x_boot = x[indices]
@@ -322,7 +318,6 @@ def bootstrap_kriging(
  n_pred = len(x_pred)
  all_predictions = np.zeros((n_bootstrap, n_pred))
 
- for i in range(n_bootstrap):
  for i in range(n_bootstrap):
  indices = np.random.choice(n, size=n, replace=True)
  x_boot = x[indices]

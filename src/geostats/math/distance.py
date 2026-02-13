@@ -41,7 +41,6 @@ def euclidean_distance(
  dist_sq = dx**2 + dy**2
 
  if z1 is not None and z2 is not None:
- if z1 is not None and z2 is not None:
  z2 = np.asarray(z2).reshape(1, -1)
  dz = z1 - z2
  dist_sq += dz**2
@@ -99,7 +98,6 @@ def anisotropic_distance(
  Anisotropic distance matrix
  """
  if ratio <= 0 or ratio > 1:
- if ratio <= 0 or ratio > 1:
 
  # Convert angle to radians
  theta = np.radians(angle)
@@ -149,13 +147,10 @@ def pairwise_distances(
  coords1 = np.asarray(coords1)
 
  if coords1.ndim == 1:
- if coords1.ndim == 1:
 
  if coords2 is None:
- if coords2 is None:
  else:
  else:
- if coords2.ndim == 1:
  if coords2.ndim == 1:
 
  # Use broadcasting for efficient computation

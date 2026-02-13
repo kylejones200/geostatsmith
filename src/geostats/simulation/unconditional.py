@@ -46,7 +46,6 @@ def unconditional_gaussian_simulation(
  Shape (n_realizations, n_points)
  """
  if method == "cholesky":
- if method == "cholesky":
  x, y, covariance_model,
  n_realizations=n_realizations,
  mean=mean,

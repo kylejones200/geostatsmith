@@ -77,7 +77,6 @@ class Cokriging(BaseKriging):
 
      # Build cokriging matrix
      if all([variogram_primary, variogram_secondary, cross_variogram]):
-     if all([variogram_primary, variogram_secondary, cross_variogram]):
 
  def _build_cokriging_matrix(self) -> None:
      n1 = self.n_primary
@@ -164,7 +163,6 @@ class Cokriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if any([v is None for v in [self.variogram_primary, self.variogram_secondary, self.cross_variogram]]):
-     if any([v is None for v in [self.variogram_primary, self.variogram_secondary, self.cross_variogram]]):
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -179,7 +177,6 @@ class Cokriging(BaseKriging):
      # Get sills
      sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
 
-     for i in range(n_pred):
      for i in range(n_pred):
      dist_to_primary = euclidean_distance(
      np.array([x_pred[i]]), np.array([y_pred[i]]),
@@ -215,7 +212,6 @@ class Cokriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_primary)
      predictions[i] = self.z_primary[nearest_idx]
      if return_variance:
-     if return_variance:
      continue
 
      # Extract weights
@@ -230,10 +226,8 @@ class Cokriging(BaseKriging):
 
      # Variance
      if return_variance:
-     if return_variance:
      variances[i] = max(0.0, variances[i])
 
-     if return_variance:
      if return_variance:
      else:
      else:
@@ -297,7 +291,6 @@ class CollocatedCokriging(BaseKriging):
      self.correlation = correlation_coefficient
 
      if variogram_primary is not None:
-     if variogram_primary is not None:
 
  def _build_kriging_matrix(self) -> None:
      dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
@@ -339,7 +332,6 @@ class CollocatedCokriging(BaseKriging):
      Kriging variance
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      # First do ordinary kriging
      from .ordinary_kriging import OrdinaryKriging
@@ -357,7 +349,6 @@ class CollocatedCokriging(BaseKriging):
      predictions = z_ok + adjustment
 
      # Adjusted variance (reduced by correlation)
-     if return_variance:
      if return_variance:
      return predictions, variances
      else:

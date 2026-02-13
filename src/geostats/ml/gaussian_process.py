@@ -177,7 +177,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
      mean_types = {'zero', 'constant', 'linear'}
      if self.mean_type not in mean_types:
-     if self.mean_type not in mean_types:
 
      logger.info(
      f"Gaussian Process initialized: kernel={kernel}, mean={mean_type}, "
@@ -204,7 +203,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      Fitted model
      """
      if SKLEARN_AVAILABLE:
-     if SKLEARN_AVAILABLE:
      else:
      else:
      y = np.asarray(y, dtype=np.float64)
@@ -217,13 +215,11 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
      # Extract spatial coordinates (assume first 2 columns are x, y)
      if n_features >= 2:
-     if n_features >= 2:
      y_coords = X[:, 1]
      else:
      else:
 
      # Fit variogram kernel if string provided
-     if isinstance(self.kernel, str):
      if isinstance(self.kernel, str):
 
      from ..algorithms.variogram import experimental_variogram
@@ -274,7 +270,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      total_noise = nugget + self.alpha
 
      if self.mean_type == 'constant':
-     if self.mean_type == 'constant':
      K = np.zeros((n + 1, n + 1), dtype=np.float64)
      K[:n, :n] = cov_matrix
      K[:n, n] = 1.0
@@ -321,9 +316,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         Covariance matrix (if return_cov=True)
     """
      if self.X_train_ is None:
-     if self.X_train_ is None:
 
-     if SKLEARN_AVAILABLE:
      if SKLEARN_AVAILABLE:
      else:
      else:
@@ -345,15 +338,12 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
     # Pre-compute distances between prediction points for covariance
     if return_cov:
-    if return_cov:
         dist_pred = cdist(coords_pred, coords_pred)
 
-    for i in range(n_pred):
     for i in range(n_pred):
      gamma_vec = self.fitted_kernel_(h_vec)
      k_vec = sill - gamma_vec # Convert to covariance
 
-     if self.mean_type == 'constant':
      if self.mean_type == 'constant':
      rhs = np.zeros(n_train + 1, dtype=np.float64)
      rhs[:n_train] = k_vec
@@ -366,7 +356,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      predictions[i] = np.dot(lambdas, self.y_train_)
 
      if return_std:
-     if return_std:
      var = sill - (np.dot(lambdas, k_vec) + mu)
      std_devs[i] = np.sqrt(max(0.0, var))
 
@@ -377,11 +366,9 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      predictions[i] = mean_y + np.dot(lambdas, self.y_train_ - mean_y)
 
      if return_std:
-     if return_std:
      std_devs[i] = np.sqrt(max(0.0, var))
 
     # Compute covariance matrix if requested
-    if return_cov:
     if return_cov:
                 h = dist_pred[i, j]
                 gamma = self.fitted_kernel_(h)
@@ -392,14 +379,12 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                     # Subtract kriging variance from diagonal
         # The diagonal should be prediction variance, not prior covariance
         if return_std:
-        if return_std:
                 cov_matrix[i, i] = std_devs[i]**2
         else:
         else:
                 gamma_vec = self.fitted_kernel_(h_vec)
                 k_vec = sill - gamma_vec
                 
-                if self.mean_type == 'constant':
                 if self.mean_type == 'constant':
                     rhs[n_train] = 1.0
                     weights = solve_kriging_system(self.K_, rhs)
@@ -413,7 +398,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
     logger.debug(f"GP prediction complete for {n_pred} points")
 
-    if return_cov:
     if return_cov:
         return predictions, cov_matrix
     elif return_std:

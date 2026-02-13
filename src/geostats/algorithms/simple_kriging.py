@@ -60,7 +60,6 @@ class SimpleKriging(BaseKriging):
 
      # Set or estimate mean
      if mean is None:
-     if mean is None:
      else:
      else:
 
@@ -68,7 +67,6 @@ class SimpleKriging(BaseKriging):
      self.z_centered = self.z - self.mean
 
      # Build covariance matrix
-     if self.variogram_model is not None:
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
@@ -112,7 +110,6 @@ class SimpleKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -124,7 +121,6 @@ class SimpleKriging(BaseKriging):
      sill = self.variogram_model.parameters.get('sill', 1.0)
 
      # Predict at each location
-     for i in range(n_pred):
      for i in range(n_pred):
      dist_to_samples = euclidean_distance(
      np.array([x_pred[i]]),
@@ -145,7 +141,6 @@ class SimpleKriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_samples)
      predictions[i] = self.z[nearest_idx]
      if return_variance:
-     if return_variance:
      continue
 
      # Simple kriging prediction: ẑ(x₀) = μ + Σλᵢ[z(xᵢ) - μ]
@@ -153,9 +148,7 @@ class SimpleKriging(BaseKriging):
 
      # Kriging variance: σ²(x₀) = C(0) - Σλᵢc₀ᵢ
      if return_variance:
-     if return_variance:
      # Variance should be non-negative; negative indicates numerical issues
-     if variances[i] < 0.0:
      if variances[i] < 0.0:
      import warnings
      warnings.warn(
@@ -165,7 +158,6 @@ class SimpleKriging(BaseKriging):
      )
      variances[i] = 0.0
 
-     if return_variance:
      if return_variance:
      else:
      else:

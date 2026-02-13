@@ -46,13 +46,11 @@ logger.info(f"Output directory: {OUTPUT_DIR}")
 results = []
 
 for i, demo in enumerate(demos, 1):
-for i, demo in enumerate(demos, 1):
  logger.info(f"Script: {demo['file']}")
 
  script_path = EXAMPLES_DIR / demo['file']
  output_path = OUTPUT_DIR / demo['output']
 
- if not script_path.exists():
  if not script_path.exists():
  results.append({'demo': demo['name'], 'status': 'NOT FOUND', 'output': None})
  continue
@@ -86,7 +84,6 @@ for i, demo in enumerate(demos, 1):
  f.write(result.stderr)
  f.write("\n\nExit Code: " + str(result.returncode))
 
- if result.returncode == 0:
  if result.returncode == 0:
  logger.info(f" Output saved to: {output_path.name}")
  results.append({
@@ -134,8 +131,6 @@ logger.error(f"Failed: {failed_count}")
 
 logger.info("Results:")
 for r in results:
-for r in results:
- if 'duration' in r:
  if 'duration' in r:
  else:
 
@@ -147,11 +142,8 @@ with open(summary_path, 'w') as f:
 with open(summary_path, 'w') as f:
 
  for r in results:
- for r in results:
  f.write(f"Status: {r['status']}\n")
  if 'duration' in r:
- if 'duration' in r:
- if r['output']:
  if r['output']:
  f.write("\n")
 

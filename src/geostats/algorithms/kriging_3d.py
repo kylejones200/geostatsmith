@@ -45,7 +45,6 @@ def validate_coordinates_3d(
  z = np.asarray(z, dtype=np.float64).flatten()
 
  if not (len(x) == len(y) == len(z)):
- if not (len(x) == len(y) == len(z)):
 
  return x, y, z
 
@@ -86,14 +85,12 @@ class SimpleKriging3D(BaseKriging):
 
      # Estimate mean if not provided
      if known_mean is not None:
-     if known_mean is not None:
      else:
      else:
 
      # Center the data
      self.residuals = self.values - self.mean
 
-     if self.variogram_model is not None:
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self):
@@ -142,7 +139,6 @@ class SimpleKriging3D(BaseKriging):
      Kriging variance at each point
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      x_new, y_new, z_new = validate_coordinates_3d(x_new, y_new, z_new)
      n_pred = len(x_new)
@@ -164,7 +160,6 @@ class SimpleKriging3D(BaseKriging):
 
      # Still need loop over prediction points for solving (inherent to kriging)
      for i in range(n_pred):
-     for i in range(n_pred):
 
      # Solve for weights
      try:
@@ -178,10 +173,8 @@ class SimpleKriging3D(BaseKriging):
 
      # Variance: σ²(x₀) = C(0) - Σλᵢ·C(xᵢ-x₀)
      if return_variance:
-     if return_variance:
 
      logger.info(f"3D Simple Kriging completed for {n_pred} prediction points (vectorized)")
-     if return_variance:
      if return_variance:
      return predictions
 
@@ -215,7 +208,6 @@ class OrdinaryKriging3D(BaseKriging):
      self.values = validate_values(values, n_expected=len(self.x))
      self.variogram_model = variogram_model
 
-     if self.variogram_model is not None:
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self):
@@ -265,7 +257,6 @@ class OrdinaryKriging3D(BaseKriging):
      Kriging variance
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      x_new, y_new, z_new = validate_coordinates_3d(x_new, y_new, z_new)
      n_pred = len(x_new)
@@ -281,7 +272,6 @@ class OrdinaryKriging3D(BaseKriging):
      variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
      # Still need loop over prediction points for solving (inherent to kriging)
-     for i in range(n_pred):
      for i in range(n_pred):
      rhs = np.zeros(n_data + 1, dtype=np.float64)
      rhs[:n_data] = gamma_to_pred[:, i]
@@ -303,10 +293,8 @@ class OrdinaryKriging3D(BaseKriging):
 
      # Variance
      if return_variance:
-     if return_variance:
 
      logger.info(f"3D Ordinary Kriging completed for {n_pred} prediction points (vectorized)")
-     if return_variance:
      if return_variance:
      return predictions
 

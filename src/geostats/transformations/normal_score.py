@@ -122,7 +122,7 @@ class NormalScoreTransform:
  Returns
  -------
  np.ndarray
- Normal scores (mean≈0, std≈1)
+ Normal scores (mean~=0, std~=1)
  """
  if not self.is_fitted:
 
@@ -229,7 +229,7 @@ def normal_score_transform(
  >>> import numpy as np
  >>> data = np.array([1.2, 5.6, 2.3, 8.9, 3.4])
  >>> normal_scores, transformer = normal_score_transform(data)
- >>> logger.info(normal_scores) # Should have mean≈0, std≈1
+ >>> logger.info(normal_scores) # Should have mean~=0, std~=1
  >>> original = transformer.inverse_transform(normal_scores)
  >>> np.allclose(original, data) # Should be True
  """

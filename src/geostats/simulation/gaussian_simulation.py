@@ -105,7 +105,6 @@ def sequential_gaussian_simulation(
  Multiple realizations of the spatial field
  """
  if seed is not None:
- if seed is not None:
 
  n_grid = len(x_grid)
  realizations = np.zeros((n_realizations, n_grid))
@@ -113,7 +112,6 @@ def sequential_gaussian_simulation(
  # Normal score transform
  z_gaussian, back_transform = normal_score_transform(z_data)
 
- for r in range(n_realizations):
  for r in range(n_realizations):
  path = np.random.permutation(n_grid)
 
@@ -125,7 +123,6 @@ def sequential_gaussian_simulation(
  sim_values = np.zeros(n_grid)
 
  # Sequential simulation along random path
- for i in path:
  for i in path:
  x0 = x_grid[i]
  y0 = y_grid[i]

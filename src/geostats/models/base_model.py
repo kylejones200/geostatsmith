@@ -122,7 +122,6 @@ class VariogramModelBase(BaseModel):
      gamma_fit = gamma[mask]
 
      if weights is not None:
-     if weights is not None:
 
      # Initial parameter estimates
      sill_init = np.max(gamma_fit) if len(gamma_fit) > 0 else 1.0
@@ -165,7 +164,6 @@ class VariogramModelBase(BaseModel):
      ) -> tuple:
      """Prepare initial parameters and bounds for fitting"""
      if fit_nugget:
-     if fit_nugget:
      bounds_lower = [0.0, 0.0, 0.0]
      bounds_upper = [np.inf, np.inf, np.inf]
      else:
@@ -191,7 +189,6 @@ class VariogramModelBase(BaseModel):
  return result
 
  def _update_parameters_from_fit(self, params: npt.NDArray[np.float64], fit_nugget: bool) -> None:
-     if fit_nugget:
      if fit_nugget:
      self._parameters["sill"] = max(0.0, params[1])
      self._parameters["range"] = max(0.0, params[2])

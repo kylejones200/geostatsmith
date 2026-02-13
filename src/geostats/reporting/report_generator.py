@@ -95,7 +95,6 @@ def _generate_html_report(
  # Cross-validation
  cv_html = ""
  if include_cv:
- if include_cv:
  cv_html = f"""
  <h2>Cross-Validation</h2>
  <table class="metrics">
@@ -123,7 +122,6 @@ def _generate_html_report(
  <p>Selected model: <strong>{model.__class__.__name__}</strong></p>
  <table class="metrics">
  """
- for key, val in params.items():
  for key, val in params.items():
  model_html += "</table>"
 

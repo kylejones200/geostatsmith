@@ -52,7 +52,6 @@ def cholesky_simulation(
  Shape (n_realizations, n_points)
  """
  if seed is not None:
- if seed is not None:
 
  n = len(x)
 
@@ -61,7 +60,6 @@ def cholesky_simulation(
 
  # Get covariance from model
  # If it's a variogram model, convert to covariance
- if hasattr(covariance_model, 'parameters'):
  if hasattr(covariance_model, 'parameters'):
  # It's a variogram model: C(h) = sill - γ(h)
  sill = covariance_model.parameters['sill']
@@ -89,7 +87,6 @@ def cholesky_simulation(
  # Generate realizations
  realizations = np.zeros((n_realizations, n))
 
- for r in range(n_realizations):
  for r in range(n_realizations):
  w = np.random.randn(n)
 
@@ -139,7 +136,6 @@ def conditional_simulation(
  Conditional realizations, shape (n_realizations, n_sim)
  """
  if seed is not None:
- if seed is not None:
 
  n_data = len(x_data)
  n_sim = len(x_sim)
@@ -163,7 +159,6 @@ def conditional_simulation(
  from ..algorithms.simple_kriging import SimpleKriging
 
  for r in range(n_realizations):
- for r in range(n_realizations):
  z_sim_at_data = uncond_sims[r, :n_data]
 
  # Krige the simulated values to get smooth field
@@ -175,7 +170,6 @@ def conditional_simulation(
 
  # Build covariance matrix manually
  dist_matrix = euclidean_distance(x_data, y_data, x_data, y_data)
- if hasattr(covariance_model, 'parameters'):
  if hasattr(covariance_model, 'parameters'):
  sill = covariance_model.parameters['sill']
  gamma = covariance_model(dist_matrix)
@@ -247,18 +241,15 @@ def turning_bands_simulation(
  Shape (n_realizations, n_points)
  """
  if seed is not None:
- if seed is not None:
 
  n_points = len(x)
  realizations = np.zeros((n_realizations, n_points))
 
  for r in range(n_realizations):
- for r in range(n_realizations):
  angles = np.random.uniform(0, 2*np.pi, n_bands)
 
  sim = np.zeros(n_points)
 
- for angle in angles:
  for angle in angles:
  u = x * np.cos(angle) + y * np.sin(angle)
 

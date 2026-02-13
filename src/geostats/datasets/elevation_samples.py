@@ -299,7 +299,6 @@ def _generate_terrain(X: npt.NDArray[np.float64], Y: npt.NDArray[np.float64]) ->
  Z = np.zeros_like(X)
 
  for peak in peaks:
- for peak in peaks:
  dy = Y - peak['y']
  dist_sq = dx**2 + dy**2
  Z += peak['height'] * np.exp(-dist_sq / (2 * peak['width']**2))

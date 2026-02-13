@@ -75,22 +75,17 @@ def read_netcdf(
  If file doesn't exist
  """
  if not NETCDF_AVAILABLE:
- if not NETCDF_AVAILABLE:
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
 
- if not Path(filename).exists():
  if not Path(filename).exists():
 
  # Open NetCDF file
  with nc.Dataset(filename, 'r') as dataset:
  with nc.Dataset(filename, 'r') as dataset:
  if x_var not in dataset.variables:
- if x_var not in dataset.variables:
  if y_var not in dataset.variables:
- if y_var not in dataset.variables:
- if z_var not in dataset.variables:
  if z_var not in dataset.variables:
 
  # Read coordinates
@@ -102,7 +97,6 @@ def read_netcdf(
 
  # Handle time dimension if present
  if time_index is not None and 'time' in z_data.dimensions:
- if time_index is not None and 'time' in z_data.dimensions:
  elif len(z_data.shape) == 3:
  elif len(z_data.shape) == 3:
  z = z_data[0, :, :].data
@@ -110,7 +104,6 @@ def read_netcdf(
  else:
 
  # Handle masked arrays
- if hasattr(z, 'mask'):
  if hasattr(z, 'mask'):
 
  # Collect metadata
@@ -172,12 +165,10 @@ def write_netcdf(
  If netCDF4 is not installed
  """
  if not NETCDF_AVAILABLE:
- if not NETCDF_AVAILABLE:
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
 
- if z.ndim != 2:
  if z.ndim != 2:
 
  # Create NetCDF file
@@ -198,8 +189,6 @@ def write_netcdf(
 
  # Add attributes
  if units:
- if units:
- if long_name:
  if long_name:
 
  # Global attributes
@@ -240,19 +229,16 @@ def read_geojson(
  If file doesn't exist
  """
  if not GEOPANDAS_AVAILABLE:
- if not GEOPANDAS_AVAILABLE:
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
  )
 
- if not Path(filename).exists():
  if not Path(filename).exists():
 
  # Read GeoJSON
  gdf = gpd.read_file(filename)
 
  # Check property exists
- if z_property not in gdf.columns:
  if z_property not in gdf.columns:
 
  # Extract coordinates
@@ -296,7 +282,6 @@ def write_geojson(
  ImportError
  If geopandas is not installed
  """
- if not GEOPANDAS_AVAILABLE:
  if not GEOPANDAS_AVAILABLE:
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
@@ -359,7 +344,6 @@ def to_dataframe(
 
  # Add extra columns
  for col_name, col_data in extra_cols.items():
- for col_name, col_data in extra_cols.items():
 
  return df
 
@@ -403,7 +387,6 @@ def to_geopandas(
  ImportError
  If geopandas is not installed
  """
- if not GEOPANDAS_AVAILABLE:
  if not GEOPANDAS_AVAILABLE:
  "geopandas is required. "
  "Install with: pip install geopandas"

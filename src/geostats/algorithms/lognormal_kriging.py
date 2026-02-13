@@ -9,7 +9,7 @@ For lognormal data (common in mining, environmental science), kriging is
 performed in log-space and back-transformed with proper variance correction.
 
 The back-transformation must account for the bias introduced by Jensen's
-inequality: E[exp(Y)] ≠ exp(E[Y]) for lognormal Y.
+inequality: E[exp(Y)] != exp(E[Y]) for lognormal Y.
 
 Reference:
 - ofr20091103.txt (USGS Practical Primer)
@@ -73,7 +73,6 @@ class LognormalKriging(BaseKriging):
 
      # Check for non-positive values
      if np.any(self.z <= 0):
-     if np.any(self.z <= 0):
      "Lognormal kriging requires all values > 0. "
      "Consider adding a constant or using a different method."
      )
@@ -85,7 +84,6 @@ class LognormalKriging(BaseKriging):
      # Select kriging method
      self.kriging_type = kriging_type.lower()
 
-     if self.kriging_type == 'simple':
      if self.kriging_type == 'simple':
      self.x, self.y, self.log_z,
      variogram_model=variogram_model,
@@ -128,10 +126,8 @@ class LognormalKriging(BaseKriging):
      Variance in original space (approximate)
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      # Krige in log-space
-     if return_variance:
      if return_variance:
      x_new, y_new, return_variance=True
      )
@@ -153,7 +149,6 @@ class LognormalKriging(BaseKriging):
      }
 
      if back_transform_method not in back_transform_methods:
-     if back_transform_method not in back_transform_methods:
      raise ValueError(
      f"back_transform_method must be one of {valid_methods}, "
      f"got '{back_transform_method}'"
@@ -164,7 +159,6 @@ class LognormalKriging(BaseKriging):
      )
 
      # Transform variance to original space (approximate)
-     if return_variance and log_variances is not None:
      if return_variance and log_variances is not None:
      # where Z = exp(Ŷ)
      original_variances = predictions**2 * (np.exp(log_variances) - 1)
@@ -193,7 +187,6 @@ class LognormalKriging(BaseKriging):
      n = len(self.x)
      predictions = np.zeros(n)
 
-     for i in range(n):
      for i in range(n):
      mask = np.ones(n, dtype=bool)
      mask[i] = False

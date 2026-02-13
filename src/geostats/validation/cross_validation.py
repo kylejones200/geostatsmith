@@ -96,14 +96,12 @@ def k_fold_cross_validation(
  # Prepare fold arguments
  fold_args = []
  for i in range(n_folds):
- for i in range(n_folds):
  test_end = (i + 1) * fold_size if i < n_folds - 1 else n
  test_idx = indices[test_start:test_end]
  train_idx = np.concatenate([indices[:test_start], indices[test_end:]])
  fold_args.append((i, train_idx, test_idx, x, y, z, kriging_class, variogram_model))
 
  # Execute folds (parallel or serial)
- if n_jobs is not None and n_jobs != 0:
  if n_jobs is not None and n_jobs != 0:
  n_workers = cpu_count() if n_jobs == -1 else min(n_jobs, cpu_count())
  logger.info(f"Running {n_folds}-fold cross-validation in parallel ({n_workers} workers)")
@@ -113,12 +111,10 @@ def k_fold_cross_validation(
 
  # Collect results
  for fold_idx, test_idx, pred, true in results:
- for fold_idx, test_idx, pred, true in results:
  all_true[test_idx] = true
  else:
  else:
  logger.info(f"Running {n_folds}-fold cross-validation (serial)")
- for args in fold_args:
  for args in fold_args:
  all_predictions[test_idx] = pred
  all_true[test_idx] = true
@@ -135,7 +131,6 @@ def k_fold_cross_validation(
 def _process_spatial_block(args):
  block_id, test_mask, train_mask, x, y, z, kriging_class, variogram_model = args
 
- if np.sum(test_mask) == 0 or np.sum(train_mask) == 0:
  if np.sum(test_mask) == 0 or np.sum(train_mask) == 0:
 
  # Train kriging model
@@ -202,12 +197,10 @@ def spatial_cross_validation(
  # Prepare block arguments
  block_args = []
  for block_id in range(n_blocks * n_blocks):
- for block_id in range(n_blocks * n_blocks):
  train_mask = ~test_mask
  block_args.append((block_id, test_mask, train_mask, x, y, z, kriging_class, variogram_model))
 
  # Execute blocks (parallel or serial)
- if n_jobs is not None and n_jobs != 0:
  if n_jobs is not None and n_jobs != 0:
  n_workers = cpu_count() if n_jobs == -1 else min(n_jobs, cpu_count())
  logger.info(f"Running spatial CV with {n_blocks}x{n_blocks} blocks in parallel ({n_workers} workers)")
@@ -219,7 +212,6 @@ def spatial_cross_validation(
  all_predictions = []
  all_true = []
  for block_id, pred, true in results:
- for block_id, pred, true in results:
  all_predictions.extend(pred)
  all_true.extend(true)
  else:
@@ -229,8 +221,6 @@ def spatial_cross_validation(
  all_true = []
 
  for args in block_args:
- for args in block_args:
- if len(pred) > 0:
  if len(pred) > 0:
  all_true.extend(true)
 

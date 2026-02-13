@@ -47,14 +47,12 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
 
  # Check file exists
  if not config_path.exists():
- if not config_path.exists():
 
  # Load based on extension
  suffix = config_path.suffix.lower()
 
  try:
  try:
- if suffix in ['.yaml', '.yml']:
  if suffix in ['.yaml', '.yml']:
  elif suffix == '.json':
  elif suffix == '.json':
@@ -77,7 +75,6 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
  except ValidationError as e:
  # Format validation errors nicely
  error_msg = "Configuration validation failed:\n"
- for error in e.errors():
  for error in e.errors():
  msg = error['msg']
  error_msg += f" • {field}: {msg}\n"
@@ -132,7 +129,6 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
  except ValidationError as e:
  error_msg = "Configuration validation failed:\n"
  for error in e.errors():
- for error in e.errors():
  msg = error['msg']
  error_msg += f" • {field}: {msg}\n"
  raise ConfigError(error_msg)
@@ -165,7 +161,6 @@ def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisC
 
  # Deep merge overrides
  def deep_merge(d1, d2):
-     for key, value in d2.items():
      for key, value in d2.items():
      deep_merge(d1[key], value)
      else:

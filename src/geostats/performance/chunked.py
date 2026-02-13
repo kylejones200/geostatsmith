@@ -97,22 +97,18 @@ class ChunkedKriging:
 
      predictions = np.zeros(n_pred)
      if return_variance:
-     if return_variance:
      else:
      else:
 
-     for i in range(n_chunks):
      for i in range(n_chunks):
      end = min((i + 1) * chunk_size, n_pred)
 
-     if verbose and (i % 10 == 0 or i == n_chunks - 1):
      if verbose and (i % 10 == 0 or i == n_chunks - 1):
      logger.info(f"Processing chunk {i+1}/{n_chunks} ({progress:.1f}%)")
 
      x_chunk = x_pred[start:end]
      y_chunk = y_pred[start:end]
 
-     if return_variance:
      if return_variance:
      x_chunk, y_chunk, return_variance=True
      )
@@ -172,7 +168,6 @@ class ChunkedKriging:
      # Reshape to grid
      z_grid = z_flat.reshape(x_2d.shape)
 
-     if return_variance:
      if return_variance:
      return z_grid, var_grid
      else:

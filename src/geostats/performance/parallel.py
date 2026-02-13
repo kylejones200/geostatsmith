@@ -83,12 +83,10 @@ def parallel_kriging(
 
  # Determine number of jobs
  if n_jobs == -1:
- if n_jobs == -1:
 
  # Create batches
  n_batches = int(np.ceil(n_pred / batch_size))
  batches = []
- for i in range(n_batches):
  for i in range(n_batches):
  end = min((i + 1) * batch_size, n_pred)
  batches.append((x_pred[start:end], y_pred[start:end], start, end))
@@ -108,7 +106,6 @@ def parallel_kriging(
      )
 
      # Combine results
-     if return_variance:
      if return_variance:
      variance = np.concatenate([r[1] for r in results])
      return predictions, variance
@@ -162,7 +159,6 @@ def parallel_cross_validation(
  """
  n = len(x)
 
- if n_jobs == -1:
  if n_jobs == -1:
 
  def predict_single(i, train_indices):
@@ -269,9 +265,7 @@ def parallel_variogram_fit(
  >>> logger.info(f"Best: {results['best_type']} (R² = {results['best_r2']:.3f})")
  """
  if model_types is None:
- if model_types is None:
 
- if n_jobs == -1:
  if n_jobs == -1:
 
  # Compute experimental variogram once
@@ -309,7 +303,6 @@ def parallel_variogram_fit(
      # Find best model
      successful = [r for r in fit_results if r['success']]
 
-     if not successful:
      if not successful:
 
      best = max(successful, key=lambda x: x['r2'])

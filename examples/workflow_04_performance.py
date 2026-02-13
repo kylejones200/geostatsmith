@@ -215,4 +215,3 @@ def main():
  logger.error(" • Approximate methods: 10-100x speedup with <5% error")
 
 if __name__ == '__main__':
-if __name__ == '__main__':

@@ -39,7 +39,6 @@ except ImportError:
 
 def example_1_interactive_variogram():
  if not PLOTLY_AVAILABLE:
- if not PLOTLY_AVAILABLE:
  return
 
  logger.info("\n" + "="*60)
@@ -66,7 +65,6 @@ def example_1_interactive_variogram():
  logger.info(" Open in browser to explore!")
 
 def example_2_interactive_prediction_map():
- if not PLOTLY_AVAILABLE:
  if not PLOTLY_AVAILABLE:
 
  logger.info("\n" + "="*60)
@@ -153,7 +151,6 @@ def main():
  logger.info("="*70)
 
  if PLOTLY_AVAILABLE:
- if PLOTLY_AVAILABLE:
  example_2_interactive_prediction_map()
 
  example_3_auto_variogram()
@@ -164,7 +161,6 @@ def main():
  logger.info("="*70)
 
  if PLOTLY_AVAILABLE:
- if PLOTLY_AVAILABLE:
  logger.info(" • interactive_variogram.html - Open in browser!")
  logger.info(" • interactive_map.html - Hover for values!")
 
@@ -173,5 +169,4 @@ def main():
  logger.info(" • One-function automatic interpolation")
  logger.info(" • Interactive plots (if plotly installed)")
 
-if __name__ == '__main__':
 if __name__ == '__main__':

@@ -70,7 +70,6 @@ class UniversalKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
-     if self.variogram_model is not None:
 
  def _build_drift_matrix(
      x: npt.NDArray[np.float64],
@@ -91,7 +90,6 @@ class UniversalKriging(BaseKriging):
      """
      n = len(x)
 
-     if self.drift_terms == "linear":
      if self.drift_terms == "linear":
      F = np.column_stack([
      np.ones(n),
@@ -163,7 +161,6 @@ class UniversalKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -172,7 +169,6 @@ class UniversalKriging(BaseKriging):
      variances = np.zeros(n_pred) if return_variance else None
 
      # Predict at each location
-     for i in range(n_pred):
      for i in range(n_pred):
      dist_to_samples = euclidean_distance(
      np.array([x_pred[i]]),
@@ -203,7 +199,6 @@ class UniversalKriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_samples)
      predictions[i] = self.z[nearest_idx]
      if return_variance:
-     if return_variance:
      continue
 
      weights = solution[:self.n_points]
@@ -214,11 +209,9 @@ class UniversalKriging(BaseKriging):
 
      # Kriging variance
      if return_variance:
-     if return_variance:
      np.dot(weights, gamma_vec) + np.dot(lagrange, drift_vec)
      )
      # Check for negative variance (indicates numerical issues)
-     if variances[i] < 0.0:
      if variances[i] < 0.0:
      import warnings
      warnings.warn(
@@ -229,7 +222,6 @@ class UniversalKriging(BaseKriging):
      )
      variances[i] = 0.0
 
-     if return_variance:
      if return_variance:
      else:
      else:

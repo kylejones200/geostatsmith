@@ -91,14 +91,12 @@ def morans_i(
  n = len(x)
 
  if n < 3:
- if n < 3:
 
  # Calculate spatial weights
  points = np.column_stack([x, y])
  dist = distance_matrix(points, points)
 
  # Binary weights: 1 if within threshold, 0 otherwise
- if distance_threshold is not None:
  if distance_threshold is not None:
  else:
  else:
@@ -111,7 +109,6 @@ def morans_i(
  W = np.sum(W_matrix)
 
  if W == 0:
- if W == 0:
  return np.nan, np.nan
 
  # Deviations from mean
@@ -120,7 +117,6 @@ def morans_i(
 
  # Moran's I numerator
  numerator = 0.0
- for i in range(n):
  for i in range(n):
  numerator += W_matrix[i, j] * z_dev[i] * z_dev[j]
 
@@ -210,14 +206,12 @@ def gearys_c(
  n = len(x)
 
  if n < 3:
- if n < 3:
 
  # Calculate spatial weights
  points = np.column_stack([x, y])
  dist = distance_matrix(points, points)
 
  # Binary weights
- if distance_threshold is not None:
  if distance_threshold is not None:
  else:
  else:
@@ -229,12 +223,10 @@ def gearys_c(
  W = np.sum(W_matrix)
 
  if W == 0:
- if W == 0:
  return np.nan, np.nan
 
  # Geary's C numerator
  numerator = 0.0
- for i in range(n):
  for i in range(n):
  numerator += W_matrix[i, j] * (z[i] - z[j])**2
 

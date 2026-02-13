@@ -9,9 +9,9 @@ The method works as follows:
 1. Generate a Gaussian random field Y(x) ~ N(0,1)
 2. Apply thresholds:
  - Category 1 if Y(x) < t₁
- - Category 2 if t₁ ≤ Y(x) < t₂
+ - Category 2 if t₁ <= Y(x) < t₂
  - ...
- - Category k if Y(x) ≥ tₖ₋₁
+ - Category k if Y(x) >= tₖ₋₁
 
 Key features:
 - Honor categorical proportions
@@ -110,10 +110,8 @@ class TruncatedGaussianSimulation:
      self.variogram_model = variogram_model
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
-     if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
 
      # Setup configuration
-     if config is None:
      if config is None:
      self.config = config
 
@@ -240,7 +238,6 @@ class TruncatedGaussianSimulation:
      Shape: (n_realizations, n_grid_points) or (n_realizations, *grid_shape)
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      # Flatten grid if needed
      original_shape = x_grid.shape
@@ -260,7 +257,6 @@ class TruncatedGaussianSimulation:
      )
 
      # Generate Gaussian realizations using SGS
-     for r in range(self.config.n_realizations):
      for r in range(self.config.n_realizations):
      seed = self.config.random_seed + r
      else:
@@ -283,10 +279,8 @@ class TruncatedGaussianSimulation:
      realizations_categorical[r, :] = categorical_realization
 
      if (r + 1) % 10 == 0:
-     if (r + 1) % 10 == 0:
 
      # Reshape to original grid shape if needed
-     if len(original_shape) > 1:
      if len(original_shape) > 1:
      self.config.n_realizations, *original_shape
      )
@@ -314,7 +308,6 @@ class TruncatedGaussianSimulation:
      categories = np.zeros(n_points, dtype=np.int32)
 
      # Vectorized threshold application
-     for i, cat in enumerate(self.unique_categories):
      for i, cat in enumerate(self.unique_categories):
      # First category: Y < t₁
      mask = gaussian_field < self.thresholds[0]
@@ -357,14 +350,11 @@ class TruncatedGaussianSimulation:
 
      # Flatten if needed
      if realizations.ndim > 2:
-     if realizations.ndim > 2:
 
      summary = {}
 
      for i, cat in enumerate(self.unique_categories):
-     for i, cat in enumerate(self.unique_categories):
      props_per_realization = np.zeros(n_realizations)
-     for r in range(n_realizations):
      for r in range(n_realizations):
 
      summary[int(cat)] = {

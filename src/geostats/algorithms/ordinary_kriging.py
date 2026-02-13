@@ -61,7 +61,6 @@ class OrdinaryKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
-     if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
@@ -109,7 +108,6 @@ class OrdinaryKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -118,7 +116,6 @@ class OrdinaryKriging(BaseKriging):
      variances = np.zeros(n_pred) if return_variance else None
 
      # Predict at each location
-     for i in range(n_pred):
      for i in range(n_pred):
      dist_to_samples = euclidean_distance(
      np.array([x_pred[i]]),
@@ -143,7 +140,6 @@ class OrdinaryKriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_samples)
      predictions[i] = self.z[nearest_idx]
      if return_variance:
-     if return_variance:
      continue
 
      weights = solution[:self.n_points]
@@ -154,10 +150,8 @@ class OrdinaryKriging(BaseKriging):
 
      # Kriging variance: σ²(x₀) = Σλᵢγ(xᵢ, x₀) + μ
      if return_variance:
-     if return_variance:
      # Kriging variance should theoretically be non-negative
      # Negative values indicate numerical issues or invalid variogram
-     if variances[i] < 0.0:
      if variances[i] < 0.0:
      import warnings
      warnings.warn(
@@ -168,7 +162,6 @@ class OrdinaryKriging(BaseKriging):
      )
      variances[i] = 0.0
 
-     if return_variance:
      if return_variance:
      else:
      else:

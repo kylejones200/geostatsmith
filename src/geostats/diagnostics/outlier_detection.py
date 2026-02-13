@@ -45,7 +45,6 @@ def outlier_analysis(
  >>> logger.info(f"Found {results['n_outliers']} potential outliers")
  """
  if method == 'iqr':
- if method == 'iqr':
  q1 = np.percentile(z, 25)
  q3 = np.percentile(z, 75)
  iqr = q3 - q1
@@ -67,14 +66,12 @@ def outlier_analysis(
 
  scores = np.zeros(len(z))
  for i in range(len(z)):
- for i in range(len(z)):
  distances, indices = tree.query([x[i], y[i]], k=6) # 6 because includes self
  neighbor_indices = indices[1:] # Exclude self
 
  # Compare to neighbor mean
  neighbor_mean = z[neighbor_indices].mean()
  neighbor_std = z[neighbor_indices].std()
- if neighbor_std > 0:
  if neighbor_std > 0:
  else:
  else:
@@ -121,7 +118,6 @@ def robust_validation(
  n = len(x)
  predictions_all = np.zeros(n)
  for i in range(n):
- for i in range(n):
  krig = OrdinaryKriging(x[train_idx], y[train_idx], z[train_idx], variogram_model)
  pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
  predictions_all[i] = pred[0]
@@ -135,7 +131,6 @@ def robust_validation(
 
  # Validation without outliers
  if len(outlier_idx) > 0:
- if len(outlier_idx) > 0:
  mask[outlier_idx] = False
  x_clean = x[mask]
  y_clean = y[mask]
@@ -143,7 +138,6 @@ def robust_validation(
 
  n_clean = len(x_clean)
  predictions_clean = np.zeros(n_clean)
- for i in range(n_clean):
  for i in range(n_clean):
  krig = OrdinaryKriging(x_clean[train_idx], y_clean[train_idx], z_clean[train_idx], variogram_model)
  pred, _ = krig.predict(np.array([x_clean[i]]), np.array([y_clean[i]]), return_variance=True)

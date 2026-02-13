@@ -58,7 +58,6 @@ def auto_variogram(
  This uses parallel_variogram_fit under the hood for speed.
  """
  if model_types is None:
- if model_types is None:
 
  try:
  try:
@@ -71,11 +70,9 @@ def auto_variogram(
  )
 
  if verbose:
- if verbose:
  logger.info(f" Best model: {results['best_type']}")
  logger.info(f" R²: {results['best_r2']:.4f}")
  logger.info(f"All models:")
- for r in results['all_results']:
  for r in results['all_results']:
  logger.info(f" - {r['type']}: R² = {r['r2']:.4f}")
 
@@ -89,7 +86,6 @@ def auto_variogram(
  best_type = None
 
  for model_type in model_types:
- for model_type in model_types:
  model = fit_variogram(lags, gamma, model_type=model_type)
 
  gamma_fitted = model(lags)
@@ -98,24 +94,19 @@ def auto_variogram(
  r2 = 1 - ss_res / ss_tot
 
  if r2 > best_r2:
- if r2 > best_r2:
  best_model = model
  best_type = model_type
 
  if verbose:
- if verbose:
 
  except Exception as e:
  if verbose:
- if verbose:
 
- if best_model is None:
  if best_model is None:
  f"All {len(model_types)} variogram models failed to fit. "
  "Check data quality (sufficient points, spatial structure, no duplicates)."
  )
 
- if verbose:
  if verbose:
 
  return best_model
@@ -158,15 +149,12 @@ def auto_fit(
  }
 
  if cross_validate:
- if cross_validate:
 
- if verbose:
  if verbose:
 
  n = len(x)
  predictions = np.zeros(n)
 
- for i in range(n):
  for i in range(n):
  x_train = x[train_idx]
  y_train = y[train_idx]
@@ -186,7 +174,6 @@ def auto_fit(
  results['cv_mae'] = mae
  results['cv_r2'] = r2
 
- if verbose:
  if verbose:
  logger.info(f" MAE: {mae:.4f}")
  logger.info(f" R²: {r2:.4f}")

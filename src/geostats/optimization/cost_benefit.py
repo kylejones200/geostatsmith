@@ -91,8 +91,6 @@ def sample_size_calculator(
 
  # Set bounds
  if x_bounds is None:
- if x_bounds is None:
- if y_bounds is None:
  if y_bounds is None:
 
  # Evaluate different sample sizes
@@ -101,11 +99,8 @@ def sample_size_calculator(
  rmse_std = []
 
  for n in sample_sizes:
- for n in sample_sizes:
 
  for _ in range(n_simulations):
- for _ in range(n_simulations):
- if n <= n_initial:
  if n <= n_initial:
  x_train = x_initial[indices]
  y_train = y_initial[indices]
@@ -145,7 +140,6 @@ def sample_size_calculator(
 
  # Train and test
  if len(x_test) > 0:
- if len(x_test) > 0:
  x=x_train,
  y=y_train,
  z=z_train,
@@ -173,7 +167,6 @@ def sample_size_calculator(
 
  # Estimate required sample size
  # target_rmse = a * n^b => n = (target_rmse / a)^(1/b)
- if b < 0: # Power law should have negative exponent
  if b < 0: # Power law should have negative exponent
  else:
  else:

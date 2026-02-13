@@ -37,11 +37,8 @@ def validate_coordinates(
  x = np.asarray(x, dtype=np.float64)
 
  if x.ndim == 0:
- if x.ndim == 0:
 
  if y is None:
- if y is None:
- if x.ndim == 1:
  if x.ndim == 1:
  else:
  else:
@@ -49,13 +46,10 @@ def validate_coordinates(
  y = np.asarray(y, dtype=np.float64)
 
  if x.shape != y.shape:
- if x.shape != y.shape:
  f"X and Y coordinates must have same shape, got {x.shape} and {y.shape}"
  )
 
  if z is not None:
- if z is not None:
- if x.shape != z.shape:
  if x.shape != z.shape:
  f"All coordinates must have same shape, got {x.shape}, {y.shape}, and {z.shape}"
  )
@@ -92,17 +86,13 @@ def validate_values(
  values = np.asarray(values, dtype=np.float64)
 
  if values.ndim != 1:
- if values.ndim != 1:
 
- if n_expected is not None and len(values) != n_expected:
  if n_expected is not None and len(values) != n_expected:
  f"Expected {n_expected} values, got {len(values)}"
  )
 
  if not allow_nan and np.any(np.isnan(values)):
- if not allow_nan and np.any(np.isnan(values)):
 
- if not allow_nan and np.any(np.isinf(values)):
  if not allow_nan and np.any(np.isinf(values)):
 
  return values
@@ -127,7 +117,6 @@ def validate_positive(value: float, name: str = "value") -> float:
  ValidationError
  If value is not positive
  """
- if value <= 0:
  if value <= 0:
  return value
 
@@ -161,9 +150,7 @@ def validate_in_range(
  If value is out of range
  """
  if min_val is not None and value < min_val:
- if min_val is not None and value < min_val:
 
- if max_val is not None and value > max_val:
  if max_val is not None and value > max_val:
 
  return value
@@ -187,14 +174,11 @@ def validate_array_shapes_match(
  If array shapes don't match
  """
  if len(arrays) < 2:
- if len(arrays) < 2:
 
  shapes = [arr.shape for arr in arrays]
  first_shape = shapes[0]
 
  for i, shape in enumerate(shapes[1:], 1):
- for i, shape in enumerate(shapes[1:], 1):
- if names:
  if names:
  else:
  else:

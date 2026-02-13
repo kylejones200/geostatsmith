@@ -105,15 +105,12 @@ class FactorialKriging(BaseKriging):
      self.z = validate_values(z, n_expected=len(self.x))
 
      if not isinstance(nested_variogram, NestedVariogram):
-     if not isinstance(nested_variogram, NestedVariogram):
 
-     if len(nested_variogram.structures) == 0:
      if len(nested_variogram.structures) == 0:
 
      self.nested_variogram = nested_variogram
 
      # Estimate or use provided mean
-     if mean is not None:
      if mean is not None:
      else:
      else:
@@ -214,13 +211,11 @@ class FactorialKriging(BaseKriging):
 
      # Predict each structure component
      for i, structure in enumerate(self.nested_variogram.structures):
-     for i, structure in enumerate(self.nested_variogram.structures):
      variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
      # Get variogram for this structure
      sill_i = structure['sill']
 
-     for j in range(n_pred):
      for j in range(n_pred):
      gamma_values = structure['model'](dist_to_pred[j])
      cov_values = sill_i - gamma_values
@@ -243,25 +238,21 @@ class FactorialKriging(BaseKriging):
 
      # Variance if requested
      if return_variance:
-     if return_variance:
 
      # Store component
      comp_name = f"structure_{i}"
      components[comp_name] = predictions
 
      if return_variance:
-     if return_variance:
 
      logger.debug(f"Predicted component {i}: {structure['model_type']}")
 
      # Nugget component (cannot be estimated, set to zero)
      if self.has_nugget:
-     if self.has_nugget:
      logger.debug("Nugget component set to zero (unestimable)")
 
      # Total (sum of all components)
      total = np.zeros(n_pred, dtype=np.float64)
-     for i in range(self.n_structures):
      for i in range(self.n_structures):
      components['total'] = total
 
@@ -299,17 +290,13 @@ class FactorialKriging(BaseKriging):
     # Sum all components
     total = self.mean * np.ones(len(x_new))
     for i in range(self.n_structures):
-    for i in range(self.n_structures):
 
-    if return_variance:
     if return_variance:
         # so variance is simply the sum of component variances
         variance = np.zeros(len(x_new))
         for i in range(self.n_structures):
-        for i in range(self.n_structures):
         
         # Add nugget variance if present
-        if self.has_nugget:
         if self.has_nugget:
         
         return total, variance
@@ -362,18 +349,14 @@ class FactorialKriging(BaseKriging):
 
      # Determine which components to include
      for i in range(self.n_structures):
-     for i in range(self.n_structures):
 
      include = True
 
      if components_to_keep is not None:
-     if components_to_keep is not None:
 
-     if components_to_remove is not None:
      if components_to_remove is not None:
      include = False
 
-     if include:
      if include:
 
      logger.info(

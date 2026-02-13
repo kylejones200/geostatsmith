@@ -161,7 +161,6 @@ def prediction_bands(
  ... )
  """
  if confidence_levels is None:
- if confidence_levels is None:
 
  # Perform kriging
  krig = OrdinaryKriging(
@@ -183,7 +182,6 @@ def prediction_bands(
  'confidence_levels': confidence_levels,
  }
 
- for level in confidence_levels:
  for level in confidence_levels:
  margin = z_score * std_errors
 

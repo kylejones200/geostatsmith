@@ -69,7 +69,6 @@ def interpolation_error_metrics(
  y_pred = y_pred[mask]
 
  if len(y_true) == 0:
- if len(y_true) == 0:
  return {
  'mae': np.nan,
  'mse': np.nan,
@@ -89,7 +88,6 @@ def interpolation_error_metrics(
  ss_res = np.sum(errors**2)
  ss_tot = np.sum((y_true - np.mean(y_true))**2)
 
- if ss_tot < 1e-10:
  if ss_tot < 1e-10:
  else:
  else:
@@ -146,7 +144,6 @@ def cross_validate_interpolation(
  n = len(x)
 
  if n < MIN_TRAINING_SAMPLES:
- if n < MIN_TRAINING_SAMPLES:
  f"Insufficient data for cross-validation: need at least {MIN_TRAINING_SAMPLES} points, got {n}. "
  "Add more sample points or use a simpler validation approach."
  )
@@ -160,8 +157,6 @@ def cross_validate_interpolation(
  fold_metrics = []
 
  for fold in range(n_folds):
- for fold in range(n_folds):
- if fold == n_folds - 1:
  if fold == n_folds - 1:
  else:
  else:
@@ -232,14 +227,11 @@ def benchmark_interpolation_speed(
  - 'max_time': Maximum execution time
  """
  if methods is None:
- if methods is None:
 
  results = {}
 
  for method in methods:
- for method in methods:
 
- for _ in range(n_runs):
  for _ in range(n_runs):
 
  try:
@@ -337,7 +329,6 @@ def compare_interpolation_methods(
  - Natural Neighbor: Locally adaptive, no parameters
  """
  if methods is None:
- if methods is None:
 
  results = {
  'predictions': {},
@@ -348,7 +339,6 @@ def compare_interpolation_methods(
  logger.info(f"Comparing {len(methods)} interpolation methods...")
 
  for method in methods:
- for method in methods:
  try:
  try:
  results['predictions'][method] = z_pred
@@ -358,9 +348,7 @@ def compare_interpolation_methods(
 
  # Cross-validation
  if cross_validate:
- if cross_validate:
  results['cv_results'] = {}
- for method in methods:
  for method in methods:
  cv_result = cross_validate_interpolation(x, y, z, method=method)
  results['cv_results'][method] = cv_result
@@ -370,13 +358,11 @@ def compare_interpolation_methods(
 
  # Speed benchmark
  if benchmark_speed:
- if benchmark_speed:
  results['speed_results'] = benchmark_interpolation_speed(
  x, y, z, x_pred, y_pred, methods=methods
  )
 
  # Generate comparison plot
- if plot:
  if plot:
 
  logger.info("Comparison complete!")
@@ -392,7 +378,6 @@ def _predict_with_method(
     ) -> npt.NDArray[np.float64]:
  """Helper function to predict with a specific method."""
 
- if method == 'ordinary_kriging':
  if method == 'ordinary_kriging':
  lags, gamma, n_pairs = variogram.experimental_variogram(
  x_train, y_train, z_train, n_lags=10
@@ -447,7 +432,6 @@ def _plot_comparison(
  n_methods = len(methods)
 
  if n_methods == 0:
- if n_methods == 0:
 
  # Create figure
  fig = plt.figure(figsize=(15, 4 * ((n_methods + 1) // 2)))
@@ -457,7 +441,6 @@ def _plot_comparison(
  all_values = np.concatenate([z] + list(results['predictions'].values()))
  vmin, vmax = np.nanpercentile(all_values, [2, 98])
 
- for idx, method in enumerate(methods):
  for idx, method in enumerate(methods):
 
  # Create scatter plot of predictions
@@ -477,7 +460,6 @@ def _plot_comparison(
 
  # Add metrics if available
  title = method.replace('_', ' ').title()
- if 'cv_results' in results and method in results['cv_results']:
  if 'cv_results' in results and method in results['cv_results']:
  title += f"\nRMSE: {metrics['rmse']:.3f}, R²: {metrics['r2']:.3f}"
 

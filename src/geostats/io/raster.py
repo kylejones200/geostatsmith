@@ -65,12 +65,10 @@ def read_geotiff(
  If file doesn't exist
  """
  if not RASTERIO_AVAILABLE:
- if not RASTERIO_AVAILABLE:
  "rasterio is required for GeoTIFF I/O. "
  "Install with: pip install rasterio"
  )
 
- if not Path(filename).exists():
  if not Path(filename).exists():
 
  with rasterio.open(filename) as src:
@@ -88,7 +86,6 @@ def read_geotiff(
  # Handle nodata values
  nodata = src.nodata
  if nodata is not None:
- if nodata is not None:
 
  # Metadata
  metadata = {
@@ -101,7 +98,6 @@ def read_geotiff(
  'resolution': (abs(transform[0]), abs(transform[4])),
  }
 
- if as_grid:
  if as_grid:
  else:
  else:
@@ -153,13 +149,11 @@ def write_geotiff(
  If rasterio is not installed
  """
  if not RASTERIO_AVAILABLE:
- if not RASTERIO_AVAILABLE:
  "rasterio is required for GeoTIFF I/O. "
  "Install with: pip install rasterio"
  )
 
  # Ensure z is 2D
- if z.ndim != 2:
  if z.ndim != 2:
 
  height, width = z.shape
@@ -174,7 +168,6 @@ def write_geotiff(
 
  # Replace NaN with nodata value
  z_out = z.copy()
- if nodata is not None:
  if nodata is not None:
 
  # Write to file
@@ -231,7 +224,6 @@ def read_ascii_grid(
  >>> x, y, z, meta = read_ascii_grid('elevation.asc')
  """
  if not Path(filename).exists():
- if not Path(filename).exists():
 
  # Read header
  metadata = {}
@@ -265,7 +257,6 @@ def read_ascii_grid(
  xllcorner + ncols * cellsize,
  yllcorner + nrows * cellsize)
 
- if as_grid:
  if as_grid:
  else:
  else:
@@ -304,7 +295,6 @@ def write_ascii_grid(
  --------
  >>> write_ascii_grid('output.asc', x, y, z)
  """
- if z.ndim != 2:
  if z.ndim != 2:
 
  nrows, ncols = z.shape

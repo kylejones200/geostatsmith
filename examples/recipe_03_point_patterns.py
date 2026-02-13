@@ -69,7 +69,6 @@ logger.info("\nAnalyzing patterns...")
 results_all = {}
 
 for pattern_name, (x, y) in patterns.items():
-for pattern_name, (x, y) in patterns.items():
 
  # Nearest neighbor analysis
  nn_results = nearest_neighbor_analysis(x, y)
@@ -108,14 +107,14 @@ for pattern_name, (x, y) in patterns.items():
 for pattern_name, (x, y) in patterns.items():
  ax1 = fig.add_subplot(gs[row, 0])
  # Remove top and right spines
- ax1.spines['top'].set_visible(False)
+ ax1
  ax1.spines['right'].set_visible(False)
  ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
  # Remove top and right spines
- ax1.spines['top'].set_visible(False)
+ ax1
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
- ax1.scatter(x, y, s.spines['top'].set_visible(False)
+ ax1.scatter(x, y, s
  s.spines['right'].set_visible(False)
  ax1.set_xlim(0, 100)
  ax1.set_ylim(0, 100)
@@ -129,7 +128,6 @@ for pattern_name, (x, y) in patterns.items():
  nn_res = results['nn']
  textstr = f"R = {nn_res['R']:.3f}\n"
  if nn_res['R'] < 1:
- if nn_res['R'] < 1:
  color = 'red'
  elif nn_res['R'] > 1:
  elif nn_res['R'] > 1:
@@ -140,7 +138,7 @@ for pattern_name, (x, y) in patterns.items():
 
  ax1.text(0.05, 0.95, textstr, transform=ax1.transAxes,
  # Remove top and right spines
- ax1.text(0.05, 0.95, textstr, transform.spines['top'].set_visible(False)
+ ax1.text(0.05, 0.95, textstr, transform
  transform.spines['right'].set_visible(False)
  fontsize=10, verticalalignment='top', fontweight='bold',
  bbox=dict(boxstyle='round', facecolor=color, alpha=0.3))
@@ -148,15 +146,15 @@ for pattern_name, (x, y) in patterns.items():
  # Column 2: Ripley's K function
  ax2 = fig.add_subplot(gs[row, 1])
  # Remove top and right spines
- ax2.spines['top'].set_visible(False)
+ ax2
  ax2.spines['right'].set_visible(False)
  ripley_res = results['ripley']
  ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth=2, label='Observed K')
  # Remove top and right spines
- ax2.spines['top'].set_visible(False)
+ ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
- ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth.spines['top'].set_visible(False)
+ ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth
  linewidth.spines['right'].set_visible(False)
  ax2.plot(ripley_res['d'], ripley_res['K_theoretical'], 'r--',
  linewidth=2, label='Theoretical (Random)')
@@ -170,30 +168,28 @@ for pattern_name, (x, y) in patterns.items():
  # Column 3: L function (transformed K)
  ax3 = fig.add_subplot(gs[row, 2])
  # Remove top and right spines
- ax3.spines['top'].set_visible(False)
+ ax3
  ax3.spines['right'].set_visible(False)
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth=2, label='Observed L')
  # Remove top and right spines
- ax3.spines['top'].set_visible(False)
+ ax3
  ax3.spines['right'].set_visible(False)
  # Remove top and right spines
- ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth.spines['top'].set_visible(False)
+ ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth
  linewidth.spines['right'].set_visible(False)
  ax3.axhline(0, color='r', linestyle='--', linewidth=2, label='Random')
  # Remove top and right spines
- ax3.axhline(0, color.spines['top'].set_visible(False)
+ ax3.axhline(0, color
  color.spines['right'].set_visible(False)
  ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',
  # Remove top and right spines
- ax3.fill_between(ripley_res['d'], -5, 5, alpha.spines['top'].set_visible(False)
+ ax3.fill_between(ripley_res['d'], -5, 5, alpha
  alpha.spines['right'].set_visible(False)
  label='±5 envelope')
  ax3.set_title('L Function Transform', fontsize=11, fontweight='bold')
  # Remove top and right spines
  ax3.set_xlabel('Distance (d)')
  ax3.set_ylabel('L(d) = √(K/π) - d')
- # Remove top and right spines
- ax3.set_ylabel('L(d).spines['top'].set_visible(False)
  ax3.legend(fontsize=9)
  # Remove top and right spines
 
@@ -201,7 +197,7 @@ for pattern_name, (x, y) in patterns.items():
  interp_text = ripley_res['interpretation']
  ax3.text(0.5, 0.95, interp_text, transform=ax3.transAxes,
  # Remove top and right spines
- ax3.text(0.5, 0.95, interp_text, transform.spines['top'].set_visible(False)
+ ax3.text(0.5, 0.95, interp_text, transform
  transform.spines['right'].set_visible(False)
  fontsize=9, verticalalignment='top', horizontalalignment='center',
  bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
@@ -209,28 +205,28 @@ for pattern_name, (x, y) in patterns.items():
  # Column 4: Quadrat counts
  ax4 = fig.add_subplot(gs[row, 3])
  # Remove top and right spines
- ax4.spines['top'].set_visible(False)
+ ax4
  # Remove top and right spines
- ax4.spines['right'].set_visible(False).spines['top'].set_visible(False)
+ ax4
  ax4.spines['right'].set_visible(False)
  quadrat_res = results['quadrat']
  im = ax4.imshow(quadrat_res['counts'], cmap='YlOrRd', aspect='auto')
  ax4.set_title('Quadrat Counts', fontsize=11, fontweight='bold')
  # Remove top and right spines
- ax4.spines['top'].set_visible(False)
+ ax4
  ax4.spines['right'].set_visible(False)
  # Remove top and right spines
  ax4.set_xlabel('Quadrat X')
  ax4.set_ylabel('Quadrat Y')
  plt.colorbar(im, ax=ax4, label='Point count')
  # Remove top and right spines
- ax4.set_ylabel('Quadrat Y').spines['top'].set_visible(False)
+ ax4.set_ylabel('Quadrat Y')
 
  # Add VMR annotation
  vmr_text = f"VMR = {quadrat_res['vmr']:.3f}\nMean = {quadrat_res['mean']:.1f}"
  ax4.text(0.05, 0.95, vmr_text, transform=ax4.transAxes,
  # Remove top and right spines
- ax4.text(0.05, 0.95, vmr_text, transform.spines['top'].set_visible(False)
+ ax4.text(0.05, 0.95, vmr_text, transform
  transform.spines['right'].set_visible(False)
  fontsize=9, verticalalignment='top',
  bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
@@ -257,20 +253,17 @@ for pattern_name in patterns.keys():
  # Overall assessment
  indicators = []
  if r_index < 0.9:
- if r_index < 0.9:
  elif r_index > 1.1:
  elif r_index > 1.1:
  else:
  else:
 
  if vmr < 0.9:
- if vmr < 0.9:
  elif vmr > 1.1:
  elif vmr > 1.1:
  else:
  else:
 
- if 'Clustered' in ripley_interp:
  if 'Clustered' in ripley_interp:
  elif 'Dispersed' in ripley_interp:
  elif 'Dispersed' in ripley_interp:
@@ -278,7 +271,6 @@ for pattern_name in patterns.keys():
  else:
 
  # Consensus
- if indicators.count('C') >= 2:
  if indicators.count('C') >= 2:
  elif indicators.count('D') >= 2:
  elif indicators.count('D') >= 2:

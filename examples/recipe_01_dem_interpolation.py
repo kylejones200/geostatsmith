@@ -23,10 +23,7 @@ from geostats.datasets import load_synthetic_dem_sample
 from geostats.algorithms import variogram
 from geostats.algorithms.ordinary_kriging import OrdinaryKriging
 from geostats.comparison import (
-import logging
-
-logger = logging.getLogger(__name__)
- compare_interpolation_methods,
+    compare_interpolation_methods,
  inverse_distance_weighting,
  radial_basis_function_interpolation,
 )
@@ -61,11 +58,12 @@ lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=15)
 # Try different models
 models = {}
 for model_type in ['spherical', 'exponential', 'gaussian']:
-for model_type in ['spherical', 'exponential', 'gaussian']:
- models[model_type] = model
- logger.info(f"{model_type.capitalize()}: sill={model.sill:.2f}, range={model.range_param:.2f}")
+ try:
+     model = variogram.fit_model(model_type, lags, gamma)
+     models[model_type] = model
+     logger.info(f"{model_type.capitalize()}: sill={model.sill:.2f}, range={model.range_param:.2f}")
  except Exception as e:
- logger.error(f" {model_type.capitalize()}: Failed to fit")
+     logger.error(f" {model_type.capitalize()}: Failed to fit")
 
 # Use best model (spherical is often good for DEMs)
 best_model = models.get('spherical', list(models.values())[0])
@@ -92,7 +90,6 @@ results = compare_interpolation_methods(
 # Print cross-validation results
 logger.info("Cross-validation results:")
 for method, cv_result in results['cv_results'].items():
-for method, cv_result in results['cv_results'].items():
 
 # Print speed results
 logger.info("Speed benchmark:")
@@ -107,12 +104,12 @@ gs = GridSpec(3, 3, figure=fig, hspace=0.3, wspace=0.3)
 # Plot 1: Sample points
 ax1 = fig.add_subplot(gs[0, 0])
 # Remove top and right spines
-ax1.spines['top'].set_visible(False)
+ax1
 ax1.spines['right'].set_visible(False)
 scatter = ax1.scatter(x, y, c=z, cmap='terrain', s=30, edgecolors='black', linewidths=0.5)
 ax1.set_title('Sample Points (Measured)', fontsize=12, fontweight='bold')
 # Remove top and right spines
-ax1.spines['top'].set_visible(False)
+ax1
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
 ax1.set_xlabel('X (m)')
@@ -120,20 +117,20 @@ ax1.set_ylabel('Y (m)')
 ax1.set_aspect('equal')
 plt.colorbar(scatter, ax=ax1, label='Elevation (m)')
 # Remove top and right spines
-ax1.set_aspect('equal').spines['top'].set_visible(False)
+ax1.set_aspect('equal')
 
 # Plot 2: True DEM (ground truth)
 ax2 = fig.add_subplot(gs[0, 1])
 # Remove top and right spines
-ax2.spines['top'].set_visible(False)
+ax2
 ax2.spines['right'].set_visible(False)
 im = ax2.contourf(X_grid, Y_grid, Z_true, levels=15, cmap='terrain')
 ax2.scatter(x, y, c='red', s=10, alpha=0.5, marker='x')
 # Remove top and right spines
-ax2.spines['top'].set_visible(False)
+ax2
 ax2.spines['right'].set_visible(False)
 # Remove top and right spines
-ax2.scatter(x, y, c.spines['top'].set_visible(False)
+ax2.scatter(x, y, c
 c.spines['right'].set_visible(False)
 ax2.set_title('True DEM (Ground Truth)', fontsize=12, fontweight='bold')
 # Remove top and right spines
@@ -142,25 +139,25 @@ ax2.set_ylabel('Y (m)')
 ax2.set_aspect('equal')
 plt.colorbar(im, ax=ax2, label='Elevation (m)')
 # Remove top and right spines
-ax2.set_aspect('equal').spines['top'].set_visible(False)
+ax2.set_aspect('equal')
 
 # Plot 3: Experimental variogram
 ax3 = fig.add_subplot(gs[0, 2])
 # Remove top and right spines
-ax3.spines['top'].set_visible(False)
+ax3
 ax3.spines['right'].set_visible(False)
 ax3.plot(lags, gamma, 'o-', label='Experimental', linewidth=2, markersize=8)
 # Remove top and right spines
-ax3.spines['top'].set_visible(False)
+ax3
 ax3.spines['right'].set_visible(False)
 # Remove top and right spines
-ax3.plot(lags, gamma, 'o-', label.spines['top'].set_visible(False)
+ax3.plot(lags, gamma, 'o-', label
 label.spines['right'].set_visible(False)
 h_model = np.linspace(0, np.max(lags), 100)
 gamma_model = best_model(h_model)
 ax3.plot(h_model, gamma_model, 'r--', label='Fitted Model', linewidth=2)
 # Remove top and right spines
-ax3.plot(h_model, gamma_model, 'r--', label.spines['top'].set_visible(False)
+ax3.plot(h_model, gamma_model, 'r--', label
 label.spines['right'].set_visible(False)
 ax3.set_title('Variogram Analysis', fontsize=12, fontweight='bold')
 # Remove top and right spines
@@ -183,11 +180,10 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  ax.set_aspect('equal')
  plt.colorbar(im, ax=ax, label='Elevation (m)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Add metrics
- if method in results['cv_results']:
  if method in results['cv_results']:
  textstr = f"RMSE={metrics['rmse']:.2f}\nR²={metrics['r2']:.3f}"
  ax.text(0.02, 0.98, textstr, transform=ax.transAxes,
@@ -202,12 +198,12 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
 
  vmax = np.max(np.abs(error))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
  im = ax.contourf(X_grid, Y_grid, error, levels=15, cmap='RdBu_r',
  vmin=-vmax, vmax=vmax)
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
  ax.scatter(x, y, c='black', s=5, alpha=0.3, marker='x')
  ax.set_title(f'{title} Error', fontsize=12, fontweight='bold')
@@ -216,7 +212,7 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  ax.set_aspect('equal')
  plt.colorbar(im, ax=ax, label='Error (m)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Add error statistics

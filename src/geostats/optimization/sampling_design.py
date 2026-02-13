@@ -97,10 +97,8 @@ def optimal_sampling_design(
  """
  # Set bounds
  if x_bounds is None:
- if x_bounds is None:
  x_bounds = (x_existing.min() - x_margin, x_existing.max() + x_margin)
 
- if y_bounds is None:
  if y_bounds is None:
  y_bounds = (y_existing.min() - y_margin, y_existing.max() + y_margin)
 
@@ -123,7 +121,6 @@ def optimal_sampling_design(
  y_current = y_existing.copy()
  z_current = z_existing.copy()
 
- for i in range(n_new_samples):
  for i in range(n_new_samples):
  # Select location with maximum kriging variance
  _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
@@ -194,7 +191,6 @@ def _compute_space_filling_scores(
  """Compute space-filling scores (minimum distance to existing points)."""
  scores = np.zeros(len(x_candidates))
 
- for i in range(len(x_candidates)):
  for i in range(len(x_candidates)):
  distances = np.sqrt(
  (x_existing - x_candidates[i])**2 +
@@ -270,8 +266,6 @@ def infill_sampling(
 
  # Set bounds
  if x_bounds is None:
- if x_bounds is None:
- if y_bounds is None:
  if y_bounds is None:
 
  # Create grid for variance evaluation
@@ -282,7 +276,6 @@ def infill_sampling(
  x_eval_flat = x_grid.ravel()
  y_eval_flat = y_grid.ravel()
 
- for i in range(max_samples):
  for i in range(max_samples):
  krig = OrdinaryKriging(
  x=x_current,
@@ -296,7 +289,6 @@ def infill_sampling(
 
  # Check if all variances are below threshold
  max_var = var.max()
- if max_var < variance_threshold:
  if max_var < variance_threshold:
 
  # Find location with maximum variance
@@ -366,8 +358,6 @@ def stratified_sampling(
  than purely random sampling for spatial data.
  """
  if n_strata_x is None:
- if n_strata_x is None:
- if n_strata_y is None:
  if n_strata_y is None:
 
  # Calculate stratum dimensions
@@ -385,7 +375,6 @@ def stratified_sampling(
  y_samples = []
 
  # Place samples in each stratum
- for i in range(n_strata_x):
  for i in range(n_strata_x):
  # Stratum bounds
  x_stratum_min = x_min + i * stratum_width
@@ -471,7 +460,6 @@ def adaptive_sampling(
  y_current = y_existing.copy()
  z_current = z_existing.copy()
 
- for iteration in range(n_iterations):
  for iteration in range(n_iterations):
  x_new, y_new = optimal_sampling_design(
  x_current, y_current, z_current,

@@ -84,7 +84,6 @@ def cell_declustering(
  z = np.asarray(z, dtype=np.float64)
 
  if len(x) != len(y) or len(x) != len(z):
- if len(x) != len(y) or len(x) != len(z):
 
  n = len(x)
 
@@ -97,7 +96,6 @@ def cell_declustering(
 
  # Generate cell sizes to try if not provided
  if cell_sizes is None:
- if cell_sizes is None:
  min_size = max_range / 20
  max_size = max_range * 2
  cell_sizes = np.linspace(min_size, max_size, n_sizes)
@@ -106,7 +104,6 @@ def cell_declustering(
  weights_all = []
  variances = []
 
- for cell_size in cell_sizes:
  for cell_size in cell_sizes:
  ix = np.floor((x - x_min) / cell_size).astype(int)
  iy = np.floor((y - y_min) / cell_size).astype(int)
@@ -195,11 +192,9 @@ def polygonal_declustering(
  z = np.asarray(z, dtype=np.float64)
 
  if len(x) != len(y) or len(x) != len(z):
- if len(x) != len(y) or len(x) != len(z):
 
  n = len(x)
 
- if n < 2:
  if n < 2:
  return np.array([float(n)]), {'method': 'single_point'}
 

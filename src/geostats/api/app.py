@@ -33,7 +33,6 @@ def create_app() -> 'FastAPI':
  If FastAPI is not installed
  """
  if not FASTAPI_AVAILABLE:
- if not FASTAPI_AVAILABLE:
  "FastAPI is required for web API. "
  "Install with: pip install fastapi uvicorn"
  )

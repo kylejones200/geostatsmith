@@ -65,7 +65,6 @@ class IndicatorKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
-     if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
@@ -113,7 +112,6 @@ class IndicatorKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -122,7 +120,6 @@ class IndicatorKriging(BaseKriging):
      variances = np.zeros(n_pred) if return_variance else None
 
      # Predict at each location
-     for i in range(n_pred):
      for i in range(n_pred):
      dist_to_samples = euclidean_distance(
      np.array([x_pred[i]]),
@@ -147,7 +144,6 @@ class IndicatorKriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_samples)
      probabilities[i] = self.z[nearest_idx]
      if return_variance:
-     if return_variance:
      continue
 
      weights = solution[:self.n_points]
@@ -161,10 +157,8 @@ class IndicatorKriging(BaseKriging):
 
      # Kriging variance
      if return_variance:
-     if return_variance:
      variances[i] = max(0.0, variances[i])
 
-     if return_variance:
      if return_variance:
      else:
      else:
@@ -248,7 +242,6 @@ class MultiThresholdIndicatorKriging:
 
      # Define thresholds
      if thresholds is None:
-     if thresholds is None:
      quantiles = np.linspace(0.1, 0.9, n_thresholds)
      self.thresholds = np.quantile(z, quantiles)
      else:
@@ -310,12 +303,10 @@ class MultiThresholdIndicatorKriging:
      Threshold values
      """
      if not self.kriging_objects:
-     if not self.kriging_objects:
 
      n_pred = len(x)
      cdfs = []
 
-     for ik in self.kriging_objects:
      for ik in self.kriging_objects:
      cdfs.append(probs)
 
@@ -347,7 +338,6 @@ class MultiThresholdIndicatorKriging:
      quantile_values = np.zeros(n_pred)
 
      # Interpolate CDF to find quantile
-     for i in range(n_pred):
      for i in range(n_pred):
      # Ensure monotonicity
      cdf_values = np.maximum.accumulate(cdf_values)

@@ -91,7 +91,6 @@ def hillshade(
  elevation = np.asarray(elevation, dtype=np.float64)
 
  if elevation.ndim != 2:
- if elevation.ndim != 2:
 
  # Convert angles to radians
  azimuth_rad = np.deg2rad(azimuth)
@@ -186,7 +185,6 @@ def plot_hillshaded_dem(
 
  # Create meshgrid if needed
  if x.ndim == 1 and y.ndim == 1:
- if x.ndim == 1 and y.ndim == 1:
  else:
  else:
 
@@ -256,11 +254,9 @@ def create_multi_azimuth_hillshade(
  Common in professional cartography and GIS.
  """
  if azimuths is None:
- if azimuths is None:
 
  # Calculate hillshade for each azimuth
  hillshades = []
- for az in azimuths:
  for az in azimuths:
  hillshades.append(hs.astype(float))
 
@@ -327,7 +323,6 @@ def slope_map(
  'percent': lambda s: np.tan(s) * 100,
  }
 
- if units not in unit_conversions:
  if units not in unit_conversions:
  raise ValueError(
  f"Unknown units '{units}'. "

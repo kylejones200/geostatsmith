@@ -86,14 +86,12 @@ def solve_kriging_system(
  }
 
  if method == "auto":
- if method == "auto":
  try:
  try:
  except linalg.LinAlgError:
  # Fall back to LU decomposition
  method = "lu"
 
- if method not in solution_methods:
  if method not in solution_methods:
  raise ValueError(
  f"Unknown solution method '{method}'. "

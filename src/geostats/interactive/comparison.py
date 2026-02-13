@@ -42,7 +42,6 @@ def interactive_comparison(
  >>> fig.show()
  """
  if not PLOTLY_AVAILABLE:
- if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -117,7 +116,6 @@ def interactive_cross_validation(
  -------
  fig : plotly Figure
  """
- if not PLOTLY_AVAILABLE:
  if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"

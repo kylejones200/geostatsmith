@@ -18,7 +18,6 @@ class ReportTemplate:
  def render(self) -> str:
      html = f"<h1>{self.title}</h1>\n"
      for section in self.sections:
-     for section in self.sections:
      html += f"<div>{section['content']}</div>\n"
      return html
 

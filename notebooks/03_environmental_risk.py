@@ -349,9 +349,10 @@ def identify_hotspots(X, Y, prob, threshold=0.9, min_area=5):
  # Calculate area of each hotspot (in grid cells)
  hotspot_areas = []
  for i in range(1, n_hotspots + 1):
- for i in range(1, n_hotspots + 1):
- if area >= min_area:
- if area >= min_area:
+     mask = labeled == i
+     area = mask.sum()
+     if area >= min_area:
+         hotspot_areas.append((i, area))
 
  return labeled, hotspot_areas
 
@@ -364,14 +365,17 @@ logger.info(f" Hotspot Analysis:")
 logger.info(f"\nArsenic:")
 logger.info(f" Number of hotspots: {len(hotspots_as)}")
 for i, (label, area) in enumerate(hotspots_as[:5], 1): # Top 5
+    logger.info(f" Hotspot {i}: Label {label}, Area {area} cells")
 
-    logger.info(f"\nLead:")
+logger.info(f"\nLead:")
 logger.info(f" Number of hotspots: {len(hotspots_pb)}")
 for i, (label, area) in enumerate(hotspots_pb[:5], 1):
+    logger.info(f" Hotspot {i}: Label {label}, Area {area} cells")
 
-    logger.info(f"\nCombined (Priority):")
+logger.info(f"\nCombined (Priority):")
 logger.info(f" Number of hotspots: {len(hotspots_combined)}")
 for i, (label, area) in enumerate(hotspots_combined[:5], 1):
+    logger.info(f" Hotspot {i}: Label {label}, Area {area} cells")
 
     # Visualize hotspots
 fig, ax = plt.subplots(figsize=(12, 8))
@@ -390,14 +394,14 @@ ax.scatter(x, y, c='k', s=10, alpha=0.5, label='Sample locations')
 
 # Add hotspot labels
 for label, area in hotspots_combined[:10]: # Label top 10
-for label, area in hotspots_combined[:10]: # Label top 10
- y_center = Y[mask].mean()
- x_center = X[mask].mean()
- ax.plot(x_center, y_center, 'r*', markersize=20, markeredgecolor='darkred',
- markeredgewidth=2, zorder=10)
- ax.annotate(f'H{label}', (x_center, y_center), fontsize=12, fontweight='bold',
- ha='center', va='center', color='white',
- bbox=dict(boxstyle='circle', facecolor='red', alpha=0.8))
+    mask = labeled_combined == label
+    y_center = Y[mask].mean()
+    x_center = X[mask].mean()
+    ax.plot(x_center, y_center, 'r*', markersize=20, markeredgecolor='darkred',
+            markeredgewidth=2, zorder=10)
+    ax.annotate(f'H{label}', (x_center, y_center), fontsize=12, fontweight='bold',
+                ha='center', va='center', color='white',
+                bbox=dict(boxstyle='circle', facecolor='red', alpha=0.8))
 
 ax.set_title('Contamination Hotspots\n(>90% probability of EPA exceedance)',
  fontsize=14, fontweight='bold')

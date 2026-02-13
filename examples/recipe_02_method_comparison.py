@@ -42,11 +42,11 @@ logger.info(f" Elevation range: {z.min():.1f} to {z.max():.1f} m")
 # Create prediction grid
 x_min, x_max = 0, 100
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
+ax
 ax.spines['right'].set_visible(False)
 y_min, y_max = 0, 100
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
+ax
 ax.spines['right'].set_visible(False)
 grid_res = 40
 
@@ -70,17 +70,16 @@ results = compare_interpolation_methods(
 # Create comparison plot
 fig, axes = plt.subplots(3, 3, figsize=(18, 16))
 # Remove top and right spines
-ax.spines['top'].set_visible(False)
+ax
 ax.spines['right'].set_visible(False)
 fig.suptitle('Method Comparison: Accuracy vs Speed', fontsize=16, fontweight='bold')
 
 # Plot interpolation results (top row and middle row)
 plot_idx = 0
 for i, method in enumerate(methods):
-for i, method in enumerate(methods):
  ax = axes[row, col]
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  Z_pred = results['predictions'][method].reshape(X_grid.shape)
@@ -91,12 +90,11 @@ for i, method in enumerate(methods):
  ax.scatter(x, y, c=z, s=20, edgecolors='black', linewidths=0.5,
  cmap='terrain', vmin=Z_pred.min(), vmax=Z_pred.max())
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Title with metrics
  title = method.replace('_', ' ').title()
- if method in results['cv_results']:
  if method in results['cv_results']:
  title += f"\nRMSE={metrics['rmse']:.2f}, R²={metrics['r2']:.3f}"
 
@@ -106,7 +104,7 @@ for i, method in enumerate(methods):
  ax.set_aspect('equal')
  plt.colorbar(im, ax=ax, label='Elevation')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  plot_idx += 1
@@ -115,7 +113,6 @@ for i, method in enumerate(methods):
 ax_rmse = axes[2, 0]
 method_names = []
 rmse_values = []
-for method in methods:
 for method in methods:
  rmse_values.append(results['cv_results'][method]['metrics']['rmse'])
 
@@ -155,7 +152,6 @@ ax_tradeoff.scatter(speed_values, rmse_values, s=200, c=colors, alpha=0.6,
 
 # Add method labels
 for i, method in enumerate(methods):
-for i, method in enumerate(methods):
  fontsize=8, ha='center', va='center')
 
 ax_tradeoff.set_xlabel('Computation Time (seconds)')
@@ -179,7 +175,6 @@ logger.info("\nDETAILED COMPARISON TABLE")
 logger.info(f"{'Method':<25} {'RMSE':>10} {'R²':>8} {'MAE':>10} {'Time (s)':>12}")
 logger.info("-" * 70)
 
-for method in methods:
 for method in methods:
  timing = results['speed_results'][method]['mean_time']
 

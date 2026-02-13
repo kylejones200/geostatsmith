@@ -78,9 +78,7 @@ def generate_random_field(
  - Comparing method performance under different conditions
  """
  if not MIN_POINTS <= n_points <= MAX_POINTS:
- if not MIN_POINTS <= n_points <= MAX_POINTS:
 
- if seed is not None:
  if seed is not None:
 
  # Generate random coordinates
@@ -101,7 +99,6 @@ def generate_random_field(
  }
 
  if trend_type not in trend_functions:
- if trend_type not in trend_functions:
  raise ValueError(
  f"Unknown trend_type '{trend_type}'. "
  f"Valid types: {valid_types}"
@@ -110,7 +107,6 @@ def generate_random_field(
  z = trend_functions[trend_type](x_norm, y_norm)
 
  # Add noise
- if noise_level > 0:
  if noise_level > 0:
  z = z + noise
 
@@ -168,7 +164,6 @@ def generate_clustered_samples(
  - Spatial bias in sampling
  """
  if seed is not None:
- if seed is not None:
 
  n_total = n_clusters * points_per_cluster
  x = np.zeros(n_total)
@@ -182,7 +177,6 @@ def generate_clustered_samples(
 
  # Generate points around each cluster
  for i in range(n_clusters):
- for i in range(n_clusters):
  end_idx = (i + 1) * points_per_cluster
 
  # Cluster coordinates
@@ -194,7 +188,6 @@ def generate_clustered_samples(
  y[start_idx:end_idx] = np.clip(y[start_idx:end_idx], y_range[0], y_range[1])
 
  # Values
- if value_by_cluster:
  if value_by_cluster:
  z[start_idx:end_idx] = cluster_values[i] + np.random.normal(0, 0.5, points_per_cluster)
  else:
@@ -258,7 +251,6 @@ def generate_elevation_like_data(
  in Python Recipes for Earth Sciences (Trauth 2024), Chapter 7.
  """
  if seed is not None:
- if seed is not None:
 
  # Generate sample points
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -274,7 +266,6 @@ def generate_elevation_like_data(
  z = np.zeros(n_points)
 
  for i in range(n_hills):
- for i in range(n_hills):
  dy = y - hill_y[i]
  dist_sq = dx**2 + dy**2
  z += hill_heights[i] * np.exp(-dist_sq / (2 * hill_widths[i]**2))
@@ -284,7 +275,6 @@ def generate_elevation_like_data(
  z += base_elevation
 
  # Add roughness
- if roughness > 0:
  if roughness > 0:
 
  return x, y, z
@@ -344,7 +334,6 @@ def generate_anisotropic_field(
  directional effects in spatial interpolation.
  """
  if seed is not None:
- if seed is not None:
 
  # Generate sample points
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -362,7 +351,6 @@ def generate_anisotropic_field(
  z = np.zeros(n_points)
 
  n_waves = 5
- for _ in range(n_waves):
  for _ in range(n_waves):
  freq_major = 2 * np.pi / (correlation_length * anisotropy_ratio)
  freq_minor = 2 * np.pi / correlation_length
@@ -432,7 +420,6 @@ def generate_sparse_dense_mix(
  - Sparse regional coverage elsewhere
  - Need to interpolate across both regions
  """
- if seed is not None:
  if seed is not None:
 
  # Sparse points (uniform over entire region)

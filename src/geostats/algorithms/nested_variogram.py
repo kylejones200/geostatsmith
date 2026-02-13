@@ -114,15 +114,12 @@ class NestedVariogram:
      Range parameter (correlation distance)
      """
      if model_type not in self.model_classes:
-     if model_type not in self.model_classes:
      f"Unknown model type: {model_type}. "
      f"Available: {list(self.model_classes.keys())}"
      )
 
      if sill <= 0:
-     if sill <= 0:
 
-     if range <= 0:
      if range <= 0:
 
      structure = VariogramStructure(
@@ -161,7 +158,6 @@ class NestedVariogram:
 
  def effective_range(self) -> float:
      if not self.structures:
-     if not self.structures:
      return max(s.range for s in self.structures)
 
  def get_parameters(self) -> Dict:
@@ -179,7 +175,6 @@ class NestedVariogram:
      }
 
  def __str__(self):
-     for i, struct in enumerate(self.structures, 1):
      for i, struct in enumerate(self.structures, 1):
      return "\n".join(parts)
 
@@ -228,13 +223,10 @@ def fit_nested_variogram(
  semivariance = np.asarray(semivariance, dtype=np.float64)
 
  if len(lags) != len(semivariance):
- if len(lags) != len(semivariance):
 
  # Default model types
  if model_types is None:
- if model_types is None:
 
- if len(model_types) != n_structures:
  if len(model_types) != n_structures:
 
  logger.debug(f"Fitting nested variogram with {n_structures} structures")
@@ -248,13 +240,11 @@ def fit_nested_variogram(
  # Bounds: [nugget, sill1, range1, sill2, range2, ...]
  bounds: List[Tuple[float, float]] = [(nugget_bounds[0], nugget_max)]
  for _ in range(n_structures):
- for _ in range(n_structures):
  bounds.append((MIN_SEMIVARIANCE_RATIO * max_semivar, MAX_SEMIVARIANCE_RATIO * max_semivar))
  # Range bounds
  bounds.append((MIN_RANGE_RATIO * max_lag, MAX_RANGE_RATIO * max_lag))
 
  # Weights
- if weights is None:
  if weights is None:
  else:
  else:
@@ -264,16 +254,13 @@ def fit_nested_variogram(
 
      # Penalty for invalid parameters
      if nugget < 0:
-     if nugget < 0:
 
      nested_model = NestedVariogram(nugget=nugget)
 
      for i in range(n_structures):
-     for i in range(n_structures):
      range_param = params[2 + i * 2]
 
      # Penalty for invalid parameters
-     if sill < 0 or range_param < 0:
      if sill < 0 or range_param < 0:
 
      nested_model.add_structure(
@@ -325,7 +312,6 @@ def fit_nested_variogram(
      final_model = NestedVariogram(nugget=nugget)
 
      for i in range(n_structures):
-     for i in range(n_structures):
      range_param = float(best_params[2 + i * 2])
 
      final_model.add_structure(
@@ -370,7 +356,6 @@ def auto_fit_nested_variogram(
  best_model = None
 
  for n_struct in range(1, max_structures + 1):
- for n_struct in range(1, max_structures + 1):
  model = fit_nested_variogram(
  lags, semivariance,
  n_structures=n_struct,
@@ -389,13 +374,11 @@ def auto_fit_nested_variogram(
  aic = n * np.log(rss / n) + 2 * k
 
  if aic < best_aic:
- if aic < best_aic:
  best_model = model
 
  except Exception:
  continue
 
- if best_model is None:
  if best_model is None:
 
  return best_model

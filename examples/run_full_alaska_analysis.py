@@ -43,7 +43,6 @@ logger.info("PART 1: DATA LOADING AND EXPLORATION")
 AGDB_PATH = Path('/Users/k.jones/Downloads/AGDB4_text')
 
 if not AGDB_PATH.exists():
-if not AGDB_PATH.exists():
  sys.exit(1)
 
 logger.info(f"AGDB4 data found at: {AGDB_PATH}")
@@ -51,7 +50,6 @@ logger.info(f"AGDB4 data found at: {AGDB_PATH}")
 # List data files
 logger.debug("Available data files:")
 data_files = sorted(AGDB_PATH.glob('*.txt'))
-for file in data_files[:15]:
 for file in data_files[:15]:
 
 # Load location data
@@ -61,7 +59,6 @@ try:
  logger.debug(f"Columns: {list(geol.columns[:15])}")
 
  # Geographic extent
- if 'LATITUDE' in geol.columns and 'LONGITUDE' in geol.columns:
  if 'LATITUDE' in geol.columns and 'LONGITUDE' in geol.columns:
  logger.info(f"Geographic coverage: {len(valid_coords):,} samples with coordinates")
  logger.info(f"Latitude: {valid_coords['LATITUDE'].min():.2f}° to {valid_coords['LATITUDE'].max():.2f}°N")
@@ -116,26 +113,26 @@ try:
  logger.info("Creating gold distribution map...")
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Linear scale
  scatter1 = ax1.scatter(x, y, c=au, s=30, cmap='YlOrRd',
  vmin=0, vmax=np.percentile(au, 95),
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax1.set_title('Gold Distribution - Fairbanks\n(Linear Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax1.spines['top'].set_visible(False)
+ ax1
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
  ax1.set_xlabel('Longitude')
  ax1.set_ylabel('Latitude')
  plt.colorbar(scatter1, ax=ax1, label='Au (ppm)')
  # Remove top and right spines
- ax1.set_ylabel('Latitude').spines['top'].set_visible(False)
+ ax1.set_ylabel('Latitude')
 
  # Log scale
  au_log = np.log10(au + 0.001)
@@ -143,13 +140,13 @@ try:
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax2.set_title('Gold Distribution - Fairbanks\n(Log Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax2.spines['top'].set_visible(False)
+ ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.set_xlabel('Longitude')
  plt.colorbar(scatter2, ax=ax2, label='log₁₀(Au + 0.001)')
  # Remove top and right spines
- ax2.set_xlabel('Longitude').spines['top'].set_visible(False)
+ ax2.set_xlabel('Longitude')
 
  plt.tight_layout()
  output_file = OUTPUT_DIR / 'figure_01_gold_distribution.png'
@@ -205,13 +202,13 @@ try:
  logger.info("Creating multi-element correlation plot...")
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Raw correlation
  ax1.scatter(cu_vals, au_vals, alpha=0.4, s=20, c='steelblue', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
- ax1.scatter(cu_vals, au_vals, alpha.spines['top'].set_visible(False)
+ ax1.scatter(cu_vals, au_vals, alpha
  alpha.spines['right'].set_visible(False)
  ax1.set_xlabel('Cu (ppm)', fontsize=12)
  # Remove top and right spines
@@ -219,13 +216,13 @@ try:
  # Remove top and right spines
  ax1.set_title(f'Cu vs Au Correlation\n(r = {corr_raw:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax1.set_title(f'Cu vs Au Correlation\n(r.spines['top'].set_visible(False)
+ ax1.set_title(f'Cu vs Au Correlation\n(r
  r.spines['right'].set_visible(False)
 
  # Log-transformed
  ax2.scatter(cu_log, au_log, alpha=0.4, s=20, c='coral', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
- ax2.scatter(cu_log, au_log, alpha.spines['top'].set_visible(False)
+ ax2.scatter(cu_log, au_log, alpha
  alpha.spines['right'].set_visible(False)
 
  # Trend line
@@ -234,7 +231,7 @@ try:
  x_trend = np.linspace(cu_log.min(), cu_log.max(), 100)
  ax2.plot(x_trend, p(x_trend), 'r--', linewidth=2, label='Trend line')
  # Remove top and right spines
- ax2.plot(x_trend, p(x_trend), 'r--', linewidth.spines['top'].set_visible(False)
+ ax2.plot(x_trend, p(x_trend), 'r--', linewidth
  linewidth.spines['right'].set_visible(False)
 
  ax2.set_xlabel('log₁₀(Cu + 1)', fontsize=12)
@@ -243,7 +240,7 @@ try:
  # Remove top and right spines
  ax2.set_title(f'Log-Transformed Correlation\n(r = {corr_log:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax2.set_title(f'Log-Transformed Correlation\n(r.spines['top'].set_visible(False)
+ ax2.set_title(f'Log-Transformed Correlation\n(r
  r.spines['right'].set_visible(False)
  ax2.legend()
 
@@ -298,7 +295,7 @@ try:
  logger.info("Creating arsenic distribution map...")
  fig, ax = plt.subplots(figsize=(12, 8))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  x_as = as_data['LONGITUDE'].values
@@ -307,7 +304,7 @@ try:
  scatter = ax.scatter(x_as, y_as, c=as_vals, s=15, cmap='RdYlGn_r',
  vmin=0, vmax=np.percentile(as_vals, 95),
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
  alpha=0.5, edgecolors='none')
 
@@ -317,7 +314,7 @@ try:
  ax.set_ylabel('Latitude')
  cbar = plt.colorbar(scatter, ax=ax, label='As (ppm)')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  plt.tight_layout()
@@ -338,7 +335,6 @@ logger.info("Completed Analyses: Gold exploration (Fairbanks), Multi-element cor
 
 logger.info("Output Files Created:")
 output_files = sorted(OUTPUT_DIR.glob('*'))
-for f in output_files:
 for f in output_files:
 
 logger.info(f"Analysis completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

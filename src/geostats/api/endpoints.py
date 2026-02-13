@@ -54,7 +54,6 @@ class HealthResponse(BaseModel):
 
     # Create router
     if FASTAPI_AVAILABLE:
-    if FASTAPI_AVAILABLE:
     else:
     else:
 

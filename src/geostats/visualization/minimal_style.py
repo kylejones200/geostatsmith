@@ -27,10 +27,8 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
 
  # Remove specified spines
  for spine in remove_spines:
- for spine in remove_spines:
 
  # Make remaining spines thinner
- for spine in ax.spines.values():
  for spine in ax.spines.values():
  spine.set_linewidth(0.8)
  spine.set_color('#333333')
@@ -41,8 +39,6 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
 
  # Remove tick marks from hidden spines
  if 'top' in remove_spines:
- if 'top' in remove_spines:
- if 'right' in remove_spines:
  if 'right' in remove_spines:
 
 def set_minimalist_rcparams():
@@ -116,12 +112,10 @@ def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  Figure and axes objects
  """
  if figsize is None:
- if figsize is None:
 
  fig, axes = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
 
  # Apply style to all axes
- if isinstance(axes, np.ndarray):
  if isinstance(axes, np.ndarray):
  apply_minimalist_style(ax)
  else:

@@ -38,9 +38,7 @@ def plot_data_locations(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
 
- if z is not None:
  if z is not None:
  edgecolors='black', linewidth=1, **kwargs)
  plt.colorbar(scatter, ax=ax, label='Value')
@@ -90,7 +88,6 @@ def plot_contour_map(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
 
  # Contour plot
  contour = ax.contourf(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)
@@ -100,7 +97,6 @@ def plot_contour_map(
  plt.colorbar(contour, ax=ax, label='Value')
 
  # Overlay data points if provided
- if x_data is not None and y_data is not None:
  if x_data is not None and y_data is not None:
  ax.scatter(x_data, y_data, c=z_data, cmap=cmap, s=50,
  edgecolors='white', linewidth=1.5, zorder=5)
@@ -144,7 +140,6 @@ def plot_symbol_map(
  -------
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
 
  # Normalize sizes
@@ -259,14 +254,11 @@ def plot_data_points(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
  else:
  else:
 
  if z is not None:
- if z is not None:
  edgecolors='black', linewidth=1, **kwargs)
- if colorbar:
  if colorbar:
  else:
  else:
@@ -309,7 +301,6 @@ def plot_contour(
  fig : matplotlib.Figure
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
  else:
  else:
@@ -358,7 +349,6 @@ def plot_filled_contour(
  fig : matplotlib.Figure
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
  else:
  else:

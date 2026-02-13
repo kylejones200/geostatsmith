@@ -66,9 +66,7 @@ def auto_interpolate(
  5. Makes final predictions
  """
  if methods is None:
- if methods is None:
 
-    if verbose:
     if verbose:
 
  best_method = None
@@ -77,7 +75,6 @@ def auto_interpolate(
  best_model = None
  all_results = {}
 
- for method in methods:
  for method in methods:
  logger.info(f"\nTesting: {method}")
 
@@ -88,7 +85,6 @@ def auto_interpolate(
  n = len(x)
  cv_preds = np.zeros(n)
 
- for i in range(n):
  for i in range(n):
  krig = OrdinaryKriging(x[train_idx], y[train_idx], z[train_idx], model)
  pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
@@ -108,9 +104,7 @@ def auto_interpolate(
  }
 
  if verbose:
- if verbose:
 
- if rmse < best_rmse:
  if rmse < best_rmse:
  best_method = method
  best_predictions = predictions
@@ -123,7 +117,6 @@ def auto_interpolate(
 
  n = len(x)
  cv_preds = np.zeros(n)
- for i in range(n):
  for i in range(n):
  mask[i] = False
  idw_cv = InverseDistanceWeighting(x[mask], y[mask], z[mask], power=2)
@@ -140,9 +133,7 @@ def auto_interpolate(
  }
 
  if verbose:
- if verbose:
 
- if rmse < best_rmse:
  if rmse < best_rmse:
  best_method = method
  best_predictions = predictions
@@ -150,23 +141,19 @@ def auto_interpolate(
 
  except ImportError:
  if verbose:
- if verbose:
  "IDW interpolation not available: comparison module not installed. "
  "Install with: pip install geostats[comparison]"
  )
 
  except Exception as e:
  if verbose:
- if verbose:
  continue
 
- if best_method is None:
  if best_method is None:
  f"All {len(methods)} interpolation methods failed. "
  "Check data quality (sufficient points, no duplicates, valid values)."
  )
 
-    if verbose:
     if verbose:
     logger.info(f" CV RMSE: {best_rmse:.4f}")
 
@@ -205,7 +192,6 @@ def suggest_method(
  >>> logger.info(f"Suggested: {method}")
  """
  # Simple heuristics
- if n_samples < 20:
  if n_samples < 20:
  elif n_samples < 100:
  elif n_samples < 100:

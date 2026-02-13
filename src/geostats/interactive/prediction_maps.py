@@ -53,7 +53,6 @@ def interactive_prediction_map(
  >>> fig.show()
  """
  if not PLOTLY_AVAILABLE:
- if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -72,7 +71,6 @@ def interactive_prediction_map(
  ))
 
  # Sample points
- if samples is not None:
  if samples is not None:
  fig.add_trace(go.Scatter(
  x=x_samples,
@@ -127,7 +125,6 @@ def interactive_uncertainty_map(
  fig : plotly Figure with subplots
  """
  if not PLOTLY_AVAILABLE:
- if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -165,8 +162,6 @@ def interactive_uncertainty_map(
 
  # Samples
  if samples is not None:
- if samples is not None:
- for col in [1, 2]:
  for col in [1, 2]:
  go.Scatter(
  x=x_s, y=y_s,
@@ -211,7 +206,6 @@ def interactive_3d_surface(
  fig : plotly Figure
  """
  if not PLOTLY_AVAILABLE:
- if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -228,7 +222,6 @@ def interactive_3d_surface(
  ))
 
  # Sample points
- if samples is not None:
  if samples is not None:
  fig.add_trace(go.Scatter3d(
  x=x_s,

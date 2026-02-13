@@ -101,7 +101,7 @@ def example_1_read_csv_and_interpolate():
 
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  scatter = ax1.scatter(x_read, y_read, c=z_read, cmap='terrain', s=50, edgecolor='k')
@@ -111,15 +111,15 @@ def example_1_read_csv_and_interpolate():
  ax1.set_aspect('equal')
  plt.colorbar(scatter, ax=ax1, label='Elevation (m)')
  # Remove top and right spines
- ax1.set_aspect('equal').spines['top'].set_visible(False)
+ ax1.set_aspect('equal')
 
  im = ax2.contourf(x_grid, y_grid, z_grid, levels=15, cmap='terrain')
  ax2.scatter(x_read, y_read, c='k', s=10, alpha=0.5, label='Samples')
  # Remove top and right spines
- ax2.spines['top'].set_visible(False)
+ ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
- ax2.scatter(x_read, y_read, c.spines['top'].set_visible(False)
+ ax2.scatter(x_read, y_read, c
  c.spines['right'].set_visible(False)
  ax2.set_xlabel('Easting (m)')
  ax2.set_ylabel('Northing (m)')
@@ -128,7 +128,7 @@ def example_1_read_csv_and_interpolate():
  ax2.legend()
  plt.colorbar(im, ax=ax2, label='Elevation (m)')
  # Remove top and right spines
- ax2.legend().spines['top'].set_visible(False)
+ ax2.legend()
 
  plt.tight_layout()
  plt.savefig('example_workflow_01_io.png', dpi=150, bbox_inches='tight')

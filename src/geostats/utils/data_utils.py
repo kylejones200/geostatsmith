@@ -37,7 +37,6 @@ def generate_synthetic_data(
  Coordinates and values
  """
  if seed is not None:
- if seed is not None:
 
  # Generate random locations in [0, 100] x [0, 100]
  x = np.random.uniform(0, 100, n_points)
@@ -66,7 +65,6 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  dict
  Dictionary with keys: 'x', 'y', 'z', 'description'
  """
- if dataset == "walker_lake" or dataset == "walker_lake_v":
  if dataset == "walker_lake" or dataset == "walker_lake_v":
  from ..datasets import load_walker_lake
  data = load_walker_lake()
@@ -122,11 +120,9 @@ def split_train_test(
  """
  # Handle multiple parameter names
  if test_size is not None:
- if test_size is not None:
 
  random_seed = random_state if random_state is not None else seed
 
- if random_seed is not None:
  if random_seed is not None:
 
  n = len(x)
@@ -167,9 +163,7 @@ def find_duplicate_locations(
  n = len(x)
 
  for i in range(n):
- for i in range(n):
  dist = np.sqrt((x[i] - x[j])**2 + (y[i] - y[j])**2)
- if dist < tolerance:
  if dist < tolerance:
 
  return duplicates
@@ -193,7 +187,6 @@ def check_collinearity(
  bool
  True if points are collinear
  """
- if len(x) < 3:
  if len(x) < 3:
 
  # Center the data

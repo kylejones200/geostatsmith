@@ -32,7 +32,6 @@ def plot_cross_validation(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
 
  # Scatter plot
  ax.scatter(y_true, y_pred, alpha=0.6, s=50,
@@ -95,14 +94,12 @@ def plot_histogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
 
  # Histogram
  n, bins_edges, patches = ax.hist(data, bins=bins, density=True,
  alpha=0.7, edgecolor='black', **kwargs)
 
  # Fit and plot normal distribution
- if fit_normal:
  if fit_normal:
  x = np.linspace(np.min(data), np.max(data), 100)
  ax.plot(x, stats.norm.pdf(x, mu, std), 'r-', linewidth=2,
@@ -138,7 +135,6 @@ def plot_qq_plot(
  -------
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
 
  # Calculate theoretical and sample quantiles
@@ -233,7 +229,6 @@ def qq_plot(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
  else:
  else:
 
@@ -271,7 +266,6 @@ def plot_histogram(
  fig : matplotlib.Figure
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
  else:
  else:
@@ -320,7 +314,6 @@ def plot_obs_vs_pred(
  fig : matplotlib.Figure
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
  else:
  else:
@@ -378,7 +371,6 @@ def plot_residuals(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
  else:
  else:
 
@@ -419,7 +411,6 @@ def plot_residual_histogram(
  fig : matplotlib.Figure
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
  else:
  else:

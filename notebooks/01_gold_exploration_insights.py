@@ -372,7 +372,9 @@ ax.scatter(new_locations[:, 0], new_locations[:, 1],
 
 # Add numbers
 for i, (nx, ny) in enumerate(new_locations, 1):
-for i, (nx, ny) in enumerate(new_locations, 1):
+    ax.annotate(f'{i}', (nx, ny), fontsize=10, fontweight='bold',
+                ha='center', va='center', color='darkgreen',
+                bbox=dict(boxstyle='round', facecolor='lime', alpha=0.8))
 
 ax.set_title('Optimal Infill Sampling Design\n(Maximize Information Gain)',
  fontsize=14, fontweight='bold')

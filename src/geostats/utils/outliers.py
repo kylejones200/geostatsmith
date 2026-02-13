@@ -81,9 +81,7 @@ def detect_outliers_zscore(
  std = np.std(data, ddof=1)
 
  if std < EPSILON:
- if std < EPSILON:
  outlier_mask = np.zeros(len(data), dtype=bool)
- if return_scores:
  if return_scores:
  return outlier_mask
 
@@ -93,7 +91,6 @@ def detect_outliers_zscore(
  n_outliers = np.sum(outlier_mask)
  logger.info(f"Z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
- if return_scores:
  if return_scores:
  return outlier_mask
 
@@ -148,7 +145,6 @@ def detect_outliers_modified_zscore(
  mad = np.median(np.abs(data - median))
 
  if mad < EPSILON:
- if mad < EPSILON:
  # Fallback to IQR method
  return detect_outliers_iqr(data, return_scores=return_scores)
 
@@ -159,7 +155,6 @@ def detect_outliers_modified_zscore(
  n_outliers = np.sum(outlier_mask)
  logger.info(f"Modified z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
- if return_scores:
  if return_scores:
  return outlier_mask
 
@@ -217,7 +212,6 @@ def detect_outliers_iqr(
  )
 
  if return_bounds:
- if return_bounds:
  return outlier_mask
 
 def detect_spatial_outliers(
@@ -266,9 +260,7 @@ def detect_spatial_outliers(
  z = np.asarray(z, dtype=np.float64).flatten()
 
  if len(x) != len(y) or len(x) != len(z):
- if len(x) != len(y) or len(x) != len(z):
 
- if len(x) <= n_neighbors:
  if len(x) <= n_neighbors:
  return np.zeros(len(x), dtype=bool)
 
@@ -278,7 +270,6 @@ def detect_spatial_outliers(
 
  outlier_mask = np.zeros(len(x), dtype=bool)
 
- for i in range(len(x)):
  for i in range(len(x)):
  distances, indices = tree.query(coords[i], k=n_neighbors + 1)
 
@@ -291,11 +282,9 @@ def detect_spatial_outliers(
  local_std = np.std(neighbor_values, ddof=1)
 
  if local_std < EPSILON:
- if local_std < EPSILON:
 
  # Check if point is outlier relative to neighbors
  deviation = np.abs(z[i] - local_mean) / local_std
- if deviation > threshold_factor:
  if deviation > threshold_factor:
 
  n_outliers = np.sum(outlier_mask)
@@ -355,7 +344,6 @@ def detect_outliers_ensemble(
 
  # Determine which methods to use
  if methods is None:
- if methods is None:
  methods = ['zscore', 'modified_zscore', 'iqr', 'spatial']
  else:
  else:
@@ -364,7 +352,6 @@ def detect_outliers_ensemble(
  detection_count = np.zeros(len(z), dtype=int)
 
  # Apply each method
- for method in methods:
  for method in methods:
  mask = detect_outliers_zscore(z)
  method_results['zscore'] = mask

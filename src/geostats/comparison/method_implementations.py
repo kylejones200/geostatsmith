@@ -104,19 +104,15 @@ def inverse_distance_weighting(
  tree = cKDTree(np.column_stack([x_data, y_data]))
 
  for i in range(n_pred):
- for i in range(n_pred):
 
  # Find neighbors
  if radius is not None:
- if radius is not None:
  indices = tree.query_ball_point(pred_point, radius)
- if len(indices) == 0:
  if len(indices) == 0:
  indices = [tree.query(pred_point)[1]]
  elif max_neighbors is not None:
  elif max_neighbors is not None:
  distances, indices = tree.query(pred_point, k=min(max_neighbors, len(x_data)))
- if isinstance(indices, np.integer):
  if isinstance(indices, np.integer):
  else:
  else:
@@ -130,7 +126,6 @@ def inverse_distance_weighting(
  distances = np.sqrt((x_neighbors - x_pred[i])**2 + (y_neighbors - y_pred[i])**2)
 
  # Handle coincident points
- if np.any(distances < MIN_DISTANCE):
  if np.any(distances < MIN_DISTANCE):
  coincident_idx = np.argmin(distances)
  z_pred[i] = z_neighbors[coincident_idx]
@@ -307,12 +302,10 @@ def natural_neighbor_interpolation(
 
  # For each prediction point
  for i in range(n_pred):
- for i in range(n_pred):
 
  # Find which simplex (triangle) contains the point
  simplex_idx = tri.find_simplex(pred_point)
 
- if simplex_idx == -1:
  if simplex_idx == -1:
  tree = cKDTree(data_points)
  _, nearest_idx = tree.query(pred_point)
@@ -360,7 +353,6 @@ def _barycentric_coordinates(
 
  denom = d00 * d11 - d01 * d01
 
- if abs(denom) < MIN_DISTANCE:
  if abs(denom) < MIN_DISTANCE:
  return np.array([1.0/3.0, 1.0/3.0, 1.0/3.0])
 

@@ -48,13 +48,11 @@ def plot_variogram(
  The axes object
  """
  if ax is None:
- if ax is None:
 
  # Apply minimalist style
  apply_minimalist_style(ax)
 
  # Plot experimental variogram
- if n_pairs is not None:
  if n_pairs is not None:
  sizes = n_pairs / np.max(n_pairs) * 100 + 20
  ax.scatter(lags, gamma, s=sizes, alpha=0.6, c='#1f77b4',
@@ -64,7 +62,6 @@ def plot_variogram(
  edgecolors='#333333', linewidth=0.8, label='Experimental', **kwargs)
 
  # Plot model if provided
- if model is not None:
  if model is not None:
  gamma_model = model(h_plot)
  ax.plot(h_plot, gamma_model, '#d62728', linewidth=2,
@@ -115,7 +112,6 @@ def plot_variogram_cloud(
  """
  from ..algorithms.variogram import variogram_cloud
 
- if ax is None:
  if ax is None:
 
  # Calculate variogram cloud
@@ -173,13 +169,11 @@ def plot_h_scatterplot(
  from ..math.distance import euclidean_distance_matrix, directional_distance
 
  if ax is None:
- if ax is None:
 
  # Calculate distances
  dist = euclidean_distance_matrix(x, y)
 
  # Find pairs within h ± tolerance
- if direction is None:
  if direction is None:
  else:
  else:
@@ -193,7 +187,6 @@ def plot_h_scatterplot(
  # Get pairs
  i_indices, j_indices = np.where(mask)
 
- if len(i_indices) == 0:
  if len(i_indices) == 0:
  transform=ax.transAxes, fontsize=14)
  return ax
@@ -213,9 +206,8 @@ def plot_h_scatterplot(
  corr = np.corrcoef(z_i, z_j)[0, 1]
 
  ax.set_xlabel('z(x)', fontsize=12)
- ax.set_ylabel(f'z(x+h), h≈{h_distance:.1f}', fontsize=12)
+ ax.set_ylabel(f'z(x+h), h~={h_distance:.1f}', fontsize=12)
  title = f'h-Scatterplot (h={h_distance:.1f}, n={len(i_indices)} pairs, ρ={corr:.3f})'
- if direction is not None:
  if direction is not None:
  ax.set_title(title, fontsize=12, fontweight='bold')
  ax.grid(False)
@@ -261,7 +253,6 @@ def plot_directional_variograms(
  axes = axes.flatten()
 
  for i, direction in enumerate(directions):
- for i, direction in enumerate(directions):
 
  # Calculate directional variogram
  lags, gamma, n_pairs = experimental_variogram_directional(
@@ -273,7 +264,6 @@ def plot_directional_variograms(
 
  # Plot
  valid = ~np.isnan(gamma)
- if np.any(valid):
  if np.any(valid):
  ax.scatter(lags[valid], gamma[valid], s=sizes, alpha=0.6,
  edgecolors='black', linewidth=1)
@@ -329,7 +319,6 @@ def plot_variogram_map(
 
  # Determine lag size
  if lag_size is None:
- if lag_size is None:
  lag_size = max_dist / n_lags
 
  # Create 2D bins
@@ -349,10 +338,8 @@ def plot_variogram_map(
  semivar_flat = semivar[mask]
 
  for i in range(len(dx_flat)):
- for i in range(len(dx_flat)):
  yi = np.digitize(dy_flat[i], y_bins) - 1
 
- if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
  if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
  counts[yi, xi] += 1
 
@@ -403,12 +390,10 @@ def plot_experimental_variogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
  else:
  else:
 
  # Plot experimental points
- if n_pairs is not None:
  if n_pairs is not None:
  ax.scatter(lags, gamma, s=sizes, alpha=0.7, c='blue',
  edgecolors='black', linewidth=1, label='Experimental', **kwargs)
@@ -451,7 +436,6 @@ def plot_variogram_model(
  fig : matplotlib.Figure
  ax : matplotlib.Axes
  """
- if ax is None:
  if ax is None:
  else:
  else:
@@ -509,12 +493,10 @@ def plot_variogram_with_model(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
  else:
  else:
 
  # Plot experimental points
- if n_pairs is not None:
  if n_pairs is not None:
  ax.scatter(lags, gamma, s=sizes, alpha=0.7, c='blue',
  edgecolors='black', linewidth=1, label='Experimental', zorder=5)
@@ -569,7 +551,6 @@ def plot_variogram_map(
  ax : matplotlib.Axes
  """
  if ax is None:
- if ax is None:
  else:
  else:
 
@@ -598,10 +579,8 @@ def plot_variogram_map(
  counts = np.zeros((2*n_lags, 2*n_lags))
 
  for i in range(len(dx_flat)):
- for i in range(len(dx_flat)):
  yi = np.digitize(dy_flat[i], y_bins) - 1
 
- if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
  if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
  counts[yi, xi] += 1
 

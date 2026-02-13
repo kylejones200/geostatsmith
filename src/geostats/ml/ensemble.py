@@ -124,14 +124,12 @@ class EnsembleKriging(BaseKriging):
      Whether to combine variance estimates
      """
      if len(models) == 0:
-     if len(models) == 0:
 
      self.models = models
      self.weighting = weighting.lower()
      self.combine_variance = combine_variance
 
      weighting_schemes = {'equal', 'inverse_variance', 'performance'}
-     if self.weighting not in weighting_schemes:
      if self.weighting not in weighting_schemes:
 
      # Initialize with equal weights
@@ -170,13 +168,10 @@ class EnsembleKriging(BaseKriging):
      }
 
      if self.weighting not in weights_map:
-     if self.weighting not in weights_map:
 
-     if self.weighting == 'inverse_variance' and variances is None:
      if self.weighting == 'inverse_variance' and variances is None:
      return weights_map['equal']()
 
-     if self.weighting == 'performance' and scores is None:
      if self.weighting == 'performance' and scores is None:
      return weights_map['equal']()
 
@@ -221,8 +216,6 @@ class EnsembleKriging(BaseKriging):
      all_variances = np.zeros((n_models, n_pred), dtype=np.float64)
 
      for i, model in enumerate(self.models):
-     for i, model in enumerate(self.models):
-     if return_variance:
      if return_variance:
      all_predictions[i] = pred
      all_variances[i] = var
@@ -236,7 +229,6 @@ class EnsembleKriging(BaseKriging):
 
      # Compute weights
      if self.weighting == 'inverse_variance' and return_variance:
-     if self.weighting == 'inverse_variance' and return_variance:
      mean_vars = np.mean(all_variances, axis=1)
      weights = self._compute_weights(variances=mean_vars)
      else:
@@ -247,17 +239,14 @@ class EnsembleKriging(BaseKriging):
      # Weighted average of predictions
      ensemble_pred = np.zeros(n_pred, dtype=np.float64)
      for i in range(n_models):
-     for i in range(n_models):
 
      logger.debug(
      f"Ensemble prediction complete: weights={weights.round(3)}"
      )
 
      if return_variance and self.combine_variance:
-     if return_variance and self.combine_variance:
      # Var[Σw_i·Z_i] = Σw_i²·Var[Z_i]
      ensemble_var = np.zeros(n_pred, dtype=np.float64)
-     for i in range(n_models):
      for i in range(n_models):
 
      return ensemble_pred, ensemble_var
@@ -360,7 +349,6 @@ class BootstrapKriging(BaseKriging):
      self.fitted = False
 
      if not 0 < sample_fraction <= 1.0:
-     if not 0 < sample_fraction <= 1.0:
 
      logger.info(
      f"Bootstrap Kriging initialized: n_bootstrap={n_bootstrap}, "
@@ -398,7 +386,6 @@ class BootstrapKriging(BaseKriging):
 
      self.bootstrap_models = []
 
-     for b in range(self.n_bootstrap):
      for b in range(self.n_bootstrap):
      indices = rng.choice(n_samples, size=n_bootstrap_samples, replace=True)
      x_boot = x[indices]
@@ -446,7 +433,6 @@ class BootstrapKriging(BaseKriging):
      Standard deviation of predictions
      """
      if not self.fitted:
-     if not self.fitted:
 
      x_new, y_new = validate_coordinates(x_new, y_new)
      n_pred = len(x_new)
@@ -455,7 +441,6 @@ class BootstrapKriging(BaseKriging):
      # Collect all predictions
      all_predictions = np.zeros((n_models, n_pred), dtype=np.float64)
 
-     for i, model in enumerate(self.bootstrap_models):
      for i, model in enumerate(self.bootstrap_models):
      pred = model.predict(x_new, y_new, return_variance=False)
      all_predictions[i] = pred
@@ -468,7 +453,6 @@ class BootstrapKriging(BaseKriging):
 
      logger.debug(f"Bootstrap prediction complete for {n_pred} points")
 
-     if return_std:
      if return_std:
      std = np.nanstd(all_predictions, axis=0)
      return predictions, std
@@ -554,7 +538,6 @@ class StackingKriging(BaseKriging):
      self.cv_folds = cv_folds
 
      if meta_model is None:
-     if meta_model is None:
      try:
      try:
      self.meta_model = Ridge(alpha=1.0)
@@ -610,10 +593,8 @@ class StackingKriging(BaseKriging):
         
         # Get predictions from each base model
         for model_idx, base_model in enumerate(self.base_models):
-        for model_idx, base_model in enumerate(self.base_models):
                 # Note: Base models should already be fitted, but we refit on fold
                 # For kriging models, we need to refit with fold data
-                if hasattr(base_model, 'variogram_model'):
                 if hasattr(base_model, 'variogram_model'):
                     fold_model = model_class(
                         x_train, y_train, z_train,
@@ -631,7 +612,6 @@ class StackingKriging(BaseKriging):
                 meta_features[val_idx, model_idx] = z_train.mean()
     
     # Train meta-learner on meta-features
-    if self.meta_model is not None:
     if self.meta_model is not None:
             logger.info("Meta-learner fitted successfully")
         except Exception as e:
@@ -656,7 +636,6 @@ class StackingKriging(BaseKriging):
         
         # Get predictions from each base model
         for model_idx, base_model in enumerate(self.base_models):
-        for model_idx, base_model in enumerate(self.base_models):
                     base_predictions[:, model_idx] = pred
                     base_variances[:, model_idx] = var
                 else:
@@ -669,7 +648,6 @@ class StackingKriging(BaseKriging):
         
                     # Combine using meta-learner
         if self.meta_model is not None:
-        if self.meta_model is not None:
                 final_predictions = self.meta_model.predict(base_predictions)
             except Exception as e:
                 logger.warning(f"Meta-learner prediction failed: {e}, using equal weights")
@@ -677,7 +655,6 @@ class StackingKriging(BaseKriging):
         else:
         else:
         
-        if return_variance:
         if return_variance:
                 weights = np.abs(self.meta_model.coef_)
                 weights = weights / weights.sum()  # Normalize

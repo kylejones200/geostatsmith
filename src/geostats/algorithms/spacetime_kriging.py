@@ -73,7 +73,6 @@ def validate_coordinates_spacetime(
  t = np.asarray(t, dtype=np.float64).ravel()
 
  if len(t) != len(x):
- if len(t) != len(x):
 
  return x, y, t
 
@@ -209,10 +208,8 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
      variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
      for i in range(n_pred):
-     for i in range(n_pred):
      rhs = np.zeros(n_data + 1, dtype=np.float64)
 
-     for j in range(n_data):
      for j in range(n_data):
      h = np.sqrt((self.x[j] - x_new[i])**2 + (self.y[j] - y_new[i])**2)
      # Temporal distance to prediction point
@@ -238,14 +235,12 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
 
      # Kriging variance
      if return_variance:
-     if return_variance:
      variances[i] = np.dot(lambdas, rhs[:n_data]) + mu
      # Ensure non-negative
      variances[i] = max(0.0, variances[i])
 
      logger.debug(f"Space-time prediction complete for {n_pred} points")
 
-     if return_variance:
      if return_variance:
      return predictions
 
@@ -353,9 +348,7 @@ class SpaceTimeSimpleKriging(BaseKriging):
      sill = getattr(self.spacetime_model, 'sigma2', 1.0)
 
      for i in range(n_pred):
-     for i in range(n_pred):
 
-     for j in range(n_data):
      for j in range(n_data):
      u = np.abs(self.t[j] - t_new[i])
      rhs[j] = self.spacetime_model(h, u)
@@ -370,13 +363,11 @@ class SpaceTimeSimpleKriging(BaseKriging):
      predictions[i] = self.mean + np.dot(lambdas, self.residuals)
 
      if return_variance:
-     if return_variance:
      variances[i] = sill - np.dot(lambdas, rhs)
      variances[i] = max(0.0, variances[i])
 
      logger.debug(f"Space-time simple kriging prediction complete for {n_pred} points")
 
-     if return_variance:
      if return_variance:
      return predictions
 

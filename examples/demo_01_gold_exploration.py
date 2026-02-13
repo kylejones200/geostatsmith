@@ -84,10 +84,8 @@ def load_fairbanks_gold_data(agdb_path):
 
  # Or use district name
  if 'DISTRICT_NAME' in fairbanks.columns:
- if 'DISTRICT_NAME' in fairbanks.columns:
  data['DISTRICT_NAME'].str.contains('Fairbanks', case=False, na=False)
  ]
- if len(district_data) > 100:
  if len(district_data) > 100:
 
  logger.info(f" Fairbanks district samples: {len(fairbanks):,}")
@@ -121,17 +119,16 @@ def analyze_variogram_anisotropy(x, y, z):
 
  fig, axes = plt.subplots(2, 2, figsize=(14, 10))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
  axes = axes.flatten()
  # Remove top and right spines
- axes.spines['top'].set_visible(False)
+ axes
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  models = {}
- for i, angle in enumerate(directions):
  for i, angle in enumerate(directions):
  x, y, z_log,
  angle=angle,
@@ -147,10 +144,10 @@ def analyze_variogram_anisotropy(x, y, z):
  # Plot
  axes[i].plot(lags, gamma, 'o', label='Experimental', markersize=6)
  # Remove top and right spines
- axes[i].spines['top'].set_visible(False)
+ axes[i]
  axes[i].spines['right'].set_visible(False)
  # Remove top and right spines
- axes[i].plot(lags, gamma, 'o', label.spines['top'].set_visible(False)
+ axes[i].plot(lags, gamma, 'o', label
  label.spines['right'].set_visible(False)
  lag_smooth = np.linspace(0, lags.max(), 100)
 
@@ -158,21 +155,21 @@ def analyze_variogram_anisotropy(x, y, z):
  gamma_smooth = model(lag_smooth)
  axes[i].plot(lag_smooth, gamma_smooth, '-', label='Model', linewidth=2)
  # Remove top and right spines
- axes[i].plot(lag_smooth, gamma_smooth, '-', label.spines['top'].set_visible(False)
+ axes[i].plot(lag_smooth, gamma_smooth, '-', label
  label.spines['right'].set_visible(False)
 
  axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
  # Remove top and right spines
- axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})').spines['top'].set_visible(False)
+ axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
  axes[i].set_xlabel('Distance (degrees)')
  # Remove top and right spines
- axes[i].set_xlabel('Distance (degrees)').spines['top'].set_visible(False)
+ axes[i].set_xlabel('Distance (degrees)')
  axes[i].set_ylabel('Semivariance')
  # Remove top and right spines
- axes[i].set_ylabel('Semivariance').spines['top'].set_visible(False)
+ axes[i].set_ylabel('Semivariance')
  axes[i].legend()
  # Remove top and right spines
- axes[i].legend().spines['top'].set_visible(False)
+ axes[i].legend()
 
  plt.tight_layout()
  plt.savefig('alaska_gold_anisotropy.png', dpi=150)
@@ -180,7 +177,6 @@ def analyze_variogram_anisotropy(x, y, z):
 
  # Check if anisotropic
  ranges = [models[a]._parameters['range'] for a in directions]
- if max(ranges) / min(ranges) > 1.5:
  if max(ranges) / min(ranges) > 1.5:
  logger.info(f" Consider using anisotropic kriging for better results")
  else:
@@ -198,11 +194,11 @@ def compare_kriging_methods(x, y, au, model):
  # Create prediction grid
  x_min, x_max = x.min(), x.max()
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
  y_min, y_max = y.min(), y.max()
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  x_grid = np.linspace(x_min, x_max, 80)
@@ -249,58 +245,57 @@ def compare_kriging_methods(x, y, au, model):
  # Visualize comparison
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Ordinary Kriging
  im1 = axes[0].contourf(X, Y, results['Ordinary']['pred'], levels=20, cmap='YlOrRd')
  axes[0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[0].spines['top'].set_visible(False)
+ axes[0]
  axes[0].spines['right'].set_visible(False)
  # Remove top and right spines
- axes[0].scatter(x, y, c.spines['top'].set_visible(False)
+ axes[0].scatter(x, y, c
  c.spines['right'].set_visible(False)
  axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
  # Remove top and right spines
- axes[0].set_title('Ordinary Kriging\n(Log-transformed)').spines['top'].set_visible(False)
+ axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
  plt.colorbar(im1, ax=axes[0], label='Au (ppm)')
  # Remove top and right spines
- axes[0].set_title('Ordinary Kriging\n(Log-transformed)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
 
  # Lognormal Kriging
  im2 = axes[1].contourf(X, Y, results['Lognormal']['pred'], levels=20, cmap='YlOrRd')
  axes[1].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[1].spines['top'].set_visible(False)
+ axes[1]
  axes[1].spines['right'].set_visible(False)
  # Remove top and right spines
- axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+ axes[1].scatter(x, y, c
  c.spines['right'].set_visible(False)
  axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
  # Remove top and right spines
- axes[1].set_title('Lognormal Kriging\n(Bias-corrected)').spines['top'].set_visible(False)
+ axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
  plt.colorbar(im2, ax=axes[1], label='Au (ppm)')
  # Remove top and right spines
- axes[1].set_title('Lognormal Kriging\n(Bias-corrected)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
 
  # Indicator Kriging
  im3 = axes[2].contourf(X, Y, results['Indicator']['pred'], levels=20, cmap='RdYlGn_r')
  axes[2].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[2].spines['top'].set_visible(False)
+ axes[2]
  axes[2].spines['right'].set_visible(False)
  # Remove top and right spines
- axes[2].scatter(x, y, c.spines['top'].set_visible(False)
+ axes[2].scatter(x, y, c
  c.spines['right'].set_visible(False)
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
  # Remove top and right spines
- axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)').spines['top'].set_visible(False)
+ axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
  plt.colorbar(im3, ax=axes[2], label='Probability')
  # Remove top and right spines
- axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
 
- for ax in axes:
  for ax in axes:
  ax.set_ylabel('Latitude')
 
@@ -345,7 +340,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  # Visualize uncertainty
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Confidence interval width
@@ -353,26 +348,26 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  im1 = axes[0].contourf(X, Y, ci_width, levels=20, cmap='viridis')
  axes[0].set_title('95% CI Width\n(Bootstrap)')
  # Remove top and right spines
- axes[0].set_title('95% CI Width\n(Bootstrap)').spines['top'].set_visible(False)
+ axes[0].set_title('95% CI Width\n(Bootstrap)')
  plt.colorbar(im1, ax=axes[0], label='Width (ppm)')
  # Remove top and right spines
- axes[0].set_title('95% CI Width\n(Bootstrap)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[0].set_title('95% CI Width\n(Bootstrap)')
 
  # Standard deviation
  im2 = axes[1].contourf(X, Y, std_dev, levels=20, cmap='viridis')
  axes[1].scatter(x, y, c='k', s=1, alpha=0.5, label='Samples')
  # Remove top and right spines
- axes[1].scatter(x, y, c.spines['top'].set_visible(False)
+ axes[1].scatter(x, y, c
  c.spines['right'].set_visible(False)
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  # Remove top and right spines
- axes[1].set_title('Prediction Std Dev\n(Kriging Variance)').spines['top'].set_visible(False)
+ axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  plt.colorbar(im2, ax=axes[1], label='Std Dev')
  # Remove top and right spines
- axes[1].set_title('Prediction Std Dev\n(Kriging Variance)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  axes[1].legend()
  # Remove top and right spines
- axes[1].legend().spines['top'].set_visible(False)
+ axes[1].legend()
 
  # Coefficient of variation (relative uncertainty)
  z_pred_reshaped = (10**z_pred.reshape(X.shape) - 0.001)
@@ -381,12 +376,11 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  im3 = axes[2].contourf(X, Y, cv, levels=20, cmap='RdYlGn_r')
  axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
  # Remove top and right spines
- axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)').spines['top'].set_visible(False)
+ axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
  plt.colorbar(im3, ax=axes[2], label='CV (%)')
  # Remove top and right spines
- axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)').spines['right'].set_visible(False).spines['top'].set_visible(False)
+ axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
 
- for ax in axes:
  for ax in axes:
  ax.set_ylabel('Latitude')
 
@@ -428,7 +422,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
  # Visualize
  fig, ax = plt.subplots(figsize=(10, 8))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Variance map
@@ -446,7 +440,6 @@ def design_infill_sampling(x, y, au, model, X, Y):
 
  # Add numbers to new samples
  for i, (nx, ny) in enumerate(new_locations, 1):
- for i, (nx, ny) in enumerate(new_locations, 1):
  ha='center', va='center')
 
  ax.set_title('Optimal Infill Sampling Design\n(targeting high-uncertainty areas)')
@@ -455,7 +448,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
  ax.legend(loc='upper right')
  plt.colorbar(im, ax=ax, label='Kriging Variance')
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  plt.tight_layout()
@@ -519,7 +512,6 @@ def validate_predictions(x, y, au, model):
  logger.info(f" Overall Quality Score: {results['overall_score']:.0f}/100")
 
  if results['overall_score'] > 80:
- if results['overall_score'] > 80:
  elif results['overall_score'] > 60:
  elif results['overall_score'] > 60:
  else:
@@ -532,9 +524,7 @@ def validate_predictions(x, y, au, model):
 # ==============================================================================
 
 if __name__ == '__main__':
-if __name__ == '__main__':
 
- if not Path(AGDB_PATH).exists():
  if not Path(AGDB_PATH).exists():
  logger.info("Please download from: https://doi.org/10.5066/F7445KBJ")
  exit(1)

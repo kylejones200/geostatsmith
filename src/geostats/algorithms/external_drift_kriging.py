@@ -83,9 +83,7 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_data = np.asarray(covariates_data, dtype=np.float64)
      if covariates_data.ndim == 1:
-     if covariates_data.ndim == 1:
 
-     if len(covariates_data) != len(self.x):
      if len(covariates_data) != len(self.x):
      f"covariates_data must have same length as x,y,z. "
      f"Got {len(covariates_data)} vs {len(self.x)}"
@@ -95,7 +93,6 @@ class ExternalDriftKriging(BaseKriging):
      self.n_covariates = covariates_data.shape[1]
 
      # Build kriging matrix
-     if self.variogram_model is not None:
      if self.variogram_model is not None:
 
  def _build_kriging_matrix(self) -> None:
@@ -172,7 +169,6 @@ class ExternalDriftKriging(BaseKriging):
      Kriging variance at each prediction point
      """
      if self.variogram_model is None:
-     if self.variogram_model is None:
 
      x_new, y_new = validate_coordinates(x_new, y_new)
      n_pred = len(x_new)
@@ -182,15 +178,12 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_new = np.asarray(covariates_new, dtype=np.float64)
      if covariates_new.ndim == 1:
-     if covariates_new.ndim == 1:
 
-     if len(covariates_new) != n_pred:
      if len(covariates_new) != n_pred:
      f"covariates_new must match length of x_new, y_new. "
      f"Got {len(covariates_new)} vs {n_pred}"
      )
 
-     if covariates_new.shape[1] != n_cov:
      if covariates_new.shape[1] != n_cov:
      f"covariates_new must have {n_cov} columns (covariates). "
      f"Got {covariates_new.shape[1]}"
@@ -214,7 +207,6 @@ class ExternalDriftKriging(BaseKriging):
      # Build and solve kriging system for each prediction point
      # Note: This loop is necessary as each point has different RHS
      for i in range(n_pred):
-     for i in range(n_pred):
      rhs = np.zeros(n_data + 1 + n_cov, dtype=np.float64)
      rhs[:n_data] = gamma_to_data[i, :] # Variogram values (vectorized)
      rhs[n_data] = 1.0 # Unbiasedness constraint
@@ -231,10 +223,8 @@ class ExternalDriftKriging(BaseKriging):
 
      # Variance: σ²(x₀) = Σλᵢγ(xᵢ-x₀) + μ₁ + Σμₖ₊₁Yₖ(x₀)
      if return_variance:
-     if return_variance:
      variances[i] = np.dot(weights, rhs)
 
-     if return_variance:
      if return_variance:
      return predictions
 

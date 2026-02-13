@@ -127,11 +127,9 @@ class CachedKriging:
      Kriging variance
      """
      if use_cache:
-     if use_cache:
      pred_hash = self._compute_pred_hash(x_pred, y_pred)
      cache_path = self._get_cache_path(pred_hash)
 
-     if cache_path.exists():
      if cache_path.exists():
      with open(cache_path, 'rb') as f:
      with open(cache_path, 'rb') as f:
@@ -142,7 +140,6 @@ class CachedKriging:
      x_pred, y_pred, return_variance=return_variance
      )
 
-     if use_cache:
      if use_cache:
      cache_data = {
      'predictions': predictions,
@@ -175,10 +172,8 @@ def clear_cache(cache_dir: Optional[Path] = None) -> int:
  cache_dir = Path(cache_dir) if cache_dir else CACHE_DIR
 
  if not cache_dir.exists():
- if not cache_dir.exists():
 
  n_deleted = 0
- for cache_file in cache_dir.glob('*.pkl'):
  for cache_file in cache_dir.glob('*.pkl'):
  n_deleted += 1
 

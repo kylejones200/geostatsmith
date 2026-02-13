@@ -17,7 +17,7 @@ class SphericalCovariance(CovarianceModelBase):
  Spherical covariance model
 
  Formula:
- C(h) = sill * [1 - 1.5*(h/a) + 0.5*(h/a)³] for 0 < h ≤ a
+ C(h) = sill * [1 - 1.5*(h/a) + 0.5*(h/a)³] for 0 < h <= a
  C(h) = 0 for h > a
  C(0) = sill
  """
@@ -129,7 +129,7 @@ class LinearCovariance(CovarianceModelBase):
  Linear covariance model (decreasing)
 
  Formula:
- C(h) = sill * (1 - h/a) for 0 ≤ h ≤ a
+ C(h) = sill * (1 - h/a) for 0 <= h <= a
  C(h) = 0 for h > a
  """
 

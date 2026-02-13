@@ -34,7 +34,6 @@ class DataConfig(BaseModel):
  @classmethod
  def validate_file_exists(cls, v):
      if not Path(v).exists():
-     if not Path(v).exists():
      return v
 
 class PreprocessingConfig(BaseModel):
@@ -85,7 +84,6 @@ class NeighborhoodConfig(BaseModel):
 
  @model_validator(mode='after')
  def validate_neighbors(self):
-     if self.max_neighbors < self.min_neighbors:
      if self.max_neighbors < self.min_neighbors:
      return self
 
@@ -204,7 +202,6 @@ class AnalysisConfig(BaseModel):
  @model_validator(mode='after')
  def validate_config(self):
      # Check cokriging requirements
-     if self.kriging.method == 'cokriging' and self.data.z_secondary is None:
      if self.kriging.method == 'cokriging' and self.data.z_secondary is None:
 
  # Check indicator kriging requirements

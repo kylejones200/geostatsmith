@@ -146,7 +146,6 @@ def optimize_parameters(
  )
 
  if not result.success:
- if not result.success:
 
  return result
 
@@ -215,7 +214,6 @@ def compute_weights(
  lag_bins = np.linspace(0, max_dist, n_lags + 1)
 
  weights = np.zeros(n_lags)
- for i in range(n_lags):
  for i in range(n_lags):
  weights[i] = np.sum(mask)
 

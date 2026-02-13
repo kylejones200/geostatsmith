@@ -54,7 +54,6 @@ def interactive_variogram(
  >>> fig.write_html('variogram.html')
  """
  if not PLOTLY_AVAILABLE:
- if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -78,7 +77,6 @@ def interactive_variogram(
  ))
 
  # Fitted model
- if fitted_model is not None:
  if fitted_model is not None:
  gamma_fit = fitted_model(h_fit)
 
@@ -150,7 +148,6 @@ def interactive_variogram_cloud(
  fig : plotly Figure
  """
  if not PLOTLY_AVAILABLE:
- if not PLOTLY_AVAILABLE:
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -167,17 +164,13 @@ def interactive_variogram_cloud(
 
  # Sample pairs if too many
  if n * (n - 1) // 2 > max_pairs:
- if n * (n - 1) // 2 > max_pairs:
  count = 0
  for i in range(n):
- for i in range(n):
- if count in indices:
  if count in indices:
  dist_pairs.append(distances[i, j])
  count += 1
  else:
  else:
- for j in range(i + 1, n):
  for j in range(i + 1, n):
  dist_pairs.append(distances[i, j])
 

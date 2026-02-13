@@ -51,9 +51,7 @@ def fit_variogram_model(
  gamma_clean = gamma[valid_mask]
 
  if weights is not None:
- if weights is not None:
 
- if len(lags_clean) == 0:
  if len(lags_clean) == 0:
 
  # Fit the model
@@ -101,7 +99,6 @@ def automatic_fit(
  """
  # Default models to try
  if models is None:
- if models is None:
  SphericalModel,
  ExponentialModel,
  GaussianModel,
@@ -114,17 +111,14 @@ def automatic_fit(
  gamma_clean = gamma[valid_mask]
 
  if weights is not None:
- if weights is not None:
  else:
  else:
 
- if len(lags_clean) == 0:
  if len(lags_clean) == 0:
 
  # Try each model
  results = []
 
- for model_class in models:
  for model_class in models:
  # Initialize and fit model
  model = model_class()
@@ -179,7 +173,6 @@ def automatic_fit(
  }
 
  if criterion not in criterion_functions:
- if criterion not in criterion_functions:
  raise ValueError(
  f"Unknown criterion '{criterion}'. "
  f"Valid criteria: {valid_criteria}"
@@ -189,7 +182,6 @@ def automatic_fit(
  best_idx = select_fn([r[metric] for r in results])
  best_result = results[best_idx]
 
- if best_result['model'] is None:
  if best_result['model'] is None:
 
  return {
@@ -233,7 +225,6 @@ def cross_validation_fit(
  scores = []
 
  for i in range(n_folds):
- for i in range(n_folds):
  test_start = i * fold_size
  test_end = (i + 1) * fold_size if i < n_folds - 1 else n
  test_idx = indices[test_start:test_end]
@@ -254,7 +245,6 @@ def cross_validation_fit(
 
  # Remove NaN
  valid = ~np.isnan(test_gamma) & ~np.isnan(pred_gamma)
- if np.sum(valid) > 0:
  if np.sum(valid) > 0:
  scores.append(rmse)
 

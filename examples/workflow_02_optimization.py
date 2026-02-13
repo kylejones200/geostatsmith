@@ -86,7 +86,7 @@ def example_1_optimal_sampling():
  # Visualize
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  strategies = [
@@ -95,7 +95,6 @@ def example_1_optimal_sampling():
  ('Hybrid', x_hybrid, y_hybrid)
  ]
 
- for ax, (name, x_new, y_new) in zip(axes, strategies):
  for ax, (name, x_new, y_new) in zip(axes, strategies):
  ax.scatter(x_init, y_init, c='blue', s=100, marker='o',
  label='Existing', edgecolor='k', linewidth=1.5)
@@ -145,7 +144,7 @@ def example_2_infill_sampling():
  # Visualize
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Before infill - show kriging variance
@@ -161,10 +160,10 @@ def example_2_infill_sampling():
  im1 = ax1.contourf(x_grid, y_grid, var_before_grid, levels=15, cmap='YlOrRd')
  ax1.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
  # Remove top and right spines
- ax1.spines['top'].set_visible(False)
+ ax1
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
- ax1.scatter(x_init, y_init, c.spines['top'].set_visible(False)
+ ax1.scatter(x_init, y_init, c
  c.spines['right'].set_visible(False)
  ax1.set_xlabel('X (m)')
  ax1.set_ylabel('Y (m)')
@@ -173,7 +172,7 @@ def example_2_infill_sampling():
  ax1.set_aspect('equal')
  plt.colorbar(im1, ax=ax1, label='Variance')
  # Remove top and right spines
- ax1.set_aspect('equal').spines['top'].set_visible(False)
+ ax1.set_aspect('equal')
 
  # After infill
  x_all = np.concatenate([x_init, x_infill])
@@ -189,14 +188,14 @@ def example_2_infill_sampling():
  im2 = ax2.contourf(x_grid, y_grid, var_after_grid, levels=15, cmap='YlOrRd')
  ax2.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
  # Remove top and right spines
- ax2.spines['top'].set_visible(False)
+ ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
- ax2.scatter(x_init, y_init, c.spines['top'].set_visible(False)
+ ax2.scatter(x_init, y_init, c
  c.spines['right'].set_visible(False)
  ax2.scatter(x_infill, y_infill, c='red', s=150, marker='*', label='Infill', edgecolor='k')
  # Remove top and right spines
- ax2.scatter(x_infill, y_infill, c.spines['top'].set_visible(False)
+ ax2.scatter(x_infill, y_infill, c
  c.spines['right'].set_visible(False)
  ax2.set_xlabel('X (m)')
  ax2.set_ylabel('Y (m)')
@@ -205,7 +204,7 @@ def example_2_infill_sampling():
  ax2.set_aspect('equal')
  plt.colorbar(im2, ax=ax2, label='Variance')
  # Remove top and right spines
- ax2.set_aspect('equal').spines['top'].set_visible(False)
+ ax2.set_aspect('equal')
 
  plt.tight_layout()
  plt.savefig('example_workflow_02_infill.png', dpi=150, bbox_inches='tight')
@@ -249,7 +248,7 @@ def example_3_sample_size_calculator():
  # Visualize RMSE vs sample size
  fig, ax = plt.subplots(figsize=(10, 6))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  ax.plot(results['sample_sizes'], results['rmse_values'], 'bo-', linewidth=2, markersize=8)
@@ -312,21 +311,21 @@ def example_4_cost_benefit():
  # Visualize
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
  # Remove top and right spines
- ax.spines['top'].set_visible(False)
+ ax
  ax.spines['right'].set_visible(False)
 
  # Costs and benefits
  ax1.plot(results['sample_sizes'], results['costs'], 'r-', linewidth=2, label='Cost')
  # Remove top and right spines
- ax1.plot(results['sample_sizes'], results['costs'], 'r-', linewidth.spines['top'].set_visible(False)
+ ax1.plot(results['sample_sizes'], results['costs'], 'r-', linewidth
  linewidth.spines['right'].set_visible(False)
  ax1.plot(results['sample_sizes'], results['benefits'], 'g-', linewidth=2, label='Benefit')
  # Remove top and right spines
- ax1.plot(results['sample_sizes'], results['benefits'], 'g-', linewidth.spines['top'].set_visible(False)
+ ax1.plot(results['sample_sizes'], results['benefits'], 'g-', linewidth
  linewidth.spines['right'].set_visible(False)
  ax1.axvline(results['optimal_n_samples'], color='blue', linestyle='--',
  # Remove top and right spines
- ax1.axvline(results['optimal_n_samples'], color.spines['top'].set_visible(False)
+ ax1.axvline(results['optimal_n_samples'], color
  color.spines['right'].set_visible(False)
  linewidth=2, label='Optimal')
  ax1.set_xlabel('Total Number of Samples')
@@ -337,16 +336,16 @@ def example_4_cost_benefit():
  # Net benefit
  ax2.plot(results['sample_sizes'], results['net_benefits'], 'b-', linewidth=2)
  # Remove top and right spines
- ax2.plot(results['sample_sizes'], results['net_benefits'], 'b-', linewidth.spines['top'].set_visible(False)
+ ax2.plot(results['sample_sizes'], results['net_benefits'], 'b-', linewidth
  linewidth.spines['right'].set_visible(False)
  ax2.axvline(results['optimal_n_samples'], color='green', linestyle='--',
  # Remove top and right spines
- ax2.axvline(results['optimal_n_samples'], color.spines['top'].set_visible(False)
+ ax2.axvline(results['optimal_n_samples'], color
  color.spines['right'].set_visible(False)
  linewidth=2, label=f'Optimal: {results["optimal_n_samples"]} samples')
  ax2.axhline(0, color='k', linestyle='-', linewidth=0.5)
  # Remove top and right spines
- ax2.axhline(0, color.spines['top'].set_visible(False)
+ ax2.axhline(0, color
  color.spines['right'].set_visible(False)
  ax2.fill_between(results['sample_sizes'], 0, results['net_benefits'],
  where=(results['net_benefits'] > 0), alpha=0.3, color='green')
@@ -375,5 +374,4 @@ def main():
  logger.info(" - example_workflow_02_sample_size.png")
  logger.info(" - example_workflow_02_cost_benefit.png")
 
-if __name__ == '__main__':
 if __name__ == '__main__':

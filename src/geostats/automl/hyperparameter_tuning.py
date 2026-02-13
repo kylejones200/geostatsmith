@@ -64,7 +64,6 @@ def tune_kriging(
     # Generate parameter grid
     param_grid = {}
     for param_name, param_range in param_ranges.items():
-    for param_name, param_range in param_ranges.items():
             param_grid[param_name] = np.linspace(
                 param_range[0], param_range[1], n_iterations
             )
@@ -80,7 +79,6 @@ def tune_kriging(
 
     # Limit to n_iterations if too many combinations
     if len(param_combinations) > n_iterations:
-    if len(param_combinations) > n_iterations:
             len(param_combinations), size=n_iterations, replace=False
         )
         param_combinations = [param_combinations[i] for i in indices]
@@ -91,9 +89,7 @@ def tune_kriging(
 
     # Test each parameter combination
     for i, param_combo in enumerate(param_combinations):
-    for i, param_combo in enumerate(param_combinations):
             test_params = current_params.copy()
-            for param_name, param_value in zip(param_names, param_combo):
             for param_name, param_value in zip(param_names, param_combo):
 
             # Create model instance
@@ -107,10 +103,8 @@ def tune_kriging(
             score = metrics.get("rmse", np.inf)
 
             if score < best_score:
-            if score < best_score:
                 best_model = test_model
 
-            if verbose and (i + 1) % max(1, len(param_combinations) // 10) == 0:
             if verbose and (i + 1) % max(1, len(param_combinations) // 10) == 0:
                 )
 
@@ -171,7 +165,6 @@ def optimize_neighborhood(
     from ..algorithms.ordinary_kriging import OrdinaryKriging
 
     for n_neighbors in test_sizes:
-    for n_neighbors in test_sizes:
             neighborhood_config = NeighborhoodConfig(
                 max_neighbors=int(n_neighbors),
                 min_neighbors=3,
@@ -191,7 +184,6 @@ def optimize_neighborhood(
             predictions, metrics = leave_one_out(ok)
             rmse = metrics.get("rmse", np.inf)
 
-            if rmse < best_rmse:
             if rmse < best_rmse:
 
             if verbose:

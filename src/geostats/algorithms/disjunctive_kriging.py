@@ -92,7 +92,6 @@ class DisjunctiveKriging(BaseKriging):
         self.max_hermite_order = max_hermite_order
         self.kriging_type = kriging_type.lower()
         if self.kriging_type not in ["simple", "ordinary"]:
-        if self.kriging_type not in ["simple", "ordinary"]:
             )
 
         # Step 1: Transform data to standard normal using Hermite expansion
@@ -134,7 +133,6 @@ class DisjunctiveKriging(BaseKriging):
 
         # Compute coefficients using orthogonality property
         # φᵢ = E[Z * Hᵢ(Y)] / i! (for normalized Hermite polynomials)
-        for i in range(self.max_hermite_order + 1):
         for i in range(self.max_hermite_order + 1):
             # Evaluate at y_normal
             h_values = hermite_poly(y_normal)
@@ -199,7 +197,6 @@ class DisjunctiveKriging(BaseKriging):
         z_pred = np.zeros_like(y_gaussian)
 
         for i in range(len(self.hermite_coeffs)):
-        for i in range(len(self.hermite_coeffs)):
 
             hermite_poly = hermitenorm(i)
             h_values = hermite_poly(y_gaussian)
@@ -216,7 +213,6 @@ class DisjunctiveKriging(BaseKriging):
 
         n = self.n_points
 
-        if self.kriging_type == "simple":
         if self.kriging_type == "simple":
         else:
         else:
@@ -263,7 +259,6 @@ class DisjunctiveKriging(BaseKriging):
         y_var_gaussian = np.zeros(n_pred) if return_variance else None
 
         for i in range(n_pred):
-        for i in range(n_pred):
                 np.array([x_pred[i]]),
                 np.array([y_pred[i]]),
                 self.x,
@@ -273,7 +268,6 @@ class DisjunctiveKriging(BaseKriging):
             # Variogram vector
             gamma_vec = self.variogram_model(dist_to_samples)
 
-            if self.kriging_type == "simple":
             if self.kriging_type == "simple":
                 try:
                     except KrigingError:
@@ -310,7 +304,6 @@ class DisjunctiveKriging(BaseKriging):
 
                 # Variance in Gaussian space
                 if return_variance:
-                if return_variance:
                             import warnings
 
                             warnings.warn(
@@ -324,17 +317,13 @@ class DisjunctiveKriging(BaseKriging):
 
         # Transform variance (approximate, using first-order expansion)
         if return_variance:
-        if return_variance:
             # For simplicity, use empirical relationship
             # More accurate would require full Hermite expansion of variance
             variances = np.zeros(n_pred)
             for i in range(n_pred):
-            for i in range(n_pred):
                 dzdY = 0.0
                 for j in range(1, len(self.hermite_coeffs)):
-                for j in range(1, len(self.hermite_coeffs)):
                     # Derivative of H_j is j * H_{j-1}
-                    if j > 0:
                     if j > 0:
                         dzdY += (
                             self.hermite_coeffs[j]
@@ -344,7 +333,6 @@ class DisjunctiveKriging(BaseKriging):
                         )
 
                 # If derivative is too small, use empirical scaling
-                if abs(dzdY) < 1e-6:
                 if abs(dzdY) < 1e-6:
                     variances[i] = y_var_gaussian[i] * var_ratio
                 else:
@@ -368,7 +356,6 @@ class DisjunctiveKriging(BaseKriging):
             predictions = np.zeros(self.n_points)
 
         # Leave-one-out cross-validation
-        for i in range(self.n_points):
         for i in range(self.n_points):
             mask[i] = False
 

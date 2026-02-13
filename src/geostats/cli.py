@@ -42,11 +42,9 @@ def run(config_file, validate_only, override, verbose):
  try:
  valid, msg = validate_config(config_file)
  if not valid:
- if not valid:
  click.echo(msg, err=True)
  sys.exit(1)
 
- if validate_only:
  if validate_only:
  return
 
@@ -55,8 +53,6 @@ def run(config_file, validate_only, override, verbose):
 
  # Apply overrides
  if override:
- if override:
- for override_str in override:
  for override_str in override:
  # Parse override (simplified - would need proper parsing)
  # Format: key.subkey.subsubkey=value
@@ -66,7 +62,6 @@ def run(config_file, validate_only, override, verbose):
  click.echo(click.style(" Warning: Overrides not fully implemented yet", fg='yellow'))
 
  # Override verbose if flag set
- if verbose:
  if verbose:
 
     # Run pipeline
@@ -87,7 +82,6 @@ def run(config_file, validate_only, override, verbose):
  except Exception as e:
  click.echo(click.style(f" Unexpected error: {e}", fg='red'), err=True)
  if verbose:
- if verbose:
  sys.exit(1)
 
     @cli.command()
@@ -100,7 +94,6 @@ def validate(config_file):
  geostats-validate analysis.yaml
  """
  valid, msg = validate_config(config_file)
- if valid:
  if valid:
  else:
  else:
@@ -124,14 +117,12 @@ def init(project_name, template, output_dir):
  output_path = Path(output_dir) / f"{project_name}.yaml"
 
  if output_path.exists():
- if output_path.exists():
  sys.exit(1)
 
  # Load template
  templates_dir = Path(__file__).parent.parent / 'examples' / 'configs'
  template_file = templates_dir / f"{template}_template.yaml"
 
- if not template_file.exists():
  if not template_file.exists():
  template_config = {
  'project': {
@@ -211,10 +202,8 @@ def templates():
  }
 
  for name, desc in templates_info.items():
- for name, desc in templates_info.items():
  click.echo(f" {desc}\n")
 
  click.echo("Usage: geostats-init PROJECT_NAME --template TEMPLATE_NAME")
 
-    if __name__ == '__main__':
     if __name__ == '__main__':

@@ -277,7 +277,6 @@ class AnalysisPipeline:
         # Use specified estimator
         estimator = self.config.variogram.estimator
         if estimator == 'matheron':
-        if estimator == 'matheron':
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag
             )
@@ -369,7 +368,6 @@ class AnalysisPipeline:
             
             # Create model with manual parameters
             model_type = self.config.variogram.manual_model.lower()
-            if model_type == 'spherical':
             if model_type == 'spherical':
                     sill=self.config.variogram.manual_sill,
                     range_param=self.config.variogram.manual_range

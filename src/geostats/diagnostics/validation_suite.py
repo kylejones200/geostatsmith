@@ -54,7 +54,6 @@ def comprehensive_validation(
  variances = np.zeros(n)
 
  for i in range(n):
- for i in range(n):
  krig = OrdinaryKriging(
  x[train_idx], y[train_idx], z[train_idx],
  variogram_model
@@ -94,12 +93,9 @@ def comprehensive_validation(
  n_pairs = 0
  sum_products = 0.0
  for i in range(n):
- for i in range(n):
- if distances[i, j] < distances.max() * 0.3: # Nearby points
  if distances[i, j] < distances.max() * 0.3: # Nearby points
  n_pairs += 1
 
- if n_pairs > 0:
  if n_pairs > 0:
  else:
  else:
@@ -112,14 +108,11 @@ def comprehensive_validation(
  # Overall score
  score = 0
  if results['cv_metrics']['r2'] > 0.7:
- if results['cv_metrics']['r2'] > 0.7:
  elif results['cv_metrics']['r2'] > 0.5:
  elif results['cv_metrics']['r2'] > 0.5:
 
  if results['normality']['passes']:
- if results['normality']['passes']:
 
- if results['spatial_independence']['passes']:
  if results['spatial_independence']['passes']:
 
  results['overall_score'] = score
@@ -134,12 +127,10 @@ def _generate_diagnostic_summary(results: Dict) -> str:
 
  summary += "Cross-Validation:\n"
  for key, val in results['cv_metrics'].items():
- for key, val in results['cv_metrics'].items():
 
  summary += f"\nNormality: {'PASS' if results['normality']['passes'] else 'FAIL'}\n"
  summary += f"Spatial Independence: {'PASS' if results['spatial_independence']['passes'] else 'FAIL'}\n"
 
- if results['overall_score'] >= 80:
  if results['overall_score'] >= 80:
  elif results['overall_score'] >= 60:
  elif results['overall_score'] >= 60:

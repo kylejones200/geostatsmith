@@ -280,7 +280,6 @@ class GneitingModel(SpaceTimeVariogramModel):
  ----------
  Gneiting, T. (2002). "Nonseparable, stationary covariance functions
  for space-time data". JASA, 97:590-600.
- for space-time data". JASA, 97:590-600.
 
  def __init__(
      sigma2: float = 1.0,
@@ -300,7 +299,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      a0 : float
      Base temporal scaling parameter
      alpha : float
-     Temporal scaling exponent (0 < alpha ≤ 2)
+     Temporal scaling exponent (0 < alpha <= 2)
      spatial_range : float
      Spatial correlation range
      temporal_range : float
@@ -315,7 +314,6 @@ class GneitingModel(SpaceTimeVariogramModel):
      self.temporal_range = temporal_range
      self.spatial_smoothness = spatial_smoothness
 
-     if not 0 < alpha <= 2:
      if not 0 < alpha <= 2:
 
      logger.info(
@@ -439,12 +437,10 @@ def create_spacetime_model(
  }
 
  if model_type not in models:
- if model_type not in models:
  f"Unknown model_type: {model_type}. "
  f"Available: {list(models.keys())}"
  )
 
- if model_type in ['separable', 'product_sum']:
  if model_type in ['separable', 'product_sum']:
  raise ValueError(f"{model_type} model requires temporal_model")
  return models[model_type](spatial_model, temporal_model, **kwargs)

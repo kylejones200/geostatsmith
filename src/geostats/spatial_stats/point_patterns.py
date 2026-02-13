@@ -90,10 +90,8 @@ def nearest_neighbor_analysis(
  n = len(x)
 
  if n < 2:
- if n < 2:
 
  # Determine study area
- if study_area is None:
  if study_area is None:
  xmin, xmax = x.min() - buffer, x.max() + buffer
  ymin, ymax = y.min() - buffer, y.max() + buffer
@@ -128,7 +126,6 @@ def nearest_neighbor_analysis(
  p_value = 2 * (1 - norm.cdf(abs(z_score)))
 
  # Interpretation
- if R < 1 and p_value < 0.05:
  if R < 1 and p_value < 0.05:
  elif R > 1 and p_value < 0.05:
  elif R > 1 and p_value < 0.05:
@@ -232,10 +229,8 @@ def ripley_k_function(
  n = len(x)
 
  if n < 3:
- if n < 3:
 
  # Determine study area
- if study_area is None:
  if study_area is None:
  ymin, ymax = y.min(), y.max()
  else:
@@ -244,7 +239,6 @@ def ripley_k_function(
  area = (xmax - xmin) * (ymax - ymin)
 
  # Distance values
- if distances is None:
  if distances is None:
  distances = np.linspace(0, max_distance, n_distances + 1)[1:] # Exclude 0
 
@@ -258,11 +252,9 @@ def ripley_k_function(
  K = np.zeros(len(distances))
 
  for i, d in enumerate(distances):
- for i, d in enumerate(distances):
  count = np.sum(dist_matrix < d) - n # Subtract diagonal
 
  # Edge correction
- if edge_correction == 'none':
  if edge_correction == 'none':
  elif edge_correction == 'border':
  elif edge_correction == 'border':
@@ -289,7 +281,6 @@ def ripley_k_function(
  above_threshold = np.sum(K > K_theoretical * 1.1) # 10% above
  below_threshold = np.sum(K < K_theoretical * 0.9) # 10% below
 
- if above_threshold > len(distances) * 0.5:
  if above_threshold > len(distances) * 0.5:
  elif below_threshold > len(distances) * 0.5:
  elif below_threshold > len(distances) * 0.5:
@@ -373,10 +364,8 @@ def quadrat_analysis(
  n = len(x)
 
  if n < 10:
- if n < 10:
 
  # Determine study area
- if study_area is None:
  if study_area is None:
  ymin, ymax = y.min(), y.max()
  else:
@@ -390,7 +379,6 @@ def quadrat_analysis(
  counts = np.zeros((n_quadrats_y, n_quadrats_x))
 
  for i in range(n_quadrats_y):
- for i in range(n_quadrats_y):
  in_quadrat = (
  (x >= x_edges[j]) & (x < x_edges[j + 1]) &
  (y >= y_edges[i]) & (y < y_edges[i + 1])
@@ -399,12 +387,9 @@ def quadrat_analysis(
 
  # Handle edge case: points exactly on upper boundary
  if n_quadrats_x > 0 and n_quadrats_y > 0:
- if n_quadrats_x > 0 and n_quadrats_y > 0:
  on_top_edge = (y == ymax)
  for i in range(n):
- for i in range(n):
  j_idx = n_quadrats_x - 1
- if on_top_edge[i]:
  if on_top_edge[i]:
  else:
  else:
@@ -433,7 +418,6 @@ def quadrat_analysis(
  min_expected = 5
  mask = expected_freq >= min_expected
  if np.sum(mask) < 2:
- if np.sum(mask) < 2:
  chi2_stat = np.nan
  chi2_p = np.nan
  else:
@@ -446,12 +430,10 @@ def quadrat_analysis(
  # Degrees of freedom = number of categories - 1 - number of estimated parameters (1 for lambda)
  df = len(observed_combined) - 2
  if df > 0:
- if df > 0:
  else:
  else:
 
  # Interpretation
- if not np.isnan(vmr):
  if not np.isnan(vmr):
  pattern = "Regular/Dispersed"
  elif vmr > 1.1:
@@ -459,7 +441,6 @@ def quadrat_analysis(
  else:
  else:
 
- if not np.isnan(chi2_p):
  if not np.isnan(chi2_p):
  significance = "significant"
  else:
@@ -534,20 +515,17 @@ def spatial_randomness_test(
  results = {}
 
  if method in ['all', 'nearest_neighbor']:
- if method in ['all', 'nearest_neighbor']:
  results['nearest_neighbor'] = nearest_neighbor_analysis(x, y, **kwargs)
  except Exception as e:
  logger.error(f"Nearest neighbor analysis failed: {e}")
  results['nearest_neighbor'] = {'error': str(e)}
 
  if method in ['all', 'ripley_k']:
- if method in ['all', 'ripley_k']:
  results['ripley_k'] = ripley_k_function(x, y, **kwargs)
  except Exception as e:
  logger.error(f"Ripley's K function failed: {e}")
  results['ripley_k'] = {'error': str(e)}
 
- if method in ['all', 'quadrat']:
  if method in ['all', 'quadrat']:
  results['quadrat'] = quadrat_analysis(x, y, **kwargs)
  except Exception as e:
@@ -591,7 +569,6 @@ def clustering_index(
  >>> index = clustering_index(x, y)
  >>> logger.info(f"Clustering index: {index:.3f}")
  """
- if method == 'nearest_neighbor':
  if method == 'nearest_neighbor':
  return results['R']
  elif method == 'vmr':

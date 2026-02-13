@@ -20,8 +20,8 @@ where f is a rule function (lithotype rule) that partitions the
 
 Example lithotype rule for 3 facies:
  - Sand: Y₁ < t₁
- - Silt: Y₁ ≥ t₁ AND Y₂ < t₂
- - Clay: Y₁ ≥ t₁ AND Y₂ ≥ t₂
+ - Silt: Y₁ >= t₁ AND Y₂ < t₂
+ - Clay: Y₁ >= t₁ AND Y₂ >= t₂
 
 Applications:
 1. Sedimentary facies modeling (complex transitions)
@@ -137,15 +137,12 @@ class PlurigaussianSimulation:
      self.categories = np.asarray(categories, dtype=np.int32).flatten()
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
-     if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
 
      # Setup configuration
-     if config is None:
      if config is None:
      self.config = config
 
      # Validate variogram models
-     if len(variogram_models) != config.n_gaussian_fields:
      if len(variogram_models) != config.n_gaussian_fields:
      f"Number of variogram models ({len(variogram_models)}) must match "
      f"number of Gaussian fields ({config.n_gaussian_fields})"
@@ -153,7 +150,6 @@ class PlurigaussianSimulation:
      self.variogram_models = variogram_models
 
      # Validate rule function
-     if config.rule_function is None:
      if config.rule_function is None:
      self.rule_function = config.rule_function
 
@@ -265,10 +261,8 @@ class PlurigaussianSimulation:
 
      # Generate realizations
      for r in range(self.config.n_realizations):
-     for r in range(self.config.n_realizations):
      gaussian_realizations = []
 
-     for field_idx in range(self.config.n_gaussian_fields):
      for field_idx in range(self.config.n_gaussian_fields):
      seed = self.config.random_seed + r * self.config.n_gaussian_fields + field_idx
      else:
@@ -293,10 +287,8 @@ class PlurigaussianSimulation:
      realizations_categorical[r, :] = categorical_realization
 
      if (r + 1) % 10 == 0:
-     if (r + 1) % 10 == 0:
 
      # Reshape to original grid shape if needed
-     if len(original_shape) > 1:
      if len(original_shape) > 1:
      self.config.n_realizations, *original_shape
      )
@@ -330,14 +322,11 @@ class PlurigaussianSimulation:
 
      # Flatten if needed
      if realizations.ndim > 2:
-     if realizations.ndim > 2:
 
      summary = {}
 
      for cat in self.unique_categories:
-     for cat in self.unique_categories:
      props_per_realization = np.zeros(n_realizations)
-     for r in range(n_realizations):
      for r in range(n_realizations):
 
      summary[int(cat)] = {
@@ -386,7 +375,6 @@ def create_rectangular_rule(
  ... )
  """
  if layout == 'grid':
- if layout == 'grid':
      y2 = np.asarray(y2).flatten()
      n = len(y1)
 
@@ -400,8 +388,6 @@ def create_rectangular_rule(
      n_bins_y2 = len(thresholds_y2) + 1
 
      for i in range(n):
-     for i in range(n):
-     if cat_idx < len(categories):
      if cat_idx < len(categories):
      else:
      else:

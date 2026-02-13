@@ -32,7 +32,6 @@ def r_squared(
  ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
 
  if ss_tot == 0:
- if ss_tot == 0:
 
  return float(1.0 - (ss_res / ss_tot))
 

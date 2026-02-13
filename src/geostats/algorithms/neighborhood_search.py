@@ -68,7 +68,6 @@ class NeighborhoodSearch:
      self.n_points = len(self.x)
 
      if len(self.x) != len(self.y):
-     if len(self.x) != len(self.y):
 
      self.config = config if config is not None else NeighborhoodConfig()
 
@@ -97,16 +96,13 @@ class NeighborhoodSearch:
      """
      # Determine search radius
      if self.config.search_radius is not None:
-     if self.config.search_radius is not None:
      else:
      else:
      radius = np.inf
 
      # Query KD-tree
      if np.isfinite(radius):
-     if np.isfinite(radius):
      indices = np.array(indices, dtype=np.int64)
-     if len(indices) == 0:
      if len(indices) == 0:
      distances = np.linalg.norm(self.points[indices] - [x0, y0], axis=1)
      else:
@@ -117,18 +113,15 @@ class NeighborhoodSearch:
 
      # Apply ellipse search if configured
      if self.config.search_ellipse is not None:
-     if self.config.search_ellipse is not None:
      indices = indices[mask]
      distances = distances[mask]
 
      # Apply octant or quadrant search
      if self.config.use_octants:
-     if self.config.use_octants:
      elif self.config.use_quadrants:
      elif self.config.use_quadrants:
 
      # Apply max_neighbors limit
-     if len(indices) > self.config.max_neighbors:
      if len(indices) > self.config.max_neighbors:
      sort_idx = np.argsort(distances)
      indices = indices[sort_idx[:self.config.max_neighbors]]
@@ -136,8 +129,6 @@ class NeighborhoodSearch:
 
      # Check min_neighbors constraint
      if len(indices) < self.config.min_neighbors:
-     if len(indices) < self.config.min_neighbors:
-     if self.config.search_radius is not None:
      if self.config.search_radius is not None:
      k = min(self.config.min_neighbors, self.n_points)
      distances, indices = self.kdtree.query([x0, y0], k=k)
@@ -165,7 +156,6 @@ class NeighborhoodSearch:
      np.ndarray
      Boolean mask of points within ellipse
      """
-     if self.config.search_ellipse is None:
      if self.config.search_ellipse is None:
 
      major, minor, angle_deg = self.config.search_ellipse
@@ -213,7 +203,6 @@ class NeighborhoodSearch:
      Selected indices and distances
      """
      if len(indices) == 0:
-     if len(indices) == 0:
 
      # Calculate angles
      dx = self.x[indices] - x0
@@ -229,11 +218,9 @@ class NeighborhoodSearch:
      selected_distances = []
 
      for octant in range(8):
-     for octant in range(8):
      octant_idx = indices[octant_mask]
      octant_dist = distances[octant_mask]
 
-     if len(octant_idx) > 0:
      if len(octant_idx) > 0:
      sort_idx = np.argsort(octant_dist)
      n_take = min(max_per_octant, len(octant_idx))
@@ -254,7 +241,6 @@ class NeighborhoodSearch:
      Divides space into 4 quadrants and limits samples per quadrant.
      """
      if len(indices) == 0:
-     if len(indices) == 0:
 
      # Determine quadrants
      dx = self.x[indices] - x0
@@ -272,11 +258,9 @@ class NeighborhoodSearch:
      selected_distances = []
 
      for quadrant in range(4):
-     for quadrant in range(4):
      quad_idx = indices[quad_mask]
      quad_dist = distances[quad_mask]
 
-     if len(quad_idx) > 0:
      if len(quad_idx) > 0:
      n_take = min(max_per_quadrant, len(quad_idx))
      selected_indices.extend(quad_idx[sort_idx[:n_take]])

@@ -96,11 +96,9 @@ def probability_map(
  exceedance_count = np.zeros(n_pred)
 
  for i in range(n_realizations):
- for i in range(n_realizations):
  z_sim = sgs.simulate(x_pred, y_pred, seed=i)
 
  # Check threshold
- if operator == '>':
  if operator == '>':
  elif operator == '>=':
  elif operator == '>=':
@@ -185,7 +183,6 @@ def conditional_probability(
  'std': std,
  }
 
- for threshold in thresholds:
  for threshold in thresholds:
  z_score = (threshold - mean) / (std + 1e-10)
  prob_exceed = 1 - norm.cdf(z_score)

@@ -20,7 +20,7 @@ class SphericalModel(VariogramModelBase):
  It reaches the sill at exactly the range parameter.
 
  Formula:
- γ(h) = nugget + (sill - nugget) * [1.5*(h/a) - 0.5*(h/a)³] for 0 < h ≤ a
+ γ(h) = nugget + (sill - nugget) * [1.5*(h/a) - 0.5*(h/a)³] for 0 < h <= a
  γ(h) = sill for h > a
 
  where a is the range parameter.
@@ -48,7 +48,7 @@ class ExponentialModel(VariogramModelBase):
  Exponential variogram model
 
  The exponential model approaches the sill asymptotically.
- Effective range ≈ 3 * range parameter.
+ Effective range ~= 3 * range parameter.
 
  Formula:
  γ(h) = nugget + (sill - nugget) * [1 - exp(-h/a)]
@@ -71,7 +71,7 @@ class GaussianModel(VariogramModelBase):
 
  The Gaussian model is very smooth near the origin.
  It approaches the sill asymptotically.
- Effective range ≈ √3 * range parameter.
+ Effective range ~= √3 * range parameter.
 
  Formula:
  γ(h) = nugget + (sill - nugget) * [1 - exp(-(h/a)²)]
@@ -193,7 +193,6 @@ class MaternModel(VariogramModelBase):
      """
      super().__init__(nugget=nugget, sill=sill, range_param=range_param)
      if nu <= 0:
-     if nu <= 0:
      self._parameters["nu"] = nu
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
@@ -261,7 +260,7 @@ class CubicModel(VariogramModelBase):
  Reaches sill at range parameter with continuous first derivative.
 
  Formula:
- γ(h) = nugget + (sill - nugget) * [7*(h/a)² - 8.75*(h/a)³ + 3.5*(h/a)⁵ - 0.75*(h/a)⁷] for 0 < h ≤ a
+ γ(h) = nugget + (sill - nugget) * [7*(h/a)² - 8.75*(h/a)³ + 3.5*(h/a)⁵ - 0.75*(h/a)⁷] for 0 < h <= a
  γ(h) = sill for h > a
  """
 
@@ -294,7 +293,7 @@ class StableModel(VariogramModelBase):
  Formula:
  γ(h) = nugget + (sill - nugget) * [1 - exp(-(h/a)^s)]
 
- where s is the shape parameter (0 < s ≤ 2):
+ where s is the shape parameter (0 < s <= 2):
  - s = 1: Exponential model
  - s = 2: Gaussian model
  """
@@ -320,7 +319,6 @@ class StableModel(VariogramModelBase):
      Shape parameter s (must be in (0, 2])
      """
      super().__init__(nugget=nugget, sill=sill, range_param=range_param)
-     if not (0 < shape <= 2):
      if not (0 < shape <= 2):
      self._parameters["shape"] = shape
 
