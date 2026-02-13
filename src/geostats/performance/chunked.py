@@ -1,5 +1,5 @@
 """
-Chunked Processing for Large Datasets
+    Chunked Processing for Large Datasets
 ======================================
 
 Process large prediction grids in chunks to manage memory usage.
@@ -72,7 +72,7 @@ class ChunkedKriging:
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Predict in chunks to manage memory.
+         Predict in chunks to manage memory.
 
      Parameters
      ----------
@@ -136,7 +136,7 @@ class ChunkedKriging:
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Predict on large 2D grid.
+         Predict on large 2D grid.
 
      Parameters
      ----------
@@ -191,7 +191,7 @@ def chunked_predict(
     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
         pass
  """
- Convenience function for chunked prediction.
+     Convenience function for chunked prediction.
 
  Parameters
  ----------

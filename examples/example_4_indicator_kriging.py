@@ -1,5 +1,5 @@
 """
-Example 4: Indicator Kriging for Probability Estimation
+    Example 4: Indicator Kriging for Probability Estimation
 
 This example demonstrates:
     pass
@@ -124,7 +124,7 @@ import logging
 logger = logging.getLogger(__name__)
 legend_elements = [
     """
-    Patch(facecolor="green", label="Below threshold"),
+        Patch(facecolor="green", label="Below threshold"),
         Patch(facecolor="red", label="Above threshold"),
 ]
 ax2.legend(handles=legend_elements, loc="upper right")

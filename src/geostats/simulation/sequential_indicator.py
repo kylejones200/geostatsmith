@@ -1,5 +1,5 @@
 """
-Sequential Indicator Simulation (SIS)
+    Sequential Indicator Simulation (SIS)
 
 Non-parametric conditional simulation for categorical or continuous variables.
 SIS generates stochastic realizations that honor:
@@ -89,7 +89,7 @@ class SequentialIndicatorSimulation:
      ):
          pass
      """
-     Initialize Sequential Indicator Simulation
+         Initialize Sequential Indicator Simulation
 
      Parameters
      ----------
@@ -135,7 +135,7 @@ class SequentialIndicatorSimulation:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Transform values to indicators
+         Transform values to indicators
 
      Parameters
      ----------
@@ -158,7 +158,7 @@ class SequentialIndicatorSimulation:
      ):
          pass
      """
-     Fit indicator variogram models
+         Fit indicator variogram models
 
      Parameters
      ----------
@@ -187,7 +187,7 @@ class SequentialIndicatorSimulation:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Generate conditional realizations
+         Generate conditional realizations
 
      Parameters
      ----------
@@ -282,7 +282,7 @@ class SequentialIndicatorSimulation:
      ) -> float:
          pass
      """
-     Sample a value from conditional CDF
+         Sample a value from conditional CDF
 
      Parameters
      ----------

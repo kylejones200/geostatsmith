@@ -1,5 +1,5 @@
 """
-Pipeline runner for config-driven geostatistical analysis
+    Pipeline runner for config-driven geostatistical analysis
 
 Orchestrates the complete workflow from data loading to output generation.
 """

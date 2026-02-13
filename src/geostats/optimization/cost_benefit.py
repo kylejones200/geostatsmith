@@ -1,5 +1,5 @@
 """
-Cost-Benefit Analysis
+    Cost-Benefit Analysis
 =====================
 
 Functions for sample size estimation and cost-benefit analysis.
@@ -29,7 +29,7 @@ def sample_size_calculator(
     ) -> Dict[str, Any]:
         pass
  """
- Estimate the number of samples needed to achieve target accuracy.
+     Estimate the number of samples needed to achieve target accuracy.
  
  Uses cross-validation to estimate how prediction error decreases
  with increasing sample size.
@@ -54,7 +54,7 @@ def sample_size_calculator(
  Maximum samples to consider
  n_simulations : int, default=10
  """
- Number of Monte Carlo simulations
+     Number of Monte Carlo simulations
  
  Returns
  -------
@@ -88,7 +88,7 @@ def sample_size_calculator(
  References
  ----------
  """
- Webster, R., & Oliver, M. A. (2007). Geostatistics for Environmental
+     Webster, R., & Oliver, M. A. (2007). Geostatistics for Environmental
   Scientists. Wiley.
  """
  n_initial = len(x_initial)
@@ -206,7 +206,7 @@ def cost_benefit_analysis(
     ) -> Dict[str, Any]:
         pass
  """
- Perform cost-benefit analysis for sampling.
+     Perform cost-benefit analysis for sampling.
  
  Determines optimal number of samples by balancing cost of sampling
  against benefit of improved predictions.
@@ -227,7 +227,7 @@ def cost_benefit_analysis(
  Benefit (in same units as cost) per unit RMSE reduction
  max_budget : float
  """
- Maximum budget available
+     Maximum budget available
  
  Returns
  -------
@@ -255,7 +255,7 @@ def cost_benefit_analysis(
  Notes
  -----
  """
- Net benefit = (RMSE_reduction * benefit_per_rmse) - (n_new * cost_per_sample)
+     Net benefit = (RMSE_reduction * benefit_per_rmse) - (n_new * cost_per_sample)
  
  Optimal sample size maximizes net benefit subject to budget constraint.
  """
@@ -318,7 +318,7 @@ def estimate_interpolation_error(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
- Estimate interpolation error and confidence intervals.
+     Estimate interpolation error and confidence intervals.
  
  Parameters
  ----------
@@ -336,7 +336,7 @@ def estimate_interpolation_error(
  Prediction Y coordinates
  confidence_level : float, default=0.95
  """
- Confidence level for intervals (0-1)
+     Confidence level for intervals (0-1)
  
  Returns
  -------
@@ -371,7 +371,7 @@ def estimate_interpolation_error(
  Notes
  -----
  """
- Uses kriging variance to construct confidence intervals.
+     Uses kriging variance to construct confidence intervals.
   Assumes Gaussian errors.
  """
  # Perform kriging

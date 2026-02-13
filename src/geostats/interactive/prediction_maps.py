@@ -1,5 +1,5 @@
 """
-Interactive Prediction Maps
+    Interactive Prediction Maps
 ============================
 
 Interactive 2D and 3D visualization of predictions.
@@ -22,7 +22,7 @@ def interactive_prediction_map(
     ):
         pass
  """
- Interactive 2D prediction map.
+     Interactive 2D prediction map.
 
  Parameters
  ----------
@@ -110,7 +110,7 @@ def interactive_uncertainty_map(
     ):
         pass
  """
- Interactive map showing predictions and uncertainty side-by-side.
+     Interactive map showing predictions and uncertainty side-by-side.
 
  Parameters
  ----------
@@ -194,7 +194,7 @@ def interactive_3d_surface(
     ):
         pass
  """
- Interactive 3D surface plot.
+     Interactive 3D surface plot.
 
  Parameters
  ----------

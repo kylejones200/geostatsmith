@@ -1,5 +1,5 @@
 """
-Data utility functions
+    Data utility functions
 """
 
 from typing import Tuple, Optional, Dict
@@ -15,7 +15,7 @@ def generate_synthetic_data(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Generate synthetic spatial data with known variogram structure
+     Generate synthetic spatial data with known variogram structure
 
  Parameters
  ----------
@@ -102,7 +102,7 @@ def split_train_test(
     ) -> Tuple:
         pass
  """
- Split data into training and test sets
+     Split data into training and test sets
 
  Parameters
  ----------
@@ -152,7 +152,7 @@ def find_duplicate_locations(
     ) -> list:
         pass
  """
- Find duplicate spatial locations
+     Find duplicate spatial locations
 
  Parameters
  ----------
@@ -183,7 +183,7 @@ def check_collinearity(
     ) -> bool:
         pass
  """
- Check if points are approximately collinear
+     Check if points are approximately collinear
 
  Parameters
  ----------
@@ -217,7 +217,7 @@ def compute_data_spacing(
     ) -> Tuple[float, float, float]:
         pass
  """
- Compute statistics about data spacing
+     Compute statistics about data spacing
 
  Parameters
  ----------

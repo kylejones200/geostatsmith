@@ -1,5 +1,5 @@
 """
-Tabular Data I/O
+    Tabular Data I/O
 ================
 
 Functions for reading and writing tabular spatial data (CSV, Excel).
@@ -20,7 +20,7 @@ def read_csv_spatial(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
         pass
  """
- Read spatial data from CSV file.
+     Read spatial data from CSV file.
  
  Parameters
  ----------
@@ -36,7 +36,7 @@ def read_csv_spatial(
  Additional columns to return (e.g., for covariates)
  **kwargs
  """
- Additional arguments passed to pd.read_csv()
+     Additional arguments passed to pd.read_csv()
  
  Returns
  -------
@@ -48,7 +48,7 @@ def read_csv_spatial(
  Values
  extra : DataFrame, optional
  """
- Additional columns (if requested)
+     Additional columns (if requested)
  
  Examples
  --------
@@ -70,10 +70,10 @@ def read_csv_spatial(
  Raises
  ------
  """
- FileNotFoundError
+     FileNotFoundError
   If file doesn't exist'
  """
- KeyError
+     KeyError
   If specified columns don't exist'
  """
  if not Path(filename).exists():
@@ -120,7 +120,7 @@ def write_csv_spatial(
     ) -> None:
         pass
  """
- Write spatial data to CSV file.
+     Write spatial data to CSV file.
  
  Parameters
  ----------
@@ -142,7 +142,7 @@ def write_csv_spatial(
  Additional columns to write
  **kwargs
  """
- Additional arguments passed to pd.DataFrame.to_csv()
+     Additional arguments passed to pd.DataFrame.to_csv()
  
  Examples
  --------
@@ -185,7 +185,7 @@ def read_excel_spatial(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
         pass
  """
- Read spatial data from Excel file.
+     Read spatial data from Excel file.
  
  Parameters
  ----------
@@ -203,7 +203,7 @@ def read_excel_spatial(
  Additional columns to return
  **kwargs
  """
- Additional arguments passed to pd.read_excel()
+     Additional arguments passed to pd.read_excel()
  
  Returns
  -------
@@ -215,7 +215,7 @@ def read_excel_spatial(
  Values
  extra : DataFrame, optional
  """
- Additional columns (if requested)
+     Additional columns (if requested)
  
  Examples
  --------
@@ -224,10 +224,10 @@ def read_excel_spatial(
  Raises
  ------
  """
- FileNotFoundError
+     FileNotFoundError
   If file doesn't exist'
  """
- ImportError
+     ImportError
   If openpyxl is not installed
  """
  if not Path(filename).exists():

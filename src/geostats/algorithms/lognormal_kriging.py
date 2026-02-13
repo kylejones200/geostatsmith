@@ -1,5 +1,5 @@
 """
-Lognormal Kriging
+    Lognormal Kriging
 
 Implementation based on ofr20091103.txt §2805-2810, §3006-3031:
     pass
@@ -54,7 +54,7 @@ class LognormalKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Lognormal Kriging
+         Initialize Lognormal Kriging
 
      Parameters
      ----------
@@ -111,7 +111,7 @@ class LognormalKriging(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict at new locations using lognormal kriging
+         Predict at new locations using lognormal kriging
 
      Parameters
      ----------
@@ -184,7 +184,7 @@ class LognormalKriging(BaseKriging):
      ) -> Tuple[npt.NDArray[np.float64], dict]:
          pass
      """
-     Leave-one-out cross-validation
+         Leave-one-out cross-validation
 
      Parameters
      ----------

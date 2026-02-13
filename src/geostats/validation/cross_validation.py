@@ -1,5 +1,5 @@
 """
-Cross-validation methods for geostatistical models
+    Cross-validation methods for geostatistical models
 
 Supports parallel processing for k-fold and spatial cross-validation
 using Python's multiprocessing module.'
@@ -62,7 +62,7 @@ def k_fold_cross_validation(
     ) -> Dict[str, Any]:
         pass
  """
- Perform k-fold cross-validation (with optional parallelization)
+     Perform k-fold cross-validation (with optional parallelization)
 
  Parameters
  ----------
@@ -163,7 +163,7 @@ def spatial_cross_validation(
     ) -> Dict[str, Any]:
         pass
  """
- Perform spatial cross-validation using spatial blocks (with optional parallelization)
+     Perform spatial cross-validation using spatial blocks (with optional parallelization)
 
  Divides the spatial domain into blocks to preserve spatial structure.
  More appropriate for spatial data than random k-fold CV.

@@ -1,5 +1,5 @@
 """
-Unconditional Gaussian simulation
+    Unconditional Gaussian simulation
 
 Generates random fields without conditioning to data.
 Useful for understanding spatial patterns and testing.
@@ -22,7 +22,7 @@ def unconditional_gaussian_simulation(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Generate unconditional Gaussian simulations
+     Generate unconditional Gaussian simulations
 
  Parameters
  ----------

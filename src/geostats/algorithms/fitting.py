@@ -1,5 +1,5 @@
 """
-Variogram model fitting algorithms
+    Variogram model fitting algorithms
 """
 
 from typing import Optional, Dict, Any, List, Type
@@ -24,7 +24,7 @@ def fit_variogram_model(
     ) -> VariogramModelBase:
         pass
  """
- Fit a variogram model to experimental data
+     Fit a variogram model to experimental data
 
  Parameters
  ----------
@@ -70,7 +70,7 @@ def automatic_fit(
     ) -> Dict[str, Any]:
         pass
  """
- Automatically select and fit the best variogram model
+     Automatically select and fit the best variogram model
 
  Tries multiple models and selects the best based on a criterion.
 
@@ -209,7 +209,7 @@ def cross_validation_fit(
     ) -> Dict[str, float]:
         pass
  """
- Cross-validate variogram model fitting
+     Cross-validate variogram model fitting
 
  Parameters
  ----------

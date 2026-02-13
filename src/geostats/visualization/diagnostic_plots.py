@@ -1,5 +1,5 @@
 """
-Diagnostic and validation plots
+    Diagnostic and validation plots
 """
 
 from typing import Optional
@@ -15,7 +15,7 @@ def plot_cross_validation(
     ) -> plt.Axes:
         pass
  """
- Plot cross-validation results
+     Plot cross-validation results
  
  Parameters
  ----------
@@ -27,7 +27,7 @@ def plot_cross_validation(
  Axes to plot on
  **kwargs
  """
- Additional scatter arguments
+     Additional scatter arguments
  
  Returns
  -------
@@ -78,7 +78,7 @@ def plot_histogram(
     ) -> plt.Axes:
         pass
  """
- Plot histogram with optional normal distribution overlay
+     Plot histogram with optional normal distribution overlay
  
  Parameters
  ----------
@@ -92,7 +92,7 @@ def plot_histogram(
  Whether to overlay fitted normal distribution
  **kwargs
  """
- Additional hist arguments
+     Additional hist arguments
  
  Returns
  -------
@@ -130,7 +130,7 @@ def plot_qq_plot(
     ) -> plt.Axes:
         pass
  """
- Create Q-Q plot to check normality
+     Create Q-Q plot to check normality
  
  Parameters
  ----------
@@ -138,7 +138,7 @@ def plot_qq_plot(
  Data values
  ax : matplotlib.Axes, optional
  """
- Axes to plot on
+     Axes to plot on
  
  Returns
  -------
@@ -170,7 +170,7 @@ def plot_residuals(
     ) -> plt.Figure:
         pass
  """
- Create residual plots
+     Create residual plots
  
  Parameters
  ----------
@@ -180,7 +180,7 @@ def plot_residuals(
  Predicted values
  figsize : tuple
  """
- Figure size
+     Figure size
  
  Returns
  -------
@@ -225,7 +225,7 @@ def qq_plot(
     ) -> tuple:
         pass
  """
- Create Q-Q plot for residuals
+     Create Q-Q plot for residuals
  
  Parameters
  ----------
@@ -235,7 +235,7 @@ def qq_plot(
  Axes to plot on
  **kwargs
  """
- Additional plot arguments
+     Additional plot arguments
  
  Returns
  -------
@@ -263,7 +263,7 @@ def plot_histogram(
     ) -> tuple:
         pass
  """
- Create histogram of data
+     Create histogram of data
  
  Parameters
  ----------
@@ -275,7 +275,7 @@ def plot_histogram(
  Axes to plot on
  **kwargs
  """
- Additional hist arguments
+     Additional hist arguments
  
  Returns
  -------
@@ -313,7 +313,7 @@ def plot_obs_vs_pred(
     ) -> tuple:
         pass
  """
- Create observed vs predicted scatter plot
+     Create observed vs predicted scatter plot
  
  Parameters
  ----------
@@ -325,7 +325,7 @@ def plot_obs_vs_pred(
  Axes to plot on
  **kwargs
  """
- Additional scatter arguments
+     Additional scatter arguments
  
  Returns
  -------
@@ -371,7 +371,7 @@ def plot_residuals(
     ) -> tuple:
         pass
  """
- Create residual plot
+     Create residual plot
  
  Parameters
  ----------
@@ -383,7 +383,7 @@ def plot_residuals(
  Axes to plot on
  **kwargs
  """
- Additional scatter arguments
+     Additional scatter arguments
  
  Returns
  -------
@@ -414,7 +414,7 @@ def plot_residual_histogram(
     ) -> tuple:
         pass
  """
- Create histogram of residuals
+     Create histogram of residuals
  
  Parameters
  ----------
@@ -426,7 +426,7 @@ def plot_residual_histogram(
  Axes to plot on
  **kwargs
  """
- Additional hist arguments
+     Additional hist arguments
  
  Returns
  -------

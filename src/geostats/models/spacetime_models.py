@@ -1,5 +1,5 @@
 """
-Space-Time Variogram Models
+    Space-Time Variogram Models
 
 Space-time geostatistics extends classical geostatistics to handle
 data that varies in both space AND time. This is crucial for:
@@ -119,7 +119,7 @@ class SeparableModel(SpaceTimeVariogramModel):
      ):
          pass
      """
-     Initialize separable space-time model
+         Initialize separable space-time model
 
      Parameters
      ----------
@@ -139,7 +139,7 @@ class SeparableModel(SpaceTimeVariogramModel):
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Evaluate separable space-time variogram
+         Evaluate separable space-time variogram
 
      Parameters
      ----------
@@ -210,7 +210,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
      ):
          pass
      """
-     Initialize product-sum space-time model
+         Initialize product-sum space-time model
 
      Parameters
      ----------
@@ -242,7 +242,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Evaluate product-sum space-time variogram
+         Evaluate product-sum space-time variogram
 
      Parameters
      ----------
@@ -312,7 +312,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      ):
          pass
      """
-     Initialize Gneiting space-time model
+         Initialize Gneiting space-time model
 
      Parameters
      ----------
@@ -369,7 +369,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Evaluate Gneiting space-time variogram
+         Evaluate Gneiting space-time variogram
 
      Parameters
      ----------
@@ -414,7 +414,7 @@ def create_spacetime_model()
     ) -> SpaceTimeVariogramModel:
         pass
  """
- Factory function to create space-time variogram models
+     Factory function to create space-time variogram models
 
  Parameters
  ----------

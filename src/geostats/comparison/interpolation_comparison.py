@@ -1,5 +1,5 @@
 """
-Tools for comparing different spatial interpolation methods.
+    Tools for comparing different spatial interpolation methods.
 
 Provides comparison utilities including:
     pass
@@ -43,7 +43,7 @@ def interpolation_error_metrics(
     ) -> Dict[str, float]:
         pass
  """
- Calculate error metrics for interpolation methods.
+     Calculate error metrics for interpolation methods.
 
  Parameters
  ----------
@@ -114,7 +114,7 @@ def cross_validate_interpolation(
     ) -> Dict[str, Any]:
         pass
  """
- Perform k-fold cross-validation for an interpolation method.
+     Perform k-fold cross-validation for an interpolation method.
 
  Parameters
  ----------
@@ -212,7 +212,7 @@ def benchmark_interpolation_speed(
     ) -> Dict[str, Dict[str, float]]:
         pass
  """
- Benchmark the speed of different interpolation methods.
+     Benchmark the speed of different interpolation methods.
 
  Parameters
  ----------
@@ -278,7 +278,7 @@ def compare_interpolation_methods(
     ) -> Dict[str, Any]:
         pass
  """
- Comparison of interpolation methods.
+     Comparison of interpolation methods.
 
  Compares multiple interpolation methods on the same dataset,
  including error metrics, cross-validation, and speed benchmarks.

@@ -1,5 +1,5 @@
 """
-Raster Data I/O
+    Raster Data I/O
 ===============
 
 Functions for reading and writing raster data formats (GeoTIFF, ASCII Grid).
@@ -24,7 +24,7 @@ def read_geotiff(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
- Read a GeoTIFF file.
+     Read a GeoTIFF file.
  
  Parameters
  ----------
@@ -34,7 +34,7 @@ def read_geotiff(
  Band number to read (1-indexed)
  as_grid : bool, default=True
  """
- If True, return data as 2D grid with coordinate arrays
+     If True, return data as 2D grid with coordinate arrays
   If False, return flattened arrays
 
  Returns
@@ -47,7 +47,7 @@ def read_geotiff(
  Values (2D if as_grid=True, else flattened)
  metadata : dict
  """
- Metadata including CRS, transform, nodata value
+     Metadata including CRS, transform, nodata value
  
  Examples
  --------
@@ -62,10 +62,10 @@ def read_geotiff(
  Raises
  ------
  """
- ImportError
+     ImportError
   If rasterio is not installed
  """
- FileNotFoundError
+     FileNotFoundError
   If file doesn't exist'
  """
  if not RASTERIO_AVAILABLE:
@@ -126,7 +126,7 @@ def write_geotiff(
     ) -> None:
         pass
  """
- Write data to a GeoTIFF file.
+     Write data to a GeoTIFF file.
  
  Parameters
  ----------
@@ -142,7 +142,7 @@ def write_geotiff(
  Coordinate reference system (e.g., 'EPSG:4326', 'EPSG:3857')
  nodata : float, optional
  """
- NoData value to use for NaN values
+     NoData value to use for NaN values
  
  Examples
  --------
@@ -155,7 +155,7 @@ def write_geotiff(
  Raises
  ------
  """
- ImportError
+     ImportError
   If rasterio is not installed
  """
  if not RASTERIO_AVAILABLE:
@@ -205,7 +205,7 @@ def read_ascii_grid(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
- Read an ASCII Grid file (.asc, .grd).
+     Read an ASCII Grid file (.asc, .grd).
  
  ASCII Grid format:
      pass
@@ -223,7 +223,7 @@ def read_ascii_grid(
  Path to ASCII grid file
  as_grid : bool, default=True
  """
- If True, return as grid; if False, return as points
+     If True, return as grid; if False, return as points
  
  Returns
  -------
@@ -235,7 +235,7 @@ def read_ascii_grid(
  Values
  metadata : dict
  """
- Grid metadata
+     Grid metadata
  
  Examples
  --------
@@ -296,7 +296,7 @@ def write_ascii_grid(
     ) -> None:
         pass
  """
- Write data to an ASCII Grid file.
+     Write data to an ASCII Grid file.
  
  Parameters
  ----------
@@ -310,7 +310,7 @@ def write_ascii_grid(
  Values (2D)
  nodata : float, default=-9999
  """
- NoData value
+     NoData value
  
  Examples
  --------

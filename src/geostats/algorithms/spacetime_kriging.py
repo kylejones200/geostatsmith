@@ -1,5 +1,5 @@
 """
-Space-Time Kriging
+    Space-Time Kriging
 
 Kriging extended to space-time data where observations are made at
 different locations AND different times.
@@ -59,7 +59,7 @@ def validate_coordinates_spacetime(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Validate space-time coordinates
+     Validate space-time coordinates
 
  Parameters
  ----------
@@ -191,7 +191,7 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict at new space-time locations
+         Predict at new space-time locations
 
      Parameters
      ----------

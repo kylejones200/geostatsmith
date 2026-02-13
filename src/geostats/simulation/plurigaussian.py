@@ -1,5 +1,5 @@
 """
-Plurigaussian Simulation (PGS)
+    Plurigaussian Simulation (PGS)
 
 Plurigaussian simulation extends Truncated Gaussian Simulation to handle
 complex categorical relationships using multiple independent Gaussian
@@ -125,7 +125,7 @@ class PlurigaussianSimulation:
      ):
          pass
      """
-     Initialize Plurigaussian Simulation
+         Initialize Plurigaussian Simulation
 
      Parameters
      ----------
@@ -248,7 +248,7 @@ class PlurigaussianSimulation:
      ) -> npt.NDArray[np.int32]:
          pass
      """
-     Generate Plurigaussian realizations
+         Generate Plurigaussian realizations
 
      Parameters
      ----------
@@ -325,7 +325,7 @@ class PlurigaussianSimulation:
      ) -> Dict[int, Dict[str, float]]:
          pass
      """
-     Calculate realized proportions for each category
+         Calculate realized proportions for each category
 
      Parameters
      ----------
@@ -375,7 +375,7 @@ def create_rectangular_rule(
     ) -> Callable:
         pass
  """
- Create a rectangular lithotype rule function
+     Create a rectangular lithotype rule function
 
  Partitions the (Y₁, Y₂) plane into rectangular regions.
 

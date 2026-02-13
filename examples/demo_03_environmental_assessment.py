@@ -1,5 +1,5 @@
 """
-DEMO 3: Environmental Guardian - Contamination Risk Assessment
+    DEMO 3: Environmental Guardian - Contamination Risk Assessment
 ============================================================
 
 This demo shows environmental geochemistry with probability mapping and risk analysis.

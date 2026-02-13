@@ -1,5 +1,5 @@
 """
-Configuration file parser and loader
+    Configuration file parser and loader
 
 Supports YAML and JSON formats with validation.
 """
@@ -21,24 +21,24 @@ class ConfigError(GeoStatsError):
 
 def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
  """
- Load and validate configuration file
+     Load and validate configuration file
  
  Parameters
  ----------
  config_path : str or Path
  """
- Path to configuration file (.yaml, .yml, or .json)
+     Path to configuration file (.yaml, .yml, or .json)
  
  Returns
  -------
  """
- AnalysisConfig
+     AnalysisConfig
   Validated configuration object
 
  Raises
  ------
  """
- ConfigError
+     ConfigError
   If file not found, invalid format, or validation fails
 
  Examples
@@ -90,13 +90,13 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
 
 def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  """
- Validate configuration file without loading
+     Validate configuration file without loading
  
  Parameters
  ----------
  config_path : str or Path
  """
- Path to configuration file
+     Path to configuration file
  
  Returns
  -------
@@ -104,7 +104,7 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  True if valid, False otherwise
  message : str
  """
- Success message or error details
+     Success message or error details
  
  Examples
  --------
@@ -125,7 +125,7 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
 
 def load_config_dict(config_dict: dict) -> AnalysisConfig:
  """
- Load configuration from dictionary
+     Load configuration from dictionary
  
  Useful for programmatic config creation or testing.
 
@@ -133,12 +133,12 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
  ----------
  config_dict : dict
  """
- Configuration dictionary
+     Configuration dictionary
  
  Returns
  -------
  """
- AnalysisConfig
+     AnalysisConfig
   Validated configuration object
  """
  try:
@@ -153,7 +153,7 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
 
 def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisConfig:
  """
- Merge configuration with overrides
+     Merge configuration with overrides
  
  Useful for command-line overrides or parameter sweeps.
 
@@ -163,12 +163,12 @@ def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisC
  Base configuration
  override_dict : dict
  """
- Dictionary with values to override
+     Dictionary with values to override
  
  Returns
  -------
  """
- AnalysisConfig
+     AnalysisConfig
   Merged configuration
 
  Examples

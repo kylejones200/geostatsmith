@@ -1,5 +1,5 @@
 """
-Synthetic data generators for testing and demonstrations.
+    Synthetic data generators for testing and demonstrations.
 
 Provides various synthetic spatial datasets with known properties
 for testing interpolation methods and demonstrating concepts.
@@ -35,7 +35,7 @@ def generate_random_field()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Generate a synthetic random field with specified trend and noise.
+     Generate a synthetic random field with specified trend and noise.
  
  Parameters
  ----------
@@ -55,13 +55,13 @@ def generate_random_field()
  Standard deviation of Gaussian noise
  seed : int, optional
  """
- Random seed for reproducibility
+     Random seed for reproducibility
  
  Returns
  -------
  x, y, z : np.ndarray
  """
- Coordinates and values
+     Coordinates and values
  
  Examples
  --------
@@ -74,7 +74,7 @@ def generate_random_field()
  ... )
  >>> logger.info(f"Generated {len(x)} points")
  """
- Generated 50 points
+     Generated 50 points
  
  Notes
  -----
@@ -133,7 +133,7 @@ def generate_clustered_samples(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Generate clustered spatial samples.
+     Generate clustered spatial samples.
  
  Useful for testing declustering methods and demonstrating
  the effect of preferential sampling.
@@ -150,17 +150,17 @@ def generate_clustered_samples(
  Spatial extent
  value_by_cluster : bool, default=True
  """
- If True, values vary by cluster
+     If True, values vary by cluster
   If False, values are spatially continuous
  seed : int, optional
  """
- Random seed
+     Random seed
  
  Returns
  -------
  x, y, z : np.ndarray
  """
- Coordinates and values
+     Coordinates and values
  
  Examples
  --------
@@ -226,7 +226,7 @@ def generate_elevation_like_data()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Generate synthetic elevation-like data with hills and valleys.
+     Generate synthetic elevation-like data with hills and valleys.
  
  Mimics digital elevation models (DEMs) for testing interpolation
  of topographic data.
@@ -243,13 +243,13 @@ def generate_elevation_like_data()
  Terrain roughness (higher = more noise)
  seed : int, optional
  """
- Random seed
+     Random seed
  
  Returns
  -------
  x, y, z : np.ndarray
  """
- Coordinates and elevation values
+     Coordinates and elevation values
  
  Examples
  --------
@@ -315,7 +315,7 @@ def generate_anisotropic_field()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Generate synthetic data with anisotropic spatial correlation.
+     Generate synthetic data with anisotropic spatial correlation.
  
  Useful for testing anisotropic kriging and demonstrating
  directional correlation structures.
@@ -334,13 +334,13 @@ def generate_anisotropic_field()
  Base correlation length
  seed : int, optional
  """
- Random seed
+     Random seed
  
  Returns
  -------
  x, y, z : np.ndarray
  """
- Coordinates and values with anisotropic correlation
+     Coordinates and values with anisotropic correlation
  
  Examples
  --------
@@ -412,7 +412,7 @@ def generate_sparse_dense_mix(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Generate dataset with both sparse and densely sampled regions.
+     Generate dataset with both sparse and densely sampled regions.
  
  Demonstrates challenges in interpolation with uneven sampling
  and the importance of appropriate neighbor selection.
@@ -431,13 +431,13 @@ def generate_sparse_dense_mix(
  Overall spatial extent
  seed : int, optional
  """
- Random seed
+     Random seed
  
  Returns
  -------
  x, y, z : np.ndarray
  """
- Coordinates and values
+     Coordinates and values
  
  Examples
  --------

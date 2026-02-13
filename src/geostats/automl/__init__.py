@@ -1,5 +1,5 @@
 """
-AutoML for Geostatistics
+    AutoML for Geostatistics
 =========================
 
 Automated model selection and hyperparameter tuning.

@@ -1,5 +1,5 @@
 """
-Hyperparameter Tuning
+    Hyperparameter Tuning
 ======================
 
 Optimize hyperparameters for kriging and related methods.
@@ -28,7 +28,7 @@ def tune_kriging(
     ) -> Dict:
         pass
     """
-    Tune kriging hyperparameters via grid search.
+        Tune kriging hyperparameters via grid search.
 
     Parameters
     ----------
@@ -135,7 +135,7 @@ def optimize_neighborhood(
     ) -> int:
         pass
     """
-    Optimize neighborhood size for approximate kriging.
+        Optimize neighborhood size for approximate kriging.
 
     Parameters
     ----------

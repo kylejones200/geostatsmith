@@ -1,5 +1,5 @@
 """
-Support Change and Block Kriging
+    Support Change and Block Kriging
 
 Support refers to the volume (1D, 2D, or 3D) over which a measurement is made:
     pass
@@ -74,7 +74,7 @@ class BlockKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Block Kriging
+         Initialize Block Kriging
 
      Parameters
      ----------
@@ -135,7 +135,7 @@ class BlockKriging(BaseKriging):
      ) -> float:
          pass
      """
-     Calculate γ(point, block) - average variogram from point to block (vectorized)
+         Calculate γ(point, block) - average variogram from point to block (vectorized)
 
      γ(ui, V) = 1/|V| ∫_V γ(ui - v) dv
 
@@ -174,7 +174,7 @@ class BlockKriging(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict block averages at new locations
+         Predict block averages at new locations
 
      Parameters
      ----------
@@ -294,7 +294,7 @@ class SupportCorrection:
      ) -> Callable[[float], float]:
          pass
      """
-     Regularize point variogram to block variogram
+         Regularize point variogram to block variogram
 
      Block variogram γᵥ(h) relates to point variogram γ(h) by:
          pass
@@ -364,7 +364,7 @@ class SupportCorrection:
      ) -> float:
          pass
      """
-     Calculate dispersion variance D²(v/V)
+         Calculate dispersion variance D²(v/V)
 
      Variance of block values within a larger domain:
          pass

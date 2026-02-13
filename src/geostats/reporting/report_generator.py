@@ -1,5 +1,5 @@
 """
-Report Generator
+    Report Generator
 ================
 
 Generate professional analysis reports.
@@ -26,7 +26,7 @@ def generate_report(
     ) -> str:
         pass
  """
- Generate analysis report.
+     Generate analysis report.
  
  Parameters
  ----------
@@ -42,13 +42,13 @@ def generate_report(
  Include cross-validation
  include_uncertainty : bool
  """
- Include uncertainty analysis
+     Include uncertainty analysis
  
  Returns
  -------
  output_path : str
  """
- Path to generated report
+     Path to generated report
  
  Examples
  --------
@@ -214,7 +214,7 @@ def create_kriging_report(
     ) -> str:
         pass
  """
- Generate kriging-specific report with prediction maps.
+     Generate kriging-specific report with prediction maps.
  
  Parameters
  ----------
@@ -224,7 +224,7 @@ def create_kriging_report(
  Prediction locations
  output : str
  """
- Output filename
+     Output filename
  
  Returns
  -------
@@ -241,7 +241,7 @@ def create_validation_report(
     ) -> str:
         pass
  """
- Generate validation-focused report.
+     Generate validation-focused report.
  
  Parameters
  ----------
@@ -249,7 +249,7 @@ def create_validation_report(
  Sample data
  output : str
  """
- Output filename
+     Output filename
  
  Returns
  -------

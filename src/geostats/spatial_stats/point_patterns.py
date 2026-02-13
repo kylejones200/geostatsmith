@@ -1,5 +1,5 @@
 """
-Point pattern analysis tools for spatial statistics.
+    Point pattern analysis tools for spatial statistics.
 
 Provides methods for analyzing the spatial distribution of points:
     continue
@@ -33,7 +33,7 @@ def nearest_neighbor_analysis(
     ) -> Dict[str, float]:
         pass
  """
- Perform nearest neighbor analysis on spatial point pattern.
+     Perform nearest neighbor analysis on spatial point pattern.
  
  Tests whether points show clustering, dispersion, or random pattern
  by comparing observed nearest neighbor distances to theoretical random pattern.
@@ -44,7 +44,7 @@ def nearest_neighbor_analysis(
  Coordinates of points
  study_area : tuple of float, optional
  """
- Study area bounds (xmin, xmax, ymin, ymax)
+     Study area bounds (xmin, xmax, ymin, ymax)
   If None, uses bounding box of points with 10% buffer
 
  Returns
@@ -76,7 +76,7 @@ def nearest_neighbor_analysis(
  The nearest neighbor index R is defined as:
      pass
  """
- R = mean_observed / mean_expected
+     R = mean_observed / mean_expected
  
  Where:
      pass
@@ -163,11 +163,11 @@ def ripley_k_function(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
- Calculate Ripley'
+     Calculate Ripley'
  
  Ripley'
  """
- Used to detect clustering or dispersion at different distances.
+     Used to detect clustering or dispersion at different distances.
  
  Parameters
  ----------
@@ -175,7 +175,7 @@ def ripley_k_function(
  Coordinates of points
  distances : np.ndarray, optional
  """
- Distance values at which to evaluate K
+     Distance values at which to evaluate K
   If None, uses n_distances evenly spaced values
  n_distances : int, default=20
  Number of distance values (if distances not provided)
@@ -183,7 +183,7 @@ def ripley_k_function(
  Study area bounds (xmin, xmax, ymin, ymax)
  edge_correction : str, default='none'
  """
- Edge correction method: 'none', 'border', or 'isotropic'
+     Edge correction method: 'none', 'border', or 'isotropic'
  
  Returns
  -------
@@ -221,7 +221,7 @@ def ripley_k_function(
  Notes
  -----
  """
- Ripley'
+     Ripley'
   K(d) = (Area / n²) * Σ Σ I(dij < d)
 
  Where I(dij < d) is an indicator function that equals 1 if the distance
@@ -241,7 +241,7 @@ def ripley_k_function(
  References
  ----------
  """
- Ripley, B.D. (1977). Modelling spatial patterns. Journal of the
+     Ripley, B.D. (1977). Modelling spatial patterns. Journal of the
   Royal Statistical Society, Series B, 39, 172-212.
  """
  x = np.asarray(x, dtype=np.float64)
@@ -328,7 +328,7 @@ def quadrat_analysis(
     ) -> Dict[str, Any]:
         pass
  """
- Perform quadrat analysis to test for spatial randomness.
+     Perform quadrat analysis to test for spatial randomness.
  
  Divides study area into quadrats and tests if point counts follow
  a Poisson distribution (expected for random pattern).
@@ -341,7 +341,7 @@ def quadrat_analysis(
  Number of quadrats in x and y directions
  study_area : tuple of float, optional
  """
- Study area bounds (xmin, xmax, ymin, ymax)
+     Study area bounds (xmin, xmax, ymin, ymax)
  
  Returns
  -------
@@ -503,7 +503,7 @@ def spatial_randomness_test(
     ) -> Dict[str, Any]:
         pass
  """
- Test for spatial randomness using multiple methods.
+     Test for spatial randomness using multiple methods.
  
  Combines nearest neighbor, Ripley'
  provide robust assessment of spatial pattern.
@@ -516,13 +516,13 @@ def spatial_randomness_test(
  Which tests to perform: 'all', 'nearest_neighbor', 'ripley_k', 'quadrat'
  **kwargs
  """
- Additional arguments passed to individual test functions
+     Additional arguments passed to individual test functions
  
  Returns
  -------
  results : dict
  """
- Dictionary containing results from all requested tests
+     Dictionary containing results from all requested tests
  
  Examples
  --------
@@ -582,7 +582,7 @@ def clustering_index(
     ) -> float:
         pass
  """
- Calculate a single clustering index value.
+     Calculate a single clustering index value.
  
  Provides a simple numeric measure of clustering/dispersion.
 
@@ -592,7 +592,7 @@ def clustering_index(
  Coordinates of points
  method : str, default='nearest_neighbor'
  """
- Method to use: 'nearest_neighbor', 'vmr'
+     Method to use: 'nearest_neighbor', 'vmr'
  
  Returns
  -------

@@ -1,5 +1,5 @@
 """
-Minimalist plotting style for clean, professional visualizations
+    Minimalist plotting style for clean, professional visualizations
 
 Principles:
     pass
@@ -15,7 +15,7 @@ import matplotlib as mpl
 
 def apply_minimalist_style(ax, remove_spines=('top', 'right')):
     """
-    Apply minimalist style to matplotlib axes
+        Apply minimalist style to matplotlib axes
  
  Parameters
  ----------
@@ -101,7 +101,7 @@ def set_minimalist_rcparams():
 
 def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  """
- Create figure with minimalist style applied
+     Create figure with minimalist style applied
  
  Parameters
  ----------
@@ -111,7 +111,7 @@ def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  Figure size
  **kwargs
  """
- Additional arguments passed to plt.subplots
+     Additional arguments passed to plt.subplots
  
  Returns
  -------

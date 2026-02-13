@@ -1,5 +1,5 @@
 """
-Type definitions and type hints for the GeoStats library
+    Type definitions and type hints for the GeoStats library
 """
 
 from typing import Union, Tuple, Protocol, runtime_checkable
@@ -22,7 +22,7 @@ VariogramFunction = callable # (distance: np.ndarray) -> np.ndarray
 class VariogramModel(Protocol):
     def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
-        Compute variogram value at distance h
+            Compute variogram value at distance h
         
         Parameters
         ----------
@@ -42,7 +42,7 @@ class VariogramModel(Protocol):
 
  def fit(self, lags: npt.NDArray[np.float64], gamma: npt.NDArray[np.float64]) -> None:
      """
-     Fit model to experimental variogram data
+         Fit model to experimental variogram data
      
  Parameters
  ----------
@@ -64,7 +64,7 @@ class KrigingPredictor(Protocol):
      ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
          pass
      """
-     Perform kriging prediction
+         Perform kriging prediction
      
      Parameters
      ----------
@@ -74,7 +74,7 @@ class KrigingPredictor(Protocol):
      Y coordinates for prediction
      return_variance : bool
      """
-     Whether to return kriging variance
+         Whether to return kriging variance
      
      Returns
      -------

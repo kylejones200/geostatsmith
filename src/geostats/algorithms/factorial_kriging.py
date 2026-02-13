@@ -1,5 +1,5 @@
 """
-Factorial Kriging
+    Factorial Kriging
 
 Factorial Kriging decomposes a spatial variable into components at
 different spatial scales using nested variogram structures.
@@ -92,7 +92,7 @@ class FactorialKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Factorial Kriging
+         Initialize Factorial Kriging
 
      Parameters
      ----------
@@ -184,7 +184,7 @@ class FactorialKriging(BaseKriging):
      ) -> Dict[str, npt.NDArray[np.float64]]:
          pass
      """
-     Predict each spatial component independently
+         Predict each spatial component independently
 
      Parameters
      ----------
@@ -289,7 +289,7 @@ class FactorialKriging(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict at new locations (sum of all components)
+         Predict at new locations (sum of all components)
 
      Parameters
      ----------
@@ -337,7 +337,7 @@ class FactorialKriging(BaseKriging):
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Filter spatial data by selecting specific components
+         Filter spatial data by selecting specific components
 
      Common use cases:
          pass

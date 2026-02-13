@@ -1,5 +1,5 @@
 """
-Alaska Geochemical Database (AGDB4) - Full Analysis
+    Alaska Geochemical Database (AGDB4) - Full Analysis
 ====================================================
 
 This script runs geostatistical analysis on AGDB4 data

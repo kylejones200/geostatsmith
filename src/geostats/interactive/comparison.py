@@ -1,5 +1,5 @@
 """
-Interactive Comparison Tools
+    Interactive Comparison Tools
 =============================
 
 Interactive comparison of methods and cross-validation results.
@@ -19,7 +19,7 @@ def interactive_comparison(
     ):
         pass
  """
- Interactive comparison of interpolation methods.
+     Interactive comparison of interpolation methods.
 
  Parameters
  ----------
@@ -103,7 +103,7 @@ def interactive_cross_validation(
     ):
         pass
  """
- Interactive cross-validation diagnostic plots.
+     Interactive cross-validation diagnostic plots.
 
  Parameters
  ----------

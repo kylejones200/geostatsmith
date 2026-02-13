@@ -1,5 +1,5 @@
 """
-Distance calculation functions for geostatistics
+    Distance calculation functions for geostatistics
 """
 
 from typing import Optional, Tuple
@@ -15,7 +15,7 @@ def euclidean_distance(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Calculate Euclidean distance between two sets of points
+     Calculate Euclidean distance between two sets of points
 
  Parameters
  ----------
@@ -55,7 +55,7 @@ def euclidean_distance_matrix(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Calculate pairwise Euclidean distance matrix for a set of points
+     Calculate pairwise Euclidean distance matrix for a set of points
 
  Parameters
  ----------
@@ -80,7 +80,7 @@ def anisotropic_distance(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Calculate anisotropic distance between two sets of points
+     Calculate anisotropic distance between two sets of points
 
  Anisotropy is modeled by stretching/compressing space along
  a principal direction.
@@ -135,7 +135,7 @@ def pairwise_distances(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Calculate pairwise distances between coordinate arrays
+     Calculate pairwise distances between coordinate arrays
 
  Parameters
  ----------
@@ -176,7 +176,7 @@ def euclidean_distance_3d()
     ) -> float:
         pass
  """
- Calculate Euclidean distance between two points in 3D space
+     Calculate Euclidean distance between two points in 3D space
 
  Simple scalar version for 3D kriging (kept for backward compatibility).
  For vectorized operations, use euclidean_distance() with z1, z2 parameters.
@@ -204,7 +204,7 @@ def euclidean_distance_matrix_3d(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Calculate pairwise 3D Euclidean distance matrix (vectorized)
+     Calculate pairwise 3D Euclidean distance matrix (vectorized)
 
  Parameters
  ----------
@@ -227,7 +227,7 @@ def directional_distance(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.bool_]]:
         pass
  """
- Calculate distance and direction mask for directional variograms
+     Calculate distance and direction mask for directional variograms
 
  Parameters
  ----------

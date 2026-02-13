@@ -1,5 +1,5 @@
 """
-Interactive Variogram Plots
+    Interactive Variogram Plots
 ============================
 
 Interactive variogram visualizations using Plotly.
@@ -23,7 +23,7 @@ def interactive_variogram(
     ):
         pass
  """
- Create interactive variogram plot.
+     Create interactive variogram plot.
 
  Parameters
  ----------
@@ -133,7 +133,7 @@ def interactive_variogram_cloud(
     ):
         pass
  """
- Create interactive variogram cloud plot.
+     Create interactive variogram cloud plot.
 
  Shows all pairwise semivariances vs. distances.
 

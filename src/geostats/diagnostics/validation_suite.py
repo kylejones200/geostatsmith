@@ -1,5 +1,5 @@
 """
-Validation Suite
+    Validation Suite
 ================
 
 Complete validation and diagnostic analysis.
@@ -21,7 +21,7 @@ def comprehensive_validation(
     ) -> Dict[str, Any]:
         pass
  """
- Validation suite.
+     Validation suite.
 
  Performs multiple validation tests and diagnostics.
 
@@ -153,7 +153,7 @@ def spatial_validation(
     ) -> Dict:
         pass
  """
- Spatial block cross-validation.
+     Spatial block cross-validation.
 
  Splits data spatially to test model on different regions.
 
@@ -185,7 +185,7 @@ def model_diagnostics(
     ) -> Dict:
         pass
  """
- Variogram model diagnostics.
+     Variogram model diagnostics.
 
  Parameters
  ----------

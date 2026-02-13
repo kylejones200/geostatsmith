@@ -1,5 +1,5 @@
 """
-Truncated Gaussian Simulation (TGS)
+    Truncated Gaussian Simulation (TGS)
 
 Truncated Gaussian Simulation is used to simulate categorical variables
 (e.g., lithology types, land use classes) by applying thresholds to
@@ -96,7 +96,7 @@ class TruncatedGaussianSimulation:
      ):
          pass
      """
-     Initialize Truncated Gaussian Simulation
+         Initialize Truncated Gaussian Simulation
 
      Parameters
      ----------
@@ -236,7 +236,7 @@ class TruncatedGaussianSimulation:
      ) -> npt.NDArray[np.int32]:
          pass
      """
-     Generate TGS realizations
+         Generate TGS realizations
 
      Parameters
      ----------
@@ -311,7 +311,7 @@ class TruncatedGaussianSimulation:
      ) -> npt.NDArray[np.int32]:
          pass
      """
-     Apply thresholds to Gaussian field to get categories
+         Apply thresholds to Gaussian field to get categories
 
      Parameters
      ----------
@@ -348,7 +348,7 @@ class TruncatedGaussianSimulation:
      ) -> Dict[int, Dict[str, float]]:
          pass
      """
-     Calculate realized proportions for each category
+         Calculate realized proportions for each category
 
      Parameters
      ----------

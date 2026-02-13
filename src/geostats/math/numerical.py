@@ -1,5 +1,5 @@
 """
-Numerical methods for optimization and fitting
+    Numerical methods for optimization and fitting
 """
 
 from typing import Callable, Dict, Any, Optional, Tuple
@@ -19,7 +19,7 @@ def weighted_least_squares(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Perform weighted least squares fitting
+     Perform weighted least squares fitting
 
  Parameters
  ----------
@@ -82,7 +82,7 @@ def ordinary_least_squares(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Perform ordinary least squares fitting
+     Perform ordinary least squares fitting
 
  Parameters
  ----------
@@ -116,7 +116,7 @@ def optimize_parameters(
     ) -> OptimizeResult:
         pass
  """
- Optimize parameters using scipy.optimize.minimize
+     Optimize parameters using scipy.optimize.minimize
 
  Parameters
  ----------
@@ -159,7 +159,7 @@ def cross_validation_score(
     ) -> Dict[str, float]:
         pass
  """
- Calculate cross-validation metrics
+     Calculate cross-validation metrics
 
  Parameters
  ----------
@@ -204,7 +204,7 @@ def compute_weights()
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Compute weights for variogram fitting based on number of pairs per lag
+     Compute weights for variogram fitting based on number of pairs per lag
 
  Parameters
  ----------

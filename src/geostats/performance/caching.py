@@ -1,5 +1,5 @@
 """
-Caching for Performance
+    Caching for Performance
 =======================
 
 Cache kriging results to avoid recomputation.
@@ -109,7 +109,7 @@ class CachedKriging:
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Predict with caching.
+         Predict with caching.
 
      Parameters
      ----------

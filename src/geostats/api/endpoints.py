@@ -1,5 +1,5 @@
 """
-API Endpoints
+    API Endpoints
 =============
 
 REST API endpoints for geostatistics operations.
@@ -71,7 +71,7 @@ class HealthResponse(BaseModel):
  async def health_check():
      pass
  """
- Health check endpoint.
+     Health check endpoint.
 
  Returns service status and available modules.
  """
@@ -106,7 +106,7 @@ class HealthResponse(BaseModel):
  async def predict(request: PredictionRequest):
      pass
  """
- Perform kriging prediction.
+     Perform kriging prediction.
 
  Returns predictions and optionally variance at requested locations.
  """
@@ -151,7 +151,7 @@ class HealthResponse(BaseModel):
  async def fit_variogram_endpoint(request: VariogramRequest):
      pass
  """
- Fit variogram model to data.
+     Fit variogram model to data.
 
  Returns best fitted model and parameters.
  """
@@ -202,7 +202,7 @@ class HealthResponse(BaseModel):
  ):
      pass
  """
- Automatic interpolation - one endpoint does everything!
+     Automatic interpolation - one endpoint does everything!
 
  Automatically selects best method and makes predictions.
  """

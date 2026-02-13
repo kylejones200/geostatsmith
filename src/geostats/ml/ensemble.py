@@ -1,5 +1,5 @@
 """
-Ensemble Methods for Geostatistics
+    Ensemble Methods for Geostatistics
 
 Ensemble methods combine multiple models to improve prediction accuracy and
 robustness. This module provides hybrid ensemble approaches that combine:
@@ -122,7 +122,7 @@ class EnsembleKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Ensemble Kriging
+         Initialize Ensemble Kriging
 
      Parameters
      ----------
@@ -160,7 +160,7 @@ class EnsembleKriging(BaseKriging):
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Compute model weights based on weighting scheme
+         Compute model weights based on weighting scheme
 
      Parameters
      ----------
@@ -211,7 +211,7 @@ class EnsembleKriging(BaseKriging):
      ]:
          pass
      """
-     Predict using ensemble of kriging models
+         Predict using ensemble of kriging models
 
      Parameters
      ----------
@@ -397,7 +397,7 @@ class BootstrapKriging(BaseKriging):
      ):
          pass
      """
-     Fit bootstrap ensemble
+         Fit bootstrap ensemble
 
      Parameters
      ----------
@@ -455,7 +455,7 @@ class BootstrapKriging(BaseKriging):
      ]:
          pass
      """
-     Predict using bootstrap ensemble
+         Predict using bootstrap ensemble
 
      Parameters
      ----------
@@ -606,7 +606,7 @@ class StackingKriging(BaseKriging):
      ):
          pass
      """
-     Fit stacking ensemble
+         Fit stacking ensemble
 
      Parameters
      ----------

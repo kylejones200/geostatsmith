@@ -1,5 +1,5 @@
 """
-Parallel Processing for Kriging
+    Parallel Processing for Kriging
 ================================
 
 Multi-core parallel implementations of kriging and related operations.
@@ -31,7 +31,7 @@ def parallel_kriging(
     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
         pass
  """
- Perform kriging in parallel across multiple CPU cores.
+     Perform kriging in parallel across multiple CPU cores.
 
  Splits prediction locations into batches and processes them in parallel.
 
@@ -127,7 +127,7 @@ def parallel_cross_validation(
     ) -> dict:
         pass
  """
- Perform cross-validation in parallel.
+     Perform cross-validation in parallel.
 
  Parameters
  ----------
@@ -240,7 +240,7 @@ def parallel_variogram_fit(
     ) -> dict:
         pass
  """
- Fit multiple variogram models in parallel and select best.
+     Fit multiple variogram models in parallel and select best.
 
  Parameters
  ----------

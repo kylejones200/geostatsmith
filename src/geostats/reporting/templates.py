@@ -1,5 +1,5 @@
 """
-Report Templates
+    Report Templates
 ================
 
 Templates for different types of reports.

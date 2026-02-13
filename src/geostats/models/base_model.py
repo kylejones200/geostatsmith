@@ -1,5 +1,5 @@
 """
-Base classes for variogram and covariance models
+    Base classes for variogram and covariance models
 """
 
 from abc import abstractmethod
@@ -25,7 +25,7 @@ class VariogramModelBase(BaseModel):
      ) -> None:
          pass
      """
-     Initialize variogram model
+         Initialize variogram model
 
      Parameters
      ----------
@@ -95,7 +95,7 @@ class VariogramModelBase(BaseModel):
      ) -> "VariogramModelBase":
          pass
      """
-     Fit variogram model to experimental data
+         Fit variogram model to experimental data
 
      Parameters
      ----------
@@ -217,7 +217,7 @@ class CovarianceModelBase(BaseModel):
      ) -> None:
          pass
      """
-     Initialize covariance model
+         Initialize covariance model
 
      Parameters
      ----------
@@ -259,7 +259,7 @@ class CovarianceModelBase(BaseModel):
      ) -> "CovarianceModelBase":
          pass
      """
-     Fit covariance model to data
+         Fit covariance model to data
 
      Parameters
      ----------

@@ -1,5 +1,5 @@
 """
-Indicator Kriging implementation
+    Indicator Kriging implementation
 
 Indicator Kriging transforms continuous data into indicator (binary) variables
 and uses kriging to estimate the probability of exceeding a threshold.
@@ -41,7 +41,7 @@ class IndicatorKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Indicator Kriging
+         Initialize Indicator Kriging
 
      Parameters
      ----------
@@ -98,7 +98,7 @@ class IndicatorKriging(BaseKriging):
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Perform Indicator Kriging prediction
+         Perform Indicator Kriging prediction
 
      Returns probability of exceeding the threshold.
 
@@ -234,7 +234,7 @@ class MultiThresholdIndicatorKriging:
      ):
          pass
      """
-     Initialize Multiple Indicator Kriging
+         Initialize Multiple Indicator Kriging
 
      Parameters
      ----------
@@ -302,7 +302,7 @@ class MultiThresholdIndicatorKriging:
      ) -> Tuple[List[npt.NDArray[np.float64]], npt.NDArray[np.float64]]:
          pass
      """
-     Predict full CDF at locations
+         Predict full CDF at locations
 
      Parameters
      ----------
@@ -336,7 +336,7 @@ class MultiThresholdIndicatorKriging:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Predict specific quantile (e.g., median) at locations
+         Predict specific quantile (e.g., median) at locations
 
      Parameters
      ----------

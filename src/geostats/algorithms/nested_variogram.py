@@ -1,5 +1,5 @@
 """
-Nested Variogram Models
+    Nested Variogram Models
 
 A nested variogram is the sum of multiple variogram structures at different scales:
     pass
@@ -110,7 +110,7 @@ class NestedVariogram:
      ):
          pass
      """
-     Add a structure to the nested model
+         Add a structure to the nested model
 
      Parameters
      ----------
@@ -202,7 +202,7 @@ def fit_nested_variogram(
     ) -> NestedVariogram:
         pass
  """
- Fit nested variogram model to experimental variogram
+     Fit nested variogram model to experimental variogram
 
  Uses global optimization (differential evolution) followed by
  local refinement to find optimal parameters.
@@ -358,7 +358,7 @@ def auto_fit_nested_variogram(
     ) -> NestedVariogram:
         pass
  """
- Automatically determine optimal number of structures
+     Automatically determine optimal number of structures
 
  Fits models with 1, 2, ..., max_structures and selects the best
  based on AIC (Akaike Information Criterion).

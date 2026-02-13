@@ -1,5 +1,5 @@
 """
-Outlier Detection for Geostatistical Data
+    Outlier Detection for Geostatistical Data
 
 Outliers can severely impact variogram estimation and kriging results.
 This module provides methods to identify potential outliers in spatial data.
@@ -47,7 +47,7 @@ def detect_outliers_zscore(
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
         pass
  """
- Detect outliers using z-score method
+     Detect outliers using z-score method
 
  Identifies values more than `threshold` standard deviations from the mean.
 
@@ -107,7 +107,7 @@ def detect_outliers_modified_zscore(
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
         pass
  """
- Detect outliers using modified z-score (robust method)
+     Detect outliers using modified z-score (robust method)
 
  Uses median and median absolute deviation (MAD) instead of mean
  and standard deviation. More robust to outliers.
@@ -175,7 +175,7 @@ def detect_outliers_iqr(
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], Tuple[float, float]]]:
         pass
  """
- Detect outliers using Interquartile Range (IQR) method
+     Detect outliers using Interquartile Range (IQR) method
 
  Classic box-plot method. Values below Q1 - k*IQR or above Q3 + k*IQR
  are considered outliers, where k is the multiplier (default: 1.5).
@@ -235,7 +235,7 @@ def detect_spatial_outliers(
     ) -> npt.NDArray[np.bool_]:
         pass
  """
- Detect spatial outliers based on local neighborhood
+     Detect spatial outliers based on local neighborhood
 
  A point is a spatial outlier if its value differs significantly
  from the values of its nearest neighbors.
@@ -323,7 +323,7 @@ def detect_outliers_ensemble(
     ) -> Tuple[npt.NDArray[np.bool_], Dict[str, npt.NDArray[np.bool_]]]:
         pass
  """
- Ensemble outlier detection using multiple methods
+     Ensemble outlier detection using multiple methods
 
  Combines multiple outlier detection methods. A point is flagged
  as an outlier if detected by at least `min_detections` methods.

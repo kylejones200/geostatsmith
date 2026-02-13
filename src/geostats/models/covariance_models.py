@@ -1,5 +1,5 @@
 """
-Covariance function models
+    Covariance function models
 
 Covariance C(h) and variogram γ(h) are related by:
  C(h) = C(0) - γ(h)

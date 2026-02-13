@@ -1,5 +1,5 @@
 """
-Example 7: Advanced Features (Top 10 Missing Features)
+    Example 7: Advanced Features (Top 10 Missing Features)
 
 Demonstrates the newly implemented advanced geostatistics features:
     pass

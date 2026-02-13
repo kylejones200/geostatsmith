@@ -1,5 +1,5 @@
 """
-Configuration schemas for config-driven geostatistical analysis
+    Configuration schemas for config-driven geostatistical analysis
 
 Uses Pydantic for validation and type checking.
 """

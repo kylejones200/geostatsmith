@@ -1,5 +1,5 @@
 """
-Recipe 2: Method Comparison for Spatial Data
+    Recipe 2: Method Comparison for Spatial Data
 
 This recipe demonstrates how to compare different interpolation methods
 systematically using cross-validation and performance metrics.

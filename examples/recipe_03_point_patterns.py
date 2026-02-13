@@ -1,5 +1,5 @@
 """
-Recipe 3: Analyzing Spatial Point Patterns
+    Recipe 3: Analyzing Spatial Point Patterns
 
 This recipe demonstrates how to analyze spatial point distributions to
 detect clustering, dispersion, or randomness using multiple statistical tests.

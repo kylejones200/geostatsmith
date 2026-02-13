@@ -1,5 +1,5 @@
 """
-Sequential Gaussian Simulation (SGS)
+    Sequential Gaussian Simulation (SGS)
 
 SGS is the most widely used geostatistical simulation algorithm.
 It generates multiple equiprobable realizations that honor:
@@ -36,7 +36,7 @@ def normal_score_transform(
     ) -> Tuple[npt.NDArray[np.float64], callable]:
         pass
  """
- Transform data to standard normal distribution
+     Transform data to standard normal distribution
 
  Uses the normal score transform (NST) which ranks data
  and assigns Gaussian quantiles.
@@ -86,7 +86,7 @@ def sequential_gaussian_simulation(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Perform Sequential Gaussian Simulation
+     Perform Sequential Gaussian Simulation
 
  Parameters
  ----------
@@ -191,7 +191,7 @@ class SequentialGaussianSimulation:
      ):
          pass
      """
-     Initialize SGS
+         Initialize SGS
 
      Parameters
      ----------
@@ -218,7 +218,7 @@ class SequentialGaussianSimulation:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Generate realizations
+         Generate realizations
 
      Parameters
      ----------
@@ -257,7 +257,7 @@ class SequentialGaussianSimulation:
      ) -> Tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
          pass
      """
-     Simulate on a regular grid
+         Simulate on a regular grid
 
      Parameters
      ----------
@@ -302,7 +302,7 @@ class SequentialGaussianSimulation:
      ) -> Tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]:
          pass
      """
-     Calculate statistics from multiple realizations
+         Calculate statistics from multiple realizations
 
      Parameters
      ----------

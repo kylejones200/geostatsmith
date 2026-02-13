@@ -1,5 +1,5 @@
 """
-Example 6: Visualization Tools for Geostatistics
+    Example 6: Visualization Tools for Geostatistics
 
 This example demonstrates:
     pass

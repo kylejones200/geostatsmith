@@ -1,5 +1,5 @@
 """
-Approximate Methods for Speed
+    Approximate Methods for Speed
 ==============================
 
 Fast approximate kriging methods for large datasets.
@@ -24,7 +24,7 @@ def approximate_kriging(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Approximate kriging using local neighborhoods.
+     Approximate kriging using local neighborhoods.
 
  Instead of using all samples for each prediction, uses only
  the nearest neighbors. Much faster for large datasets.
@@ -140,7 +140,7 @@ def coarse_to_fine(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Coarse-to-fine kriging for large grids.
+     Coarse-to-fine kriging for large grids.
 
  First interpolates on coarse grid, then refines to full resolution.
 

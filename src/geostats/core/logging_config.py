@@ -1,5 +1,5 @@
 """
-Centralized logging configuration for GeoStats.
+    Centralized logging configuration for GeoStats.
 
 This module provides a consistent logging setup across the entire library.
 """
@@ -14,7 +14,7 @@ def setup_logging(
     stream: Optional[object] = None,
     ) -> None:
         """
-        Configure logging for GeoStats.
+            Configure logging for GeoStats.
     
     Parameters
     ----------
@@ -24,7 +24,7 @@ def setup_logging(
         Custom format string. If None, uses default format.
     stream : file-like object, optional
         """
-        Stream to write logs to. If None, uses sys.stderr.
+            Stream to write logs to. If None, uses sys.stderr.
         
     Examples
     --------
@@ -50,19 +50,19 @@ def setup_logging(
 
 def get_logger(name: str) -> logging.Logger:
     """
-    Get a logger for a module.
+        Get a logger for a module.
     
     Parameters
     ----------
     name : str
         """
-        Logger name (typically __name__)
+            Logger name (typically __name__)
         
     Returns
     -------
     logger : logging.Logger
         """
-        Configured logger instance
+            Configured logger instance
         
     Examples
     --------

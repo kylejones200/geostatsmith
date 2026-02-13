@@ -1,5 +1,5 @@
 """
-Probability Maps and Risk Assessment
+    Probability Maps and Risk Assessment
 =====================================
 
 Functions for creating probability maps and assessing risks.
@@ -24,7 +24,7 @@ def probability_map(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Create probability map: P(Z operator threshold).
+     Create probability map: P(Z operator threshold).
 
  Uses conditional simulation to estimate probability that values
  exceed (or are below) a threshold.
@@ -123,7 +123,7 @@ def conditional_probability(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
- Compute conditional probabilities for multiple thresholds.
+     Compute conditional probabilities for multiple thresholds.
 
  Useful for creating probability curves or risk profiles.
 
@@ -205,7 +205,7 @@ def risk_assessment(
     ) -> Dict[str, any]:
         pass
  """
- Perform risk-based decision analysis.
+     Perform risk-based decision analysis.
 
  Determines optimal decision threshold by balancing costs of
  false positives and false negatives.

@@ -1,5 +1,5 @@
 """
-Anisotropic variogram models
+    Anisotropic variogram models
 
 Anisotropy occurs when spatial correlation depends on direction.
 Two types:
@@ -29,7 +29,7 @@ class AnisotropicModel:
      ):
          pass
      """
-     Initialize anisotropic model
+         Initialize anisotropic model
 
      Parameters
      ----------
@@ -57,7 +57,7 @@ class AnisotropicModel:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Evaluate anisotropic variogram
+         Evaluate anisotropic variogram
 
      Parameters
      ----------
@@ -103,7 +103,7 @@ class AnisotropicModel:
      ):
          pass
      """
-     Fit the base model to data
+         Fit the base model to data
 
      Note: This fits the isotropic component. For full anisotropic fitting,
      use directional variograms.
@@ -132,7 +132,7 @@ class DirectionalVariogram:
      ):
          pass
      """
-     Initialize with data
+         Initialize with data
 
      Parameters
      ----------
@@ -153,7 +153,7 @@ class DirectionalVariogram:
      ):
          pass
      """
-     Compute experimental variogram in a specific direction
+         Compute experimental variogram in a specific direction
 
      Parameters
      ----------
@@ -194,7 +194,7 @@ class DirectionalVariogram:
      ):
          pass
      """
-     Fit anisotropy parameters by analyzing multiple directions
+         Fit anisotropy parameters by analyzing multiple directions
 
      Parameters
      ----------

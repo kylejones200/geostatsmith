@@ -1,5 +1,5 @@
 """
-FastAPI Application
+    FastAPI Application
 ===================
 
 Main FastAPI application for geostatistics web service.

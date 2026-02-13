@@ -1,5 +1,5 @@
 """
-Walker Lake Dataset
+    Walker Lake Dataset
 
 Classic geostatistics dataset from Nevada.
 Used in Isaaks & Srivastava (1989) and Zhang (2010) course notes.
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 def load_walker_lake() -> Dict:
     """
-    Load the Walker Lake dataset
+        Load the Walker Lake dataset
     
     Returns
     -------
@@ -106,7 +106,7 @@ def load_walker_lake() -> Dict:
 
 def get_walker_lake_subset(n_samples: int = 50, seed: int = 42) -> Dict:
     """
-    Get a random subset of Walker Lake data
+        Get a random subset of Walker Lake data
     
     Useful for testing algorithms on smaller datasets.
 
@@ -116,7 +116,7 @@ def get_walker_lake_subset(n_samples: int = 50, seed: int = 42) -> Dict:
     Number of samples to extract
     seed : int
     """
-    Random seed for reproducibility
+        Random seed for reproducibility
     
     Returns
     -------

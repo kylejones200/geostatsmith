@@ -1,5 +1,5 @@
 """
-Alternative interpolation method implementations.
+    Alternative interpolation method implementations.
 
 Provides non-kriging interpolation methods for comparison:
     continue
@@ -41,7 +41,7 @@ def inverse_distance_weighting(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Inverse Distance Weighting (IDW) interpolation.
+     Inverse Distance Weighting (IDW) interpolation.
 
  Simple but effective method where predicted values are weighted averages
  of nearby points, with weights inversely proportional to distance.
@@ -156,7 +156,7 @@ def radial_basis_function_interpolation(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Radial Basis Function (RBF) interpolation.
+     Radial Basis Function (RBF) interpolation.
 
  RBF interpolation constructs a smooth surface through data points using
  radial basis functions. More sophisticated than IDW.
@@ -248,7 +248,7 @@ def natural_neighbor_interpolation(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Natural Neighbor (Sibson) interpolation.
+     Natural Neighbor (Sibson) interpolation.
 
  Based on Voronoi tessellation. Weights are proportional to the areas
  of natural neighbor regions. Produces smooth, natural-looking surfaces.
@@ -343,7 +343,7 @@ def _barycentric_coordinates(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Calculate barycentric coordinates of a point in a triangle.
+     Calculate barycentric coordinates of a point in a triangle.
 
  Parameters
  ----------

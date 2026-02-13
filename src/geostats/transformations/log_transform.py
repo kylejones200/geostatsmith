@@ -1,5 +1,5 @@
 """
-Logarithmic Transform
+    Logarithmic Transform
 
 Implementation based on Olea (2009) §2162-2176:
     pass
@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 class LogTransform:
  """
- Logarithmic Transform for geostatistical data
+     Logarithmic Transform for geostatistical data
  
  Useful for data that follows a lognormal distribution, common in:
      continue
@@ -40,7 +40,7 @@ class LogTransform:
 
  def __init__(self, base: str = 'natural', epsilon: Optional[float] = None):
      """
-     Initialize Log Transform
+         Initialize Log Transform
      
  Parameters
  ----------
@@ -48,7 +48,7 @@ class LogTransform:
  'natural' for ln, '10' for log10, '2' for log2
  epsilon : float, optional
  """
- Small value to add to zeros before logging
+     Small value to add to zeros before logging
   If None, automatically set to 1% of minimum positive value
  """
  self.base = base
@@ -76,13 +76,13 @@ class LogTransform:
 
  def fit(self, data: npt.NDArray[np.float64]) -> 'LogTransform':
      """
-     Fit the log transform to data
+         Fit the log transform to data
      
  Parameters
  ----------
  data : np.ndarray
  """
- Original data values
+     Original data values
  
  Returns
  -------
@@ -128,13 +128,13 @@ class LogTransform:
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      """
-     Transform data using logarithm
+         Transform data using logarithm
      
  Parameters
  ----------
  data : np.ndarray
  """
- Data to transform
+     Data to transform
  
  Returns
  -------
@@ -160,13 +160,13 @@ class LogTransform:
 
  def inverse_transform(self, log_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      """
-     Back-transform log data to original scale
+         Back-transform log data to original scale
      
  Parameters
  ----------
  log_data : np.ndarray
  """
- Log-transformed data
+     Log-transformed data
  
  Returns
  -------
@@ -192,13 +192,13 @@ class LogTransform:
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      """
-     Fit and transform data in one step
+         Fit and transform data in one step
      
  Parameters
  ----------
  data : np.ndarray
  """
- Data to transform
+     Data to transform
  
  Returns
  -------
@@ -213,7 +213,7 @@ def log_transform(
     ) -> Tuple[npt.NDArray[np.float64], LogTransform]:
         pass
  """
- Convenience function for log transform
+     Convenience function for log transform
  
  Parameters
  ----------
@@ -228,7 +228,7 @@ def log_transform(
  Log-transformed data
  transformer : LogTransform
  """
- Fitted transformer
+     Fitted transformer
  
  Examples
  --------
@@ -248,7 +248,7 @@ def log_back_transform()
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Back-transform log data to original scale
+     Back-transform log data to original scale
  
  Parameters
  ----------
@@ -256,7 +256,7 @@ def log_back_transform()
  Log-transformed data
  transformer : LogTransform
  """
- Fitted transformer
+     Fitted transformer
  
  Returns
  -------

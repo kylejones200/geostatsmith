@@ -1,5 +1,5 @@
 """
-Spatial data visualization
+    Spatial data visualization
 
 Based on Zhang, Y. (2010). Course Notes, Section 3.1
 """
@@ -19,7 +19,7 @@ def plot_data_locations(
     ) -> plt.Axes:
         pass
  """
- Plot data locations (data posting)
+     Plot data locations (data posting)
  
  Parameters
  ----------
@@ -33,7 +33,7 @@ def plot_data_locations(
  Colormap name
  **kwargs
  """
- Additional scatter plot arguments
+     Additional scatter plot arguments
  
  Returns
  -------
@@ -58,7 +58,7 @@ def plot_data_locations(
 
 def plot_contour_map(
  """
- Y: npt.NDArray[np.float64],
+     Y: npt.NDArray[np.float64],
   Z: npt.NDArray[np.float64],
  x_data: Optional[npt.NDArray[np.float64]] = None,
  y_data: Optional[npt.NDArray[np.float64]] = None,
@@ -70,15 +70,15 @@ def plot_contour_map(
     ) -> plt.Axes:
         pass
  """
- Create contour map
+     Create contour map
  
  Parameters
  ----------
  """
- X, Y : np.ndarray
+     X, Y : np.ndarray
   Meshgrid coordinates
  """
- Z : np.ndarray
+     Z : np.ndarray
   Values on grid
  x_data, y_data, z_data : np.ndarray, optional
  Original data points to overlay
@@ -90,7 +90,7 @@ def plot_contour_map(
  Colormap name
  **kwargs
  """
- Additional contourf arguments
+     Additional contourf arguments
  
  Returns
  -------
@@ -131,7 +131,7 @@ def plot_symbol_map(
     ) -> plt.Axes:
         pass
  """
- Create symbol map with sized symbols
+     Create symbol map with sized symbols
  
  Symbol size proportional to value magnitude.
 
@@ -147,7 +147,7 @@ def plot_symbol_map(
  Axes to plot on
  **kwargs
  """
- Additional scatter arguments
+     Additional scatter arguments
  
  Returns
  -------
@@ -174,7 +174,7 @@ def plot_symbol_map(
 
 def plot_kriging_results(
  """
- Y: npt.NDArray[np.float64],
+     Y: npt.NDArray[np.float64],
   Z_pred: npt.NDArray[np.float64],
  Z_var: npt.NDArray[np.float64],
  x_data: npt.NDArray[np.float64],
@@ -184,24 +184,24 @@ def plot_kriging_results(
     ) -> plt.Figure:
         pass
  """
- Plot kriging predictions and variance side-by-side
+     Plot kriging predictions and variance side-by-side
  
  Parameters
  ----------
  """
- X, Y : np.ndarray
+     X, Y : np.ndarray
   Meshgrid coordinates
  """
- Z_pred : np.ndarray
+     Z_pred : np.ndarray
   Kriging predictions
  """
- Z_var : np.ndarray
+     Z_var : np.ndarray
   Kriging variance
  x_data, y_data, z_data : np.ndarray
  Original sample data
  figsize : tuple
  """
- Figure size
+     Figure size
  
  Returns
  -------
@@ -248,7 +248,7 @@ def plot_data_points(
     ) -> tuple:
         pass
  """
- Plot data points (API-compatible version)
+     Plot data points (API-compatible version)
  
  Parameters
  ----------
@@ -268,7 +268,7 @@ def plot_data_points(
  Colormap name
  **kwargs
  """
- Additional scatter plot arguments
+     Additional scatter plot arguments
  
  Returns
  -------
@@ -295,7 +295,7 @@ def plot_data_points(
 
 def plot_contour(
  """
- Y: npt.NDArray[np.float64],
+     Y: npt.NDArray[np.float64],
   Z: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  n_levels: int = 10,
@@ -304,15 +304,15 @@ def plot_contour(
     ) -> tuple:
         pass
  """
- Create contour plot (lines only)
+     Create contour plot (lines only)
  
  Parameters
  ----------
  """
- X, Y : np.ndarray
+     X, Y : np.ndarray
   Meshgrid coordinates
  """
- Z : np.ndarray
+     Z : np.ndarray
   Values on grid
  ax : matplotlib.Axes, optional
  Axes to plot on
@@ -322,7 +322,7 @@ def plot_contour(
  Colormap name
  **kwargs
  """
- Additional contour arguments
+     Additional contour arguments
  
  Returns
  -------
@@ -348,7 +348,7 @@ def plot_contour(
 
 def plot_filled_contour(
  """
- Y: npt.NDArray[np.float64],
+     Y: npt.NDArray[np.float64],
   Z: npt.NDArray[np.float64],
  ax: Optional[plt.Axes] = None,
  n_levels: int = 15,
@@ -357,15 +357,15 @@ def plot_filled_contour(
     ) -> tuple:
         pass
  """
- Create filled contour plot
+     Create filled contour plot
  
  Parameters
  ----------
  """
- X, Y : np.ndarray
+     X, Y : np.ndarray
   Meshgrid coordinates
  """
- Z : np.ndarray
+     Z : np.ndarray
   Values on grid
  ax : matplotlib.Axes, optional
  Axes to plot on
@@ -375,7 +375,7 @@ def plot_filled_contour(
  Colormap name
  **kwargs
  """
- Additional contourf arguments
+     Additional contourf arguments
  
  Returns
  -------

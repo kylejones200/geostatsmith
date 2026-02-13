@@ -1,5 +1,5 @@
 """
-External Drift Kriging (Regression Kriging)
+    External Drift Kriging (Regression Kriging)
 
 Implementation based on:
     pass
@@ -65,7 +65,7 @@ class ExternalDriftKriging(BaseKriging):
      ):
          pass
      """
-     Initialize External Drift Kriging
+         Initialize External Drift Kriging
 
      Parameters
      ----------
@@ -162,7 +162,7 @@ class ExternalDriftKriging(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict at new locations using external drift kriging
+         Predict at new locations using external drift kriging
 
      Parameters
      ----------

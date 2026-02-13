@@ -1,5 +1,5 @@
 """
-Theoretical variogram models
+    Theoretical variogram models
 
 Based on classical geostatistics theory:
     pass
@@ -190,7 +190,7 @@ class MaternModel(VariogramModelBase):
      ):
          pass
      """
-     Initialize Matérn model
+         Initialize Matérn model
 
      Parameters
      ----------
@@ -325,7 +325,7 @@ class StableModel(VariogramModelBase):
      ):
          pass
      """
-     Initialize Stable model
+         Initialize Stable model
 
      Parameters
      ----------

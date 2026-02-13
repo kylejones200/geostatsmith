@@ -1,5 +1,5 @@
 """
-Ordinary Kriging implementation
+    Ordinary Kriging implementation
 
 Ordinary Kriging (OK) does not assume a known mean. Instead, it estimates
 the local mean by adding a Lagrange multiplier constraint.
@@ -43,7 +43,7 @@ class OrdinaryKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Ordinary Kriging
+         Initialize Ordinary Kriging
 
      Parameters
      ----------
@@ -95,7 +95,7 @@ class OrdinaryKriging(BaseKriging):
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Perform Ordinary Kriging prediction
+         Perform Ordinary Kriging prediction
 
      Parameters
      ----------
@@ -227,7 +227,7 @@ class OrdinaryKriging(BaseKriging):
      ) -> Tuple[float, float]:
          pass
      """
-     Block kriging: predict average value over a block
+         Block kriging: predict average value over a block
 
      Parameters
      ----------

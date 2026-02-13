@@ -1,5 +1,5 @@
 """
-Other Format I/O
+    Other Format I/O
 ================
 
 Functions for reading/writing NetCDF, GeoJSON, and conversion utilities.
@@ -29,7 +29,7 @@ def read_netcdf()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
- Read spatial data from NetCDF file.
+     Read spatial data from NetCDF file.
  
  Parameters
  ----------
@@ -43,7 +43,7 @@ def read_netcdf()
  Name of data variable (e.g., 'temperature', 'precipitation')
  time_index : int, optional
  """
- If data has time dimension, specify which time slice to read
+     If data has time dimension, specify which time slice to read
  
  Returns
  -------
@@ -55,7 +55,7 @@ def read_netcdf()
  Values (2D or flattened)
  metadata : dict
  """
- Variable metadata and attributes
+     Variable metadata and attributes
  
  Examples
  --------
@@ -71,10 +71,10 @@ def read_netcdf()
  Raises
  ------
  """
- ImportError
+     ImportError
   If netCDF4 is not installed
  """
- FileNotFoundError
+     FileNotFoundError
   If file doesn't exist'
  """
  if not NETCDF_AVAILABLE:
@@ -133,7 +133,7 @@ def write_netcdf(
     ) -> None:
         pass
  """
- Write spatial data to NetCDF file.
+     Write spatial data to NetCDF file.
  
  Parameters
  ----------
@@ -155,7 +155,7 @@ def write_netcdf(
  Units for data variable
  long_name : str, optional
  """
- Long descriptive name for data variable
+     Long descriptive name for data variable
  
  Examples
  --------
@@ -170,7 +170,7 @@ def write_netcdf(
  Raises
  ------
  """
- ImportError
+     ImportError
   If netCDF4 is not installed
  """
  if not NETCDF_AVAILABLE:
@@ -212,7 +212,7 @@ def read_geojson()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Read point data from GeoJSON file.
+     Read point data from GeoJSON file.
  
  Parameters
  ----------
@@ -220,7 +220,7 @@ def read_geojson()
  Path to GeoJSON file
  z_property : str
  """
- Name of property to use as z values
+     Name of property to use as z values
  
  Returns
  -------
@@ -230,7 +230,7 @@ def read_geojson()
  Y coordinates (latitude)
  z : ndarray
  """
- Values from specified property
+     Values from specified property
  
  Examples
  --------
@@ -239,10 +239,10 @@ def read_geojson()
  Raises
  ------
  """
- ImportError
+     ImportError
   If geopandas is not installed
  """
- FileNotFoundError
+     FileNotFoundError
   If file doesn't exist'
  """
  if not GEOPANDAS_AVAILABLE:
@@ -277,7 +277,7 @@ def write_geojson(
     ) -> None:
         pass
  """
- Write point data to GeoJSON file.
+     Write point data to GeoJSON file.
  
  Parameters
  ----------
@@ -293,7 +293,7 @@ def write_geojson(
  Name for value property
  crs : str, default='EPSG:4326'
  """
- Coordinate reference system
+     Coordinate reference system
  
  Examples
  --------
@@ -302,7 +302,7 @@ def write_geojson(
  Raises
  ------
  """
- ImportError
+     ImportError
   If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
@@ -332,7 +332,7 @@ def to_dataframe(
     ) -> pd.DataFrame:
         pass
  """
- Convert spatial data to pandas DataFrame.
+     Convert spatial data to pandas DataFrame.
  
  Parameters
  ----------
@@ -350,13 +350,13 @@ def to_dataframe(
  Column name for values
  **extra_cols
  """
- Additional columns as keyword arguments
+     Additional columns as keyword arguments
  
  Returns
  -------
  df : DataFrame
  """
- Spatial data as DataFrame
+     Spatial data as DataFrame
  
  Examples
  --------
@@ -384,7 +384,7 @@ def to_geopandas(
     ) -> 'gpd.GeoDataFrame':
         pass
  """
- Convert spatial data to GeoPandas GeoDataFrame.
+     Convert spatial data to GeoPandas GeoDataFrame.
  
  Parameters
  ----------
@@ -400,13 +400,13 @@ def to_geopandas(
  Coordinate reference system
  **extra_cols
  """
- Additional columns as keyword arguments
+     Additional columns as keyword arguments
  
  Returns
  -------
  gdf : GeoDataFrame
  """
- Spatial data as GeoDataFrame
+     Spatial data as GeoDataFrame
  
  Examples
  --------
@@ -416,7 +416,7 @@ def to_geopandas(
  Raises
  ------
  """
- ImportError
+     ImportError
   If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:

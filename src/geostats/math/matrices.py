@@ -1,5 +1,5 @@
 """
-Matrix operations and utilities for kriging
+    Matrix operations and utilities for kriging
 """
 
 from typing import Callable, Optional
@@ -14,7 +14,7 @@ def build_covariance_matrix(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Build covariance matrix from distances and covariance function
+     Build covariance matrix from distances and covariance function
 
  Parameters
  ----------
@@ -35,7 +35,7 @@ def build_variogram_matrix(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Build variogram matrix from distances and variogram function
+     Build variogram matrix from distances and variogram function
 
  Parameters
  ----------
@@ -57,7 +57,7 @@ def solve_kriging_system(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Solve kriging system A * weights = b
+     Solve kriging system A * weights = b
 
  Uses appropriate solver based on matrix properties and size.
 
@@ -113,7 +113,7 @@ def is_positive_definite(
     ) -> bool:
         pass
  """
- Check if a matrix is positive definite
+     Check if a matrix is positive definite
 
  Parameters
  ----------
@@ -142,7 +142,7 @@ def regularize_matrix(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Regularize a matrix by adding small value to diagonal
+     Regularize a matrix by adding small value to diagonal
 
  This improves numerical stability for near-singular matrices.
 
@@ -201,7 +201,7 @@ def add_nugget_effect()
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Add nugget effect to variogram/covariance matrix
+     Add nugget effect to variogram/covariance matrix
 
  Parameters
  ----------

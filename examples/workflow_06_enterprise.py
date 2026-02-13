@@ -1,5 +1,5 @@
 """
-Example Workflow: Enterprise Deployment & Advanced Features
+    Example Workflow: Enterprise Deployment & Advanced Features
 ============================================================
 
 Demonstrates Phase 3 enterprise features:

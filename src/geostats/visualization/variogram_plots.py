@@ -1,5 +1,5 @@
 """
-Variogram visualization functions
+    Variogram visualization functions
 
 """
 
@@ -29,7 +29,7 @@ def plot_variogram(
     ) -> plt.Axes:
         pass
  """
- Plot experimental variogram with optional model fit
+     Plot experimental variogram with optional model fit
  
  Parameters
  ----------
@@ -45,7 +45,7 @@ def plot_variogram(
  Axes to plot on
  **kwargs
  """
- Additional arguments passed to scatter plot
+     Additional arguments passed to scatter plot
  
  Returns
  -------
@@ -97,11 +97,11 @@ def plot_variogram_cloud(
     ) -> plt.Axes:
         pass
  """
- Plot variogram cloud (all pairwise points)
+     Plot variogram cloud (all pairwise points)
  
  Shows individual squared differences vs. distance.
  """
- Useful for detecting outliers and understanding spatial structure.
+     Useful for detecting outliers and understanding spatial structure.
  
  Parameters
  ----------
@@ -115,7 +115,7 @@ def plot_variogram_cloud(
  Axes to plot on
  **kwargs
  """
- Additional scatter plot arguments
+     Additional scatter plot arguments
  
  Returns
  -------
@@ -151,11 +151,11 @@ def plot_h_scatterplot(
     ) -> plt.Axes:
         pass
  """
- Plot h-scatterplot: z(x) vs z(x+h)
+     Plot h-scatterplot: z(x) vs z(x+h)
  
  Shows correlation between values separated by distance h.
  """
- The cloud of points should lie along a 45° line if strong correlation exists.
+     The cloud of points should lie along a 45° line if strong correlation exists.
  
  Based on Zhang, Y. (2010). Course Notes, Section 3.2.2
 
@@ -175,7 +175,7 @@ def plot_h_scatterplot(
  Angular tolerance in degrees
  ax : matplotlib.Axes, optional
  """
- Axes to plot on
+     Axes to plot on
  
  Returns
  -------
@@ -244,7 +244,7 @@ def plot_directional_variograms(
     ) -> plt.Figure:
         pass
  """
- Plot directional variograms to detect anisotropy
+     Plot directional variograms to detect anisotropy
  
  Parameters
  ----------
@@ -260,7 +260,7 @@ def plot_directional_variograms(
  Number of lag bins
  figsize : tuple
  """
- Figure size
+     Figure size
  
  Returns
  -------
@@ -310,7 +310,7 @@ def plot_variogram_map(
     ) -> plt.Figure:
         pass
  """
- Create a variogram map (2D variogram surface)
+     Create a variogram map (2D variogram surface)
  
  Shows how semivariance varies with direction and distance.
 
@@ -324,7 +324,7 @@ def plot_variogram_map(
  Size of each lag
  figsize : tuple
  """
- Figure size
+     Figure size
  
  Returns
  -------
@@ -397,7 +397,7 @@ def plot_experimental_variogram(
     ) -> tuple:
         pass
  """
- Plot experimental variogram points
+     Plot experimental variogram points
  
  Parameters
  ----------
@@ -411,7 +411,7 @@ def plot_experimental_variogram(
  Axes to plot on
  **kwargs
  """
- Additional scatter arguments
+     Additional scatter arguments
  
  Returns
  -------
@@ -447,7 +447,7 @@ def plot_variogram_model(
     ) -> tuple:
         pass
  """
- Plot theoretical variogram model
+     Plot theoretical variogram model
  
  Parameters
  ----------
@@ -461,7 +461,7 @@ def plot_variogram_model(
  Number of points for smooth curve
  **kwargs
  """
- Additional plot arguments
+     Additional plot arguments
  
  Returns
  -------
@@ -503,7 +503,7 @@ def plot_variogram_with_model(
     ) -> tuple:
         pass
  """
- Plot experimental variogram with fitted model
+     Plot experimental variogram with fitted model
  
  Parameters
  ----------
@@ -519,7 +519,7 @@ def plot_variogram_with_model(
  Axes to plot on
  **kwargs
  """
- Additional arguments
+     Additional arguments
  
  Returns
  -------
@@ -568,7 +568,7 @@ def plot_variogram_map(
     ) -> tuple:
         pass
  """
- Create variogram map (directional variography)
+     Create variogram map (directional variography)
  
  Parameters
  ----------
@@ -580,7 +580,7 @@ def plot_variogram_map(
  Number of lag bins in each direction
  ax : matplotlib.Axes, optional
  """
- Axes to plot on
+     Axes to plot on
  
  Returns
  -------

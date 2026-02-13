@@ -1,5 +1,5 @@
 """
-Sampling Design Optimization
+    Sampling Design Optimization
 =============================
 
 Functions for designing optimal spatial sampling strategies.
@@ -26,7 +26,7 @@ def optimal_sampling_design(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Design optimal locations for new sampling points.
+     Design optimal locations for new sampling points.
  
  Uses kriging variance to identify locations where uncertainty is highest,
  or space-filling designs to ensure good spatial coverage.
@@ -57,7 +57,7 @@ def optimal_sampling_design(
  If None, uses existing data bounds
  n_candidates : int, default=1000
  """
- Number of candidate locations to evaluate
+     Number of candidate locations to evaluate
  
  Returns
  -------
@@ -65,7 +65,7 @@ def optimal_sampling_design(
  X coordinates of proposed new sample locations
  y_new : ndarray
  """
- Y coordinates of proposed new sample locations
+     Y coordinates of proposed new sample locations
  
  Examples
  --------
@@ -221,7 +221,7 @@ def infill_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Identify locations where additional sampling is needed (infill).
+     Identify locations where additional sampling is needed (infill).
  
  Adds samples until kriging variance is below threshold everywhere.
 
@@ -243,7 +243,7 @@ def infill_sampling(
  Domain bounds for Y
  max_samples : int, default=100
  """
- Maximum number of new samples to add
+     Maximum number of new samples to add
  
  Returns
  -------
@@ -251,7 +251,7 @@ def infill_sampling(
  X coordinates of infill sample locations
  y_infill : ndarray
  """
- Y coordinates of infill sample locations
+     Y coordinates of infill sample locations
  
  Examples
  --------
@@ -333,7 +333,7 @@ def stratified_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Generate stratified random sample locations.
+     Generate stratified random sample locations.
  
  Divides the domain into strata and places samples randomly within each stratum.
 
@@ -347,11 +347,11 @@ def stratified_sampling(
  Total number of samples
  n_strata_x : int, optional
  """
- Number of strata in X direction
+     Number of strata in X direction
   If None, uses sqrt(n_samples)
  n_strata_y : int, optional
  """
- Number of strata in Y direction
+     Number of strata in Y direction
   If None, uses sqrt(n_samples)
 
  Returns
@@ -360,7 +360,7 @@ def stratified_sampling(
  X coordinates of sample locations
  y : ndarray
  """
- Y coordinates of sample locations
+     Y coordinates of sample locations
  
  Examples
  --------
@@ -427,7 +427,7 @@ def adaptive_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Adaptive sampling: iteratively add samples where uncertainty is highest.
+     Adaptive sampling: iteratively add samples where uncertainty is highest.
  
  Parameters
  ----------
@@ -447,7 +447,7 @@ def adaptive_sampling(
  Domain bounds for X
  y_bounds : tuple, optional
  """
- Domain bounds for Y
+     Domain bounds for Y
  
  Returns
  -------
@@ -455,7 +455,7 @@ def adaptive_sampling(
  All proposed sample locations (all iterations)
  y_adaptive : ndarray
  """
- All proposed sample locations (all iterations)
+     All proposed sample locations (all iterations)
  
  Examples
  --------

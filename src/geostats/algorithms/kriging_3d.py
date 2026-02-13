@@ -69,7 +69,7 @@ class SimpleKriging3D(BaseKriging):
      ):
          pass
      """
-     Initialize 3D Simple Kriging
+         Initialize 3D Simple Kriging
 
      Parameters
      ----------
@@ -130,7 +130,7 @@ class SimpleKriging3D(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict at new 3D locations
+         Predict at new 3D locations
 
      Parameters
      ----------
@@ -209,7 +209,7 @@ class OrdinaryKriging3D(BaseKriging):
      ):
          pass
      """
-     Initialize 3D Ordinary Kriging
+         Initialize 3D Ordinary Kriging
 
      Parameters
      ----------
@@ -259,7 +259,7 @@ class OrdinaryKriging3D(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict at new 3D locations using ordinary kriging
+         Predict at new 3D locations using ordinary kriging
 
      Parameters
      ----------

@@ -1,5 +1,5 @@
 """
-Conditional Simulation using Cholesky Decomposition
+    Conditional Simulation using Cholesky Decomposition
 
 Generates Gaussian random fields conditioned to data.
 Uses Cholesky decomposition of the covariance matrix.
@@ -24,7 +24,7 @@ def cholesky_simulation(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Unconditional simulation using Cholesky decomposition
+     Unconditional simulation using Cholesky decomposition
 
  Generates Gaussian random fields by decomposing the covariance matrix.
 
@@ -112,7 +112,7 @@ def conditional_simulation(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Conditional simulation using conditioning by kriging
+     Conditional simulation using conditioning by kriging
 
  Algorithm:
      pass
@@ -227,7 +227,7 @@ def turning_bands_simulation(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- Turning Bands Method for unconditional simulation
+     Turning Bands Method for unconditional simulation
 
  Faster alternative to Cholesky for large grids.
  Approximates 2D simulation by combining 1D simulations along random lines.

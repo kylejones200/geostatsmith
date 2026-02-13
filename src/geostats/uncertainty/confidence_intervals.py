@@ -1,5 +1,5 @@
 """
-Confidence Intervals and Prediction Bands
+    Confidence Intervals and Prediction Bands
 ==========================================
 
 Functions for computing confidence intervals and visualization utilities.
@@ -21,7 +21,7 @@ def confidence_intervals(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
- Compute confidence intervals for kriging predictions.
+     Compute confidence intervals for kriging predictions.
 
  Uses kriging variance to construct confidence intervals
  assuming Gaussian errors.
@@ -114,7 +114,7 @@ def prediction_bands(
     ) -> Dict[str, any]:
         pass
  """
- Compute multiple prediction bands at different confidence levels.
+     Compute multiple prediction bands at different confidence levels.
 
  Useful for visualizing uncertainty with multiple bands.
 
@@ -208,7 +208,7 @@ def uncertainty_ellipse(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- Compute uncertainty ellipse for a prediction location.
+     Compute uncertainty ellipse for a prediction location.
 
  The ellipse represents regions of equal kriging variance
  around a point.

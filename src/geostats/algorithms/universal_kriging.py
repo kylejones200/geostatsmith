@@ -1,5 +1,5 @@
 """
-Universal Kriging implementation
+    Universal Kriging implementation
 
 Universal Kriging (UK) accounts for a trend (drift) in the data.
 The mean is modeled as a function of coordinates:
@@ -44,7 +44,7 @@ class UniversalKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Universal Kriging
+         Initialize Universal Kriging
 
      Parameters
      ----------
@@ -83,7 +83,7 @@ class UniversalKriging(BaseKriging):
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Build matrix of drift basis functions
+         Build matrix of drift basis functions
 
      Parameters
      ----------
@@ -153,7 +153,7 @@ class UniversalKriging(BaseKriging):
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Perform Universal Kriging prediction
+         Perform Universal Kriging prediction
 
      Parameters
      ----------

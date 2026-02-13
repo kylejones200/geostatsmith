@@ -1,5 +1,5 @@
 """
-Outlier Detection and Robust Validation
+    Outlier Detection and Robust Validation
 ========================================
 
 Tools for detecting outliers and robust validation.
@@ -20,7 +20,7 @@ def outlier_analysis(
     ) -> Dict:
         pass
  """
- Detect potential outliers in spatial data.
+     Detect potential outliers in spatial data.
 
  Parameters
  ----------
@@ -101,7 +101,7 @@ def robust_validation(
     ) -> Dict:
         pass
  """
- Validation with outlier detection and removal.
+     Validation with outlier detection and removal.
 
  Parameters
  ----------

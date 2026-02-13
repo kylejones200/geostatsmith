@@ -1,5 +1,5 @@
 """
-Gaussian Process Regression for Geostatistics
+    Gaussian Process Regression for Geostatistics
 
 Gaussian Processes (GP) provide a machine learning interpretation of kriging.
 This module bridges classical geostatistics and modern ML by:
@@ -160,7 +160,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      ):
          pass
      """
-     Initialize Gaussian Process with geostatistical kernel
+         Initialize Gaussian Process with geostatistical kernel
 
      Parameters
      ----------
@@ -202,7 +202,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      ):
          pass
      """
-     Fit Gaussian Process model
+         Fit Gaussian Process model
 
      Parameters
      ----------
@@ -314,7 +314,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]
     ]:
      """
-     Predict using Gaussian Process
+         Predict using Gaussian Process
 
      Parameters
      ----------
@@ -434,7 +434,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      ) -> float:
          pass
      """
-     Return the coefficient of determination R² of the prediction
+         Return the coefficient of determination R² of the prediction
 
      sklearn-compatible scoring function.
 

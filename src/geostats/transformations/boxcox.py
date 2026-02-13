@@ -1,5 +1,5 @@
 """
-Box-Cox Transformation
+    Box-Cox Transformation
 
 The Box-Cox transformation is a parametric power transformation that
 stabilizes variance and makes data more normal-like.
@@ -57,7 +57,7 @@ MIN_POSITIVE_VALUE = EPSILON
 
 class BoxCoxTransform:
  """
- Box-Cox power transformation for data normalization
+     Box-Cox power transformation for data normalization
  
  Transforms data to approximate normality using:
      pass
@@ -91,13 +91,13 @@ class BoxCoxTransform:
      ):
          pass
      """
-     Initialize Box-Cox transformation
+         Initialize Box-Cox transformation
      
      Parameters
      ----------
      lmbda : float, optional
      """
-     Transformation parameter. If None, will be estimated from data.
+         Transformation parameter. If None, will be estimated from data.
           Special values:
               pass
          pass
@@ -126,7 +126,7 @@ class BoxCoxTransform:
 
  def fit(self, data: npt.NDArray[np.float64]) -> 'BoxCoxTransform':
      """
-     Fit the Box-Cox transformation to data
+         Fit the Box-Cox transformation to data
      
  Estimates optimal λ parameter and calculates any necessary shifts.
 
@@ -134,7 +134,7 @@ class BoxCoxTransform:
  ----------
  data : np.ndarray
  """
- Input data (must be positive)
+     Input data (must be positive)
  
  Returns
  -------
@@ -172,13 +172,13 @@ class BoxCoxTransform:
 
  def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      """
-     Apply Box-Cox transformation to data
+         Apply Box-Cox transformation to data
      
  Parameters
  ----------
  data : np.ndarray
  """
- Input data
+     Input data
  
  Returns
  -------
@@ -218,13 +218,13 @@ class BoxCoxTransform:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Apply inverse Box-Cox transformation (back-transform)
+         Apply inverse Box-Cox transformation (back-transform)
      
      Parameters
      ----------
      transformed_data : np.ndarray
      """
-     Transformed data
+         Transformed data
      
      Returns
      -------
@@ -257,13 +257,13 @@ class BoxCoxTransform:
 
  def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      """
-     Fit and transform in one step
+         Fit and transform in one step
      
  Parameters
  ----------
  data : np.ndarray
  """
- Input data
+     Input data
  
  Returns
  -------
@@ -292,11 +292,11 @@ class BoxCoxTransform:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     Vectorized inverse Box-Cox transformation
+         Vectorized inverse Box-Cox transformation
      
      For λ != 0: x = (λy + 1)^(1/λ)
      """
-     This requires λy + 1 > 0, i.e., y > -1/λ
+         This requires λy + 1 > 0, i.e., y > -1/λ
      
      For negative λ, we need to check domain validity.
      """
@@ -321,7 +321,7 @@ class BoxCoxTransform:
 
  def _estimate_lambda(self, data: npt.NDArray[np.float64]) -> float:
      """
-     Estimate optimal lambda parameter
+         Estimate optimal lambda parameter
      
  Uses dict dispatch pattern for method selection
  """
@@ -372,7 +372,7 @@ class BoxCoxTransform:
 
  def get_diagnostics(self) -> Dict[str, float]:
      """
-     Get diagnostic information about the transformation
+         Get diagnostic information about the transformation
      
  Returns
  -------
@@ -396,7 +396,7 @@ def boxcox_transform(
     ) -> Tuple[npt.NDArray[np.float64], Optional[float]]:
         pass
  """
- Convenience function for Box-Cox transformation
+     Convenience function for Box-Cox transformation
  
  Parameters
  ----------
@@ -406,7 +406,7 @@ def boxcox_transform(
  Transformation parameter. If None, estimated from data.
  return_lambda : bool
  """
- If True, return (transformed_data, lambda)
+     If True, return (transformed_data, lambda)
  
  Returns
  -------
@@ -414,7 +414,7 @@ def boxcox_transform(
  Box-Cox transformed data
  lambda : float, optional
  """
- The lambda parameter used (if return_lambda=True)
+     The lambda parameter used (if return_lambda=True)
  
  Examples
  --------

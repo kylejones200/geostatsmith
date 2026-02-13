@@ -1,5 +1,5 @@
 """
-Sample elevation datasets for demonstration and testing.
+    Sample elevation datasets for demonstration and testing.
 
 Provides access to small sample DEM datasets similar to those
 discussed in Python Recipes for Earth Sciences (Trauth 2024).
@@ -22,7 +22,7 @@ logger = get_logger(__name__)
 
 def load_synthetic_dem_sample() -> Dict[str, Any]:
  """
- Load a synthetic DEM sample for testing and demonstrations.
+     Load a synthetic DEM sample for testing and demonstrations.
  
  Creates a small synthetic elevation dataset that mimics real DEMs
  with hills, valleys, and realistic terrain features.
@@ -108,7 +108,7 @@ def load_synthetic_dem_sample() -> Dict[str, Any]:
 
 def load_volcano_sample() -> Dict[str, Any]:
  """
- Load a synthetic volcano elevation dataset.
+     Load a synthetic volcano elevation dataset.
  
  Simulates elevation data around a volcanic cone, useful for
  demonstrating interpolation of steep terrain.
@@ -117,7 +117,7 @@ def load_volcano_sample() -> Dict[str, Any]:
  -------
  data : dict
  """
- Dictionary containing sparse samples and grid information
+     Dictionary containing sparse samples and grid information
  
  Examples
  --------
@@ -209,7 +209,7 @@ def load_volcano_sample() -> Dict[str, Any]:
 
 def load_valley_sample() -> Dict[str, Any]:
  """
- Load a synthetic valley elevation dataset.
+     Load a synthetic valley elevation dataset.
  
  Simulates a U-shaped valley with ridges on both sides,
  useful for demonstrating interpolation of linear features.
@@ -218,7 +218,7 @@ def load_valley_sample() -> Dict[str, Any]:
  -------
  data : dict
  """
- Dictionary containing sparse samples and grid information
+     Dictionary containing sparse samples and grid information
  
  Examples
  --------
@@ -243,7 +243,7 @@ def load_valley_sample() -> Dict[str, Any]:
  # Rotate coordinates
  angle = np.pi / 4
  """
- X_rot = X_grid * np.cos(angle) + Y_grid * np.sin(angle)
+     X_rot = X_grid * np.cos(angle) + Y_grid * np.sin(angle)
   Y_rot = -X_grid * np.sin(angle) + Y_grid * np.cos(angle)
 
  # U-shaped valley profile
@@ -295,7 +295,7 @@ def load_valley_sample() -> Dict[str, Any]:
 
 def _generate_terrain(X: npt.NDArray[np.float64], Y: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
  """
- Generate synthetic terrain with multiple hills.
+     Generate synthetic terrain with multiple hills.
  
  Helper function for creating realistic-looking elevation data.
  """

@@ -1,5 +1,5 @@
 """
-Regression Kriging with Machine Learning
+    Regression Kriging with Machine Learning
 
 Regression Kriging (RK) is a hybrid spatial prediction method that combines:
     pass
@@ -158,7 +158,7 @@ class RegressionKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Regression Kriging
+         Initialize Regression Kriging
 
      Parameters
      ----------
@@ -197,7 +197,7 @@ class RegressionKriging(BaseKriging):
      ):
          pass
      """
-     Fit the Regression Kriging model
+         Fit the Regression Kriging model
 
      Parameters
      ----------
@@ -284,7 +284,7 @@ class RegressionKriging(BaseKriging):
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
          pass
      """
-     Predict at new locations using Regression Kriging
+         Predict at new locations using Regression Kriging
 
      Parameters
      ----------
@@ -503,7 +503,7 @@ class XGBoostKriging(RegressionKriging):
      ) -> Optional[Dict[str, float]]:
          pass
      """
-     Get feature importances from XGBoost model
+         Get feature importances from XGBoost model
 
      Parameters
      ----------

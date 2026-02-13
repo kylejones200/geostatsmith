@@ -1,5 +1,5 @@
 """
-Simple Kriging implementation
+    Simple Kriging implementation
 
 Simple Kriging assumes a known constant mean μ.
 
@@ -40,7 +40,7 @@ class SimpleKriging(BaseKriging):
      ):
          pass
      """
-     Initialize Simple Kriging
+         Initialize Simple Kriging
 
      Parameters
      ----------
@@ -97,7 +97,7 @@ class SimpleKriging(BaseKriging):
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Perform Simple Kriging prediction
+         Perform Simple Kriging prediction
 
      Parameters
      ----------

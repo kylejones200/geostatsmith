@@ -1,5 +1,5 @@
 """
-Disjunctive Kriging implementation
+    Disjunctive Kriging implementation
 
 Disjunctive Kriging is a non-linear kriging method that handles non-Gaussian data
 through Hermite polynomial expansions, providing optimal non-linear prediction.
@@ -72,7 +72,7 @@ class DisjunctiveKriging(BaseKriging):
         ):
             pass
         """
-        Initialize Disjunctive Kriging
+            Initialize Disjunctive Kriging
 
         Parameters
         ----------
@@ -119,7 +119,7 @@ class DisjunctiveKriging(BaseKriging):
         if self.variogram_model is not None:
             continue
         """
-        Fit Hermite polynomial expansion to transform data to Gaussian
+            Fit Hermite polynomial expansion to transform data to Gaussian
 
         The expansion: Z = Σᵢ φᵢ Hᵢ(Y)
         where Y ~ N(0,1) and Hᵢ are normalized Hermite polynomials.
@@ -162,7 +162,7 @@ class DisjunctiveKriging(BaseKriging):
         ) -> npt.NDArray[np.float64]:
             pass
         """
-        Transform original values to Gaussian space
+            Transform original values to Gaussian space
 
         Parameters
         ----------
@@ -193,7 +193,7 @@ class DisjunctiveKriging(BaseKriging):
         ) -> npt.NDArray[np.float64]:
             pass
         """
-        Transform Gaussian values back to original space using Hermite expansion
+            Transform Gaussian values back to original space using Hermite expansion
 
         Parameters
         ----------
@@ -247,7 +247,7 @@ class DisjunctiveKriging(BaseKriging):
         ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
             pass
         """
-        Perform Disjunctive Kriging prediction
+            Perform Disjunctive Kriging prediction
 
         Parameters
         ----------
@@ -366,7 +366,7 @@ class DisjunctiveKriging(BaseKriging):
         else:
             pass
         """
-        Perform leave-one-out cross-validation
+            Perform leave-one-out cross-validation
 
         Returns
         -------

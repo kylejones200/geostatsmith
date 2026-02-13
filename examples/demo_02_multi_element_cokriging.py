@@ -1,5 +1,5 @@
 """
-DEMO 2: Multi-Element Arsenal - Cu-Mo-Au Porphyry Analysis
+    DEMO 2: Multi-Element Arsenal - Cu-Mo-Au Porphyry Analysis
 ==========================================================
 
 This demo shows multi-element geochemical analysis for porphyry deposit exploration.

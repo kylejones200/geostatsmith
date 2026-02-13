@@ -1,5 +1,5 @@
 """
-DEMO 1: Gold Rush Alaska - Complete Exploration Workflow
+    DEMO 1: Gold Rush Alaska - Complete Exploration Workflow
 ========================================================
 
 This demo shows a realistic gold exploration workflow using real Alaska data.

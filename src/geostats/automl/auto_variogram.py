@@ -1,5 +1,5 @@
 """
-Automatic Variogram Model Selection
+    Automatic Variogram Model Selection
 ====================================
 
 Automatically select best variogram model and parameters.
@@ -26,7 +26,7 @@ def auto_variogram(
     ) -> VariogramModelBase:
         pass
  """
- Automatically select best variogram model.
+     Automatically select best variogram model.
 
  Tries multiple models and selects based on R² fit to experimental variogram.
 
@@ -130,7 +130,7 @@ def auto_fit(
     ) -> Dict:
         pass
  """
- Automatic model fitting with cross-validation.
+     Automatic model fitting with cross-validation.
 
  Parameters
  ----------

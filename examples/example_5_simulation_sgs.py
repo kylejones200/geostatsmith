@@ -1,5 +1,5 @@
 """
-Example 5: Sequential Gaussian Simulation (SGS)
+    Example 5: Sequential Gaussian Simulation (SGS)
 
 This example demonstrates:
     pass

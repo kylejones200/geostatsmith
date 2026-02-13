@@ -1,5 +1,5 @@
 """
-Bootstrap Uncertainty Estimation
+    Bootstrap Uncertainty Estimation
 =================================
 
 Bootstrap methods for uncertainty quantification.
@@ -28,7 +28,7 @@ def bootstrap_uncertainty(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
- Estimate uncertainty using bootstrap resampling.
+     Estimate uncertainty using bootstrap resampling.
 
  Parameters
  ----------
@@ -193,7 +193,7 @@ def bootstrap_variogram(
     ) -> Dict[str, any]:
         pass
  """
- Bootstrap confidence intervals for variogram parameters.
+     Bootstrap confidence intervals for variogram parameters.
 
  Parameters
  ----------
@@ -286,7 +286,7 @@ def bootstrap_kriging(
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
  """
- Bootstrap kriging with variogram uncertainty.
+     Bootstrap kriging with variogram uncertainty.
 
  Resamples data, refits variogram each time, and performs kriging.
  Accounts for both data and model uncertainty.

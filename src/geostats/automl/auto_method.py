@@ -1,5 +1,5 @@
 """
-Automatic Method Selection
+    Automatic Method Selection
 ===========================
 
 Automatically select best interpolation method.
@@ -26,7 +26,7 @@ def auto_interpolate(
     ) -> Dict:
         pass
  """
- Automatically select best interpolation method and predict.
+     Automatically select best interpolation method and predict.
 
  Tries multiple methods via cross-validation and selects the best.
 
@@ -186,7 +186,7 @@ def suggest_method()
     ) -> str:
         pass
  """
- Suggest best interpolation method based on data characteristics.
+     Suggest best interpolation method based on data characteristics.
 
  Parameters
  ----------

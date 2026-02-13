@@ -1,5 +1,5 @@
 """
-Example Workflow: Performance Optimization
+    Example Workflow: Performance Optimization
 ===========================================
 
 """
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 try:
  """
- ChunkedKriging,
+     ChunkedKriging,
   CachedKriging,
  approximate_kriging,
  )

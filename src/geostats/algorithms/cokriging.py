@@ -1,5 +1,5 @@
 """
-Cokriging and Collocated Cokriging implementations
+    Cokriging and Collocated Cokriging implementations
 
 Cokriging uses a secondary variable to improve estimation of the primary variable.
 Useful when secondary variable is densely sampled or correlated with primary.
@@ -41,7 +41,7 @@ class Cokriging(BaseKriging):
      ):
          pass
      """
-     Initialize Cokriging
+         Initialize Cokriging
 
      Parameters
      ----------
@@ -151,7 +151,7 @@ class Cokriging(BaseKriging):
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Perform Cokriging prediction
+         Perform Cokriging prediction
 
      Parameters
      ----------
@@ -281,7 +281,7 @@ class CollocatedCokriging(BaseKriging):
      ):
          pass
      """
-     Initialize Collocated Cokriging
+         Initialize Collocated Cokriging
 
      Parameters
      ----------
@@ -326,7 +326,7 @@ class CollocatedCokriging(BaseKriging):
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
      """
-     Perform collocated cokriging prediction
+         Perform collocated cokriging prediction
 
      Parameters
      ----------

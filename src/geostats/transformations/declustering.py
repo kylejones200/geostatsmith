@@ -1,5 +1,5 @@
 """
-Declustering Methods
+    Declustering Methods
 
 Implementation based on Olea (2009) §1996-2066:
     pass
@@ -32,7 +32,7 @@ def cell_declustering(
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
         pass
  """
- Cell Declustering
+     Cell Declustering
  
  Assigns weights to samples based on spatial distribution to correct for
  preferential clustering. Samples in densely sampled areas get lower weights.
@@ -52,11 +52,11 @@ def cell_declustering(
  Values at sample points
  cell_sizes : np.ndarray, optional
  """
- Array of cell sizes to try
+     Array of cell sizes to try
   If None, automatically generates sizes
  n_sizes : int
  """
- Number of cell sizes to try (if cell_sizes not provided)
+     Number of cell sizes to try (if cell_sizes not provided)
  
  Returns
  -------
@@ -168,7 +168,7 @@ def polygonal_declustering(
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
         pass
  """
- Polygonal (Voronoi-based) Declustering
+     Polygonal (Voronoi-based) Declustering
  
  Assigns weights based on the area of influence (Voronoi polygon) around
  each sample. Samples in dense areas have smaller polygons and lower weights.
@@ -185,7 +185,7 @@ def polygonal_declustering(
  Values at sample points
  power : float
  """
- Power to raise distances to (default 2 for area approximation)
+     Power to raise distances to (default 2 for area approximation)
  
  Returns
  -------
@@ -193,7 +193,7 @@ def polygonal_declustering(
  Declustering weights (normalized to sum to n_samples)
  info : dict
  """
- Information including statistics
+     Information including statistics
  
  Notes
  -----
@@ -248,7 +248,7 @@ def detect_clustering(
     ) -> Dict[str, float]:
         pass
  """
- Detect presence of spatial clustering
+     Detect presence of spatial clustering
  
  Uses nearest neighbor distances to assess if data is clustered.
  From Olea (2009) §2009: "
@@ -258,7 +258,7 @@ def detect_clustering(
  ----------
  x, y : np.ndarray
  """
- Coordinates of sample points
+     Coordinates of sample points
  
  Returns
  -------

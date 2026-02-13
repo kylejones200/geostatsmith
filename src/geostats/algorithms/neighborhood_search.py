@@ -1,5 +1,5 @@
 """
-Neighborhood Search for Kriging
+    Neighborhood Search for Kriging
 
 Implementation based on ofr20091103.txt §4659-4690, §6227-6250:
     pass
@@ -59,7 +59,7 @@ class NeighborhoodSearch:
      ):
          pass
      """
-     Initialize neighborhood search
+         Initialize neighborhood search
 
      Parameters
      ----------
@@ -88,7 +88,7 @@ class NeighborhoodSearch:
      ) -> Tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
          pass
      """
-     Find neighbors for a prediction point
+         Find neighbors for a prediction point
 
      Parameters
      ----------
@@ -157,7 +157,7 @@ class NeighborhoodSearch:
      ) -> npt.NDArray[np.bool_]:
          pass
      """
-     Check which points are within search ellipse
+         Check which points are within search ellipse
 
      Parameters
      ----------
@@ -200,7 +200,7 @@ class NeighborhoodSearch:
      ) -> Tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
          pass
      """
-     Octant search for good radial distribution
+         Octant search for good radial distribution
 
      Divides space into 8 sectors (45° each) and limits samples per sector.
      From Olea (2009): "Use octant search to further ensure good radial"
@@ -259,7 +259,7 @@ class NeighborhoodSearch:
      ) -> Tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
          pass
      """
-     Quadrant search for radial distribution (simpler than octant)
+         Quadrant search for radial distribution (simpler than octant)
 
      Divides space into 4 quadrants and limits samples per quadrant.
      """
