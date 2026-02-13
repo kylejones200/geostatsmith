@@ -35,7 +35,6 @@ from geostats.diagnostics import cross_validation
 
 # Set style
 plt.style.use('seaborn-v0_8-darkgrid')
-%matplotlib inline
 
 logger.info(" Imports successful - Ready to hunt for porphyries!")
 

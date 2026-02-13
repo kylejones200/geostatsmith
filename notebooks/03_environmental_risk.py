@@ -37,7 +37,6 @@ logger = logging.getLogger(__name__)
 
 # Set style
 plt.style.use('seaborn-v0_8-darkgrid')
-%matplotlib inline
 
 logger.info(" Environmental assessment tools loaded!")
 

@@ -38,7 +38,6 @@ from geostats.diagnostics import comprehensive_validation
 
 # Set style
 plt.style.use('seaborn-v0_8-darkgrid')
-%matplotlib inline
 
 logger.info(" GeoStats loaded successfully!")
 
