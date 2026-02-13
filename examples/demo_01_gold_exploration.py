@@ -172,14 +172,11 @@ def analyze_variogram_anisotropy(x, y, z):
 # ==============================================================================
 
 def compare_kriging_methods(x, y, au, model):
- logger.info("Comparing Kriging Methods...")
+    logger.info("Comparing Kriging Methods...")
 
- # Create prediction grid
- x_min, x_max = x.min(), x.max()
- # Remove top and right spines
- 
- y_min, y_max = y.min(), y.max()
- # Remove top and right spines
+    # Create prediction grid
+    x_min, x_max = x.min(), x.max()
+    y_min, y_max = y.min(), y.max()
  
  x_grid = np.linspace(x_min, x_max, 80)
  y_grid = np.linspace(y_min, y_max, 80)
@@ -280,25 +277,25 @@ def compare_kriging_methods(x, y, au, model):
 # ==============================================================================
 
 def quantify_uncertainty(x, y, au, model, X, Y):
- logger.info("Uncertainty Quantification...")
+    logger.info("Uncertainty Quantification...")
 
- au_log = np.log10(au + 0.001)
+    au_log = np.log10(au + 0.001)
 
- # Method 1: Bootstrap confidence intervals
- logger.info("Bootstrap (100 iterations)...")
- t0 = time.time()
- ci_lower, ci_upper = bootstrap_uncertainty()
- x, y, au_log,
- X[0, :], Y[:, 0],
- model,
- n_bootstrap=100,
- confidence_level=0.95
- )
- logger.info(f" Time: {time.time() - t0:.1f}s")
+    # Method 1: Bootstrap confidence intervals
+    logger.info("Bootstrap (100 iterations)...")
+    t0 = time.time()
+    ci_lower, ci_upper = bootstrap_uncertainty(
+        x, y, au_log,
+        X[0, :], Y[:, 0],
+        model,
+        n_bootstrap=100,
+        confidence_level=0.95
+    )
+    logger.info(f" Time: {time.time() - t0:.1f}s")
 
- # Back-transform
- ci_lower = 10**ci_lower - 0.001
- ci_upper = 10**ci_upper - 0.001
+    # Back-transform
+    ci_lower = 10**ci_lower - 0.001
+    ci_upper = 10**ci_upper - 0.001
 
  # Method 2: Kriging variance
  logger.info("Kriging Variance...")
