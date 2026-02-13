@@ -97,14 +97,14 @@ def load_fairbanks_gold_data(agdb_path):
     y = fairbanks['LATITUDE'].values
     au = fairbanks['Au'].values # ppm
 
- logger.info(f"Gold Statistics:")
- logger.info(f" Mean: {au.mean():.3f} ppm")
- logger.info(f" Median: {np.median(au):.3f} ppm")
- logger.info(f" Max: {au.max():.3f} ppm")
- logger.info(f" >0.1 ppm: {(au > 0.1).sum()} samples ({(au > 0.1).sum()/len(au)*100:.1f}%)")
- logger.info(f" >1.0 ppm: {(au > 1.0).sum()} samples (economic grade!)")
+    logger.info(f"Gold Statistics:")
+    logger.info(f" Mean: {au.mean():.3f} ppm")
+    logger.info(f" Median: {np.median(au):.3f} ppm")
+    logger.info(f" Max: {au.max():.3f} ppm")
+    logger.info(f" >0.1 ppm: {(au > 0.1).sum()} samples ({(au > 0.1).sum()/len(au)*100:.1f}%)")
+    logger.info(f" >1.0 ppm: {(au > 1.0).sum()} samples (economic grade!)")
 
- return x, y, au, fairbanks
+    return x, y, au, fairbanks
 
 # ==============================================================================
 # STEP 2: Advanced Variogram Analysis (Anisotropy Detection)
