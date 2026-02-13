@@ -280,31 +280,28 @@ def quantify_uncertainty(x, y, au, model, X, Y):
 
     # Method 2: Kriging variance
     logger.info("Kriging Variance...")
- ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
- z_pred, variance = ok.predict(X.flatten(), Y.flatten(), return_variance=True)
- variance = variance.reshape(X.shape)
- std_dev = np.sqrt(variance)
+    ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
+    z_pred, variance = ok.predict(X.flatten(), Y.flatten(), return_variance=True)
+    variance = variance.reshape(X.shape)
+    std_dev = np.sqrt(variance)
 
- # Visualize uncertainty
- fig, axes = plt.subplots(1, 3, figsize=(18, 5))
- # Remove top and right spines
- 
- # Confidence interval width
- ci_width = ci_upper - ci_lower
- im1 = axes[0].contourf(X, Y, ci_width, levels=20, cmap='viridis')
- axes[0].set_title('95% CI Width\n(Bootstrap)')
- # Remove top and right spines
- axes[0].set_title('95% CI Width\n(Bootstrap)')
- plt.colorbar(im1, ax=axes[0], label='Width (ppm)')
- # Remove top and right spines
- axes[0].set_title('95% CI Width\n(Bootstrap)')
+    # Visualize uncertainty
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    # Remove top and right spines
+    for ax in axes:
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+    
+    # Confidence interval width
+    ci_width = ci_upper - ci_lower
+    im1 = axes[0].contourf(X, Y, ci_width, levels=20, cmap='viridis')
+    axes[0].set_title('95% CI Width\n(Bootstrap)')
+    plt.colorbar(im1, ax=axes[0], label='Width (ppm)')
 
- # Standard deviation
- im2 = axes[1].contourf(X, Y, std_dev, levels=20, cmap='viridis')
- axes[1].scatter(x, y, c='k', s=1, alpha=0.5, label='Samples')
- # Remove top and right spines
- 
- axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
+    # Standard deviation
+    im2 = axes[1].contourf(X, Y, std_dev, levels=20, cmap='viridis')
+    axes[1].scatter(x, y, c='k', s=1, alpha=0.5, label='Samples')
+    axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  # Remove top and right spines
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  plt.colorbar(im2, ax=axes[1], label='Std Dev')
