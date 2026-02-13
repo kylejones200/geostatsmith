@@ -245,9 +245,7 @@ def compare_kriging_methods(x, y, au, model):
  im1 = axes[0].contourf(X, Y, results['Ordinary']['pred'], levels=20, cmap='YlOrRd')
  axes[0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[0]
  # Remove top and right spines
- axes[0].scatter(x, y, c)
  
  axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
  # Remove top and right spines
@@ -260,9 +258,7 @@ def compare_kriging_methods(x, y, au, model):
  im2 = axes[1].contourf(X, Y, results['Lognormal']['pred'], levels=20, cmap='YlOrRd')
  axes[1].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[1]
  # Remove top and right spines
- axes[1].scatter(x, y, c)
  
  axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
  # Remove top and right spines
@@ -275,9 +271,7 @@ def compare_kriging_methods(x, y, au, model):
  im3 = axes[2].contourf(X, Y, results['Indicator']['pred'], levels=20, cmap='RdYlGn_r')
  axes[2].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[2]
  # Remove top and right spines
- axes[2].scatter(x, y, c)
  
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
  # Remove top and right spines
@@ -346,7 +340,6 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  im2 = axes[1].contourf(X, Y, std_dev, levels=20, cmap='viridis')
  axes[1].scatter(x, y, c='k', s=1, alpha=0.5, label='Samples')
  # Remove top and right spines
- axes[1].scatter(x, y, c)
  
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  # Remove top and right spines

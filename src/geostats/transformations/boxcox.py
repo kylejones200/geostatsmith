@@ -100,7 +100,6 @@ class BoxCoxTransform:
          Transformation parameter. If None, will be estimated from data.
           Special values:
               pass
-         pass
      λ = 1: identity (no transform)
      λ = 0.5: square root
      λ = 0: log

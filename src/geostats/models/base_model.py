@@ -57,7 +57,6 @@ class VariogramModelBase(BaseModel):
  np.ndarray
  Model values
  """
- pass
 
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Evaluate variogram at distance h

@@ -220,8 +220,7 @@ def detect_outliers_iqr(
  n_outliers = np.sum(outlier_mask)
  logger.info(
  f"IQR method: {n_outliers} outliers detected "
- f"(bounds: [{lower_bound:.2f}, {upper_bound:.2f}])"
- )
+ f"(bounds: [{lower_bound:.2f}, {upper_bound:.2f}]) )
 
  if return_bounds:
      continue
@@ -310,8 +309,7 @@ def detect_spatial_outliers(
  n_outliers = np.sum(outlier_mask)
  logger.info(
  f"Spatial outlier detection: {n_outliers} outliers detected "
- f"(neighbors={n_neighbors}, threshold={threshold_factor:.1f})"
- )
+ f"(neighbors={n_neighbors}, threshold={threshold_factor:.1f}) )
 
  return outlier_mask
 
@@ -402,8 +400,7 @@ def detect_outliers_ensemble(
  n_outliers = np.sum(outlier_mask)
  logger.info(
  f"Ensemble detection: {n_outliers} outliers detected "
- f"(min_detections={min_detections}, methods={methods})"
- )
+ f"(min_detections={min_detections}, methods={methods}) )
 
  return outlier_mask, method_results
 

@@ -152,8 +152,7 @@ class TruncatedGaussianSimulation:
  if self.config.proportions is not None:
      raise SimulationError(
  f"Number of proportions ({len(self.config.proportions)}) "
- f"must match number of categories ({n_categories})"
- )
+ f"must match number of categories ({n_categories}) )
  if not np.isclose(np.sum(self.config.proportions), 1.0):
      self.proportions = np.array(self.config.proportions, dtype=np.float64)
  else:

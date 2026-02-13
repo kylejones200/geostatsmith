@@ -116,8 +116,7 @@ class AnisotropicModel:
      f"AnisotropicModel("
      f"base={self.base_model.__class__.__name__}, "
      f"angle={self.angle:.1f}°, "
-     f"ratio={self.ratio:.3f})"
-     )
+     f"ratio={self.ratio:.3f})     )
 
 class DirectionalVariogram:
  Compute and analyze directional variograms

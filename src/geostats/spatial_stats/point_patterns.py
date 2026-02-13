@@ -479,8 +479,7 @@ def quadrat_analysis(
  significance = "significant"
  else:
      pass
- interpretation = f"{pattern} ({significance}, p={chi2_p:.4f})"
- else:
+ interpretation = f"{pattern} ({significance}, p={chi2_p:.4f}) else:
     pass
 
  return {

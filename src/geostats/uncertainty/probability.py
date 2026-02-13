@@ -289,12 +289,10 @@ def risk_assessment(
 
  # Expected costs
  # If we classify as "positive" (exceeding):
- # - Cost if we're wrong (false positive): cost_false_positive * P(not exceed)'
- expected_cost_positive = cost_false_positive * prob_not_exceed
+ # - Cost if we're wrong (false positive): cost_false_positive * P(not exceed) expected_cost_positive = cost_false_positive * prob_not_exceed
 
  # If we classify as "negative" (not exceeding):
- # - Cost if we're wrong (false negative): cost_false_negative * P(exceed)'
- expected_cost_negative = cost_false_negative * prob_exceed
+ # - Cost if we're wrong (false negative): cost_false_negative * P(exceed) expected_cost_negative = cost_false_negative * prob_exceed
 
  # Optimal decision: choose classification with lower expected cost
  optimal_decision = np.where()

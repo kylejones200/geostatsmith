@@ -2,7 +2,7 @@
     Example 4: Indicator Kriging for Probability Estimation
 
 This example demonstrates:
-- Indicator transformation
+    pass- Indicator transformation
 - Probability estimation with indicator kriging
 - Multiple threshold indicator kriging for CDF estimation
 - Risk assessment applications
@@ -254,7 +254,6 @@ high_risk = probabilities > 0.7
 n_high_risk = np.sum(high_risk)
 pct_high_risk = (n_high_risk / len(probabilities)) * 100
 logger.info()
-    f"\nHigh-risk locations (P>0.7): {n_high_risk} ({pct_high_risk:.1f}% of area)"
-)
+    f"\nHigh-risk locations (P>0.7): {n_high_risk} ({pct_high_risk:.1f}% of area))
 
 logger.info("\nExample completed successfully!")

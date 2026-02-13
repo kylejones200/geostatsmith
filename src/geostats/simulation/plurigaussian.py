@@ -155,8 +155,7 @@ class PlurigaussianSimulation:
      if len(variogram_models) != config.n_gaussian_fields:
          continue
      f"Number of variogram models ({len(variogram_models)}) must match "
-     f"number of Gaussian fields ({config.n_gaussian_fields})"
-     )
+     f"number of Gaussian fields ({config.n_gaussian_fields})     )
      self.variogram_models = variogram_models
 
      # Validate rule function

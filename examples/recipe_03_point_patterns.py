@@ -82,8 +82,7 @@ for pattern_name, (x, y) in patterns.items():
 
     # Ripley's K function'
     ripley_results = ripley_k_function(x, y, n_distances=30)
-    logger.info(f"\nRipley's K Function:")'
-    logger.info(f" Interpretation: {ripley_results['interpretation']}")
+    logger.info(f"\nRipley's K Function:")    logger.info(f" Interpretation: {ripley_results['interpretation']}")
 
     # Quadrat analysis
     quadrat_results = quadrat_analysis(x, y, n_quadrats_x=8, n_quadrats_y=8)

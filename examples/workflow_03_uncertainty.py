@@ -186,7 +186,6 @@ def example_2_probability_map():
     ax1.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7, label="Samples")
     # Remove top and right spines
     # Remove top and right spines
-    ax1.scatter(x, y, c)
     ax1.set_xlabel("X (m)")
     ax1.set_ylabel("Y (m)")
     ax1.set_title("Kriging Prediction\n(dashed = regulatory limit)")
@@ -214,7 +213,6 @@ def example_2_probability_map():
     ax2.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
     # Remove top and right spines
-    ax2.scatter(x, y, c)
     ax2.set_xlabel("X (m)")
     ax2.set_ylabel("Y (m)")
     ax2.set_title("P(Concentration > 12)\n(solid line = 50% probability)")
@@ -282,11 +280,9 @@ def example_3_risk_assessment():
 
     logger.info(f"Risk assessment complete:")
     logger.info()
-        f" Recommend remediation: {n_remediate} cells ({n_remediate / len(x_pred) * 100:.1f}%)"
-    )
+        f" Recommend remediation: {n_remediate} cells ({n_remediate / len(x_pred) * 100:.1f}%)    )
     logger.info()
-        f" Recommend no action: {n_no_action} cells ({n_no_action / len(x_pred) * 100:.1f}%)"
-    )
+        f" Recommend no action: {n_no_action} cells ({n_no_action / len(x_pred) * 100:.1f}%)    )
     logger.info(f" Total expected cost: ${total_cost:,.2f}")
 
     # Visualize
@@ -299,9 +295,7 @@ def example_3_risk_assessment():
     )
     axes[0].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
-    axes[0]
     # Remove top and right spines
-    axes[0].scatter(x, y, c)
     axes[0].set_xlabel("X (m)")
     # Remove top and right spines
     axes[0].set_xlabel("X (m)")
@@ -323,9 +317,7 @@ def example_3_risk_assessment():
     im2 = axes[1].contourf(x_grid, y_grid, cost_grid, levels=15, cmap="YlOrRd")
     axes[1].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
-    axes[1]
     # Remove top and right spines
-    axes[1].scatter(x, y, c)
     axes[1].set_xlabel("X (m)")
     # Remove top and right spines
     axes[1].set_xlabel("X (m)")
@@ -356,9 +348,7 @@ def example_3_risk_assessment():
     )
     axes[2].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
-    axes[2]
     # Remove top and right spines
-    axes[2].scatter(x, y, c)
     axes[2].set_xlabel("X (m)")
     # Remove top and right spines
     axes[2].set_xlabel("X (m)")

@@ -380,21 +380,17 @@ logger.info("SUMMARY: CORRELATION IMPROVEMENTS")
 
 logger.info(f"Baseline (Statewide): r = {corr_all:.3f}, R² = {corr_all**2:.3f}")
 logger.info()
-    f"Porphyry Districts: r = {corr_porp:.3f}, R² = {corr_porp**2:.3f} ({(corr_porp / corr_all - 1) * 100:+.0f}%)"
-)
+    f"Porphyry Districts: r = {corr_porp:.3f}, R² = {corr_porp**2:.3f} ({(corr_porp / corr_all - 1) * 100:+.0f}%))
 logger.info()
-    f"Anomalous Samples: r = {corr_anom:.3f}, R² = {corr_anom**2:.3f} ({(corr_anom / corr_all - 1) * 100:+.0f}%)"
-)
+    f"Anomalous Samples: r = {corr_anom:.3f}, R² = {corr_anom**2:.3f} ({(corr_anom / corr_all - 1) * 100:+.0f}%))
 logger.info()
-    f"Porphyry + Anomalous (BEST): r = {corr_best:.3f}, R² = {corr_best**2:.3f} ({(corr_best / corr_all - 1) * 100:+.0f}%)"
-)
+    f"Porphyry + Anomalous (BEST): r = {corr_best:.3f}, R² = {corr_best**2:.3f} ({(corr_best / corr_all - 1) * 100:+.0f}%))
 
 logger.info("Key Insights:")
 logger.info(" Regional filtering improves correlation by focusing on deposit type")
 logger.info(" Anomaly filtering removes background noise")
 logger.info(" Combined approach yields strongest signal")
 logger.info()
-    f" R² improved from {corr_all**2:.3f} to {corr_best**2:.3f} ({(corr_best**2 / corr_all**2 - 1) * 100:.0f}% increase)"
-)
+    f" R² improved from {corr_all**2:.3f} to {corr_best**2:.3f} ({(corr_best**2 / corr_all**2 - 1) * 100:.0f}% increase))
 
 logger.info("ANALYSIS COMPLETE!")

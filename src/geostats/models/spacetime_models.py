@@ -73,7 +73,6 @@ class SpaceTimeVariogramModel(ABC):
      ) -> npt.NDArray[np.float64]:
          pass
      """Evaluate space-time variogram"""
-     pass
 
      @abstractmethod
  def is_separable(self) -> bool:
@@ -233,8 +232,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
 
      logger.info()
      f"Initialized product-sum space-time model "
-     f"(C_s={C_s:.3f}, C_t={C_t:.3f}, k={k:.3f})"
-     )
+     f"(C_s={C_s:.3f}, C_t={C_t:.3f}, k={k:.3f})     )
 
  def __call__(
      h: npt.NDArray[np.float64],
@@ -342,8 +340,7 @@ class GneitingModel(SpaceTimeVariogramModel):
 
      logger.info()
      f"Initialized Gneiting space-time model "
-     f"(spatial_range={spatial_range:.1f}, temporal_range={temporal_range:.1f})"
-     )
+     f"(spatial_range={spatial_range:.1f}, temporal_range={temporal_range:.1f})     )
 
  def _temporal_scaling(self, u: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      return (self.a0 + np.abs(u) ** self.alpha) ** (1.0 / self.alpha)

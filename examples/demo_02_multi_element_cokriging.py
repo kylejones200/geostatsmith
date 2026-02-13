@@ -114,7 +114,6 @@ def analyze_element_correlations(data):
  # Cu vs Mo
  axes[0].hexbin(cu_log, mo_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
- axes[0]
  # Remove top and right spines
  axes[0].hexbin(cu_log, mo_log, gridsize)
  
@@ -131,7 +130,6 @@ def analyze_element_correlations(data):
  # Cu vs Au
  axes[1].hexbin(cu_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
- axes[1]
  # Remove top and right spines
  axes[1].hexbin(cu_log, au_log, gridsize)
  
@@ -148,7 +146,6 @@ def analyze_element_correlations(data):
  # Mo vs Au
  axes[2].hexbin(mo_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
- axes[2]
  # Remove top and right spines
  axes[2].hexbin(mo_log, au_log, gridsize)
  
@@ -320,7 +317,6 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  # Remove top and right spines
  axes[0, 0]
  # Remove top and right spines
- axes[0, 0].scatter(x, y, c)
  
  axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)')
  # Remove top and right spines
@@ -344,7 +340,6 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  # Remove top and right spines
  axes[1, 0]
  # Remove top and right spines
- axes[1, 0].scatter(x, y, c)
  
  axes[1, 0].set_title('Cokriging\n(Cu with Mo)')
  # Remove top and right spines
@@ -424,7 +419,6 @@ def calculate_porphyry_index(data, elements_dict):
  # Remove top and right spines
  
  # Remove top and right spines
- ax1.scatter(x, y, c)
  
  edgecolors='k', linewidths=0.5)
  ax1.contour(X, Y, index_pred, levels=[np.percentile(index_pred, 90)],)
@@ -445,7 +439,6 @@ def calculate_porphyry_index(data, elements_dict):
  # Remove top and right spines
  
  # Remove top and right spines
- ax2.scatter(x, y, c)
  
  ax2.set_title('High-Potential Zones\n(Top 10% fertility)')
  ax2.set_xlabel('Longitude')

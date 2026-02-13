@@ -65,8 +65,7 @@ def cholesky_simulation(
  # If it's a variogram model, convert to covariance'
  if hasattr(covariance_model, 'parameters'):
      continue
- # It's a variogram model: C(h) = sill - γ(h)'
- sill = covariance_model.parameters['sill']
+ # It's a variogram model: C(h) = sill - γ(h) sill = covariance_model.parameters['sill']
  gamma = covariance_model(dist_matrix)
  cov_matrix = sill - gamma
  else:

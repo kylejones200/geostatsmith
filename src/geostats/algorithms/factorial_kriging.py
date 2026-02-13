@@ -396,8 +396,7 @@ class FactorialKriging(BaseKriging):
 
      logger.info(
      f"Filtered {len(filtered)} points "
-     f"(keep={components_to_keep}, remove={components_to_remove})"
-     )
+     f"(keep={components_to_keep}, remove={components_to_remove})     )
 
      return filtered
 

@@ -202,8 +202,7 @@ class SequentialIndicatorSimulation:
      # Ensure indicator krigers are fitted
      if any(k is None for k in self.indicator_krigers):
          continue
-     "Must call fit_indicator_variograms() before simulate()"
-     )
+     "Must call fit_indicator_variograms() before simulate()     )
 
      x_grid = np.asarray(x_grid, dtype=np.float64)
      y_grid = np.asarray(y_grid, dtype=np.float64)

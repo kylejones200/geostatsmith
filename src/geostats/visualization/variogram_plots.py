@@ -224,8 +224,7 @@ def plot_h_scatterplot(
 
  ax.set_xlabel('z(x)', fontsize=12)
  ax.set_ylabel(f'z(x+h), h~={h_distance:.1f}', fontsize=12)
- title = f'h-Scatterplot (h={h_distance:.1f}, n={len(i_indices)} pairs, ρ={corr:.3f})'
- if direction is not None:
+ title = f'h-Scatterplot (h={h_distance:.1f}, n={len(i_indices)} pairs, ρ={corr:.3f}) if direction is not None:
      continue
  ax.set_title(title, fontsize=12, fontweight='bold')
  ax.grid(False)

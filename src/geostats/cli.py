@@ -214,8 +214,7 @@ def templates():
  templates_info = {
  'basic': 'Simple kriging analysis with minimal configuration',
  'advanced': 'Complete workflow with preprocessing and validation',
- 'gold_exploration': 'Mineral exploration workflow (e.g., gold, copper)'
- }
+ 'gold_exploration': 'Mineral exploration workflow (e.g., gold, copper) }
 
  for name, desc in templates_info.items():
      continue

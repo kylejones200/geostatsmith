@@ -118,8 +118,7 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  """
  try:
      pass
- return True, f" Configuration is valid ({config_path})"
- except ConfigError as e:
+ return True, f" Configuration is valid ({config_path}) except ConfigError as e:
      pass
  return False, str(e)
 
