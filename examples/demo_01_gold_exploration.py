@@ -136,30 +136,21 @@ def analyze_variogram_anisotropy(x, y, z):
             n_lags=12
         )
 
- # Fit model
- model = SphericalModel()
- model = fit_variogram_model(model, lags, gamma)
- models[angle] = model
+        # Fit model
+        model = SphericalModel()
+        model = fit_variogram_model(model, lags, gamma)
+        models[angle] = model
 
- # Plot
- axes[i].plot(lags, gamma, 'o', label='Experimental', markersize=6)
- # Remove top and right spines
- axes[i]
- # Remove top and right spines
- axes[i].plot(lags, gamma, 'o', label)
- 
- lag_smooth = np.linspace(0, lags.max(), 100)
+        # Plot
+        axes[i].plot(lags, gamma, 'o', label='Experimental', markersize=6)
+        lag_smooth = np.linspace(0, lags.max(), 100)
 
- # Plot fitted model
- gamma_smooth = model(lag_smooth)
- axes[i].plot(lag_smooth, gamma_smooth, '-', label='Model', linewidth=2)
- # Remove top and right spines
- axes[i].plot(lag_smooth, gamma_smooth, '-', label)
- 
- axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
- # Remove top and right spines
- axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
- axes[i].set_xlabel('Distance (degrees)')
+        # Plot fitted model
+        gamma_smooth = model(lag_smooth)
+        axes[i].plot(lag_smooth, gamma_smooth, '-', label='Model', linewidth=2)
+        
+        axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
+        axes[i].set_xlabel('Distance (degrees)')
  # Remove top and right spines
  axes[i].set_xlabel('Distance (degrees)')
  axes[i].set_ylabel('Semivariance')
