@@ -277,7 +277,7 @@ def multi_element_analysis(agdb_path):
 
     if len(common) < 50:
         logger.warning("Not enough common samples for analysis.")
-        continue
+        return None
 
     x = common['LONGITUDE'].values
     y = common['LATITUDE'].values
