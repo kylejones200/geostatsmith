@@ -34,11 +34,11 @@ class VariogramModel(Protocol):
         np.ndarray
             Variogram values
         """
- ...
+        ...
 
- @property
- def parameters(self) -> dict:
-     ...
+    @property
+    def parameters(self) -> dict:
+        ...
 
  def fit(self, lags: npt.NDArray[np.float64], gamma: npt.NDArray[np.float64]) -> None:
      """
