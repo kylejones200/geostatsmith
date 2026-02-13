@@ -15,15 +15,14 @@ def validate_coordinates(
         """
         Validate and convert coordinate arrays
         
- Parameters
- ----------
- x : array-like
- X coordinates or combined coordinates
- y : array-like, optional
- Y coordinates
- z : array-like, optional
- """
- Z coordinates
+        Parameters
+        ----------
+        x : array-like
+            X coordinates or combined coordinates
+        y : array-like, optional
+            Y coordinates
+        z : array-like, optional
+            Z coordinates
  
  Returns
  -------

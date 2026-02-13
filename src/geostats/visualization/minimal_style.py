@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 def apply_minimalist_style(ax, remove_spines=('top', 'right')):
- """
- Apply minimalist style to matplotlib axes
+    """
+    Apply minimalist style to matplotlib axes
  
  Parameters
  ----------

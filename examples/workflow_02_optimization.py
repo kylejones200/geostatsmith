@@ -325,8 +325,8 @@ def example_4_cost_benefit():
 def main():
     logger.info("GEOSTATS OPTIMIZATION WORKFLOW EXAMPLES")
 
-    example_1_optimal_sampling((
-    example_2_infill_sampling((
+    example_1_optimal_sampling()
+    example_2_infill_sampling()
     example_3_sample_size_calculator()
     example_4_cost_benefit()
 

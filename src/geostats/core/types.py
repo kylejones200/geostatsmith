@@ -24,11 +24,10 @@ class VariogramModel(Protocol):
         """
         Compute variogram value at distance h
         
- Parameters
- ----------
- h : np.ndarray
- """
- Distance values
+        Parameters
+        ----------
+        h : np.ndarray
+            Distance values
  
  Returns
  -------

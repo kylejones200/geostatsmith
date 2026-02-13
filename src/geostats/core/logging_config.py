@@ -13,9 +13,8 @@ def setup_logging(
     format_string: Optional[str] = None,
     stream: Optional[object] = None,
     ) -> None:
-        pass
-    """
-    Configure logging for GeoStats.
+        """
+        Configure logging for GeoStats.
     
     Parameters
     ----------

@@ -15,12 +15,12 @@ class BaseModel(ABC):
     covariance models, and other spatial models.
     """
 
- def __init__(self, **kwargs: Any) -> None:
-     self._parameters: Dict[str, float] = {}
-     self._is_fitted: bool = False
+    def __init__(self, **kwargs: Any) -> None:
+        self._parameters: Dict[str, float] = {}
+        self._is_fitted: bool = False
 
- @abstractmethod
- def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    @abstractmethod
+    def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      """
      Evaluate the model at distance h
      
