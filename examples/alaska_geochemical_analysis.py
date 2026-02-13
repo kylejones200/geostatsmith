@@ -10,13 +10,12 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     element : str
         Element to analyze (e.g., 'Au', 'Cu', 'Pb', 'As')
     sample_type : str
-        """
-            Type of sample to filter for
-        
-    Returns:
-        pass
+        Type of sample to filter for
+    
+    Returns
     --------
-    dict with keys: x, y, values, metadata
+    dict
+        Dictionary with keys: x, y, values, metadata
     """
     agdb_path = Path(agdb_path)
 
