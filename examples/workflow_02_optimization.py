@@ -194,162 +194,147 @@ def example_2_infill_sampling():
 
 def example_3_sample_size_calculator():
     logger.info("Example 3: Sample Size Calculator")
- 
- logger.info("Example 3: Sample Size Calculator")
- 
 
- # Initial samples
- np.random.seed(42)
- n_initial = 30
- x = np.random.uniform(0, 100, n_initial)
- y = np.random.uniform(0, 100, n_initial)
- z = 50 + 0.3*x + 0.2*y + np.random.normal(0, 3, n_initial)
+    # Initial samples
+    np.random.seed(42)
+    n_initial = 30
+    x = np.random.uniform(0, 100, n_initial)
+    y = np.random.uniform(0, 100, n_initial)
+    z = 50 + 0.3*x + 0.2*y + np.random.normal(0, 3, n_initial)
 
- # Fit variogram
- lags, gamma = experimental_variogram(x, y, z)
- variogram_model = fit_variogram(lags, gamma, model_type='spherical')
+    # Fit variogram
+    lags, gamma = experimental_variogram(x, y, z)
+    variogram_model = fit_variogram(lags, gamma, model_type='spherical')
 
- # Calculate required samples for target RMSE = 1.5
- logger.info("Calculating required samples for target RMSE = 1.5...")
- results = sample_size_calculator()
- x, y, z,
- variogram_model=variogram_model,
- target_rmse=1.5,
- max_samples=200,
- n_simulations=10
- )
+    # Calculate required samples for target RMSE = 1.5
+    logger.info("Calculating required samples for target RMSE = 1.5...")
+    results = sample_size_calculator(
+        x, y, z,
+        variogram_model=variogram_model,
+        target_rmse=1.5,
+        max_samples=200,
+        n_simulations=10
+    )
 
- logger.info(f"Results:")
- logger.info(f" Current samples: {n_initial}")
- logger.info(f" Current RMSE: {results['current_rmse']:.3f}")
- logger.info(f" Target RMSE: {results['target_rmse']:.3f}")
- logger.info(f" Required samples: {results['required_samples']}")
- logger.info(f" Additional needed: {results['required_samples'] - n_initial}")
- logger.info(f" Achievable: {'Yes' if results['achievable'] else 'No'}")
+    logger.info(f"Results:")
+    logger.info(f" Current samples: {n_initial}")
+    logger.info(f" Current RMSE: {results['current_rmse']:.3f}")
+    logger.info(f" Target RMSE: {results['target_rmse']:.3f}")
+    logger.info(f" Required samples: {results['required_samples']}")
+    logger.info(f" Additional needed: {results['required_samples'] - n_initial}")
+    logger.info(f" Achievable: {'Yes' if results['achievable'] else 'No'}")
 
- # Visualize RMSE vs sample size
- fig, ax = plt.subplots(figsize=(10, 6))
- # Remove top and right spines
- 
- ax.plot(results['sample_sizes'], results['rmse_values'], 'bo-', linewidth=2, markersize=8)
- ax.axhline(results['target_rmse'], color='red', linestyle='--', linewidth=2, label='Target RMSE')
- ax.axvline(results['required_samples'], color='green', linestyle='--', linewidth=2,
- label=f'Required: {results["required_samples"]} samples')
+    # Visualize RMSE vs sample size
+    fig, ax = plt.subplots(figsize=(10, 6))
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    
+    ax.plot(results['sample_sizes'], results['rmse_values'], 'bo-', linewidth=2, markersize=8)
+    ax.axhline(results['target_rmse'], color='red', linestyle='--', linewidth=2, label='Target RMSE')
+    ax.axvline(results['required_samples'], color='green', linestyle='--', linewidth=2,
+               label=f'Required: {results["required_samples"]} samples')
 
- # Confidence bands
- ci_upper = results['rmse_values'] + results['confidence_90']
- ci_lower = results['rmse_values'] - results['confidence_90']
- ax.fill_between(results['sample_sizes'], ci_lower, ci_upper, alpha=0.3, color='blue')
+    # Confidence bands
+    ci_upper = results['rmse_values'] + results['confidence_90']
+    ci_lower = results['rmse_values'] - results['confidence_90']
+    ax.fill_between(results['sample_sizes'], ci_lower, ci_upper, alpha=0.3, color='blue')
 
- ax.set_xlabel('Number of Samples', fontsize=12)
- ax.set_ylabel('RMSE', fontsize=12)
- ax.set_title('RMSE vs Sample Size (with 90% confidence bands)', fontsize=14)
- ax.legend(fontsize=10)
+    ax.set_xlabel('Number of Samples', fontsize=12)
+    ax.set_ylabel('RMSE', fontsize=12)
+    ax.set_title('RMSE vs Sample Size (with 90% confidence bands)', fontsize=14)
+    ax.legend(fontsize=10)
 
- plt.tight_layout()
- plt.savefig('example_workflow_02_sample_size.png', dpi=150, bbox_inches='tight')
- logger.info(" Saved example_workflow_02_sample_size.png")
- plt.close()
+    plt.tight_layout()
+    plt.savefig('example_workflow_02_sample_size.png', dpi=150, bbox_inches='tight')
+    logger.info(" Saved example_workflow_02_sample_size.png")
+    plt.close()
 
 def example_4_cost_benefit():
     logger.info("Example 4: Cost-Benefit Analysis")
 
- # Initial samples
- np.random.seed(42)
- n_initial = 25
- x = np.random.uniform(0, 100, n_initial)
- y = np.random.uniform(0, 100, n_initial)
- z = 50 + 0.3*x + 0.2*y + np.random.normal(0, 3, n_initial)
+    # Initial samples
+    np.random.seed(42)
+    n_initial = 25
+    x = np.random.uniform(0, 100, n_initial)
+    y = np.random.uniform(0, 100, n_initial)
+    z = 50 + 0.3*x + 0.2*y + np.random.normal(0, 3, n_initial)
 
- # Fit variogram
- lags, gamma = experimental_variogram(x, y, z)
- variogram_model = fit_variogram(lags, gamma, model_type='spherical')
+    # Fit variogram
+    lags, gamma = experimental_variogram(x, y, z)
+    variogram_model = fit_variogram(lags, gamma, model_type='spherical')
 
- # Cost-benefit analysis
- logger.info("Performing cost-benefit analysis...")
- logger.info(" Cost per sample: $500")
- logger.info(" Benefit per RMSE reduction: $2000")
- logger.info(" Maximum budget: $20,000")
+    # Cost-benefit analysis
+    logger.info("Performing cost-benefit analysis...")
+    logger.info(" Cost per sample: $500")
+    logger.info(" Benefit per RMSE reduction: $2000")
+    logger.info(" Maximum budget: $20,000")
 
- results = cost_benefit_analysis()
- x, y, z,
- variogram_model=variogram_model,
- cost_per_sample=500,
- benefit_per_rmse_reduction=2000,
- max_budget=20000
- )
+    results = cost_benefit_analysis(
+        x, y, z,
+        variogram_model=variogram_model,
+        cost_per_sample=500,
+        benefit_per_rmse_reduction=2000,
+        max_budget=20000
+    )
 
- logger.info(f"Optimal Strategy:")
- logger.info(f" Current samples: {n_initial}")
- logger.info(f" Optimal total samples: {results['optimal_n_samples']}")
- logger.info(f" Additional samples needed: {results['optimal_n_additional']}")
- logger.info(f" Total cost: ${results['optimal_total_cost']:,.2f}")
- logger.info(f" Net benefit: ${results['optimal_net_benefit']:,.2f}")
- logger.info(f" Baseline RMSE: {results['baseline_rmse']:.3f}")
- logger.info(f" Optimal RMSE: {results['optimal_rmse']:.3f}")
+    logger.info(f"Optimal Strategy:")
+    logger.info(f" Current samples: {n_initial}")
+    logger.info(f" Optimal total samples: {results['optimal_n_samples']}")
+    logger.info(f" Additional samples needed: {results['optimal_n_additional']}")
+    logger.info(f" Total cost: ${results['optimal_total_cost']:,.2f}")
+    logger.info(f" Net benefit: ${results['optimal_net_benefit']:,.2f}")
+    logger.info(f" Baseline RMSE: {results['baseline_rmse']:.3f}")
+    logger.info(f" Optimal RMSE: {results['optimal_rmse']:.3f}")
 
- # Visualize
- fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
- # Remove top and right spines
- 
- # Costs and benefits
- ax1.plot(results['sample_sizes'], results['costs'], 'r-', linewidth=2, label='Cost')
- # Remove top and right spines
- ax1.plot(results['sample_sizes'], results['costs'], 'r-', linewidth)
- 
- ax1.plot(results['sample_sizes'], results['benefits'], 'g-', linewidth=2, label='Benefit')
- # Remove top and right spines
- ax1.plot(results['sample_sizes'], results['benefits'], 'g-', linewidth)
- 
- ax1.axvline(results['optimal_n_samples'], color='blue', linestyle='--',)
- # Remove top and right spines
- ax1.axvline(results['optimal_n_samples'], color)
- 
- linewidth=2, label='Optimal')
- ax1.set_xlabel('Total Number of Samples')
- ax1.set_ylabel('Cost / Benefit ($)')
- ax1.set_title('Cost-Benefit Analysis')
- ax1.legend()
+    # Visualize
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+    # Remove top and right spines
+    ax1.spines['top'].set_visible(False)
+    ax1.spines['right'].set_visible(False)
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
+    
+    # Costs and benefits
+    ax1.plot(results['sample_sizes'], results['costs'], 'r-', linewidth=2, label='Cost')
+    ax1.plot(results['sample_sizes'], results['benefits'], 'g-', linewidth=2, label='Benefit')
+    ax1.axvline(results['optimal_n_samples'], color='blue', linestyle='--',
+                linewidth=2, label='Optimal')
+    ax1.set_xlabel('Total Number of Samples')
+    ax1.set_ylabel('Cost / Benefit ($)')
+    ax1.set_title('Cost-Benefit Analysis')
+    ax1.legend()
 
- # Net benefit
- ax2.plot(results['sample_sizes'], results['net_benefits'], 'b-', linewidth=2)
- # Remove top and right spines
- ax2.plot(results['sample_sizes'], results['net_benefits'], 'b-', linewidth)
- 
- ax2.axvline(results['optimal_n_samples'], color='green', linestyle='--',)
- # Remove top and right spines
- ax2.axvline(results['optimal_n_samples'], color)
- 
- linewidth=2, label=f'Optimal: {results["optimal_n_samples"]} samples')
- ax2.axhline(0, color='k', linestyle='-', linewidth=0.5)
- # Remove top and right spines
- ax2.axhline(0, color)
- 
- ax2.fill_between(results['sample_sizes'], 0, results['net_benefits'],
- where=(results['net_benefits'] > 0), alpha=0.3, color='green')
- ax2.set_xlabel('Total Number of Samples')
- ax2.set_ylabel('Net Benefit ($)')
- ax2.set_title('Net Benefit vs Sample Size')
- ax2.legend()
+    # Net benefit
+    ax2.plot(results['sample_sizes'], results['net_benefits'], 'b-', linewidth=2)
+    ax2.axvline(results['optimal_n_samples'], color='green', linestyle='--',
+                linewidth=2, label=f'Optimal: {results["optimal_n_samples"]} samples')
+    ax2.axhline(0, color='k', linestyle='-', linewidth=0.5)
+    ax2.fill_between(results['sample_sizes'], 0, results['net_benefits'],
+                     where=(results['net_benefits'] > 0), alpha=0.3, color='green')
+    ax2.set_xlabel('Total Number of Samples')
+    ax2.set_ylabel('Net Benefit ($)')
+    ax2.set_title('Net Benefit vs Sample Size')
+    ax2.legend()
 
- plt.tight_layout()
- plt.savefig('example_workflow_02_cost_benefit.png', dpi=150, bbox_inches='tight')
- logger.info(" Saved example_workflow_02_cost_benefit.png")
- plt.close()
+    plt.tight_layout()
+    plt.savefig('example_workflow_02_cost_benefit.png', dpi=150, bbox_inches='tight')
+    logger.info(" Saved example_workflow_02_cost_benefit.png")
+    plt.close()
 
 def main():
- logger.info("GEOSTATS OPTIMIZATION WORKFLOW EXAMPLES")
+    logger.info("GEOSTATS OPTIMIZATION WORKFLOW EXAMPLES")
 
- example_1_optimal_sampling()
- example_2_infill_sampling()
- example_3_sample_size_calculator()
- example_4_cost_benefit()
+    example_1_optimal_sampling()
+    example_2_infill_sampling()
+    example_3_sample_size_calculator()
+    example_4_cost_benefit()
 
- logger.info("ALL EXAMPLES COMPLETE!")
- logger.info("\nFiles created:")
- logger.info(" - example_workflow_02_optimal_sampling.png")
- logger.info(" - example_workflow_02_infill.png")
- logger.info(" - example_workflow_02_sample_size.png")
- logger.info(" - example_workflow_02_cost_benefit.png")
+    logger.info("ALL EXAMPLES COMPLETE!")
+    logger.info("\nFiles created:")
+    logger.info(" - example_workflow_02_optimal_sampling.png")
+    logger.info(" - example_workflow_02_infill.png")
+    logger.info(" - example_workflow_02_sample_size.png")
+    logger.info(" - example_workflow_02_cost_benefit.png")
 
 if __name__ == '__main__':
