@@ -3,6 +3,7 @@ Space-Time Variogram Models
 
 Space-time geostatistics extends classical geostatistics to handle
 data that varies in both space AND time. This is crucial for:
+    pass
 - Environmental monitoring (air quality over time)
 - Climate data (temperature, precipitation time series)
 - Epidemiology (disease spread)
@@ -10,15 +11,18 @@ data that varies in both space AND time. This is crucial for:
 - Hydrology (groundwater levels)
 
 Mathematical Framework:
+    pass
 For a space-time random field Z(s, t) where s is location and t is time,
 the space-time variogram is:
  γ(h, u) = ½ E[(Z(s, t) - Z(s+h, t+u))²]
 
 where:
+    pass
 - h is spatial lag (distance)
 - u is temporal lag (time difference)
 
 Key concepts:
+    pass
 1. Separability: γ(h, u) = γ_s(h) · γ_t(u)
  - Simplest case: spatial and temporal structures independent
 
@@ -30,12 +34,13 @@ Key concepts:
 4. Stationarity: Same structure across space-time
 
 References:
-- Cressie, N. & Huang, H-C. (1999). "Classes of nonseparable, spatio-temporal
- stationary covariance functions". JASA, 94:1330-1340.
-- Gneiting, T. (2002). "Nonseparable, stationary covariance functions for
- space-time data". JASA, 97:590-600.
+    pass
+- Cressie, N. & Huang, H-C. (1999). "Classes of nonseparable, spatio-temporal"
+ stationary covariance functions". JASA, 94:1330-1340."
+- Gneiting, T. (2002). "Nonseparable, stationary covariance functions for"
+ space-time data". JASA, 97:590-600."
 - Kyriakidis, P.C. & Journel, A.G. (1999). "Geostatistical space-time models"
-- De Iaco, S. et al. (2001). "Space-time variograms and a functional form
+- De Iaco, S. et al. (2001). "Space-time variograms and a functional form"
  for total air pollution measurements"
 """
 
@@ -56,6 +61,7 @@ class SpaceTimeVariogramModel(ABC):
  Base class for space-time variogram models
 
  All space-time models must implement:
+     pass
  - __call__(h, u): evaluate variogram at spatial lag h and temporal lag u
  - is_separable(): whether model is separable
  """
@@ -65,6 +71,7 @@ class SpaceTimeVariogramModel(ABC):
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """Evaluate space-time variogram"""
      pass
 
@@ -78,11 +85,13 @@ class SeparableModel(SpaceTimeVariogramModel):
  γ(h, u) = C_s · C_t · [γ_s(h)/C_s + γ_t(u)/C_t - γ_s(h)·γ_t(u)/(C_s·C_t)]
 
  Simplified form when normalized:
+     pass
  γ(h, u) = γ_s(h) + γ_t(u) - γ_s(h)·γ_t(u)
 
  where γ_s and γ_t are spatial and temporal variograms.
 
  Properties:
+     pass
  - Simplest space-time model
  - Assumes spatial and temporal structures are independent
  - Computationally efficient
@@ -108,6 +117,7 @@ class SeparableModel(SpaceTimeVariogramModel):
      spatial_model: Callable,
      temporal_model: Callable
      ):
+         pass
      """
      Initialize separable space-time model
 
@@ -127,6 +137,7 @@ class SeparableModel(SpaceTimeVariogramModel):
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Evaluate separable space-time variogram
 
@@ -156,6 +167,7 @@ class SeparableModel(SpaceTimeVariogramModel):
      return gamma
 
  def is_separable(self) -> bool:
+     pass
 
 class ProductSumModel(SpaceTimeVariogramModel):
  Product-Sum space-time variogram model (Cressie & Huang, 1999)
@@ -163,12 +175,14 @@ class ProductSumModel(SpaceTimeVariogramModel):
  γ(h, u) = C_s·γ_t(u) + C_t·γ_s(h) + k·γ_s(h)·γ_t(u)
 
  where:
+     pass
  - C_s: spatial sill
  - C_t: temporal sill
  - k: interaction parameter (controls space-time interaction strength)
  - γ_s, γ_t: normalized spatial and temporal variograms
 
  Properties:
+     pass
  - Non-separable (unless k=0)
  - Allows space-time interaction
  - More flexible than separable model
@@ -194,6 +208,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
      C_t: float = 1.0,
      k: float = 0.5
      ):
+         pass
      """
      Initialize product-sum space-time model
 
@@ -225,6 +240,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Evaluate product-sum space-time variogram
 
@@ -252,6 +268,7 @@ class ProductSumModel(SpaceTimeVariogramModel):
      return gamma
 
  def is_separable(self) -> bool:
+     pass
 
 class GneitingModel(SpaceTimeVariogramModel):
  Gneiting space-time covariance model (Gneiting, 2002)
@@ -259,9 +276,11 @@ class GneitingModel(SpaceTimeVariogramModel):
  Fully symmetric, non-separable space-time model.
 
  Covariance form:
+     pass
  C(h, u) = σ² / (a(u)^d) · ϕ(h² / a(u)²) · ψ(u)
 
  where:
+     pass
  - a(u) = (a₀ + u^α)^(1/α) : temporal scaling function
  - ϕ: spatial correlation function (e.g., exponential)
  - ψ: temporal correlation function
@@ -271,6 +290,7 @@ class GneitingModel(SpaceTimeVariogramModel):
  Variogram: γ(h, u) = σ² - C(h, u)
 
  Properties:
+     pass
  - Fully symmetric (time-reversible)
  - Non-separable
  - Flexible space-time interaction
@@ -278,8 +298,8 @@ class GneitingModel(SpaceTimeVariogramModel):
 
  References
  ----------
- Gneiting, T. (2002). "Nonseparable, stationary covariance functions
- for space-time data". JASA, 97:590-600.
+ Gneiting, T. (2002). "Nonseparable, stationary covariance functions"
+ for space-time data". JASA, 97:590-600."
     pass
 
  def __init__(
@@ -290,6 +310,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      temporal_range: float = 10.0,
      spatial_smoothness: float = 1.0
      ):
+         pass
      """
      Initialize Gneiting space-time model
 
@@ -316,6 +337,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      self.spatial_smoothness = spatial_smoothness
 
      if not 0 < alpha <= 2:
+         continue
     pass
 
      logger.info(
@@ -330,6 +352,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      h: npt.NDArray[np.float64],
      a_u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """Compute spatial correlation ϕ(h²/a(u)²)"""
      # Using exponential correlation as default
      # Can be extended to other forms (Gaussian, Matérn, etc.)
@@ -344,6 +367,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      h: npt.NDArray[np.float64],
      u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Evaluate Gneiting space-time variogram
 
@@ -381,12 +405,14 @@ class GneitingModel(SpaceTimeVariogramModel):
      return gamma
 
  def is_separable(self) -> bool:
+     pass
 
 def create_spacetime_model(
  spatial_model: Callable,
  temporal_model: Optional[Callable] = None,
  **kwargs
     ) -> SpaceTimeVariogramModel:
+        pass
  """
  Factory function to create space-time variogram models
 
@@ -394,9 +420,10 @@ def create_spacetime_model(
  ----------
  model_type : str
  Type of space-time model:
+     pass
  - 'separable': Simple separable model
  - 'product_sum': Product-sum model (Cressie-Huang)
- - 'gneiting': Gneiting's non-separable model
+ - 'gneiting': Gneiting's non-separable model'
  spatial_model : callable
  Spatial variogram model
  temporal_model : callable, optional
@@ -439,12 +466,13 @@ def create_spacetime_model(
  }
 
  if model_type not in models:
+     continue
  f"Unknown model_type: {model_type}. "
  f"Available: {list(models.keys())}"
  )
 
  if model_type in ['separable', 'product_sum']:
+     continue
  raise ValueError(f"{model_type} model requires temporal_model")
  return models[model_type](spatial_model, temporal_model, **kwargs)
- else:
  else:

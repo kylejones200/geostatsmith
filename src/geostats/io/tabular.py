@@ -18,6 +18,7 @@ def read_csv_spatial(
  additional_cols: Optional[List[str]] = None,
  **kwargs,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
+        pass
  """
  Read spatial data from CSV file.
 
@@ -67,9 +68,9 @@ def read_csv_spatial(
  Raises
  ------
  FileNotFoundError
- If file doesn't exist
+ If file doesn't exist'
  KeyError
- If specified columns don't exist
+ If specified columns don't exist'
  """
  if not Path(filename).exists():
     pass
@@ -98,6 +99,7 @@ def read_csv_spatial(
  extra = None
  if additional_cols:
  if missing_extra:
+     continue
  extra = df.loc[mask, additional_cols].copy()
 
  return x, y, z, extra
@@ -112,6 +114,7 @@ def write_csv_spatial(
  extra: Optional[pd.DataFrame] = None,
  **kwargs,
     ) -> None:
+        pass
  """
  Write spatial data to CSV file.
 
@@ -175,6 +178,7 @@ def read_excel_spatial(
  additional_cols: Optional[List[str]] = None,
  **kwargs,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
+        pass
  """
  Read spatial data from Excel file.
 
@@ -213,7 +217,7 @@ def read_excel_spatial(
  Raises
  ------
  FileNotFoundError
- If file doesn't exist
+ If file doesn't exist'
  ImportError
  If openpyxl is not installed
  """
@@ -221,9 +225,10 @@ def read_excel_spatial(
     pass
 
  try:
- try:
+     pass
  df = pd.read_excel(filename, sheet_name=sheet_name, **kwargs)
  except ImportError:
+     pass
  raise ImportError(
  "openpyxl is required for Excel I/O. "
  "Install with: pip install openpyxl"
@@ -250,6 +255,7 @@ def read_excel_spatial(
  extra = None
  if additional_cols:
  if missing_extra:
+     continue
  extra = df.loc[mask, additional_cols].copy()
 
  return x, y, z, extra

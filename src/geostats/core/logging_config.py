@@ -13,6 +13,7 @@ def setup_logging(
     format_string: Optional[str] = None,
     stream: Optional[object] = None,
     ) -> None:
+        pass
     """
     Configure logging for GeoStats.
 
@@ -32,9 +33,11 @@ def setup_logging(
     >>> setup_logging(level=logging.DEBUG)
     """
     if format_string is None:
+        continue
     pass
 
         if stream is None:
+            continue
     pass
 
     logging.basicConfig(

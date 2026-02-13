@@ -10,7 +10,6 @@ import numpy.typing as npt
 from typing import Optional, Tuple
 
 try:
-try:
 except ImportError:
  PLOTLY_AVAILABLE = False
 
@@ -21,6 +20,7 @@ def interactive_prediction_map(
  title: str = 'Kriging Predictions',
  colorscale: str = 'Viridis',
     ):
+        pass
  """
  Interactive 2D prediction map.
 
@@ -53,6 +53,7 @@ def interactive_prediction_map(
  >>> fig.show()
  """
  if not PLOTLY_AVAILABLE:
+     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -72,6 +73,7 @@ def interactive_prediction_map(
 
  # Sample points
  if samples is not None:
+     continue
  fig.add_trace(go.Scatter(
  x=x_samples,
  y=y_samples,
@@ -106,6 +108,7 @@ def interactive_uncertainty_map(
  var_grid: npt.NDArray[np.float64],
  samples: Optional[Tuple] = None,
     ):
+        pass
  """
  Interactive map showing predictions and uncertainty side-by-side.
 
@@ -125,6 +128,7 @@ def interactive_uncertainty_map(
  fig : plotly Figure with subplots
  """
  if not PLOTLY_AVAILABLE:
+     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -163,6 +167,7 @@ def interactive_uncertainty_map(
  # Samples
  if samples is not None:
  for col in [1, 2]:
+     continue
  go.Scatter(
  x=x_s, y=y_s,
  mode='markers',
@@ -187,6 +192,7 @@ def interactive_3d_surface(
  samples: Optional[Tuple] = None,
  title: str = '3D Surface',
     ):
+        pass
  """
  Interactive 3D surface plot.
 
@@ -206,6 +212,7 @@ def interactive_3d_surface(
  fig : plotly Figure
  """
  if not PLOTLY_AVAILABLE:
+     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -223,6 +230,7 @@ def interactive_3d_surface(
 
  # Sample points
  if samples is not None:
+     continue
  fig.add_trace(go.Scatter3d(
  x=x_s,
  y=y_s,

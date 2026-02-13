@@ -19,6 +19,7 @@ def confidence_intervals(
  variogram_model: VariogramModelBase,
  confidence_level: float = 0.95,
     ) -> Dict[str, npt.NDArray[np.float64]]:
+        pass
  """
  Compute confidence intervals for kriging predictions.
 
@@ -46,6 +47,7 @@ def confidence_intervals(
  -------
  results : dict
  Dictionary containing:
+     pass
  - 'predictions': Kriging predictions
  - 'std_errors': Standard errors
  - 'lower_bound': Lower confidence bound
@@ -110,6 +112,7 @@ def prediction_bands(
  variogram_model: VariogramModelBase,
  confidence_levels: Optional[npt.NDArray[np.float64]] = None,
     ) -> Dict[str, any]:
+        pass
  """
  Compute multiple prediction bands at different confidence levels.
 
@@ -151,6 +154,7 @@ def prediction_bands(
  >>> plt.plot(x_pred, bands['predictions'], 'b-', linewidth=2)
  >>> colors = ['lightblue', 'blue', 'darkblue']
  >>> for i, level in enumerate([0.68, 0.95, 0.99]):
+     continue
  ... plt.fill_between(
  ... x_pred,
  ... bands[f'lower_{level}'],
@@ -184,6 +188,7 @@ def prediction_bands(
  }
 
  for level in confidence_levels:
+     continue
  margin = z_score * std_errors
 
  results[f'lower_{level}'] = predictions - margin
@@ -201,6 +206,7 @@ def uncertainty_ellipse(
  confidence_level: float = 0.95,
  n_points: int = 100,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Compute uncertainty ellipse for a prediction location.
 

@@ -52,6 +52,7 @@ for i, demo in enumerate(demos, 1):
  output_path = OUTPUT_DIR / demo['output']
 
  if not script_path.exists():
+     continue
  results.append({'demo': demo['name'], 'status': 'NOT FOUND', 'output': None})
  continue
 
@@ -59,7 +60,7 @@ for i, demo in enumerate(demos, 1):
  start_time = datetime.now()
 
  try:
- try:
+     pass
  result = subprocess.run(
  [sys.executable, str(script_path)],
  cwd=EXAMPLES_DIR.parent,
@@ -73,7 +74,7 @@ for i, demo in enumerate(demos, 1):
 
  # Save output
  with open(output_path, 'w') as f:
- with open(output_path, 'w') as f:
+     pass
  f.write(f"Script: {demo['file']}\n")
  f.write(f"Started: {start_time.strftime('%Y-%m-%d %H:%M:%S')}\n")
  f.write(f"Duration: {duration:.1f} seconds\n")
@@ -85,6 +86,7 @@ for i, demo in enumerate(demos, 1):
  f.write("\n\nExit Code: " + str(result.returncode))
 
  if result.returncode == 0:
+     continue
  logger.info(f" Output saved to: {output_path.name}")
  results.append({
  'demo': demo['name'],
@@ -93,7 +95,7 @@ for i, demo in enumerate(demos, 1):
  'output': output_path
  })
  else:
- else:
+     pass
  logger.info(f" Check output file for details: {output_path.name}")
  results.append({
  'demo': demo['name'],
@@ -103,6 +105,7 @@ for i, demo in enumerate(demos, 1):
  })
 
  except subprocess.TimeoutExpired:
+     pass
  logger.info(f"⏱ TIMEOUT - Demo took longer than 5 minutes")
  results.append({
  'demo': demo['name'],
@@ -111,6 +114,7 @@ for i, demo in enumerate(demos, 1):
  })
 
  except Exception as e:
+     pass
  logger.error(f" ERROR - {str(e)}")
  results.append({
  'demo': demo['name'],
@@ -141,12 +145,14 @@ for r in results:
 # Create summary file
 summary_path = OUTPUT_DIR / 'SUMMARY.txt'
 with open(summary_path, 'w') as f:
-with open(summary_path, 'w') as f:
+    pass
 
  for r in results:
+     continue
  f.write(f"Status: {r['status']}\n")
  if 'duration' in r:
  if r['output']:
+     continue
  f.write("\n")
 
  f.write(f"\nSuccess Rate: {success_count}/{len(demos)} ({success_count/len(demos)*100:.0f}%)\n")

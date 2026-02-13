@@ -56,11 +56,11 @@ for file in data_files[:15]:
 # Load location data
 logger.info("Loading sample location data...")
 try:
-try:
  logger.debug(f"Columns: {list(geol.columns[:15])}")
 
  # Geographic extent
  if 'LATITUDE' in geol.columns and 'LONGITUDE' in geol.columns:
+     continue
  logger.info(f"Geographic coverage: {len(valid_coords):,} samples with coordinates")
  logger.info(f"Latitude: {valid_coords['LATITUDE'].min():.2f}° to {valid_coords['LATITUDE'].max():.2f}°N")
  logger.info(f"Longitude: {valid_coords['LONGITUDE'].min():.2f}° to {valid_coords['LONGITUDE'].max():.2f}°W")
@@ -75,7 +75,6 @@ except Exception as e:
 
 logger.info("PART 2: GOLD EXPLORATION ANALYSIS - FAIRBANKS DISTRICT")
 
-try:
 try:
  chem_file = AGDB_PATH / 'Chem_A_Br.txt'
  chem = pd.read_csv(chem_file, low_memory=False, encoding='latin-1')
@@ -114,16 +113,13 @@ try:
  logger.info("Creating gold distribution map...")
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  # Linear scale
  scatter1 = ax1.scatter(x, y, c=au, s=30, cmap='YlOrRd',
  vmin=0, vmax=np.percentile(au, 95),
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax1.set_title('Gold Distribution - Fairbanks\n(Linear Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax1.spines['right'].set_visible(False)
  # Remove top and right spines
  ax1.set_xlabel('Longitude')
  ax1.set_ylabel('Latitude')
@@ -137,7 +133,6 @@ try:
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax2.set_title('Gold Distribution - Fairbanks\n(Log Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.set_xlabel('Longitude')
  plt.colorbar(scatter2, ax=ax2, label='log₁₀(Au + 0.001)')
@@ -199,12 +194,10 @@ try:
  logger.info("Creating multi-element correlation plot...")
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  # Raw correlation
  ax1.scatter(cu_vals, au_vals, alpha=0.4, s=20, c='steelblue', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
  ax1.scatter(cu_vals, au_vals, alpha
- alpha.spines['right'].set_visible(False)
  ax1.set_xlabel('Cu (ppm)', fontsize=12)
  # Remove top and right spines
  ax1.set_ylabel('Au (ppm)', fontsize=12)
@@ -212,12 +205,10 @@ try:
  ax1.set_title(f'Cu vs Au Correlation\n(r = {corr_raw:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
  ax1.set_title(f'
- r.spines['right'].set_visible(False)
  # Log-transformed
  ax2.scatter(cu_log, au_log, alpha=0.4, s=20, c='coral', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
  ax2.scatter(cu_log, au_log, alpha
- alpha.spines['right'].set_visible(False)
  # Trend line
  z = np.polyfit(cu_log, au_log, 1)
  p = np.poly1d(z)
@@ -225,7 +216,6 @@ try:
  ax2.plot(x_trend, p(x_trend), 'r--', linewidth=2, label='Trend line')
  # Remove top and right spines
  ax2.plot(x_trend, p(x_trend), 'r--', linewidth
- linewidth.spines['right'].set_visible(False)
  ax2.set_xlabel('log₁₀(Cu + 1)', fontsize=12)
  # Remove top and right spines
  ax2.set_ylabel('log₁₀(Au + 0.001)', fontsize=12)
@@ -233,7 +223,6 @@ try:
  ax2.set_title(f'Log-Transformed Correlation\n(r = {corr_log:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
  ax2.set_title(f'
- r.spines['right'].set_visible(False)
  ax2.legend()
 
  plt.tight_layout()
@@ -288,14 +277,12 @@ try:
  logger.info("Creating arsenic distribution map...")
  fig, ax = plt.subplots(figsize=(12, 8))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  x_as = as_data['LONGITUDE'].values
  y_as = as_data['LATITUDE'].values
 
  scatter = ax.scatter(x_as, y_as, c=as_vals, s=15, cmap='RdYlGn_r',
  vmin=0, vmax=np.percentile(as_vals, 95),
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  alpha=0.5, edgecolors='none')
 
  ax.set_title('Arsenic Distribution - Alaska\n(EPA Residential Threshold: 0.39 ppm)',
@@ -304,7 +291,6 @@ try:
  ax.set_ylabel('Latitude')
  cbar = plt.colorbar(scatter, ax=ax, label='As (ppm)')
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  plt.tight_layout()
  output_file = OUTPUT_DIR / 'figure_03_arsenic_distribution.png'
  plt.savefig(output_file, dpi=150, bbox_inches='tight')

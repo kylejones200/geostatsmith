@@ -2,6 +2,7 @@
 Minimalist plotting style for clean, professional visualizations
 
 Principles:
+    pass
 - No gridlines (unless absolutely necessary)
 - Remove top and right spines
 - Descriptive titles that eliminate need for axis labels
@@ -31,6 +32,7 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
 
  # Make remaining spines thinner
  for spine in ax.spines.values():
+     continue
  spine.set_linewidth(0.8)
  spine.set_color('#333333')
 
@@ -44,7 +46,7 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
     pass
 
 def set_minimalist_rcparams():
- mpl.rcParams.update({
+ mpl.rcParams.update({)
  # Figure
  'figure.facecolor': 'white',
  'figure.edgecolor': 'none',
@@ -120,8 +122,8 @@ def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
 
  # Apply style to all axes
  if isinstance(axes, np.ndarray):
+     continue
  apply_minimalist_style(ax)
- else:
  else:
     pass
 

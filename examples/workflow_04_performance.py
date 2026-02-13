@@ -5,6 +5,7 @@ Example Workflow: Performance Optimization
 Demonstrates speed optimizations for large datasets.
 
 Shows:
+    pass
 1. Parallel kriging (multi-core)
 2. Chunked processing
 3. Result caching
@@ -24,7 +25,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
-try:
  ChunkedKriging,
  CachedKriging,
  approximate_kriging,
@@ -38,6 +38,7 @@ except ImportError:
  exit(1)
 
 def example_1_parallel_kriging():
+    pass
  
  logger.info("Example 1: Parallel Kriging (Multi-Core)")
  

@@ -17,6 +17,7 @@ def weighted_least_squares(
  bounds: Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
  **kwargs: Any,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Perform weighted least squares fitting
 
@@ -50,9 +51,8 @@ def weighted_least_squares(
  If fitting fails
  """
  try:
- try:
+     pass
  sigma = 1.0 / np.sqrt(weights)
- else:
  else:
     pass
 
@@ -70,6 +70,7 @@ def weighted_least_squares(
  return params, cov
 
  except Exception as e:
+     pass
  raise FittingError(f"Weighted least squares fitting failed: {e}")
 
 def ordinary_least_squares(
@@ -79,6 +80,7 @@ def ordinary_least_squares(
  bounds: Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
  **kwargs: Any,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Perform ordinary least squares fitting
 
@@ -112,6 +114,7 @@ def optimize_parameters(
  method: str = "L-BFGS-B",
  **kwargs: Any,
     ) -> OptimizeResult:
+        pass
  """
  Optimize parameters using scipy.optimize.minimize
 
@@ -154,6 +157,7 @@ def optimize_parameters(
 def cross_validation_score(
  y_pred: npt.NDArray[np.float64],
     ) -> Dict[str, float]:
+        pass
  """
  Calculate cross-validation metrics
 
@@ -168,6 +172,7 @@ def cross_validation_score(
  -------
  dict
  Dictionary containing:
+     pass
  - 'mse': Mean squared error
  - 'rmse': Root mean squared error
  - 'mae': Mean absolute error
@@ -197,6 +202,7 @@ def cross_validation_score(
 def compute_weights(
  n_lags: int,
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Compute weights for variogram fitting based on number of pairs per lag
 
@@ -217,6 +223,7 @@ def compute_weights(
 
  weights = np.zeros(n_lags)
  for i in range(n_lags):
+     continue
  weights[i] = np.sum(mask)
 
  # Normalize weights

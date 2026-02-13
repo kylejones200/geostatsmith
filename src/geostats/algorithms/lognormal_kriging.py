@@ -2,16 +2,18 @@
 Lognormal Kriging
 
 Implementation based on ofr20091103.txt §2805-2810, §3006-3031:
-"Lognormal kriging [is] simply any of the first three forms of kriging
+    pass
+"Lognormal kriging [is] simply any of the first three forms of kriging"
 applied to transformed data."
 
 For lognormal data (common in mining, environmental science), kriging is
 performed in log-space and back-transformed with proper variance correction.
 
-The back-transformation must account for the bias introduced by Jensen's
+The back-transformation must account for the bias introduced by Jensen's'
 inequality: E[exp(Y)] != exp(E[Y]) for lognormal Y.
 
 Reference:
+    pass
 - ofr20091103.txt (USGS Practical Primer)
 - Lognormal transformation and kriging (§2162-2176, §2805-2810)
 - Back-transformation considerations (§3622-3624)
@@ -34,6 +36,7 @@ class LognormalKriging(BaseKriging):
  with proper variance correction for the lognormal distribution.
 
  For lognormal data Z = exp(Y) where Y ~ Normal:
+     pass
  1. Transform: Y = log(Z)
  2. Krige Y to get Ŷ and σ²ʏ
  3. Back-transform: Ẑ = exp(Ŷ + σ²ʏ/2) # Variance correction
@@ -49,6 +52,7 @@ class LognormalKriging(BaseKriging):
      kriging_type: str = 'ordinary',
      mean_log: Optional[float] = None,
      ):
+         pass
      """
      Initialize Lognormal Kriging
 
@@ -73,6 +77,7 @@ class LognormalKriging(BaseKriging):
 
      # Check for non-positive values
      if np.any(self.z <= 0):
+         continue
      "Lognormal kriging requires all values > 0. "
      "Consider adding a constant or using a different method."
      )
@@ -85,17 +90,18 @@ class LognormalKriging(BaseKriging):
      self.kriging_type = kriging_type.lower()
 
      if self.kriging_type == 'simple':
+         continue
      self.x, self.y, self.log_z,
      variogram_model=variogram_model,
      known_mean=self.mean_log
      )
      elif self.kriging_type == 'ordinary':
-     elif self.kriging_type == 'ordinary':
+         continue
      self.x, self.y, self.log_z,
      variogram_model=variogram_model
      )
      else:
-     else:
+         pass
     pass
 
  def predict(
@@ -104,6 +110,7 @@ class LognormalKriging(BaseKriging):
      return_variance: bool = True,
      back_transform_method: str = 'unbiased'
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+         pass
      """
      Predict at new locations using lognormal kriging
 
@@ -115,6 +122,7 @@ class LognormalKriging(BaseKriging):
      If True, return both predictions and variance
      back_transform_method : str
      Method for back-transformation:
+         continue
      - 'unbiased': exp(Ŷ + σ²/2) - proper unbiased estimator
      - 'median': exp(Ŷ) - returns median of lognormal
      - 'simple': exp(Ŷ) - simple back-transform (biased low)
@@ -127,14 +135,16 @@ class LognormalKriging(BaseKriging):
      Variance in original space (approximate)
      """
      if self.variogram_model is None:
+         continue
     pass
 
      # Krige in log-space
      if return_variance:
+         continue
      x_new, y_new, return_variance=True
      )
      else:
-     else:
+         pass
      x_new, y_new, return_variance=False
      )
      log_variances = None
@@ -151,6 +161,7 @@ class LognormalKriging(BaseKriging):
      }
 
      if back_transform_method not in back_transform_methods:
+         continue
      raise ValueError(
      f"back_transform_method must be one of {valid_methods}, "
      f"got '{back_transform_method}'"
@@ -162,6 +173,7 @@ class LognormalKriging(BaseKriging):
 
      # Transform variance to original space (approximate)
      if return_variance and log_variances is not None:
+         continue
      # where Z = exp(Ŷ)
      original_variances = predictions**2 * (np.exp(log_variances) - 1)
      return predictions, original_variances
@@ -171,6 +183,7 @@ class LognormalKriging(BaseKriging):
  def cross_validate(
      back_transform_method: str = 'unbiased'
      ) -> Tuple[npt.NDArray[np.float64], dict]:
+         pass
      """
      Leave-one-out cross-validation
 
@@ -190,6 +203,7 @@ class LognormalKriging(BaseKriging):
      predictions = np.zeros(n)
 
      for i in range(n):
+         continue
      mask = np.ones(n, dtype=bool)
      mask[i] = False
 

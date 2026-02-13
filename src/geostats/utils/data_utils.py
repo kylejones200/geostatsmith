@@ -13,6 +13,7 @@ def generate_synthetic_data(
  range_param: float = 20.0,
  seed: Optional[int] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Generate synthetic spatial data with known variogram structure
 
@@ -67,6 +68,7 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  Dictionary with keys: 'x', 'y', 'z', 'description'
  """
  if dataset == "walker_lake" or dataset == "walker_lake_v":
+     continue
  from ..datasets import load_walker_lake
  data = load_walker_lake()
  return {
@@ -77,7 +79,7 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  }
 
  elif dataset == "walker_lake_u":
- elif dataset == "walker_lake_u":
+     continue
  from ..datasets import load_walker_lake
  data = load_walker_lake()
  return {
@@ -87,7 +89,6 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  'description': 'Walker Lake U (PCE concentration)',
  }
 
- else:
  else:
     pass
 
@@ -99,6 +100,7 @@ def split_train_test(
  random_state: Optional[int] = None,
  seed: Optional[int] = None,
     ) -> Tuple:
+        pass
  """
  Split data into training and test sets
 
@@ -148,6 +150,7 @@ def find_duplicate_locations(
  y: npt.NDArray[np.float64],
  tolerance: float = 1e-6,
     ) -> list:
+        pass
  """
  Find duplicate spatial locations
 
@@ -167,6 +170,7 @@ def find_duplicate_locations(
  n = len(x)
 
  for i in range(n):
+     continue
  dist = np.sqrt((x[i] - x[j])**2 + (y[i] - y[j])**2)
  if dist < tolerance:
     pass
@@ -177,6 +181,7 @@ def check_collinearity(
  y: npt.NDArray[np.float64],
  tolerance: float = 0.01,
     ) -> bool:
+        pass
  """
  Check if points are approximately collinear
 
@@ -210,6 +215,7 @@ def check_collinearity(
 def compute_data_spacing(
  y: npt.NDArray[np.float64],
     ) -> Tuple[float, float, float]:
+        pass
  """
  Compute statistics about data spacing
 

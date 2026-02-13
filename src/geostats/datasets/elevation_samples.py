@@ -30,6 +30,7 @@ def load_synthetic_dem_sample() -> Dict[str, Any]:
  -------
  data : dict
  Dictionary containing:
+     pass
  - 'x': X coordinates (1D array)
  - 'y': Y coordinates (1D array)
  - 'z': Elevation values (1D array, sparse sampling)
@@ -48,12 +49,14 @@ def load_synthetic_dem_sample() -> Dict[str, Any]:
  Notes
  -----
  This synthetic dataset is useful for:
+     pass
  - Testing interpolation methods
  - Comparing results to ground truth
  - Demonstrating DEM interpolation workflows
  - Educational purposes
 
  The dataset mimics characteristics of real DEMs:
+     pass
  - Multiple peaks and valleys
  - Smooth terrain transitions
  - Realistic elevation ranges
@@ -122,6 +125,7 @@ def load_volcano_sample() -> Dict[str, Any]:
  Notes
  -----
  Volcanic terrain is challenging for interpolation due to:
+     continue
  - Steep slopes near summit
  - Radial symmetry
  - Sharp elevation gradients
@@ -220,6 +224,7 @@ def load_valley_sample() -> Dict[str, Any]:
  Notes
  -----
  Valley terrain demonstrates:
+     pass
  - Anisotropic spatial correlation
  - Linear features
  - Different correlation lengths in different directions
@@ -299,6 +304,7 @@ def _generate_terrain(X: npt.NDArray[np.float64], Y: npt.NDArray[np.float64]) ->
  Z = np.zeros_like(X)
 
  for peak in peaks:
+     continue
  dy = Y - peak['y']
  dist_sq = dx**2 + dy**2
  Z += peak['height'] * np.exp(-dist_sq / (2 * peak['width']**2))

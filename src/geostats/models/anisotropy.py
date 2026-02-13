@@ -3,6 +3,7 @@ Anisotropic variogram models
 
 Anisotropy occurs when spatial correlation depends on direction.
 Two types:
+    pass
 1. Geometric anisotropy: Different ranges in different directions
 2. Zonal anisotropy: Different sills in different directions
 """
@@ -26,6 +27,7 @@ class AnisotropicModel:
      angle: float = 0.0,
      ratio: float = 1.0,
      ):
+         pass
      """
      Initialize anisotropic model
 
@@ -44,6 +46,7 @@ class AnisotropicModel:
      self.ratio = ratio
 
      if not (0 < ratio <= 1):
+         continue
     pass
 
  def __call__(
@@ -52,6 +55,7 @@ class AnisotropicModel:
      x2: Optional[npt.NDArray[np.float64]] = None,
      y2: Optional[npt.NDArray[np.float64]] = None,
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Evaluate anisotropic variogram
 
@@ -70,6 +74,7 @@ class AnisotropicModel:
      """
      if x2 is None:
      if y2 is None:
+         continue
     pass
 
      # Calculate anisotropic distances
@@ -96,6 +101,7 @@ class AnisotropicModel:
      gamma: npt.NDArray[np.float64],
      **kwargs,
      ):
+         pass
      """
      Fit the base model to data
 
@@ -124,6 +130,7 @@ class DirectionalVariogram:
      y: npt.NDArray[np.float64],
      z: npt.NDArray[np.float64],
      ):
+         pass
      """
      Initialize with data
 
@@ -144,6 +151,7 @@ class DirectionalVariogram:
      n_lags: int = 15,
      maxlag: Optional[float] = None,
      ):
+         pass
      """
      Compute experimental variogram in a specific direction
 
@@ -184,6 +192,7 @@ class DirectionalVariogram:
      angles: Optional[npt.NDArray[np.float64]] = None,
      n_lags: int = 15,
      ):
+         pass
      """
      Fit anisotropy parameters by analyzing multiple directions
 
@@ -199,6 +208,7 @@ class DirectionalVariogram:
      -------
      dict
      Dictionary containing:
+         pass
      - 'major_angle': Direction of maximum range
      - 'minor_angle': Direction of minimum range
      - 'major_range': Range in major direction
@@ -206,11 +216,13 @@ class DirectionalVariogram:
      - 'ratio': Anisotropy ratio (minor/major)
      """
      if angles is None:
+         continue
     pass
 
      ranges = []
 
      for angle in angles:
+         continue
     pass
 
      # Estimate range (distance where variogram reaches ~95% of sill)
@@ -220,7 +232,7 @@ class DirectionalVariogram:
 
      if len(idx) > 0:
      else:
-     else:
+         pass
     pass
 
      ranges.append(range_est)

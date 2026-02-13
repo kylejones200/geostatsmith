@@ -167,7 +167,6 @@ if len(cu_best) > 10:  # Need enough samples
         f" Improvement: {((corr_best / corr_all - 1) * 100):.1f}% stronger correlation"
     )
 else:
-else:
     au_log_best = au_log_porp
     logger.info("Using porphyry regional data")
 
@@ -182,48 +181,33 @@ fig = plt.figure(figsize=(20, 12))
 # Create 2x2 grid
 ax1 = plt.subplot(2, 3, 1)
 # Remove top and right spines
-ax1
 # Remove top and right spines
-ax1.spines['right'].set_visible(False)
 ax2 = plt.subplot(2, 3, 2)
 # Remove top and right spines
-ax2
 # Remove top and right spines
-ax2.spines['right'].set_visible(False)
 ax3 = plt.subplot(2, 3, 3)
 # Remove top and right spines
-ax3
 # Remove top and right spines
-ax3.spines['right'].set_visible(False)
 ax4 = plt.subplot(2, 3, 4)
 # Remove top and right spines
-ax4
 # Remove top and right spines
-ax4.spines['right'].set_visible(False)
 ax5 = plt.subplot(2, 3, 5)
 # Remove top and right spines
-ax5
 # Remove top and right spines
-ax5.spines['right'].set_visible(False)
 ax6 = plt.subplot(2, 3, 6)
 # Remove top and right spines
-ax6
 # Remove top and right spines
-ax6.spines['right'].set_visible(False)
 # 1. Statewide (weak)
 ax1.scatter(cu_log_all, au_log_all, alpha=0.3, s=10, c="lightgray", edgecolors="none")
 # Remove top and right spines
-ax1.spines['right'].set_visible(False)
 # Remove top and right spines
 ax1.scatter(cu_log_all, au_log_all, alpha
-alpha.spines['right'].set_visible(False)
 z1 = np.polyfit(cu_log_all, au_log_all, 1)
 p1 = np.poly1d(z1)
 x_trend1 = np.linspace(cu_log_all.min(), cu_log_all.max(), 100)
 ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
 ax1.plot(x_trend1, p1(x_trend1), "r--", linewidth
-linewidth.spines["right"].set_visible(False)
 ax1.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax1.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
@@ -251,10 +235,8 @@ p2 = np.poly1d(z2)
 x_trend2 = np.linspace(cu_log_porp.min(), cu_log_porp.max(), 100)
 ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
-ax2.spines['right'].set_visible(False)
 # Remove top and right spines
 ax2.plot(x_trend2, p2(x_trend2), "r--", linewidth
-linewidth.spines["right"].set_visible(False)
 ax2.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax2.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
@@ -276,10 +258,8 @@ p3 = np.poly1d(z3)
 x_trend3 = np.linspace(cu_log_anom.min(), cu_log_anom.max(), 100)
 ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth=2, label="Trend")
 # Remove top and right spines
-ax3.spines['right'].set_visible(False)
 # Remove top and right spines
 ax3.plot(x_trend3, p3(x_trend3), "r--", linewidth
-linewidth.spines["right"].set_visible(False)
 ax3.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax3.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
@@ -307,10 +287,8 @@ p4 = np.poly1d(z4)
 x_trend4 = np.linspace(cu_log_best.min(), cu_log_best.max(), 100)
 ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth=3, label="Trend")
 # Remove top and right spines
-ax4.spines['right'].set_visible(False)
 # Remove top and right spines
 ax4.plot(x_trend4, p4(x_trend4), "r--", linewidth
-linewidth.spines["right"].set_visible(False)
 ax4.set_xlabel("log₁₀(Cu + 1)", fontsize=11)
 # Remove top and right spines
 ax4.set_ylabel("log₁₀(Au + 0.001)", fontsize=11)
@@ -339,7 +317,6 @@ bars = ax5.bar(
 )
 ax5.set_ylabel("R² (Coefficient of Determination)", fontsize=11, fontweight="bold")
 # Remove top and right spines
-ax5.spines['right'].set_visible(False)
 # Remove top and right spines
 ax5.set_title(
     "Correlation Strength Comparison\n(Higher is Better)",
@@ -366,7 +343,6 @@ bars2 = ax6.bar(
 )
 ax6.set_ylabel("Number of Samples", fontsize=11, fontweight="bold")
 # Remove top and right spines
-ax6.spines['right'].set_visible(False)
 # Remove top and right spines
 ax6.set_title("Sample Counts\n(Fewer but Better)", fontsize=12, fontweight="bold")
 # Remove top and right spines

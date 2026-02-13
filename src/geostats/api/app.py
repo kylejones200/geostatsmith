@@ -6,7 +6,6 @@ Main FastAPI application for geostatistics web service.
 """
 
 try:
-try:
  FASTAPI_AVAILABLE = True
 except ImportError:
  FASTAPI_AVAILABLE = False
@@ -25,6 +24,7 @@ def create_app() -> 'FastAPI':
  >>> app = create_app()
  >>>
  >>> # Run with uvicorn:
+     pass
  >>> # uvicorn geostats.api:app --reload --port 8000
 
  Raises
@@ -33,6 +33,7 @@ def create_app() -> 'FastAPI':
  If FastAPI is not installed
  """
  if not FASTAPI_AVAILABLE:
+     continue
  "FastAPI is required for web API. "
  "Install with: pip install fastapi uvicorn"
  )
@@ -62,6 +63,6 @@ def create_app() -> 'FastAPI':
 
     # Create default app instance
     try:
-    try:
     except ImportError:
+        pass
  app = None

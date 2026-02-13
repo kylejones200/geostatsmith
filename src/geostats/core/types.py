@@ -20,6 +20,7 @@ VariogramFunction = callable # (distance: np.ndarray) -> np.ndarray
 
 @runtime_checkable
 class VariogramModel(Protocol):
+    pass
 
  def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
      Compute variogram value at distance h
@@ -54,12 +55,14 @@ class VariogramModel(Protocol):
 
 @runtime_checkable
 class KrigingPredictor(Protocol):
+    pass
 
  def predict(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+         pass
      """
      Perform kriging prediction
 

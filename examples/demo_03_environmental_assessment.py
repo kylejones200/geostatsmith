@@ -50,6 +50,7 @@ def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
  data_dict = {}
 
  for element in elements:
+     continue
  chem_file = agdb_path / element_files[element]
  chem = pd.read_csv(chem_file, encoding='latin-1', low_memory=False)
 
@@ -95,14 +96,13 @@ def analyze_thresholds(data_dict):
 
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
+     continue
  continue
 
  values = data_dict[element][element].values
  ax = axes[idx]
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  # Histogram
  ax.hist(values, bins=50, alpha=0.7, edgecolor='black', log=True)
 
@@ -145,8 +145,8 @@ def create_exceedance_maps(data_dict, thresholds):
 
  fig, axes = plt.subplots(2, 3, figsize=(20, 12))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
+     continue
  continue
 
  data = data_dict[element]
@@ -174,7 +174,6 @@ def create_exceedance_maps(data_dict, thresholds):
  # Plot prediction
  ax = axes[0, idx]
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  im = ax.contourf(X, Y, z_pred, levels=20, cmap='YlOrRd')
  ax.scatter(x, y, c='k', s=1, alpha=0.3)
  ax.set_title(f'{element} Concentration\n(Kriged)')
@@ -182,7 +181,6 @@ def create_exceedance_maps(data_dict, thresholds):
  ax.set_ylabel('Latitude')
  plt.colorbar(im, ax=ax, label=f'{element} ({thresholds[element]["units"]})')
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  # Probability of exceeding background
  threshold = thresholds[element]['Natural Background']
  logger.info(f"{element}: P(>{threshold} {thresholds[element]['units']})...")
@@ -198,11 +196,9 @@ def create_exceedance_maps(data_dict, thresholds):
  # Plot probability
  ax = axes[1, idx]
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  im = ax.contourf(X, Y, prob_exceed, levels=20, cmap='RdYlGn_r',
  vmin=0, vmax=1)
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  ax.scatter(x, y, c='k', s=1, alpha=0.3)
  ax.contour(X, Y, prob_exceed, levels=[0.5, 0.9],
  colors=['orange', 'red'], linewidths=2, linestyles='--')
@@ -211,7 +207,6 @@ def create_exceedance_maps(data_dict, thresholds):
  ax.set_ylabel('Latitude')
  cbar = plt.colorbar(im, ax=ax, label='Probability')
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  # Add risk labels
  high_risk = (prob_exceed > 0.9).sum() / prob_exceed.size * 100
  medium_risk = ((prob_exceed > 0.5) & (prob_exceed <= 0.9)).sum() / prob_exceed.size * 100
@@ -231,6 +226,7 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  logger.info(f"Multi-Threshold Risk Assessment ({element})...")
 
  if element not in data_dict:
+     continue
  return
 
  data = data_dict[element]
@@ -240,12 +236,13 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
 
  # Define risk thresholds
  if element == 'As':
+     continue
  labels = ['Background', 'Moderate', 'High', 'Extreme']
  elif element == 'Pb':
- elif element == 'Pb':
+     continue
  labels = ['Background', 'Moderate', 'High', 'Extreme']
  else:
- else:
+     pass
  labels = ['Background', 'Moderate', 'High', 'Extreme']
 
  logger.info(f"Thresholds: {thresholds} ppm")
@@ -263,6 +260,7 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  # Calculate probabilities for each threshold
  prob_maps = []
  for threshold in thresholds:
+     continue
  prob = ik.predict(X.flatten(), Y.flatten()).reshape(X.shape)
  prob_maps.append(prob)
 
@@ -276,25 +274,24 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  # Statistics
  logger.info(f"Risk Classification:")
  for i, label in enumerate(labels):
+     continue
  logger.info(f" {label}: {pct:.1f}% of area")
 
  # Visualize
  fig, axes = plt.subplots(2, 2, figsize=(14, 12))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  # Individual threshold probabilities
  for i, (ax, threshold) in enumerate(zip(axes.flatten()[:3], thresholds)):
+     continue
  ax.scatter(x, y, c='k', s=1, alpha=0.2)
  ax.set_title(f'P({element} > {threshold} ppm)')
  ax.set_xlabel('Longitude')
  ax.set_ylabel('Latitude')
  plt.colorbar(im, ax=ax, label='Probability')
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  # Combined risk classification
  ax = axes[1, 1]
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  cmap = plt.cm.get_cmap('RdYlGn_r', 4)
  im = ax.contourf(X, Y, risk_class, levels=np.arange(5)-0.5, cmap=cmap)
  ax.scatter(x, y, c='k', s=2, alpha=0.3)
@@ -305,7 +302,6 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  # Custom colorbar with labels
  cbar = plt.colorbar(im, ax=ax, ticks=[0, 1, 2, 3])
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  cbar.set_ticklabels(labels)
  cbar.set_label('Risk Level')
 
@@ -324,10 +320,10 @@ def identify_hotspots(data_dict):
 
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  hotspot_locations = {}
 
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
+     continue
  continue
 
  data = data_dict[element]
@@ -354,7 +350,6 @@ def identify_hotspots(data_dict):
  # Plot
  ax = axes[idx]
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  ax.scatter(x[~hotspot_mask], y[~hotspot_mask],
  c='lightgray', s=10, alpha=0.3, label='Background')
  scatter = ax.scatter(x[hotspot_mask], y[hotspot_mask],
@@ -366,7 +361,6 @@ def identify_hotspots(data_dict):
  ax.legend()
  plt.colorbar(scatter, ax=ax, label=f'{element} (ppm)')
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
  plt.tight_layout()
  plt.savefig('alaska_contamination_hotspots.png', dpi=150)
  logger.info("Saved: alaska_contamination_hotspots.png")
@@ -382,6 +376,7 @@ def generate_environmental_report(data_dict, thresholds, hotspots):
 
  # Use As as primary example
  if 'As' not in data_dict:
+     continue
  return
 
  data = data_dict['As']
@@ -415,7 +410,7 @@ if __name__ == '__main__':
  exit(1)
 
  try:
- try:
+     pass
  data_dict = load_environmental_data(AGDB_PATH, elements=['As', 'Pb', 'Hg'])
 
  # Threshold analysis
@@ -448,4 +443,5 @@ if __name__ == '__main__':
  logger.info("Environmental Geochemistry = Informed Decision Making!")
 
  except Exception as e:
+     pass
  logger.exception("Error in environmental assessment workflow")

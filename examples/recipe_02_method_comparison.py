@@ -7,6 +7,7 @@ systematically using cross-validation and performance metrics.
 Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Sections 7.6-7.7
 
 Key Concepts:
+    pass
 - Cross-validation for method selection
 - Speed vs accuracy tradeoffs
 - Visualization of interpolation quality
@@ -42,10 +43,10 @@ logger.info(f" Elevation range: {z.min():.1f} to {z.max():.1f} m")
 # Create prediction grid
 x_min, x_max = 0, 100
 # Remove top and right spines
-ax.spines['right'].set_visible(False)
+
 y_min, y_max = 0, 100
 # Remove top and right spines
-ax.spines['right'].set_visible(False)
+
 grid_res = 40
 
 x_pred = np.linspace(x_min, x_max, grid_res)
@@ -68,7 +69,7 @@ results = compare_interpolation_methods(
 # Create comparison plot
 fig, axes = plt.subplots(3, 3, figsize=(18, 16))
 # Remove top and right spines
-ax.spines['right'].set_visible(False)
+
 fig.suptitle('Method Comparison: Accuracy vs Speed', fontsize=16, fontweight='bold')
 
 # Plot interpolation results (top row and middle row)
@@ -76,7 +77,7 @@ plot_idx = 0
 for i, method in enumerate(methods):
  ax = axes[row, col]
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  Z_pred = results['predictions'][method].reshape(X_grid.shape)
 
  # Contour plot
@@ -85,10 +86,11 @@ for i, method in enumerate(methods):
  ax.scatter(x, y, c=z, s=20, edgecolors='black', linewidths=0.5,
  cmap='terrain', vmin=Z_pred.min(), vmax=Z_pred.max())
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # Title with metrics
  title = method.replace('_', ' ').title()
  if method in results['cv_results']:
+     continue
  title += f"\nRMSE={metrics['rmse']:.2f}, R²={metrics['r2']:.3f}"
 
  ax.set_title(title, fontsize=11, fontweight='bold')
@@ -97,7 +99,7 @@ for i, method in enumerate(methods):
  ax.set_aspect('equal')
  plt.colorbar(im, ax=ax, label='Elevation')
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  plot_idx += 1
 
 # Bar chart: RMSE comparison (bottom left)

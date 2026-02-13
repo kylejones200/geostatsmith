@@ -69,6 +69,7 @@ def load_multi_element_data(agdb_path, region='Pebble'):
  # Focus on specific region if desired (e.g., Iliamna - contains Pebble deposit)
  if region and 'QUAD' in merged.columns:
  if len(region_data) > 50:
+     continue
  logger.info(f" Focused on {region} region")
 
  logger.info(f" Samples with Cu+Mo+Au: {len(merged):,}")
@@ -108,15 +109,15 @@ def analyze_element_correlations(data):
  # Scatter plots with density
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # Cu vs Mo
  axes[0].hexbin(cu_log, mo_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
  axes[0]
- axes[0].spines['right'].set_visible(False)
+ axes[0]
  # Remove top and right spines
- axes[0].hexbin(cu_log, mo_log, gridsize
- gridsize.spines['right'].set_visible(False)
+ axes[0].hexbin(cu_log, mo_log, gridsize)
+ 
  axes[0].set_xlabel('log10(Cu, ppm)')
  # Remove top and right spines
  axes[0].set_xlabel('log10(Cu, ppm)')
@@ -125,16 +126,16 @@ def analyze_element_correlations(data):
  axes[0].set_ylabel('log10(Mo, ppm)')
  axes[0].set_title(f'Cu vs Mo\nr = {corr_cu_mo:.3f}')
  # Remove top and right spines
- axes[0].set_title(f'
- nr.spines['right'].set_visible(False)
+ axes[0].set_title(f')
+ 
  # Cu vs Au
  axes[1].hexbin(cu_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
  axes[1]
- axes[1].spines['right'].set_visible(False)
+ axes[1]
  # Remove top and right spines
- axes[1].hexbin(cu_log, au_log, gridsize
- gridsize.spines['right'].set_visible(False)
+ axes[1].hexbin(cu_log, au_log, gridsize)
+ 
  axes[1].set_xlabel('log10(Cu, ppm)')
  # Remove top and right spines
  axes[1].set_xlabel('log10(Cu, ppm)')
@@ -143,16 +144,16 @@ def analyze_element_correlations(data):
  axes[1].set_ylabel('log10(Au, ppm)')
  axes[1].set_title(f'Cu vs Au\nr = {corr_cu_au:.3f}')
  # Remove top and right spines
- axes[1].set_title(f'
- nr.spines['right'].set_visible(False)
+ axes[1].set_title(f')
+ 
  # Mo vs Au
  axes[2].hexbin(mo_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
  axes[2]
- axes[2].spines['right'].set_visible(False)
+ axes[2]
  # Remove top and right spines
- axes[2].hexbin(mo_log, au_log, gridsize
- gridsize.spines['right'].set_visible(False)
+ axes[2].hexbin(mo_log, au_log, gridsize)
+ 
  axes[2].set_xlabel('log10(Mo, ppm)')
  # Remove top and right spines
  axes[2].set_xlabel('log10(Mo, ppm)')
@@ -161,8 +162,8 @@ def analyze_element_correlations(data):
  axes[2].set_ylabel('log10(Au, ppm)')
  axes[2].set_title(f'Mo vs Au\nr = {corr_mo_au:.3f}')
  # Remove top and right spines
- axes[2].set_title(f'
- nr.spines['right'].set_visible(False)
+ axes[2].set_title(f')
+ 
  plt.tight_layout()
  plt.savefig('alaska_element_correlations.png', dpi=150)
  logger.info("Saved: alaska_element_correlations.png")
@@ -216,9 +217,10 @@ def detect_geochemical_anomalies(data, elements_dict):
  # Map anomalies
  fig, axes = plt.subplots(2, 2, figsize=(16, 14))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # Individual elements
  for idx, element in enumerate(['Cu', 'Mo', 'Au']):
+     continue
  mask = anomalies_dict[element]['outlier_mask']
 
  # Background samples
@@ -236,7 +238,7 @@ def detect_geochemical_anomalies(data, elements_dict):
  # Combined
  ax = axes[1, 1]
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  ax.scatter(x[~combined_anomaly], y[~combined_anomaly],
  c='lightgray', s=10, alpha=0.5, label='Background')
  ax.scatter(x[combined_anomaly], y[combined_anomaly],
@@ -313,16 +315,16 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  # Visualize
  fig, axes = plt.subplots(2, 2, figsize=(14, 12))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # OK prediction
  im1 = axes[0, 0].contourf(X, Y, cu_ok, levels=20, cmap='YlOrRd')
  axes[0, 0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[0, 0]
- axes[0, 0].spines['right'].set_visible(False)
+ axes[0, 0]
  # Remove top and right spines
- axes[0, 0].scatter(x, y, c
- c.spines['right'].set_visible(False)
+ axes[0, 0].scatter(x, y, c)
+ 
  axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)')
  # Remove top and right spines
  axes[0, 0].set_title('Ordinary Kriging\n(Cu alone)')
@@ -344,10 +346,10 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  axes[1, 0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[1, 0]
- axes[1, 0].spines['right'].set_visible(False)
+ axes[1, 0]
  # Remove top and right spines
- axes[1, 0].scatter(x, y, c
- c.spines['right'].set_visible(False)
+ axes[1, 0].scatter(x, y, c)
+ 
  axes[1, 0].set_title('Cokriging\n(Cu with Mo)')
  # Remove top and right spines
  axes[1, 0].set_title('Cokriging\n(Cu with Mo)')
@@ -365,6 +367,7 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  axes[1, 1].set_title(f'Cokriging Variance\n({variance_reduction:.0f}% reduction!)')
 
  for ax in axes.flatten():
+     continue
  ax.set_ylabel('Latitude')
 
  plt.tight_layout()
@@ -418,20 +421,20 @@ def calculate_porphyry_index(data, elements_dict):
  # Visualize
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # Porphyry index map
  im1 = ax1.contourf(X, Y, index_pred, levels=20, cmap='RdYlGn')
- ax1.scatter(x, y, c=porphyry_index, s=30, cmap='RdYlGn',
+ ax1.scatter(x, y, c=porphyry_index, s=30, cmap='RdYlGn',)
  # Remove top and right spines
- ax1.spines['right'].set_visible(False)
+ 
  # Remove top and right spines
- ax1.scatter(x, y, c
- c.spines['right'].set_visible(False)
+ ax1.scatter(x, y, c)
+ 
  edgecolors='k', linewidths=0.5)
- ax1.contour(X, Y, index_pred, levels=[np.percentile(index_pred, 90)],
+ ax1.contour(X, Y, index_pred, levels=[np.percentile(index_pred, 90)],)
  # Remove top and right spines
- ax1.contour(X, Y, index_pred, levels
- levels.spines['right'].set_visible(False)
+ ax1.contour(X, Y, index_pred, levels)
+ 
  colors='red', linewidths=3, linestyles='--')
  ax1.set_title('Porphyry Fertility Index\n(Combined Cu-Mo-Au signature)')
  ax1.set_xlabel('Longitude')
@@ -444,10 +447,10 @@ def calculate_porphyry_index(data, elements_dict):
  im2 = ax2.contourf(X, Y, high_potential.astype(int), levels=1, colors=['white', 'red'], alpha=0.5)
  ax2.scatter(x, y, c=porphyry_index, s=20, cmap='RdYlGn', alpha=0.6)
  # Remove top and right spines
- ax2.spines['right'].set_visible(False)
+ 
  # Remove top and right spines
- ax2.scatter(x, y, c
- c.spines['right'].set_visible(False)
+ ax2.scatter(x, y, c)
+ 
  ax2.set_title('High-Potential Zones\n(Top 10% fertility)')
  ax2.set_xlabel('Longitude')
  ax2.set_ylabel('Latitude')
@@ -470,7 +473,7 @@ if __name__ == '__main__':
  exit(1)
 
  try:
- try:
+     pass
  data = load_multi_element_data(AGDB_PATH, region='Iliamna') # or 'Pebble'
 
  # Correlation analysis
@@ -500,4 +503,5 @@ if __name__ == '__main__':
  logger.info("Multi-Element Analysis = Powerful Exploration Tool!")
 
  except Exception as e:
+     pass
  logger.exception("Multi-element analysis error")

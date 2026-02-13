@@ -13,11 +13,9 @@ from pathlib import Path
 import json
 
 try:
-try:
 except ImportError:
  NETCDF_AVAILABLE = False
 
-try:
 try:
  GEOPANDAS_AVAILABLE = True
 except ImportError:
@@ -29,6 +27,7 @@ def read_netcdf(
  y_var: str = 'y',
  time_index: Optional[int] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
+        pass
  """
  Read spatial data from NetCDF file.
 
@@ -72,9 +71,10 @@ def read_netcdf(
  ImportError
  If netCDF4 is not installed
  FileNotFoundError
- If file doesn't exist
+ If file doesn't exist'
  """
  if not NETCDF_AVAILABLE:
+     continue
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
@@ -83,7 +83,6 @@ def read_netcdf(
     pass
 
  # Open NetCDF file
- with nc.Dataset(filename, 'r') as dataset:
  with nc.Dataset(filename, 'r') as dataset:
  if x_var not in dataset.variables:
  if y_var not in dataset.variables:
@@ -100,9 +99,8 @@ def read_netcdf(
  # Handle time dimension if present
  if time_index is not None and 'time' in z_data.dimensions:
  elif len(z_data.shape) == 3:
- elif len(z_data.shape) == 3:
+     continue
  z = z_data[0, :, :].data
- else:
  else:
     pass
 
@@ -129,6 +127,7 @@ def write_netcdf(
  units: Optional[str] = None,
  long_name: Optional[str] = None,
     ) -> None:
+        pass
  """
  Write spatial data to NetCDF file.
 
@@ -169,6 +168,7 @@ def write_netcdf(
  If netCDF4 is not installed
  """
  if not NETCDF_AVAILABLE:
+     continue
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
@@ -178,7 +178,7 @@ def write_netcdf(
 
  # Create NetCDF file
  with nc.Dataset(filename, 'w', format='NETCDF4') as dataset:
- with nc.Dataset(filename, 'w', format='NETCDF4') as dataset:
+     pass
  dataset.createDimension(y_varname, len(y))
  dataset.createDimension(x_varname, len(x))
 
@@ -204,6 +204,7 @@ def write_netcdf(
 def read_geojson(
  z_property: str,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Read point data from GeoJSON file.
 
@@ -232,9 +233,10 @@ def read_geojson(
  ImportError
  If geopandas is not installed
  FileNotFoundError
- If file doesn't exist
+ If file doesn't exist'
  """
  if not GEOPANDAS_AVAILABLE:
+     continue
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
  )
@@ -263,6 +265,7 @@ def write_geojson(
  z_property: str = 'value',
  crs: str = 'EPSG:4326',
     ) -> None:
+        pass
  """
  Write point data to GeoJSON file.
 
@@ -291,6 +294,7 @@ def write_geojson(
  If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
+     continue
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
  )
@@ -314,6 +318,7 @@ def to_dataframe(
  z_col: str = 'z',
  **extra_cols,
     ) -> pd.DataFrame:
+        pass
  """
  Convert spatial data to pandas DataFrame.
 
@@ -363,6 +368,7 @@ def to_geopandas(
  crs: str = 'EPSG:4326',
  **extra_cols,
     ) -> 'gpd.GeoDataFrame':
+        pass
  """
  Convert spatial data to GeoPandas GeoDataFrame.
 
@@ -397,6 +403,7 @@ def to_geopandas(
  If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
+     continue
  "geopandas is required. "
  "Install with: pip install geopandas"
  )

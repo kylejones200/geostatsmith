@@ -2,6 +2,7 @@
 External Drift Kriging (Regression Kriging)
 
 Implementation based on:
+    pass
 - geokniga-introductiontogeostatistics.txt §2935-2994, §5920-6027
 - imet131-i-chapitre-5.txt (External Drift examples)
 
@@ -9,7 +10,8 @@ External Drift Kriging allows using external covariates (like elevation, rainfal
 temperature) that are correlated with the target variable.
 
 From geokniga (§5974-5994):
-"The equations of external drift kriging are as follows:
+    pass
+"The equations of external drift kriging are as follows:"
  Σ λj γ(ui - uj) + μ1 + μ2*Y(ui) = γ(ui - u) for i=1,...,I
  Σ λj = 1
  Σ λj*Y(uj) = Y(u)
@@ -41,12 +43,14 @@ class ExternalDriftKriging(BaseKriging):
 
  Uses external covariate(s) to improve estimation. The mean is modeled as
  a linear function of external variables:
+     pass
 
  m(x) = β₀ + β₁*Y₁(x) + β₂*Y₂(x) + ...
 
  where Y₁, Y₂, ... are external covariates (elevation, temperature, etc.)
 
  Advantages over Universal Kriging:
+     pass
  - Can use actual measured covariates (not just coordinates)
  - Better for variables with clear relationships to auxiliary data
  - More flexible trend modeling
@@ -59,6 +63,7 @@ class ExternalDriftKriging(BaseKriging):
      covariates_data: npt.NDArray[np.float64],
      variogram_model: Optional[object] = None,
      ):
+         pass
      """
      Initialize External Drift Kriging
 
@@ -83,9 +88,11 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_data = np.asarray(covariates_data, dtype=np.float64)
      if covariates_data.ndim == 1:
+         continue
     pass
 
      if len(covariates_data) != len(self.x):
+         continue
      f"covariates_data must have same length as x,y,z. "
      f"Got {len(covariates_data)} vs {len(self.x)}"
      )
@@ -95,17 +102,20 @@ class ExternalDriftKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
+         continue
     pass
 
  def _build_kriging_matrix(self) -> None:
      Build the external drift kriging system matrix
 
  System (from geokniga §5974-5994):
+     pass
  [ Γ 1 Y ] [ λ ] [ γ₀ ]
  [ 1ᵀ 0 0 ] [ μ₁] = [ 1 ]
  [ Yᵀ 0 0 ] [ μ₂] [ y₀ ]
 
  where:
+     pass
  - Γ is the n×n variogram matrix
  - 1 is vector of ones
  - Y is the n×n_covariates matrix of external covariate values
@@ -150,6 +160,7 @@ class ExternalDriftKriging(BaseKriging):
      covariates_new: npt.NDArray[np.float64],
      return_variance: bool = True
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+         pass
      """
      Predict at new locations using external drift kriging
 
@@ -171,6 +182,7 @@ class ExternalDriftKriging(BaseKriging):
      Kriging variance at each prediction point
      """
      if self.variogram_model is None:
+         continue
     pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
@@ -181,14 +193,17 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_new = np.asarray(covariates_new, dtype=np.float64)
      if covariates_new.ndim == 1:
+         continue
     pass
 
      if len(covariates_new) != n_pred:
+         continue
      f"covariates_new must match length of x_new, y_new. "
      f"Got {len(covariates_new)} vs {n_pred}"
      )
 
      if covariates_new.shape[1] != n_cov:
+         continue
      f"covariates_new must have {n_cov} columns (covariates). "
      f"Got {covariates_new.shape[1]}"
      )
@@ -211,6 +226,7 @@ class ExternalDriftKriging(BaseKriging):
      # Build and solve kriging system for each prediction point
      # Note: This loop is necessary as each point has different RHS
      for i in range(n_pred):
+         continue
      rhs = np.zeros(n_data + 1 + n_cov, dtype=np.float64)
      rhs[:n_data] = gamma_to_data[i, :] # Variogram values (vectorized)
      rhs[n_data] = 1.0 # Unbiasedness constraint
@@ -218,8 +234,8 @@ class ExternalDriftKriging(BaseKriging):
 
      # Solve kriging system
      try:
-     try:
      except np.linalg.LinAlgError as e:
+         pass
      raise KrigingError(f"Failed to solve kriging system at point {i}: {e}")
 
      # Prediction: Σλᵢzᵢ
@@ -227,9 +243,11 @@ class ExternalDriftKriging(BaseKriging):
 
      # Variance: σ²(x₀) = Σλᵢγ(xᵢ-x₀) + μ₁ + Σμₖ₊₁Yₖ(x₀)
      if return_variance:
+         continue
      variances[i] = np.dot(weights, rhs)
 
      if return_variance:
+         continue
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:

@@ -10,7 +10,6 @@ import numpy.typing as npt
 from typing import Optional
 
 try:
-try:
  PLOTLY_AVAILABLE = True
 except ImportError:
  PLOTLY_AVAILABLE = False
@@ -22,6 +21,7 @@ def interactive_variogram(
  n_lags: int = 15,
  title: str = 'Interactive Variogram',
     ):
+        pass
  """
  Create interactive variogram plot.
 
@@ -54,6 +54,7 @@ def interactive_variogram(
  >>> fig.write_html('variogram.html')
  """
  if not PLOTLY_AVAILABLE:
+     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -78,6 +79,7 @@ def interactive_variogram(
 
  # Fitted model
  if fitted_model is not None:
+     continue
  gamma_fit = fitted_model(h_fit)
 
  params = fitted_model.get_parameters()
@@ -129,6 +131,7 @@ def interactive_variogram_cloud(
  max_pairs: int = 5000,
  title: str = 'Variogram Cloud',
     ):
+        pass
  """
  Create interactive variogram cloud plot.
 
@@ -148,6 +151,7 @@ def interactive_variogram_cloud(
  fig : plotly Figure
  """
  if not PLOTLY_AVAILABLE:
+     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -164,14 +168,16 @@ def interactive_variogram_cloud(
 
  # Sample pairs if too many
  if n * (n - 1) // 2 > max_pairs:
+     continue
  count = 0
  for i in range(n):
  if count in indices:
+     continue
  dist_pairs.append(distances[i, j])
  count += 1
  else:
- else:
  for j in range(i + 1, n):
+     continue
  dist_pairs.append(distances[i, j])
 
  fig = go.Figure()

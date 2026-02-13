@@ -5,6 +5,7 @@ Cokriging uses a secondary variable to improve estimation of the primary variabl
 Useful when secondary variable is densely sampled or correlated with primary.
 
 Based on:
+    pass
 - Zhang, Y. (2010). Introduction to Geostatistics - Course Notes, Section 5.4.3
 - Wackernagel, H. (2003). Multivariate Geostatistics
 """
@@ -38,6 +39,7 @@ class Cokriging(BaseKriging):
      variogram_secondary: Optional[object] = None,
      cross_variogram: Optional[object] = None,
      ):
+         pass
      """
      Initialize Cokriging
 
@@ -77,6 +79,7 @@ class Cokriging(BaseKriging):
 
      # Build cokriging matrix
      if all([variogram_primary, variogram_secondary, cross_variogram]):
+         continue
     pass
 
  def _build_cokriging_matrix(self) -> None:
@@ -146,6 +149,7 @@ class Cokriging(BaseKriging):
      y: npt.NDArray[np.float64],
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Perform Cokriging prediction
 
@@ -164,6 +168,7 @@ class Cokriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if any([v is None for v in [self.variogram_primary, self.variogram_secondary, self.cross_variogram]]):
+         continue
     pass
 
      x_pred, y_pred = validate_coordinates(x, y)
@@ -180,6 +185,7 @@ class Cokriging(BaseKriging):
      sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
 
      for i in range(n_pred):
+         continue
      dist_to_primary = euclidean_distance(
      np.array([x_pred[i]]), np.array([y_pred[i]]),
      self.x_primary, self.y_primary
@@ -208,12 +214,13 @@ class Cokriging(BaseKriging):
 
      # Solve system
      try:
-     try:
      except KrigingError:
+         pass
      # Fallback to nearest primary point
      nearest_idx = np.argmin(dist_to_primary)
      predictions[i] = self.z_primary[nearest_idx]
      if return_variance:
+         continue
      continue
 
      # Extract weights
@@ -228,11 +235,12 @@ class Cokriging(BaseKriging):
 
      # Variance
      if return_variance:
+         continue
      variances[i] = max(0.0, variances[i])
 
      if return_variance:
      else:
-     else:
+         pass
     pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
@@ -273,6 +281,7 @@ class CollocatedCokriging(BaseKriging):
      variogram_primary: Optional[object] = None,
      correlation_coefficient: float = 0.7,
      ):
+         pass
      """
      Initialize Collocated Cokriging
 
@@ -294,6 +303,7 @@ class CollocatedCokriging(BaseKriging):
      self.correlation = correlation_coefficient
 
      if variogram_primary is not None:
+         continue
     pass
 
  def _build_kriging_matrix(self) -> None:
@@ -316,6 +326,7 @@ class CollocatedCokriging(BaseKriging):
      z_secondary: npt.NDArray[np.float64],
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Perform collocated cokriging prediction
 
@@ -336,6 +347,7 @@ class CollocatedCokriging(BaseKriging):
      Kriging variance
      """
      if self.variogram_model is None:
+         continue
     pass
 
      # First do ordinary kriging
@@ -355,9 +367,10 @@ class CollocatedCokriging(BaseKriging):
 
      # Adjusted variance (reduced by correlation)
      if return_variance:
+         continue
      return predictions, variances
      else:
-     else:
+         pass
     pass
 
  def predict(self, x, y, return_variance=True):

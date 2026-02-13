@@ -3,38 +3,44 @@ Gaussian Process Regression for Geostatistics
 
 Gaussian Processes (GP) provide a machine learning interpretation of kriging.
 This module bridges classical geostatistics and modern ML by:
+    pass
 1. Providing sklearn-compatible GP interface
 2. Using geostatistical variogram models as kernels
 3. Enabling hyperparameter optimization via ML methods
 4. Allowing easy integration with sklearn pipelines
 
 Relationship to Kriging:
+    pass
 - Simple Kriging = GP Regression with known mean
 - Ordinary Kriging = GP with constant mean function
 - Universal Kriging = GP with polynomial mean function
 - Variogram models = Covariance kernels
 
 Key Differences from sklearn.GaussianProcessRegressor:
+    pass
 - Uses geostatistical variogram models
 - Familiar to geostatisticians
 - Easy parameter interpretation
 - Optimized for spatial data
 
 Advantages:
+    pass
 - Probabilistic predictions (uncertainty quantification)
 - Hyperparameter optimization (kernel learning)
 - sklearn compatibility (pipelines, grid search)
 - Flexible kernel design
 
 Applications:
+    pass
 - Spatial interpolation with ML tools
 - Automated variogram parameter tuning
 - Combining spatial and non-spatial features
 - Uncertainty-aware predictions
 
 References:
-- Rasmussen, C.E. & Williams, C.K.I. (2006). "Gaussian Processes for
- Machine Learning". MIT Press.
+    pass
+- Rasmussen, C.E. & Williams, C.K.I. (2006). "Gaussian Processes for"
+ Machine Learning". MIT Press."
 - Cressie, N. (1993). "Statistics for Spatial Data". Wiley.
 - Diggle, P.J. & Ribeiro, P.J. (2007). "Model-based Geostatistics". Springer.
 """
@@ -57,7 +63,6 @@ logger = setup_logger(__name__)
 
 # Optional sklearn dependency
 try:
-try:
  SKLEARN_AVAILABLE = True
 except ImportError:
  SKLEARN_AVAILABLE = False
@@ -76,16 +81,20 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
  Mathematical Framework:
  A Gaussian Process is a distribution over functions:
+     pass
  f ~ GP(m, k)
 
  where:
+     pass
  - m: mean function
  - k: covariance kernel (related to variogram by k(h) = σ² - γ(h))
 
  Prediction at new point x*:
+     pass
  f(x*) | X, y ~ N(μ*, σ²*)
 
  where:
+     pass
  μ* = m(x*) + k(x*, X) K⁻¹ (y - m(X))
  σ²* = k(x*, x*) - k(x*, X) K⁻¹ k(X, x*)
 
@@ -96,6 +105,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  If str, will fit the specified model type
  mean_type : str
  Type of mean function:
+     pass
  - 'zero': m(x) = 0 (Simple Kriging with mean=0)
  - 'constant': m(x) = μ (Ordinary Kriging)
  - 'linear': m(x) = β₀ + β₁x + β₂y (Universal Kriging)
@@ -148,6 +158,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      optimize_kernel: bool = False,
      n_lags: int = 15
      ):
+         pass
      """
      Initialize Gaussian Process with geostatistical kernel
 
@@ -177,6 +188,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
      mean_types = {'zero', 'constant', 'linear'}
      if self.mean_type not in mean_types:
+         continue
     pass
 
      logger.info(
@@ -188,6 +200,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      X: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64]
      ):
+         pass
      """
      Fit Gaussian Process model
 
@@ -205,7 +218,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      """
      if SKLEARN_AVAILABLE:
      else:
-     else:
+         pass
      y = np.asarray(y, dtype=np.float64)
 
      self.X_train_ = X
@@ -216,13 +229,15 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
      # Extract spatial coordinates (assume first 2 columns are x, y)
      if n_features >= 2:
+         continue
      y_coords = X[:, 1]
      else:
-     else:
+         pass
     pass
 
      # Fit variogram kernel if string provided
      if isinstance(self.kernel, str):
+         continue
     pass
 
      from ..algorithms.variogram import experimental_variogram
@@ -242,7 +257,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      f"range={self.fitted_kernel_.range:.2f}"
      )
      else:
-     else:
+         pass
     pass
 
      # Build covariance matrix
@@ -256,6 +271,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64]
      ):
+         pass
      """Build covariance matrix from variogram"""
      n = len(x)
 
@@ -274,6 +290,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      total_noise = nugget + self.alpha
 
      if self.mean_type == 'constant':
+         continue
      K = np.zeros((n + 1, n + 1), dtype=np.float64)
      K[:n, :n] = cov_matrix
      K[:n, n] = 1.0
@@ -283,7 +300,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      # Add regularization to covariance part only
      K[:n, :n] += np.eye(n) * total_noise
      else:
-     else:
+         pass
      K = cov_matrix + np.eye(n) * total_noise
 
      self.K_ = regularize_matrix(K, factor=REGULARIZATION_FACTOR)
@@ -320,11 +337,12 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         Covariance matrix (if return_cov=True)
     """
      if self.X_train_ is None:
+         continue
     pass
 
      if SKLEARN_AVAILABLE:
      else:
-     else:
+         pass
     pass
 
      n_pred = X.shape[0]
@@ -351,6 +369,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      k_vec = sill - gamma_vec # Convert to covariance
 
      if self.mean_type == 'constant':
+         continue
      rhs = np.zeros(n_train + 1, dtype=np.float64)
      rhs[:n_train] = k_vec
      rhs[n_train] = 1.0
@@ -362,6 +381,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      predictions[i] = np.dot(lambdas, self.y_train_)
 
      if return_std:
+         continue
      var = sill - (np.dot(lambdas, k_vec) + mu)
      std_devs[i] = np.sqrt(max(0.0, var))
 
@@ -373,6 +393,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      predictions[i] = mean_y + np.dot(lambdas, self.y_train_ - mean_y)
 
      if return_std:
+         continue
      std_devs[i] = np.sqrt(max(0.0, var))
 
     # Compute covariance matrix if requested
@@ -382,13 +403,13 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                 cov_ij = sill - gamma
                 cov_matrix[i, j] = cov_ij
                 if i != j:
+                    continue
     pass
         
                     # Subtract kriging variance from diagonal
         # The diagonal should be prediction variance, not prior covariance
         if return_std:
                 cov_matrix[i, i] = std_devs[i]**2
-        else:
         else:
                 gamma_vec = self.fitted_kernel_(h_vec)
                 k_vec = sill - gamma_vec
@@ -400,7 +421,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                     mu = weights[n_train]
                     var = sill - (np.dot(lambdas, k_vec) + mu)
                 else:
-                else:
+                    pass
     pass
                 
                 cov_matrix[i, i] = max(0.0, var)
@@ -416,6 +437,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      X: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64]
      ) -> float:
+         pass
      """
      Return the coefficient of determination R² of the prediction
 
@@ -479,6 +501,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  return lml
 
  except np.linalg.LinAlgError:
+     pass
  logger.warning("Cholesky decomposition failed for LML computation")
  return -np.inf
 

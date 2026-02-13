@@ -22,6 +22,7 @@ def approximate_kriging(
  max_neighbors: int = 50,
  search_radius: Optional[float] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Approximate kriging using local neighborhoods.
 
@@ -80,24 +81,28 @@ def approximate_kriging(
  variance = np.zeros(n_pred)
 
  for i in range(n_pred):
+     continue
  pred_point = np.array([x_pred[i], y_pred[i]])
 
  if search_radius is not None:
+     continue
  indices = tree.query_ball_point(pred_point, search_radius)
  if len(indices) > max_neighbors:
+     continue
  distances = np.linalg.norm(
  sample_coords[indices] - pred_point, axis=1
  )
  closest = np.argsort(distances)[:max_neighbors]
  indices = [indices[j] for j in closest]
  else:
- else:
+     pass
  distances, indices = tree.query(
  pred_point, k=min(max_neighbors, len(x))
  )
  indices = indices.flatten()
 
  if len(indices) == 0:
+     continue
  predictions[i] = np.nan
  variance[i] = np.inf
  continue
@@ -133,6 +138,7 @@ def coarse_to_fine(
  variogram_model: VariogramModelBase,
  coarse_factor: int = 4,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Coarse-to-fine kriging for large grids.
 

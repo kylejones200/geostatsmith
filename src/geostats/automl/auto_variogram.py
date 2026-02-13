@@ -24,6 +24,7 @@ def auto_variogram(
  n_lags: int = 15,
  verbose: bool = True,
     ) -> VariogramModelBase:
+        pass
  """
  Automatically select best variogram model.
 
@@ -61,7 +62,6 @@ def auto_variogram(
     pass
 
  try:
- try:
     pass
 
  results = parallel_variogram_fit(
@@ -72,15 +72,18 @@ def auto_variogram(
  )
 
  if verbose:
+     continue
  logger.info(f" Best model: {results['best_type']}")
  logger.info(f" R²: {results['best_r2']:.4f}")
  logger.info(f"All models:")
  for r in results['all_results']:
+     continue
  logger.info(f" - {r['type']}: R² = {r['r2']:.4f}")
 
  return results['best_model']
 
  except ImportError:
+     pass
  lags, gamma, _ = experimental_variogram(x, y, z, n_lags=n_lags)
 
  best_model = None
@@ -88,6 +91,7 @@ def auto_variogram(
  best_type = None
 
  for model_type in model_types:
+     continue
  model = fit_variogram(lags, gamma, model_type=model_type)
 
  gamma_fitted = model(lags)
@@ -96,6 +100,7 @@ def auto_variogram(
  r2 = 1 - ss_res / ss_tot
 
  if r2 > best_r2:
+     continue
  best_model = model
  best_type = model_type
 
@@ -107,6 +112,7 @@ def auto_variogram(
     pass
 
  if best_model is None:
+     continue
  f"All {len(model_types)} variogram models failed to fit. "
  "Check data quality (sufficient points, spatial structure, no duplicates)."
  )
@@ -122,6 +128,7 @@ def auto_fit(
  cross_validate: bool = True,
  verbose: bool = True,
     ) -> Dict:
+        pass
  """
  Automatic model fitting with cross-validation.
 
@@ -163,6 +170,7 @@ def auto_fit(
  predictions = np.zeros(n)
 
  for i in range(n):
+     continue
  x_train = x[train_idx]
  y_train = y[train_idx]
  z_train = z[train_idx]
@@ -182,6 +190,7 @@ def auto_fit(
  results['cv_r2'] = r2
 
  if verbose:
+     continue
  logger.info(f" MAE: {mae:.4f}")
  logger.info(f" R²: {r2:.4f}")
 

@@ -5,6 +5,7 @@ Disjunctive Kriging is a non-linear kriging method that handles non-Gaussian dat
 through Hermite polynomial expansions, providing optimal non-linear prediction.
 
 The method:
+    pass
 1. Transforms data to standard normal using Hermite polynomial expansion
 2. Performs kriging in the transformed (Gaussian) space
 3. Back-transforms predictions to original space
@@ -12,11 +13,13 @@ The method:
 This is particularly useful for skewed distributions common in environmental data.
 
 Based on:
+    pass
 - Rivoirard, J. (1994). "Introduction to Disjunctive Kriging and Non-Linear Geostatistics"
 - Matheron, G. (1976). "A Simple Substitute for Conditional Expectation: The Disjunctive Kriging"
 - Chilès, J.-P., & Delfiner, P. (2012). "Geostatistics: Modeling Spatial Uncertainty", Chapter 6
 
 References:
+    pass
 - Hermite polynomials: scipy.special.hermitenorm
 - Gaussian anamorphosis: Transformation to standard normal
 """
@@ -46,9 +49,11 @@ class DisjunctiveKriging(BaseKriging):
     and back-transforms predictions.
 
     The transformation uses the Gaussian anamorphosis:
+        pass
     Z(x) = Σᵢ φᵢ Hᵢ(Y(x))
 
     where:
+        pass
     - Y(x) is the Gaussian transform of Z(x)
     - Hᵢ are normalized Hermite polynomials
     - φᵢ are expansion coefficients
@@ -65,6 +70,7 @@ class DisjunctiveKriging(BaseKriging):
         kriging_type: str = "ordinary",
         mean: Optional[float] = None,
         ):
+            pass
         """
         Initialize Disjunctive Kriging
 
@@ -103,13 +109,16 @@ class DisjunctiveKriging(BaseKriging):
         # Mean for simple kriging
         if self.kriging_type == "simple":
             else:
+                pass
     pass
 
         # Build kriging matrix in Gaussian space
         if self.variogram_model is not None:
+            continue
     pass
 
         if self.variogram_model is not None:
+            continue
         """
         Fit Hermite polynomial expansion to transform data to Gaussian
 
@@ -127,7 +136,7 @@ class DisjunctiveKriging(BaseKriging):
         y_normal = stats.norm.ppf(cdf_values)
 
         # Fit Hermite expansion coefficients
-        # We'll use a simplified approach: fit polynomial expansion
+        # We'll use a simplified approach: fit polynomial expansion'
         # In practice, this uses the orthogonality of Hermite polynomials
 
         # For each Hermite polynomial order, compute coefficient
@@ -152,6 +161,7 @@ class DisjunctiveKriging(BaseKriging):
 
     def _transform_to_gaussian(
         ) -> npt.NDArray[np.float64]:
+            pass
         """
         Transform original values to Gaussian space
 
@@ -182,6 +192,7 @@ class DisjunctiveKriging(BaseKriging):
 
     def _transform_from_gaussian(
         ) -> npt.NDArray[np.float64]:
+            pass
         """
         Transform Gaussian values back to original space using Hermite expansion
 
@@ -199,6 +210,7 @@ class DisjunctiveKriging(BaseKriging):
         z_pred = np.zeros_like(y_gaussian)
 
         for i in range(len(self.hermite_coeffs)):
+            continue
     pass
 
             hermite_poly = hermitenorm(i)
@@ -218,7 +230,6 @@ class DisjunctiveKriging(BaseKriging):
 
         if self.kriging_type == "simple":
         else:
-        else:
             self.kriging_matrix[:n, :n] = gamma_matrix
             self.kriging_matrix[:n, n] = 1.0
             self.kriging_matrix[n, :n] = 1.0
@@ -235,6 +246,7 @@ class DisjunctiveKriging(BaseKriging):
         y: npt.NDArray[np.float64],
         return_variance: bool = True,
         ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+            pass
         """
         Perform Disjunctive Kriging prediction
 
@@ -253,6 +265,7 @@ class DisjunctiveKriging(BaseKriging):
             Kriging variance (in original space, if return_variance=True)
         """
         if self.variogram_model is None:
+            continue
     pass
 
             x_pred, y_pred = validate_coordinates(x, y)
@@ -275,6 +288,7 @@ class DisjunctiveKriging(BaseKriging):
             if self.kriging_type == "simple":
                 try:
                     except KrigingError:
+                        pass
                     nearest_idx = np.argmin(dist_to_samples)
                     y_pred_gaussian[i] = self.y_gaussian[nearest_idx]
                     if return_variance:
@@ -287,15 +301,18 @@ class DisjunctiveKriging(BaseKriging):
 
                 # Variance in Gaussian space
                 if return_variance:
+                    continue
     pass
 
                     else:
+                        pass
                 rhs = np.zeros(self.n_points + 1)
                 rhs[: self.n_points] = gamma_vec
                 rhs[self.n_points] = 1.0
 
                 try:
                     except KrigingError:
+                        pass
                     nearest_idx = np.argmin(dist_to_samples)
                     y_pred_gaussian[i] = self.y_gaussian[nearest_idx]
                     if return_variance:
@@ -341,13 +358,16 @@ class DisjunctiveKriging(BaseKriging):
                 if abs(dzdY) < 1e-6:
                     variances[i] = y_var_gaussian[i] * var_ratio
                 else:
+                    pass
     pass
 
                     return predictions, variances
         else:
+            pass
     pass
 
         else:
+            pass
         """
         Perform leave-one-out cross-validation
 
@@ -359,6 +379,7 @@ class DisjunctiveKriging(BaseKriging):
             Dictionary of validation metrics (MSE, RMSE, MAE, R², bias)
         """
         if self.variogram_model is None:
+            continue
     pass
 
             predictions = np.zeros(self.n_points)

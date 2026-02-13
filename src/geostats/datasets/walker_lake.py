@@ -5,10 +5,12 @@ Classic geostatistics dataset from Nevada.
 Used in Isaaks & Srivastava (1989) and Zhang (2010) course notes.
 
 Two variables measured on a 10x10 grid:
+    pass
 - V: Arsenious contaminant concentration (ppm)
 - U: PCE concentration (ppm)
 
 Reference:
+    pass
 - Zhang, Y. (2010). Course Notes, Chapter 2.7, Figures 2.5 and 2.6
 - Isaaks, E.H., & Srivastava, R.M. (1989). An Introduction to Applied Geostatistics
 """
@@ -27,6 +29,7 @@ def load_walker_lake() -> Dict:
     -------
     dict
     Dictionary with keys:
+        pass
     - 'x': X coordinates (m)
     - 'y': Y coordinates (m)
     - 'V': Arsenious contaminant concentration (ppm)

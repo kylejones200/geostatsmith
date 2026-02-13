@@ -2,6 +2,7 @@
 Logarithmic Transform
 
 Implementation based on Olea (2009) §2162-2176:
+    pass
 "
 is simply the logarithm of the original observation."
 
@@ -10,6 +11,7 @@ to lognormal, which explains the great attention paid to this distribution since
 the early days of geostatistics."
 
 Reference:
+    pass
 - ofr20091103.txt (USGS Practical Primer)
 - Lognormal transformation for kriging (§2805-2810)
 """
@@ -26,6 +28,7 @@ class LogTransform:
  Logarithmic Transform for geostatistical data
 
  Useful for data that follows a lognormal distribution, common in:
+     continue
  - Mineral concentrations
  - Chemical element distributions
  - Permeability values
@@ -106,6 +109,7 @@ class LogTransform:
      positive_values = valid_data[valid_data > 0]
  if len(positive_values) > 0:
      else:
+         pass
     pass
 
  warnings.warn(
@@ -197,6 +201,7 @@ class LogTransform:
 def log_transform(
  base: str = 'natural'
     ) -> Tuple[npt.NDArray[np.float64], LogTransform]:
+        pass
  """
  Convenience function for log transform
 
@@ -230,6 +235,7 @@ def log_transform(
 def log_back_transform(
  transformer: LogTransform
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Back-transform log data to original scale
 

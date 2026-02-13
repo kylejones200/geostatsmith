@@ -3,29 +3,34 @@ Sequential Indicator Simulation (SIS)
 
 Non-parametric conditional simulation for categorical or continuous variables.
 SIS generates stochastic realizations that honor:
+    pass
 1. Data values at sample locations
 2. Spatial variability (via indicator variograms)
 3. Target histogram/distribution
 
 Key advantages over SGS:
+    pass
 - No normality assumption required
 - Can handle multi-modal distributions
 - Works for categorical variables
 - Captures complex spatial patterns
 
 Algorithm (from Deutsch & Journel 1998, GSLIB):
+    pass
 1. Choose thresholds (cutoffs) for indicator transform
 2. Transform data to indicators I(x; zk) = 1 if z(x) <= zk, else 0
 3. Model indicator variograms for each threshold
 4. Sequential simulation:
  a) Define random path through grid nodes
  b) For each node, for each threshold:
+     continue
  - Krige indicator probability P(Z <= zk | data)
  - Build conditional CDF from probabilities
  - Draw random value from conditional CDF
  c) Add simulated value to conditioning data
 
 References:
+    pass
 - Deutsch & Journel (1998) GSLIB, Chapter V.4
 - Goovaerts (1997) Geostatistics for Natural Resources Evaluation, Chapter 9
 - Journel & Isaaks (1984) Conditional indicator simulation
@@ -64,11 +69,13 @@ class SequentialIndicatorSimulation:
  Works for both continuous and categorical variables.
 
  For continuous variables:
+     pass
  - Transform to indicators at multiple thresholds
  - Krige probabilities at each threshold
  - Build conditional CDF and sample from it
 
  For categorical variables:
+     pass
  - Each category becomes an indicator
  - Krige category probabilities
  - Sample category from multinomial distribution
@@ -80,6 +87,7 @@ class SequentialIndicatorSimulation:
      z: npt.NDArray[np.float64],
      config: Optional[SISConfig] = None
      ):
+         pass
      """
      Initialize Sequential Indicator Simulation
 
@@ -97,18 +105,20 @@ class SequentialIndicatorSimulation:
      self.z = np.asarray(z, dtype=np.float64)
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.z):
+         continue
     pass
 
      self.config = config if config is not None else SISConfig()
 
      # Set random seed
      if self.config.random_seed is not None:
+         continue
     pass
 
      # Determine thresholds
      if self.config.thresholds is not None:
      else:
-     else:
+         pass
      probabilities = np.linspace(0, 1, self.config.n_thresholds + 2)[1:-1]
      self.thresholds = np.quantile(self.z, probabilities)
 
@@ -123,6 +133,7 @@ class SequentialIndicatorSimulation:
  def _compute_indicators(
      values: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Transform values to indicators
 
@@ -145,6 +156,7 @@ class SequentialIndicatorSimulation:
  def fit_indicator_variograms(
      variogram_models: List[object]
      ):
+         pass
      """
      Fit indicator variogram models
 
@@ -155,11 +167,13 @@ class SequentialIndicatorSimulation:
      Length must equal n_thresholds
      """
      if len(variogram_models) != self.n_thresholds:
+         continue
      f"Need {self.n_thresholds} variogram models, got {len(variogram_models)}"
      )
 
      # Create indicator kriging objects
      for k in range(self.n_thresholds):
+         continue
      self.x,
      self.y,
      self.z,
@@ -171,6 +185,7 @@ class SequentialIndicatorSimulation:
      x_grid: npt.NDArray[np.float64],
      y_grid: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Generate conditional realizations
 
@@ -186,6 +201,7 @@ class SequentialIndicatorSimulation:
      """
      # Ensure indicator krigers are fitted
      if any(k is None for k in self.indicator_krigers):
+         continue
      "Must call fit_indicator_variograms() before simulate()"
      )
 
@@ -202,6 +218,7 @@ class SequentialIndicatorSimulation:
 
      # Generate each realization
      for r in range(self.config.n_realizations):
+         continue
      path = np.random.permutation(n_nodes)
 
      # Simulated values for this realization
@@ -214,6 +231,7 @@ class SequentialIndicatorSimulation:
 
      # Sequential simulation along random path
      for idx in path:
+         continue
      y_loc = y_flat[idx]
 
      # Krige indicator probabilities at all thresholds (vectorized where possible)
@@ -221,6 +239,7 @@ class SequentialIndicatorSimulation:
 
      # Batch predict all thresholds (vectorized threshold loop)
      for k in range(self.n_thresholds):
+         continue
      prob, _ = self.indicator_krigers[k].predict(
      np.array([x_loc]),
      np.array([y_loc]),
@@ -228,6 +247,7 @@ class SequentialIndicatorSimulation:
      )
      probabilities[k] = prob[0]
      except Exception:
+         pass
      # Fallback to marginal probability
      probabilities[k] = np.mean(self.indicators[:, k])
 
@@ -236,6 +256,7 @@ class SequentialIndicatorSimulation:
 
      # Correct order relations: P(z1) <= P(z2) for z1 < z2 (vectorized)
      if self.config.correct_order_relations:
+         continue
      probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
 
      # Build conditional CDF and sample from it
@@ -251,6 +272,7 @@ class SequentialIndicatorSimulation:
 
      # Reshape to original grid shape
      if len(original_shape) > 1:
+         continue
     pass
 
      return realizations
@@ -258,6 +280,7 @@ class SequentialIndicatorSimulation:
  def _sample_from_cdf(
      probabilities: npt.NDArray[np.float64]
      ) -> float:
+         pass
      """
      Sample a value from conditional CDF
 
@@ -292,21 +315,21 @@ class SequentialIndicatorSimulation:
      # Interpolate to find corresponding z value
      # Use linear interpolation (could use more sophisticated methods)
      try:
-     try:
+         pass
      sampled_value = float(interp(u))
      except Exception:
+         pass
      # Fallback: simple linear search
      idx = np.searchsorted(cdf_p, u)
      if idx == 0:
      elif idx >= len(cdf_z):
-     elif idx >= len(cdf_z):
      else:
-     else:
+         pass
      p1, p2 = cdf_p[idx-1], cdf_p[idx]
      z1, z2 = cdf_z[idx-1], cdf_z[idx]
      if p2 > p1:
      else:
-     else:
+         pass
     pass
 
      return sampled_value

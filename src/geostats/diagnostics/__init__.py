@@ -5,6 +5,7 @@ Advanced Validation & Diagnostics
 Validation and diagnostic tools.
 
 Features:
+    pass
 - Advanced cross-validation
 - Diagnostic plots
 - Model comparison

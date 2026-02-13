@@ -24,6 +24,7 @@ def generate_report(
  include_cv: bool = True,
  include_uncertainty: bool = True,
     ) -> str:
+        pass
  """
  Generate analysis report.
 
@@ -84,6 +85,7 @@ def _generate_html_report(
  include_cv: bool,
  include_uncertainty: bool,
     ) -> str:
+        pass
  """Generate HTML report content."""
  from ..automl import auto_variogram, auto_fit
  from ..algorithms.ordinary_kriging import OrdinaryKriging
@@ -95,6 +97,7 @@ def _generate_html_report(
  # Cross-validation
  cv_html = ""
  if include_cv:
+     continue
  cv_html = f"""
  <h2>Cross-Validation</h2>
  <table class="metrics">
@@ -123,6 +126,7 @@ def _generate_html_report(
  <table class="metrics">
  """
  for key, val in params.items():
+     continue
  model_html += "</table>"
 
  # Compile HTML
@@ -206,6 +210,7 @@ def create_kriging_report(
  y_pred: npt.NDArray[np.float64],
  output: str = 'kriging_report.html',
     ) -> str:
+        pass
  """
  Generate kriging-specific report with prediction maps.
 
@@ -231,6 +236,7 @@ def create_validation_report(
  z: npt.NDArray[np.float64],
  output: str = 'validation_report.html',
     ) -> str:
+        pass
  """
  Generate validation-focused report.
 

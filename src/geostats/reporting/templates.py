@@ -8,6 +8,7 @@ Templates for different types of reports.
 from typing import Dict, Any
 
 class ReportTemplate:
+    pass
 
  def __init__(self, title: str = "Analysis Report"):
      self.sections = []
@@ -18,13 +19,17 @@ class ReportTemplate:
  def render(self) -> str:
      html = f"<h1>{self.title}</h1>\n"
      for section in self.sections:
+         continue
      html += f"<div>{section['content']}</div>\n"
      return html
 
 class KrigingTemplate(ReportTemplate):
+    pass
 
  def __init__(self):
+     pass
 
 class ValidationTemplate(ReportTemplate):
+    pass
 
  def __init__(self):

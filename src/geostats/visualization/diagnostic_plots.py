@@ -13,6 +13,7 @@ def plot_cross_validation(
  ax: Optional[plt.Axes] = None,
  **kwargs,
     ) -> plt.Axes:
+        pass
  """
  Plot cross-validation results
 
@@ -74,6 +75,7 @@ def plot_histogram(
  fit_normal: bool = True,
  **kwargs,
     ) -> plt.Axes:
+        pass
  """
  Plot histogram with optional normal distribution overlay
 
@@ -103,6 +105,7 @@ def plot_histogram(
 
  # Fit and plot normal distribution
  if fit_normal:
+     continue
  x = np.linspace(np.min(data), np.max(data), 100)
  ax.plot(x, stats.norm.pdf(x, mu, std), 'r-', linewidth=2,
  label=f'Normal(μ={mu:.2f}, σ={std:.2f})')
@@ -123,6 +126,7 @@ def plot_histogram(
 def plot_qq_plot(
  ax: Optional[plt.Axes] = None,
     ) -> plt.Axes:
+        pass
  """
  Create Q-Q plot to check normality
 
@@ -161,6 +165,7 @@ def plot_residuals(
  y_pred: npt.NDArray[np.float64],
  figsize: tuple = (14, 5),
     ) -> plt.Figure:
+        pass
  """
  Create residual plots
 
@@ -214,6 +219,7 @@ def qq_plot(
  ax: Optional[plt.Axes] = None,
  **kwargs,
     ) -> tuple:
+        pass
  """
  Create Q-Q plot for residuals
 
@@ -233,7 +239,6 @@ def qq_plot(
  """
  if ax is None:
  else:
- else:
     pass
 
  from scipy import stats
@@ -251,6 +256,7 @@ def plot_histogram(
  ax: Optional[plt.Axes] = None,
  **kwargs,
     ) -> tuple:
+        pass
  """
  Create histogram of data
 
@@ -271,7 +277,6 @@ def plot_histogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- else:
  else:
     pass
 
@@ -300,6 +305,7 @@ def plot_obs_vs_pred(
  ax: Optional[plt.Axes] = None,
  **kwargs,
     ) -> tuple:
+        pass
  """
  Create observed vs predicted scatter plot
 
@@ -320,7 +326,6 @@ def plot_obs_vs_pred(
  ax : matplotlib.Axes
  """
  if ax is None:
- else:
  else:
     pass
 
@@ -357,6 +362,7 @@ def plot_residuals(
  ax: Optional[plt.Axes] = None,
  **kwargs,
     ) -> tuple:
+        pass
  """
  Create residual plot
 
@@ -378,7 +384,6 @@ def plot_residuals(
  """
  if ax is None:
  else:
- else:
     pass
 
  ax.scatter(predicted, residuals, alpha=0.6, s=60,
@@ -399,6 +404,7 @@ def plot_residual_histogram(
  ax: Optional[plt.Axes] = None,
  **kwargs,
     ) -> tuple:
+        pass
  """
  Create histogram of residuals
 
@@ -419,7 +425,6 @@ def plot_residual_histogram(
  ax : matplotlib.Axes
  """
  if ax is None:
- else:
  else:
     pass
 

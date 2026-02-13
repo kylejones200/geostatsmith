@@ -9,13 +9,13 @@ import numpy as np
 from typing import List, Optional, Dict, Any
 
 try:
-try:
  FASTAPI_AVAILABLE = True
 except ImportError:
  FASTAPI_AVAILABLE = False
  # Create dummy classes for when FastAPI not installed
  class BaseModel:
  class APIRouter:
+     pass
 
      # Request/Response models
 class PredictionRequest(BaseModel):
@@ -55,11 +55,12 @@ class HealthResponse(BaseModel):
     # Create router
     if FASTAPI_AVAILABLE:
     else:
-    else:
+        pass
     pass
 
     if FASTAPI_AVAILABLE:
         async def root():
+            pass
  """Root endpoint."""
  return {
  "message": "GeoStats API",
@@ -69,6 +70,7 @@ class HealthResponse(BaseModel):
 
  @router.get("/health", response_model=HealthResponse, tags=["General"])
  async def health_check():
+     pass
  """
  Health check endpoint.
 
@@ -103,13 +105,14 @@ class HealthResponse(BaseModel):
 
  @router.post("/predict", response_model=PredictionResponse, tags=["Kriging"])
  async def predict(request: PredictionRequest):
+     pass
  """
  Perform kriging prediction.
 
  Returns predictions and optionally variance at requested locations.
  """
  try:
- try:
+     pass
  from ..algorithms.variogram import experimental_variogram
  from ..algorithms.fitting import fit_variogram_model as fit_variogram
 
@@ -142,17 +145,19 @@ class HealthResponse(BaseModel):
  )
 
  except Exception as e:
+     pass
  raise HTTPException(status_code=500, detail=str(e))
 
  @router.post("/variogram", response_model=VariogramResponse, tags=["Variogram"])
  async def fit_variogram_endpoint(request: VariogramRequest):
+     pass
  """
  Fit variogram model to data.
 
  Returns best fitted model and parameters.
  """
  try:
- try:
+     pass
  from ..algorithms.variogram import experimental_variogram
 
  # Convert to numpy
@@ -185,6 +190,7 @@ class HealthResponse(BaseModel):
  )
 
  except Exception as e:
+     pass
  raise HTTPException(status_code=500, detail=str(e))
 
  @router.post("/auto-interpolate", tags=["AutoML"])
@@ -195,12 +201,12 @@ class HealthResponse(BaseModel):
  x_pred: List[float],
  y_pred: List[float],
  ):
+     pass
  """
  Automatic interpolation - one endpoint does everything!
 
  Automatically selects best method and makes predictions.
  """
- try:
  try:
     pass
 
@@ -220,4 +226,5 @@ class HealthResponse(BaseModel):
  }
 
  except Exception as e:
+     pass
  raise HTTPException(status_code=500, detail=str(e))

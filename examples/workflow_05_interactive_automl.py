@@ -5,6 +5,7 @@ Example Workflow: Interactive Visualization & AutoML
 Demonstrates Phase 2 interactive and automatic features.
 
 Shows:
+    pass
 1. Interactive variogram plots (Plotly)
 2. Interactive prediction maps
 3. AutoML - automatic model selection
@@ -20,14 +21,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
-try:
  from geostats.algorithms.fitting import fit_variogram
 except ImportError:
  logger.info("Please install geostats: pip install -e .")
  exit(1)
 
 # Check for optional dependencies
-try:
 try:
  interactive_prediction_map,
  interactive_uncertainty_map,
@@ -39,6 +38,7 @@ except ImportError:
 
 def example_1_interactive_variogram():
  if not PLOTLY_AVAILABLE:
+     continue
  return
 
  logger.info("\n" + "="*60)
@@ -103,6 +103,7 @@ def example_2_interactive_prediction_map():
  logger.info(" Saved to: interactive_map.html")
 
 def example_3_auto_variogram():
+    pass
  
  logger.info("Example 3: Automatic Variogram Selection")
  
@@ -152,6 +153,7 @@ def main():
  logger.info("="*70)
 
  if PLOTLY_AVAILABLE:
+     continue
  example_2_interactive_prediction_map()
 
  example_3_auto_variogram()
@@ -162,6 +164,7 @@ def main():
  logger.info("="*70)
 
  if PLOTLY_AVAILABLE:
+     continue
  logger.info(" • interactive_variogram.html - Open in browser!")
  logger.info(" • interactive_map.html - Hover for values!")
 

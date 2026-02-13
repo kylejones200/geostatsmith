@@ -34,6 +34,7 @@ class DataConfig(BaseModel):
  @classmethod
  def validate_file_exists(cls, v):
      if not Path(v).exists():
+         continue
      return v
 
 class PreprocessingConfig(BaseModel):
@@ -85,6 +86,7 @@ class NeighborhoodConfig(BaseModel):
  @model_validator(mode='after')
  def validate_neighbors(self):
      if self.max_neighbors < self.min_neighbors:
+         continue
      return self
 
 class GridConfig(BaseModel):
@@ -180,6 +182,7 @@ class OutputConfig(BaseModel):
  precision: Literal['float32', 'float64'] = Field('float32', description="Numerical precision")
 
 class AnalysisConfig(BaseModel):
+    pass
 
  project: ProjectConfig = Field(..., description="Project metadata")
  data: DataConfig = Field(..., description="Data configuration")
@@ -203,6 +206,7 @@ class AnalysisConfig(BaseModel):
  def validate_config(self):
      # Check cokriging requirements
      if self.kriging.method == 'cokriging' and self.data.z_secondary is None:
+         continue
     pass
 
  # Check indicator kriging requirements
@@ -220,5 +224,4 @@ class AnalysisConfig(BaseModel):
      return yaml.dump(self.model_dump(), default_flow_style=False, sort_keys=False)
 
  def save_yaml(self, path: str):
-     with open(path, 'w') as f:
      with open(path, 'w') as f:

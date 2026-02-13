@@ -10,7 +10,6 @@ import numpy.typing as npt
 from typing import Dict, List
 
 try:
-try:
  PLOTLY_AVAILABLE = True
 except ImportError:
  PLOTLY_AVAILABLE = False
@@ -18,6 +17,7 @@ except ImportError:
 def interactive_comparison(
  title: str = 'Method Comparison',
     ):
+        pass
  """
  Interactive comparison of interpolation methods.
 
@@ -42,6 +42,7 @@ def interactive_comparison(
  >>> fig.show()
  """
  if not PLOTLY_AVAILABLE:
+     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -100,6 +101,7 @@ def interactive_cross_validation(
  predicted: npt.NDArray[np.float64],
  method_name: str = 'Kriging',
     ):
+        pass
  """
  Interactive cross-validation diagnostic plots.
 
@@ -117,6 +119,7 @@ def interactive_cross_validation(
  fig : plotly Figure
  """
  if not PLOTLY_AVAILABLE:
+     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )

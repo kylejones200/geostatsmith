@@ -5,6 +5,7 @@ AutoML for Geostatistics
 Automated model selection and hyperparameter tuning.
 
 Key Features:
+    pass
 - Automatic variogram model selection
 - Automatic method selection (kriging vs alternatives)
 - Hyperparameter optimization

@@ -3,12 +3,14 @@ Universal Kriging implementation
 
 Universal Kriging (UK) accounts for a trend (drift) in the data.
 The mean is modeled as a function of coordinates:
+    pass
 
  m(x) = Σβf(x)
 
 where f are basis functions (e.g., polynomials).
 
 Common trends:
+    pass
 - Linear: m(x,y) = β₀ + β₁x + β₂y
 - Quadratic: m(x,y) = β₀ + β₁x + β₂y + β₃x² + β₄xy + β₅y²
 
@@ -40,6 +42,7 @@ class UniversalKriging(BaseKriging):
      variogram_model: Optional[object] = None,
      drift_terms: str = "linear",
      ):
+         pass
      """
      Initialize Universal Kriging
 
@@ -53,6 +56,7 @@ class UniversalKriging(BaseKriging):
      Fitted variogram model (should be fitted to residuals)
      drift_terms : str
      Type of drift/trend:
+         pass
      - 'linear': β₀ + β₁x + β₂y
      - 'quadratic': β₀ + β₁x + β₂y + β₃x² + β₄xy + β₅y²
      """
@@ -70,12 +74,14 @@ class UniversalKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
+         continue
     pass
 
  def _build_drift_matrix(
      x: npt.NDArray[np.float64],
      y: npt.NDArray[np.float64],
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Build matrix of drift basis functions
 
@@ -92,6 +98,7 @@ class UniversalKriging(BaseKriging):
      n = len(x)
 
      if self.drift_terms == "linear":
+         continue
      F = np.column_stack([
      np.ones(n),
      x,
@@ -99,7 +106,7 @@ class UniversalKriging(BaseKriging):
      ])
 
      elif self.drift_terms == "quadratic":
-     elif self.drift_terms == "quadratic":
+         continue
      F = np.column_stack([
      np.ones(n),
      x,
@@ -110,7 +117,7 @@ class UniversalKriging(BaseKriging):
      ])
 
      else:
-     else:
+         pass
     pass
 
      return F
@@ -145,6 +152,7 @@ class UniversalKriging(BaseKriging):
      y: npt.NDArray[np.float64],
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Perform Universal Kriging prediction
 
@@ -163,6 +171,7 @@ class UniversalKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
+         continue
     pass
 
      x_pred, y_pred = validate_coordinates(x, y)
@@ -173,6 +182,7 @@ class UniversalKriging(BaseKriging):
 
      # Predict at each location
      for i in range(n_pred):
+         continue
      dist_to_samples = euclidean_distance(
      np.array([x_pred[i]]),
      np.array([y_pred[i]]),
@@ -196,12 +206,13 @@ class UniversalKriging(BaseKriging):
 
      # Solve for weights and Lagrange multipliers
      try:
-     try:
      except KrigingError:
+         pass
      # Fallback: use nearest neighbor
      nearest_idx = np.argmin(dist_to_samples)
      predictions[i] = self.z[nearest_idx]
      if return_variance:
+         continue
      continue
 
      weights = solution[:self.n_points]
@@ -212,10 +223,12 @@ class UniversalKriging(BaseKriging):
 
      # Kriging variance
      if return_variance:
+         continue
      np.dot(weights, gamma_vec) + np.dot(lagrange, drift_vec)
      )
      # Check for negative variance (indicates numerical issues)
      if variances[i] < 0.0:
+         continue
      import warnings
      warnings.warn(
      f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
@@ -227,7 +240,7 @@ class UniversalKriging(BaseKriging):
 
      if return_variance:
      else:
-     else:
+         pass
     pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
@@ -292,6 +305,7 @@ class UniversalKriging(BaseKriging):
 
  try:
      except np.linalg.LinAlgError:
+         pass
  # Use pseudo-inverse if singular
  coefficients = np.linalg.lstsq(self.drift_matrix, self.z, rcond=None)[0]
 

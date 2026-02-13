@@ -17,6 +17,7 @@ class SphericalCovariance(CovarianceModelBase):
  Spherical covariance model
 
  Formula:
+     pass
  C(h) = sill * [1 - 1.5*(h/a) + 0.5*(h/a)³] for 0 < h <= a
  C(h) = 0 for h > a
  C(0) = sill
@@ -47,6 +48,7 @@ class ExponentialCovariance(CovarianceModelBase):
  Exponential covariance model
 
  Formula:
+     pass
  C(h) = sill * exp(-h/a)
 
  where a is the range parameter.
@@ -63,6 +65,7 @@ class GaussianCovariance(CovarianceModelBase):
  Gaussian covariance model
 
  Formula:
+     pass
  C(h) = sill * exp(-(h/a)²)
 
  where a is the range parameter.
@@ -80,6 +83,7 @@ class MaternCovariance(CovarianceModelBase):
  Matérn covariance model
 
  Formula:
+     pass
  C(h) = sill * (2^(1-ν)/Γ(ν)) * (h/a)^ν * K_ν(h/a) for h > 0
  C(0) = sill
  """
@@ -132,6 +136,7 @@ class LinearCovariance(CovarianceModelBase):
  Linear covariance model (decreasing)
 
  Formula:
+     pass
  C(h) = sill * (1 - h/a) for 0 <= h <= a
  C(h) = 0 for h > a
  """

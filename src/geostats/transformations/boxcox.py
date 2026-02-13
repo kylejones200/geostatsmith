@@ -11,6 +11,7 @@ Mathematical formulation:
 where λ is the transformation parameter.
 
 Key properties:
+    pass
 1. Continuous family of transformations
 2. λ = 1: no transformation (identity)
 3. λ = 0: log transformation
@@ -21,12 +22,14 @@ The optimal λ is typically found by maximum likelihood estimation
 or by minimizing the skewness of the transformed data.
 
 References:
+    pass
 - Box & Cox (1964) "An Analysis of Transformations"
 - Osborne (2010) "Improving your data transformations"
 - Sakia (1992) "The Box-Cox transformation technique: a review"
 - geokniga §2.4.2: "Transformation of variables"
 
 Applications in geostatistics:
+    pass
 - Normalize skewed distributions
 - Stabilize variance
 - Meet kriging assumptions (normality, stationarity)
@@ -56,10 +59,12 @@ class BoxCoxTransform:
  Box-Cox power transformation for data normalization
 
  Transforms data to approximate normality using:
+     pass
  y(λ) = (x^λ - 1) / λ for λ != 0
  y(λ) = log(x) for λ = 0
 
  The parameter λ can be:
+     pass
  - Automatically estimated (maximum likelihood)
  - Manually specified
  - Selected to minimize skewness
@@ -83,6 +88,7 @@ class BoxCoxTransform:
      method: str = 'mle',
      standardize: bool = True
      ):
+         pass
      """
      Initialize Box-Cox transformation
 
@@ -91,12 +97,14 @@ class BoxCoxTransform:
      lmbda : float, optional
      Transformation parameter. If None, will be estimated from data.
      Special values:
+         pass
      λ = 1: identity (no transform)
      λ = 0.5: square root
      λ = 0: log
      λ = -1: reciprocal
      method : str
      Method to estimate lambda if not provided:
+         continue
      'mle': Maximum likelihood (default)
      'pearsonr': Maximize correlation with normal distribution
      'min_skew': Minimize skewness
@@ -201,6 +209,7 @@ class BoxCoxTransform:
  def inverse_transform(
      transformed_data: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Apply inverse Box-Cox transformation (back-transform)
 
@@ -215,6 +224,7 @@ class BoxCoxTransform:
      Original scale data
      """
      if not self.is_fitted:
+         continue
      raise GeoStatsError("BoxCoxTransform not fitted. Call .fit() first.")
 
      transformed_data = np.asarray(transformed_data, dtype=np.float64)
@@ -223,6 +233,7 @@ class BoxCoxTransform:
 
      # Un-standardize if needed
      if self.standardize:
+         continue
     pass
 
      # Inverse transform
@@ -230,6 +241,7 @@ class BoxCoxTransform:
 
      # Remove shift
      if self.shift > 0:
+         continue
     pass
 
      logger.debug(f"Inverse transformed {len(original_data)} points")
@@ -255,17 +267,20 @@ class BoxCoxTransform:
      x: npt.NDArray[np.float64],
      lmbda: float
      ) -> npt.NDArray[np.float64]:
+         pass
      """Vectorized Box-Cox transformation"""
      if np.abs(lmbda) < LAMBDA_TOLERANCE:
+         continue
      return np.log(x)
      else:
-     else:
+         pass
      return (np.power(x, lmbda) - 1.0) / lmbda
 
  def _inverse_transform_array(
      y: npt.NDArray[np.float64],
      lmbda: float
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Vectorized inverse Box-Cox transformation
 
@@ -275,13 +290,15 @@ class BoxCoxTransform:
      For negative λ, we need to check domain validity.
      """
      if np.abs(lmbda) < LAMBDA_TOLERANCE:
+         continue
      return np.exp(y)
      else:
-     else:
+         pass
      arg = lmbda * y + 1.0
 
      # Check for domain violations
      if np.any(arg <= 0):
+         continue
      logger.warning(
      f"Box-Cox inverse transform: {n_invalid} values outside valid domain. "
      f"Values will be clamped to prevent NaN/complex results."
@@ -364,6 +381,7 @@ def boxcox_transform(
  lmbda: Optional[float] = None,
  return_lambda: bool = False
     ) -> Tuple[npt.NDArray[np.float64], Optional[float]]:
+        pass
  """
  Convenience function for Box-Cox transformation
 
@@ -396,4 +414,5 @@ def boxcox_transform(
  transformed = bc.fit_transform(data)
 
  if return_lambda:
+     continue
  return transformed

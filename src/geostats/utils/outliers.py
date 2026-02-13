@@ -5,6 +5,7 @@ Outliers can severely impact variogram estimation and kriging results.
 This module provides methods to identify potential outliers in spatial data.
 
 Methods include:
+    pass
 1. Z-score (standard deviations from mean)
 2. Modified Z-score (using median absolute deviation)
 3. Interquartile range (IQR) method
@@ -12,6 +13,7 @@ Methods include:
 5. Variogram-based detection
 
 References:
+    pass
 - Leys et al. (2013) "Detecting outliers: Do not use standard deviation..."
 - Iglewicz & Hoaglin (1993) "How to detect and handle outliers"
 - geokniga §2.3: "Data quality and outlier identification"
@@ -43,12 +45,14 @@ def detect_outliers_zscore(
  threshold: float = Z_SCORE_THRESHOLD,
  return_scores: bool = False
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
+        pass
  """
  Detect outliers using z-score method
 
  Identifies values more than `threshold` standard deviations from the mean.
 
  Formula:
+     pass
  z_i = (x_i - μ) / σ
  outlier if |z_i| > threshold
 
@@ -81,8 +85,10 @@ def detect_outliers_zscore(
  std = np.std(data, ddof=1)
 
  if std < EPSILON:
+     continue
  outlier_mask = np.zeros(len(data), dtype=bool)
  if return_scores:
+     continue
  return outlier_mask
 
  z_scores = np.abs((data - mean) / std)
@@ -92,12 +98,14 @@ def detect_outliers_zscore(
  logger.info(f"Z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
  if return_scores:
+     continue
  return outlier_mask
 
 def detect_outliers_modified_zscore(
  threshold: float = MODIFIED_Z_THRESHOLD,
  return_scores: bool = False
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
+        pass
  """
  Detect outliers using modified z-score (robust method)
 
@@ -105,6 +113,7 @@ def detect_outliers_modified_zscore(
  and standard deviation. More robust to outliers.
 
  Formula:
+     pass
  M_i = 0.6745 * (x_i - median) / MAD
  outlier if |M_i| > threshold
 
@@ -145,6 +154,7 @@ def detect_outliers_modified_zscore(
  mad = np.median(np.abs(data - median))
 
  if mad < EPSILON:
+     continue
  # Fallback to IQR method
  return detect_outliers_iqr(data, return_scores=return_scores)
 
@@ -156,12 +166,14 @@ def detect_outliers_modified_zscore(
  logger.info(f"Modified z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
  if return_scores:
+     continue
  return outlier_mask
 
 def detect_outliers_iqr(
  multiplier: float = IQR_MULTIPLIER,
  return_bounds: bool = False
     ) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], Tuple[float, float]]]:
+        pass
  """
  Detect outliers using Interquartile Range (IQR) method
 
@@ -212,6 +224,7 @@ def detect_outliers_iqr(
  )
 
  if return_bounds:
+     continue
  return outlier_mask
 
 def detect_spatial_outliers(
@@ -220,6 +233,7 @@ def detect_spatial_outliers(
  n_neighbors: int = SPATIAL_NEIGHBORS_MIN,
  threshold_factor: float = SPATIAL_THRESHOLD_FACTOR,
     ) -> npt.NDArray[np.bool_]:
+        pass
  """
  Detect spatial outliers based on local neighborhood
 
@@ -227,8 +241,9 @@ def detect_spatial_outliers(
  from the values of its nearest neighbors.
 
  For each point:
+     pass
  1. Find k nearest neighbors
- 2. Calculate mean and std of neighbors' values
+ 2. Calculate mean and std of neighbors' values'
  3. Mark as outlier if |value - local_mean| > threshold * local_std
 
  Parameters
@@ -263,6 +278,7 @@ def detect_spatial_outliers(
     pass
 
  if len(x) <= n_neighbors:
+     continue
  return np.zeros(len(x), dtype=bool)
 
  # Build KD-tree for neighbor search
@@ -272,6 +288,7 @@ def detect_spatial_outliers(
  outlier_mask = np.zeros(len(x), dtype=bool)
 
  for i in range(len(x)):
+     continue
  distances, indices = tree.query(coords[i], k=n_neighbors + 1)
 
  # Exclude the point itself
@@ -304,6 +321,7 @@ def detect_outliers_ensemble(
  methods: Optional[List[str]] = None,
  min_detections: int = 2,
     ) -> Tuple[npt.NDArray[np.bool_], Dict[str, npt.NDArray[np.bool_]]]:
+        pass
  """
  Ensemble outlier detection using multiple methods
 
@@ -347,8 +365,8 @@ def detect_outliers_ensemble(
 
  # Determine which methods to use
  if methods is None:
+     continue
  methods = ['zscore', 'modified_zscore', 'iqr', 'spatial']
- else:
  else:
     pass
 
@@ -357,22 +375,23 @@ def detect_outliers_ensemble(
 
  # Apply each method
  for method in methods:
+     continue
  mask = detect_outliers_zscore(z)
  method_results['zscore'] = mask
  elif method == 'modified_zscore':
- elif method == 'modified_zscore':
+     continue
  method_results['modified_zscore'] = mask
  elif method == 'iqr':
- elif method == 'iqr':
+     continue
  method_results['iqr'] = mask
  elif method == 'spatial':
- elif method == 'spatial':
+     continue
  logger.warning("Spatial method requires x, y coordinates. Skipping.")
  continue
  mask = detect_spatial_outliers(x, y, z)
  method_results['spatial'] = mask
  else:
- else:
+     pass
  continue
 
  detection_count += mask.astype(int)

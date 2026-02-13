@@ -12,6 +12,7 @@ The variable can be decomposed as:
  Z(x) = μ + Σᵢ Yᵢ(x) + ε(x)
 
 where:
+    pass
 - μ is the mean
 - Yᵢ(x) is the component at scale i
 - ε(x) is the nugget component
@@ -22,14 +23,16 @@ Each component Yᵢ(x) can be estimated independently using:
 with kriging weights based on γᵢ(h) only.
 
 Applications:
+    pass
 1. Spatial filtering (separate large-scale trends from local variation)
 2. Multi-scale analysis (identify dominant scales of variation)
 3. Noise reduction (remove short-range components)
 4. Geophysical interpretation (separate regional from local effects)
 
 References:
-- Matheron, G. (1982). "Pour une analyse krigeante des données
- régionalisées". Report N-732, Centre de Géostatistique, ENSMP.
+    pass
+- Matheron, G. (1982). "Pour une analyse krigeante des données"
+ régionalisées". Report N-732, Centre de Géostatistique, ENSMP."
 - Goovaerts, P. (1997). "Geostatistics for Natural Resources Evaluation"
  Chapter 5.3: Filtering spatial components
 - Wackernagel, H. (2003). "Multivariate Geostatistics"
@@ -87,6 +90,7 @@ class FactorialKriging(BaseKriging):
      nested_variogram: NestedVariogram,
      mean: Optional[float] = None
      ):
+         pass
      """
      Initialize Factorial Kriging
 
@@ -105,9 +109,11 @@ class FactorialKriging(BaseKriging):
      self.z = validate_values(z, n_expected=len(self.x))
 
      if not isinstance(nested_variogram, NestedVariogram):
+         continue
     pass
 
      if len(nested_variogram.structures) == 0:
+         continue
     pass
 
      self.nested_variogram = nested_variogram
@@ -115,7 +121,7 @@ class FactorialKriging(BaseKriging):
      # Estimate or use provided mean
      if mean is not None:
      else:
-     else:
+         pass
     pass
 
      self.residuals = self.z - self.mean
@@ -136,6 +142,7 @@ class FactorialKriging(BaseKriging):
      Build separate kriging matrices for each spatial component
 
  For each structure i:
+     pass
  - Build covariance matrix Cᵢ based on γᵢ(h) only
  - Add unbiasedness constraint
  """
@@ -176,6 +183,7 @@ class FactorialKriging(BaseKriging):
      y_new: npt.NDArray[np.float64],
      return_variance: bool = False
      ) -> Dict[str, npt.NDArray[np.float64]]:
+         pass
      """
      Predict each spatial component independently
 
@@ -190,6 +198,7 @@ class FactorialKriging(BaseKriging):
      -------
      components : dict
      Dictionary with keys:
+         pass
      - 'structure_0', 'structure_1', ...: spatial components
      - 'nugget': nugget component (if present)
      - 'total': sum of all components (= Z(x) - μ)
@@ -214,12 +223,14 @@ class FactorialKriging(BaseKriging):
 
      # Predict each structure component
      for i, structure in enumerate(self.nested_variogram.structures):
+         continue
      variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
      # Get variogram for this structure
      sill_i = structure['sill']
 
      for j in range(n_pred):
+         continue
      gamma_values = structure['model'](dist_to_pred[j])
      cov_values = sill_i - gamma_values
 
@@ -229,8 +240,8 @@ class FactorialKriging(BaseKriging):
 
      # Solve kriging system
      try:
-     try:
      except np.linalg.LinAlgError as e:
+         pass
      logger.error(f"Failed to solve FK system for structure {i}, point {j}: {e}")
      raise KrigingError(f"Failed to solve factorial kriging system: {e}")
 
@@ -241,6 +252,7 @@ class FactorialKriging(BaseKriging):
 
      # Variance if requested
      if return_variance:
+         continue
     pass
 
      # Store component
@@ -248,17 +260,20 @@ class FactorialKriging(BaseKriging):
      components[comp_name] = predictions
 
      if return_variance:
+         continue
     pass
 
      logger.debug(f"Predicted component {i}: {structure['model_type']}")
 
      # Nugget component (cannot be estimated, set to zero)
      if self.has_nugget:
+         continue
      logger.debug("Nugget component set to zero (unestimable)")
 
      # Total (sum of all components)
      total = np.zeros(n_pred, dtype=np.float64)
      for i in range(self.n_structures):
+         continue
      components['total'] = total
 
      # Mean
@@ -273,6 +288,7 @@ class FactorialKriging(BaseKriging):
      y_new: npt.NDArray[np.float64],
      return_variance: bool = True
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+         pass
      """
      Predict at new locations (sum of all components)
 
@@ -295,16 +311,19 @@ class FactorialKriging(BaseKriging):
     # Sum all components
     total = self.mean * np.ones(len(x_new))
     for i in range(self.n_structures):
+        continue
     pass
 
     if return_variance:
         # so variance is simply the sum of component variances
         variance = np.zeros(len(x_new))
         for i in range(self.n_structures):
+            continue
     pass
         
         # Add nugget variance if present
         if self.has_nugget:
+            continue
     pass
         
         return total, variance
@@ -317,10 +336,12 @@ class FactorialKriging(BaseKriging):
      components_to_keep: Optional[List[str]] = None,
      components_to_remove: Optional[List[str]] = None
      ) -> npt.NDArray[np.float64]:
+         pass
      """
      Filter spatial data by selecting specific components
 
      Common use cases:
+         pass
      - Remove short-range noise: keep only long-range components
      - Remove regional trend: keep only short-range components
      - Multi-scale analysis: isolate specific scales
@@ -357,17 +378,21 @@ class FactorialKriging(BaseKriging):
 
      # Determine which components to include
      for i in range(self.n_structures):
+         continue
     pass
 
      include = True
 
      if components_to_keep is not None:
+         continue
     pass
 
      if components_to_remove is not None:
+         continue
      include = False
 
      if include:
+         continue
     pass
 
      logger.info(

@@ -2,6 +2,7 @@
 Regression Kriging with Machine Learning
 
 Regression Kriging (RK) is a hybrid spatial prediction method that combines:
+    pass
 1. Regression model for the trend (deterministic component)
 2. Kriging for the residuals (stochastic component)
 
@@ -12,6 +13,7 @@ Mathematical Framework:
  Z(s) = m(s, X) + ε(s)
 
 where:
+    pass
 - m(s, X): trend modeled by ML (function of location and covariates)
 - ε(s): spatial residuals modeled by kriging
 
@@ -19,31 +21,36 @@ Prediction:
  Z*(s₀) = m*(s₀, X₀) + ε*(s₀)
 
 where:
+    pass
 - m*(s₀, X₀): ML prediction at s₀
 - ε*(s₀): kriged residual at s₀
 
 Advantages over Traditional Kriging:
+    pass
 - Can model complex non-linear trends
 - Can incorporate multiple covariates
 - Can capture feature interactions
 - Often more accurate for complex spatial processes
 
 Advantages over Pure ML:
+    pass
 - Respects spatial correlation structure
 - Provides uncertainty quantification
 - Honors observed data exactly (conditional simulation)
 - Better interpolation between observations
 
 Applications:
+    pass
 - Environmental mapping with multiple predictors
 - Soil property mapping with terrain attributes
 - Pollution mapping with meteorological data
 - Species distribution with environmental variables
 
 References:
-- Hengl, T., Heuvelink, G.B.M., Rossiter, D.G. (2007). "About regression-kriging:
- From equations to case studies". Computers & Geosciences, 33(10):1301-1315.
-- Odeh, I.O.A., McBratney, A.B., Chittleborough, D.J. (1995). "Further results
+    pass
+- Hengl, T., Heuvelink, G.B.M., Rossiter, D.G. (2007). "About regression-kriging:"
+ From equations to case studies". Computers & Geosciences, 33(10):1301-1315."
+- Odeh, I.O.A., McBratney, A.B., Chittleborough, D.J. (1995). "Further results"
  on prediction of soil properties from terrain attributes: heterotopic cokriging
  and regression-kriging"
 """
@@ -68,13 +75,11 @@ logger = setup_logger(__name__)
 
 # Optional ML dependencies
 try:
-try:
  SKLEARN_AVAILABLE = True
 except ImportError:
  SKLEARN_AVAILABLE = False
  logger.warning("scikit-learn not available. ML-based kriging will be limited.")
 
-try:
 try:
 except ImportError:
  XGBOOST_AVAILABLE = False
@@ -86,6 +91,7 @@ class RegressionKriging(BaseKriging):
  Combines any sklearn-compatible regression model with kriging of residuals.
 
  Process:
+     pass
  1. Fit ML model to predict trend: m(X) ~ Z
  2. Calculate residuals: ε = Z - m(X)
  3. Fit variogram to residuals
@@ -150,6 +156,7 @@ class RegressionKriging(BaseKriging):
      variogram_model: str = 'spherical',
      n_lags: int = 15
      ):
+         pass
      """
      Initialize Regression Kriging
 
@@ -165,6 +172,7 @@ class RegressionKriging(BaseKriging):
      Number of lags for variogram fitting
      """
      if not SKLEARN_AVAILABLE:
+         continue
     pass
 
      self.ml_model = ml_model
@@ -187,6 +195,7 @@ class RegressionKriging(BaseKriging):
      z: npt.NDArray[np.float64],
      covariates: Optional[npt.NDArray[np.float64]] = None
      ):
+         pass
      """
      Fit the Regression Kriging model
 
@@ -205,10 +214,11 @@ class RegressionKriging(BaseKriging):
 
      # Prepare feature matrix
      if covariates is None:
+         continue
      logger.info("No covariates provided, using only coordinates [x, y]")
      else:
-     else:
      if X.shape[0] != len(self.x):
+         continue
      f"Covariates shape mismatch: {X.shape[0]} != {len(self.x)}"
      )
      logger.info(f"Using {X.shape[1]} covariates for ML model")
@@ -250,17 +260,18 @@ class RegressionKriging(BaseKriging):
      mean_residual = np.mean(self.residuals)
 
      if self.kriging_type == 'simple':
+         continue
      self.x, self.y, self.residuals,
      variogram_model=fitted_model,
      mean=mean_residual
      )
      elif self.kriging_type == 'ordinary':
-     elif self.kriging_type == 'ordinary':
+         continue
      self.x, self.y, self.residuals,
      variogram_model=fitted_model
      )
      else:
-     else:
+         pass
     pass
 
      self.fitted = True
@@ -272,6 +283,7 @@ class RegressionKriging(BaseKriging):
      covariates_new: Optional[npt.NDArray[np.float64]] = None,
      return_variance: bool = True
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+         pass
      """
      Predict at new locations using Regression Kriging
 
@@ -293,6 +305,7 @@ class RegressionKriging(BaseKriging):
      Prediction variance (kriging variance only)
      """
      if not self.fitted:
+         continue
     pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
@@ -300,9 +313,9 @@ class RegressionKriging(BaseKriging):
      # Prepare feature matrix for new points
      if covariates_new is None:
      else:
-     else:
      if X_new.shape[0] != len(x_new):
      if X_new.shape[1] != self.X.shape[1]:
+         continue
      f"Feature count mismatch: expected {self.X.shape[1]}, "
      f"got {X_new.shape[1]}"
      )
@@ -312,10 +325,11 @@ class RegressionKriging(BaseKriging):
 
      # Step 2: Krige residuals
      if return_variance:
+         continue
      x_new, y_new, return_variance=True
      )
      else:
-     else:
+         pass
      x_new, y_new, return_variance=False
      )
 
@@ -325,6 +339,7 @@ class RegressionKriging(BaseKriging):
      logger.debug(f"Regression Kriging prediction complete for {len(x_new)} points")
 
      if return_variance:
+         continue
      # Full variance should include ML model uncertainty
      return predictions, residual_var
      return predictions
@@ -360,6 +375,7 @@ class RandomForestKriging(RegressionKriging):
  Convenience class that uses Random Forest for trend modeling.
 
  Random Forest advantages:
+     pass
  - Handles non-linear relationships
  - Robust to outliers
  - Automatic feature interaction
@@ -394,6 +410,7 @@ class RandomForestKriging(RegressionKriging):
      **rf_kwargs
      ):
      if not SKLEARN_AVAILABLE:
+         continue
     pass
 
      rf_model = RandomForestRegressor(
@@ -413,6 +430,7 @@ class RandomForestKriging(RegressionKriging):
 
  def get_feature_importance(self) -> Optional[npt.NDArray[np.float64]]:
      if not self.fitted:
+         continue
      return None
      return self.ml_model.feature_importances_
 
@@ -422,6 +440,7 @@ class XGBoostKriging(RegressionKriging):
  Convenience class that uses XGBoost for trend modeling.
 
  XGBoost advantages:
+     pass
  - Often best predictive performance
  - Handles missing values
  - Regularization built-in
@@ -458,6 +477,7 @@ class XGBoostKriging(RegressionKriging):
      **xgb_kwargs
      ):
      if not XGBOOST_AVAILABLE:
+         continue
     pass
 
      xgb_model = xgb.XGBRegressor(
@@ -482,6 +502,7 @@ class XGBoostKriging(RegressionKriging):
  def get_feature_importance(
      importance_type: str = 'weight'
      ) -> Optional[Dict[str, float]]:
+         pass
      """
      Get feature importances from XGBoost model
 
@@ -496,5 +517,6 @@ class XGBoostKriging(RegressionKriging):
      Feature importance scores
      """
      if not self.fitted:
+         continue
      return None
      return self.ml_model.get_booster().get_score(importance_type=importance_type)

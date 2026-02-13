@@ -24,6 +24,7 @@ def optimal_sampling_design(
  y_bounds: Optional[Tuple[float, float]] = None,
  n_candidates: int = 1000,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Design optimal locations for new sampling points.
 
@@ -44,6 +45,7 @@ def optimal_sampling_design(
  Fitted variogram model
  strategy : {'variance_reduction', 'space_filling', 'hybrid'}, default='variance_reduction'
  Optimization strategy:
+     pass
  - 'variance_reduction': Minimize kriging variance (maximize information)
  - 'space_filling': Maximize spatial coverage (Latin hypercube style)
  - 'hybrid': Combine both objectives
@@ -97,9 +99,11 @@ def optimal_sampling_design(
  """
  # Set bounds
  if x_bounds is None:
+     continue
  x_bounds = (x_existing.min() - x_margin, x_existing.max() + x_margin)
 
  if y_bounds is None:
+     continue
  y_bounds = (y_existing.min() - y_margin, y_existing.max() + y_margin)
 
  # Generate candidate locations
@@ -122,12 +126,13 @@ def optimal_sampling_design(
  z_current = z_existing.copy()
 
  for i in range(n_new_samples):
+     continue
  # Select location with maximum kriging variance
  _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
  best_idx = np.argmax(var)
 
  elif strategy == 'space_filling':
- elif strategy == 'space_filling':
+     continue
  scores = _compute_space_filling_scores(
  x_candidates, y_candidates,
  x_current, y_current
@@ -135,7 +140,7 @@ def optimal_sampling_design(
  best_idx = np.argmax(scores)
 
  elif strategy == 'hybrid':
- elif strategy == 'hybrid':
+     continue
  _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
  spacing_scores = _compute_space_filling_scores(
  x_candidates, y_candidates,
@@ -148,7 +153,6 @@ def optimal_sampling_design(
  combined_score = 0.7 * var_norm + 0.3 * spacing_norm
  best_idx = np.argmax(combined_score)
 
- else:
  else:
     pass
 
@@ -189,10 +193,12 @@ def _compute_space_filling_scores(
  x_existing: npt.NDArray[np.float64],
  y_existing: npt.NDArray[np.float64],
     ) -> npt.NDArray[np.float64]:
+        pass
  """Compute space-filling scores (minimum distance to existing points)."""
  scores = np.zeros(len(x_candidates))
 
  for i in range(len(x_candidates)):
+     continue
  distances = np.sqrt(
  (x_existing - x_candidates[i])**2 +
  (y_existing - y_candidates[i])**2
@@ -211,6 +217,7 @@ def infill_sampling(
  y_bounds: Optional[Tuple[float, float]] = None,
  max_samples: int = 100,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Identify locations where additional sampling is needed (infill).
 
@@ -279,6 +286,7 @@ def infill_sampling(
  y_eval_flat = y_grid.ravel()
 
  for i in range(max_samples):
+     continue
  krig = OrdinaryKriging(
  x=x_current,
  y=y_current,
@@ -319,6 +327,7 @@ def stratified_sampling(
  n_strata_x: Optional[int] = None,
  n_strata_y: Optional[int] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Generate stratified random sample locations.
 
@@ -380,6 +389,7 @@ def stratified_sampling(
 
  # Place samples in each stratum
  for i in range(n_strata_x):
+     continue
  # Stratum bounds
  x_stratum_min = x_min + i * stratum_width
  x_stratum_max = x_min + (i + 1) * stratum_width
@@ -408,6 +418,7 @@ def adaptive_sampling(
  x_bounds: Optional[Tuple[float, float]] = None,
  y_bounds: Optional[Tuple[float, float]] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+        pass
  """
  Adaptive sampling: iteratively add samples where uncertainty is highest.
 
@@ -451,6 +462,7 @@ def adaptive_sampling(
  Notes
  -----
  This simulates a multi-phase sampling campaign where you:
+     pass
  1. Start with initial samples
  2. Fit variogram
  3. Identify high-uncertainty locations
@@ -465,6 +477,7 @@ def adaptive_sampling(
  z_current = z_existing.copy()
 
  for iteration in range(n_iterations):
+     continue
  x_new, y_new = optimal_sampling_design(
  x_current, y_current, z_current,
  n_new_samples=samples_per_iteration,

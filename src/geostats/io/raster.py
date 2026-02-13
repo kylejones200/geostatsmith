@@ -14,7 +14,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 try:
-try:
  RASTERIO_AVAILABLE = True
 except ImportError:
  RASTERIO_AVAILABLE = False
@@ -23,6 +22,7 @@ def read_geotiff(
  band: int = 1,
  as_grid: bool = True,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
+        pass
  """
  Read a GeoTIFF file.
 
@@ -62,9 +62,10 @@ def read_geotiff(
  ImportError
  If rasterio is not installed
  FileNotFoundError
- If file doesn't exist
+ If file doesn't exist'
  """
  if not RASTERIO_AVAILABLE:
+     continue
  "rasterio is required for GeoTIFF I/O. "
  "Install with: pip install rasterio"
  )
@@ -73,7 +74,7 @@ def read_geotiff(
     pass
 
  with rasterio.open(filename) as src:
- with rasterio.open(filename) as src:
+     pass
  z_grid = src.read(band)
 
  # Get coordinate arrays
@@ -102,7 +103,7 @@ def read_geotiff(
 
  if as_grid:
  else:
- else:
+     pass
  x_grid, y_grid = np.meshgrid(x_coords, y_coords)
  x_flat = x_grid.ravel()
  y_flat = y_grid.ravel()
@@ -119,6 +120,7 @@ def write_geotiff(
  crs: str = 'EPSG:4326',
  nodata: Optional[float] = -9999.0,
     ) -> None:
+        pass
  """
  Write data to a GeoTIFF file.
 
@@ -151,6 +153,7 @@ def write_geotiff(
  If rasterio is not installed
  """
  if not RASTERIO_AVAILABLE:
+     continue
  "rasterio is required for GeoTIFF I/O. "
  "Install with: pip install rasterio"
  )
@@ -188,15 +191,18 @@ def write_geotiff(
  nodata=nodata,
  compress='lzw', # Compress output
  ) as dst:
+     pass
  dst.write(z_out, 1)
 
 def read_ascii_grid(
  as_grid: bool = True,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
+        pass
  """
  Read an ASCII Grid file (.asc, .grd).
 
  ASCII Grid format:
+     pass
  ncols 100
  nrows 100
  xllcorner 0.0
@@ -233,7 +239,7 @@ def read_ascii_grid(
  # Read header
  metadata = {}
  with open(filename, 'r') as f:
- with open(filename, 'r') as f:
+     pass
  line = f.readline().strip().split()
  key = line[0].lower()
  value = float(line[1]) if '.' in line[1] else int(line[1])
@@ -264,7 +270,7 @@ def read_ascii_grid(
 
  if as_grid:
  else:
- else:
+     pass
  x_grid, y_grid = np.meshgrid(x_coords, y_coords)
  x_flat = x_grid.ravel()
  y_flat = y_grid.ravel()
@@ -280,6 +286,7 @@ def write_ascii_grid(
  z: npt.NDArray[np.float64],
  nodata: float = -9999.0,
     ) -> None:
+        pass
  """
  Write data to an ASCII Grid file.
 
@@ -315,7 +322,7 @@ def write_ascii_grid(
 
  # Write header
  with open(filename, 'w') as f:
- with open(filename, 'w') as f:
+     pass
  f.write(f"nrows {nrows}\n")
  f.write(f"xllcorner {xllcorner:.6f}\n")
  f.write(f"yllcorner {yllcorner:.6f}\n")
@@ -323,5 +330,4 @@ def write_ascii_grid(
  f.write(f"NODATA_value {nodata}\n")
 
  # Write data (top-to-bottom)
- with open(filename, 'a') as f:
  with open(filename, 'a') as f:

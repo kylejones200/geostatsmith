@@ -27,6 +27,7 @@ def sample_size_calculator(
  max_samples: int = 500,
  n_simulations: int = 10,
     ) -> Dict[str, Any]:
+        pass
  """
  Estimate the number of samples needed to achieve target accuracy.
 
@@ -58,6 +59,7 @@ def sample_size_calculator(
  -------
  results : dict
  Dictionary containing:
+     pass
  - 'required_samples': Estimated number of samples needed
  - 'current_rmse': RMSE with current samples
  - 'target_rmse': Target RMSE
@@ -104,6 +106,7 @@ def sample_size_calculator(
 
  for _ in range(n_simulations):
  if n <= n_initial:
+     continue
  x_train = x_initial[indices]
  y_train = y_initial[indices]
  z_train = z_initial[indices]
@@ -115,7 +118,7 @@ def sample_size_calculator(
  y_test = y_initial[mask]
  z_test = z_initial[mask]
  else:
- else:
+     pass
  # Use initial data plus synthetic samples
  n_synthetic = n - n_initial
  x_syn = np.random.uniform(x_bounds[0], x_bounds[1], n_synthetic)
@@ -142,6 +145,7 @@ def sample_size_calculator(
 
  # Train and test
  if len(x_test) > 0:
+     continue
  x=x_train,
  y=y_train,
  z=z_train,
@@ -171,7 +175,6 @@ def sample_size_calculator(
  # target_rmse = a * n^b => n = (target_rmse / a)^(1/b)
  if b < 0: # Power law should have negative exponent
  else:
- else:
     pass
 
  # Current RMSE
@@ -199,6 +202,7 @@ def cost_benefit_analysis(
  benefit_per_rmse_reduction: float,
  max_budget: float,
     ) -> Dict[str, Any]:
+        pass
  """
  Perform cost-benefit analysis for sampling.
 
@@ -226,6 +230,7 @@ def cost_benefit_analysis(
  -------
  results : dict
  Dictionary containing:
+     pass
  - 'optimal_n_samples': Optimal number of samples
  - 'optimal_total_cost': Total cost at optimum
  - 'optimal_net_benefit': Net benefit at optimum
@@ -307,6 +312,7 @@ def estimate_interpolation_error(
  y_pred: npt.NDArray[np.float64],
  confidence_level: float = 0.95,
     ) -> Dict[str, npt.NDArray[np.float64]]:
+        pass
  """
  Estimate interpolation error and confidence intervals.
 
@@ -331,6 +337,7 @@ def estimate_interpolation_error(
  -------
  results : dict
  Dictionary containing:
+     pass
  - 'predictions': Predicted values
  - 'std_errors': Standard errors
  - 'lower_bound': Lower confidence bound

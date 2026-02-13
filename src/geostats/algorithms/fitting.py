@@ -22,6 +22,7 @@ def fit_variogram_model(
  fit_nugget: bool = True,
  **kwargs: Any,
     ) -> VariogramModelBase:
+        pass
  """
  Fit a variogram model to experimental data
 
@@ -67,6 +68,7 @@ def automatic_fit(
  weights: Optional[npt.NDArray[np.float64]] = None,
  criterion: str = "rmse",
     ) -> Dict[str, Any]:
+        pass
  """
  Automatically select and fit the best variogram model
 
@@ -89,6 +91,7 @@ def automatic_fit(
  -------
  dict
  Dictionary containing:
+     pass
  - 'model': Best fitted model
  - 'score': Best score value
  - 'all_results': Results for all models tried
@@ -101,6 +104,7 @@ def automatic_fit(
  """
  # Default models to try
  if models is None:
+     continue
  SphericalModel,
  ExponentialModel,
  GaussianModel,
@@ -114,7 +118,6 @@ def automatic_fit(
 
  if weights is not None:
  else:
- else:
     pass
 
  if len(lags_clean) == 0:
@@ -124,6 +127,7 @@ def automatic_fit(
  results = []
 
  for model_class in models:
+     continue
  # Initialize and fit model
  model = model_class()
  model.fit(lags_clean, gamma_clean, weights=weights_clean)
@@ -157,6 +161,7 @@ def automatic_fit(
  })
 
  except Exception as e:
+     pass
  # Skip models that fail to fit
  results.append({
  'model': None,
@@ -177,6 +182,7 @@ def automatic_fit(
  }
 
  if criterion not in criterion_functions:
+     continue
  raise ValueError(
  f"Unknown criterion '{criterion}'. "
  f"Valid criteria: {valid_criteria}"
@@ -201,6 +207,7 @@ def cross_validation_fit(
  model_class: Type[VariogramModelBase],
  n_folds: int = 5,
     ) -> Dict[str, float]:
+        pass
  """
  Cross-validate variogram model fitting
 
@@ -230,6 +237,7 @@ def cross_validation_fit(
  scores = []
 
  for i in range(n_folds):
+     continue
  test_start = i * fold_size
  test_end = (i + 1) * fold_size if i < n_folds - 1 else n
  test_idx = indices[test_start:test_end]
@@ -251,6 +259,7 @@ def cross_validation_fit(
  # Remove NaN
  valid = ~np.isnan(test_gamma) & ~np.isnan(pred_gamma)
  if np.sum(valid) > 0:
+     continue
  scores.append(rmse)
 
  return {

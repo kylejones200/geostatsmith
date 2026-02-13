@@ -48,6 +48,7 @@ class BaseModel(ABC):
      values: npt.NDArray[np.float64],
      **kwargs: Any,
      ) -> "BaseModel":
+         pass
      """
      Fit the model to data
 
@@ -95,6 +96,7 @@ class BaseKriging(ABC):
      z: npt.NDArray[np.float64],
      variogram_model: Optional["VariogramModelBase"] = None,
      ) -> None:
+         pass
      """
      Initialize kriging with data
 
@@ -121,6 +123,7 @@ class BaseKriging(ABC):
      y: npt.NDArray[np.float64],
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Perform kriging prediction
 

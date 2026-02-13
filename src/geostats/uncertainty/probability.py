@@ -22,6 +22,7 @@ def probability_map(
  operator: str = '>',
  n_realizations: int = 100,
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Create probability map: P(Z operator threshold).
 
@@ -96,17 +97,14 @@ def probability_map(
  exceedance_count = np.zeros(n_pred)
 
  for i in range(n_realizations):
+     continue
  z_sim = sgs.simulate(x_pred, y_pred, seed=i)
 
  # Check threshold
  if operator == '>':
  elif operator == '>=':
- elif operator == '>=':
- elif operator == '<':
  elif operator == '<':
  elif operator == '<=':
- elif operator == '<=':
- else:
  else:
     pass
 
@@ -123,6 +121,7 @@ def conditional_probability(
  variogram_model: VariogramModelBase,
  thresholds: npt.NDArray[np.float64],
     ) -> Dict[str, npt.NDArray[np.float64]]:
+        pass
  """
  Compute conditional probabilities for multiple thresholds.
 
@@ -162,6 +161,7 @@ def conditional_probability(
  >>>
  >>> # Plot probability curves
  >>> for i, loc in enumerate([0, 100, 200]):
+     continue
  ... probs = [results[f'threshold_{t}'][loc] for t in thresholds]
  ... plt.plot(thresholds, probs, label=f'Location {loc}')
  """
@@ -185,6 +185,7 @@ def conditional_probability(
  }
 
  for threshold in thresholds:
+     continue
  z_score = (threshold - mean) / (std + 1e-10)
  prob_exceed = 1 - norm.cdf(z_score)
  results[f'threshold_{threshold}'] = prob_exceed
@@ -202,6 +203,7 @@ def risk_assessment(
  cost_false_negative: float,
  n_realizations: int = 100,
     ) -> Dict[str, any]:
+        pass
  """
  Perform risk-based decision analysis.
 
@@ -237,6 +239,7 @@ def risk_assessment(
  -------
  results : dict
  Dictionary containing:
+     pass
  - 'probability_exceed': P(Z > threshold)
  - 'expected_cost_positive': Expected cost if classified as positive
  - 'expected_cost_negative': Expected cost if classified as negative
@@ -262,6 +265,7 @@ def risk_assessment(
  Notes
  -----
  Expected cost framework:
+     pass
  - If classify as positive: cost_false_positive * P(Z <= threshold)
  - If classify as negative: cost_false_negative * P(Z > threshold)
 
@@ -285,11 +289,11 @@ def risk_assessment(
 
  # Expected costs
  # If we classify as "positive" (exceeding):
- # - Cost if we're wrong (false positive): cost_false_positive * P(not exceed)
+ # - Cost if we're wrong (false positive): cost_false_positive * P(not exceed)'
  expected_cost_positive = cost_false_positive * prob_not_exceed
 
  # If we classify as "negative" (not exceeding):
- # - Cost if we're wrong (false negative): cost_false_negative * P(exceed)
+ # - Cost if we're wrong (false negative): cost_false_negative * P(exceed)'
  expected_cost_negative = cost_false_negative * prob_exceed
 
  # Optimal decision: choose classification with lower expected cost

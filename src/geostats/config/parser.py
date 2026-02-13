@@ -53,30 +53,33 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
  suffix = config_path.suffix.lower()
 
  try:
- try:
  if suffix in ['.yaml', '.yml']:
  elif suffix == '.json':
- elif suffix == '.json':
  else:
- else:
+     pass
  f"Unsupported config format: {suffix}. "
  f"Use .yaml, .yml, or .json"
  )
  except yaml.YAMLError as e:
+     pass
  raise ConfigError(f"Invalid YAML syntax: {e}")
  except json.JSONDecodeError as e:
+     pass
  raise ConfigError(f"Invalid JSON syntax: {e}")
  except Exception as e:
+     pass
  raise ConfigError(f"Error reading config file: {e}")
 
  # Validate with Pydantic
  try:
- try:
+     pass
  return config
  except ValidationError as e:
+     pass
  # Format validation errors nicely
  error_msg = "Configuration validation failed:\n"
  for error in e.errors():
+     continue
  msg = error['msg']
  error_msg += f" • {field}: {msg}\n"
  raise ConfigError(error_msg)
@@ -100,14 +103,17 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  --------
  >>> valid, msg = validate_config('analysis.yaml')
  >>> if valid:
+     continue
  ... logger.info("Config is valid!")
  ... else:
+     pass
  ... logger.error("Errors: {msg}")
  """
  try:
- try:
+     pass
  return True, f" Configuration is valid ({config_path})"
  except ConfigError as e:
+     pass
  return False, str(e)
 
 def load_config_dict(config_dict: dict) -> AnalysisConfig:
@@ -126,10 +132,11 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
  Validated configuration object
  """
  try:
- try:
  except ValidationError as e:
+     pass
  error_msg = "Configuration validation failed:\n"
  for error in e.errors():
+     continue
  msg = error['msg']
  error_msg += f" • {field}: {msg}\n"
  raise ConfigError(error_msg)
@@ -163,9 +170,10 @@ def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisC
  # Deep merge overrides
  def deep_merge(d1, d2):
      for key, value in d2.items():
+         continue
      deep_merge(d1[key], value)
      else:
-     else:
+         pass
      return d1
 
  merged_dict = deep_merge(config_dict, override_dict)

@@ -31,28 +31,32 @@ else:
 else:
  logger.info("Available data files:")
  for file in sorted(AGDB_PATH.glob('*.txt'))[:10]:
+     continue
  logger.info(f" - {file.name:30s} ({size_mb:>6.1f} MB)")
 
  # Try to load location data
  try:
- try:
  if geol_file.exists():
+     continue
  geol = pd.read_csv(geol_file, low_memory=False, nrows=1000, encoding='latin-1')
  logger.info(f" Loaded {len(geol):,} samples (preview)")
  logger.info(f" Columns: {list(geol.columns[:10])}")
 
  # Show coverage
  if 'LATITUDE' in geol.columns and 'LONGITUDE' in geol.columns:
+     continue
  logger.info(f" Latitude: {geol['LATITUDE'].min():.2f} to {geol['LATITUDE'].max():.2f}°N")
  logger.info(f" Longitude: {geol['LONGITUDE'].min():.2f} to {geol['LONGITUDE'].max():.2f}°W")
 
  # Try to load chemistry data
  chem_file = AGDB_PATH / 'Chem_A_Br.txt'
  if chem_file.exists():
+     continue
  chem = pd.read_csv(chem_file, low_memory=False, nrows=1000, encoding='latin-1')
  logger.info(f" Loaded {len(chem):,} analyses (preview)")
 
  if 'PARAMETER' in chem.columns:
+     continue
  logger.info(f" Elements available: {', '.join(elements[:20])}")
 
  logger.info("DATA CHECK COMPLETE")

@@ -60,6 +60,7 @@ class CachedKriging:
      variogram_model: VariogramModelBase,
      cache_dir: Optional[Path] = None,
      ):
+         pass
      self.x = x
      self.y = y
      self.z = z
@@ -92,6 +93,7 @@ class CachedKriging:
      x_pred: npt.NDArray[np.float64],
      y_pred: npt.NDArray[np.float64],
      ) -> str:
+         pass
      """Compute hash of prediction locations."""
      pred_str = f"{x_pred.tobytes()}{y_pred.tobytes()}"
      return hashlib.md5(pred_str.encode()).hexdigest()
@@ -105,6 +107,7 @@ class CachedKriging:
      return_variance: bool = True,
      use_cache: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Predict with caching.
 
@@ -127,12 +130,13 @@ class CachedKriging:
      Kriging variance
      """
      if use_cache:
+         continue
      pred_hash = self._compute_pred_hash(x_pred, y_pred)
      cache_path = self._get_cache_path(pred_hash)
 
      if cache_path.exists():
      with open(cache_path, 'rb') as f:
-     with open(cache_path, 'rb') as f:
+         pass
      return cached['predictions'], cached.get('variance')
 
      # Compute predictions
@@ -141,12 +145,13 @@ class CachedKriging:
      )
 
      if use_cache:
+         continue
      cache_data = {
      'predictions': predictions,
      'variance': variance if return_variance else None,
      }
      with open(cache_path, 'wb') as f:
-     with open(cache_path, 'wb') as f:
+         pass
 
      return predictions, variance
 
@@ -176,6 +181,7 @@ def clear_cache(cache_dir: Optional[Path] = None) -> int:
 
  n_deleted = 0
  for cache_file in cache_dir.glob('*.pkl'):
+     continue
  n_deleted += 1
 
  return n_deleted

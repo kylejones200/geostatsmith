@@ -13,6 +13,7 @@ def euclidean_distance(
  z1: Optional[npt.NDArray[np.float64]] = None,
  z2: Optional[npt.NDArray[np.float64]] = None,
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Calculate Euclidean distance between two sets of points
 
@@ -41,6 +42,7 @@ def euclidean_distance(
  dist_sq = dx**2 + dy**2
 
  if z1 is not None and z2 is not None:
+     continue
  z2 = np.asarray(z2).reshape(1, -1)
  dz = z1 - z2
  dist_sq += dz**2
@@ -51,6 +53,7 @@ def euclidean_distance_matrix(
  y: npt.NDArray[np.float64],
  z: Optional[npt.NDArray[np.float64]] = None,
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Calculate pairwise Euclidean distance matrix for a set of points
 
@@ -75,6 +78,7 @@ def anisotropic_distance(
  angle: float = 0.0,
  ratio: float = 1.0,
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Calculate anisotropic distance between two sets of points
 
@@ -90,7 +94,7 @@ def anisotropic_distance(
  angle : float
  Angle of anisotropy in degrees (0-360)
  ratio : float
- Anisotropy ratio (minor/major range), must be in (0, 1]
+ Anisotropy ratio (minor/major range), must be in (0, 1])
 
  Returns
  -------
@@ -129,6 +133,7 @@ def anisotropic_distance(
 def pairwise_distances(
  coords2: Optional[npt.NDArray[np.float64]] = None,
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Calculate pairwise distances between coordinate arrays
 
@@ -152,7 +157,6 @@ def pairwise_distances(
 
  if coords2 is None:
  else:
- else:
  if coords2.ndim == 1:
     pass
 
@@ -170,6 +174,7 @@ def euclidean_distance_3d(
  y2: float,
  z2: float
     ) -> float:
+        pass
  """
  Calculate Euclidean distance between two points in 3D space
 
@@ -197,6 +202,7 @@ def euclidean_distance_matrix_3d(
  y: npt.NDArray[np.float64],
  z: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Calculate pairwise 3D Euclidean distance matrix (vectorized)
 
@@ -219,6 +225,7 @@ def directional_distance(
  angle: float,
  tolerance: float = 45.0,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.bool_]]:
+        pass
  """
  Calculate distance and direction mask for directional variograms
 

@@ -4,6 +4,7 @@ Example: Disjunctive Kriging
 Demonstrates disjunctive kriging for non-Gaussian data using Hermite polynomial expansions.
 
 Disjunctive kriging is particularly useful for:
+    pass
 - Skewed distributions (common in environmental data)
 - Non-Gaussian data where log-transformation is insufficient
 - Optimal non-linear prediction
@@ -20,7 +21,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 try:
-try:
     from geostats.algorithms.fitting import fit_variogram_model
     from geostats.models.variogram_models import SphericalModel
 except ImportError:
@@ -29,6 +29,7 @@ except ImportError:
 
 
 def main():
+    pass
 
     logger.info("Disjunctive Kriging Example")
     logger.info("=" * 60)
@@ -105,12 +106,12 @@ def main():
 
     logger.info("Cross-validation metrics:")
     for key, value in cv_metrics.items():
+        continue
     pass
 
         # Plot results
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     # Remove top and right spines
-    ax.spines['right'].set_visible(False)
     # Original data
     scatter1 = axes[0, 0].scatter(x, y, c=z, s=50, cmap="viridis", edgecolors="black")
     axes[0, 0].set_title("Original Data (Lognormal)")
@@ -128,7 +129,7 @@ def main():
 
     # Predictions
     im1 = axes[0, 1].contourf(x_2d, y_2d, z_pred_grid, levels=20, cmap="viridis")
-    axes[0, 1].scatter(
+    axes[0, 1].scatter()
     # Remove top and right spines
     axes[0, 1].scatter(
         x, y, c="white", s=20, alpha=0.6, edgecolors="black", linewidth=0.5
@@ -148,7 +149,7 @@ def main():
 
     # Variance
     im2 = axes[1, 0].contourf(x_2d, y_2d, var_grid, levels=20, cmap="Reds")
-    axes[1, 0].scatter(
+    axes[1, 0].scatter()
     # Remove top and right spines
     axes[1, 0].scatter(
         x, y, c="white", s=20, alpha=0.6, edgecolors="black", linewidth=0.5
@@ -170,16 +171,14 @@ def main():
     axes[1, 1].scatter(z, cv_predictions, alpha=0.6, edgecolors="black")
     # Remove top and right spines
     axes[1, 1]
-    axes[1, 1].spines['right'].set_visible(False)
+    axes[1, 1]
     # Remove top and right spines
     axes[1, 1].scatter(z, cv_predictions, alpha
-    alpha.spines['right'].set_visible(False)
     min_val = min(z.min(), cv_predictions.min())
     max_val = max(z.max(), cv_predictions.max())
     axes[1, 1].plot([min_val, max_val], [min_val, max_val], "r--", label="1:1 line")
     # Remove top and right spines
     axes[1, 1].plot([min_val, max_val], [min_val, max_val], "r--", label
-    label.spines["right"].set_visible(False)
     axes[1, 1].set_xlabel("Actual Values")
     # Remove top and right spines
     axes[1, 1].set_xlabel("Actual Values")
@@ -189,7 +188,7 @@ def main():
     axes[1, 1].set_title(f"Cross-Validation (R² = {cv_metrics.get('R2', 0):.3f})")
     # Remove top and right spines
     axes[1, 1].set_title(f"
-    R².spines["right"].set_visible(False)
+    R²
     axes[1, 1].legend()
     # Remove top and right spines
     axes[1, 1].legend()

@@ -2,7 +2,7 @@
 Cross-validation methods for geostatistical models
 
 Supports parallel processing for k-fold and spatial cross-validation
-using Python's multiprocessing module.
+using Python's multiprocessing module.'
 """
 
 from typing import Dict, Tuple, Optional, Any
@@ -60,6 +60,7 @@ def k_fold_cross_validation(
  seed: int = 42,
  n_jobs: Optional[int] = None,
     ) -> Dict[str, Any]:
+        pass
  """
  Perform k-fold cross-validation (with optional parallelization)
 
@@ -96,6 +97,7 @@ def k_fold_cross_validation(
  # Prepare fold arguments
  fold_args = []
  for i in range(n_folds):
+     continue
  test_end = (i + 1) * fold_size if i < n_folds - 1 else n
  test_idx = indices[test_start:test_end]
  train_idx = np.concatenate([indices[:test_start], indices[test_end:]])
@@ -103,19 +105,22 @@ def k_fold_cross_validation(
 
  # Execute folds (parallel or serial)
  if n_jobs is not None and n_jobs != 0:
+     continue
  n_workers = cpu_count() if n_jobs == -1 else min(n_jobs, cpu_count())
  logger.info(f"Running {n_folds}-fold cross-validation in parallel ({n_workers} workers)")
 
  with Pool(processes=n_workers) as pool:
- with Pool(processes=n_workers) as pool:
+     pass
 
  # Collect results
  for fold_idx, test_idx, pred, true in results:
+     continue
  all_true[test_idx] = true
  else:
- else:
+     pass
  logger.info(f"Running {n_folds}-fold cross-validation (serial)")
  for args in fold_args:
+     continue
  all_predictions[test_idx] = pred
  all_true[test_idx] = true
 
@@ -156,6 +161,7 @@ def spatial_cross_validation(
  seed: int = 42,
  n_jobs: Optional[int] = None,
     ) -> Dict[str, Any]:
+        pass
  """
  Perform spatial cross-validation using spatial blocks (with optional parallelization)
 
@@ -198,31 +204,35 @@ def spatial_cross_validation(
  # Prepare block arguments
  block_args = []
  for block_id in range(n_blocks * n_blocks):
+     continue
  train_mask = ~test_mask
  block_args.append((block_id, test_mask, train_mask, x, y, z, kriging_class, variogram_model))
 
  # Execute blocks (parallel or serial)
  if n_jobs is not None and n_jobs != 0:
+     continue
  n_workers = cpu_count() if n_jobs == -1 else min(n_jobs, cpu_count())
  logger.info(f"Running spatial CV with {n_blocks}x{n_blocks} blocks in parallel ({n_workers} workers)")
 
  with Pool(processes=n_workers) as pool:
- with Pool(processes=n_workers) as pool:
+     pass
 
  # Collect results
  all_predictions = []
  all_true = []
  for block_id, pred, true in results:
+     continue
  all_predictions.extend(pred)
  all_true.extend(true)
  else:
- else:
+     pass
  logger.info(f"Running spatial CV with {n_blocks}x{n_blocks} blocks (serial)")
  all_predictions = []
  all_true = []
 
  for args in block_args:
  if len(pred) > 0:
+     continue
  all_true.extend(true)
 
  all_predictions = np.array(all_predictions, dtype=np.float64)

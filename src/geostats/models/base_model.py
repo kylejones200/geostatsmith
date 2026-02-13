@@ -23,6 +23,7 @@ class VariogramModelBase(BaseModel):
      sill: Optional[float] = None,
      range_param: Optional[float] = None,
      ) -> None:
+         pass
      """
      Initialize variogram model
 
@@ -92,6 +93,7 @@ class VariogramModelBase(BaseModel):
      fit_nugget: bool = True,
      **kwargs: Any,
      ) -> "VariogramModelBase":
+         pass
      """
      Fit variogram model to experimental data
 
@@ -122,6 +124,7 @@ class VariogramModelBase(BaseModel):
      gamma_fit = gamma[mask]
 
      if weights is not None:
+         continue
     pass
 
      # Initial parameter estimates
@@ -135,7 +138,7 @@ class VariogramModelBase(BaseModel):
      )
 
      try:
-     try:
+         pass
      self._fitting_function,
      lags_fit,
      gamma_fit,
@@ -149,6 +152,7 @@ class VariogramModelBase(BaseModel):
      self._is_fitted = True
 
      except Exception as e:
+         pass
      # Use initial estimates if fitting fails
      self._parameters["nugget"] = nugget_init
      self._parameters["sill"] = sill_init
@@ -163,12 +167,14 @@ class VariogramModelBase(BaseModel):
      range_init: float,
      fit_nugget: bool,
      ) -> tuple:
+         pass
      """Prepare initial parameters and bounds for fitting"""
      if fit_nugget:
+         continue
      bounds_lower = [0.0, 0.0, 0.0]
      bounds_upper = [np.inf, np.inf, np.inf]
      else:
-     else:
+         pass
      bounds_lower = [0.0, 0.0]
      bounds_upper = [np.inf, np.inf]
 
@@ -191,10 +197,11 @@ class VariogramModelBase(BaseModel):
 
  def _update_parameters_from_fit(self, params: npt.NDArray[np.float64], fit_nugget: bool) -> None:
      if fit_nugget:
+         continue
      self._parameters["sill"] = max(0.0, params[1])
      self._parameters["range"] = max(0.0, params[2])
      else:
-     else:
+         pass
      self._parameters["range"] = max(0.0, params[1])
 
 class CovarianceModelBase(BaseModel):
@@ -208,6 +215,7 @@ class CovarianceModelBase(BaseModel):
      sill: float = 1.0,
      range_param: float = 1.0,
      ) -> None:
+         pass
      """
      Initialize covariance model
 
@@ -249,6 +257,7 @@ class CovarianceModelBase(BaseModel):
      cov: npt.NDArray[np.float64],
      **kwargs: Any,
      ) -> "CovarianceModelBase":
+         pass
      """
      Fit covariance model to data
 

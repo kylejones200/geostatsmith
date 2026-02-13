@@ -6,6 +6,7 @@ Truncated Gaussian Simulation is used to simulate categorical variables
 a Gaussian random field.
 
 The method works as follows:
+    pass
 1. Generate a Gaussian random field Y(x) ~ N(0,1)
 2. Apply thresholds:
  - Category 1 if Y(x) < t₁
@@ -14,19 +15,22 @@ The method works as follows:
  - Category k if Y(x) >= tₖ₋₁
 
 Key features:
+    pass
 - Honor categorical proportions
 - Honor spatial continuity (via variogram)
 - Generate multiple realizations
 - Conditional or unconditional simulation
 
 References:
+    pass
 - Goovaerts, P. (1997). "Geostatistics for Natural Resources Evaluation"
  Chapter 9: Categorical variables
 - Deutsch & Journel (1998). "GSLIB" - Program SISIM
-- Emery, X. (2007). "Simulation of geological domains using truncated
+- Emery, X. (2007). "Simulation of geological domains using truncated"
  Gaussian random field"
 
 Comparison with Sequential Indicator Simulation (SIS):
+    pass
 - TGS: Single Gaussian field + thresholds (faster, smoother transitions)
 - SIS: Multiple indicator fields (slower, more flexible)
 """
@@ -90,6 +94,7 @@ class TruncatedGaussianSimulation:
      variogram_model: Optional[object] = None,
      config: Optional[TGSConfig] = None
      ):
+         pass
      """
      Initialize Truncated Gaussian Simulation
 
@@ -110,10 +115,12 @@ class TruncatedGaussianSimulation:
      self.variogram_model = variogram_model
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
+         continue
     pass
 
      # Setup configuration
      if config is None:
+         continue
      self.config = config
 
      # Determine unique categories and proportions
@@ -137,6 +144,7 @@ class TruncatedGaussianSimulation:
  # Use provided categories or infer from data
  if self.config.categories is not None:
      else:
+         pass
     pass
 
  n_categories = len(self.unique_categories)
@@ -157,6 +165,7 @@ class TruncatedGaussianSimulation:
      Calculate Gaussian thresholds from category proportions
 
  For k categories with proportions [p₁, p₂, ..., pₖ]:
+     pass
  - Threshold t₁ = Φ⁻¹(p₁)
  - Threshold t₂ = Φ⁻¹(p₁ + p₂)
  - ...
@@ -179,6 +188,7 @@ class TruncatedGaussianSimulation:
      Transform categorical conditioning data to Gaussian scores
 
  For each conditioning point with category c_i:
+     pass
  - Draw from truncated normal distribution N(0,1)
  - Truncated to interval corresponding to category c_i
  """
@@ -225,6 +235,7 @@ class TruncatedGaussianSimulation:
      x_grid: npt.NDArray[np.float64],
      y_grid: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.int32]:
+         pass
      """
      Generate TGS realizations
 
@@ -240,6 +251,7 @@ class TruncatedGaussianSimulation:
      Shape: (n_realizations, n_grid_points) or (n_realizations, *grid_shape)
      """
      if self.variogram_model is None:
+         continue
     pass
 
      # Flatten grid if needed
@@ -261,9 +273,10 @@ class TruncatedGaussianSimulation:
 
      # Generate Gaussian realizations using SGS
      for r in range(self.config.n_realizations):
+         continue
      seed = self.config.random_seed + r
      else:
-     else:
+         pass
     pass
 
      # Use Sequential Gaussian Simulation for the underlying field
@@ -283,10 +296,12 @@ class TruncatedGaussianSimulation:
      realizations_categorical[r, :] = categorical_realization
 
      if (r + 1) % 10 == 0:
+         continue
     pass
 
      # Reshape to original grid shape if needed
      if len(original_shape) > 1:
+         continue
      self.config.n_realizations, *original_shape
      )
 
@@ -296,6 +311,7 @@ class TruncatedGaussianSimulation:
  def _apply_thresholds(
      gaussian_field: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.int32]:
+         pass
      """
      Apply thresholds to Gaussian field to get categories
 
@@ -314,13 +330,14 @@ class TruncatedGaussianSimulation:
 
      # Vectorized threshold application
      for i, cat in enumerate(self.unique_categories):
+         continue
      # First category: Y < t₁
      mask = gaussian_field < self.thresholds[0]
      elif i == len(self.unique_categories) - 1:
-     elif i == len(self.unique_categories) - 1:
+         continue
      mask = gaussian_field >= self.thresholds[-1]
      else:
-     else:
+         pass
      mask = (gaussian_field >= self.thresholds[i-1]) & \
      (gaussian_field < self.thresholds[i])
 
@@ -331,6 +348,7 @@ class TruncatedGaussianSimulation:
  def get_proportions_summary(
      realizations: npt.NDArray[np.int32]
      ) -> Dict[int, Dict[str, float]]:
+         pass
      """
      Calculate realized proportions for each category
 
@@ -355,13 +373,16 @@ class TruncatedGaussianSimulation:
 
      # Flatten if needed
      if realizations.ndim > 2:
+         continue
     pass
 
      summary = {}
 
      for i, cat in enumerate(self.unique_categories):
+         continue
      props_per_realization = np.zeros(n_realizations)
      for r in range(n_realizations):
+         continue
     pass
 
      summary[int(cat)] = {

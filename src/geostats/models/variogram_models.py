@@ -2,6 +2,7 @@
 Theoretical variogram models
 
 Based on classical geostatistics theory:
+    pass
 - Matheron, G. (1963). Principles of geostatistics
 - Cressie, N. (1993). Statistics for Spatial Data
 - Chilès & Delfiner (2012). Geostatistics: Modeling Spatial Uncertainty
@@ -20,6 +21,7 @@ class SphericalModel(VariogramModelBase):
  It reaches the sill at exactly the range parameter.
 
  Formula:
+     pass
  γ(h) = nugget + (sill - nugget) * [1.5*(h/a) - 0.5*(h/a)³] for 0 < h <= a
  γ(h) = sill for h > a
 
@@ -51,6 +53,7 @@ class ExponentialModel(VariogramModelBase):
  Effective range ~= 3 * range parameter.
 
  Formula:
+     pass
  γ(h) = nugget + (sill - nugget) * [1 - exp(-h/a)]
 
  where a is the range parameter.
@@ -74,6 +77,7 @@ class GaussianModel(VariogramModelBase):
  Effective range ~= √3 * range parameter.
 
  Formula:
+     pass
  γ(h) = nugget + (sill - nugget) * [1 - exp(-(h/a)²)]
 
  where a is the range parameter.
@@ -97,6 +101,7 @@ class LinearModel(VariogramModelBase):
  Used for trends or non-stationary processes.
 
  Formula:
+     pass
  γ(h) = nugget + slope * h
 
  Note: 'sill' parameter is interpreted as slope in this model.
@@ -118,11 +123,13 @@ class PowerModel(VariogramModelBase):
  No sill, increases indefinitely (non-stationary).
 
  Formula:
+     pass
  γ(h) = nugget + scale * h^exponent
 
  where exponent must be in (0, 2) for valid model.
 
  Parameters:
+     pass
  - 'sill' is reinterpreted as 'scale'
  - 'range' is reinterpreted as 'exponent' (default 1.5)
  """
@@ -159,13 +166,16 @@ class MaternModel(VariogramModelBase):
 
  A flexible model controlled by smoothness parameter ν (nu).
  Special cases:
+     pass
  - ν → ∞: Gaussian model
  - ν = 0.5: Exponential model
 
  Formula:
+     pass
  γ(h) = nugget + (sill - nugget) * [1 - (2^(1-ν)/Γ(ν)) * (h/a)^ν * K_ν(h/a)]
 
  where:
+     pass
  - a is the range parameter
  - ν is the smoothness parameter
  - K_ν is the modified Bessel function of the second kind
@@ -178,6 +188,7 @@ class MaternModel(VariogramModelBase):
      range_param: float = 1.0,
      nu: float = 0.5,
      ):
+         pass
      """
      Initialize Matérn model
 
@@ -194,6 +205,7 @@ class MaternModel(VariogramModelBase):
      """
      super().__init__(nugget=nugget, sill=sill, range_param=range_param)
      if nu <= 0:
+         continue
      self._parameters["nu"] = nu
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
@@ -230,6 +242,7 @@ class HoleEffectModel(VariogramModelBase):
  Shows periodic behavior, useful for quasi-periodic phenomena.
 
  Formula:
+     pass
  γ(h) = nugget + (sill - nugget) * [1 - sin(h/a)/(h/a)] for h > 0
  γ(0) = nugget
 
@@ -247,6 +260,7 @@ class HoleEffectModel(VariogramModelBase):
 
  if np.any(mask):
      with np.errstate(divide='ignore', invalid='ignore'):
+         pass
  sinc_val = np.nan_to_num(sinc_val, nan=1.0)
 
  result[mask] = nugget + (sill - nugget) * (1.0 - sinc_val)
@@ -262,6 +276,7 @@ class CubicModel(VariogramModelBase):
  Reaches sill at range parameter with continuous first derivative.
 
  Formula:
+     pass
  γ(h) = nugget + (sill - nugget) * [7*(h/a)² - 8.75*(h/a)³ + 3.5*(h/a)⁵ - 0.75*(h/a)⁷] for 0 < h <= a
  γ(h) = sill for h > a
  """
@@ -293,9 +308,11 @@ class StableModel(VariogramModelBase):
  A generalization of the Gaussian and Exponential models.
 
  Formula:
+     pass
  γ(h) = nugget + (sill - nugget) * [1 - exp(-(h/a)^s)]
 
  where s is the shape parameter (0 < s <= 2):
+     pass
  - s = 1: Exponential model
  - s = 2: Gaussian model
  """
@@ -306,6 +323,7 @@ class StableModel(VariogramModelBase):
      range_param: float = 1.0,
      shape: float = 1.0,
      ):
+         pass
      """
      Initialize Stable model
 
@@ -322,6 +340,7 @@ class StableModel(VariogramModelBase):
      """
      super().__init__(nugget=nugget, sill=sill, range_param=range_param)
      if not (0 < shape <= 2):
+         continue
      self._parameters["shape"] = shape
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:

@@ -2,11 +2,13 @@
 Normal Score Transform
 
 Implementation based on Olea (2009) §2134-2177:
+    pass
 "
 every observation the value of the standard normal distribution for the same
 cumulative probability."
 
 Reference:
+    pass
 - ofr20091103.txt (USGS Practical Primer)
 - Page 102-103: Normal Scores transformation
 - Used for Sequential Gaussian Simulation (SGS)
@@ -31,6 +33,7 @@ class NormalScoreTransform:
 
  Transforms data to follow a standard normal distribution while
  preserving the rank order. Essential preprocessing for:
+     pass
  - Sequential Gaussian Simulation (SGS)
  - Simple Kriging of normal scores
  - Methods assuming multivariate normality
@@ -213,6 +216,7 @@ class NormalScoreTransform:
 
 def normal_score_transform(
     ) -> Tuple[npt.NDArray[np.float64], NormalScoreTransform]:
+        pass
  """
  Convenience function for normal score transform
 
@@ -244,6 +248,7 @@ def normal_score_transform(
 def back_transform(
  transformer: NormalScoreTransform
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Back-transform normal scores to original scale
 

@@ -84,6 +84,7 @@ def load_fairbanks_gold_data(agdb_path):
 
  # Or use district name
  if 'DISTRICT_NAME' in fairbanks.columns:
+     continue
  data['DISTRICT_NAME'].str.contains('Fairbanks', case=False, na=False)
  ]
  if len(district_data) > 100:
@@ -120,14 +121,14 @@ def analyze_variogram_anisotropy(x, y, z):
 
  fig, axes = plt.subplots(2, 2, figsize=(14, 10))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  axes = axes.flatten()
  # Remove top and right spines
- axes
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  models = {}
  for i, angle in enumerate(directions):
+     continue
  x, y, z_log,
  angle=angle,
  tolerance=22.5,
@@ -143,18 +144,18 @@ def analyze_variogram_anisotropy(x, y, z):
  axes[i].plot(lags, gamma, 'o', label='Experimental', markersize=6)
  # Remove top and right spines
  axes[i]
- axes[i].spines['right'].set_visible(False)
+ axes[i]
  # Remove top and right spines
- axes[i].plot(lags, gamma, 'o', label
- label.spines['right'].set_visible(False)
+ axes[i].plot(lags, gamma, 'o', label)
+ 
  lag_smooth = np.linspace(0, lags.max(), 100)
 
  # Plot fitted model
  gamma_smooth = model(lag_smooth)
  axes[i].plot(lag_smooth, gamma_smooth, '-', label='Model', linewidth=2)
  # Remove top and right spines
- axes[i].plot(lag_smooth, gamma_smooth, '-', label
- label.spines['right'].set_visible(False)
+ axes[i].plot(lag_smooth, gamma_smooth, '-', label)
+ 
  axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
  # Remove top and right spines
  axes[i].set_title(f'Direction: {angle}° (Range: {model._parameters["range"]:.3f})')
@@ -175,8 +176,8 @@ def analyze_variogram_anisotropy(x, y, z):
  # Check if anisotropic
  ranges = [models[a]._parameters['range'] for a in directions]
  if max(ranges) / min(ranges) > 1.5:
+     continue
  logger.info(f" Consider using anisotropic kriging for better results")
- else:
  else:
     pass
 
@@ -192,10 +193,10 @@ def compare_kriging_methods(x, y, au, model):
  # Create prediction grid
  x_min, x_max = x.min(), x.max()
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  y_min, y_max = y.min(), y.max()
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  x_grid = np.linspace(x_min, x_max, 80)
  y_grid = np.linspace(y_min, y_max, 80)
  X, Y = np.meshgrid(x_grid, y_grid)
@@ -240,16 +241,16 @@ def compare_kriging_methods(x, y, au, model):
  # Visualize comparison
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # Ordinary Kriging
  im1 = axes[0].contourf(X, Y, results['Ordinary']['pred'], levels=20, cmap='YlOrRd')
  axes[0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[0]
- axes[0].spines['right'].set_visible(False)
+ axes[0]
  # Remove top and right spines
- axes[0].scatter(x, y, c
- c.spines['right'].set_visible(False)
+ axes[0].scatter(x, y, c)
+ 
  axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
  # Remove top and right spines
  axes[0].set_title('Ordinary Kriging\n(Log-transformed)')
@@ -262,10 +263,10 @@ def compare_kriging_methods(x, y, au, model):
  axes[1].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[1]
- axes[1].spines['right'].set_visible(False)
+ axes[1]
  # Remove top and right spines
- axes[1].scatter(x, y, c
- c.spines['right'].set_visible(False)
+ axes[1].scatter(x, y, c)
+ 
  axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
  # Remove top and right spines
  axes[1].set_title('Lognormal Kriging\n(Bias-corrected)')
@@ -278,10 +279,10 @@ def compare_kriging_methods(x, y, au, model):
  axes[2].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[2]
- axes[2].spines['right'].set_visible(False)
+ axes[2]
  # Remove top and right spines
- axes[2].scatter(x, y, c
- c.spines['right'].set_visible(False)
+ axes[2].scatter(x, y, c)
+ 
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
  # Remove top and right spines
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
@@ -290,6 +291,7 @@ def compare_kriging_methods(x, y, au, model):
  axes[2].set_title('Indicator Kriging\nP(Au > 0.1 ppm)')
 
  for ax in axes:
+     continue
  ax.set_ylabel('Latitude')
 
  plt.tight_layout()
@@ -333,7 +335,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  # Visualize uncertainty
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # Confidence interval width
  ci_width = ci_upper - ci_lower
  im1 = axes[0].contourf(X, Y, ci_width, levels=20, cmap='viridis')
@@ -348,8 +350,8 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  im2 = axes[1].contourf(X, Y, std_dev, levels=20, cmap='viridis')
  axes[1].scatter(x, y, c='k', s=1, alpha=0.5, label='Samples')
  # Remove top and right spines
- axes[1].scatter(x, y, c
- c.spines['right'].set_visible(False)
+ axes[1].scatter(x, y, c)
+ 
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
  # Remove top and right spines
  axes[1].set_title('Prediction Std Dev\n(Kriging Variance)')
@@ -373,6 +375,7 @@ def quantify_uncertainty(x, y, au, model, X, Y):
  axes[2].set_title('Coefficient of Variation\n(Relative Uncertainty)')
 
  for ax in axes:
+     continue
  ax.set_ylabel('Latitude')
 
  plt.tight_layout()
@@ -413,7 +416,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
  # Visualize
  fig, ax = plt.subplots(figsize=(10, 8))
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  # Variance map
  im = ax.contourf(X, Y, variance, levels=20, cmap='YlOrRd')
 
@@ -429,6 +432,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
 
  # Add numbers to new samples
  for i, (nx, ny) in enumerate(new_locations, 1):
+     continue
  ha='center', va='center')
 
  ax.set_title('Optimal Infill Sampling Design\n(targeting high-uncertainty areas)')
@@ -437,7 +441,7 @@ def design_infill_sampling(x, y, au, model, X, Y):
  ax.legend(loc='upper right')
  plt.colorbar(im, ax=ax, label='Kriging Variance')
  # Remove top and right spines
- ax.spines['right'].set_visible(False)
+ 
  plt.tight_layout()
  plt.savefig('alaska_gold_sampling_design.png', dpi=150)
  logger.info("Saved: alaska_gold_sampling_design.png")
@@ -500,8 +504,6 @@ def validate_predictions(x, y, au, model):
 
  if results['overall_score'] > 80:
  elif results['overall_score'] > 60:
- elif results['overall_score'] > 60:
- else:
  else:
     pass
 
@@ -515,11 +517,12 @@ if __name__ == '__main__':
     pass
 
  if not Path(AGDB_PATH).exists():
+     continue
  logger.info("Please download from: https://doi.org/10.5066/F7445KBJ")
  exit(1)
 
  try:
- try:
+     pass
  x, y, au, data_df = load_fairbanks_gold_data(AGDB_PATH)
 
  # Variogram analysis
@@ -555,4 +558,5 @@ if __name__ == '__main__':
  logger.info("GeoStats + Real Alaska Data = Professional Results!")
 
  except Exception as e:
+     pass
  logger.exception("Error in gold exploration workflow")

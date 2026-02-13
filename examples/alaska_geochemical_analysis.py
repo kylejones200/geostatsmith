@@ -3,6 +3,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     Load Alaska Geochemical Database and prepare for analysis.
 
     Parameters:
+        pass
     -----------
     agdb_path : str or Path
         Path to AGDB4_text directory
@@ -12,6 +13,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
         Type of sample to filter for
 
     Returns:
+        pass
     --------
     dict with keys: x, y, values, metadata
     """
@@ -21,7 +23,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Load geological/location data
     geol_file = agdb_path / 'Geol_DeDuped.txt'
-    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)'
+    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)'"
 
     logger.info(f" Loaded {len(geol_data):,} samples from Geol_DeDuped")
 
@@ -50,7 +52,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     chem_file = agdb_path / chem_filename
 
     # Load chemistry data
-    chem_data = pd.read_csv(chem_file, sep=',', quotechar='"', low_memory=False)'
+    chem_data = pd.read_csv(chem_file, sep=',', quotechar='"', low_memory=False)'"
     logger.info(f" Loaded {len(chem_data):,} analyses from {chem_filename}")
 
     # Merge on AGDB_ID
@@ -186,12 +188,12 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     # Visualization
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     # Remove top and right spines
-    ax.spines['right'].set_visible(False)
+    
     # Sample locations
     axes[0].scatter(x, y, c=au, s=10, cmap='YlOrRd', vmin=0, vmax=np.percentile(au, 95))
     # Remove top and right spines
-    axes[0].spines['top'].set_visible(False)
-    axes[0].spines['right'].set_visible(False)
+    axes[0]
+    axes[0]
     axes[0].set_title(f'Gold Sample Locations (n={len(au)})')
     axes[0].set_xlabel('Longitude')
     # Remove top and right spines
@@ -208,10 +210,10 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[1].scatter(x, y, c='k', s=1, alpha=0.3)
     # Remove top and right spines
     axes[1]
-    axes[1].spines['right'].set_visible(False)
+    axes[1]
     # Remove top and right spines
-    axes[1].scatter(x, y, c
-    c.spines['right'].set_visible(False)
+    axes[1].scatter(x, y, c)
+    
     axes[1].set_title('Kriged Gold Distribution')
     # Remove top and right spines
     axes[1].set_title('Kriged Gold Distribution')
@@ -276,6 +278,7 @@ def multi_element_analysis(agdb_path):
     logger.info(f"Common Cu-Mo samples: {len(common)}")
 
     if len(common) < 50:
+        continue
     pass
 
         x = common['LONGITUDE'].values
@@ -320,6 +323,7 @@ def environmental_assessment(agdb_path, element='As', threshold=20):
     Environmental geochemistry: assess contamination risk.
 
     Parameters:
+        pass
     -----------
     element : str
         Element to assess (As, Pb, Hg, etc.)

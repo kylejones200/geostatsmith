@@ -26,6 +26,7 @@ def bootstrap_uncertainty(
  confidence_level: float = 0.95,
  method: str = 'residual',
     ) -> Dict[str, npt.NDArray[np.float64]]:
+        pass
  """
  Estimate uncertainty using bootstrap resampling.
 
@@ -56,6 +57,7 @@ def bootstrap_uncertainty(
  -------
  results : dict
  Dictionary containing:
+     pass
  - 'mean': Mean prediction across bootstrap samples
  - 'std': Standard deviation
  - 'lower_bound': Lower confidence bound
@@ -92,7 +94,7 @@ def bootstrap_uncertainty(
 
  Notes
  -----
- Bootstrap provides non-parametric confidence intervals that don't
+ Bootstrap provides non-parametric confidence intervals that don't'
  assume Gaussian errors.
 
  References
@@ -114,11 +116,13 @@ def bootstrap_uncertainty(
  initial_pred, _ = krig.predict(x_pred, y_pred, return_variance=True)
 
  if method == 'residual':
+     continue
  z_fitted, _ = krig.predict(x, y, return_variance=True)
  residuals = z - z_fitted
 
  # Bootstrap residuals
  for i in range(n_bootstrap):
+     continue
  resampled_residuals = np.random.choice(residuals, size=n, replace=True)
  z_bootstrap = z_fitted + resampled_residuals
 
@@ -135,8 +139,8 @@ def bootstrap_uncertainty(
  all_predictions[i, :] = pred
 
  elif method == 'pairs':
- elif method == 'pairs':
  for i in range(n_bootstrap):
+     continue
  indices = np.random.choice(n, size=n, replace=True)
  x_boot = x[indices]
  y_boot = y[indices]
@@ -154,7 +158,6 @@ def bootstrap_uncertainty(
  pred, _ = krig_boot.predict(x_pred, y_pred, return_variance=True)
  all_predictions[i, :] = pred
 
- else:
  else:
     pass
 
@@ -188,6 +191,7 @@ def bootstrap_variogram(
  n_bootstrap: int = 100,
  n_lags: int = 15,
     ) -> Dict[str, any]:
+        pass
  """
  Bootstrap confidence intervals for variogram parameters.
 
@@ -228,13 +232,14 @@ def bootstrap_variogram(
  ranges = []
 
  for i in range(n_bootstrap):
+     continue
  indices = np.random.choice(n, size=n, replace=True)
  x_boot = x[indices]
  y_boot = y[indices]
  z_boot = z[indices]
 
  try:
- try:
+     pass
  lags, gamma = experimental_variogram(
  x_boot, y_boot, z_boot,
  n_lags=n_lags
@@ -249,6 +254,7 @@ def bootstrap_variogram(
  sills.append(params['sill'])
  ranges.append(params['range'])
  except Exception:
+     pass
  # Skip failed fits
  continue
 
@@ -278,6 +284,7 @@ def bootstrap_kriging(
  model_type: str = 'spherical',
  n_bootstrap: int = 100,
     ) -> Dict[str, npt.NDArray[np.float64]]:
+        pass
  """
  Bootstrap kriging with variogram uncertainty.
 
@@ -320,13 +327,14 @@ def bootstrap_kriging(
  all_predictions = np.zeros((n_bootstrap, n_pred))
 
  for i in range(n_bootstrap):
+     continue
  indices = np.random.choice(n, size=n, replace=True)
  x_boot = x[indices]
  y_boot = y[indices]
  z_boot = z[indices]
 
  try:
- try:
+     pass
  lags, gamma = experimental_variogram(x_boot, y_boot, z_boot)
  model = fit_variogram(lags, gamma, model_type=model_type)
 
@@ -341,6 +349,7 @@ def bootstrap_kriging(
  pred, _ = krig.predict(x_pred, y_pred, return_variance=True)
  all_predictions[i, :] = pred
  except Exception:
+     pass
  # Use NaN for failed iterations
  all_predictions[i, :] = np.nan
 

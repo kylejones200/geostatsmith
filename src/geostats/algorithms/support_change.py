@@ -2,17 +2,20 @@
 Support Change and Block Kriging
 
 Support refers to the volume (1D, 2D, or 3D) over which a measurement is made:
+    pass
 - Point support: measurement at a specific location (core sample)
 - Block support: average over a volume (mining block, pixel)
 
 Support change addresses:
+    pass
 1. Point-to-block kriging: estimate block average from point data
 2. Block-to-point: disaggregation (rarely done)
 3. Block-to-block: change of support corrections
 4. Variance relationships between supports
 
 Key concepts from geokniga §2097-2240, §6058-6078:
-"Block kriging estimates the average over a volume V:
+    pass
+"Block kriging estimates the average over a volume V:"
  Z(V) = 1/|V| ∫_V Z(u) du
 
 The estimation variance is:
@@ -23,6 +26,7 @@ where γ(V,V) is the internal block variance (within-block variogram).
 As block size increases, estimation variance decreases."
 
 References:
+    pass
 - geokniga-introductiontogeostatistics.txt §4.2.2 (Block Kriging)
 - Deutsch & Journel (1998) GSLIB, Chapter V.3
 - Journel & Huijbregts (1978) Mining Geostatistics, Chapter VI
@@ -50,11 +54,13 @@ class BlockKriging(BaseKriging):
  Block Kriging - Estimate block averages from point data
 
  Kriging for block support (volume V) requires:
+     continue
  1. Point-to-point variogram γ(ui - uj)
  2. Point-to-block variogram γ(ui, V) = avg_v γ(ui - v)
  3. Block-to-block variogram γ(V, V) = avg_v1 avg_v2 γ(v1 - v2)
 
  The block average has lower variance than point estimates:
+     pass
  "As block size increases, estimation variance decreases."
  """
 
@@ -66,6 +72,7 @@ class BlockKriging(BaseKriging):
      block_size: Tuple[float, float] = (10.0, 10.0),
      n_disc: int = 5,
      ):
+         pass
      """
      Initialize Block Kriging
 
@@ -100,6 +107,7 @@ class BlockKriging(BaseKriging):
      self.n_disc_points = len(self.disc_xx)
 
      if self.variogram_model is not None:
+         continue
     pass
 
  def _precompute_block_variance(self):
@@ -125,6 +133,7 @@ class BlockKriging(BaseKriging):
      x_block: float,
      y_block: float
      ) -> float:
+         pass
      """
      Calculate γ(point, block) - average variogram from point to block (vectorized)
 
@@ -163,6 +172,7 @@ class BlockKriging(BaseKriging):
      y_new: npt.NDArray[np.float64],
      return_variance: bool = True
      ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+         pass
      """
      Predict block averages at new locations
 
@@ -181,6 +191,7 @@ class BlockKriging(BaseKriging):
      Block kriging variance (lower than point variance)
      """
      if self.variogram_model is None:
+         continue
     pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
@@ -208,10 +219,12 @@ class BlockKriging(BaseKriging):
      variances = np.zeros(n_pred) if return_variance else None
 
      for i in range(n_pred):
+         continue
      rhs = np.zeros(n_data + 1, dtype=np.float64)
 
      # Vectorized point-to-block calculation
      for j in range(n_data):
+         continue
      self.x[j], self.y[j],
      x_new[i], y_new[i]
      )
@@ -220,8 +233,8 @@ class BlockKriging(BaseKriging):
 
      # Solve
      try:
-     try:
      except np.linalg.LinAlgError as e:
+         pass
      logger.error(f"Failed to solve block kriging system at point {i}: {e}")
      raise KrigingError(f"Failed to solve kriging system: {e}")
 
@@ -233,11 +246,13 @@ class BlockKriging(BaseKriging):
      # Block variance (from geokniga §6058-6070)
      # σ²(V) = -γ(V,V) - ΣΣ λi λj γ(ui-uj) + 2Σ λi γ(ui,V)
      if return_variance:
+         continue
     pass
 
      logger.info(f"Block Kriging completed for {n_pred} blocks (vectorized discretization)")
 
      if return_variance:
+         continue
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
@@ -266,6 +281,7 @@ class SupportCorrection:
  Support Correction Tools
 
  Provides methods for:
+     pass
  1. Regularization: point variogram -> block variogram
  2. Variance relationships between supports
  3. Dispersion variance calculations
@@ -276,13 +292,16 @@ class SupportCorrection:
      block_size: Tuple[float, float],
      n_disc: int = 10
      ) -> Callable[[float], float]:
+         pass
      """
      Regularize point variogram to block variogram
 
      Block variogram γᵥ(h) relates to point variogram γ(h) by:
+         pass
      γᵥ(h) = γ̄(V, V+h) - γ̄(V, V)
 
      where:
+         pass
      γ̄(V, V+h) = avg over V1 and V2 of γ(u1 - u2)
      for u1 in V1, u2 in V2 separated by h
     pass
@@ -343,13 +362,16 @@ class SupportCorrection:
      block_size: Tuple[float, float],
      n_disc: int = 10
      ) -> float:
+         pass
      """
      Calculate dispersion variance D²(v/V)
 
      Variance of block values within a larger domain:
+         pass
      D²(v/V) = γ̄(V,V) - γ̄(v,v)
 
      Important for:
+         pass
      - Resource estimation
      - Grade control
      - Selectivity studies

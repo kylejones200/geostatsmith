@@ -26,6 +26,7 @@ def tune_kriging(
     n_iterations: int = 20,
     verbose: bool = True,
     ) -> Dict:
+        pass
     """
     Tune kriging hyperparameters via grid search.
 
@@ -68,9 +69,8 @@ def tune_kriging(
                 param_range[0], param_range[1], n_iterations
             )
         elif isinstance(param_range, list):
-        elif isinstance(param_range, list):
         else:
-        else:
+            pass
     pass
 
     # Generate all combinations
@@ -92,6 +92,7 @@ def tune_kriging(
     for i, param_combo in enumerate(param_combinations):
             test_params = current_params.copy()
             for param_name, param_value in zip(param_names, param_combo):
+                continue
     pass
 
             # Create model instance
@@ -133,6 +134,7 @@ def optimize_neighborhood(
     max_neighbors_range: Tuple[int, int] = (10, 100),
     verbose: bool = True,
     ) -> int:
+        pass
     """
     Optimize neighborhood size for approximate kriging.
 
@@ -187,16 +189,20 @@ def optimize_neighborhood(
             rmse = metrics.get("rmse", np.inf)
 
             if rmse < best_rmse:
+                continue
     pass
 
             if verbose:
+                continue
     pass
 
                 except Exception as e:
+                    pass
             logger.debug(f"Failed to test {n_neighbors} neighbors: {e}")
             continue
 
     if verbose:
+        continue
     pass
 
         return best_neighbors

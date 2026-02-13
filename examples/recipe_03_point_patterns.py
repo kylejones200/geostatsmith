@@ -7,8 +7,9 @@ detect clustering, dispersion, or randomness using multiple statistical tests.
 Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Section 7.8
 
 Key Concepts:
+    pass
 - Nearest neighbor analysis
-- Ripley's K function
+- Ripley's K function'
 - Quadrat analysis
 - Visual pattern assessment
 """
@@ -19,15 +20,14 @@ from matplotlib.gridspec import GridSpec
 
 from geostats.datasets import generate_clustered_samples
 from geostats.spatial_stats import (
+    nearest_neighbor_analysis,
+    ripley_k_function,
+    quadrat_analysis,
+    spatial_randomness_test,
+)
 import logging
 
 logger = logging.getLogger(__name__)
- nearest_neighbor_analysis,
- ripley_k_function,
- quadrat_analysis,
- spatial_randomness_test,
-)
-
 logger.info("RECIPE 3: SPATIAL POINT PATTERN ANALYSIS")
 
 # Generate three different point patterns for comparison
@@ -69,32 +69,30 @@ logger.info("\nAnalyzing patterns...")
 results_all = {}
 
 for pattern_name, (x, y) in patterns.items():
-    pass
+    # Nearest neighbor analysis
+    nn_results = nearest_neighbor_analysis(x, y)
+    logger.info(f"\nNearest Neighbor Analysis:")
+    logger.info(f" R index: {nn_results['R']:.3f}")
+    logger.info(f" Z-score: {nn_results['z_score']:.3f}")
+    logger.info(f" P-value: {nn_results['p_value']:.4f}")
+    logger.info(f" Interpretation: {nn_results['interpretation']}")
 
- # Nearest neighbor analysis
- nn_results = nearest_neighbor_analysis(x, y)
- logger.info(f"\nNearest Neighbor Analysis:")
- logger.info(f" R index: {nn_results['R']:.3f}")
- logger.info(f" Z-score: {nn_results['z_score']:.3f}")
- logger.info(f" P-value: {nn_results['p_value']:.4f}")
- logger.info(f" Interpretation: {nn_results['interpretation']}")
+    # Ripley's K function
+    ripley_results = ripley_k_function(x, y, n_distances=30)
+    logger.info(f"\nRipley's K Function:")
+    logger.info(f" Interpretation: {ripley_results['interpretation']}")
 
- # Ripley's K function
- ripley_results = ripley_k_function(x, y, n_distances=30)
- logger.info(f"\nRipley's K Function:")
- logger.info(f" Interpretation: {ripley_results['interpretation']}")
+    # Quadrat analysis
+    quadrat_results = quadrat_analysis(x, y, n_quadrats_x=8, n_quadrats_y=8)
+    logger.info(f"\nQuadrat Analysis:")
+    logger.info(f" VMR: {quadrat_results['vmr']:.3f}")
+    logger.info(f" Interpretation: {quadrat_results['interpretation']}")
 
- # Quadrat analysis
- quadrat_results = quadrat_analysis(x, y, n_quadrats_x=8, n_quadrats_y=8)
- logger.info(f"\nQuadrat Analysis:")
- logger.info(f" VMR: {quadrat_results['vmr']:.3f}")
- logger.info(f" Interpretation: {quadrat_results['interpretation']}")
-
- results_all[pattern_name] = {
- 'nn': nn_results,
- 'ripley': ripley_results,
- 'quadrat': quadrat_results,
- }
+    results_all[pattern_name] = {
+        'nn': nn_results,
+        'ripley': ripley_results,
+        'quadrat': quadrat_results,
+    }
 
 # Create visualization
 logger.info("\nCreating visualization...")
@@ -109,13 +107,13 @@ for pattern_name, (x, y) in patterns.items():
 for pattern_name, (x, y) in patterns.items():
  ax1 = fig.add_subplot(gs[row, 0])
  # Remove top and right spines
- ax1.spines['right'].set_visible(False)
+ 
  ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
  # Remove top and right spines
- ax1.spines['right'].set_visible(False)
+ 
  # Remove top and right spines
- ax1.scatter(x, y, s
- s.spines['right'].set_visible(False)
+ ax1.scatter(x, y, s)
+ 
  ax1.set_xlim(0, 100)
  ax1.set_ylim(0, 100)
  ax1.set_aspect('equal')
@@ -128,32 +126,33 @@ for pattern_name, (x, y) in patterns.items():
  nn_res = results['nn']
  textstr = f"R = {nn_res['R']:.3f}\n"
  if nn_res['R'] < 1:
+     continue
  color = 'red'
  elif nn_res['R'] > 1:
- elif nn_res['R'] > 1:
+     continue
  color = 'blue'
  else:
- else:
+     pass
  color = 'green'
 
- ax1.text(0.05, 0.95, textstr, transform=ax1.transAxes,
- # Remove top and right spines
- ax1.text(0.05, 0.95, textstr, transform
- transform.spines['right'].set_visible(False)
- fontsize=10, verticalalignment='top', fontweight='bold',
- bbox=dict(boxstyle='round', facecolor=color, alpha=0.3))
+    ax1.text(0.05, 0.95, textstr, transform=ax1.transAxes,
+             fontsize=10, verticalalignment='top', fontweight='bold',
+             bbox=dict(boxstyle='round', facecolor=color, alpha=0.3))
+    # Remove top and right spines
+    ax1.spines['top'].set_visible(False)
+    ax1.spines['right'].set_visible(False)
 
- # Column 2: Ripley's K function
+    # Column 2: Ripley's K function
  ax2 = fig.add_subplot(gs[row, 1])
  # Remove top and right spines
- ax2.spines['right'].set_visible(False)
+ 
  ripley_res = results['ripley']
  ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth=2, label='Observed K')
  # Remove top and right spines
- ax2.spines['right'].set_visible(False)
+ 
  # Remove top and right spines
- ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth
- linewidth.spines['right'].set_visible(False)
+ ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth)
+ 
  ax2.plot(ripley_res['d'], ripley_res['K_theoretical'], 'r--',
  linewidth=2, label='Theoretical (Random)')
  ax2.set_title('Ripley\'s K Function', fontsize=11, fontweight='bold')
@@ -166,21 +165,21 @@ for pattern_name, (x, y) in patterns.items():
  # Column 3: L function (transformed K)
  ax3 = fig.add_subplot(gs[row, 2])
  # Remove top and right spines
- ax3.spines['right'].set_visible(False)
+ 
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth=2, label='Observed L')
  # Remove top and right spines
- ax3.spines['right'].set_visible(False)
+ 
  # Remove top and right spines
- ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth
- linewidth.spines['right'].set_visible(False)
+ ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth)
+ 
  ax3.axhline(0, color='r', linestyle='--', linewidth=2, label='Random')
  # Remove top and right spines
- ax3.axhline(0, color
- color.spines['right'].set_visible(False)
- ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',
+ ax3.axhline(0, color)
+ 
+ ax3.fill_between(ripley_res['d'], -5, 5, alpha=0.2, color='gray',)
  # Remove top and right spines
- ax3.fill_between(ripley_res['d'], -5, 5, alpha
- alpha.spines['right'].set_visible(False)
+ ax3.fill_between(ripley_res['d'], -5, 5, alpha)
+ 
  label='±5 envelope')
  ax3.set_title('L Function Transform', fontsize=11, fontweight='bold')
  # Remove top and right spines
@@ -191,24 +190,23 @@ for pattern_name, (x, y) in patterns.items():
 
  # Add interpretation
  interp_text = ripley_res['interpretation']
- ax3.text(0.5, 0.95, interp_text, transform=ax3.transAxes,
- # Remove top and right spines
- ax3.text(0.5, 0.95, interp_text, transform
- transform.spines['right'].set_visible(False)
- fontsize=9, verticalalignment='top', horizontalalignment='center',
- bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    ax3.text(0.5, 0.95, interp_text, transform=ax3.transAxes,
+             fontsize=9, verticalalignment='top', horizontalalignment='center',
+             bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    # Remove top and right spines
+    ax3.spines['top'].set_visible(False)
+    ax3.spines['right'].set_visible(False)
 
  # Column 4: Quadrat counts
  ax4 = fig.add_subplot(gs[row, 3])
  # Remove top and right spines
- ax4
  # Remove top and right spines
- ax4.spines['right'].set_visible(False)
+ 
  quadrat_res = results['quadrat']
  im = ax4.imshow(quadrat_res['counts'], cmap='YlOrRd', aspect='auto')
  ax4.set_title('Quadrat Counts', fontsize=11, fontweight='bold')
  # Remove top and right spines
- ax4.spines['right'].set_visible(False)
+ 
  # Remove top and right spines
  ax4.set_xlabel('Quadrat X')
  ax4.set_ylabel('Quadrat Y')
@@ -218,12 +216,12 @@ for pattern_name, (x, y) in patterns.items():
 
  # Add VMR annotation
  vmr_text = f"VMR = {quadrat_res['vmr']:.3f}\nMean = {quadrat_res['mean']:.1f}"
- ax4.text(0.05, 0.95, vmr_text, transform=ax4.transAxes,
- # Remove top and right spines
- ax4.text(0.05, 0.95, vmr_text, transform
- transform.spines['right'].set_visible(False)
- fontsize=9, verticalalignment='top',
- bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+    ax4.text(0.05, 0.95, vmr_text, transform=ax4.transAxes,
+             fontsize=9, verticalalignment='top',
+             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+    # Remove top and right spines
+    ax4.spines['top'].set_visible(False)
+    ax4.spines['right'].set_visible(False)
 
  row += 1
 
@@ -249,30 +247,22 @@ for pattern_name in patterns.keys():
  indicators = []
  if r_index < 0.9:
  elif r_index > 1.1:
- elif r_index > 1.1:
- else:
  else:
     pass
 
  if vmr < 0.9:
  elif vmr > 1.1:
- elif vmr > 1.1:
- else:
  else:
     pass
 
  if 'Clustered' in ripley_interp:
  elif 'Dispersed' in ripley_interp:
- elif 'Dispersed' in ripley_interp:
- else:
  else:
     pass
 
  # Consensus
  if indicators.count('C') >= 2:
  elif indicators.count('D') >= 2:
- elif indicators.count('D') >= 2:
- else:
  else:
     pass
 
@@ -287,7 +277,7 @@ logger.debug("""
 
 2. Different tests detect different aspects:
  - R index: Overall clustering/dispersion
- - Ripley's K: Multi-scale patterns
+ - Ripley's K: Multi-scale patterns'
  - Quadrat VMR: Variance in local density
 
 3. Visual inspection is essential:

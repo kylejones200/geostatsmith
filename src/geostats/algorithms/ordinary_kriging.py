@@ -41,6 +41,7 @@ class OrdinaryKriging(BaseKriging):
      z: npt.NDArray[np.float64],
      variogram_model: Optional[object] = None,
      ):
+         pass
      """
      Initialize Ordinary Kriging
 
@@ -61,6 +62,7 @@ class OrdinaryKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
+         continue
     pass
 
  def _build_kriging_matrix(self) -> None:
@@ -91,6 +93,7 @@ class OrdinaryKriging(BaseKriging):
      y: npt.NDArray[np.float64],
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Perform Ordinary Kriging prediction
 
@@ -109,6 +112,7 @@ class OrdinaryKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
+         continue
     pass
 
      x_pred, y_pred = validate_coordinates(x, y)
@@ -119,6 +123,7 @@ class OrdinaryKriging(BaseKriging):
 
      # Predict at each location
      for i in range(n_pred):
+         continue
      dist_to_samples = euclidean_distance(
      np.array([x_pred[i]]),
      np.array([y_pred[i]]),
@@ -136,12 +141,13 @@ class OrdinaryKriging(BaseKriging):
 
      # Solve for weights and Lagrange multiplier
      try:
-     try:
      except KrigingError:
+         pass
      # Fallback: use nearest neighbor
      nearest_idx = np.argmin(dist_to_samples)
      predictions[i] = self.z[nearest_idx]
      if return_variance:
+         continue
      continue
 
      weights = solution[:self.n_points]
@@ -152,9 +158,11 @@ class OrdinaryKriging(BaseKriging):
 
      # Kriging variance: σ²(x₀) = Σλᵢγ(xᵢ, x₀) + μ
      if return_variance:
+         continue
      # Kriging variance should theoretically be non-negative
      # Negative values indicate numerical issues or invalid variogram
      if variances[i] < 0.0:
+         continue
      import warnings
      warnings.warn(
      f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
@@ -166,7 +174,7 @@ class OrdinaryKriging(BaseKriging):
 
      if return_variance:
      else:
-     else:
+         pass
     pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
@@ -219,6 +227,7 @@ class OrdinaryKriging(BaseKriging):
      y_block: Tuple[float, float],
      discretization: int = 10,
      ) -> Tuple[float, float]:
+         pass
      """
      Block kriging: predict average value over a block
 

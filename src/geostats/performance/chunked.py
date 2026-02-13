@@ -51,6 +51,7 @@ class ChunkedKriging:
      z: npt.NDArray[np.float64],
      variogram_model: VariogramModelBase,
      ):
+         pass
      self.x = x
      self.y = y
      self.z = z
@@ -69,6 +70,7 @@ class ChunkedKriging:
      return_variance: bool = False,
      verbose: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Predict in chunks to manage memory.
 
@@ -98,25 +100,28 @@ class ChunkedKriging:
      predictions = np.zeros(n_pred)
      if return_variance:
      else:
-     else:
+         pass
     pass
 
      for i in range(n_chunks):
+         continue
      end = min((i + 1) * chunk_size, n_pred)
 
      if verbose and (i % 10 == 0 or i == n_chunks - 1):
+         continue
      logger.info(f"Processing chunk {i+1}/{n_chunks} ({progress:.1f}%)")
 
      x_chunk = x_pred[start:end]
      y_chunk = y_pred[start:end]
 
      if return_variance:
+         continue
      x_chunk, y_chunk, return_variance=True
      )
      predictions[start:end] = pred_chunk
      variance[start:end] = var_chunk
      else:
-     else:
+         pass
      x_chunk, y_chunk, return_variance=False
      )
      predictions[start:end] = pred_chunk
@@ -130,6 +135,7 @@ class ChunkedKriging:
      return_variance: bool = False,
      verbose: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Predict on large 2D grid.
 
@@ -170,9 +176,10 @@ class ChunkedKriging:
      z_grid = z_flat.reshape(x_2d.shape)
 
      if return_variance:
+         continue
      return z_grid, var_grid
      else:
-     else:
+         pass
     pass
 
 def chunked_predict(
@@ -184,6 +191,7 @@ def chunked_predict(
  chunk_size: int = 10000,
  return_variance: bool = False,
     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+        pass
  """
  Convenience function for chunked prediction.
 

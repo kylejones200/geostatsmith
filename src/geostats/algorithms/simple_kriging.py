@@ -38,6 +38,7 @@ class SimpleKriging(BaseKriging):
      variogram_model: Optional[object] = None,
      mean: Optional[float] = None,
      ):
+         pass
      """
      Initialize Simple Kriging
 
@@ -61,7 +62,7 @@ class SimpleKriging(BaseKriging):
      # Set or estimate mean
      if mean is None:
      else:
-     else:
+         pass
     pass
 
      # Center the data
@@ -69,6 +70,7 @@ class SimpleKriging(BaseKriging):
 
      # Build covariance matrix
      if self.variogram_model is not None:
+         continue
     pass
 
  def _build_kriging_matrix(self) -> None:
@@ -94,6 +96,7 @@ class SimpleKriging(BaseKriging):
      y: npt.NDArray[np.float64],
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+         pass
      """
      Perform Simple Kriging prediction
 
@@ -112,6 +115,7 @@ class SimpleKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
+         continue
     pass
 
      x_pred, y_pred = validate_coordinates(x, y)
@@ -125,6 +129,7 @@ class SimpleKriging(BaseKriging):
 
      # Predict at each location
      for i in range(n_pred):
+         continue
      dist_to_samples = euclidean_distance(
      np.array([x_pred[i]]),
      np.array([y_pred[i]]),
@@ -138,12 +143,13 @@ class SimpleKriging(BaseKriging):
 
      # Solve for weights: C * λ = c₀
      try:
-     try:
      except KrigingError:
+         pass
      # Fallback: use nearest neighbor
      nearest_idx = np.argmin(dist_to_samples)
      predictions[i] = self.z[nearest_idx]
      if return_variance:
+         continue
      continue
 
      # Simple kriging prediction: ẑ(x₀) = μ + Σλᵢ[z(xᵢ) - μ]
@@ -151,8 +157,10 @@ class SimpleKriging(BaseKriging):
 
      # Kriging variance: σ²(x₀) = C(0) - Σλᵢc₀ᵢ
      if return_variance:
+         continue
      # Variance should be non-negative; negative indicates numerical issues
      if variances[i] < 0.0:
+         continue
      import warnings
      warnings.warn(
      f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
@@ -163,7 +171,7 @@ class SimpleKriging(BaseKriging):
 
      if return_variance:
      else:
-     else:
+         pass
     pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:

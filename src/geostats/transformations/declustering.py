@@ -2,6 +2,7 @@
 Declustering Methods
 
 Implementation based on Olea (2009) §1996-2066:
+    pass
 "
 of those associated with the histogram."
 
@@ -9,6 +10,7 @@ Handles preferential sampling where data points are clustered in certain areas,
 leading to biased global statistics.
 
 Reference:
+    pass
 - ofr20091103.txt (USGS Practical Primer)
 - Declustering (pages 91-97)
 - Cell declustering and distance-based methods
@@ -28,6 +30,7 @@ def cell_declustering(
  cell_sizes: Optional[npt.NDArray[np.float64]] = None,
  n_sizes: int = 10
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
+        pass
  """
  Cell Declustering
 
@@ -35,6 +38,7 @@ def cell_declustering(
  preferential clustering. Samples in densely sampled areas get lower weights.
 
  Method:
+     pass
  1. Overlay grid of cells with varying cell sizes
  2. Count samples per cell
  3. Assign weight = 1/n_samples_in_cell to each sample
@@ -58,6 +62,7 @@ def cell_declustering(
  Declustering weights (sum to n_samples)
  info : dict
  Information about declustering including:
+     pass
  - optimal_cell_size
  - weights_by_cell_size
  - statistics (weighted vs unweighted)
@@ -97,6 +102,7 @@ def cell_declustering(
 
  # Generate cell sizes to try if not provided
  if cell_sizes is None:
+     continue
  min_size = max_range / 20
  max_size = max_range * 2
  cell_sizes = np.linspace(min_size, max_size, n_sizes)
@@ -106,6 +112,7 @@ def cell_declustering(
  variances = []
 
  for cell_size in cell_sizes:
+     continue
  ix = np.floor((x - x_min) / cell_size).astype(int)
  iy = np.floor((y - y_min) / cell_size).astype(int)
 
@@ -157,6 +164,7 @@ def polygonal_declustering(
  z: npt.NDArray[np.float64],
  power: float = 2.0
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
+        pass
  """
  Polygonal (Voronoi-based) Declustering
 
@@ -199,6 +207,7 @@ def polygonal_declustering(
  n = len(x)
 
  if n < 2:
+     continue
  return np.array([float(n)]), {'method': 'single_point'}
 
  # Build KD-tree for efficient nearest neighbor search
@@ -233,6 +242,7 @@ def polygonal_declustering(
 def detect_clustering(
  y: npt.NDArray[np.float64]
     ) -> Dict[str, float]:
+        pass
  """
  Detect presence of spatial clustering
 
@@ -249,6 +259,7 @@ def detect_clustering(
  -------
  dict
  Statistics about clustering:
+     pass
  - mean_nn_dist: Mean nearest neighbor distance
  - std_nn_dist: Standard deviation of nearest neighbor distances
  - cv_nn_dist: Coefficient of variation (std/mean)

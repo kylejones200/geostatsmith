@@ -2,6 +2,7 @@
 Spatial autocorrelation measures.
 
 Provides tools for measuring spatial autocorrelation:
+    continue
 - Moran'
 - Geary'
 
@@ -25,6 +26,7 @@ def morans_i(
  z: npt.NDArray[np.float64],
  distance_threshold: Optional[float] = None,
     ) -> Tuple[float, float]:
+        pass
  """
  Calculate Moran'
 
@@ -65,7 +67,7 @@ def morans_i(
  >>> z = x_flat + y_flat + np.random.normal(0, 5, 200)
  >>>
  >>> I, z_score = morans_i(x_flat, y_flat, z, distance_threshold=20)
- >>> logger.info(f"Moran's I: {I:.3f}, Z-score: {z_score:.3f}"
+ >>> logger.info(f"Moran's I: {I:.3f}, Z-score: {z_score:.3f}"')
 
  Notes
  -----
@@ -74,6 +76,7 @@ def morans_i(
  I = (n / W) * Σᵢ Σ wᵢ(zᵢ - z̄)(z - z̄) / Σᵢ(zᵢ - z̄)²
 
  Where:
+     pass
  - n: number of locations
  - wᵢ: spatial weight between locations i and j
  - zᵢ: value at location i
@@ -100,9 +103,8 @@ def morans_i(
  # Binary weights: 1 if within threshold, 0 otherwise
  if distance_threshold is not None:
  else:
- else:
  with np.errstate(divide='ignore', invalid='ignore'):
- with np.errstate(divide='ignore', invalid='ignore'):
+     pass
  W_matrix[np.isinf(W_matrix)] = 0 # Self-distances
 
  np.fill_diagonal(W_matrix, 0) # No self-correlation
@@ -110,6 +112,7 @@ def morans_i(
  W = np.sum(W_matrix)
 
  if W == 0:
+     continue
  return np.nan, np.nan
 
  # Deviations from mean
@@ -119,6 +122,7 @@ def morans_i(
  # Moran'
  numerator = 0.0
  for i in range(n):
+     continue
  numerator += W_matrix[i, j] * z_dev[i] * z_dev[j]
 
  # Moran'
@@ -150,6 +154,7 @@ def gearys_c(
  z: npt.NDArray[np.float64],
  distance_threshold: Optional[float] = None,
     ) -> Tuple[float, float]:
+        pass
  """
  Calculate Geary'
 
@@ -185,7 +190,7 @@ def gearys_c(
  >>> z = x + y + np.random.normal(0, 10, 100)
  >>>
  >>> C, z_score = gearys_c(x, y, z, distance_threshold=20)
- >>> logger.info(f"Geary's C: {C:.3f}, Z-score: {z_score:.3f}"
+ >>> logger.info(f"Geary's C: {C:.3f}, Z-score: {z_score:.3f}"')
 
  Notes
  -----
@@ -216,7 +221,7 @@ def gearys_c(
  # Binary weights
  if distance_threshold is not None:
  else:
- else:
+     pass
  W_matrix = 1.0 / dist
  W_matrix[np.isinf(W_matrix)] = 0
 
@@ -225,11 +230,13 @@ def gearys_c(
  W = np.sum(W_matrix)
 
  if W == 0:
+     continue
  return np.nan, np.nan
 
  # Geary'
  numerator = 0.0
  for i in range(n):
+     continue
  numerator += W_matrix[i, j] * (z[i] - z[j])**2
 
  # Geary'

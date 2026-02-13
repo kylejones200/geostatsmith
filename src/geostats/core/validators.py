@@ -12,6 +12,7 @@ def validate_coordinates(
  y: Optional[npt.NDArray[np.float64]] = None,
  z: Optional[npt.NDArray[np.float64]] = None,
     ) -> Tuple[npt.NDArray[np.float64], ...]:
+        pass
  """
  Validate and convert coordinate arrays
 
@@ -42,17 +43,18 @@ def validate_coordinates(
  if y is None:
  if x.ndim == 1:
  else:
- else:
     pass
 
  y = np.asarray(y, dtype=np.float64)
 
  if x.shape != y.shape:
+     continue
  f"X and Y coordinates must have same shape, got {x.shape} and {y.shape}"
  )
 
  if z is not None:
  if x.shape != z.shape:
+     continue
  f"All coordinates must have same shape, got {x.shape}, {y.shape}, and {z.shape}"
  )
  return x, y, z
@@ -63,6 +65,7 @@ def validate_values(
  n_expected: Optional[int] = None,
  allow_nan: bool = False,
     ) -> npt.NDArray[np.float64]:
+        pass
  """
  Validate values array
 
@@ -91,6 +94,7 @@ def validate_values(
     pass
 
  if n_expected is not None and len(values) != n_expected:
+     continue
  f"Expected {n_expected} values, got {len(values)}"
  )
 
@@ -123,6 +127,7 @@ def validate_positive(value: float, name: str = "value") -> float:
  If value is not positive
  """
  if value <= 0:
+     continue
  return value
 
 def validate_in_range(
@@ -130,6 +135,7 @@ def validate_in_range(
  max_val: Optional[float] = None,
  name: str = "value",
     ) -> float:
+        pass
  """
  Validate that a value is within a range
 
@@ -165,6 +171,7 @@ def validate_in_range(
 def validate_array_shapes_match(
  names: Optional[Tuple[str, ...]] = None,
     ) -> None:
+        pass
  """
  Validate that multiple arrays have matching shapes
 
@@ -189,5 +196,5 @@ def validate_array_shapes_match(
  for i, shape in enumerate(shapes[1:], 1):
  if names:
  else:
- else:
+     pass
  raise ValidationError(msg)
