@@ -21,7 +21,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Load geological/location data
     geol_file = agdb_path / 'Geol_DeDuped.txt'
-    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)
+    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"'
 
     logger.info(f" Loaded {len(geol_data):,} samples from Geol_DeDuped")
 
@@ -50,7 +50,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     chem_file = agdb_path / chem_filename
 
     # Load chemistry data
-    chem_data = pd.read_csv(chem_file, sep=',', quotechar='"', low_memory=False)
+    chem_data = pd.read_csv(chem_file, sep=',', quotechar='"'
     logger.info(f" Loaded {len(chem_data):,} analyses from {chem_filename}")
 
     # Merge on AGDB_ID
@@ -186,7 +186,6 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     # Visualization
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     # Remove top and right spines
-    ax
     ax.spines['right'].set_visible(False)
 
     # Sample locations

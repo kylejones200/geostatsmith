@@ -196,7 +196,7 @@ class AnalysisConfig(BaseModel):
  log_file: Optional[str] = Field(None, description="Log file path")
 
  class Config:
-     extra = 'forbid' # Don't allow extra fields
+     extra = 'forbid' # Don'
      validate_assignment = True
 
  @model_validator(mode='after')

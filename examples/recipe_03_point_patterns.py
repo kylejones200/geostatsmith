@@ -8,7 +8,7 @@ Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Section 7.8
 
 Key Concepts:
 - Nearest neighbor analysis
-- Ripley's K function
+- Ripley'
 - Quadrat analysis
 - Visual pattern assessment
 """
@@ -78,9 +78,9 @@ for pattern_name, (x, y) in patterns.items():
  logger.info(f" P-value: {nn_results['p_value']:.4f}")
  logger.info(f" Interpretation: {nn_results['interpretation']}")
 
- # Ripley's K
+ # Ripley'
  ripley_results = ripley_k_function(x, y, n_distances=30)
- logger.info(f"\nRipley's K Function:")
+ logger.info(f"\nRipley's K Function:"
  logger.info(f" Interpretation: {ripley_results['interpretation']}")
 
  # Quadrat analysis
@@ -107,11 +107,9 @@ for pattern_name, (x, y) in patterns.items():
 for pattern_name, (x, y) in patterns.items():
  ax1 = fig.add_subplot(gs[row, 0])
  # Remove top and right spines
- ax1
  ax1.spines['right'].set_visible(False)
  ax1.scatter(x, y, s=50, alpha=0.6, edgecolors='black', linewidths=0.5)
  # Remove top and right spines
- ax1
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
  ax1.scatter(x, y, s
@@ -143,15 +141,13 @@ for pattern_name, (x, y) in patterns.items():
  fontsize=10, verticalalignment='top', fontweight='bold',
  bbox=dict(boxstyle='round', facecolor=color, alpha=0.3))
 
- # Column 2: Ripley's K function
+ # Column 2: Ripley'
  ax2 = fig.add_subplot(gs[row, 1])
  # Remove top and right spines
- ax2
  ax2.spines['right'].set_visible(False)
  ripley_res = results['ripley']
  ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth=2, label='Observed K')
  # Remove top and right spines
- ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.plot(ripley_res['d'], ripley_res['K'], 'b-', linewidth
@@ -168,11 +164,9 @@ for pattern_name, (x, y) in patterns.items():
  # Column 3: L function (transformed K)
  ax3 = fig.add_subplot(gs[row, 2])
  # Remove top and right spines
- ax3
  ax3.spines['right'].set_visible(False)
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth=2, label='Observed L')
  # Remove top and right spines
- ax3
  ax3.spines['right'].set_visible(False)
  # Remove top and right spines
  ax3.plot(ripley_res['d'], ripley_res['L'], 'b-', linewidth
@@ -207,13 +201,11 @@ for pattern_name, (x, y) in patterns.items():
  # Remove top and right spines
  ax4
  # Remove top and right spines
- ax4
  ax4.spines['right'].set_visible(False)
  quadrat_res = results['quadrat']
  im = ax4.imshow(quadrat_res['counts'], cmap='YlOrRd', aspect='auto')
  ax4.set_title('Quadrat Counts', fontsize=11, fontweight='bold')
  # Remove top and right spines
- ax4
  ax4.spines['right'].set_visible(False)
  # Remove top and right spines
  ax4.set_xlabel('Quadrat X')
@@ -288,7 +280,7 @@ logger.debug("""
 
 2. Different tests detect different aspects:
  - R index: Overall clustering/dispersion
- - Ripley's K: Multi-scale patterns
+ - Ripley'
  - Quadrat VMR: Variance in local density
 
 3. Visual inspection is essential:
@@ -301,6 +293,6 @@ logger.debug("""
  - Geology: Mineral deposits, earthquake locations
  - Environmental: Pollution sources
  - Archaeology: Settlement patterns
-""")
+"""
 
 logger.info("Recipe complete!")

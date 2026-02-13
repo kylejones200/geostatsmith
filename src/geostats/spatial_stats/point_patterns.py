@@ -3,7 +3,7 @@ Point pattern analysis tools for spatial statistics.
 
 Provides methods for analyzing the spatial distribution of points:
 - Nearest neighbor analysis
-- Ripley's K function
+- Ripley'
 - Quadrat analysis
 - Spatial randomness tests
 
@@ -153,9 +153,9 @@ def ripley_k_function(
  edge_correction: str = 'none',
     ) -> Dict[str, npt.NDArray[np.float64]]:
  """
- Calculate Ripley's K function for spatial point pattern analysis.
+ Calculate Ripley'
 
- Ripley's K function describes point patterns at multiple scales.
+ Ripley'
  Used to detect clustering or dispersion at different distances.
 
  Parameters
@@ -206,7 +206,7 @@ def ripley_k_function(
 
  Notes
  -----
- Ripley's K function is defined as:
+ Ripley'
  K(d) = (Area / n²) * Σ Σ I(dij < d)
 
  Where I(dij < d) is an indicator function that equals 1 if the distance
@@ -472,7 +472,7 @@ def spatial_randomness_test(
  """
  Test for spatial randomness using multiple methods.
 
- Combines nearest neighbor, Ripley's K, and quadrat analyses to
+ Combines nearest neighbor, Ripley'
  provide robust assessment of spatial pattern.
 
  Parameters
@@ -500,14 +500,14 @@ def spatial_randomness_test(
  >>>
  >>> results = spatial_randomness_test(x, y)
  >>> logger.info("Nearest Neighbor:", results['nearest_neighbor']['interpretation'])
- >>> logger.info("Ripley's K:", results['ripley_k']['interpretation'])
+ >>> logger.info("Ripley's K:", results['ripley_k']['interpretation'
  >>> logger.info("Quadrat:", results['quadrat']['interpretation'])
 
  Notes
  -----
  Using multiple tests provides more robust conclusions:
  - Nearest neighbor: Good for overall clustering/dispersion
- - Ripley's K: Detects patterns at multiple scales
+ - Ripley'
  - Quadrat: Tests departure from Poisson distribution
 
  Agreement among tests strengthens conclusions.
@@ -523,7 +523,7 @@ def spatial_randomness_test(
  if method in ['all', 'ripley_k']:
  results['ripley_k'] = ripley_k_function(x, y, **kwargs)
  except Exception as e:
- logger.error(f"Ripley's K function failed: {e}")
+ logger.error(f"Ripley's K function failed: {e}"
  results['ripley_k'] = {'error': str(e)}
 
  if method in ['all', 'quadrat']:

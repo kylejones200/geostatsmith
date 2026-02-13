@@ -171,7 +171,7 @@ def validate_array_shapes_match(
  Raises
  ------
  ValidationError
- If array shapes don't match
+ If array shapes don'
  """
  if len(arrays) < 2:
 

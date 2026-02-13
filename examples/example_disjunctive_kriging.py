@@ -109,7 +109,6 @@ def main():
         # Plot results
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     # Remove top and right spines
-    ax
     ax.spines['right'].set_visible(False)
 
     # Original data
@@ -189,7 +188,7 @@ def main():
     axes[1, 1].set_ylabel("Predicted Values")
     axes[1, 1].set_title(f"Cross-Validation (R² = {cv_metrics.get('R2', 0):.3f})")
     # Remove top and right spines
-    axes[1, 1].set_title(f"Cross-Validation (R²
+    axes[1, 1].set_title(f"
     R².spines["right"].set_visible(False)
     axes[1, 1].legend()
     # Remove top and right spines

@@ -2,7 +2,7 @@
 Normal Score Transform
 
 Implementation based on Olea (2009) §2134-2177:
-"The transformation is performed by assigning to the cumulative probability of
+"
 every observation the value of the standard normal distribution for the same
 cumulative probability."
 
@@ -150,7 +150,7 @@ class NormalScoreTransform:
 
  Notes
  -----
- From Olea (2009): "Backtransformation of estimated normal scores outside
+ From Olea (2009): "
  the interval of variation for the normal scores of the data is highly uncertain."
 
  Values outside the training range are extrapolated using the boundary values.

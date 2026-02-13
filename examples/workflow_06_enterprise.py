@@ -126,20 +126,20 @@ def example_4_web_api():
  )
 
  predictions = response.json()["predictions"]
- """)
+ """
 
  logger.info("\nExample API call (curl):")
  logger.debug("""
  curl -X POST "http://localhost:8000/predict" \\
  -H "Content-Type: application/json" \\
- -d '{
+ -d '
  "x_samples": [0, 50, 100],
  "y_samples": [0, 50, 100],
  "z_samples": [10, 15, 20],
  "x_pred": [25, 75],
  "y_pred": [25, 75]
  }'
- """)
+ """
 
 def example_5_complete_workflow():
  logger.info("Example 5: Complete Enterprise Workflow")

@@ -2,8 +2,8 @@
 Spatial autocorrelation measures.
 
 Provides tools for measuring spatial autocorrelation:
-- Moran's I
-- Geary's C
+- Moran'
+- Geary'
 
 These measure the degree to which nearby locations have similar values.
 """
@@ -26,9 +26,9 @@ def morans_i(
  distance_threshold: Optional[float] = None,
     ) -> Tuple[float, float]:
  """
- Calculate Moran's I spatial autocorrelation statistic.
+ Calculate Moran'
 
- Moran's I measures spatial autocorrelation - the degree to which
+ Moran'
  nearby locations have similar attribute values.
 
  Parameters
@@ -44,7 +44,7 @@ def morans_i(
  Returns
  -------
  I : float
- Moran's I statistic
+ Moran'
  - I > 0: Positive spatial autocorrelation (similar values cluster)
  - I = 0: No spatial autocorrelation
  - I < 0: Negative spatial autocorrelation (dissimilar values cluster)
@@ -65,11 +65,11 @@ def morans_i(
  >>> z = x_flat + y_flat + np.random.normal(0, 5, 200)
  >>>
  >>> I, z_score = morans_i(x_flat, y_flat, z, distance_threshold=20)
- >>> logger.info(f"Moran's I: {I:.3f}, Z-score: {z_score:.3f}")
+ >>> logger.info(f"Moran's I: {I:.3f}, Z-score: {z_score:.3f}"
 
  Notes
  -----
- Moran's I is defined as:
+ Moran'
 
  I = (n / W) * Σᵢ Σ wᵢ(zᵢ - z̄)(z - z̄) / Σᵢ(zᵢ - z̄)²
 
@@ -115,15 +115,15 @@ def morans_i(
  z_mean = np.mean(z)
  z_dev = z - z_mean
 
- # Moran's I numerator
+ # Moran'
  numerator = 0.0
  for i in range(n):
  numerator += W_matrix[i, j] * z_dev[i] * z_dev[j]
 
- # Moran's I denominator
+ # Moran'
  denominator = np.sum(z_dev**2)
 
- # Moran's I
+ # Moran'
  I = (n / W) * (numerator / denominator)
 
  # Expected value under null hypothesis (no spatial autocorrelation)
@@ -150,10 +150,10 @@ def gearys_c(
  distance_threshold: Optional[float] = None,
     ) -> Tuple[float, float]:
  """
- Calculate Geary's C spatial autocorrelation statistic.
+ Calculate Geary'
 
- Geary's C is another measure of spatial autocorrelation,
- more sensitive to local spatial autocorrelation than Moran's I.
+ Geary'
+ more sensitive to local spatial autocorrelation than Moran'
 
  Parameters
  ----------
@@ -167,7 +167,7 @@ def gearys_c(
  Returns
  -------
  C : float
- Geary's C statistic
+ Geary'
  - C < 1: Positive spatial autocorrelation
  - C = 1: No spatial autocorrelation
  - C > 1: Negative spatial autocorrelation
@@ -184,11 +184,11 @@ def gearys_c(
  >>> z = x + y + np.random.normal(0, 10, 100)
  >>>
  >>> C, z_score = gearys_c(x, y, z, distance_threshold=20)
- >>> logger.info(f"Geary's C: {C:.3f}, Z-score: {z_score:.3f}")
+ >>> logger.info(f"Geary's C: {C:.3f}, Z-score: {z_score:.3f}"
 
  Notes
  -----
- Geary's C is defined as:
+ Geary'
 
  C = ((n-1) / (2W)) * Σᵢ Σ wᵢ(zᵢ - z)² / Σᵢ(zᵢ - z̄)²
 
@@ -225,16 +225,16 @@ def gearys_c(
  if W == 0:
  return np.nan, np.nan
 
- # Geary's C numerator
+ # Geary'
  numerator = 0.0
  for i in range(n):
  numerator += W_matrix[i, j] * (z[i] - z[j])**2
 
- # Geary's C denominator
+ # Geary'
  z_mean = np.mean(z)
  denominator = 2 * np.sum((z - z_mean)**2)
 
- # Geary's C
+ # Geary'
  C = ((n - 1) / W) * (numerator / denominator)
 
  # Expected value

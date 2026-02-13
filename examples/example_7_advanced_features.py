@@ -462,7 +462,7 @@ ax2.scatter(x_3d[mask_slice], y_3d[mask_slice], c
 c.spines['right'].set_visible(False)
 ax2.set_title('3D Kriging Prediction (Slice at Depth=25)')
 # Remove top and right spines
-ax2.set_title('3D Kriging Prediction (Slice at Depth
+ax2.set_title('
 Depth.spines['right'].set_visible(False)
 ax2.set_xlabel('X')
 ax2.set_ylabel('Y')

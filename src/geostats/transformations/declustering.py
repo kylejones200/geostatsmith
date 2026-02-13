@@ -2,7 +2,7 @@
 Declustering Methods
 
 Implementation based on Olea (2009) §1996-2066:
-"Declustering is important for the inference of global parameters, such as any
+"
 of those associated with the histogram."
 
 Handles preferential sampling where data points are clustered in certain areas,
@@ -76,8 +76,8 @@ def cell_declustering(
 
  Notes
  -----
- From Olea (2009): "Declustering is important for the inference of global
- parameters" when data has preferential clustering.
+ From Olea (2009): "
+ parameters"
  """
  x = np.asarray(x, dtype=np.float64)
  y = np.asarray(y, dtype=np.float64)
@@ -234,7 +234,7 @@ def detect_clustering(
  Detect presence of spatial clustering
 
  Uses nearest neighbor distances to assess if data is clustered.
- From Olea (2009) §2009: "Detect presence of clusters by preparing a
+ From Olea (2009) §2009: "
  cumulative distribution of distance to nearest neighbor."
 
  Parameters

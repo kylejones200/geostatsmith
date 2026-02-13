@@ -48,7 +48,6 @@ directions = [0, 45, 90, 135]
 for i, direction in enumerate(directions, 5):
  direction=direction, angle_tolerance=30, ax=ax)
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
 # h-scatterplot for U vs V (cross-correlation)
@@ -70,7 +69,7 @@ ax9.set_ylabel('U (ppm)', fontsize=11)
 # Remove top and right spines
 ax9.set_title(f'V vs U Cross-plot (ρ={corr:.3f})', fontweight='bold', fontsize=11)
 # Remove top and right spines
-ax9.set_title(f'V vs U Cross-plot (ρ
+ax9.set_title(f'
 ρ.spines['right'].set_visible(False)
 
 # Histograms
@@ -160,7 +159,7 @@ ax3
 # Remove top and right spines
 ax3
 ax3.spines['right'].set_visible(False)
-# Use the full function that returns a figure, but we'll extract and rearrange
+# Use the full function that returns a figure, but we'
 logger.info("Calculating directional variograms...")
 dirs = [0, 45, 90, 135]
 for direction in dirs:
@@ -168,7 +167,6 @@ for direction in dirs:
  valid = ~np.isnan(gamma_dir)
  ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label=f'{direction}°', linewidth=2, markersize=6)
  # Remove top and right spines
- ax3
  ax3.spines['right'].set_visible(False)
  # Remove top and right spines
  ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label

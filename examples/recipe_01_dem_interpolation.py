@@ -84,7 +84,7 @@ results = compare_interpolation_methods(
  methods=['ordinary_kriging', 'idw', 'rbf'],
  cross_validate=True,
  benchmark_speed=True,
- plot=False, # We'll make custom plots
+ plot=False, # We'
 )
 
 # Print cross-validation results
@@ -180,7 +180,6 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  ax.set_aspect('equal')
  plt.colorbar(im, ax=ax, label='Elevation (m)')
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # Add metrics
@@ -198,12 +197,10 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
 
  vmax = np.max(np.abs(error))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  im = ax.contourf(X_grid, Y_grid, error, levels=15, cmap='RdBu_r',
  vmin=-vmax, vmax=vmax)
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  ax.scatter(x, y, c='black', s=5, alpha=0.3, marker='x')
  ax.set_title(f'{title} Error', fontsize=12, fontweight='bold')
@@ -212,7 +209,6 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  ax.set_aspect('equal')
  plt.colorbar(im, ax=ax, label='Error (m)')
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # Add error statistics
@@ -237,7 +233,7 @@ logger.info(f" {best_method[0]} (RMSE: {best_method[1]['metrics']['rmse']:.2f})"
 
 logger.info("\nKey findings:")
 logger.info(" • Ordinary Kriging accounts for spatial correlation")
-logger.info(" • IDW is fastest but may create bull's-eye artifacts")
+logger.info(" • IDW is fastest but may create bull's-eye artifacts"
 logger.info(" • RBF produces smooth surfaces")
 
 logger.info("Recipe complete! See output figure for visual comparison.")

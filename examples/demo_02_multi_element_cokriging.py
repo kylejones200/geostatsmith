@@ -107,7 +107,6 @@ def analyze_element_correlations(data):
  # Scatter plots with density
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # Cu vs Mo
@@ -126,7 +125,7 @@ def analyze_element_correlations(data):
  axes[0].set_ylabel('log10(Mo, ppm)')
  axes[0].set_title(f'Cu vs Mo\nr = {corr_cu_mo:.3f}')
  # Remove top and right spines
- axes[0].set_title(f'Cu vs Mo\nr
+ axes[0].set_title(f'
  nr.spines['right'].set_visible(False)
 
  # Cu vs Au
@@ -145,7 +144,7 @@ def analyze_element_correlations(data):
  axes[1].set_ylabel('log10(Au, ppm)')
  axes[1].set_title(f'Cu vs Au\nr = {corr_cu_au:.3f}')
  # Remove top and right spines
- axes[1].set_title(f'Cu vs Au\nr
+ axes[1].set_title(f'
  nr.spines['right'].set_visible(False)
 
  # Mo vs Au
@@ -164,7 +163,7 @@ def analyze_element_correlations(data):
  axes[2].set_ylabel('log10(Au, ppm)')
  axes[2].set_title(f'Mo vs Au\nr = {corr_mo_au:.3f}')
  # Remove top and right spines
- axes[2].set_title(f'Mo vs Au\nr
+ axes[2].set_title(f'
  nr.spines['right'].set_visible(False)
 
  plt.tight_layout()
@@ -219,7 +218,6 @@ def detect_geochemical_anomalies(data, elements_dict):
  # Map anomalies
  fig, axes = plt.subplots(2, 2, figsize=(16, 14))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # Individual elements
@@ -241,7 +239,6 @@ def detect_geochemical_anomalies(data, elements_dict):
  # Combined
  ax = axes[1, 1]
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  ax.scatter(x[~combined_anomaly], y[~combined_anomaly],
  c='lightgray', s=10, alpha=0.5, label='Background')
@@ -319,7 +316,6 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  # Visualize
  fig, axes = plt.subplots(2, 2, figsize=(14, 12))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # OK prediction
@@ -426,14 +422,12 @@ def calculate_porphyry_index(data, elements_dict):
  # Visualize
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # Porphyry index map
  im1 = ax1.contourf(X, Y, index_pred, levels=20, cmap='RdYlGn')
  ax1.scatter(x, y, c=porphyry_index, s=30, cmap='RdYlGn',
  # Remove top and right spines
- ax1
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
  ax1.scatter(x, y, c
@@ -455,7 +449,6 @@ def calculate_porphyry_index(data, elements_dict):
  im2 = ax2.contourf(X, Y, high_potential.astype(int), levels=1, colors=['white', 'red'], alpha=0.5)
  ax2.scatter(x, y, c=porphyry_index, s=20, cmap='RdYlGn', alpha=0.6)
  # Remove top and right spines
- ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.scatter(x, y, c

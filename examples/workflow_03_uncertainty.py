@@ -73,7 +73,6 @@ def example_1_bootstrap_confidence():
     # Visualize
     fig, ax = plt.subplots(figsize=(12, 6))
     # Remove top and right spines
-    ax
     ax.spines['right'].set_visible(False)
 
     # Mean prediction
@@ -171,7 +170,6 @@ def example_2_probability_map():
     # Visualize
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
     # Remove top and right spines
-    ax
     ax.spines['right'].set_visible(False)
 
     # Kriging prediction
@@ -191,7 +189,6 @@ def example_2_probability_map():
     )
     ax1.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7, label="Samples")
     # Remove top and right spines
-    ax1
     ax1.spines['right'].set_visible(False)
     # Remove top and right spines
     ax1.scatter(x, y, c
@@ -200,7 +197,7 @@ def example_2_probability_map():
     ax1.set_ylabel("Y (m)")
     ax1.set_title("Kriging Prediction\n(dashed = regulatory limit)")
     # Remove top and right spines
-    ax1.set_title("Kriging Prediction\n(dashed
+    ax1.set_title("
     dashed.spines["right"].set_visible(False)
     ax1.legend()
     ax1.set_aspect("equal")
@@ -223,7 +220,6 @@ def example_2_probability_map():
     )
     ax2.scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
-    ax2
     ax2.spines['right'].set_visible(False)
     # Remove top and right spines
     ax2.scatter(x, y, c
@@ -232,7 +228,7 @@ def example_2_probability_map():
     ax2.set_ylabel("Y (m)")
     ax2.set_title("P(Concentration > 12)\n(solid line = 50% probability)")
     # Remove top and right spines
-    ax2.set_title("P(Concentration > 12)\n(solid line
+    ax2.set_title("
     line.spines["right"].set_visible(False)
     ax2.set_aspect("equal")
     plt.colorbar(im2, ax=ax2, label="Probability", ticks=np.arange(0, 1.1, 0.1))
@@ -305,7 +301,6 @@ def example_3_risk_assessment():
     # Visualize
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     # Remove top and right spines
-    ax
     ax.spines['right'].set_visible(False)
 
     # Probability map
@@ -389,7 +384,7 @@ def example_3_risk_assessment():
     axes[2].set_ylabel("Y (m)")
     axes[2].set_title("Optimal Decision\n(Red=Remediate, Green=No Action)")
     # Remove top and right spines
-    axes[2].set_title("Optimal Decision\n(Red
+    axes[2].set_title("
     Red.spines["right"].set_visible(False)
     axes[2].set_aspect("equal")
     # Remove top and right spines

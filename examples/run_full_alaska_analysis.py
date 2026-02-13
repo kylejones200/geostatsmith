@@ -113,19 +113,16 @@ try:
  logger.info("Creating gold distribution map...")
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # Linear scale
  scatter1 = ax1.scatter(x, y, c=au, s=30, cmap='YlOrRd',
  vmin=0, vmax=np.percentile(au, 95),
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax1.set_title('Gold Distribution - Fairbanks\n(Linear Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax1
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
  ax1.set_xlabel('Longitude')
@@ -140,7 +137,6 @@ try:
  alpha=0.6, edgecolors='k', linewidths=0.5)
  ax2.set_title('Gold Distribution - Fairbanks\n(Log Scale)', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.set_xlabel('Longitude')
@@ -202,7 +198,6 @@ try:
  logger.info("Creating multi-element correlation plot...")
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  # Raw correlation
@@ -216,7 +211,7 @@ try:
  # Remove top and right spines
  ax1.set_title(f'Cu vs Au Correlation\n(r = {corr_raw:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax1.set_title(f'Cu vs Au Correlation\n(r
+ ax1.set_title(f'
  r.spines['right'].set_visible(False)
 
  # Log-transformed
@@ -240,7 +235,7 @@ try:
  # Remove top and right spines
  ax2.set_title(f'Log-Transformed Correlation\n(r = {corr_log:.3f})', fontsize=14, fontweight='bold')
  # Remove top and right spines
- ax2.set_title(f'Log-Transformed Correlation\n(r
+ ax2.set_title(f'
  r.spines['right'].set_visible(False)
  ax2.legend()
 
@@ -295,7 +290,6 @@ try:
  logger.info("Creating arsenic distribution map...")
  fig, ax = plt.subplots(figsize=(12, 8))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  x_as = as_data['LONGITUDE'].values
@@ -304,7 +298,6 @@ try:
  scatter = ax.scatter(x_as, y_as, c=as_vals, s=15, cmap='RdYlGn_r',
  vmin=0, vmax=np.percentile(as_vals, 95),
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  alpha=0.5, edgecolors='none')
 
@@ -314,7 +307,6 @@ try:
  ax.set_ylabel('Latitude')
  cbar = plt.colorbar(scatter, ax=ax, label='As (ppm)')
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
 
  plt.tight_layout()

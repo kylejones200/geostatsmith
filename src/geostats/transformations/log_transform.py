@@ -2,10 +2,10 @@
 Logarithmic Transform
 
 Implementation based on Olea (2009) §2162-2176:
-"This is a special case of normal score transformation. The transformed value
+"
 is simply the logarithm of the original observation."
 
-"Most minerals and chemical elements have distributions of concentration close
+"
 to lognormal, which explains the great attention paid to this distribution since
 the early days of geostatistics."
 
