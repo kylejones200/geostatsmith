@@ -81,8 +81,10 @@ except ImportError:
  logger.warning("scikit-learn not available. ML-based kriging will be limited.")
 
 try:
+    import xgboost as xgb
+    XGBOOST_AVAILABLE = True
 except ImportError:
- XGBOOST_AVAILABLE = False
+    XGBOOST_AVAILABLE = False
  logger.debug("XGBoost not available")
 
 class RegressionKriging(BaseKriging):

@@ -28,12 +28,12 @@ class VariogramModel(Protocol):
         ----------
         h : np.ndarray
             Distance values
- 
- Returns
- -------
- np.ndarray
- Variogram values
- """
+        
+        Returns
+        -------
+        np.ndarray
+            Variogram values
+        """
  ...
 
  @property

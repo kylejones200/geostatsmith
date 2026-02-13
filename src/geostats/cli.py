@@ -19,10 +19,11 @@ from geostats.workflows import AnalysisPipeline, PipelineError
 
 @click.group()
 @click.version_option()
+@click.group()
 def cli():
- pass
+    pass
 
-    @cli.command()
+@cli.command()
     @click.argument('config_file', type=click.Path(exists=True))
     @click.option('--validate-only', is_flag=True, help='Only validate config, do not run')
     @click.option('--override', '-o', multiple=True, help='Override config values (e.g., project.name="Test")')

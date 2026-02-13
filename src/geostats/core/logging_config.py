@@ -22,8 +22,7 @@ def setup_logging(
         Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
     format_string : str, optional
         Custom format string. If None, uses default format.
-    stream : file-like object, optional
-        """
+        stream : file-like object, optional
             Stream to write logs to. If None, uses sys.stderr.
         
     Examples

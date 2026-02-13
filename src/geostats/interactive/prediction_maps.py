@@ -10,8 +10,11 @@ import numpy.typing as npt
 from typing import Optional, Tuple
 
 try:
+    import plotly.graph_objects as go
+    import plotly.express as px
+    PLOTLY_AVAILABLE = True
 except ImportError:
- PLOTLY_AVAILABLE = False
+    PLOTLY_AVAILABLE = False
 
 def interactive_prediction_map(
  y_grid: npt.NDArray[np.float64],

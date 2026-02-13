@@ -23,19 +23,17 @@ def validate_coordinates(
             Y coordinates
         z : array-like, optional
             Z coordinates
- 
- Returns
- -------
- tuple of np.ndarray
- """
-     Validated coordinate arrays
- 
- Raises
- ------
- """
-     ValidationError
-  If coordinates are invalid
- """
+        
+        Returns
+        -------
+        tuple of np.ndarray
+            Validated coordinate arrays
+        
+        Raises
+        ------
+        ValidationError
+            If coordinates are invalid
+        """
  x = np.asarray(x, dtype=np.float64)
 
  if x.ndim == 0:
