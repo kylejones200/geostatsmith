@@ -8,7 +8,7 @@ Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Section 7.8
 
 Key Concepts:
 - Nearest neighbor analysis
-- Ripley'
+- Ripley's K function
 - Quadrat analysis
 - Visual pattern assessment
 """
@@ -79,9 +79,9 @@ for pattern_name, (x, y) in patterns.items():
  logger.info(f" P-value: {nn_results['p_value']:.4f}")
  logger.info(f" Interpretation: {nn_results['interpretation']}")
 
- # Ripley'
+ # Ripley's K function
  ripley_results = ripley_k_function(x, y, n_distances=30)
- logger.info(f"\nRipley's K Function:"
+ logger.info(f"\nRipley's K Function:")
  logger.info(f" Interpretation: {ripley_results['interpretation']}")
 
  # Quadrat analysis
@@ -143,7 +143,7 @@ for pattern_name, (x, y) in patterns.items():
  fontsize=10, verticalalignment='top', fontweight='bold',
  bbox=dict(boxstyle='round', facecolor=color, alpha=0.3))
 
- # Column 2: Ripley'
+ # Column 2: Ripley's K function
  ax2 = fig.add_subplot(gs[row, 1])
  # Remove top and right spines
  ax2.spines['right'].set_visible(False)
@@ -287,7 +287,7 @@ logger.debug("""
 
 2. Different tests detect different aspects:
  - R index: Overall clustering/dispersion
- - Ripley'
+ - Ripley's K: Multi-scale patterns
  - Quadrat VMR: Variance in local density
 
 3. Visual inspection is essential:
