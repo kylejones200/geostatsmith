@@ -178,7 +178,7 @@ def compare_kriging_methods(x, y, au, model):
     x_min, x_max = x.min(), x.max()
     y_min, y_max = y.min(), y.max()
  
- x_grid = np.linspace(x_min, x_max, 80)
+    x_grid = np.linspace(x_min, x_max, 80)
  y_grid = np.linspace(y_min, y_max, 80)
  X, Y = np.meshgrid(x_grid, y_grid)
  x_pred = X.flatten()
