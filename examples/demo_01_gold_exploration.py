@@ -165,7 +165,7 @@ def analyze_variogram_anisotropy(x, y, z):
     else:
         pass
 
- return models[0] # Return default model
+    return models[0] # Return default model
 
 # ==============================================================================
 # STEP 3: Compare Multiple Kriging Methods
