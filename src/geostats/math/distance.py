@@ -98,6 +98,7 @@ def anisotropic_distance(
  Anisotropic distance matrix
  """
  if ratio <= 0 or ratio > 1:
+    pass
 
  # Convert angle to radians
  theta = np.radians(angle)
@@ -147,11 +148,13 @@ def pairwise_distances(
  coords1 = np.asarray(coords1)
 
  if coords1.ndim == 1:
+    pass
 
  if coords2 is None:
  else:
  else:
  if coords2.ndim == 1:
+    pass
 
  # Use broadcasting for efficient computation
  # Shape: (n1, 1, ndim) - (1, n2, ndim) = (n1, n2, ndim)

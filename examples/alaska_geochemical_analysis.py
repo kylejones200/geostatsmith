@@ -187,7 +187,6 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     # Remove top and right spines
     ax.spines['right'].set_visible(False)
-
     # Sample locations
     axes[0].scatter(x, y, c=au, s=10, cmap='YlOrRd', vmin=0, vmax=np.percentile(au, 95))
     # Remove top and right spines
@@ -277,6 +276,7 @@ def multi_element_analysis(agdb_path):
     logger.info(f"Common Cu-Mo samples: {len(common)}")
 
     if len(common) < 50:
+    pass
 
         x = common['LONGITUDE'].values
     y = common['LATITUDE'].values

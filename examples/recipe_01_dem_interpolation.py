@@ -90,10 +90,12 @@ results = compare_interpolation_methods(
 # Print cross-validation results
 logger.info("Cross-validation results:")
 for method, cv_result in results['cv_results'].items():
+    pass
 
 # Print speed results
 logger.info("Speed benchmark:")
 for method, timing in results['speed_results'].items():
+    pass
 
     # Step 5: Visualize results
 logger.info("\nStep 5: Visualizing results...")
@@ -104,12 +106,10 @@ gs = GridSpec(3, 3, figure=fig, hspace=0.3, wspace=0.3)
 # Plot 1: Sample points
 ax1 = fig.add_subplot(gs[0, 0])
 # Remove top and right spines
-ax1
 ax1.spines['right'].set_visible(False)
 scatter = ax1.scatter(x, y, c=z, cmap='terrain', s=30, edgecolors='black', linewidths=0.5)
 ax1.set_title('Sample Points (Measured)', fontsize=12, fontweight='bold')
 # Remove top and right spines
-ax1
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
 ax1.set_xlabel('X (m)')
@@ -122,12 +122,10 @@ ax1.set_aspect('equal')
 # Plot 2: True DEM (ground truth)
 ax2 = fig.add_subplot(gs[0, 1])
 # Remove top and right spines
-ax2
 ax2.spines['right'].set_visible(False)
 im = ax2.contourf(X_grid, Y_grid, Z_true, levels=15, cmap='terrain')
 ax2.scatter(x, y, c='red', s=10, alpha=0.5, marker='x')
 # Remove top and right spines
-ax2
 ax2.spines['right'].set_visible(False)
 # Remove top and right spines
 ax2.scatter(x, y, c
@@ -144,11 +142,9 @@ ax2.set_aspect('equal')
 # Plot 3: Experimental variogram
 ax3 = fig.add_subplot(gs[0, 2])
 # Remove top and right spines
-ax3
 ax3.spines['right'].set_visible(False)
 ax3.plot(lags, gamma, 'o-', label='Experimental', linewidth=2, markersize=8)
 # Remove top and right spines
-ax3
 ax3.spines['right'].set_visible(False)
 # Remove top and right spines
 ax3.plot(lags, gamma, 'o-', label
@@ -170,6 +166,7 @@ methods_to_plot = ['ordinary_kriging', 'idw', 'rbf']
 titles = ['Ordinary Kriging', 'Inverse Distance Weighting', 'Radial Basis Function']
 
 for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
+    pass
 
 for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  im = ax.contourf(X_grid, Y_grid, Z_pred, levels=15, cmap='terrain')
@@ -181,7 +178,6 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  plt.colorbar(im, ax=ax, label='Elevation (m)')
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # Add metrics
  if method in results['cv_results']:
  textstr = f"RMSE={metrics['rmse']:.2f}\nR²={metrics['r2']:.3f}"
@@ -191,6 +187,7 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
 
 # Plot 7-9: Error maps
 for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
+    pass
 
 for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  error = Z_pred - Z_true
@@ -210,7 +207,6 @@ for idx, (method, title) in enumerate(zip(methods_to_plot, titles)):
  plt.colorbar(im, ax=ax, label='Error (m)')
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # Add error statistics
  mae = np.mean(np.abs(error))
  rmse = np.sqrt(np.mean(error**2))

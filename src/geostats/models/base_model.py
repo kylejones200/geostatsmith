@@ -122,6 +122,7 @@ class VariogramModelBase(BaseModel):
      gamma_fit = gamma[mask]
 
      if weights is not None:
+    pass
 
      # Initial parameter estimates
      sill_init = np.max(gamma_fit) if len(gamma_fit) > 0 else 1.0

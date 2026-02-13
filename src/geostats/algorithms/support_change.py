@@ -100,6 +100,7 @@ class BlockKriging(BaseKriging):
      self.n_disc_points = len(self.disc_xx)
 
      if self.variogram_model is not None:
+    pass
 
  def _precompute_block_variance(self):
      Precompute γ(V,V) - internal block variance (vectorized)
@@ -180,6 +181,7 @@ class BlockKriging(BaseKriging):
      Block kriging variance (lower than point variance)
      """
      if self.variogram_model is None:
+    pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
      n_pred = len(x_new)
@@ -231,6 +233,7 @@ class BlockKriging(BaseKriging):
      # Block variance (from geokniga §6058-6070)
      # σ²(V) = -γ(V,V) - ΣΣ λi λj γ(ui-uj) + 2Σ λi γ(ui,V)
      if return_variance:
+    pass
 
      logger.info(f"Block Kriging completed for {n_pred} blocks (vectorized discretization)")
 
@@ -282,6 +285,7 @@ class SupportCorrection:
      where:
      γ̄(V, V+h) = avg over V1 and V2 of γ(u1 - u2)
      for u1 in V1, u2 in V2 separated by h
+    pass
 
      Parameters
      ----------

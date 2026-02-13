@@ -137,6 +137,7 @@ class PlurigaussianSimulation:
      self.categories = np.asarray(categories, dtype=np.int32).flatten()
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
+    pass
 
      # Setup configuration
      if config is None:
@@ -171,6 +172,7 @@ class PlurigaussianSimulation:
 
  if self.config.categories is not None:
      else:
+    pass
 
  self.n_categories = len(self.unique_categories)
 
@@ -196,6 +198,7 @@ class PlurigaussianSimulation:
  # For each conditioning point, find valid Gaussian values
  # that satisfy the rule function
  for i in range(n_cond):
+    pass
 
      # Use rejection sampling to find Gaussian values
  # that produce the correct category
@@ -204,6 +207,7 @@ class PlurigaussianSimulation:
 
  for attempt in range(max_attempts):
      if self.config.random_seed is not None:
+    pass
 
  y_samples = np.random.randn(n_fields)
 
@@ -221,6 +225,7 @@ class PlurigaussianSimulation:
  )
  # Fallback: use mean of region (simplified)
  for j in range(n_fields):
+    pass
 
      logger.debug(f"Transformed {n_cond} conditioning points to {n_fields} Gaussian fields")
 
@@ -267,6 +272,7 @@ class PlurigaussianSimulation:
      seed = self.config.random_seed + r * self.config.n_gaussian_fields + field_idx
      else:
      else:
+    pass
 
      # Use SGS for each independent Gaussian field
      gaussian_field = sequential_gaussian_simulation(
@@ -287,6 +293,7 @@ class PlurigaussianSimulation:
      realizations_categorical[r, :] = categorical_realization
 
      if (r + 1) % 10 == 0:
+    pass
 
      # Reshape to original grid shape if needed
      if len(original_shape) > 1:
@@ -322,12 +329,14 @@ class PlurigaussianSimulation:
 
      # Flatten if needed
      if realizations.ndim > 2:
+    pass
 
      summary = {}
 
      for cat in self.unique_categories:
      props_per_realization = np.zeros(n_realizations)
      for r in range(n_realizations):
+    pass
 
      summary[int(cat)] = {
      'mean': float(np.mean(props_per_realization)),
@@ -391,6 +400,7 @@ def create_rectangular_rule(
      if cat_idx < len(categories):
      else:
      else:
+    pass
 
      return result
 

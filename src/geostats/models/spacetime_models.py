@@ -280,6 +280,7 @@ class GneitingModel(SpaceTimeVariogramModel):
  ----------
  Gneiting, T. (2002). "Nonseparable, stationary covariance functions
  for space-time data". JASA, 97:590-600.
+    pass
 
  def __init__(
      sigma2: float = 1.0,
@@ -315,6 +316,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      self.spatial_smoothness = spatial_smoothness
 
      if not 0 < alpha <= 2:
+    pass
 
      logger.info(
      f"Initialized Gneiting space-time model "

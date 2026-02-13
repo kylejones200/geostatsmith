@@ -41,7 +41,6 @@ logger.info(f"Variogram parameters: {vario_model.parameters}")
 logger.info("\nCreating simulation grid...")
 X, Y = create_grid(x_min=0, x_max=90, y_min=0, y_max=90, resolution=30)
 # Remove top and right spines
-ax
 ax.spines['right'].set_visible(False)
 x_grid, y_grid = X.flatten(), Y.flatten()
 
@@ -87,7 +86,6 @@ for i in range(min(4, n_realizations)):
     )
     plt.colorbar(contour, ax=ax, label="V (ppm)")
     # Remove top and right spines
-    ax
     ax.spines['right'].set_visible(False)
     ax.set_title(f"Realization {i + 1}", fontweight="bold", fontsize=11)
     ax.set_xlabel("X (m)")
@@ -99,7 +97,6 @@ ax5 = plt.subplot(3, 4, 5)
 # Remove top and right spines
 ax5
 # Remove top and right spines
-ax5
 ax5.spines['right'].set_visible(False)
 contour5 = ax5.contourf(X, Y, Mean_sgs, levels=15, cmap="viridis", alpha=0.9)
 ax5.scatter(
@@ -110,7 +107,6 @@ plt.colorbar(contour5, ax=ax5, label="V (ppm)")
 ax5.scatter(
 ax5.set_title("E-type (Mean of Realizations)", fontweight="bold", fontsize=11)
 # Remove top and right spines
-ax5
 ax5.spines['right'].set_visible(False)
 # Remove top and right spines
 ax5.set_title("E-type (Mean of Realizations)", fontweight
@@ -124,12 +120,10 @@ ax6 = plt.subplot(3, 4, 6)
 # Remove top and right spines
 ax6
 # Remove top and right spines
-ax6
 ax6.spines['right'].set_visible(False)
 contour6 = ax6.contourf(X, Y, Std_sgs, levels=15, cmap="YlOrRd", alpha=0.9)
 ax6.scatter(x, y, s=40, c="blue", marker="x", linewidth=2, zorder=5)
 # Remove top and right spines
-ax6
 ax6.spines['right'].set_visible(False)
 # Remove top and right spines
 ax6.scatter(x, y, s
@@ -151,7 +145,6 @@ ax7 = plt.subplot(3, 4, 7)
 # Remove top and right spines
 ax7
 # Remove top and right spines
-ax7
 ax7.spines['right'].set_visible(False)
 contour7 = ax7.contourf(X, Y, P10, levels=15, cmap="viridis", alpha=0.9)
 ax7.scatter(
@@ -162,7 +155,6 @@ plt.colorbar(contour7, ax=ax7, label="V (ppm)")
 ax7.scatter(
 ax7.set_title("P10 (Conservative Estimate)", fontweight="bold", fontsize=11)
 # Remove top and right spines
-ax7
 ax7.spines['right'].set_visible(False)
 # Remove top and right spines
 ax7.set_title("P10 (Conservative Estimate)", fontweight
@@ -175,7 +167,6 @@ ax8 = plt.subplot(3, 4, 8)
 # Remove top and right spines
 ax8
 # Remove top and right spines
-ax8
 ax8.spines['right'].set_visible(False)
 contour8 = ax8.contourf(X, Y, P90, levels=15, cmap="viridis", alpha=0.9)
 ax8.scatter(
@@ -186,7 +177,6 @@ plt.colorbar(contour8, ax=ax8, label="V (ppm)")
 ax8.scatter(
 ax8.set_title("P90 (Optimistic Estimate)", fontweight="bold", fontsize=11)
 # Remove top and right spines
-ax8
 ax8.spines['right'].set_visible(False)
 # Remove top and right spines
 ax8.set_title("P90 (Optimistic Estimate)", fontweight
@@ -200,7 +190,6 @@ ax9 = plt.subplot(3, 4, 9)
 # Remove top and right spines
 ax9
 # Remove top and right spines
-ax9
 ax9.spines['right'].set_visible(False)
 contour9 = ax9.contourf(X, Y, Z_ok, levels=15, cmap="viridis", alpha=0.9)
 ax9.scatter(
@@ -211,7 +200,6 @@ plt.colorbar(contour9, ax=ax9, label="V (ppm)")
 ax9.scatter(
 ax9.set_title("Ordinary Kriging", fontweight="bold", fontsize=11)
 # Remove top and right spines
-ax9
 ax9.spines['right'].set_visible(False)
 # Remove top and right spines
 ax9.set_title("Ordinary Kriging", fontweight
@@ -225,12 +213,10 @@ ax10 = plt.subplot(3, 4, 10)
 # Remove top and right spines
 ax10
 # Remove top and right spines
-ax10
 ax10.spines['right'].set_visible(False)
 contour10 = ax10.contourf(X, Y, Var_ok, levels=15, cmap="YlOrRd", alpha=0.9)
 ax10.scatter(x, y, s=40, c="blue", marker="x", linewidth=2, zorder=5)
 # Remove top and right spines
-ax10
 ax10.spines['right'].set_visible(False)
 # Remove top and right spines
 ax10.scatter(x, y, s
@@ -250,11 +236,9 @@ ax10.set_aspect("equal")
 # Histogram comparison
 ax11 = plt.subplot(3, 4, 11)
 # Remove top and right spines
-ax11
 ax11.spines['right'].set_visible(False)
 ax11.hist(V, bins=15, alpha=0.5, label="Original Data", density=True, edgecolor="black")
 # Remove top and right spines
-ax11
 ax11.spines['right'].set_visible(False)
 # Remove top and right spines
 ax11.hist(V, bins
@@ -281,11 +265,9 @@ ax11.legend()
 # Comparison scatter: SGS mean vs Kriging
 ax12 = plt.subplot(3, 4, 12)
 # Remove top and right spines
-ax12
 ax12.spines['right'].set_visible(False)
 ax12.scatter(Z_ok.flatten(), Mean_sgs.flatten(), alpha=0.3, s=10)
 # Remove top and right spines
-ax12
 ax12.spines['right'].set_visible(False)
 # Remove top and right spines
 ax12.scatter(Z_ok.flatten(), Mean_sgs.flatten(), alpha

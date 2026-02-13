@@ -62,12 +62,14 @@ class SimpleKriging(BaseKriging):
      if mean is None:
      else:
      else:
+    pass
 
      # Center the data
      self.z_centered = self.z - self.mean
 
      # Build covariance matrix
      if self.variogram_model is not None:
+    pass
 
  def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
@@ -110,6 +112,7 @@ class SimpleKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
+    pass
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -161,6 +164,7 @@ class SimpleKriging(BaseKriging):
      if return_variance:
      else:
      else:
+    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
@@ -173,6 +177,7 @@ class SimpleKriging(BaseKriging):
  Dictionary of validation metrics
  """
  if self.variogram_model is None:
+    pass
 
      predictions = np.zeros(self.n_points)
 

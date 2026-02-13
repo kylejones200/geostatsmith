@@ -83,6 +83,7 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_data = np.asarray(covariates_data, dtype=np.float64)
      if covariates_data.ndim == 1:
+    pass
 
      if len(covariates_data) != len(self.x):
      f"covariates_data must have same length as x,y,z. "
@@ -94,6 +95,7 @@ class ExternalDriftKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
+    pass
 
  def _build_kriging_matrix(self) -> None:
      Build the external drift kriging system matrix
@@ -169,6 +171,7 @@ class ExternalDriftKriging(BaseKriging):
      Kriging variance at each prediction point
      """
      if self.variogram_model is None:
+    pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
      n_pred = len(x_new)
@@ -178,6 +181,7 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_new = np.asarray(covariates_new, dtype=np.float64)
      if covariates_new.ndim == 1:
+    pass
 
      if len(covariates_new) != n_pred:
      f"covariates_new must match length of x_new, y_new. "

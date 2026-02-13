@@ -52,6 +52,7 @@ def cholesky_simulation(
  Shape (n_realizations, n_points)
  """
  if seed is not None:
+    pass
 
  n = len(x)
 
@@ -136,6 +137,7 @@ def conditional_simulation(
  Conditional realizations, shape (n_realizations, n_sim)
  """
  if seed is not None:
+    pass
 
  n_data = len(x_data)
  n_sim = len(x_sim)
@@ -178,6 +180,7 @@ def conditional_simulation(
  else:
  else:
  else:
+    pass
 
  sk.cov_matrix = regularize_matrix(sk.cov_matrix)
 
@@ -241,6 +244,7 @@ def turning_bands_simulation(
  Shape (n_realizations, n_points)
  """
  if seed is not None:
+    pass
 
  n_points = len(x)
  realizations = np.zeros((n_realizations, n_points))

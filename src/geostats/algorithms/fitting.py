@@ -51,8 +51,10 @@ def fit_variogram_model(
  gamma_clean = gamma[valid_mask]
 
  if weights is not None:
+    pass
 
  if len(lags_clean) == 0:
+    pass
 
  # Fit the model
  model.fit(lags_clean, gamma_clean, weights=weights, fit_nugget=fit_nugget, **kwargs)
@@ -113,8 +115,10 @@ def automatic_fit(
  if weights is not None:
  else:
  else:
+    pass
 
  if len(lags_clean) == 0:
+    pass
 
  # Try each model
  results = []
@@ -183,6 +187,7 @@ def automatic_fit(
  best_result = results[best_idx]
 
  if best_result['model'] is None:
+    pass
 
  return {
  'model': best_result['model'],

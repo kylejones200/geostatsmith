@@ -92,6 +92,7 @@ def sample_size_calculator(
  # Set bounds
  if x_bounds is None:
  if y_bounds is None:
+    pass
 
  # Evaluate different sample sizes
  sample_sizes = np.linspace(n_initial, min(max_samples, n_initial * 10), 20, dtype=int)
@@ -99,6 +100,7 @@ def sample_size_calculator(
  rmse_std = []
 
  for n in sample_sizes:
+    pass
 
  for _ in range(n_simulations):
  if n <= n_initial:
@@ -170,6 +172,7 @@ def sample_size_calculator(
  if b < 0: # Power law should have negative exponent
  else:
  else:
+    pass
 
  # Current RMSE
  current_rmse = rmse_values[0]

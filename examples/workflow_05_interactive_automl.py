@@ -66,6 +66,7 @@ def example_1_interactive_variogram():
 
 def example_2_interactive_prediction_map():
  if not PLOTLY_AVAILABLE:
+    pass
 
  logger.info("\n" + "="*60)
  logger.info("Example 2: Interactive Prediction Map")

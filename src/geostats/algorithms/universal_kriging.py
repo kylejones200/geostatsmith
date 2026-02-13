@@ -70,6 +70,7 @@ class UniversalKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
+    pass
 
  def _build_drift_matrix(
      x: npt.NDArray[np.float64],
@@ -110,6 +111,7 @@ class UniversalKriging(BaseKriging):
 
      else:
      else:
+    pass
 
      return F
 
@@ -161,6 +163,7 @@ class UniversalKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
+    pass
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -225,6 +228,7 @@ class UniversalKriging(BaseKriging):
      if return_variance:
      else:
      else:
+    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
@@ -237,6 +241,7 @@ class UniversalKriging(BaseKriging):
  Dictionary of validation metrics
  """
  if self.variogram_model is None:
+    pass
 
      predictions = np.zeros(self.n_points)
 

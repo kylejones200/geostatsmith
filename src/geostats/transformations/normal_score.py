@@ -66,6 +66,7 @@ class NormalScoreTransform:
  n_valid = len(valid_data)
 
  if n_valid == 0:
+    pass
 
      logger.debug(f"Fitting normal score transform on {n_valid} valid points")
 
@@ -125,6 +126,7 @@ class NormalScoreTransform:
  Normal scores (mean~=0, std~=1)
  """
  if not self.is_fitted:
+    pass
 
      data = np.asarray(data, dtype=np.float64)
  original_shape = data.shape
@@ -156,6 +158,7 @@ class NormalScoreTransform:
  Values outside the training range are extrapolated using the boundary values.
  """
  if not self.is_fitted:
+    pass
 
      normal_scores = np.asarray(normal_scores, dtype=np.float64)
  original_shape = normal_scores.shape
@@ -191,6 +194,7 @@ class NormalScoreTransform:
  Statistics including original and transformed statistics
  """
  if not self.is_fitted:
+    pass
 
      assert self.original_values is not None
  assert self.normal_scores is not None

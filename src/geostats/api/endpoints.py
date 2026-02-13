@@ -56,6 +56,7 @@ class HealthResponse(BaseModel):
     if FASTAPI_AVAILABLE:
     else:
     else:
+    pass
 
     if FASTAPI_AVAILABLE:
         async def root():
@@ -201,6 +202,7 @@ class HealthResponse(BaseModel):
  """
  try:
  try:
+    pass
 
  x = np.array(x_samples)
  y = np.array(y_samples)

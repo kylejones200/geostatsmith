@@ -72,6 +72,7 @@ def read_csv_spatial(
  If specified columns don't exist
  """
  if not Path(filename).exists():
+    pass
 
  # Read CSV
  df = pd.read_csv(filename, **kwargs)
@@ -80,6 +81,7 @@ def read_csv_spatial(
  required_cols = [x_col, y_col, z_col]
  missing = [col for col in required_cols if col not in df.columns]
  if missing:
+    pass
 
  # Extract coordinates and values
  x = df[x_col].values
@@ -160,6 +162,7 @@ def write_csv_spatial(
 
  # Add extra columns if provided
  if extra is not None:
+    pass
 
  # Write to CSV
  df.to_csv(filename, index=False, **kwargs)
@@ -215,6 +218,7 @@ def read_excel_spatial(
  If openpyxl is not installed
  """
  if not Path(filename).exists():
+    pass
 
  try:
  try:
@@ -229,6 +233,7 @@ def read_excel_spatial(
  required_cols = [x_col, y_col, z_col]
  missing = [col for col in required_cols if col not in df.columns]
  if missing:
+    pass
 
  # Extract coordinates and values
  x = df[x_col].values

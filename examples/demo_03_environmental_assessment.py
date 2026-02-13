@@ -71,6 +71,7 @@ def load_environmental_data(agdb_path, elements=['As', 'Pb', 'Hg']):
 
  # Focus on sediments (more relevant for environmental)
  if 'PRIMARY_CLASS' in merged.columns:
+    pass
 
  logger.info(f" {element}: {len(merged):,} samples")
 
@@ -94,18 +95,14 @@ def analyze_thresholds(data_dict):
 
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
  continue
 
  values = data_dict[element][element].values
  ax = axes[idx]
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  # Histogram
  ax.hist(values, bins=50, alpha=0.7, edgecolor='black', log=True)
 
@@ -115,6 +112,7 @@ def analyze_thresholds(data_dict):
  labels = ['Background', 'Residential', 'Industrial']
 
  for i, (label, value) in enumerate(list(thresh.items())[:-1]): # Skip 'units'
+    pass
 
  # Calculate exceedances
  background = thresh['Natural Background']
@@ -147,9 +145,7 @@ def create_exceedance_maps(data_dict, thresholds):
 
  fig, axes = plt.subplots(2, 3, figsize=(20, 12))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
  continue
 
@@ -178,7 +174,6 @@ def create_exceedance_maps(data_dict, thresholds):
  # Plot prediction
  ax = axes[0, idx]
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  im = ax.contourf(X, Y, z_pred, levels=20, cmap='YlOrRd')
  ax.scatter(x, y, c='k', s=1, alpha=0.3)
@@ -187,9 +182,7 @@ def create_exceedance_maps(data_dict, thresholds):
  ax.set_ylabel('Latitude')
  plt.colorbar(im, ax=ax, label=f'{element} ({thresholds[element]["units"]})')
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  # Probability of exceeding background
  threshold = thresholds[element]['Natural Background']
  logger.info(f"{element}: P(>{threshold} {thresholds[element]['units']})...")
@@ -205,12 +198,10 @@ def create_exceedance_maps(data_dict, thresholds):
  # Plot probability
  ax = axes[1, idx]
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  im = ax.contourf(X, Y, prob_exceed, levels=20, cmap='RdYlGn_r',
  vmin=0, vmax=1)
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  ax.scatter(x, y, c='k', s=1, alpha=0.3)
  ax.contour(X, Y, prob_exceed, levels=[0.5, 0.9],
@@ -220,9 +211,7 @@ def create_exceedance_maps(data_dict, thresholds):
  ax.set_ylabel('Latitude')
  cbar = plt.colorbar(im, ax=ax, label='Probability')
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  # Add risk labels
  high_risk = (prob_exceed > 0.9).sum() / prob_exceed.size * 100
  medium_risk = ((prob_exceed > 0.5) & (prob_exceed <= 0.9)).sum() / prob_exceed.size * 100
@@ -292,9 +281,7 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  # Visualize
  fig, axes = plt.subplots(2, 2, figsize=(14, 12))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  # Individual threshold probabilities
  for i, (ax, threshold) in enumerate(zip(axes.flatten()[:3], thresholds)):
  ax.scatter(x, y, c='k', s=1, alpha=0.2)
@@ -303,13 +290,10 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  ax.set_ylabel('Latitude')
  plt.colorbar(im, ax=ax, label='Probability')
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  # Combined risk classification
  ax = axes[1, 1]
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  cmap = plt.cm.get_cmap('RdYlGn_r', 4)
  im = ax.contourf(X, Y, risk_class, levels=np.arange(5)-0.5, cmap=cmap)
@@ -321,7 +305,6 @@ def multi_threshold_risk_assessment(data_dict, element='As'):
  # Custom colorbar with labels
  cbar = plt.colorbar(im, ax=ax, ticks=[0, 1, 2, 3])
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  cbar.set_ticklabels(labels)
  cbar.set_label('Risk Level')
@@ -341,9 +324,7 @@ def identify_hotspots(data_dict):
 
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  hotspot_locations = {}
 
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
@@ -373,7 +354,6 @@ def identify_hotspots(data_dict):
  # Plot
  ax = axes[idx]
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
  ax.scatter(x[~hotspot_mask], y[~hotspot_mask],
  c='lightgray', s=10, alpha=0.3, label='Background')
@@ -386,9 +366,7 @@ def identify_hotspots(data_dict):
  ax.legend()
  plt.colorbar(scatter, ax=ax, label=f'{element} (ppm)')
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  plt.tight_layout()
  plt.savefig('alaska_contamination_hotspots.png', dpi=150)
  logger.info("Saved: alaska_contamination_hotspots.png")
@@ -430,6 +408,7 @@ def generate_environmental_report(data_dict, thresholds, hotspots):
 # ==============================================================================
 
 if __name__ == '__main__':
+    pass
 
 if __name__ == '__main__':
      logger.info(f" AGDB4 not found at: {AGDB_PATH}")

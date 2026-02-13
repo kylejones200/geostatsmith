@@ -68,6 +68,7 @@ class NeighborhoodSearch:
      self.n_points = len(self.x)
 
      if len(self.x) != len(self.y):
+    pass
 
      self.config = config if config is not None else NeighborhoodConfig()
 
@@ -120,6 +121,7 @@ class NeighborhoodSearch:
      if self.config.use_octants:
      elif self.config.use_quadrants:
      elif self.config.use_quadrants:
+    pass
 
      # Apply max_neighbors limit
      if len(indices) > self.config.max_neighbors:
@@ -157,6 +159,7 @@ class NeighborhoodSearch:
      Boolean mask of points within ellipse
      """
      if self.config.search_ellipse is None:
+    pass
 
      major, minor, angle_deg = self.config.search_ellipse
      angle_rad = np.deg2rad(angle_deg)
@@ -203,6 +206,7 @@ class NeighborhoodSearch:
      Selected indices and distances
      """
      if len(indices) == 0:
+    pass
 
      # Calculate angles
      dx = self.x[indices] - x0
@@ -241,6 +245,7 @@ class NeighborhoodSearch:
      Divides space into 4 quadrants and limits samples per quadrant.
      """
      if len(indices) == 0:
+    pass
 
      # Determine quadrants
      dx = self.x[indices] - x0

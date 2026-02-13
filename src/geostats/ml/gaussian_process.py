@@ -177,6 +177,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
      mean_types = {'zero', 'constant', 'linear'}
      if self.mean_type not in mean_types:
+    pass
 
      logger.info(
      f"Gaussian Process initialized: kernel={kernel}, mean={mean_type}, "
@@ -218,9 +219,11 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      y_coords = X[:, 1]
      else:
      else:
+    pass
 
      # Fit variogram kernel if string provided
      if isinstance(self.kernel, str):
+    pass
 
      from ..algorithms.variogram import experimental_variogram
      from ..algorithms.fitting import fit_variogram_model
@@ -240,6 +243,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      )
      else:
      else:
+    pass
 
      # Build covariance matrix
      self._build_covariance_matrix(x_coords, y_coords)
@@ -316,10 +320,12 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         Covariance matrix (if return_cov=True)
     """
      if self.X_train_ is None:
+    pass
 
      if SKLEARN_AVAILABLE:
      else:
      else:
+    pass
 
      n_pred = X.shape[0]
      n_train = len(self.X_train_)
@@ -361,6 +367,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
      else: # Simple Kriging
      else: # Simple Kriging
+    pass
 
      mean_y = np.mean(self.y_train_) if self.mean_type == 'zero' else 0.0
      predictions[i] = mean_y + np.dot(lambdas, self.y_train_ - mean_y)
@@ -375,6 +382,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                 cov_ij = sill - gamma
                 cov_matrix[i, j] = cov_ij
                 if i != j:
+    pass
         
                     # Subtract kriging variance from diagonal
         # The diagonal should be prediction variance, not prior covariance
@@ -393,6 +401,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                     var = sill - (np.dot(lambdas, k_vec) + mu)
                 else:
                 else:
+    pass
                 
                 cov_matrix[i, i] = max(0.0, var)
 
@@ -444,6 +453,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  Log marginal likelihood
  """
  if self.K_ is None:
+    pass
 
      n = len(self.y_train_)
 
@@ -483,6 +493,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  Dictionary of performance metrics
  """
  if self.X_train_ is None:
+    pass
 
      from ..core.exceptions import KrigingError
 

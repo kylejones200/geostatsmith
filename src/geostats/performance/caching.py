@@ -172,6 +172,7 @@ def clear_cache(cache_dir: Optional[Path] = None) -> int:
  cache_dir = Path(cache_dir) if cache_dir else CACHE_DIR
 
  if not cache_dir.exists():
+    pass
 
  n_deleted = 0
  for cache_file in cache_dir.glob('*.pkl'):

@@ -105,6 +105,7 @@ def sequential_gaussian_simulation(
  Multiple realizations of the spatial field
  """
  if seed is not None:
+    pass
 
  n_grid = len(x_grid)
  realizations = np.zeros((n_realizations, n_grid))

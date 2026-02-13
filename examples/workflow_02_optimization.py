@@ -86,9 +86,7 @@ def example_1_optimal_sampling():
  # Visualize
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  strategies = [
  ('Variance Reduction', x_var, y_var),
  ('Space-Filling', x_space, y_space),
@@ -144,9 +142,7 @@ def example_2_infill_sampling():
  # Visualize
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  # Before infill - show kriging variance
  nx, ny = 50, 50
  x_grid = np.linspace(0, 100, nx)
@@ -160,7 +156,6 @@ def example_2_infill_sampling():
  im1 = ax1.contourf(x_grid, y_grid, var_before_grid, levels=15, cmap='YlOrRd')
  ax1.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
  # Remove top and right spines
- ax1
  ax1.spines['right'].set_visible(False)
  # Remove top and right spines
  ax1.scatter(x_init, y_init, c
@@ -188,7 +183,6 @@ def example_2_infill_sampling():
  im2 = ax2.contourf(x_grid, y_grid, var_after_grid, levels=15, cmap='YlOrRd')
  ax2.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
  # Remove top and right spines
- ax2
  ax2.spines['right'].set_visible(False)
  # Remove top and right spines
  ax2.scatter(x_init, y_init, c
@@ -248,9 +242,7 @@ def example_3_sample_size_calculator():
  # Visualize RMSE vs sample size
  fig, ax = plt.subplots(figsize=(10, 6))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  ax.plot(results['sample_sizes'], results['rmse_values'], 'bo-', linewidth=2, markersize=8)
  ax.axhline(results['target_rmse'], color='red', linestyle='--', linewidth=2, label='Target RMSE')
  ax.axvline(results['required_samples'], color='green', linestyle='--', linewidth=2,
@@ -311,9 +303,7 @@ def example_4_cost_benefit():
  # Visualize
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
  # Remove top and right spines
- ax
  ax.spines['right'].set_visible(False)
-
  # Costs and benefits
  ax1.plot(results['sample_sizes'], results['costs'], 'r-', linewidth=2, label='Cost')
  # Remove top and right spines

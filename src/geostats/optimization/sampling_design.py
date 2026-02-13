@@ -150,6 +150,7 @@ def optimal_sampling_design(
 
  else:
  else:
+    pass
 
  # Add selected location
  x_new.append(x_candidates[best_idx])
@@ -267,6 +268,7 @@ def infill_sampling(
  # Set bounds
  if x_bounds is None:
  if y_bounds is None:
+    pass
 
  # Create grid for variance evaluation
  n_eval = 50
@@ -290,6 +292,7 @@ def infill_sampling(
  # Check if all variances are below threshold
  max_var = var.max()
  if max_var < variance_threshold:
+    pass
 
  # Find location with maximum variance
  max_idx = np.argmax(var)
@@ -359,6 +362,7 @@ def stratified_sampling(
  """
  if n_strata_x is None:
  if n_strata_y is None:
+    pass
 
  # Calculate stratum dimensions
  x_min, x_max = x_bounds

@@ -63,6 +63,7 @@ def run(config_file, validate_only, override, verbose):
 
  # Override verbose if flag set
  if verbose:
+    pass
 
     # Run pipeline
     click.echo(click.style(f"\nStarting Analysis: {config.project.name}", fg='cyan', bold=True))

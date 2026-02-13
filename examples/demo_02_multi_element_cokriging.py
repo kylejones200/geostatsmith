@@ -103,12 +103,12 @@ def analyze_element_correlations(data):
  logger.info(f" Mo-Au: r={corr_mo_au:.3f} (p={p_mo_au:.4f})")
 
  if corr_cu_mo > 0.5:
+    pass
 
  # Scatter plots with density
  fig, axes = plt.subplots(1, 3, figsize=(18, 5))
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # Cu vs Mo
  axes[0].hexbin(cu_log, mo_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
@@ -127,7 +127,6 @@ def analyze_element_correlations(data):
  # Remove top and right spines
  axes[0].set_title(f'
  nr.spines['right'].set_visible(False)
-
  # Cu vs Au
  axes[1].hexbin(cu_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
@@ -146,7 +145,6 @@ def analyze_element_correlations(data):
  # Remove top and right spines
  axes[1].set_title(f'
  nr.spines['right'].set_visible(False)
-
  # Mo vs Au
  axes[2].hexbin(mo_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
@@ -165,7 +163,6 @@ def analyze_element_correlations(data):
  # Remove top and right spines
  axes[2].set_title(f'
  nr.spines['right'].set_visible(False)
-
  plt.tight_layout()
  plt.savefig('alaska_element_correlations.png', dpi=150)
  logger.info("Saved: alaska_element_correlations.png")
@@ -187,6 +184,7 @@ def detect_geochemical_anomalies(data, elements_dict):
  anomalies_dict = {}
 
  for element in ['Cu', 'Mo', 'Au']:
+    pass
 
  # Detect outliers using multiple methods
  outlier_results = detect_outliers(
@@ -219,7 +217,6 @@ def detect_geochemical_anomalies(data, elements_dict):
  fig, axes = plt.subplots(2, 2, figsize=(16, 14))
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # Individual elements
  for idx, element in enumerate(['Cu', 'Mo', 'Au']):
  mask = anomalies_dict[element]['outlier_mask']
@@ -317,7 +314,6 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  fig, axes = plt.subplots(2, 2, figsize=(14, 12))
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # OK prediction
  im1 = axes[0, 0].contourf(X, Y, cu_ok, levels=20, cmap='YlOrRd')
  axes[0, 0].scatter(x, y, c='k', s=2, alpha=0.3)
@@ -423,7 +419,6 @@ def calculate_porphyry_index(data, elements_dict):
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # Porphyry index map
  im1 = ax1.contourf(X, Y, index_pred, levels=20, cmap='RdYlGn')
  ax1.scatter(x, y, c=porphyry_index, s=30, cmap='RdYlGn',
@@ -468,6 +463,7 @@ def calculate_porphyry_index(data, elements_dict):
 # ==============================================================================
 
 if __name__ == '__main__':
+    pass
 
 if __name__ == '__main__':
      logger.info(f" AGDB4 not found at: {AGDB_PATH}")

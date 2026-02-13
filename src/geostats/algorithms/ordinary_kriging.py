@@ -61,6 +61,7 @@ class OrdinaryKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
+    pass
 
  def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
@@ -108,6 +109,7 @@ class OrdinaryKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
+    pass
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -165,6 +167,7 @@ class OrdinaryKriging(BaseKriging):
      if return_variance:
      else:
      else:
+    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
@@ -177,6 +180,7 @@ class OrdinaryKriging(BaseKriging):
  Dictionary of validation metrics (MSE, RMSE, MAE, R², bias)
  """
  if self.variogram_model is None:
+    pass
 
      predictions = np.zeros(self.n_points)
 

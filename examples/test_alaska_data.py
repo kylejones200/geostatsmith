@@ -26,6 +26,7 @@ if not AGDB_PATH.exists():
  logger.info(" - Lat/Long coordinates")
  logger.info("To run this analysis, please ensure AGDB4 data is available.")
 else:
+    pass
 
 else:
  logger.info("Available data files:")

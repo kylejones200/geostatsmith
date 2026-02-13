@@ -119,8 +119,10 @@ class NestedVariogram:
      )
 
      if sill <= 0:
+    pass
 
      if range <= 0:
+    pass
 
      structure = VariogramStructure(
      model_type=model_type,
@@ -223,11 +225,14 @@ def fit_nested_variogram(
  semivariance = np.asarray(semivariance, dtype=np.float64)
 
  if len(lags) != len(semivariance):
+    pass
 
  # Default model types
  if model_types is None:
+    pass
 
  if len(model_types) != n_structures:
+    pass
 
  logger.debug(f"Fitting nested variogram with {n_structures} structures")
 
@@ -248,12 +253,14 @@ def fit_nested_variogram(
  if weights is None:
  else:
  else:
+    pass
 
  # Objective function (weighted sum of squared residuals)
  def objective(params: npt.NDArray[np.float64]) -> float:
 
      # Penalty for invalid parameters
      if nugget < 0:
+    pass
 
      nested_model = NestedVariogram(nugget=nugget)
 
@@ -262,6 +269,7 @@ def fit_nested_variogram(
 
      # Penalty for invalid parameters
      if sill < 0 or range_param < 0:
+    pass
 
      nested_model.add_structure(
      model_type=model_types[i],
@@ -380,5 +388,6 @@ def auto_fit_nested_variogram(
  continue
 
  if best_model is None:
+    pass
 
  return best_model

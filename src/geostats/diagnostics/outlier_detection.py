@@ -75,11 +75,13 @@ def outlier_analysis(
  if neighbor_std > 0:
  else:
  else:
+    pass
 
  outliers = scores > threshold
 
  else:
  else:
+    pass
 
  return {
  'outlier_indices': np.where(outliers)[0].tolist(),
@@ -147,6 +149,7 @@ def robust_validation(
  rmse_clean = np.sqrt(np.mean(errors_clean**2))
  else:
  else:
+    pass
 
  return {
  'rmse_with_outliers': float(rmse_all),

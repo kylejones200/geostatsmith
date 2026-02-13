@@ -83,6 +83,7 @@ def parallel_kriging(
 
  # Determine number of jobs
  if n_jobs == -1:
+    pass
 
  # Create batches
  n_batches = int(np.ceil(n_pred / batch_size))
@@ -160,6 +161,7 @@ def parallel_cross_validation(
  n = len(x)
 
  if n_jobs == -1:
+    pass
 
  def predict_single(i, train_indices):
      x_train = x[train_indices]
@@ -207,6 +209,7 @@ def parallel_cross_validation(
  variances[test_idx] = [r[1] for r in fold_results]
 
  else:
+    pass
 
      # Compute metrics
  errors = z - predictions
@@ -265,8 +268,10 @@ def parallel_variogram_fit(
  >>> logger.info(f"Best: {results['best_type']} (R² = {results['best_r2']:.3f})")
  """
  if model_types is None:
+    pass
 
  if n_jobs == -1:
+    pass
 
  # Compute experimental variogram once
  lags, gamma = experimental_variogram(x, y, z, n_lags=n_lags)
@@ -304,6 +309,7 @@ def parallel_variogram_fit(
      successful = [r for r in fit_results if r['success']]
 
      if not successful:
+    pass
 
      best = max(successful, key=lambda x: x['r2'])
 

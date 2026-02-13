@@ -91,6 +91,7 @@ def morans_i(
  n = len(x)
 
  if n < 3:
+    pass
 
  # Calculate spatial weights
  points = np.column_stack([x, y])
@@ -206,6 +207,7 @@ def gearys_c(
  n = len(x)
 
  if n < 3:
+    pass
 
  # Calculate spatial weights
  points = np.column_stack([x, y])

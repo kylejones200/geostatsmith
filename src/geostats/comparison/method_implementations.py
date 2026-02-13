@@ -104,6 +104,7 @@ def inverse_distance_weighting(
  tree = cKDTree(np.column_stack([x_data, y_data]))
 
  for i in range(n_pred):
+    pass
 
  # Find neighbors
  if radius is not None:
@@ -200,6 +201,7 @@ def radial_basis_function_interpolation(
 
  The thin plate spline kernel minimizes bending energy and is popular
  for smooth surface fitting.
+    pass
 
  References
  ----------
@@ -302,6 +304,7 @@ def natural_neighbor_interpolation(
 
  # For each prediction point
  for i in range(n_pred):
+    pass
 
  # Find which simplex (triangle) contains the point
  simplex_idx = tri.find_simplex(pred_point)

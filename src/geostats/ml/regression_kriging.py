@@ -165,6 +165,7 @@ class RegressionKriging(BaseKriging):
      Number of lags for variogram fitting
      """
      if not SKLEARN_AVAILABLE:
+    pass
 
      self.ml_model = ml_model
      self.kriging_type = kriging_type.lower()
@@ -260,6 +261,7 @@ class RegressionKriging(BaseKriging):
      )
      else:
      else:
+    pass
 
      self.fitted = True
      logger.info("Regression Kriging model fitted successfully")
@@ -291,6 +293,7 @@ class RegressionKriging(BaseKriging):
      Prediction variance (kriging variance only)
      """
      if not self.fitted:
+    pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
 
@@ -337,6 +340,7 @@ class RegressionKriging(BaseKriging):
  Dictionary of performance metrics
  """
  if not self.fitted:
+    pass
 
      from ..validation.cross_validation import leave_one_out
  from ..validation.metrics import mean_squared_error, r_squared
@@ -390,6 +394,7 @@ class RandomForestKriging(RegressionKriging):
      **rf_kwargs
      ):
      if not SKLEARN_AVAILABLE:
+    pass
 
      rf_model = RandomForestRegressor(
      n_estimators=n_estimators,
@@ -453,6 +458,7 @@ class XGBoostKriging(RegressionKriging):
      **xgb_kwargs
      ):
      if not XGBOOST_AVAILABLE:
+    pass
 
      xgb_model = xgb.XGBRegressor(
      n_estimators=n_estimators,

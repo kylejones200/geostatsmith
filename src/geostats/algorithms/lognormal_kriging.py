@@ -96,6 +96,7 @@ class LognormalKriging(BaseKriging):
      )
      else:
      else:
+    pass
 
  def predict(
      x_new: npt.NDArray[np.float64],
@@ -126,6 +127,7 @@ class LognormalKriging(BaseKriging):
      Variance in original space (approximate)
      """
      if self.variogram_model is None:
+    pass
 
      # Krige in log-space
      if return_variance:

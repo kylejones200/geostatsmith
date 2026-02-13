@@ -72,12 +72,10 @@ fig = plt.figure(figsize=(16, 5))
 # Plot 1: Kriging predictions
 ax1 = plt.subplot(131)
 # Remove top and right spines
-ax1
 ax1.spines['right'].set_visible(False)
 contour = ax1.contourf(X, Y, Z_pred, levels=15, cmap="viridis", alpha=0.8)
 ax1.scatter(x, y, c=z, s=50, cmap="viridis", edgecolors="black", linewidth=1, zorder=5)
 # Remove top and right spines
-ax1
 ax1.spines['right'].set_visible(False)
 # Remove top and right spines
 ax1.scatter(x, y, c
@@ -98,7 +96,6 @@ ax2 = plt.subplot(132)
 # Remove top and right spines
 ax2
 # Remove top and right spines
-ax2
 ax2.spines['right'].set_visible(False)
 contour2 = ax2.contourf(X, Y, Variance, levels=15, cmap="YlOrRd", alpha=0.8)
 ax2.scatter(
@@ -106,7 +103,6 @@ ax2.scatter(
 )
 ax2.set_xlabel("X", fontsize=12)
 # Remove top and right spines
-ax2
 ax2.spines['right'].set_visible(False)
 # Remove top and right spines
 ax2.set_ylabel("Y", fontsize=12)
@@ -122,11 +118,9 @@ ax2.legend()
 # Plot 3: Cross-validation
 ax3 = plt.subplot(133)
 # Remove top and right spines
-ax3
 ax3.spines['right'].set_visible(False)
 ax3.scatter(z, cv_pred, alpha=0.6, s=50, edgecolors="black", linewidth=0.5)
 # Remove top and right spines
-ax3
 ax3.spines['right'].set_visible(False)
 # Remove top and right spines
 ax3.scatter(z, cv_pred, alpha

@@ -161,6 +161,7 @@ def prediction_bands(
  ... )
  """
  if confidence_levels is None:
+    pass
 
  # Perform kriging
  krig = OrdinaryKriging(

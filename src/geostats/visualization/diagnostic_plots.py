@@ -32,6 +32,7 @@ def plot_cross_validation(
  ax : matplotlib.Axes
  """
  if ax is None:
+    pass
 
  # Scatter plot
  ax.scatter(y_true, y_pred, alpha=0.6, s=50,
@@ -94,6 +95,7 @@ def plot_histogram(
  ax : matplotlib.Axes
  """
  if ax is None:
+    pass
 
  # Histogram
  n, bins_edges, patches = ax.hist(data, bins=bins, density=True,
@@ -136,6 +138,7 @@ def plot_qq_plot(
  ax : matplotlib.Axes
  """
  if ax is None:
+    pass
 
  # Calculate theoretical and sample quantiles
  (osm, osr), (slope, intercept, r) = stats.probplot(data, dist="norm")
@@ -231,6 +234,7 @@ def qq_plot(
  if ax is None:
  else:
  else:
+    pass
 
  from scipy import stats
 
@@ -269,6 +273,7 @@ def plot_histogram(
  if ax is None:
  else:
  else:
+    pass
 
  ax.hist(data, bins=bins, alpha=0.7, color='blue',
  edgecolor='black', **kwargs)
@@ -317,6 +322,7 @@ def plot_obs_vs_pred(
  if ax is None:
  else:
  else:
+    pass
 
  ax.scatter(observed, predicted, alpha=0.6, s=60,
  edgecolors='black', linewidth=1, **kwargs)
@@ -373,6 +379,7 @@ def plot_residuals(
  if ax is None:
  else:
  else:
+    pass
 
  ax.scatter(predicted, residuals, alpha=0.6, s=60,
  edgecolors='black', linewidth=1, **kwargs)
@@ -414,6 +421,7 @@ def plot_residual_histogram(
  if ax is None:
  else:
  else:
+    pass
 
  ax.hist(residuals, bins=bins, alpha=0.7, color='blue',
  edgecolor='black', density=True, **kwargs)

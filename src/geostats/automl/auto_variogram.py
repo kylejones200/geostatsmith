@@ -58,9 +58,11 @@ def auto_variogram(
  This uses parallel_variogram_fit under the hood for speed.
  """
  if model_types is None:
+    pass
 
  try:
  try:
+    pass
 
  results = parallel_variogram_fit(
  x, y, z,
@@ -98,9 +100,11 @@ def auto_variogram(
  best_type = model_type
 
  if verbose:
+    pass
 
  except Exception as e:
  if verbose:
+    pass
 
  if best_model is None:
  f"All {len(model_types)} variogram models failed to fit. "
@@ -108,6 +112,7 @@ def auto_variogram(
  )
 
  if verbose:
+    pass
 
  return best_model
 
@@ -149,8 +154,10 @@ def auto_fit(
  }
 
  if cross_validate:
+    pass
 
  if verbose:
+    pass
 
  n = len(x)
  predictions = np.zeros(n)

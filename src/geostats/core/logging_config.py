@@ -32,8 +32,10 @@ def setup_logging(
     >>> setup_logging(level=logging.DEBUG)
     """
     if format_string is None:
+    pass
 
         if stream is None:
+    pass
 
     logging.basicConfig(
         level=level,

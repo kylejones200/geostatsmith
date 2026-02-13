@@ -203,9 +203,11 @@ class AnalysisConfig(BaseModel):
  def validate_config(self):
      # Check cokriging requirements
      if self.kriging.method == 'cokriging' and self.data.z_secondary is None:
+    pass
 
  # Check indicator kriging requirements
  if self.kriging.method == 'indicator' and self.kriging.thresholds is None:
+    pass
 
      # Check simple kriging mean
  if self.kriging.method == 'simple' and self.kriging.mean is None:

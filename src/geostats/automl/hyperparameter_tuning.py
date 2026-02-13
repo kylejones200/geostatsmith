@@ -71,6 +71,7 @@ def tune_kriging(
         elif isinstance(param_range, list):
         else:
         else:
+    pass
 
     # Generate all combinations
     param_names = list(param_grid.keys())
@@ -91,6 +92,7 @@ def tune_kriging(
     for i, param_combo in enumerate(param_combinations):
             test_params = current_params.copy()
             for param_name, param_value in zip(param_names, param_combo):
+    pass
 
             # Create model instance
             test_model = model_class(**test_params)
@@ -185,13 +187,16 @@ def optimize_neighborhood(
             rmse = metrics.get("rmse", np.inf)
 
             if rmse < best_rmse:
+    pass
 
             if verbose:
+    pass
 
                 except Exception as e:
             logger.debug(f"Failed to test {n_neighbors} neighbors: {e}")
             continue
 
     if verbose:
+    pass
 
         return best_neighbors

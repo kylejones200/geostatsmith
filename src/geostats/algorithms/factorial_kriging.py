@@ -105,8 +105,10 @@ class FactorialKriging(BaseKriging):
      self.z = validate_values(z, n_expected=len(self.x))
 
      if not isinstance(nested_variogram, NestedVariogram):
+    pass
 
      if len(nested_variogram.structures) == 0:
+    pass
 
      self.nested_variogram = nested_variogram
 
@@ -114,6 +116,7 @@ class FactorialKriging(BaseKriging):
      if mean is not None:
      else:
      else:
+    pass
 
      self.residuals = self.z - self.mean
 
@@ -238,12 +241,14 @@ class FactorialKriging(BaseKriging):
 
      # Variance if requested
      if return_variance:
+    pass
 
      # Store component
      comp_name = f"structure_{i}"
      components[comp_name] = predictions
 
      if return_variance:
+    pass
 
      logger.debug(f"Predicted component {i}: {structure['model_type']}")
 
@@ -290,14 +295,17 @@ class FactorialKriging(BaseKriging):
     # Sum all components
     total = self.mean * np.ones(len(x_new))
     for i in range(self.n_structures):
+    pass
 
     if return_variance:
         # so variance is simply the sum of component variances
         variance = np.zeros(len(x_new))
         for i in range(self.n_structures):
+    pass
         
         # Add nugget variance if present
         if self.has_nugget:
+    pass
         
         return total, variance
 
@@ -349,15 +357,18 @@ class FactorialKriging(BaseKriging):
 
      # Determine which components to include
      for i in range(self.n_structures):
+    pass
 
      include = True
 
      if components_to_keep is not None:
+    pass
 
      if components_to_remove is not None:
      include = False
 
      if include:
+    pass
 
      logger.info(
      f"Filtered {len(filtered)} points "

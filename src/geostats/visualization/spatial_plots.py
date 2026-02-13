@@ -38,12 +38,14 @@ def plot_data_locations(
  ax : matplotlib.Axes
  """
  if ax is None:
+    pass
 
  if z is not None:
  edgecolors='black', linewidth=1, **kwargs)
  plt.colorbar(scatter, ax=ax, label='Value')
  else:
  else:
+    pass
 
  ax.set_xlabel('X', fontsize=12)
  ax.set_ylabel('Y', fontsize=12)
@@ -88,6 +90,7 @@ def plot_contour_map(
  ax : matplotlib.Axes
  """
  if ax is None:
+    pass
 
  # Contour plot
  contour = ax.contourf(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)
@@ -141,6 +144,7 @@ def plot_symbol_map(
  ax : matplotlib.Axes
  """
  if ax is None:
+    pass
 
  # Normalize sizes
  z_normalized = (z - np.min(z)) / (np.max(z) - np.min(z))
@@ -256,12 +260,14 @@ def plot_data_points(
  if ax is None:
  else:
  else:
+    pass
 
  if z is not None:
  edgecolors='black', linewidth=1, **kwargs)
  if colorbar:
  else:
  else:
+    pass
 
  ax.set_xlabel(xlabel, fontsize=12)
  ax.set_ylabel(ylabel, fontsize=12)
@@ -304,6 +310,7 @@ def plot_contour(
  if ax is None:
  else:
  else:
+    pass
 
  # Contour lines only
  contour = ax.contour(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)
@@ -352,6 +359,7 @@ def plot_filled_contour(
  if ax is None:
  else:
  else:
+    pass
 
  # Filled contours
  contour = ax.contourf(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)

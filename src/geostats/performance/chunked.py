@@ -99,6 +99,7 @@ class ChunkedKriging:
      if return_variance:
      else:
      else:
+    pass
 
      for i in range(n_chunks):
      end = min((i + 1) * chunk_size, n_pred)
@@ -172,6 +173,7 @@ class ChunkedKriging:
      return z_grid, var_grid
      else:
      else:
+    pass
 
 def chunked_predict(
  y: npt.NDArray[np.float64],

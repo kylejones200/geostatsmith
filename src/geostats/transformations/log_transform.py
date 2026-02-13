@@ -85,6 +85,7 @@ class LogTransform:
  valid_data = data[~np.isnan(data)]
 
  if len(valid_data) == 0:
+    pass
 
      self.min_original = np.min(valid_data)
  self.max_original = np.max(valid_data)
@@ -105,12 +106,14 @@ class LogTransform:
      positive_values = valid_data[valid_data > 0]
  if len(positive_values) > 0:
      else:
+    pass
 
  warnings.warn(
  f"Data contains zeros. Adding epsilon={self.epsilon_fitted:.2e} "
  "before log transform."
  )
  else:
+    pass
 
      self.is_fitted = True
  return self
@@ -129,6 +132,7 @@ class LogTransform:
  Log-transformed data
  """
  if not self.is_fitted:
+    pass
 
      data = np.asarray(data, dtype=np.float64)
  original_shape = data.shape
@@ -136,6 +140,7 @@ class LogTransform:
 
  # Add epsilon to handle zeros
  if self.epsilon_fitted > 0:
+    pass
 
      # Transform
  with warnings.catch_warnings():
@@ -157,6 +162,7 @@ class LogTransform:
  Values in original data space
  """
  if not self.is_fitted:
+    pass
 
      log_data = np.asarray(log_data, dtype=np.float64)
  original_shape = log_data.shape

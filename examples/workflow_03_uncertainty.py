@@ -74,7 +74,6 @@ def example_1_bootstrap_confidence():
     fig, ax = plt.subplots(figsize=(12, 6))
     # Remove top and right spines
     ax.spines['right'].set_visible(False)
-
     # Mean prediction
     ax.plot(x_pred, results["mean"], "b-", linewidth=2, label="Mean Prediction")
 
@@ -171,7 +170,6 @@ def example_2_probability_map():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
     # Remove top and right spines
     ax.spines['right'].set_visible(False)
-
     # Kriging prediction
     krig = OrdinaryKriging(x, y, z, variogram_model)
     z_pred, _ = krig.predict(x_pred, y_pred, return_variance=True)
@@ -302,7 +300,6 @@ def example_3_risk_assessment():
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
     # Remove top and right spines
     ax.spines['right'].set_visible(False)
-
     # Probability map
     prob_grid = results["probability_exceed"].reshape((ny, nx))
     im1 = axes[0].contourf(

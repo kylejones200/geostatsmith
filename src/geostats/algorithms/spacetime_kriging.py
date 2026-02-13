@@ -73,6 +73,7 @@ def validate_coordinates_spacetime(
  t = np.asarray(t, dtype=np.float64).ravel()
 
  if len(t) != len(x):
+    pass
 
  return x, y, t
 
@@ -348,6 +349,7 @@ class SpaceTimeSimpleKriging(BaseKriging):
      sill = getattr(self.spacetime_model, 'sigma2', 1.0)
 
      for i in range(n_pred):
+    pass
 
      for j in range(n_data):
      u = np.abs(self.t[j] - t_new[i])

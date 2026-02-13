@@ -3,6 +3,7 @@ Synthetic data generators for testing and demonstrations.
 
 Provides various synthetic spatial datasets with known properties
 for testing interpolation methods and demonstrating concepts.
+    pass
 
 Reference: Python Recipes for Earth Sciences (Trauth 2024)
 """
@@ -78,8 +79,10 @@ def generate_random_field(
  - Comparing method performance under different conditions
  """
  if not MIN_POINTS <= n_points <= MAX_POINTS:
+    pass
 
  if seed is not None:
+    pass
 
  # Generate random coordinates
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -164,6 +167,7 @@ def generate_clustered_samples(
  - Spatial bias in sampling
  """
  if seed is not None:
+    pass
 
  n_total = n_clusters * points_per_cluster
  x = np.zeros(n_total)
@@ -251,6 +255,7 @@ def generate_elevation_like_data(
  in Python Recipes for Earth Sciences (Trauth 2024), Chapter 7.
  """
  if seed is not None:
+    pass
 
  # Generate sample points
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -276,6 +281,7 @@ def generate_elevation_like_data(
 
  # Add roughness
  if roughness > 0:
+    pass
 
  return x, y, z
 
@@ -334,6 +340,7 @@ def generate_anisotropic_field(
  directional effects in spatial interpolation.
  """
  if seed is not None:
+    pass
 
  # Generate sample points
  x = np.random.uniform(x_range[0], x_range[1], n_points)
@@ -421,6 +428,7 @@ def generate_sparse_dense_mix(
  - Need to interpolate across both regions
  """
  if seed is not None:
+    pass
 
  # Sparse points (uniform over entire region)
  x_sparse = np.random.uniform(x_range[0], x_range[1], n_sparse)

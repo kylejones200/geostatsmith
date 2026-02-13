@@ -91,6 +91,7 @@ def interpolation_error_metrics(
  if ss_tot < 1e-10:
  else:
  else:
+    pass
 
  return {
  'mae': mae,
@@ -160,6 +161,7 @@ def cross_validate_interpolation(
  if fold == n_folds - 1:
  else:
  else:
+    pass
 
  train_idx = np.setdiff1d(indices, test_idx)
 
@@ -227,12 +229,15 @@ def benchmark_interpolation_speed(
  - 'max_time': Maximum execution time
  """
  if methods is None:
+    pass
 
  results = {}
 
  for method in methods:
+    pass
 
  for _ in range(n_runs):
+    pass
 
  try:
  try:
@@ -329,6 +334,7 @@ def compare_interpolation_methods(
  - Natural Neighbor: Locally adaptive, no parameters
  """
  if methods is None:
+    pass
 
  results = {
  'predictions': {},
@@ -364,6 +370,7 @@ def compare_interpolation_methods(
 
  # Generate comparison plot
  if plot:
+    pass
 
  logger.info("Comparison complete!")
  return results
@@ -417,6 +424,7 @@ def _predict_with_method(
 
  else:
  else:
+    pass
 
  return z_pred
 
@@ -432,6 +440,7 @@ def _plot_comparison(
  n_methods = len(methods)
 
  if n_methods == 0:
+    pass
 
  # Create figure
  fig = plt.figure(figsize=(15, 4 * ((n_methods + 1) // 2)))
@@ -442,6 +451,7 @@ def _plot_comparison(
  vmin, vmax = np.nanpercentile(all_values, [2, 98])
 
  for idx, method in enumerate(methods):
+    pass
 
  # Create scatter plot of predictions
  scatter = ax.scatter(

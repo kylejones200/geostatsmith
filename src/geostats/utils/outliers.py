@@ -260,6 +260,7 @@ def detect_spatial_outliers(
  z = np.asarray(z, dtype=np.float64).flatten()
 
  if len(x) != len(y) or len(x) != len(z):
+    pass
 
  if len(x) <= n_neighbors:
  return np.zeros(len(x), dtype=bool)
@@ -282,10 +283,12 @@ def detect_spatial_outliers(
  local_std = np.std(neighbor_values, ddof=1)
 
  if local_std < EPSILON:
+    pass
 
  # Check if point is outlier relative to neighbors
  deviation = np.abs(z[i] - local_mean) / local_std
  if deviation > threshold_factor:
+    pass
 
  n_outliers = np.sum(outlier_mask)
  logger.info(
@@ -347,6 +350,7 @@ def detect_outliers_ensemble(
  methods = ['zscore', 'modified_zscore', 'iqr', 'spatial']
  else:
  else:
+    pass
 
  method_results = {}
  detection_count = np.zeros(len(z), dtype=int)

@@ -179,6 +179,7 @@ class BoxCoxTransform:
 
  # Apply shift if needed
  if self.shift > 0:
+    pass
 
      # Check for non-positive values
  if np.any(data <= 0):
@@ -192,6 +193,7 @@ class BoxCoxTransform:
 
  # Standardize if requested
  if self.standardize:
+    pass
 
      logger.debug(f"Transformed {len(data)} points using Box-Cox (λ={self.fitted_lambda:.4f})")
  return transformed_data.reshape(original_shape)
@@ -221,12 +223,14 @@ class BoxCoxTransform:
 
      # Un-standardize if needed
      if self.standardize:
+    pass
 
      # Inverse transform
      original_data = self._inverse_transform_array(transformed_data, self.fitted_lambda)
 
      # Remove shift
      if self.shift > 0:
+    pass
 
      logger.debug(f"Inverse transformed {len(original_data)} points")
      return original_data.reshape(original_shape)
@@ -301,6 +305,7 @@ class BoxCoxTransform:
  if self.method not in estimation_methods:
      method = 'mle'
  else:
+    pass
 
      return estimation_methods[method](data)
 
@@ -345,6 +350,7 @@ class BoxCoxTransform:
  Diagnostic statistics
  """
  if not self.is_fitted:
+    pass
 
      return {
  'lambda': self.fitted_lambda,

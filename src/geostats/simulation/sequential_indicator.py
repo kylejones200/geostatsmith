@@ -97,11 +97,13 @@ class SequentialIndicatorSimulation:
      self.z = np.asarray(z, dtype=np.float64)
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.z):
+    pass
 
      self.config = config if config is not None else SISConfig()
 
      # Set random seed
      if self.config.random_seed is not None:
+    pass
 
      # Determine thresholds
      if self.config.thresholds is not None:
@@ -249,6 +251,7 @@ class SequentialIndicatorSimulation:
 
      # Reshape to original grid shape
      if len(original_shape) > 1:
+    pass
 
      return realizations
 
@@ -304,6 +307,7 @@ class SequentialIndicatorSimulation:
      if p2 > p1:
      else:
      else:
+    pass
 
      return sampled_value
 
@@ -323,6 +327,7 @@ class SequentialIndicatorSimulation:
  # Flatten to (n_realizations, n_nodes)
  original_shape = realizations.shape
  if realizations.ndim > 2:
+    pass
 
      # E-type estimate (mean of realizations)
  e_type = np.mean(realizations, axis=0)

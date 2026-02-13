@@ -133,8 +133,10 @@ logger.info("Results:")
 for r in results:
  if 'duration' in r:
  else:
+    pass
 
  else:
+    pass
 
 # Create summary file
 summary_path = OUTPUT_DIR / 'SUMMARY.txt'

@@ -65,6 +65,7 @@ class IndicatorKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
+    pass
 
  def _build_kriging_matrix(self) -> None:
      # Calculate pairwise distances
@@ -112,6 +113,7 @@ class IndicatorKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
+    pass
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -162,6 +164,7 @@ class IndicatorKriging(BaseKriging):
      if return_variance:
      else:
      else:
+    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation
@@ -174,6 +177,7 @@ class IndicatorKriging(BaseKriging):
  Dictionary of validation metrics
  """
  if self.variogram_model is None:
+    pass
 
      predictions = np.zeros(self.n_points)
 
@@ -246,6 +250,7 @@ class MultiThresholdIndicatorKriging:
      self.thresholds = np.quantile(z, quantiles)
      else:
      else:
+    pass
 
      self.kriging_objects = []
      self.variogram_models = []
@@ -303,6 +308,7 @@ class MultiThresholdIndicatorKriging:
      Threshold values
      """
      if not self.kriging_objects:
+    pass
 
      n_pred = len(x)
      cdfs = []

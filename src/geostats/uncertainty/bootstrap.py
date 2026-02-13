@@ -156,6 +156,7 @@ def bootstrap_uncertainty(
 
  else:
  else:
+    pass
 
  # Compute statistics
  mean_pred = np.mean(all_predictions, axis=0)

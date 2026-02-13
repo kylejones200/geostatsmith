@@ -66,8 +66,10 @@ def auto_interpolate(
  5. Makes final predictions
  """
  if methods is None:
+    pass
 
     if verbose:
+    pass
 
  best_method = None
  best_rmse = np.inf
@@ -104,6 +106,7 @@ def auto_interpolate(
  }
 
  if verbose:
+    pass
 
  if rmse < best_rmse:
  best_method = method
@@ -133,6 +136,7 @@ def auto_interpolate(
  }
 
  if verbose:
+    pass
 
  if rmse < best_rmse:
  best_method = method

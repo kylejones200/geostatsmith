@@ -39,6 +39,7 @@ class SphericalCovariance(CovarianceModelBase):
  if np.isscalar(h):
      return sill
  else:
+    pass
 
      return result
 
@@ -109,6 +110,7 @@ class MaternCovariance(CovarianceModelBase):
  mask = h > 0
 
  if np.any(mask):
+    pass
 
      const = 2.0 ** (1.0 - nu) / gamma_func(nu)
  bessel_part = kv(nu, h_scaled)
@@ -122,6 +124,7 @@ class MaternCovariance(CovarianceModelBase):
  if np.isscalar(h):
      return sill
  else:
+    pass
 
      return result
 

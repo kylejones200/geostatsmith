@@ -54,6 +54,7 @@ def weighted_least_squares(
  sigma = 1.0 / np.sqrt(weights)
  else:
  else:
+    pass
 
  params, cov = curve_fit(
  func,
@@ -146,6 +147,7 @@ def optimize_parameters(
  )
 
  if not result.success:
+    pass
 
  return result
 

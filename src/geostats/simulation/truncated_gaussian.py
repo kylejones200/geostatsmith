@@ -110,6 +110,7 @@ class TruncatedGaussianSimulation:
      self.variogram_model = variogram_model
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
+    pass
 
      # Setup configuration
      if config is None:
@@ -136,6 +137,7 @@ class TruncatedGaussianSimulation:
  # Use provided categories or infer from data
  if self.config.categories is not None:
      else:
+    pass
 
  n_categories = len(self.unique_categories)
 
@@ -238,6 +240,7 @@ class TruncatedGaussianSimulation:
      Shape: (n_realizations, n_grid_points) or (n_realizations, *grid_shape)
      """
      if self.variogram_model is None:
+    pass
 
      # Flatten grid if needed
      original_shape = x_grid.shape
@@ -261,6 +264,7 @@ class TruncatedGaussianSimulation:
      seed = self.config.random_seed + r
      else:
      else:
+    pass
 
      # Use Sequential Gaussian Simulation for the underlying field
      gaussian_realization = sequential_gaussian_simulation(
@@ -279,6 +283,7 @@ class TruncatedGaussianSimulation:
      realizations_categorical[r, :] = categorical_realization
 
      if (r + 1) % 10 == 0:
+    pass
 
      # Reshape to original grid shape if needed
      if len(original_shape) > 1:
@@ -350,12 +355,14 @@ class TruncatedGaussianSimulation:
 
      # Flatten if needed
      if realizations.ndim > 2:
+    pass
 
      summary = {}
 
      for i, cat in enumerate(self.unique_categories):
      props_per_realization = np.zeros(n_realizations)
      for r in range(n_realizations):
+    pass
 
      summary[int(cat)] = {
      'target': float(self.proportions[i]),

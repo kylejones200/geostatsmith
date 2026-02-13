@@ -77,6 +77,7 @@ class Cokriging(BaseKriging):
 
      # Build cokriging matrix
      if all([variogram_primary, variogram_secondary, cross_variogram]):
+    pass
 
  def _build_cokriging_matrix(self) -> None:
      n1 = self.n_primary
@@ -163,6 +164,7 @@ class Cokriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if any([v is None for v in [self.variogram_primary, self.variogram_secondary, self.cross_variogram]]):
+    pass
 
      x_pred, y_pred = validate_coordinates(x, y)
      n_pred = len(x_pred)
@@ -231,6 +233,7 @@ class Cokriging(BaseKriging):
      if return_variance:
      else:
      else:
+    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      # Simplified: only validate primary variable
@@ -291,6 +294,7 @@ class CollocatedCokriging(BaseKriging):
      self.correlation = correlation_coefficient
 
      if variogram_primary is not None:
+    pass
 
  def _build_kriging_matrix(self) -> None:
      dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
@@ -332,6 +336,7 @@ class CollocatedCokriging(BaseKriging):
      Kriging variance
      """
      if self.variogram_model is None:
+    pass
 
      # First do ordinary kriging
      from .ordinary_kriging import OrdinaryKriging
@@ -353,6 +358,7 @@ class CollocatedCokriging(BaseKriging):
      return predictions, variances
      else:
      else:
+    pass
 
  def predict(self, x, y, return_variance=True):
      from .ordinary_kriging import OrdinaryKriging

@@ -27,6 +27,7 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
 
  # Remove specified spines
  for spine in remove_spines:
+    pass
 
  # Make remaining spines thinner
  for spine in ax.spines.values():
@@ -40,6 +41,7 @@ def apply_minimalist_style(ax, remove_spines=('top', 'right')):
  # Remove tick marks from hidden spines
  if 'top' in remove_spines:
  if 'right' in remove_spines:
+    pass
 
 def set_minimalist_rcparams():
  mpl.rcParams.update({
@@ -112,6 +114,7 @@ def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  Figure and axes objects
  """
  if figsize is None:
+    pass
 
  fig, axes = plt.subplots(nrows, ncols, figsize=figsize, **kwargs)
 
@@ -120,6 +123,7 @@ def create_minimalist_figure(nrows=1, ncols=1, figsize=None, **kwargs):
  apply_minimalist_style(ax)
  else:
  else:
+    pass
 
  return fig, axes
 

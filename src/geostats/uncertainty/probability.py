@@ -108,6 +108,7 @@ def probability_map(
  elif operator == '<=':
  else:
  else:
+    pass
 
  # Compute probability
  probability = exceedance_count / n_realizations

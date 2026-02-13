@@ -35,6 +35,7 @@ def example_2_professional_reporting():
 
  try:
  try:
+    pass
 
  # Create sample data
  np.random.seed(42)

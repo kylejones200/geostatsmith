@@ -91,6 +91,7 @@ def hillshade(
  elevation = np.asarray(elevation, dtype=np.float64)
 
  if elevation.ndim != 2:
+    pass
 
  # Convert angles to radians
  azimuth_rad = np.deg2rad(azimuth)
@@ -187,6 +188,7 @@ def plot_hillshaded_dem(
  if x.ndim == 1 and y.ndim == 1:
  else:
  else:
+    pass
 
  # Plot hillshade (grayscale base)
  ax.imshow(hs, extent=[X.min(), X.max(), Y.min(), Y.max()],
@@ -254,6 +256,7 @@ def create_multi_azimuth_hillshade(
  Common in professional cartography and GIS.
  """
  if azimuths is None:
+    pass
 
  # Calculate hillshade for each azimuth
  hillshades = []

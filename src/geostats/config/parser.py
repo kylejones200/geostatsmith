@@ -47,6 +47,7 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
 
  # Check file exists
  if not config_path.exists():
+    pass
 
  # Load based on extension
  suffix = config_path.suffix.lower()

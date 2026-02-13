@@ -70,6 +70,7 @@ def read_geotiff(
  )
 
  if not Path(filename).exists():
+    pass
 
  with rasterio.open(filename) as src:
  with rasterio.open(filename) as src:
@@ -86,6 +87,7 @@ def read_geotiff(
  # Handle nodata values
  nodata = src.nodata
  if nodata is not None:
+    pass
 
  # Metadata
  metadata = {
@@ -155,6 +157,7 @@ def write_geotiff(
 
  # Ensure z is 2D
  if z.ndim != 2:
+    pass
 
  height, width = z.shape
 
@@ -169,6 +172,7 @@ def write_geotiff(
  # Replace NaN with nodata value
  z_out = z.copy()
  if nodata is not None:
+    pass
 
  # Write to file
  with rasterio.open(
@@ -224,6 +228,7 @@ def read_ascii_grid(
  >>> x, y, z, meta = read_ascii_grid('elevation.asc')
  """
  if not Path(filename).exists():
+    pass
 
  # Read header
  metadata = {}
@@ -296,6 +301,7 @@ def write_ascii_grid(
  >>> write_ascii_grid('output.asc', x, y, z)
  """
  if z.ndim != 2:
+    pass
 
  nrows, ncols = z.shape
 

@@ -69,6 +69,7 @@ logger.info("\nAnalyzing patterns...")
 results_all = {}
 
 for pattern_name, (x, y) in patterns.items():
+    pass
 
  # Nearest neighbor analysis
  nn_results = nearest_neighbor_analysis(x, y)
@@ -103,6 +104,7 @@ gs = GridSpec(3, 4, figure=fig, hspace=0.35, wspace=0.4)
 
 row = 0
 for pattern_name, (x, y) in patterns.items():
+    pass
 
 for pattern_name, (x, y) in patterns.items():
  ax1 = fig.add_subplot(gs[row, 0])
@@ -237,6 +239,7 @@ logger.info(f"{'Pattern':<12} {'R Index':>10} {'VMR':>10} {'Ripley':>15} {'Overa
 logger.info("-" * 70)
 
 for pattern_name in patterns.keys():
+    pass
 
 for pattern_name in patterns.keys():
  vmr = results['quadrat']['vmr']
@@ -249,18 +252,21 @@ for pattern_name in patterns.keys():
  elif r_index > 1.1:
  else:
  else:
+    pass
 
  if vmr < 0.9:
  elif vmr > 1.1:
  elif vmr > 1.1:
  else:
  else:
+    pass
 
  if 'Clustered' in ripley_interp:
  elif 'Dispersed' in ripley_interp:
  elif 'Dispersed' in ripley_interp:
  else:
  else:
+    pass
 
  # Consensus
  if indicators.count('C') >= 2:
@@ -268,6 +274,7 @@ for pattern_name in patterns.keys():
  elif indicators.count('D') >= 2:
  else:
  else:
+    pass
 
  logger.info(f"{pattern_name:<12} {r_index:>10.3f} {vmr:>10.3f} {ripley_interp:>15} {overall:>15}")
 

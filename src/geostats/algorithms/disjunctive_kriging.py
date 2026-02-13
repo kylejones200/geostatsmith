@@ -103,9 +103,11 @@ class DisjunctiveKriging(BaseKriging):
         # Mean for simple kriging
         if self.kriging_type == "simple":
             else:
+    pass
 
         # Build kriging matrix in Gaussian space
         if self.variogram_model is not None:
+    pass
 
         if self.variogram_model is not None:
         """
@@ -197,6 +199,7 @@ class DisjunctiveKriging(BaseKriging):
         z_pred = np.zeros_like(y_gaussian)
 
         for i in range(len(self.hermite_coeffs)):
+    pass
 
             hermite_poly = hermitenorm(i)
             h_values = hermite_poly(y_gaussian)
@@ -250,6 +253,7 @@ class DisjunctiveKriging(BaseKriging):
             Kriging variance (in original space, if return_variance=True)
         """
         if self.variogram_model is None:
+    pass
 
             x_pred, y_pred = validate_coordinates(x, y)
         n_pred = len(x_pred)
@@ -283,6 +287,7 @@ class DisjunctiveKriging(BaseKriging):
 
                 # Variance in Gaussian space
                 if return_variance:
+    pass
 
                     else:
                 rhs = np.zeros(self.n_points + 1)
@@ -336,9 +341,11 @@ class DisjunctiveKriging(BaseKriging):
                 if abs(dzdY) < 1e-6:
                     variances[i] = y_var_gaussian[i] * var_ratio
                 else:
+    pass
 
                     return predictions, variances
         else:
+    pass
 
         else:
         """
@@ -352,6 +359,7 @@ class DisjunctiveKriging(BaseKriging):
             Dictionary of validation metrics (MSE, RMSE, MAE, R², bias)
         """
         if self.variogram_model is None:
+    pass
 
             predictions = np.zeros(self.n_points)
 

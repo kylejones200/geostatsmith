@@ -80,6 +80,7 @@ def read_netcdf(
  )
 
  if not Path(filename).exists():
+    pass
 
  # Open NetCDF file
  with nc.Dataset(filename, 'r') as dataset:
@@ -87,6 +88,7 @@ def read_netcdf(
  if x_var not in dataset.variables:
  if y_var not in dataset.variables:
  if z_var not in dataset.variables:
+    pass
 
  # Read coordinates
  x = dataset.variables[x_var][:].data
@@ -102,9 +104,11 @@ def read_netcdf(
  z = z_data[0, :, :].data
  else:
  else:
+    pass
 
  # Handle masked arrays
  if hasattr(z, 'mask'):
+    pass
 
  # Collect metadata
  metadata = {
@@ -170,6 +174,7 @@ def write_netcdf(
  )
 
  if z.ndim != 2:
+    pass
 
  # Create NetCDF file
  with nc.Dataset(filename, 'w', format='NETCDF4') as dataset:
@@ -190,6 +195,7 @@ def write_netcdf(
  # Add attributes
  if units:
  if long_name:
+    pass
 
  # Global attributes
  dataset.description = 'Geostatistics output'
@@ -234,12 +240,14 @@ def read_geojson(
  )
 
  if not Path(filename).exists():
+    pass
 
  # Read GeoJSON
  gdf = gpd.read_file(filename)
 
  # Check property exists
  if z_property not in gdf.columns:
+    pass
 
  # Extract coordinates
  x = gdf.geometry.x.values
@@ -344,6 +352,7 @@ def to_dataframe(
 
  # Add extra columns
  for col_name, col_data in extra_cols.items():
+    pass
 
  return df
 

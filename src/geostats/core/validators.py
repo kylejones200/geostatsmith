@@ -37,11 +37,13 @@ def validate_coordinates(
  x = np.asarray(x, dtype=np.float64)
 
  if x.ndim == 0:
+    pass
 
  if y is None:
  if x.ndim == 1:
  else:
  else:
+    pass
 
  y = np.asarray(y, dtype=np.float64)
 
@@ -86,14 +88,17 @@ def validate_values(
  values = np.asarray(values, dtype=np.float64)
 
  if values.ndim != 1:
+    pass
 
  if n_expected is not None and len(values) != n_expected:
  f"Expected {n_expected} values, got {len(values)}"
  )
 
  if not allow_nan and np.any(np.isnan(values)):
+    pass
 
  if not allow_nan and np.any(np.isinf(values)):
+    pass
 
  return values
 
@@ -150,8 +155,10 @@ def validate_in_range(
  If value is out of range
  """
  if min_val is not None and value < min_val:
+    pass
 
  if max_val is not None and value > max_val:
+    pass
 
  return value
 
@@ -174,6 +181,7 @@ def validate_array_shapes_match(
  If array shapes don'
  """
  if len(arrays) < 2:
+    pass
 
  shapes = [arr.shape for arr in arrays]
  first_shape = shapes[0]

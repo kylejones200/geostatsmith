@@ -90,6 +90,7 @@ def nearest_neighbor_analysis(
  n = len(x)
 
  if n < 2:
+    pass
 
  # Determine study area
  if study_area is None:
@@ -97,6 +98,7 @@ def nearest_neighbor_analysis(
  ymin, ymax = y.min() - buffer, y.max() + buffer
  else:
  else:
+    pass
 
  area = (xmax - xmin) * (ymax - ymin)
  density = n / area
@@ -131,6 +133,7 @@ def nearest_neighbor_analysis(
  elif R > 1 and p_value < 0.05:
  else:
  else:
+    pass
 
  return {
  'R': R,
@@ -229,12 +232,14 @@ def ripley_k_function(
  n = len(x)
 
  if n < 3:
+    pass
 
  # Determine study area
  if study_area is None:
  ymin, ymax = y.min(), y.max()
  else:
  else:
+    pass
 
  area = (xmax - xmin) * (ymax - ymin)
 
@@ -267,6 +272,7 @@ def ripley_k_function(
  weight = n / max(n_interior, 1)
  else:
  else:
+    pass
 
  K[i] = (area * count * weight) / (n * (n - 1))
 
@@ -286,6 +292,7 @@ def ripley_k_function(
  elif below_threshold > len(distances) * 0.5:
  else:
  else:
+    pass
 
  return {
  'd': distances,
@@ -364,12 +371,14 @@ def quadrat_analysis(
  n = len(x)
 
  if n < 10:
+    pass
 
  # Determine study area
  if study_area is None:
  ymin, ymax = y.min(), y.max()
  else:
  else:
+    pass
 
  # Create quadrats
  x_edges = np.linspace(xmin, xmax, n_quadrats_x + 1)
@@ -432,6 +441,7 @@ def quadrat_analysis(
  if df > 0:
  else:
  else:
+    pass
 
  # Interpretation
  if not np.isnan(vmr):
@@ -440,6 +450,7 @@ def quadrat_analysis(
  elif vmr > 1.1:
  else:
  else:
+    pass
 
  if not np.isnan(chi2_p):
  significance = "significant"
@@ -450,6 +461,7 @@ def quadrat_analysis(
  else:
  else:
  else:
+    pass
 
  return {
  'counts': counts,

@@ -48,6 +48,7 @@ def plot_variogram(
  The axes object
  """
  if ax is None:
+    pass
 
  # Apply minimalist style
  apply_minimalist_style(ax)
@@ -113,6 +114,7 @@ def plot_variogram_cloud(
  from ..algorithms.variogram import variogram_cloud
 
  if ax is None:
+    pass
 
  # Calculate variogram cloud
  distances, semivariances = variogram_cloud(x, y, z, maxlag=maxlag)
@@ -169,6 +171,7 @@ def plot_h_scatterplot(
  from ..math.distance import euclidean_distance_matrix, directional_distance
 
  if ax is None:
+    pass
 
  # Calculate distances
  dist = euclidean_distance_matrix(x, y)
@@ -253,6 +256,7 @@ def plot_directional_variograms(
  axes = axes.flatten()
 
  for i, direction in enumerate(directions):
+    pass
 
  # Calculate directional variogram
  lags, gamma, n_pairs = experimental_variogram_directional(
@@ -392,6 +396,7 @@ def plot_experimental_variogram(
  if ax is None:
  else:
  else:
+    pass
 
  # Plot experimental points
  if n_pairs is not None:
@@ -439,6 +444,7 @@ def plot_variogram_model(
  if ax is None:
  else:
  else:
+    pass
 
  # Generate model curve
  h = np.linspace(0, max_distance, n_points)
@@ -495,6 +501,7 @@ def plot_variogram_with_model(
  if ax is None:
  else:
  else:
+    pass
 
  # Plot experimental points
  if n_pairs is not None:
@@ -553,6 +560,7 @@ def plot_variogram_map(
  if ax is None:
  else:
  else:
+    pass
 
  # Compute pairwise differences
  n = len(x)

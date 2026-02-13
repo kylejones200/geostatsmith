@@ -124,6 +124,7 @@ class EnsembleKriging(BaseKriging):
      Whether to combine variance estimates
      """
      if len(models) == 0:
+    pass
 
      self.models = models
      self.weighting = weighting.lower()
@@ -131,6 +132,7 @@ class EnsembleKriging(BaseKriging):
 
      weighting_schemes = {'equal', 'inverse_variance', 'performance'}
      if self.weighting not in weighting_schemes:
+    pass
 
      # Initialize with equal weights
      self.weights = np.ones(len(models)) / len(models)
@@ -168,6 +170,7 @@ class EnsembleKriging(BaseKriging):
      }
 
      if self.weighting not in weights_map:
+    pass
 
      if self.weighting == 'inverse_variance' and variances is None:
      return weights_map['equal']()
@@ -233,12 +236,14 @@ class EnsembleKriging(BaseKriging):
      weights = self._compute_weights(variances=mean_vars)
      else:
      else:
+    pass
 
      self.weights = weights
 
      # Weighted average of predictions
      ensemble_pred = np.zeros(n_pred, dtype=np.float64)
      for i in range(n_models):
+    pass
 
      logger.debug(
      f"Ensemble prediction complete: weights={weights.round(3)}"
@@ -248,6 +253,7 @@ class EnsembleKriging(BaseKriging):
      # Var[Σw_i·Z_i] = Σw_i²·Var[Z_i]
      ensemble_var = np.zeros(n_pred, dtype=np.float64)
      for i in range(n_models):
+    pass
 
      return ensemble_pred, ensemble_var
      elif return_variance:
@@ -269,10 +275,12 @@ class EnsembleKriging(BaseKriging):
  from ..core.exceptions import KrigingError
 
  if len(self.models) == 0:
+    pass
 
      # Use the first model's data for cross-validation
  first_model = self.models[0]
  if not hasattr(first_model, 'x') or first_model.x is None:
+    pass
 
      from ..validation.cross_validation import leave_one_out
  from ..validation.metrics import mean_squared_error, r_squared
@@ -349,6 +357,7 @@ class BootstrapKriging(BaseKriging):
      self.fitted = False
 
      if not 0 < sample_fraction <= 1.0:
+    pass
 
      logger.info(
      f"Bootstrap Kriging initialized: n_bootstrap={n_bootstrap}, "
@@ -433,6 +442,7 @@ class BootstrapKriging(BaseKriging):
      Standard deviation of predictions
      """
      if not self.fitted:
+    pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
      n_pred = len(x_new)
@@ -472,6 +482,7 @@ class BootstrapKriging(BaseKriging):
  from ..core.exceptions import KrigingError
 
  if not self.fitted:
+    pass
 
      from ..validation.cross_validation import leave_one_out
  from ..validation.metrics import mean_squared_error, r_squared
@@ -587,6 +598,7 @@ class StackingKriging(BaseKriging):
     
     # Fit each base model and generate out-of-fold predictions
     for fold_idx, (train_idx, val_idx) in enumerate(kf.split(x)):
+    pass
         
     for fold_idx, (train_idx, val_idx) in enumerate(kf.split(x)):
         x_val, y_val = x[val_idx], y[val_idx]
@@ -618,6 +630,7 @@ class StackingKriging(BaseKriging):
             logger.warning(f"Meta-learner fitting failed: {e}, using equal weights")
             self.meta_model = None
     else:
+    pass
     
         # Store meta-features for reference
     self.meta_features = meta_features
@@ -629,6 +642,7 @@ class StackingKriging(BaseKriging):
         ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
         """Predict using stacking ensemble"""
         if not hasattr(self, 'x') or self.x is None:
+    pass
         
             n_new = len(x_new)
         base_predictions = np.zeros((n_new, len(self.base_models)))
@@ -645,6 +659,7 @@ class StackingKriging(BaseKriging):
                 # Use mean as fallback
                 base_predictions[:, model_idx] = self.z.mean()
                 if return_variance:
+    pass
         
                     # Combine using meta-learner
         if self.meta_model is not None:
@@ -654,11 +669,13 @@ class StackingKriging(BaseKriging):
                 final_predictions = base_predictions.mean(axis=1)
         else:
         else:
+    pass
         
         if return_variance:
                 weights = np.abs(self.meta_model.coef_)
                 weights = weights / weights.sum()  # Normalize
             else:
+    pass
             
                 final_variance = np.sum(weights * base_variances, axis=1)
             return final_predictions, final_variance
@@ -678,6 +695,7 @@ class StackingKriging(BaseKriging):
  from ..core.exceptions import KrigingError
 
  if not hasattr(self, 'x') or self.x is None:
+    pass
 
      from ..validation.cross_validation import leave_one_out
  from ..validation.metrics import mean_squared_error, r_squared

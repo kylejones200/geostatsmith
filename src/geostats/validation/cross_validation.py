@@ -132,6 +132,7 @@ def _process_spatial_block(args):
  block_id, test_mask, train_mask, x, y, z, kriging_class, variogram_model = args
 
  if np.sum(test_mask) == 0 or np.sum(train_mask) == 0:
+    pass
 
  # Train kriging model
  krig = kriging_class(

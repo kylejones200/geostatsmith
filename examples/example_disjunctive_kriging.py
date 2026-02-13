@@ -105,12 +105,12 @@ def main():
 
     logger.info("Cross-validation metrics:")
     for key, value in cv_metrics.items():
+    pass
 
         # Plot results
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     # Remove top and right spines
     ax.spines['right'].set_visible(False)
-
     # Original data
     scatter1 = axes[0, 0].scatter(x, y, c=z, s=50, cmap="viridis", edgecolors="black")
     axes[0, 0].set_title("Original Data (Lognormal)")

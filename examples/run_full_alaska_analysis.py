@@ -51,6 +51,7 @@ logger.info(f"AGDB4 data found at: {AGDB_PATH}")
 logger.debug("Available data files:")
 data_files = sorted(AGDB_PATH.glob('*.txt'))
 for file in data_files[:15]:
+    pass
 
 # Load location data
 logger.info("Loading sample location data...")
@@ -114,7 +115,6 @@ try:
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # Linear scale
  scatter1 = ax1.scatter(x, y, c=au, s=30, cmap='YlOrRd',
  vmin=0, vmax=np.percentile(au, 95),
@@ -160,6 +160,7 @@ except Exception as e:
 logger.info("PART 3: MULTI-ELEMENT ANALYSIS - Cu, Mo, Au")
 
 try:
+    pass
 
 try:
  chem_c = pd.read_csv(AGDB_PATH / 'Chem_C_Gd.txt', low_memory=False, encoding='latin-1')
@@ -199,7 +200,6 @@ try:
  fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  # Raw correlation
  ax1.scatter(cu_vals, au_vals, alpha=0.4, s=20, c='steelblue', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
@@ -213,13 +213,11 @@ try:
  # Remove top and right spines
  ax1.set_title(f'
  r.spines['right'].set_visible(False)
-
  # Log-transformed
  ax2.scatter(cu_log, au_log, alpha=0.4, s=20, c='coral', edgecolors='k', linewidths=0.3)
  # Remove top and right spines
  ax2.scatter(cu_log, au_log, alpha
  alpha.spines['right'].set_visible(False)
-
  # Trend line
  z = np.polyfit(cu_log, au_log, 1)
  p = np.poly1d(z)
@@ -228,7 +226,6 @@ try:
  # Remove top and right spines
  ax2.plot(x_trend, p(x_trend), 'r--', linewidth
  linewidth.spines['right'].set_visible(False)
-
  ax2.set_xlabel('log₁₀(Cu + 1)', fontsize=12)
  # Remove top and right spines
  ax2.set_ylabel('log₁₀(Au + 0.001)', fontsize=12)
@@ -255,6 +252,7 @@ except Exception as e:
 logger.info("PART 4: ENVIRONMENTAL ASSESSMENT - ARSENIC (As)")
 
 try:
+    pass
 
 try:
  as_chem = chem[chem['PARAMETER'].str.contains('As_', case=False, na=False)][['AGDB_ID', 'DATA_VALUE']].copy()
@@ -291,7 +289,6 @@ try:
  fig, ax = plt.subplots(figsize=(12, 8))
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  x_as = as_data['LONGITUDE'].values
  y_as = as_data['LATITUDE'].values
 
@@ -308,7 +305,6 @@ try:
  cbar = plt.colorbar(scatter, ax=ax, label='As (ppm)')
  # Remove top and right spines
  ax.spines['right'].set_visible(False)
-
  plt.tight_layout()
  output_file = OUTPUT_DIR / 'figure_03_arsenic_distribution.png'
  plt.savefig(output_file, dpi=150, bbox_inches='tight')
@@ -328,6 +324,7 @@ logger.info("Completed Analyses: Gold exploration (Fairbanks), Multi-element cor
 logger.info("Output Files Created:")
 output_files = sorted(OUTPUT_DIR.glob('*'))
 for f in output_files:
+    pass
 
 logger.info(f"Analysis completed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 logger.info(f"Full analysis complete! Results saved to: {OUTPUT_DIR}")

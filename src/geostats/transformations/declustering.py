@@ -84,6 +84,7 @@ def cell_declustering(
  z = np.asarray(z, dtype=np.float64)
 
  if len(x) != len(y) or len(x) != len(z):
+    pass
 
  n = len(x)
 
@@ -164,6 +165,7 @@ def polygonal_declustering(
 
  This is an approximate method using distance to nearest neighbors as a proxy
  for polygon area.
+    pass
 
  Parameters
  ----------
@@ -192,6 +194,7 @@ def polygonal_declustering(
  z = np.asarray(z, dtype=np.float64)
 
  if len(x) != len(y) or len(x) != len(z):
+    pass
 
  n = len(x)
 
