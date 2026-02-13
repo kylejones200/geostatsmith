@@ -111,29 +111,30 @@ def load_fairbanks_gold_data(agdb_path):
 # ==============================================================================
 
 def analyze_variogram_anisotropy(x, y, z):
- logger.info("Directional Variogram Analysis (Anisotropy)...")
+    logger.info("Directional Variogram Analysis (Anisotropy)...")
 
- # Log-transform for stationarity
- z_log = np.log10(z + 0.001)
+    # Log-transform for stationarity
+    z_log = np.log10(z + 0.001)
 
- # Check 4 directions
- directions = [0, 45, 90, 135] # N-S, NE-SW, E-W, NW-SE
+    # Check 4 directions
+    directions = [0, 45, 90, 135] # N-S, NE-SW, E-W, NW-SE
 
- fig, axes = plt.subplots(2, 2, figsize=(14, 10))
- # Remove top and right spines
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    # Remove top and right spines
+    for ax in axes.flatten():
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+    
+    axes = axes.flatten()
  
- axes = axes.flatten()
- # Remove top and right spines
- # Remove top and right spines
- 
- models = {}
- for i, angle in enumerate(directions):
-     continue
- x, y, z_log,
- angle=angle,
- tolerance=22.5,
- n_lags=12
- )
+    models = {}
+    for i, angle in enumerate(directions):
+        lags, gamma = experimental_variogram_directional(
+            x, y, z_log,
+            angle=angle,
+            tolerance=22.5,
+            n_lags=12
+        )
 
  # Fit model
  model = SphericalModel()
