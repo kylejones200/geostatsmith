@@ -327,7 +327,7 @@ def main():
 
     example_1_optimal_sampling((
     example_2_infill_sampling((
-    example_3_sample_size_calculator((
+    example_3_sample_size_calculator()
     example_4_cost_benefit()
 
     logger.info("ALL EXAMPLES COMPLETE!")
