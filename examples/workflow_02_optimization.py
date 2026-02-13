@@ -109,104 +109,88 @@ def example_1_optimal_sampling():
         ax.legend()
         ax.set_aspect('equal')
 
- plt.tight_layout()
- plt.savefig('example_workflow_02_optimal_sampling.png', dpi=150, bbox_inches='tight')
- logger.info(" Saved example_workflow_02_optimal_sampling.png")
- plt.close()
+    plt.tight_layout()
+    plt.savefig('example_workflow_02_optimal_sampling.png', dpi=150, bbox_inches='tight')
+    logger.info(" Saved example_workflow_02_optimal_sampling.png")
+    plt.close()
 
 def example_2_infill_sampling():
     logger.info("Example 2: Infill Sampling")
- 
- logger.info("Example 2: Infill Sampling")
- 
 
- # Initial samples
- np.random.seed(42)
- n_initial = 15
- x_init = np.random.uniform(10, 90, n_initial)
- y_init = np.random.uniform(10, 90, n_initial)
- z_init = 50 + 0.3*x_init + np.random.normal(0, 3, n_initial)
+    # Initial samples
+    np.random.seed(42)
+    n_initial = 15
+    x_init = np.random.uniform(10, 90, n_initial)
+    y_init = np.random.uniform(10, 90, n_initial)
+    z_init = 50 + 0.3*x_init + np.random.normal(0, 3, n_initial)
 
- # Fit variogram
- lags, gamma = experimental_variogram(x_init, y_init, z_init)
- variogram_model = fit_variogram(lags, gamma, model_type='exponential')
+    # Fit variogram
+    lags, gamma = experimental_variogram(x_init, y_init, z_init)
+    variogram_model = fit_variogram(lags, gamma, model_type='exponential')
 
- # Find infill locations (variance < 2.0)
- logger.info("Finding infill locations to reduce variance below 2.0...")
- x_infill, y_infill = infill_sampling()
- x_init, y_init, z_init,
- variogram_model=variogram_model,
- variance_threshold=2.0,
- max_samples=20
- )
+    # Find infill locations (variance < 2.0)
+    logger.info("Finding infill locations to reduce variance below 2.0...")
+    x_infill, y_infill = infill_sampling(
+        x_init, y_init, z_init,
+        variogram_model=variogram_model,
+        variance_threshold=2.0,
+        max_samples=20
+    )
 
- logger.info(f" Need {len(x_infill)} additional samples")
+    logger.info(f" Need {len(x_infill)} additional samples")
 
- # Visualize
- fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
- # Remove top and right spines
- 
- # Before infill - show kriging variance
- nx, ny = 50, 50
- x_grid = np.linspace(0, 100, nx)
- y_grid = np.linspace(0, 100, ny)
- x_pred_2d, y_pred_2d = np.meshgrid(x_grid, y_grid)
+    # Visualize
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+    # Remove top and right spines
+    ax1.spines['top'].set_visible(False)
+    ax1.spines['right'].set_visible(False)
+    ax2.spines['top'].set_visible(False)
+    ax2.spines['right'].set_visible(False)
 
- krig_before = OrdinaryKriging(x_init, y_init, z_init, variogram_model)
- _, var_before = krig_before.predict(x_pred_2d.ravel(), y_pred_2d.ravel(), return_variance=True)
- var_before_grid = var_before.reshape((ny, nx))
+    # Before infill - show kriging variance
+    nx, ny = 50, 50
+    x_grid = np.linspace(0, 100, nx)
+    y_grid = np.linspace(0, 100, ny)
+    x_pred_2d, y_pred_2d = np.meshgrid(x_grid, y_grid)
 
- im1 = ax1.contourf(x_grid, y_grid, var_before_grid, levels=15, cmap='YlOrRd')
- ax1.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
- # Remove top and right spines
- 
- # Remove top and right spines
- ax1.scatter(x_init, y_init, c)
- 
- ax1.set_xlabel('X (m)')
- ax1.set_ylabel('Y (m)')
- ax1.set_title(f'Kriging Variance - Before Infill\nMax var: {var_before.max():.2f}')
- ax1.legend()
- ax1.set_aspect('equal')
- plt.colorbar(im1, ax=ax1, label='Variance')
- # Remove top and right spines
- ax1.set_aspect('equal')
+    krig_before = OrdinaryKriging(x_init, y_init, z_init, variogram_model)
+    _, var_before = krig_before.predict(x_pred_2d.ravel(), y_pred_2d.ravel(), return_variance=True)
+    var_before_grid = var_before.reshape((ny, nx))
 
- # After infill
- x_all = np.concatenate([x_init, x_infill])
- y_all = np.concatenate([y_init, y_infill])
- # Simulate values at infill locations
- z_infill_sim = 50 + 0.3*x_infill + np.random.normal(0, 3, len(x_infill))
- z_all = np.concatenate([z_init, z_infill_sim])
+    im1 = ax1.contourf(x_grid, y_grid, var_before_grid, levels=15, cmap='YlOrRd')
+    ax1.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
+    ax1.set_xlabel('X (m)')
+    ax1.set_ylabel('Y (m)')
+    ax1.set_title(f'Kriging Variance - Before Infill\nMax var: {var_before.max():.2f}')
+    ax1.legend()
+    ax1.set_aspect('equal')
+    plt.colorbar(im1, ax=ax1, label='Variance')
 
- krig_after = OrdinaryKriging(x_all, y_all, z_all, variogram_model)
- _, var_after = krig_after.predict(x_pred_2d.ravel(), y_pred_2d.ravel(), return_variance=True)
- var_after_grid = var_after.reshape((ny, nx))
+    # After infill
+    x_all = np.concatenate([x_init, x_infill])
+    y_all = np.concatenate([y_init, y_infill])
+    # Simulate values at infill locations
+    z_infill_sim = 50 + 0.3*x_infill + np.random.normal(0, 3, len(x_infill))
+    z_all = np.concatenate([z_init, z_infill_sim])
 
- im2 = ax2.contourf(x_grid, y_grid, var_after_grid, levels=15, cmap='YlOrRd')
- ax2.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
- # Remove top and right spines
- 
- # Remove top and right spines
- ax2.scatter(x_init, y_init, c)
- 
- ax2.scatter(x_infill, y_infill, c='red', s=150, marker='*', label='Infill', edgecolor='k')
- # Remove top and right spines
- ax2.scatter(x_infill, y_infill, c)
- 
- ax2.set_xlabel('X (m)')
- ax2.set_ylabel('Y (m)')
- ax2.set_title(f'Kriging Variance - After Infill\nMax var: {var_after.max():.2f}')
- ax2.legend()
- ax2.set_aspect('equal')
- plt.colorbar(im2, ax=ax2, label='Variance')
- # Remove top and right spines
- ax2.set_aspect('equal')
+    krig_after = OrdinaryKriging(x_all, y_all, z_all, variogram_model)
+    _, var_after = krig_after.predict(x_pred_2d.ravel(), y_pred_2d.ravel(), return_variance=True)
+    var_after_grid = var_after.reshape((ny, nx))
 
- plt.tight_layout()
- plt.savefig('example_workflow_02_infill.png', dpi=150, bbox_inches='tight')
- logger.info(" Saved example_workflow_02_infill.png")
- plt.close()
+    im2 = ax2.contourf(x_grid, y_grid, var_after_grid, levels=15, cmap='YlOrRd')
+    ax2.scatter(x_init, y_init, c='blue', s=100, marker='o', label='Initial', edgecolor='k')
+    ax2.scatter(x_infill, y_infill, c='red', s=150, marker='*', label='Infill', edgecolor='k')
+    ax2.set_xlabel('X (m)')
+    ax2.set_ylabel('Y (m)')
+    ax2.set_title(f'Kriging Variance - After Infill\nMax var: {var_after.max():.2f}')
+    ax2.legend()
+    ax2.set_aspect('equal')
+    plt.colorbar(im2, ax=ax2, label='Variance')
+
+    plt.tight_layout()
+    plt.savefig('example_workflow_02_infill.png', dpi=150, bbox_inches='tight')
+    logger.info(" Saved example_workflow_02_infill.png")
+    plt.close()
 
 def example_3_sample_size_calculator():
     logger.info("Example 3: Sample Size Calculator")
@@ -268,7 +252,7 @@ def example_3_sample_size_calculator():
  plt.close()
 
 def example_4_cost_benefit():
- logger.info("Example 4: Cost-Benefit Analysis")
+    logger.info("Example 4: Cost-Benefit Analysis")
 
  # Initial samples
  np.random.seed(42)
