@@ -230,7 +230,6 @@ def normal_score_transform()
     ) -> Tuple[npt.NDArray[np.float64], NormalScoreTransform]:
         pass
  """
- """
  Convenience function for normal score transform
  
  Parameters
@@ -264,7 +263,6 @@ def back_transform()
  transformer: NormalScoreTransform
     ) -> npt.NDArray[np.float64]:
         pass
- """
  """
  Back-transform normal scores to original scale
  

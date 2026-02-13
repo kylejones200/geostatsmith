@@ -114,7 +114,6 @@ def analyze_element_correlations(data):
  axes[0].hexbin(cu_log, mo_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
  axes[0]
- axes[0]
  # Remove top and right spines
  axes[0].hexbin(cu_log, mo_log, gridsize)
  
@@ -132,7 +131,6 @@ def analyze_element_correlations(data):
  axes[1].hexbin(cu_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
  axes[1]
- axes[1]
  # Remove top and right spines
  axes[1].hexbin(cu_log, au_log, gridsize)
  
@@ -149,7 +147,6 @@ def analyze_element_correlations(data):
  # Mo vs Au
  axes[2].hexbin(mo_log, au_log, gridsize=30, cmap='YlOrRd', mincnt=1)
  # Remove top and right spines
- axes[2]
  axes[2]
  # Remove top and right spines
  axes[2].hexbin(mo_log, au_log, gridsize)
@@ -321,7 +318,6 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  axes[0, 0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[0, 0]
- axes[0, 0]
  # Remove top and right spines
  axes[0, 0].scatter(x, y, c)
  
@@ -345,7 +341,6 @@ def compare_kriging_vs_cokriging(data, elements_dict):
  im3 = axes[1, 0].contourf(X, Y, cu_cok, levels=20, cmap='YlOrRd')
  axes[1, 0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[1, 0]
  axes[1, 0]
  # Remove top and right spines
  axes[1, 0].scatter(x, y, c)

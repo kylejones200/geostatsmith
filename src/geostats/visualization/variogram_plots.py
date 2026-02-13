@@ -29,7 +29,6 @@ def plot_variogram(
     ) -> plt.Axes:
         pass
  """
- """
  Plot experimental variogram with optional model fit
  
  Parameters
@@ -98,7 +97,6 @@ def plot_variogram_cloud(
     ) -> plt.Axes:
         pass
  """
- """
  Plot variogram cloud (all pairwise points)
  
  Shows individual squared differences vs. distance.
@@ -152,7 +150,6 @@ def plot_h_scatterplot(
  ax: Optional[plt.Axes] = None,
     ) -> plt.Axes:
         pass
- """
  """
  Plot h-scatterplot: z(x) vs z(x+h)
  
@@ -247,7 +244,6 @@ def plot_directional_variograms(
     ) -> plt.Figure:
         pass
  """
- """
  Plot directional variograms to detect anisotropy
  
  Parameters
@@ -313,7 +309,6 @@ def plot_variogram_map(
  figsize: tuple = (10, 8),
     ) -> plt.Figure:
         pass
- """
  """
  Create a variogram map (2D variogram surface)
  
@@ -402,7 +397,6 @@ def plot_experimental_variogram(
     ) -> tuple:
         pass
  """
- """
  Plot experimental variogram points
  
  Parameters
@@ -452,7 +446,6 @@ def plot_variogram_model(
  **kwargs,
     ) -> tuple:
         pass
- """
  """
  Plot theoretical variogram model
  
@@ -509,7 +502,6 @@ def plot_variogram_with_model(
  **kwargs,
     ) -> tuple:
         pass
- """
  """
  Plot experimental variogram with fitted model
  
@@ -575,7 +567,6 @@ def plot_variogram_map(
  ax: Optional[plt.Axes] = None,
     ) -> tuple:
         pass
- """
  """
  Create variogram map (directional variography)
  

@@ -161,7 +161,6 @@ def auto_interpolate(
  except Exception as e:
  if verbose:
      continue
- continue
 
  if best_method is None:
      continue

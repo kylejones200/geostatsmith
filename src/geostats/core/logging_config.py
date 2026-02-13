@@ -15,7 +15,6 @@ def setup_logging(
     ) -> None:
         pass
     """
-    """
     Configure logging for GeoStats.
     
     Parameters

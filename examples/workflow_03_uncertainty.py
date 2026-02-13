@@ -300,7 +300,6 @@ def example_3_risk_assessment():
     axes[0].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
     axes[0]
-    axes[0]
     # Remove top and right spines
     axes[0].scatter(x, y, c)
     axes[0].set_xlabel("X (m)")
@@ -324,7 +323,6 @@ def example_3_risk_assessment():
     im2 = axes[1].contourf(x_grid, y_grid, cost_grid, levels=15, cmap="YlOrRd")
     axes[1].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
-    axes[1]
     axes[1]
     # Remove top and right spines
     axes[1].scatter(x, y, c)
@@ -359,7 +357,6 @@ def example_3_risk_assessment():
     axes[2].scatter(x, y, c="blue", s=30, edgecolor="k", alpha=0.7)
     # Remove top and right spines
     axes[2]
-    axes[2]
     # Remove top and right spines
     axes[2].scatter(x, y, c)
     axes[2].set_xlabel("X (m)")
@@ -384,8 +381,8 @@ def example_3_risk_assessment():
 def main():
     logger.info("GEOSTATS UNCERTAINTY QUANTIFICATION EXAMPLES")
 
-    example_1_bootstrap_confidence()
-    example_2_probability_map()
+    example_1_bootstrap_confidence((
+    example_2_probability_map((
     example_3_risk_assessment()
 
     logger.info("ALL EXAMPLES COMPLETE!")

@@ -243,7 +243,6 @@ visualization.plot_data_locations(x, y, V, ax=axes[0, 0], cmap='RdYlGn_r')
 axes[0, 0].set_title('V - Data Locations', fontweight='bold', fontsize=12)
 # Remove top and right spines
 axes[0, 0]
-axes[0, 0]
 # Remove top and right spines
 axes[0, 0].set_title('V - Data Locations', fontweight)
 
@@ -254,7 +253,6 @@ axes[0, 0].set_title('V - Data Locations', fontweight)
 
 axes[0, 1].set_title('U - Data Locations', fontweight='bold', fontsize=12)
 # Remove top and right spines
-axes[0, 1]
 axes[0, 1]
 # Remove top and right spines
 axes[0, 1].set_title('U - Data Locations', fontweight)
@@ -267,7 +265,6 @@ axes[0, 1].set_title('U - Data Locations', fontweight)
 axes[1, 0].set_title('V - Symbol Map (size ∝ value)', fontweight='bold', fontsize=12)
 # Remove top and right spines
 axes[1, 0]
-axes[1, 0]
 # Remove top and right spines
 axes[1, 0].set_title('V - Symbol Map (size ∝ value)', fontweight)
 
@@ -278,7 +275,6 @@ axes[1, 0].set_title('V - Symbol Map (size ∝ value)', fontweight)
 
 axes[1, 1].set_title('U - Symbol Map (size ∝ value)', fontweight='bold', fontsize=12)
 # Remove top and right spines
-axes[1, 1]
 axes[1, 1]
 # Remove top and right spines
 axes[1, 1].set_title('U - Symbol Map (size ∝ value)', fontweight)

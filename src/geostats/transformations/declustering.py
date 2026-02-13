@@ -32,7 +32,6 @@ def cell_declustering(
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
         pass
  """
- """
  Cell Declustering
  
  Assigns weights to samples based on spatial distribution to correct for
@@ -169,7 +168,6 @@ def polygonal_declustering(
     ) -> Tuple[npt.NDArray[np.float64], Dict]:
         pass
  """
- """
  Polygonal (Voronoi-based) Declustering
  
  Assigns weights based on the area of influence (Voronoi polygon) around
@@ -249,7 +247,6 @@ def detect_clustering(
  y: npt.NDArray[np.float64]
     ) -> Dict[str, float]:
         pass
- """
  """
  Detect presence of spatial clustering
  

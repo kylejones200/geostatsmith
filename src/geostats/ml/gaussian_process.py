@@ -233,7 +233,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      y_coords = X[:, 1]
      else:
          pass
-    pass
 
      # Fit variogram kernel if string provided
      if isinstance(self.kernel, str):
@@ -258,7 +257,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      )
      else:
          pass
-    pass
 
      # Build covariance matrix
      self._build_covariance_matrix(x_coords, y_coords)
@@ -343,7 +341,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      if SKLEARN_AVAILABLE:
      else:
          pass
-    pass
 
      n_pred = X.shape[0]
      n_train = len(self.X_train_)
@@ -386,7 +383,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
      std_devs[i] = np.sqrt(max(0.0, var))
 
      else: # Simple Kriging
-     else: # Simple Kriging
     pass
 
      mean_y = np.mean(self.y_train_) if self.mean_type == 'zero' else 0.0
@@ -422,7 +418,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                     var = sill - (np.dot(lambdas, k_vec) + mu)
                 else:
                     pass
-    pass
                 
                 cov_matrix[i, i] = max(0.0, var)
 

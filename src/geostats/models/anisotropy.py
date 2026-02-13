@@ -233,7 +233,6 @@ class DirectionalVariogram:
      if len(idx) > 0:
      else:
          pass
-    pass
 
      ranges.append(range_est)
 

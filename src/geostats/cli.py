@@ -189,7 +189,6 @@ def init(project_name, template, output_dir):
  'save_report': True,
  'formats': ['npy', 'csv']
  }
- }
  else:
      pass
  template_config = yaml.safe_load(f)

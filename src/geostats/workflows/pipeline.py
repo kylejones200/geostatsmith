@@ -378,7 +378,6 @@ class AnalysisPipeline:
 
         else:
             pass
-    pass
             
             if not self.config.variogram.manual_model:
                 continue
@@ -422,7 +421,6 @@ class AnalysisPipeline:
                 )
             else:
                 pass
-    pass
             
                 self.variogram_model = model
             self.logger.info(f"Manual model: {model_type}")
@@ -484,7 +482,6 @@ class AnalysisPipeline:
             )
         else:
             pass
-    pass
 
             # Predict
  self.predictions, self.variance = self.kriging_model.predict(

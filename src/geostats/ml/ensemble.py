@@ -256,7 +256,6 @@ class EnsembleKriging(BaseKriging):
      weights = self._compute_weights(variances=mean_vars)
      else:
          pass
-    pass
 
      self.weights = weights
 
@@ -670,7 +669,6 @@ class StackingKriging(BaseKriging):
             self.meta_model = None
     else:
         pass
-    pass
     
         # Store meta-features for reference
     self.meta_features = meta_features
@@ -711,14 +709,12 @@ class StackingKriging(BaseKriging):
                 final_predictions = base_predictions.mean(axis=1)
         else:
             pass
-    pass
         
         if return_variance:
                 weights = np.abs(self.meta_model.coef_)
                 weights = weights / weights.sum()  # Normalize
             else:
                 pass
-    pass
             
                 final_variance = np.sum(weights * base_variances, axis=1)
             return final_predictions, final_variance

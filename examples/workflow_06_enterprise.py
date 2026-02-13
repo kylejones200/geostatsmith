@@ -189,10 +189,10 @@ def example_5_complete_workflow():
 def main():
  logger.info("GEOSTATS PHASE 3: ENTERPRISE DEPLOYMENT")
 
- example_1_cli_tools()
- example_2_professional_reporting()
- example_3_advanced_diagnostics()
- example_4_web_api()
+ example_1_cli_tools((
+ example_2_professional_reporting((
+ example_3_advanced_diagnostics((
+ example_4_web_api((
  example_5_complete_workflow()
 
  logger.info("ALL EXAMPLES COMPLETE!")

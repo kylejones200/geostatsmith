@@ -183,7 +183,6 @@ class PlurigaussianSimulation:
  if self.config.categories is not None:
      else:
          pass
-    pass
 
  self.n_categories = len(self.unique_categories)
 
@@ -289,7 +288,6 @@ class PlurigaussianSimulation:
      seed = self.config.random_seed + r * self.config.n_gaussian_fields + field_idx
      else:
          pass
-    pass
 
      # Use SGS for each independent Gaussian field
      gaussian_field = sequential_gaussian_simulation(
@@ -424,7 +422,6 @@ def create_rectangular_rule(
      if cat_idx < len(categories):
      else:
          pass
-    pass
 
      return result
 

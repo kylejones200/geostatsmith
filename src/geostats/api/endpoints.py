@@ -56,7 +56,6 @@ class HealthResponse(BaseModel):
     if FASTAPI_AVAILABLE:
     else:
         pass
-    pass
 
     if FASTAPI_AVAILABLE:
         async def root():

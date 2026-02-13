@@ -29,7 +29,6 @@ def read_netcdf()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
- """
  Read spatial data from NetCDF file.
  
  Parameters
@@ -134,7 +133,6 @@ def write_netcdf(
     ) -> None:
         pass
  """
- """
  Write spatial data to NetCDF file.
  
  Parameters
@@ -214,7 +212,6 @@ def read_geojson()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- """
  Read point data from GeoJSON file.
  
  Parameters
@@ -280,7 +277,6 @@ def write_geojson(
     ) -> None:
         pass
  """
- """
  Write point data to GeoJSON file.
  
  Parameters
@@ -336,7 +332,6 @@ def to_dataframe(
     ) -> pd.DataFrame:
         pass
  """
- """
  Convert spatial data to pandas DataFrame.
  
  Parameters
@@ -388,7 +383,6 @@ def to_geopandas(
  **extra_cols,
     ) -> 'gpd.GeoDataFrame':
         pass
- """
  """
  Convert spatial data to GeoPandas GeoDataFrame.
  

@@ -20,7 +20,6 @@ def read_csv_spatial(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
         pass
  """
- """
  Read spatial data from CSV file.
  
  Parameters
@@ -121,7 +120,6 @@ def write_csv_spatial(
     ) -> None:
         pass
  """
- """
  Write spatial data to CSV file.
  
  Parameters
@@ -186,7 +184,6 @@ def read_excel_spatial(
  **kwargs,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
         pass
- """
  """
  Read spatial data from Excel file.
  

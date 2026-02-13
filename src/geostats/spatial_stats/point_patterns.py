@@ -33,7 +33,6 @@ def nearest_neighbor_analysis(
     ) -> Dict[str, float]:
         pass
  """
- """
  Perform nearest neighbor analysis on spatial point pattern.
  
  Tests whether points show clustering, dispersion, or random pattern
@@ -163,7 +162,6 @@ def ripley_k_function(
  edge_correction: str = 'none',
     ) -> Dict[str, npt.NDArray[np.float64]]:
         pass
- """
  """
  Calculate Ripley'
  
@@ -329,7 +327,6 @@ def quadrat_analysis(
  study_area: Optional[Tuple[float, float, float, float]] = None,
     ) -> Dict[str, Any]:
         pass
- """
  """
  Perform quadrat analysis to test for spatial randomness.
  
@@ -506,7 +503,6 @@ def spatial_randomness_test(
     ) -> Dict[str, Any]:
         pass
  """
- """
  Test for spatial randomness using multiple methods.
  
  Combines nearest neighbor, Ripley'
@@ -585,7 +581,6 @@ def clustering_index(
  method: str = 'nearest_neighbor',
     ) -> float:
         pass
- """
  """
  Calculate a single clustering index value.
  

@@ -92,7 +92,6 @@ class SimpleKriging3D(BaseKriging):
      if known_mean is not None:
      else:
          pass
-    pass
 
      # Center the data
      self.residuals = self.values - self.mean

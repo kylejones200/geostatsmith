@@ -19,7 +19,6 @@ def plot_data_locations(
     ) -> plt.Axes:
         pass
  """
- """
  Plot data locations (data posting)
  
  Parameters
@@ -70,7 +69,6 @@ def plot_contour_map(
  **kwargs,
     ) -> plt.Axes:
         pass
- """
  """
  Create contour map
  
@@ -133,7 +131,6 @@ def plot_symbol_map(
     ) -> plt.Axes:
         pass
  """
- """
  Create symbol map with sized symbols
  
  Symbol size proportional to value magnitude.
@@ -186,7 +183,6 @@ def plot_kriging_results(
  figsize: tuple = (16, 6),
     ) -> plt.Figure:
         pass
- """
  """
  Plot kriging predictions and variance side-by-side
  
@@ -252,7 +248,6 @@ def plot_data_points(
     ) -> tuple:
         pass
  """
- """
  Plot data points (API-compatible version)
  
  Parameters
@@ -309,7 +304,6 @@ def plot_contour(
     ) -> tuple:
         pass
  """
- """
  Create contour plot (lines only)
  
  Parameters
@@ -362,7 +356,6 @@ def plot_filled_contour(
  **kwargs,
     ) -> tuple:
         pass
- """
  """
  Create filled contour plot
  

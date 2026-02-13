@@ -144,7 +144,6 @@ def analyze_variogram_anisotropy(x, y, z):
  axes[i].plot(lags, gamma, 'o', label='Experimental', markersize=6)
  # Remove top and right spines
  axes[i]
- axes[i]
  # Remove top and right spines
  axes[i].plot(lags, gamma, 'o', label)
  
@@ -247,7 +246,6 @@ def compare_kriging_methods(x, y, au, model):
  axes[0].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[0]
- axes[0]
  # Remove top and right spines
  axes[0].scatter(x, y, c)
  
@@ -263,7 +261,6 @@ def compare_kriging_methods(x, y, au, model):
  axes[1].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
  axes[1]
- axes[1]
  # Remove top and right spines
  axes[1].scatter(x, y, c)
  
@@ -278,7 +275,6 @@ def compare_kriging_methods(x, y, au, model):
  im3 = axes[2].contourf(X, Y, results['Indicator']['pred'], levels=20, cmap='RdYlGn_r')
  axes[2].scatter(x, y, c='k', s=2, alpha=0.3)
  # Remove top and right spines
- axes[2]
  axes[2]
  # Remove top and right spines
  axes[2].scatter(x, y, c)

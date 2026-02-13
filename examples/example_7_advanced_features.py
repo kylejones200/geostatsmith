@@ -61,7 +61,6 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 axes[0].hist(original_data, bins=20, edgecolor='black', alpha=0.7)
 # Remove top and right spines
 axes[0]
-axes[0]
 # Remove top and right spines
 axes[0].hist(original_data, bins)
 
@@ -74,7 +73,6 @@ axes[0].set_xlabel('Value')
 axes[1].hist(normal_scores, bins=20, edgecolor='black', alpha=0.7)
 # Remove top and right spines
 axes[1]
-axes[1]
 # Remove top and right spines
 axes[1].hist(normal_scores, bins)
 
@@ -86,7 +84,6 @@ axes[1].set_xlabel('Normal Score')
 axes[1].set_xlabel('Normal Score')
 axes[2].scatter(original_data, normal_scores, alpha=0.6)
 # Remove top and right spines
-axes[2]
 axes[2]
 # Remove top and right spines
 axes[2].scatter(original_data, normal_scores, alpha)

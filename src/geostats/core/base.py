@@ -9,7 +9,6 @@ import numpy.typing as npt
 
 class BaseModel(ABC):
     """
-    """
     Abstract base class for all geostatistical models
     
     This provides a common interface for variogram models,
@@ -53,7 +52,6 @@ class BaseModel(ABC):
      **kwargs: Any,
      ) -> "BaseModel":
          pass
-     """
      """
      Fit the model to data
      
@@ -106,7 +104,6 @@ class BaseKriging(ABC):
      ) -> None:
          pass
      """
-     """
      Initialize kriging with data
      
      Parameters
@@ -133,7 +130,6 @@ class BaseKriging(ABC):
      return_variance: bool = True,
      ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
          pass
-     """
      """
      Perform kriging prediction
      

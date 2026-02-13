@@ -102,7 +102,6 @@ class LognormalKriging(BaseKriging):
      )
      else:
          pass
-    pass
 
  def predict(
      x_new: npt.NDArray[np.float64],

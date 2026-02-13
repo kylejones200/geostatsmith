@@ -26,7 +26,6 @@ def optimal_sampling_design(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- """
  Design optimal locations for new sampling points.
  
  Uses kriging variance to identify locations where uncertainty is highest,
@@ -222,7 +221,6 @@ def infill_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- """
  Identify locations where additional sampling is needed (infill).
  
  Adds samples until kriging variance is below threshold everywhere.
@@ -335,7 +333,6 @@ def stratified_sampling(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- """
  Generate stratified random sample locations.
  
  Divides the domain into strata and places samples randomly within each stratum.
@@ -429,7 +426,6 @@ def adaptive_sampling(
  y_bounds: Optional[Tuple[float, float]] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
- """
  """
  Adaptive sampling: iteratively add samples where uncertainty is highest.
  

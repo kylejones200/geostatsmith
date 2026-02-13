@@ -272,7 +272,6 @@ class RegressionKriging(BaseKriging):
      )
      else:
          pass
-    pass
 
      self.fitted = True
      logger.info("Regression Kriging model fitted successfully")

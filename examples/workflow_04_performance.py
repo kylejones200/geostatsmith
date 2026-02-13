@@ -207,9 +207,9 @@ def example_4_approximate_methods():
 def main():
     logger.info("\nGEOSTATS PERFORMANCE OPTIMIZATION EXAMPLES")
 
- example_1_parallel_kriging()
- example_2_chunked_processing()
- example_3_caching()
+ example_1_parallel_kriging((
+ example_2_chunked_processing((
+ example_3_caching((
     example_4_approximate_methods()
 
     logger.info("\nALL EXAMPLES COMPLETE!")

@@ -221,7 +221,6 @@ class Cokriging(BaseKriging):
      predictions[i] = self.z_primary[nearest_idx]
      if return_variance:
          continue
-     continue
 
      # Extract weights
      weights_primary = solution[:n1]
@@ -241,7 +240,6 @@ class Cokriging(BaseKriging):
      if return_variance:
      else:
          pass
-    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      # Simplified: only validate primary variable
@@ -371,7 +369,6 @@ class CollocatedCokriging(BaseKriging):
      return predictions, variances
      else:
          pass
-    pass
 
  def predict(self, x, y, return_variance=True):
      from .ordinary_kriging import OrdinaryKriging

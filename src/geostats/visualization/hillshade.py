@@ -28,7 +28,6 @@ def hillshade(
     dy: float = 1.0,
 ) -> npt.NDArray[np.float64]:
  """
- """
  Calculate hillshade from elevation data.
  
  Creates a shaded relief representation of terrain by simulating
@@ -139,7 +138,6 @@ def plot_hillshaded_dem(
     ) -> Tuple[plt.Figure, plt.Axes]:
         pass
  """
- """
  Create a hillshaded DEM visualization.
  
  Combines hillshading with color elevation map for enhanced visualization.
@@ -221,7 +219,6 @@ def create_multi_azimuth_hillshade(
     ) -> npt.NDArray[np.float64]:
         pass
  """
- """
  Create combined hillshade from multiple sun azimuths.
  
  Averages hillshades from different sun positions to reduce
@@ -288,7 +285,6 @@ def slope_map(
  units: str = 'degrees',
     ) -> npt.NDArray[np.float64]:
         pass
- """
  """
  Calculate slope from elevation data.
  
@@ -357,7 +353,6 @@ def aspect_map(
  dy: float = 1.0,
     ) -> npt.NDArray[np.float64]:
         pass
- """
  """
  Calculate aspect (slope direction) from elevation data.
  

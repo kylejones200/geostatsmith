@@ -122,7 +122,6 @@ class FactorialKriging(BaseKriging):
      if mean is not None:
      else:
          pass
-    pass
 
      self.residuals = self.z - self.mean
 

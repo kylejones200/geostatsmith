@@ -24,7 +24,6 @@ def read_geotiff(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
  """
- """
  Read a GeoTIFF file.
  
  Parameters
@@ -127,7 +126,6 @@ def write_geotiff(
     ) -> None:
         pass
  """
- """
  Write data to a GeoTIFF file.
  
  Parameters
@@ -206,7 +204,6 @@ def read_ascii_grid(
  as_grid: bool = True,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
         pass
- """
  """
  Read an ASCII Grid file (.asc, .grd).
  
@@ -298,7 +295,6 @@ def write_ascii_grid(
  nodata: float = -9999.0,
     ) -> None:
         pass
- """
  """
  Write data to an ASCII Grid file.
  

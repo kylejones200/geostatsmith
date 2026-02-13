@@ -159,7 +159,7 @@ def main():
      continue
  example_2_interactive_prediction_map()
 
- example_3_auto_variogram()
+ example_3_auto_variogram((
  example_4_auto_interpolate()
 
  logger.info("\n" + "="*70)

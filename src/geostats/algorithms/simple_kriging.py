@@ -63,7 +63,6 @@ class SimpleKriging(BaseKriging):
      if mean is None:
      else:
          pass
-    pass
 
      # Center the data
      self.z_centered = self.z - self.mean
@@ -150,7 +149,6 @@ class SimpleKriging(BaseKriging):
      predictions[i] = self.z[nearest_idx]
      if return_variance:
          continue
-     continue
 
      # Simple kriging prediction: ẑ(x₀) = μ + Σλᵢ[z(xᵢ) - μ]
      predictions[i] = self.mean + np.dot(weights, self.z_centered)
@@ -172,7 +170,6 @@ class SimpleKriging(BaseKriging):
      if return_variance:
      else:
          pass
-    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation

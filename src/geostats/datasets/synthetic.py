@@ -35,7 +35,6 @@ def generate_random_field()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- """
  Generate a synthetic random field with specified trend and noise.
  
  Parameters
@@ -134,7 +133,6 @@ def generate_clustered_samples(
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- """
  Generate clustered spatial samples.
  
  Useful for testing declustering methods and demonstrating
@@ -228,7 +226,6 @@ def generate_elevation_like_data()
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
  """
- """
  Generate synthetic elevation-like data with hills and valleys.
  
  Mimics digital elevation models (DEMs) for testing interpolation
@@ -317,7 +314,6 @@ def generate_anisotropic_field()
  seed: Optional[int] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
- """
  """
  Generate synthetic data with anisotropic spatial correlation.
  
@@ -415,7 +411,6 @@ def generate_sparse_dense_mix(
  seed: Optional[int] = None,
     ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         pass
- """
  """
  Generate dataset with both sparse and densely sampled regions.
  

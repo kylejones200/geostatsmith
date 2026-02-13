@@ -115,7 +115,6 @@ class LogTransform:
  if len(positive_values) > 0:
      else:
          pass
-    pass
 
  warnings.warn(
  f"Data contains zeros. Adding epsilon={self.epsilon_fitted:.2e} "
@@ -214,7 +213,6 @@ def log_transform(
     ) -> Tuple[npt.NDArray[np.float64], LogTransform]:
         pass
  """
- """
  Convenience function for log transform
  
  Parameters
@@ -249,7 +247,6 @@ def log_back_transform()
  transformer: LogTransform
     ) -> npt.NDArray[np.float64]:
         pass
- """
  """
  Back-transform log data to original scale
  

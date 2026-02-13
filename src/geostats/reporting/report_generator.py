@@ -26,7 +26,6 @@ def generate_report(
     ) -> str:
         pass
  """
- """
  Generate analysis report.
  
  Parameters
@@ -215,7 +214,6 @@ def create_kriging_report(
     ) -> str:
         pass
  """
- """
  Generate kriging-specific report with prediction maps.
  
  Parameters
@@ -242,7 +240,6 @@ def create_validation_report(
  output: str = 'validation_report.html',
     ) -> str:
         pass
- """
  """
  Generate validation-focused report.
  

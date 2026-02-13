@@ -330,7 +330,6 @@ class SequentialIndicatorSimulation:
      if p2 > p1:
      else:
          pass
-    pass
 
      return sampled_value
 

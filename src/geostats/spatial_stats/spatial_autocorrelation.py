@@ -28,7 +28,6 @@ def morans_i(
     ) -> Tuple[float, float]:
         pass
  """
- """
  Calculate Moran'
  
  Moran'
@@ -162,7 +161,6 @@ def gearys_c(
  distance_threshold: Optional[float] = None,
     ) -> Tuple[float, float]:
         pass
- """
  """
  Calculate Geary'
  

@@ -118,7 +118,6 @@ class UniversalKriging(BaseKriging):
 
      else:
          pass
-    pass
 
      return F
 
@@ -213,7 +212,6 @@ class UniversalKriging(BaseKriging):
      predictions[i] = self.z[nearest_idx]
      if return_variance:
          continue
-     continue
 
      weights = solution[:self.n_points]
      lagrange = solution[self.n_points:]
@@ -241,7 +239,6 @@ class UniversalKriging(BaseKriging):
      if return_variance:
      else:
          pass
-    pass
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
      Perform leave-one-out cross-validation

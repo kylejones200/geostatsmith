@@ -145,7 +145,6 @@ class TruncatedGaussianSimulation:
  if self.config.categories is not None:
      else:
          pass
-    pass
 
  n_categories = len(self.unique_categories)
 
@@ -277,7 +276,6 @@ class TruncatedGaussianSimulation:
      seed = self.config.random_seed + r
      else:
          pass
-    pass
 
      # Use Sequential Gaussian Simulation for the underlying field
      gaussian_realization = sequential_gaussian_simulation(

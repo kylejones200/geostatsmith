@@ -91,7 +91,6 @@ class BoxCoxTransform:
      ):
          pass
      """
-     """
      Initialize Box-Cox transformation
      
      Parameters
@@ -100,6 +99,7 @@ class BoxCoxTransform:
      """
      Transformation parameter. If None, will be estimated from data.
           Special values:
+              pass
          pass
      λ = 1: identity (no transform)
      λ = 0.5: square root
@@ -218,7 +218,6 @@ class BoxCoxTransform:
      ) -> npt.NDArray[np.float64]:
          pass
      """
-     """
      Apply inverse Box-Cox transformation (back-transform)
      
      Parameters
@@ -292,7 +291,6 @@ class BoxCoxTransform:
      lmbda: float
      ) -> npt.NDArray[np.float64]:
          pass
-     """
      """
      Vectorized inverse Box-Cox transformation
      
@@ -397,7 +395,6 @@ def boxcox_transform(
  return_lambda: bool = False
     ) -> Tuple[npt.NDArray[np.float64], Optional[float]]:
         pass
- """
  """
  Convenience function for Box-Cox transformation
  

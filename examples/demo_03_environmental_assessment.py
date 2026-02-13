@@ -98,7 +98,6 @@ def analyze_thresholds(data_dict):
  # Remove top and right spines
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
      continue
- continue
 
  values = data_dict[element][element].values
  ax = axes[idx]
@@ -147,7 +146,6 @@ def create_exceedance_maps(data_dict, thresholds):
  # Remove top and right spines
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
      continue
- continue
 
  data = data_dict[element]
  x = data['LONGITUDE'].values
@@ -324,7 +322,6 @@ def identify_hotspots(data_dict):
 
  for idx, element in enumerate(['As', 'Pb', 'Hg']):
      continue
- continue
 
  data = data_dict[element]
  x = data['LONGITUDE'].values
@@ -384,7 +381,7 @@ def generate_environmental_report(data_dict, thresholds, hotspots):
  y = data['LATITUDE'].values
  values = data['As'].values
 
- generate_report()
+ generate_report((
  x, y, values,
  output='alaska_environmental_report.html',
  title='Alaska Environmental Geochemistry Assessment',

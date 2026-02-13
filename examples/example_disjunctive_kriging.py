@@ -174,7 +174,6 @@ def main():
     axes[1, 1].scatter(z, cv_predictions, alpha=0.6, edgecolors="black")
     # Remove top and right spines
     axes[1, 1]
-    axes[1, 1]
     # Remove top and right spines
     axes[1, 1].scatter(z, cv_predictions, alpha)
     min_val = min(z.min(), cv_predictions.min())

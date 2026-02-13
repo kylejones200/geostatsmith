@@ -15,7 +15,6 @@ def plot_cross_validation(
     ) -> plt.Axes:
         pass
  """
- """
  Plot cross-validation results
  
  Parameters
@@ -79,7 +78,6 @@ def plot_histogram(
     ) -> plt.Axes:
         pass
  """
- """
  Plot histogram with optional normal distribution overlay
  
  Parameters
@@ -132,7 +130,6 @@ def plot_qq_plot(
     ) -> plt.Axes:
         pass
  """
- """
  Create Q-Q plot to check normality
  
  Parameters
@@ -172,7 +169,6 @@ def plot_residuals(
  figsize: tuple = (14, 5),
     ) -> plt.Figure:
         pass
- """
  """
  Create residual plots
  
@@ -229,7 +225,6 @@ def qq_plot(
     ) -> tuple:
         pass
  """
- """
  Create Q-Q plot for residuals
  
  Parameters
@@ -267,7 +262,6 @@ def plot_histogram(
  **kwargs,
     ) -> tuple:
         pass
- """
  """
  Create histogram of data
  
@@ -318,7 +312,6 @@ def plot_obs_vs_pred(
  **kwargs,
     ) -> tuple:
         pass
- """
  """
  Create observed vs predicted scatter plot
  
@@ -378,7 +371,6 @@ def plot_residuals(
     ) -> tuple:
         pass
  """
- """
  Create residual plot
  
  Parameters
@@ -421,7 +413,6 @@ def plot_residual_histogram(
  **kwargs,
     ) -> tuple:
         pass
- """
  """
  Create histogram of residuals
  

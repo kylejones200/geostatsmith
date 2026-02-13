@@ -110,7 +110,6 @@ class DisjunctiveKriging(BaseKriging):
         if self.kriging_type == "simple":
             else:
                 pass
-    pass
 
         # Build kriging matrix in Gaussian space
         if self.variogram_model is not None:
@@ -359,12 +358,10 @@ class DisjunctiveKriging(BaseKriging):
                     variances[i] = y_var_gaussian[i] * var_ratio
                 else:
                     pass
-    pass
 
                     return predictions, variances
         else:
             pass
-    pass
 
         else:
             pass

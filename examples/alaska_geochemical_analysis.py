@@ -1,6 +1,5 @@
 def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     """
-    """
     Load Alaska Geochemical Database and prepare for analysis.
     
     Parameters:
@@ -25,7 +24,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
 
     # Load geological/location data
     geol_file = agdb_path / 'Geol_DeDuped.txt'
-    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)
+    geol_data = pd.read_csv(geol_file, sep=',', quotechar='"', low_memory=False)"
 
     logger.info(f" Loaded {len(geol_data):,} samples from Geol_DeDuped")
 
@@ -54,7 +53,7 @@ def load_agdb4_data(agdb_path, element='Au', sample_type='stream sediment'):
     chem_file = agdb_path / chem_filename
 
     # Load chemistry data
-    chem_data = pd.read_csv(chem_file, sep=',', quotechar='"', low_memory=False)'
+    chem_data = pd.read_csv(chem_file, sep=',', quotechar='"', low_memory=False)'"
     logger.info(f" Loaded {len(chem_data):,} analyses from {chem_filename}")
 
     # Merge on AGDB_ID
@@ -195,7 +194,6 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     axes[0].scatter(x, y, c=au, s=10, cmap='YlOrRd', vmin=0, vmax=np.percentile(au, 95))
     # Remove top and right spines
     axes[0]
-    axes[0]
     axes[0].set_title(f'Gold Sample Locations (n={len(au)})')
     axes[0].set_xlabel('Longitude')
     # Remove top and right spines
@@ -211,7 +209,6 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     im = axes[1].contourf(X, Y, au_pred, levels=20, cmap='YlOrRd')
     axes[1].scatter(x, y, c='k', s=1, alpha=0.3)
     # Remove top and right spines
-    axes[1]
     axes[1]
     # Remove top and right spines
     axes[1].scatter(x, y, c)
@@ -259,7 +256,6 @@ def gold_exploration_analysis(agdb_path, region_name='Iliamna'):
     # ==============================================================================
 
 def multi_element_analysis(agdb_path):
-    """
     """
     Analyze multiple correlated elements using cokriging.
         Example: Cu-Mo association in porphyry deposits.
@@ -322,7 +318,6 @@ def multi_element_analysis(agdb_path):
     # ==============================================================================
 
 def environmental_assessment(agdb_path, element='As', threshold=20):
-    """
     """
     Environmental geochemistry: assess contamination risk.
     

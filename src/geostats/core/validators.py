@@ -13,7 +13,6 @@ def validate_coordinates(
  z: Optional[npt.NDArray[np.float64]] = None,
     ) -> Tuple[npt.NDArray[np.float64], ...]:
         """
-        """
         Validate and convert coordinate arrays
         
  Parameters
@@ -69,7 +68,6 @@ def validate_values(
  allow_nan: bool = False,
     ) -> npt.NDArray[np.float64]:
         pass
- """
  """
  Validate values array
  
@@ -148,7 +146,6 @@ def validate_in_range(
     ) -> float:
         pass
  """
- """
  Validate that a value is within a range
  
  Parameters
@@ -187,7 +184,6 @@ def validate_array_shapes_match(
  names: Optional[Tuple[str, ...]] = None,
     ) -> None:
         pass
- """
  """
  Validate that multiple arrays have matching shapes
  

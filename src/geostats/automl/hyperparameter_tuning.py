@@ -71,7 +71,6 @@ def tune_kriging(
         elif isinstance(param_range, list):
         else:
             pass
-    pass
 
     # Generate all combinations
     param_names = list(param_grid.keys())
