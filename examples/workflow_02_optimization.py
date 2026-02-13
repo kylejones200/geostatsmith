@@ -98,16 +98,16 @@ def example_1_optimal_sampling():
     for ax, (name, x_new, y_new) in zip(axes, strategies):
         ax.scatter(x_init, y_init, c='blue', s=100, marker='o',
                    label='Existing', edgecolor='k', linewidth=1.5)
- # Proposed new samples
- ax.scatter(x_new, y_new, c='red', s=150, marker='*',
- label='Proposed', edgecolor='k', linewidth=1.5)
- ax.set_xlabel('X (m)')
- ax.set_ylabel('Y (m)')
- ax.set_title(f'{name} Strategy')
- ax.set_xlim(0, 100)
- ax.set_ylim(0, 100)
- ax.legend()
- ax.set_aspect('equal')
+        # Proposed new samples
+        ax.scatter(x_new, y_new, c='red', s=150, marker='*',
+                   label='Proposed', edgecolor='k', linewidth=1.5)
+        ax.set_xlabel('X (m)')
+        ax.set_ylabel('Y (m)')
+        ax.set_title(f'{name} Strategy')
+        ax.set_xlim(0, 100)
+        ax.set_ylim(0, 100)
+        ax.legend()
+        ax.set_aspect('equal')
 
  plt.tight_layout()
  plt.savefig('example_workflow_02_optimal_sampling.png', dpi=150, bbox_inches='tight')
