@@ -82,9 +82,9 @@ class BaseModel(ABC):
         self._parameters.update(params)
         self._is_fitted = True
 
- def __repr__(self) -> str:
-     params_str = ", ".join(f"{k}={v:.4f}" for k, v in self._parameters.items())
-     return f"{self.__class__.__name__}({params_str})"
+    def __repr__(self) -> str:
+        params_str = ", ".join(f"{k}={v:.4f}" for k, v in self._parameters.items())
+        return f"{self.__class__.__name__}({params_str})"
 
 class BaseKriging(ABC):
     """
