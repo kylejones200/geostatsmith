@@ -107,14 +107,12 @@ class ChunkedKriging:
      end = min((i + 1) * chunk_size, n_pred)
 
      if verbose and (i % 10 == 0 or i == n_chunks - 1):
-         continue
      logger.info(f"Processing chunk {i+1}/{n_chunks} ({progress:.1f}%)")
 
      x_chunk = x_pred[start:end]
      y_chunk = y_pred[start:end]
 
      if return_variance:
-         continue
      x_chunk, y_chunk, return_variance=True
      )
      predictions[start:end] = pred_chunk
@@ -175,7 +173,6 @@ class ChunkedKriging:
      z_grid = z_flat.reshape(x_2d.shape)
 
      if return_variance:
-         continue
      return z_grid, var_grid
      else:
          pass

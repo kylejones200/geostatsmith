@@ -45,12 +45,10 @@ def run(config_file, validate_only, override, verbose):
      pass
  valid, msg = validate_config(config_file)
  if not valid:
-     continue
  click.echo(msg, err=True)
  sys.exit(1)
 
  if validate_only:
-     continue
  return
 
  # Load config
@@ -92,7 +90,6 @@ def run(config_file, validate_only, override, verbose):
      pass
  click.echo(click.style(f" Unexpected error: {e}", fg='red'), err=True)
  if verbose:
-     continue
  sys.exit(1)
 
     @cli.command()
@@ -132,7 +129,6 @@ def init(project_name, template, output_dir):
  output_path = Path(output_dir) / f"{project_name}.yaml"
 
  if output_path.exists():
-     continue
  sys.exit(1)
 
  # Load template
@@ -140,7 +136,6 @@ def init(project_name, template, output_dir):
  template_file = templates_dir / f"{template}_template.yaml"
 
  if not template_file.exists():
-     continue
  template_config = {
  'project': {
  'name': project_name,

@@ -19,7 +19,7 @@ Key concepts from geokniga §2097-2240, §6058-6078:
  Z(V) = 1/|V| ∫_V Z(u) du
 
 The estimation variance is:
- σ²(V) = -γ(V,V) - ΣΣ λi λj γ(ui - uj) + 2Σ λi γ(ui, V)
+ σ^2(V) = -γ(V,V) - ΣΣ λi λj γ(ui - uj) + 2Σ λi γ(ui, V)
 
 where γ(V,V) is the internal block variance (within-block variogram).
 
@@ -54,7 +54,6 @@ class BlockKriging(BaseKriging):
  Block Kriging - Estimate block averages from point data
 
  Kriging for block support (volume V) requires:
-     continue
  1. Point-to-point variogram γ(ui - uj)
  2. Point-to-block variogram γ(ui, V) = avg_v γ(ui - v)
  3. Block-to-block variogram γ(V, V) = avg_v1 avg_v2 γ(v1 - v2)
@@ -107,13 +106,12 @@ class BlockKriging(BaseKriging):
      self.n_disc_points = len(self.disc_xx)
 
      if self.variogram_model is not None:
-         continue
     pass
 
  def _precompute_block_variance(self):
      Precompute γ(V,V) - internal block variance (vectorized)
 
- γ(V,V) = 1/|V|² ∬∬ γ(u-v) du dv
+ γ(V,V) = 1/|V|^2 ∬∬ γ(u-v) du dv
 
  Approximated using discretization points.
  """
@@ -191,7 +189,6 @@ class BlockKriging(BaseKriging):
      Block kriging variance (lower than point variance)
      """
      if self.variogram_model is None:
-         continue
     pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
@@ -244,15 +241,13 @@ class BlockKriging(BaseKriging):
      predictions[i] = np.dot(lambdas, self.z)
 
      # Block variance (from geokniga §6058-6070)
-     # σ²(V) = -γ(V,V) - ΣΣ λi λj γ(ui-uj) + 2Σ λi γ(ui,V)
+     # σ^2(V) = -γ(V,V) - ΣΣ λi λj γ(ui-uj) + 2Σ λi γ(ui,V)
      if return_variance:
-         continue
     pass
 
      logger.info(f"Block Kriging completed for {n_pred} blocks (vectorized discretization)")
 
      if return_variance:
-         continue
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
@@ -364,11 +359,11 @@ class SupportCorrection:
      ) -> float:
          pass
      """
-         Calculate dispersion variance D²(v/V)
+         Calculate dispersion variance D^2(v/V)
 
      Variance of block values within a larger domain:
          pass
-     D²(v/V) = γ̄(V,V) - γ̄(v,v)
+     D^2(v/V) = γ̄(V,V) - γ̄(v,v)
 
      Important for:
          pass
@@ -390,7 +385,7 @@ class SupportCorrection:
      Returns
      -------
      float
-     Dispersion variance D²(v/V)
+     Dispersion variance D^2(v/V)
      """
      # Discretize domain
      disc_x_domain = np.linspace(0, domain_size[0], n_disc)

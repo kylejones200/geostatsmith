@@ -69,7 +69,6 @@ def read_geotiff(
   If file doesn't exist'
  """
  if not RASTERIO_AVAILABLE:
-     continue
  "rasterio is required for GeoTIFF I/O. "
  "Install with: pip install rasterio"
  )
@@ -159,7 +158,6 @@ def write_geotiff(
   If rasterio is not installed
  """
  if not RASTERIO_AVAILABLE:
-     continue
  "rasterio is required for GeoTIFF I/O. "
  "Install with: pip install rasterio"
  )

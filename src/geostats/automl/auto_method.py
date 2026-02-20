@@ -71,7 +71,6 @@ def auto_interpolate(
     pass
 
     if verbose:
-        continue
     pass
 
  best_method = None
@@ -114,13 +113,11 @@ def auto_interpolate(
     pass
 
  if rmse < best_rmse:
-     continue
  best_method = method
  best_predictions = predictions
  best_model = model
 
  elif method == 'idw':
-     continue
  from ..comparison.method_implementations import InverseDistanceWeighting
  idw = InverseDistanceWeighting(x, y, z, power=2)
 
@@ -146,30 +143,25 @@ def auto_interpolate(
     pass
 
  if rmse < best_rmse:
-     continue
  best_method = method
  best_predictions = predictions
  best_model = None
 
  except ImportError:
  if verbose:
-     continue
  "IDW interpolation not available: comparison module not installed. "
  "Install with: pip install geostats[comparison]"
  )
 
  except Exception as e:
  if verbose:
-     continue
 
  if best_method is None:
-     continue
  f"All {len(methods)} interpolation methods failed. "
  "Check data quality (sufficient points, no duplicates, valid values)."
  )
 
     if verbose:
-        continue
     logger.info(f" CV RMSE: {best_rmse:.4f}")
 
  return {

@@ -191,20 +191,19 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 # Remove top and right spines
 
 for ax, indices, title in zip(axes, [indices_simple, indices_octant],
- ['Simple Nearest', 'Octant Search']):
-     pass
- ax.scatter(x, y, c='lightgray', s=50, alpha=0.5, label='Other points')
- ax.scatter(x[indices], y[indices], c='red', s=100, marker='o',
- edgecolors='black', label='Selected neighbors')
- ax.scatter([x0], [y0], c='blue', s=200, marker='*',
- edgecolors='black', label='Target point')
- circle = plt.Circle((x0, y0), 30, fill=False, linestyle='--', color='blue')
- ax.add_patch(circle)
- ax.set_title(title)
- ax.legend()
- ax.set_xlim(-5, 105)
- ax.set_ylim(-5, 105)
- ax.set_aspect('equal')
+                                ['Simple Nearest', 'Octant Search']):
+    ax.scatter(x, y, c='lightgray', s=50, alpha=0.5, label='Other points')
+    ax.scatter(x[indices], y[indices], c='red', s=100, marker='o',
+               edgecolors='black', label='Selected neighbors')
+    ax.scatter([x0], [y0], c='blue', s=200, marker='*',
+               edgecolors='black', label='Target point')
+    circle = plt.Circle((x0, y0), 30, fill=False, linestyle='--', color='blue')
+    ax.add_patch(circle)
+    ax.set_title(title)
+    ax.legend()
+    ax.set_xlim(-5, 105)
+    ax.set_ylim(-5, 105)
+    ax.set_aspect('equal')
 plt.tight_layout()
 plt.savefig('advanced_3_neighborhood.png', dpi=150, bbox_inches='tight')
 logger.info("Saved: advanced_3_neighborhood.png\n")
@@ -227,10 +226,10 @@ z_multi = z_short + z_long + np.random.normal(0, 0.1, 200) # Combined
 lags_multi, gamma_multi = experimental_variogram(x_var, y_var, z_multi, n_lags=15)
 
 # Fit nested model (2 structures)
-nested_model = fit_nested_variogram()
- lags_multi, gamma_multi,
- n_structures=2,
- model_types=['spherical', 'spherical']
+nested_model = fit_nested_variogram(
+    lags_multi, gamma_multi,
+    n_structures=2,
+    model_types=['spherical', 'spherical']
 )
 
 logger.info(nested_model)
@@ -450,7 +449,6 @@ ax2.scatter(x_3d[mask_slice], y_3d[mask_slice], c)
 
 ax2.set_title('3D Kriging Prediction (Slice at Depth=25)')
 # Remove top and right spines
-ax2.set_title(')
 
 ax2.set_xlabel('X')
 ax2.set_ylabel('Y')
@@ -512,15 +510,17 @@ axes[0].set_ylabel('Y')
 axes[0].set_ylabel('Y')
 
 # Show blocks with predictions
-for i in range(len(x_grid_bk)):
- fill=True, facecolor=plt.cm.coolwarm((pred_bk[j,i] - pred_bk.min())/(pred_bk.max() - pred_bk.min())),
- edgecolor='black', linewidth=0.5, alpha=0.7)
- axes[1].add_patch(rect)
- # Remove top and right spines
- axes[1].add_patch(rect)
+from matplotlib.patches import Rectangle
+block_size = 10.0
+for i in range(len(y_grid_bk)):
+    for j in range(len(x_grid_bk)):
+        rect = Rectangle(
+            (x_grid_bk[j] - block_size/2, y_grid_bk[i] - block_size/2),
+            block_size, block_size,
+            fill=True, facecolor=plt.cm.coolwarm((pred_bk[i, j] - pred_bk.min())/(pred_bk.max() - pred_bk.min())),
+            edgecolor='black', linewidth=0.5, alpha=0.7)
+        axes[1].add_patch(rect)
 axes[1].scatter(x_bk, y_bk, c='black', s=20, marker='+', alpha=0.5)
-# Remove top and right spines
-axes[1].scatter(x_bk, y_bk, c)
 
 axes[1].set_xlim(0, 100)
 # Remove top and right spines

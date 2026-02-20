@@ -1,18 +1,14 @@
 """
-    Recipe 3: Analyzing Spatial Point Patterns
+Recipe 3: Analyzing Spatial Point Patterns
 
 This recipe demonstrates how to analyze spatial point distributions to
 detect clustering, dispersion, or randomness using multiple statistical tests.
 
-"""
-
 Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Section 7.8
 
-
 Key Concepts:
-    pass
 - Nearest neighbor analysis
-- Ripley's K function'
+- Ripley's K function
 - Quadrat analysis
 - Visual pattern assessment
 """
@@ -22,7 +18,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
 from geostats.datasets import generate_clustered_samples
-from geostats.spatial_stats import ()
+from geostats.spatial_stats import (
     nearest_neighbor_analysis,
     ripley_k_function,
     quadrat_analysis,
@@ -80,9 +76,10 @@ for pattern_name, (x, y) in patterns.items():
     logger.info(f" P-value: {nn_results['p_value']:.4f}")
     logger.info(f" Interpretation: {nn_results['interpretation']}")
 
-    # Ripley's K function'
+    # Ripley's K function
     ripley_results = ripley_k_function(x, y, n_distances=30)
-    logger.info(f"\nRipley's K Function:")    logger.info(f" Interpretation: {ripley_results['interpretation']}")
+    logger.info(f"\nRipley's K Function:")
+    logger.info(f" Interpretation: {ripley_results['interpretation']}")
 
     # Quadrat analysis
     quadrat_results = quadrat_analysis(x, y, n_quadrats_x=8, n_quadrats_y=8)
@@ -175,36 +172,29 @@ for pattern_name, (x, y) in patterns.items():
     ax3.spines['top'].set_visible(False)
     ax3.spines['right'].set_visible(False)
 
- # Column 4: Quadrat counts
- ax4 = fig.add_subplot(gs[row, 3])
- # Remove top and right spines
- # Remove top and right spines
- 
- quadrat_res = results['quadrat']
- im = ax4.imshow(quadrat_res['counts'], cmap='YlOrRd', aspect='auto')
- ax4.set_title('Quadrat Counts', fontsize=11, fontweight='bold')
- # Remove top and right spines
- 
- # Remove top and right spines
- ax4.set_xlabel('Quadrat X')
- ax4.set_ylabel('Quadrat Y')
- plt.colorbar(im, ax=ax4, label='Point count')
- # Remove top and right spines
- ax4.set_ylabel('Quadrat Y')
-
- # Add VMR annotation
- vmr_text = f"VMR = {quadrat_res['vmr']:.3f}\nMean = {quadrat_res['mean']:.1f}"
-    ax4.text(0.05, 0.95, vmr_text, transform=ax4.transAxes,
-             fontsize=9, verticalalignment='top',
-             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+    # Column 4: Quadrat counts
+    ax4 = fig.add_subplot(gs[row, 3])
     # Remove top and right spines
     ax4.spines['top'].set_visible(False)
     ax4.spines['right'].set_visible(False)
 
- row += 1
+    quadrat_res = results['quadrat']
+    im = ax4.imshow(quadrat_res['counts'], cmap='YlOrRd', aspect='auto')
+    ax4.set_title('Quadrat Counts', fontsize=11, fontweight='bold')
+    ax4.set_xlabel('Quadrat X')
+    ax4.set_ylabel('Quadrat Y')
+    plt.colorbar(im, ax=ax4, label='Point count')
+
+    # Add VMR annotation
+    vmr_text = f"VMR = {quadrat_res['vmr']:.3f}\nMean = {quadrat_res['mean']:.1f}"
+    ax4.text(0.05, 0.95, vmr_text, transform=ax4.transAxes,
+             fontsize=9, verticalalignment='top',
+             bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+
+    row += 1
 
 plt.suptitle('Spatial Point Pattern Analysis Comparison',
- fontsize=16, fontweight='bold')
+             fontsize=16, fontweight='bold')
 plt.savefig('recipe_03_point_patterns.png', dpi=150, bbox_inches='tight')
 logger.info(" Figure saved as 'recipe_03_point_patterns.png'")
 plt.show()
@@ -215,40 +205,47 @@ logger.info(f"{'Pattern':<12} {'R Index':>10} {'VMR':>10} {'Ripley':>15} {'Overa
 logger.info("-" * 70)
 
 for pattern_name in patterns.keys():
-    pass
+    results = results_all[pattern_name]
+    r_index = results['nn']['R']
+    vmr = results['quadrat']['vmr']
+    ripley_interp = results['ripley']['interpretation'].split()[0]  # First word
 
-for pattern_name in patterns.keys():
- vmr = results['quadrat']['vmr']
- ripley_interp = results['ripley']['interpretation'].split()[0] # First word
+    # Overall assessment
+    indicators = []
+    if r_index < 0.9:
+        indicators.append('C')
+    elif r_index > 1.1:
+        indicators.append('D')
+    else:
+        indicators.append('R')
 
- # Overall assessment
- indicators = []
- if r_index < 0.9:
- elif r_index > 1.1:
- else:
-    pass
+    if vmr < 0.9:
+        indicators.append('C')
+    elif vmr > 1.1:
+        indicators.append('D')
+    else:
+        indicators.append('R')
 
- if vmr < 0.9:
- elif vmr > 1.1:
- else:
-    pass
+    if 'Clustered' in ripley_interp:
+        indicators.append('C')
+    elif 'Dispersed' in ripley_interp:
+        indicators.append('D')
+    else:
+        indicators.append('R')
 
- if 'Clustered' in ripley_interp:
- elif 'Dispersed' in ripley_interp:
- else:
-    pass
+    # Consensus
+    if indicators.count('C') >= 2:
+        overall = 'Clustered'
+    elif indicators.count('D') >= 2:
+        overall = 'Dispersed'
+    else:
+        overall = 'Random'
 
- # Consensus
- if indicators.count('C') >= 2:
- elif indicators.count('D') >= 2:
- else:
-    pass
-
- logger.info(f"{pattern_name:<12} {r_index:>10.3f} {vmr:>10.3f} {ripley_interp:>15} {overall:>15}")
+    logger.info(f"{pattern_name:<12} {r_index:>10.3f} {vmr:>10.3f} {ripley_interp:>15} {overall:>15}")
 
 
 logger.info("\nKEY INSIGHTS")
-logger.debug(""")
+logger.debug("""
 1. Multiple tests provide robust conclusions
  - Agreement among tests strengthens interpretation
  - Disagreement suggests mixed patterns or edge effects
@@ -268,6 +265,6 @@ logger.debug(""")
  - Geology: Mineral deposits, earthquake locations
  - Environmental: Pollution sources
  - Archaeology: Settlement patterns
-"""
+""")
 
 logger.info("Recipe complete!")

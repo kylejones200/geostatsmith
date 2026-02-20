@@ -72,7 +72,6 @@ def interpolation_error_metrics(
  y_pred = y_pred[mask]
 
  if len(y_true) == 0:
-     continue
  return {
  'mae': np.nan,
  'mse': np.nan,
@@ -151,7 +150,6 @@ def cross_validate_interpolation(
  n = len(x)
 
  if n < MIN_TRAINING_SAMPLES:
-     continue
  f"Insufficient data for cross-validation: need at least {MIN_TRAINING_SAMPLES} points, got {n}. "
  "Add more sample points or use a simpler validation approach."
  )
@@ -369,7 +367,6 @@ def compare_interpolation_methods(
 
  # Cross-validation
  if cross_validate:
-     continue
  results['cv_results'] = {}
  for method in methods:
      continue
@@ -382,7 +379,6 @@ def compare_interpolation_methods(
 
  # Speed benchmark
  if benchmark_speed:
-     continue
  results['speed_results'] = benchmark_interpolation_speed(
  x, y, z, x_pred, y_pred, methods=methods
  )
@@ -406,7 +402,6 @@ def _predict_with_method(
  """Helper function to predict with a specific method."""
 
  if method == 'ordinary_kriging':
-     continue
  lags, gamma, n_pairs = variogram.experimental_variogram(
  x_train, y_train, z_train, n_lags=10
  )
@@ -417,7 +412,6 @@ def _predict_with_method(
  z_pred = krig.predict(x_pred, y_pred, return_variance=False)
 
  elif method == 'simple_kriging':
-     continue
  lags, gamma, n_pairs = variogram.experimental_variogram(
  x_train, y_train, z_train, n_lags=10
  )
@@ -429,17 +423,14 @@ def _predict_with_method(
  z_pred = krig.predict(x_pred, y_pred, return_variance=False)
 
  elif method == 'idw':
-     continue
  x_train, y_train, z_train, x_pred, y_pred, **kwargs
  )
 
  elif method == 'rbf':
-     continue
  x_train, y_train, z_train, x_pred, y_pred, **kwargs
  )
 
  elif method == 'natural_neighbor':
-     continue
  x_train, y_train, z_train, x_pred, y_pred
  )
 
@@ -492,8 +483,7 @@ def _plot_comparison(
  # Add metrics if available
  title = method.replace('_', ' ').title()
  if 'cv_results' in results and method in results['cv_results']:
-     continue
- title += f"\nRMSE: {metrics['rmse']:.3f}, R²: {metrics['r2']:.3f}"
+ title += f"\nRMSE: {metrics['rmse']:.3f}, R^2: {metrics['r2']:.3f}"
 
  ax.set_title(title)
  ax.set_xlabel('X')

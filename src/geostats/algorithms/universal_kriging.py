@@ -12,7 +12,7 @@ where f are basis functions (e.g., polynomials).
 Common trends:
     pass
 - Linear: m(x,y) = β₀ + β₁x + β₂y
-- Quadratic: m(x,y) = β₀ + β₁x + β₂y + β₃x² + β₄xy + β₅y²
+- Quadratic: m(x,y) = β₀ + β₁x + β₂y + β₃x^2 + β₄xy + β₅y^2
 
 The kriging system includes additional constraints for unbiasedness.
 """
@@ -58,7 +58,7 @@ class UniversalKriging(BaseKriging):
      Type of drift/trend:
          pass
      - 'linear': β₀ + β₁x + β₂y
-     - 'quadratic': β₀ + β₁x + β₂y + β₃x² + β₄xy + β₅y²
+     - 'quadratic': β₀ + β₁x + β₂y + β₃x^2 + β₄xy + β₅y^2
      """
      super().__init__(x, y, z, variogram_model)
 
@@ -74,7 +74,6 @@ class UniversalKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
-         continue
     pass
 
  def _build_drift_matrix(
@@ -98,7 +97,6 @@ class UniversalKriging(BaseKriging):
      n = len(x)
 
      if self.drift_terms == "linear":
-         continue
      F = np.column_stack([
      np.ones(n),
      x,
@@ -106,7 +104,6 @@ class UniversalKriging(BaseKriging):
      ])
 
      elif self.drift_terms == "quadratic":
-         continue
      F = np.column_stack([
      np.ones(n),
      x,
@@ -170,7 +167,6 @@ class UniversalKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
-         continue
     pass
 
      x_pred, y_pred = validate_coordinates(x, y)
@@ -211,7 +207,6 @@ class UniversalKriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_samples)
      predictions[i] = self.z[nearest_idx]
      if return_variance:
-         continue
 
      weights = solution[:self.n_points]
      lagrange = solution[self.n_points:]
@@ -221,12 +216,10 @@ class UniversalKriging(BaseKriging):
 
      # Kriging variance
      if return_variance:
-         continue
      np.dot(weights, gamma_vec) + np.dot(lagrange, drift_vec)
      )
      # Check for negative variance (indicates numerical issues)
      if variances[i] < 0.0:
-         continue
      import warnings
      warnings.warn(
      f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "

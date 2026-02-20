@@ -28,7 +28,7 @@ def auto_variogram(
  """
      Automatically select best variogram model.
 
- Tries multiple models and selects based on R² fit to experimental variogram.
+ Tries multiple models and selects based on R^2 fit to experimental variogram.
 
  Parameters
  ----------
@@ -72,13 +72,12 @@ def auto_variogram(
  )
 
  if verbose:
-     continue
  logger.info(f" Best model: {results['best_type']}")
- logger.info(f" R²: {results['best_r2']:.4f}")
+ logger.info(f" R^2: {results['best_r2']:.4f}")
  logger.info(f"All models:")
  for r in results['all_results']:
      continue
- logger.info(f" - {r['type']}: R² = {r['r2']:.4f}")
+ logger.info(f" - {r['type']}: R^2 = {r['r2']:.4f}")
 
  return results['best_model']
 
@@ -100,7 +99,6 @@ def auto_variogram(
  r2 = 1 - ss_res / ss_tot
 
  if r2 > best_r2:
-     continue
  best_model = model
  best_type = model_type
 
@@ -112,7 +110,6 @@ def auto_variogram(
     pass
 
  if best_model is None:
-     continue
  f"All {len(model_types)} variogram models failed to fit. "
  "Check data quality (sufficient points, spatial structure, no duplicates)."
  )
@@ -190,8 +187,7 @@ def auto_fit(
  results['cv_r2'] = r2
 
  if verbose:
-     continue
  logger.info(f" MAE: {mae:.4f}")
- logger.info(f" R²: {r2:.4f}")
+ logger.info(f" R^2: {r2:.4f}")
 
  return results

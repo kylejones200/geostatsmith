@@ -38,8 +38,8 @@ class LognormalKriging(BaseKriging):
  For lognormal data Z = exp(Y) where Y ~ Normal:
      pass
  1. Transform: Y = log(Z)
- 2. Krige Y to get Ŷ and σ²ʏ
- 3. Back-transform: Ẑ = exp(Ŷ + σ²ʏ/2) # Variance correction
+ 2. Krige Y to get Ŷ and σ^2ʏ
+ 3. Back-transform: Ẑ = exp(Ŷ + σ^2ʏ/2) # Variance correction
 
  This is critical for unbiased estimates in original space.
  """
@@ -77,7 +77,6 @@ class LognormalKriging(BaseKriging):
 
      # Check for non-positive values
      if np.any(self.z <= 0):
-         continue
      "Lognormal kriging requires all values > 0. "
      "Consider adding a constant or using a different method."
      )
@@ -90,13 +89,11 @@ class LognormalKriging(BaseKriging):
      self.kriging_type = kriging_type.lower()
 
      if self.kriging_type == 'simple':
-         continue
      self.x, self.y, self.log_z,
      variogram_model=variogram_model,
      known_mean=self.mean_log
      )
      elif self.kriging_type == 'ordinary':
-         continue
      self.x, self.y, self.log_z,
      variogram_model=variogram_model
      )
@@ -121,8 +118,7 @@ class LognormalKriging(BaseKriging):
      If True, return both predictions and variance
      back_transform_method : str
      Method for back-transformation:
-         continue
-     - 'unbiased': exp(Ŷ + σ²/2) - proper unbiased estimator
+     - 'unbiased': exp(Ŷ + σ^2/2) - proper unbiased estimator
      - 'median': exp(Ŷ) - returns median of lognormal
      - 'simple': exp(Ŷ) - simple back-transform (biased low)
 
@@ -134,12 +130,10 @@ class LognormalKriging(BaseKriging):
      Variance in original space (approximate)
      """
      if self.variogram_model is None:
-         continue
     pass
 
      # Krige in log-space
      if return_variance:
-         continue
      x_new, y_new, return_variance=True
      )
      else:
@@ -160,7 +154,6 @@ class LognormalKriging(BaseKriging):
      }
 
      if back_transform_method not in back_transform_methods:
-         continue
      raise ValueError(
      f"back_transform_method must be one of {valid_methods}, "
      f"got '{back_transform_method}'"
@@ -172,7 +165,6 @@ class LognormalKriging(BaseKriging):
 
      # Transform variance to original space (approximate)
      if return_variance and log_variances is not None:
-         continue
      # where Z = exp(Ŷ)
      original_variances = predictions**2 * (np.exp(log_variances) - 1)
      return predictions, original_variances

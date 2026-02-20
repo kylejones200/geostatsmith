@@ -115,12 +115,10 @@ class TruncatedGaussianSimulation:
      self.variogram_model = variogram_model
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
-         continue
     pass
 
      # Setup configuration
      if config is None:
-         continue
      self.config = config
 
      # Determine unique categories and proportions
@@ -249,7 +247,6 @@ class TruncatedGaussianSimulation:
      Shape: (n_realizations, n_grid_points) or (n_realizations, *grid_shape)
      """
      if self.variogram_model is None:
-         continue
     pass
 
      # Flatten grid if needed
@@ -293,12 +290,10 @@ class TruncatedGaussianSimulation:
      realizations_categorical[r, :] = categorical_realization
 
      if (r + 1) % 10 == 0:
-         continue
     pass
 
      # Reshape to original grid shape if needed
      if len(original_shape) > 1:
-         continue
      self.config.n_realizations, *original_shape
      )
 
@@ -331,7 +326,6 @@ class TruncatedGaussianSimulation:
      # First category: Y < t₁
      mask = gaussian_field < self.thresholds[0]
      elif i == len(self.unique_categories) - 1:
-         continue
      mask = gaussian_field >= self.thresholds[-1]
      else:
          pass
@@ -370,7 +364,6 @@ class TruncatedGaussianSimulation:
 
      # Flatten if needed
      if realizations.ndim > 2:
-         continue
     pass
 
      summary = {}

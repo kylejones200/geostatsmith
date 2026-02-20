@@ -110,7 +110,6 @@ def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
  --------
  >>> valid, msg = validate_config('analysis.yaml')
  >>> if valid:
-     continue
  ... logger.info("Config is valid!")
  ... else:
      pass

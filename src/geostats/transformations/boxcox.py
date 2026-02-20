@@ -106,7 +106,6 @@ class BoxCoxTransform:
      λ = -1: reciprocal
      method : str
      Method to estimate lambda if not provided:
-         continue
      'mle': Maximum likelihood (default)
      'pearsonr': Maximize correlation with normal distribution
      'min_skew': Minimize skewness
@@ -231,7 +230,6 @@ class BoxCoxTransform:
      Original scale data
      """
      if not self.is_fitted:
-         continue
      raise GeoStatsError("BoxCoxTransform not fitted. Call .fit() first.")
 
      transformed_data = np.asarray(transformed_data, dtype=np.float64)
@@ -240,7 +238,6 @@ class BoxCoxTransform:
 
      # Un-standardize if needed
      if self.standardize:
-         continue
     pass
 
      # Inverse transform
@@ -248,7 +245,6 @@ class BoxCoxTransform:
 
      # Remove shift
      if self.shift > 0:
-         continue
     pass
 
      logger.debug(f"Inverse transformed {len(original_data)} points")
@@ -279,7 +275,6 @@ class BoxCoxTransform:
          pass
      """Vectorized Box-Cox transformation"""
      if np.abs(lmbda) < LAMBDA_TOLERANCE:
-         continue
      return np.log(x)
      else:
          pass
@@ -300,7 +295,6 @@ class BoxCoxTransform:
      For negative λ, we need to check domain validity.
      """
      if np.abs(lmbda) < LAMBDA_TOLERANCE:
-         continue
      return np.exp(y)
      else:
          pass
@@ -308,7 +302,6 @@ class BoxCoxTransform:
 
      # Check for domain violations
      if np.any(arg <= 0):
-         continue
      logger.warning(
      f"Box-Cox inverse transform: {n_invalid} values outside valid domain. "
      f"Values will be clamped to prevent NaN/complex results."
@@ -428,5 +421,4 @@ def boxcox_transform(
  transformed = bc.fit_transform(data)
 
  if return_lambda:
-     continue
  return transformed

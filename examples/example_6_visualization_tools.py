@@ -43,23 +43,23 @@ fig1 = plt.figure(figsize=(16, 12))
 # h-scatterplots for V at different distances
 distances = [10, 20, 30, 40]
 for i, h in enumerate(distances, 1):
-    pass
+    ax = plt.subplot(3, 4, i)
+    visualization.plot_h_scatterplot(x, y, V, h, ax=ax)
+    ax.set_title(f'h-scatterplot (h={h})')
 
 # Directional h-scatterplots for V
 directions = [0, 45, 90, 135]
 for i, direction in enumerate(directions, 5):
- direction=direction, angle_tolerance=30, ax=ax)
- # Remove top and right spines
+    ax = plt.subplot(3, 4, i)
+    visualization.plot_h_scatterplot(x, y, V, h=20,
+                                      direction=direction, angle_tolerance=30, ax=ax)
+    ax.set_title(f'Directional h-scatterplot (θ={direction}°)')
  
 # h-scatterplot for U vs V (cross-correlation)
 ax9 = plt.subplot(3, 4, 9)
 # Remove top and right spines
 
 ax9.scatter(V, U, alpha=0.7, s=80, edgecolors='black', linewidth=1)
-# Remove top and right spines
-
-# Remove top and right spines
-ax9.scatter(V, U, alpha)
 
 corr = np.corrcoef(V, U)[0, 1]
 ax9.set_xlabel('V (ppm)', fontsize=11)
@@ -67,9 +67,6 @@ ax9.set_xlabel('V (ppm)', fontsize=11)
 ax9.set_ylabel('U (ppm)', fontsize=11)
 # Remove top and right spines
 ax9.set_title(f'V vs U Cross-plot (ρ={corr:.3f})', fontweight='bold', fontsize=11)
-# Remove top and right spines
-ax9.set_title(f')
-ρ
 # Histograms
 ax10 = plt.subplot(3, 4, 10)
 # Remove top and right spines
@@ -133,17 +130,14 @@ ax3 = plt.subplot(2, 3, 3)
 # Remove top and right spines
 # Remove top and right spines
 
-# Use the full function that returns a figure, but we'
 logger.info("Calculating directional variograms...")
 dirs = [0, 45, 90, 135]
 for direction in dirs:
- )
- valid = ~np.isnan(gamma_dir)
- ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label=f'{direction}°', linewidth=2, markersize=6)
- # Remove top and right spines
- 
- # Remove top and right spines
- ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label)
+    lags_dir, gamma_dir, n_pairs_dir = variogram.experimental_variogram(
+        x, y, V, n_lags=8, direction=direction, angle_tolerance=30
+    )
+    valid = ~np.isnan(gamma_dir)
+    ax3.plot(lags_dir[valid], gamma_dir[valid], 'o-', label=f'{direction}°', linewidth=2, markersize=6)
  
 ax3.set_xlabel('Distance (h)', fontsize=11)
 # Remove top and right spines
@@ -207,25 +201,18 @@ logger = logging.getLogger(__name__)
 dir_vario = DirectionalVariogram(x, y, V)
 aniso_params = dir_vario.fit_anisotropy(angles=[0, 45, 90, 135], n_lags=6)
 
-aniso_text = ()
- f"Anisotropy Analysis:\n"
- f"Major direction: {aniso_params['major_angle']:.0f}°\n"
- f"Major range: {aniso_params['major_range']:.1f}\n"
- f"Minor range: {aniso_params['minor_range']:.1f}\n"
- f"Ratio: {aniso_params['ratio']:.3f}"
+aniso_text = (
+    f"Anisotropy Analysis:\n"
+    f"Major direction: {aniso_params['major_angle']:.0f}°\n"
+    f"Major range: {aniso_params['major_range']:.1f}\n"
+    f"Minor range: {aniso_params['minor_range']:.1f}\n"
+    f"Ratio: {aniso_params['ratio']:.3f}"
 )
-ax6.text(0.1, 0.5, aniso_text, transform=ax6.transAxes,)
-# Remove top and right spines
-
-# Remove top and right spines
-ax6.text(0.1, 0.5, aniso_text, transform)
-
- fontsize=12, verticalalignment='center',
- bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
+ax6.text(0.1, 0.5, aniso_text, transform=ax6.transAxes,
+         fontsize=12, verticalalignment='center',
+         bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
 ax6.axis('off')
 ax6.set_title('Anisotropy Parameters', fontweight='bold', fontsize=12)
-# Remove top and right spines
-ax6.set_title('Anisotropy Parameters', fontweight)
 
 plt.tight_layout()
 plt.savefig('example_6_variogram_analysis.png', dpi=300, bbox_inches='tight')

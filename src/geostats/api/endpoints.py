@@ -174,7 +174,7 @@ class HealthResponse(BaseModel):
  verbose=False
  )
 
- # Compute R²
+ # Compute R^2
  gamma_fitted = model(lags)
  ss_res = np.sum((gamma - gamma_fitted)**2)
  ss_tot = np.sum((gamma - gamma.mean())**2)

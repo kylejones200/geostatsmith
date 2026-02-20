@@ -72,9 +72,9 @@ class EnsembleKriging(BaseKriging):
 
  Ensemble Variance:
      pass
- Var[Z_ensemble*] = Σ w_k² · Var[Z_k*] + 2Σ Σ w_i·w_j·Cov[Z_i*, Z_j*]
+ Var[Z_ensemble*] = Σ w_k^2 · Var[Z_k*] + 2Σ Σ w_i·w_j·Cov[Z_i*, Z_j*]
 
- If models are independent: Var[Z_ensemble*] = Σ w_k² · Var[Z_k*]
+ If models are independent: Var[Z_ensemble*] = Σ w_k^2 · Var[Z_k*]
 
  Parameters
  ----------
@@ -84,7 +84,7 @@ class EnsembleKriging(BaseKriging):
  Weighting scheme:
      pass
  - 'equal': w_k = 1/K
- - 'inverse_variance': w_k ∝ 1/σ²_k
+ - 'inverse_variance': w_k ∝ 1/σ^2_k
  - 'performance': w_k ∝ cross-validation score
  combine_variance : bool
  Whether to combine variance estimates
@@ -134,7 +134,6 @@ class EnsembleKriging(BaseKriging):
      Whether to combine variance estimates
      """
      if len(models) == 0:
-         continue
     pass
 
      self.models = models
@@ -143,7 +142,6 @@ class EnsembleKriging(BaseKriging):
 
      weighting_schemes = {'equal', 'inverse_variance', 'performance'}
      if self.weighting not in weighting_schemes:
-         continue
     pass
 
      # Initialize with equal weights
@@ -183,15 +181,12 @@ class EnsembleKriging(BaseKriging):
      }
 
      if self.weighting not in weights_map:
-         continue
     pass
 
      if self.weighting == 'inverse_variance' and variances is None:
-         continue
      return weights_map['equal']()
 
      if self.weighting == 'performance' and scores is None:
-         continue
      return weights_map['equal']()
 
      weights = weights_map[self.weighting]()
@@ -237,7 +232,6 @@ class EnsembleKriging(BaseKriging):
 
      for i, model in enumerate(self.models):
      if return_variance:
-         continue
      all_predictions[i] = pred
      all_variances[i] = var
      else:
@@ -251,7 +245,6 @@ class EnsembleKriging(BaseKriging):
 
      # Compute weights
      if self.weighting == 'inverse_variance' and return_variance:
-         continue
      mean_vars = np.mean(all_variances, axis=1)
      weights = self._compute_weights(variances=mean_vars)
      else:
@@ -270,8 +263,7 @@ class EnsembleKriging(BaseKriging):
      )
 
      if return_variance and self.combine_variance:
-         continue
-     # Var[Σw_i·Z_i] = Σw_i²·Var[Z_i]
+     # Var[Σw_i·Z_i] = Σw_i^2·Var[Z_i]
      ensemble_var = np.zeros(n_pred, dtype=np.float64)
      for i in range(n_models):
          continue
@@ -279,7 +271,6 @@ class EnsembleKriging(BaseKriging):
 
      return ensemble_pred, ensemble_var
      elif return_variance:
-         continue
      return ensemble_pred, np.mean(all_variances, axis=0)
 
      return ensemble_pred
@@ -382,7 +373,6 @@ class BootstrapKriging(BaseKriging):
      self.fitted = False
 
      if not 0 < sample_fraction <= 1.0:
-         continue
     pass
 
      logger.info(
@@ -438,7 +428,6 @@ class BootstrapKriging(BaseKriging):
      except Exception as e:
          pass
      logger.warning(f"Bootstrap iteration {b} failed: {e}")
-     continue
 
      self.fitted = True
      logger.info(
@@ -472,7 +461,6 @@ class BootstrapKriging(BaseKriging):
      Standard deviation of predictions
      """
      if not self.fitted:
-         continue
     pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
@@ -497,7 +485,6 @@ class BootstrapKriging(BaseKriging):
      logger.debug(f"Bootstrap prediction complete for {n_pred} points")
 
      if return_std:
-         continue
      std = np.nanstd(all_predictions, axis=0)
      return predictions, std
 
@@ -681,7 +668,6 @@ class StackingKriging(BaseKriging):
             pass
         """Predict using stacking ensemble"""
         if not hasattr(self, 'x') or self.x is None:
-            continue
     pass
         
             n_new = len(x_new)

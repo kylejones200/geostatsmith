@@ -85,10 +85,8 @@ def approximate_kriging(
  pred_point = np.array([x_pred[i], y_pred[i]])
 
  if search_radius is not None:
-     continue
  indices = tree.query_ball_point(pred_point, search_radius)
  if len(indices) > max_neighbors:
-     continue
  distances = np.linalg.norm(
  sample_coords[indices] - pred_point, axis=1
  )
@@ -102,10 +100,8 @@ def approximate_kriging(
  indices = indices.flatten()
 
  if len(indices) == 0:
-     continue
  predictions[i] = np.nan
  variance[i] = np.inf
- continue
 
  # Local kriging
  x_local = x[indices]

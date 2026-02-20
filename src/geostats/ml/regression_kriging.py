@@ -174,7 +174,6 @@ class RegressionKriging(BaseKriging):
      Number of lags for variogram fitting
      """
      if not SKLEARN_AVAILABLE:
-         continue
     pass
 
      self.ml_model = ml_model
@@ -216,11 +215,9 @@ class RegressionKriging(BaseKriging):
 
      # Prepare feature matrix
      if covariates is None:
-         continue
      logger.info("No covariates provided, using only coordinates [x, y]")
      else:
      if X.shape[0] != len(self.x):
-         continue
      f"Covariates shape mismatch: {X.shape[0]} != {len(self.x)}"
      )
      logger.info(f"Using {X.shape[1]} covariates for ML model")
@@ -236,7 +233,7 @@ class RegressionKriging(BaseKriging):
      self.residuals = self.z - ml_predictions
 
      logger.info(
-     f"ML model R² = {self.ml_model.score(X, self.z):.4f}, "
+     f"ML model R^2 = {self.ml_model.score(X, self.z):.4f}, "
      f"Residual std = {np.std(self.residuals):.4f}"
      )
 
@@ -262,13 +259,11 @@ class RegressionKriging(BaseKriging):
      mean_residual = np.mean(self.residuals)
 
      if self.kriging_type == 'simple':
-         continue
      self.x, self.y, self.residuals,
      variogram_model=fitted_model,
      mean=mean_residual
      )
      elif self.kriging_type == 'ordinary':
-         continue
      self.x, self.y, self.residuals,
      variogram_model=fitted_model
      )
@@ -306,7 +301,6 @@ class RegressionKriging(BaseKriging):
      Prediction variance (kriging variance only)
      """
      if not self.fitted:
-         continue
     pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
@@ -316,7 +310,6 @@ class RegressionKriging(BaseKriging):
      else:
      if X_new.shape[0] != len(x_new):
      if X_new.shape[1] != self.X.shape[1]:
-         continue
      f"Feature count mismatch: expected {self.X.shape[1]}, "
      f"got {X_new.shape[1]}"
      )
@@ -326,7 +319,6 @@ class RegressionKriging(BaseKriging):
 
      # Step 2: Krige residuals
      if return_variance:
-         continue
      x_new, y_new, return_variance=True
      )
      else:
@@ -340,7 +332,6 @@ class RegressionKriging(BaseKriging):
      logger.debug(f"Regression Kriging prediction complete for {len(x_new)} points")
 
      if return_variance:
-         continue
      # Full variance should include ML model uncertainty
      return predictions, residual_var
      return predictions
@@ -411,7 +402,6 @@ class RandomForestKriging(RegressionKriging):
      **rf_kwargs
      ):
      if not SKLEARN_AVAILABLE:
-         continue
     pass
 
      rf_model = RandomForestRegressor(
@@ -431,7 +421,6 @@ class RandomForestKriging(RegressionKriging):
 
  def get_feature_importance(self) -> Optional[npt.NDArray[np.float64]]:
      if not self.fitted:
-         continue
      return None
      return self.ml_model.feature_importances_
 
@@ -478,7 +467,6 @@ class XGBoostKriging(RegressionKriging):
      **xgb_kwargs
      ):
      if not XGBOOST_AVAILABLE:
-         continue
     pass
 
      xgb_model = xgb.XGBRegressor(
@@ -518,6 +506,5 @@ class XGBoostKriging(RegressionKriging):
      Feature importance scores
      """
      if not self.fitted:
-         continue
      return None
      return self.ml_model.get_booster().get_score(importance_type=importance_type)

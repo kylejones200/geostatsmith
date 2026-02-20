@@ -42,7 +42,6 @@ def euclidean_distance(
  dist_sq = dx**2 + dy**2
 
  if z1 is not None and z2 is not None:
-     continue
  z2 = np.asarray(z2).reshape(1, -1)
  dz = z1 - z2
  dist_sq += dz**2

@@ -47,7 +47,6 @@ def outlier_analysis(
  >>> logger.info(f"Found {results['n_outliers']} potential outliers")
  """
  if method == 'iqr':
-     continue
  q1 = np.percentile(z, 25)
  q3 = np.percentile(z, 75)
  iqr = q3 - q1
@@ -57,13 +56,11 @@ def outlier_analysis(
  scores = np.abs(z - np.median(z)) / iqr
 
  elif method == 'zscore':
-     continue
  z_scores = np.abs((z - z.mean()) / z.std())
  outliers = z_scores > threshold
  scores = z_scores
 
  elif method == 'spatial':
-     continue
  from scipy.spatial import cKDTree
  tree = cKDTree(np.column_stack([x, y]))
 
@@ -137,7 +134,6 @@ def robust_validation(
 
  # Validation without outliers
  if len(outlier_idx) > 0:
-     continue
  mask[outlier_idx] = False
  x_clean = x[mask]
  y_clean = y[mask]

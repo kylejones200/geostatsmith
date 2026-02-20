@@ -85,10 +85,8 @@ def detect_outliers_zscore(
  std = np.std(data, ddof=1)
 
  if std < EPSILON:
-     continue
  outlier_mask = np.zeros(len(data), dtype=bool)
  if return_scores:
-     continue
  return outlier_mask
 
  z_scores = np.abs((data - mean) / std)
@@ -98,7 +96,6 @@ def detect_outliers_zscore(
  logger.info(f"Z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
  if return_scores:
-     continue
  return outlier_mask
 
 def detect_outliers_modified_zscore(
@@ -154,7 +151,6 @@ def detect_outliers_modified_zscore(
  mad = np.median(np.abs(data - median))
 
  if mad < EPSILON:
-     continue
  # Fallback to IQR method
  return detect_outliers_iqr(data, return_scores=return_scores)
 
@@ -166,7 +162,6 @@ def detect_outliers_modified_zscore(
  logger.info(f"Modified z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
 
  if return_scores:
-     continue
  return outlier_mask
 
 def detect_outliers_iqr(
@@ -223,7 +218,6 @@ def detect_outliers_iqr(
  f"(bounds: [{lower_bound:.2f}, {upper_bound:.2f}]) )
 
  if return_bounds:
-     continue
  return outlier_mask
 
 def detect_spatial_outliers(
@@ -277,7 +271,6 @@ def detect_spatial_outliers(
     pass
 
  if len(x) <= n_neighbors:
-     continue
  return np.zeros(len(x), dtype=bool)
 
  # Build KD-tree for neighbor search
@@ -363,7 +356,6 @@ def detect_outliers_ensemble(
 
  # Determine which methods to use
  if methods is None:
-     continue
  methods = ['zscore', 'modified_zscore', 'iqr', 'spatial']
  else:
     pass
@@ -377,20 +369,15 @@ def detect_outliers_ensemble(
  mask = detect_outliers_zscore(z)
  method_results['zscore'] = mask
  elif method == 'modified_zscore':
-     continue
  method_results['modified_zscore'] = mask
  elif method == 'iqr':
-     continue
  method_results['iqr'] = mask
  elif method == 'spatial':
-     continue
  logger.warning("Spatial method requires x, y coordinates. Skipping.")
- continue
  mask = detect_spatial_outliers(x, y, z)
  method_results['spatial'] = mask
  else:
      pass
- continue
 
  detection_count += mask.astype(int)
 

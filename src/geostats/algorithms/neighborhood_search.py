@@ -9,7 +9,6 @@ Three observations are a reasonable bare minimum and 25 are more than adequate.
 Use octant search to further ensure good radial distribution."
 
 Provides efficient spatial indexing and neighborhood selection for kriging:
-    continue
 - Search radius/ellipse
 - Max/min number of samples
 - Octant/quadrant search for radial distribution
@@ -43,7 +42,6 @@ class NeighborhoodSearch:
  Efficient neighborhood search for kriging
 
  Uses KD-tree for fast spatial queries with options for:
-     continue
  - Circular/elliptical search regions
  - Octant/quadrant search for good radial distribution
  - Min/max sample constraints
@@ -73,7 +71,6 @@ class NeighborhoodSearch:
      self.n_points = len(self.x)
 
      if len(self.x) != len(self.y):
-         continue
     pass
 
      self.config = config if config is not None else NeighborhoodConfig()
@@ -110,10 +107,8 @@ class NeighborhoodSearch:
 
      # Query KD-tree
      if np.isfinite(radius):
-         continue
      indices = np.array(indices, dtype=np.int64)
      if len(indices) == 0:
-         continue
      distances = np.linalg.norm(self.points[indices] - [x0, y0], axis=1)
      else:
          pass
@@ -123,19 +118,16 @@ class NeighborhoodSearch:
 
      # Apply ellipse search if configured
      if self.config.search_ellipse is not None:
-         continue
      indices = indices[mask]
      distances = distances[mask]
 
      # Apply octant or quadrant search
      if self.config.use_octants:
      elif self.config.use_quadrants:
-         continue
     pass
 
      # Apply max_neighbors limit
      if len(indices) > self.config.max_neighbors:
-         continue
      sort_idx = np.argsort(distances)
      indices = indices[sort_idx[:self.config.max_neighbors]]
      distances = distances[sort_idx[:self.config.max_neighbors]]
@@ -143,7 +135,6 @@ class NeighborhoodSearch:
      # Check min_neighbors constraint
      if len(indices) < self.config.min_neighbors:
      if self.config.search_radius is not None:
-         continue
      k = min(self.config.min_neighbors, self.n_points)
      distances, indices = self.kdtree.query([x0, y0], k=k)
      indices = indices.astype(np.int64)
@@ -172,7 +163,6 @@ class NeighborhoodSearch:
      Boolean mask of points within ellipse
      """
      if self.config.search_ellipse is None:
-         continue
     pass
 
      major, minor, angle_deg = self.config.search_ellipse
@@ -202,7 +192,7 @@ class NeighborhoodSearch:
      """
          Octant search for good radial distribution
 
-     Divides space into 8 sectors (45° each) and limits samples per sector.
+     Divides space into 8 sectors (45 degrees each) and limits samples per sector.
      From Olea (2009): "Use octant search to further ensure good radial"
      distribution."
 
@@ -221,7 +211,6 @@ class NeighborhoodSearch:
      Selected indices and distances
      """
      if len(indices) == 0:
-         continue
     pass
 
      # Calculate angles
@@ -243,7 +232,6 @@ class NeighborhoodSearch:
      octant_dist = distances[octant_mask]
 
      if len(octant_idx) > 0:
-         continue
      sort_idx = np.argsort(octant_dist)
      n_take = min(max_per_octant, len(octant_idx))
      selected_indices.extend(octant_idx[sort_idx[:n_take]])
@@ -264,7 +252,6 @@ class NeighborhoodSearch:
      Divides space into 4 quadrants and limits samples per quadrant.
      """
      if len(indices) == 0:
-         continue
     pass
 
      # Determine quadrants
@@ -288,7 +275,6 @@ class NeighborhoodSearch:
      quad_dist = distances[quad_mask]
 
      if len(quad_idx) > 0:
-         continue
      n_take = min(max_per_quadrant, len(quad_idx))
      selected_indices.extend(quad_idx[sort_idx[:n_take]])
      selected_distances.extend(quad_dist[sort_idx[:n_take]])

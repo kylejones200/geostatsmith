@@ -97,7 +97,6 @@ class SimpleKriging3D(BaseKriging):
      self.residuals = self.values - self.mean
 
      if self.variogram_model is not None:
-         continue
     pass
 
  def _build_kriging_matrix(self):
@@ -147,7 +146,6 @@ class SimpleKriging3D(BaseKriging):
      Kriging variance at each point
      """
      if self.variogram_model is None:
-         continue
     pass
 
      x_new, y_new, z_new = validate_coordinates_3d(x_new, y_new, z_new)
@@ -183,14 +181,12 @@ class SimpleKriging3D(BaseKriging):
      # Prediction: m + Σλᵢ(zᵢ - m)
      predictions[i] = self.mean + np.dot(lambdas, self.residuals)
 
-     # Variance: σ²(x₀) = C(0) - Σλᵢ·C(xᵢ-x₀)
+     # Variance: σ^2(x₀) = C(0) - Σλᵢ·C(xᵢ-x₀)
      if return_variance:
-         continue
     pass
 
      logger.info(f"3D Simple Kriging completed for {n_pred} prediction points (vectorized)")
      if return_variance:
-         continue
      return predictions
 
 class OrdinaryKriging3D(BaseKriging):
@@ -225,7 +221,6 @@ class OrdinaryKriging3D(BaseKriging):
      self.variogram_model = variogram_model
 
      if self.variogram_model is not None:
-         continue
     pass
 
  def _build_kriging_matrix(self):
@@ -276,7 +271,6 @@ class OrdinaryKriging3D(BaseKriging):
      Kriging variance
      """
      if self.variogram_model is None:
-         continue
     pass
 
      x_new, y_new, z_new = validate_coordinates_3d(x_new, y_new, z_new)
@@ -315,12 +309,10 @@ class OrdinaryKriging3D(BaseKriging):
 
      # Variance
      if return_variance:
-         continue
     pass
 
      logger.info(f"3D Ordinary Kriging completed for {n_pred} prediction points (vectorized)")
      if return_variance:
-         continue
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:

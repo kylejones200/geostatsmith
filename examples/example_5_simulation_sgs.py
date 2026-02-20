@@ -238,7 +238,7 @@ ax11.hist(V, bins=15, alpha=0.5, label="Original Data", density=True, edgecolor=
 # Remove top and right spines
 ax11.hist(V, bins)
 
-ax11.hist()
+ax11.hist(
     Mean_sgs.flatten(),
     bins=15,
     alpha=0.5,
@@ -246,14 +246,13 @@ ax11.hist()
     density=True,
     edgecolor="black",
 )
-ax11.hist()
+ax11.hist(
     Z_ok.flatten(), bins=15, alpha=0.5, label="OK", density=True, edgecolor="black"
 )
 ax11.set_xlabel("V (ppm)")
 ax11.set_ylabel("Density")
 ax11.set_title("Histogram Comparison", fontweight="bold", fontsize=11)
 # Remove top and right spines
-ax11.set_title("Histogram Comparison", fontweight)
 
 ax11.legend()
 

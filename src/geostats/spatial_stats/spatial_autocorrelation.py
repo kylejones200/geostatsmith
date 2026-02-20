@@ -2,7 +2,6 @@
     Spatial autocorrelation measures.
 
 Provides tools for measuring spatial autocorrelation:
-    continue
 - Moran'
 - Geary'
 
@@ -77,7 +76,7 @@ def morans_i(
  """
      Moran'
  
- I = (n / W) * Σᵢ Σ wᵢ(zᵢ - z̄)(z - z̄) / Σᵢ(zᵢ - z̄)²
+ I = (n / W) * Σᵢ Σ wᵢ(zᵢ - z̄)(z - z̄) / Σᵢ(zᵢ - z̄)^2
 
  Where:
      pass
@@ -117,7 +116,6 @@ def morans_i(
  W = np.sum(W_matrix)
 
  if W == 0:
-     continue
  return np.nan, np.nan
 
  # Deviations from mean
@@ -206,7 +204,7 @@ def gearys_c(
  """
      Geary'
  
- C = ((n-1) / (2W)) * Σᵢ Σ wᵢ(zᵢ - z)² / Σᵢ(zᵢ - z̄)²
+ C = ((n-1) / (2W)) * Σᵢ Σ wᵢ(zᵢ - z)^2 / Σᵢ(zᵢ - z̄)^2
 
  Geary's C is inversely related to Moran's I but emphasizes
  differences between pairs rather than deviations from the mean.
@@ -242,7 +240,6 @@ def gearys_c(
  W = np.sum(W_matrix)
 
  if W == 0:
-     continue
  return np.nan, np.nan
 
  # Geary'

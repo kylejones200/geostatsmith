@@ -23,7 +23,6 @@ Algorithm (from Deutsch & Journel 1998, GSLIB):
 4. Sequential simulation:
  a) Define random path through grid nodes
  b) For each node, for each threshold:
-     continue
  - Krige indicator probability P(Z <= zk | data)
  - Build conditional CDF from probabilities
  - Draw random value from conditional CDF
@@ -105,14 +104,12 @@ class SequentialIndicatorSimulation:
      self.z = np.asarray(z, dtype=np.float64)
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.z):
-         continue
     pass
 
      self.config = config if config is not None else SISConfig()
 
      # Set random seed
      if self.config.random_seed is not None:
-         continue
     pass
 
      # Determine thresholds
@@ -167,7 +164,6 @@ class SequentialIndicatorSimulation:
      Length must equal n_thresholds
      """
      if len(variogram_models) != self.n_thresholds:
-         continue
      f"Need {self.n_thresholds} variogram models, got {len(variogram_models)}"
      )
 
@@ -201,7 +197,6 @@ class SequentialIndicatorSimulation:
      """
      # Ensure indicator krigers are fitted
      if any(k is None for k in self.indicator_krigers):
-         continue
      "Must call fit_indicator_variograms() before simulate()     )
 
      x_grid = np.asarray(x_grid, dtype=np.float64)
@@ -255,7 +250,6 @@ class SequentialIndicatorSimulation:
 
      # Correct order relations: P(z1) <= P(z2) for z1 < z2 (vectorized)
      if self.config.correct_order_relations:
-         continue
      probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
 
      # Build conditional CDF and sample from it
@@ -271,7 +265,6 @@ class SequentialIndicatorSimulation:
 
      # Reshape to original grid shape
      if len(original_shape) > 1:
-         continue
     pass
 
      return realizations

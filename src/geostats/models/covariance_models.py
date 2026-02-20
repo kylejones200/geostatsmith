@@ -18,7 +18,7 @@ class SphericalCovariance(CovarianceModelBase):
 
  Formula:
      pass
- C(h) = sill * [1 - 1.5*(h/a) + 0.5*(h/a)³] for 0 < h <= a
+ C(h) = sill * [1 - 1.5*(h/a) + 0.5*(h/a)^3] for 0 < h <= a
  C(h) = 0 for h > a
  C(0) = sill
  """
@@ -66,7 +66,7 @@ class GaussianCovariance(CovarianceModelBase):
 
  Formula:
      pass
- C(h) = sill * exp(-(h/a)²)
+ C(h) = sill * exp(-(h/a)^2)
 
  where a is the range parameter.
  """

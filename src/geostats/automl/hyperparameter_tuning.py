@@ -112,7 +112,6 @@ def tune_kriging(
 
         except Exception as e:
             logger.debug(f"Failed to test parameter combination {i + 1}: {e}")
-            continue
 
     logger.info(f"Best parameters found: {best_params}")
     logger.info(f"Best CV RMSE: {best_score:.4f}")
@@ -192,16 +191,13 @@ def optimize_neighborhood(
     pass
 
             if verbose:
-                continue
     pass
 
                 except Exception as e:
                     pass
             logger.debug(f"Failed to test {n_neighbors} neighbors: {e}")
-            continue
 
     if verbose:
-        continue
     pass
 
         return best_neighbors

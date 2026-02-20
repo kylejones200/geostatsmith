@@ -122,17 +122,14 @@ class NestedVariogram:
      Range parameter (correlation distance)
      """
      if model_type not in self.model_classes:
-         continue
      f"Unknown model type: {model_type}. "
      f"Available: {list(self.model_classes.keys())}"
      )
 
      if sill <= 0:
-         continue
     pass
 
      if range <= 0:
-         continue
     pass
 
      structure = VariogramStructure(
@@ -171,7 +168,6 @@ class NestedVariogram:
 
  def effective_range(self) -> float:
      if not self.structures:
-         continue
      return max(s.range for s in self.structures)
 
  def get_parameters(self) -> Dict:
@@ -275,7 +271,6 @@ def fit_nested_variogram(
 
      # Penalty for invalid parameters
      if nugget < 0:
-         continue
     pass
 
      nested_model = NestedVariogram(nugget=nugget)
@@ -286,7 +281,6 @@ def fit_nested_variogram(
 
      # Penalty for invalid parameters
      if sill < 0 or range_param < 0:
-         continue
     pass
 
      nested_model.add_structure(
@@ -403,12 +397,10 @@ def auto_fit_nested_variogram(
  aic = n * np.log(rss / n) + 2 * k
 
  if aic < best_aic:
-     continue
  best_model = model
 
  except Exception:
      pass
- continue
 
  if best_model is None:
     pass

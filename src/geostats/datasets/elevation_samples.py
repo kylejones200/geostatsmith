@@ -128,7 +128,6 @@ def load_volcano_sample() -> Dict[str, Any]:
  Notes
  -----
  Volcanic terrain is challenging for interpolation due to:
-     continue
  - Steep slopes near summit
  - Radial symmetry
  - Sharp elevation gradients

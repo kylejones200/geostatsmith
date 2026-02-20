@@ -42,7 +42,6 @@ def interactive_comparison(
  >>> fig.show()
  """
  if not PLOTLY_AVAILABLE:
-     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -58,7 +57,7 @@ def interactive_comparison(
  # Create subplots
  fig = make_subplots(
  rows=2, cols=2,
- subplot_titles=('RMSE (lower is better)', 'R² (higher is better)',
+ subplot_titles=('RMSE (lower is better)', 'R^2 (higher is better)',
  'MAE (lower is better)', 'Computation Time'),
  specs=[[{'type': 'bar'}, {'type': 'bar'}],
  [{'type': 'bar'}, {'type': 'bar'}]]
@@ -70,9 +69,9 @@ def interactive_comparison(
  row=1, col=1
  )
 
- # R²
+ # R^2
  fig.add_trace(
- go.Bar(x=methods, y=r2_vals, name='R²', marker_color='lightseagreen'),
+ go.Bar(x=methods, y=r2_vals, name='R^2', marker_color='lightseagreen'),
  row=1, col=2
  )
 
@@ -119,7 +118,6 @@ def interactive_cross_validation(
  fig : plotly Figure
  """
  if not PLOTLY_AVAILABLE:
-     continue
  "plotly is required for interactive plots. "
  "Install with: pip install plotly"
  )
@@ -178,7 +176,7 @@ def interactive_cross_validation(
  metrics_text = f"<b>Metrics:</b><br>"
  metrics_text += f"RMSE: {rmse:.3f}<br>"
  metrics_text += f"MAE: {mae:.3f}<br>"
- metrics_text += f"R²: {r2:.3f}"
+ metrics_text += f"R^2: {r2:.3f}"
 
  fig.add_annotation(
  xref="paper", yref="paper",

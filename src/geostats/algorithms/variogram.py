@@ -4,7 +4,7 @@ Experimental variogram calculation algorithms
 The experimental variogram (or semivariogram) estimates spatial correlation
 from sample data using Matheron's estimator:
 
- γ(h) = 1/(2*N(h)) * Σ[z(xi) - z(xi+h)]²
+ γ(h) = 1/(2*N(h)) * Σ[z(xi) - z(xi+h)]^2
 
 where N(h) is the number of pairs separated by distance h.
 """
@@ -123,7 +123,7 @@ def experimental_variogram_directional(
     Values at sample points
     angle : float
     Direction angle in degrees (0-360)
-    0° = East, 90° = North
+    0 degrees = East, 90 degrees = North
     tolerance : float
     Angular tolerance in degrees
     n_lags : int
@@ -310,7 +310,7 @@ def robust_variogram(
                 mean_fourth_root = np.mean(z_diff ** 0.5)
                 gamma[i] = (mean_fourth_root ** 4) / (0.457 + 0.494 / n_pairs_lag)
             elif estimator == "dowd":
-                # γ(h) = 2.198 * median(|z_i - z_j|)²
+                # γ(h) = 2.198 * median(|z_i - z_j|)^2
                 median_diff = np.median(z_diff)
                 gamma[i] = 2.198 * (median_diff ** 2)
             else:
@@ -337,7 +337,7 @@ def madogram(
     classical estimator.
 
     Formula:
-    γ(h) = 0.5 * [median(|Z(xi) - Z(xi+h)|)]²
+    γ(h) = 0.5 * [median(|Z(xi) - Z(xi+h)|)]^2
 
     The factor of 0.5 makes it comparable to the classical variogram
     under normality assumptions.
@@ -412,7 +412,7 @@ def madogram(
             # Extract differences for this lag
             diffs = z_diff_abs[mask]
 
-            # Madogram: 0.5 * [median(|differences|)]²
+            # Madogram: 0.5 * [median(|differences|)]^2
             median_diff = np.median(diffs)
             gamma[i] = 0.5 * (median_diff ** 2)
             n_pairs[i] = n_pairs_lag

@@ -79,7 +79,6 @@ class Cokriging(BaseKriging):
 
      # Build cokriging matrix
      if all([variogram_primary, variogram_secondary, cross_variogram]):
-         continue
     pass
 
  def _build_cokriging_matrix(self) -> None:
@@ -168,7 +167,6 @@ class Cokriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if any([v is None for v in [self.variogram_primary, self.variogram_secondary, self.cross_variogram]]):
-         continue
     pass
 
      x_pred, y_pred = validate_coordinates(x, y)
@@ -220,7 +218,6 @@ class Cokriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_primary)
      predictions[i] = self.z_primary[nearest_idx]
      if return_variance:
-         continue
 
      # Extract weights
      weights_primary = solution[:n1]
@@ -234,7 +231,6 @@ class Cokriging(BaseKriging):
 
      # Variance
      if return_variance:
-         continue
      variances[i] = max(0.0, variances[i])
 
      if return_variance:
@@ -301,7 +297,6 @@ class CollocatedCokriging(BaseKriging):
      self.correlation = correlation_coefficient
 
      if variogram_primary is not None:
-         continue
     pass
 
  def _build_kriging_matrix(self) -> None:
@@ -345,7 +340,6 @@ class CollocatedCokriging(BaseKriging):
      Kriging variance
      """
      if self.variogram_model is None:
-         continue
     pass
 
      # First do ordinary kriging
@@ -365,7 +359,6 @@ class CollocatedCokriging(BaseKriging):
 
      # Adjusted variance (reduced by correlation)
      if return_variance:
-         continue
      return predictions, variances
      else:
          pass

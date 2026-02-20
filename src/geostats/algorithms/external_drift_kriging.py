@@ -88,11 +88,9 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_data = np.asarray(covariates_data, dtype=np.float64)
      if covariates_data.ndim == 1:
-         continue
     pass
 
      if len(covariates_data) != len(self.x):
-         continue
      f"covariates_data must have same length as x,y,z. "
      f"Got {len(covariates_data)} vs {len(self.x)}"
      )
@@ -102,7 +100,6 @@ class ExternalDriftKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
-         continue
     pass
 
  def _build_kriging_matrix(self) -> None:
@@ -116,9 +113,9 @@ class ExternalDriftKriging(BaseKriging):
 
  where:
      pass
- - Γ is the n×n variogram matrix
+ - Γ is the n*n variogram matrix
  - 1 is vector of ones
- - Y is the n×n_covariates matrix of external covariate values
+ - Y is the n*n_covariates matrix of external covariate values
  - y₀ is the covariate value(s) at prediction location
  """
  n = len(self.x)
@@ -134,7 +131,7 @@ class ExternalDriftKriging(BaseKriging):
  gamma_matrix = self.variogram_model(dist_matrix)
 
  # Build full kriging matrix
- # Size: (n + 1 + n_cov) × (n + 1 + n_cov)
+ # Size: (n + 1 + n_cov) * (n + 1 + n_cov)
  size = n + 1 + n_cov
  K = np.zeros((size, size))
 
@@ -182,7 +179,6 @@ class ExternalDriftKriging(BaseKriging):
      Kriging variance at each prediction point
      """
      if self.variogram_model is None:
-         continue
     pass
 
      x_new, y_new = validate_coordinates(x_new, y_new)
@@ -193,17 +189,14 @@ class ExternalDriftKriging(BaseKriging):
      # Handle covariates
      covariates_new = np.asarray(covariates_new, dtype=np.float64)
      if covariates_new.ndim == 1:
-         continue
     pass
 
      if len(covariates_new) != n_pred:
-         continue
      f"covariates_new must match length of x_new, y_new. "
      f"Got {len(covariates_new)} vs {n_pred}"
      )
 
      if covariates_new.shape[1] != n_cov:
-         continue
      f"covariates_new must have {n_cov} columns (covariates). "
      f"Got {covariates_new.shape[1]}"
      )
@@ -241,13 +234,11 @@ class ExternalDriftKriging(BaseKriging):
      # Prediction: Σλᵢzᵢ
      predictions[i] = np.dot(weights[:n_data], self.z)
 
-     # Variance: σ²(x₀) = Σλᵢγ(xᵢ-x₀) + μ₁ + Σμₖ₊₁Yₖ(x₀)
+     # Variance: σ^2(x₀) = Σλᵢγ(xᵢ-x₀) + μ₁ + Σμₖ₊₁Yₖ(x₀)
      if return_variance:
-         continue
      variances[i] = np.dot(weights, rhs)
 
      if return_variance:
-         continue
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
@@ -258,7 +249,7 @@ class ExternalDriftKriging(BaseKriging):
  errors : np.ndarray
  Prediction errors at each sample location
  metrics : Dict[str, float]
- Error statistics (MSE, RMSE, MAE, R², bias)
+ Error statistics (MSE, RMSE, MAE, R^2, bias)
  """
  n = len(self.x)
  predictions = np.zeros(n)

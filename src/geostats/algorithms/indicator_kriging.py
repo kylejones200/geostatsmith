@@ -67,7 +67,6 @@ class IndicatorKriging(BaseKriging):
 
      # Build kriging matrix
      if self.variogram_model is not None:
-         continue
     pass
 
  def _build_kriging_matrix(self) -> None:
@@ -117,7 +116,6 @@ class IndicatorKriging(BaseKriging):
      Kriging variance (if return_variance=True)
      """
      if self.variogram_model is None:
-         continue
     pass
 
      x_pred, y_pred = validate_coordinates(x, y)
@@ -152,7 +150,6 @@ class IndicatorKriging(BaseKriging):
      nearest_idx = np.argmin(dist_to_samples)
      probabilities[i] = self.z[nearest_idx]
      if return_variance:
-         continue
 
      weights = solution[:self.n_points]
      lagrange = solution[self.n_points]
@@ -165,7 +162,6 @@ class IndicatorKriging(BaseKriging):
 
      # Kriging variance
      if return_variance:
-         continue
      variances[i] = max(0.0, variances[i])
 
      if return_variance:
@@ -253,7 +249,6 @@ class MultiThresholdIndicatorKriging:
 
      # Define thresholds
      if thresholds is None:
-         continue
      quantiles = np.linspace(0.1, 0.9, n_thresholds)
      self.thresholds = np.quantile(z, quantiles)
      else:
@@ -317,7 +312,6 @@ class MultiThresholdIndicatorKriging:
      Threshold values
      """
      if not self.kriging_objects:
-         continue
     pass
 
      n_pred = len(x)

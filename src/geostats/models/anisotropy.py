@@ -46,7 +46,6 @@ class AnisotropicModel:
      self.ratio = ratio
 
      if not (0 < ratio <= 1):
-         continue
     pass
 
  def __call__(
@@ -74,7 +73,6 @@ class AnisotropicModel:
      """
      if x2 is None:
      if y2 is None:
-         continue
     pass
 
      # Calculate anisotropic distances
@@ -115,7 +113,7 @@ class AnisotropicModel:
      return (
      f"AnisotropicModel("
      f"base={self.base_model.__class__.__name__}, "
-     f"angle={self.angle:.1f}°, "
+     f"angle={self.angle:.1f} degrees, "
      f"ratio={self.ratio:.3f})     )
 
 class DirectionalVariogram:
@@ -158,7 +156,7 @@ class DirectionalVariogram:
      ----------
      angle : float
      Direction angle in degrees (0-360)
-     0° = East, 90° = North
+     0 degrees = East, 90 degrees = North
      tolerance : float
      Angular tolerance in degrees (default 22.5)
      n_lags : int
@@ -215,7 +213,6 @@ class DirectionalVariogram:
      - 'ratio': Anisotropy ratio (minor/major)
      """
      if angles is None:
-         continue
     pass
 
      ranges = []

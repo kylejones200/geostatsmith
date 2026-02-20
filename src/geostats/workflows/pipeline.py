@@ -108,7 +108,6 @@ class AnalysisPipeline:
 
  try:
      if self.config.random_seed is not None:
-         continue
  self.logger.info(f"Random seed set to: {self.config.random_seed}")
 
  # Set visualization style
@@ -153,7 +152,6 @@ class AnalysisPipeline:
  break
  except UnicodeDecodeError:
      pass
- continue
  else:
     pass
 
@@ -257,7 +255,6 @@ class AnalysisPipeline:
     pass
 
      if self.config.preprocessing.transform == 'log':
-         continue
  self.z = self.transform.fit_transform(self.z)
 
  elif self.config.preprocessing.transform == 'boxcox':
@@ -276,7 +273,6 @@ class AnalysisPipeline:
     pass
 
      if self.config.preprocessing.declustering_method == 'cell':
-         continue
  self.logger.info(f"Optimal cell size: {info.get('optimal_cell_size', 'N/A')}")
  else:
     pass
@@ -339,7 +335,6 @@ class AnalysisPipeline:
  elif model_type == 'gaussian':
      else:
          pass
- continue
 
  # Fit the model
  fitted_model = fit_variogram_model(model, lags, gamma)
@@ -380,7 +375,6 @@ class AnalysisPipeline:
             pass
             
             if not self.config.variogram.manual_model:
-                continue
     pass
             
                 if (self.config.variogram.manual_nugget is None or)
@@ -592,7 +586,6 @@ with open(report_path, 'w') as f:
      val = np.sqrt(np.mean((self.cv_results['observed'] - self.cv_results['predicted'])**2))
  elif metric == 'mae':
      elif metric == 'r2':
-         continue
  ss_tot = np.sum((self.cv_results['observed'] - self.cv_results['observed'].mean())**2)
  val = 1 - ss_res / ss_tot
  elif metric == 'bias':

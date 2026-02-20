@@ -110,7 +110,6 @@ def parallel_kriging(
 
      # Combine results
      if return_variance:
-         continue
      variance = np.concatenate([r[1] for r in results])
      return predictions, variance
      else:
@@ -270,7 +269,7 @@ def parallel_variogram_fit(
  ... n_jobs=-1
  ... )
  >>> best_model = results['best_model']
- >>> logger.info(f"Best: {results['best_type']} (R² = {results['best_r2']:.3f})")
+ >>> logger.info(f"Best: {results['best_type']} (R^2 = {results['best_r2']:.3f})")
  """
  if model_types is None:
     pass
@@ -285,7 +284,7 @@ def parallel_variogram_fit(
  def fit_single_model(model_type):
          model = fit_variogram(lags, gamma, model_type=model_type)
 
-     # Compute R²
+     # Compute R^2
      gamma_fitted = model(lags)
      ss_res = np.sum((gamma - gamma_fitted)**2)
      ss_tot = np.sum((gamma - gamma.mean())**2)
@@ -315,7 +314,6 @@ def parallel_variogram_fit(
      successful = [r for r in fit_results if r['success']]
 
      if not successful:
-         continue
     pass
 
      best = max(successful, key=lambda x: x['r2'])

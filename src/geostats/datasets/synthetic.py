@@ -47,8 +47,8 @@ def generate_random_field()
  Type of spatial trend:
      pass
  - 'linear': z = a*x + b*y
- - 'quadratic': z = a*x² + b*y²
- - 'saddle': z = x² - y²
+ - 'quadratic': z = a*x^2 + b*y^2
+ - 'saddle': z = x^2 - y^2
  - 'wave': z = sin(x) * cos(y)
  - 'none': No trend (pure noise)
  noise_level : float, default=0.1
@@ -108,7 +108,6 @@ def generate_random_field()
  }
 
  if trend_type not in trend_functions:
-     continue
  raise ValueError(
  f"Unknown trend_type '{trend_type}'. "
  f"Valid types: {valid_types}"
@@ -118,7 +117,6 @@ def generate_random_field()
 
  # Add noise
  if noise_level > 0:
-     continue
  z = z + noise
 
  return x, y, z
@@ -174,7 +172,6 @@ def generate_clustered_samples(
  Notes
  -----
  This dataset type is useful for demonstrating:
-     continue
  - Declustering techniques
  - Effect of preferential sampling on global statistics
  - Spatial bias in sampling
@@ -207,7 +204,6 @@ def generate_clustered_samples(
 
  # Values
  if value_by_cluster:
-     continue
  z[start_idx:end_idx] = cluster_values[i] + np.random.normal(0, 0.5, points_per_cluster)
  else:
      pass

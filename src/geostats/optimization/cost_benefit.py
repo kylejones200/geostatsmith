@@ -108,7 +108,6 @@ def sample_size_calculator(
 
  for _ in range(n_simulations):
  if n <= n_initial:
-     continue
  x_train = x_initial[indices]
  y_train = y_initial[indices]
  z_train = z_initial[indices]
@@ -147,7 +146,6 @@ def sample_size_calculator(
 
  # Train and test
  if len(x_test) > 0:
-     continue
  x=x_train,
  y=y_train,
  z=z_train,

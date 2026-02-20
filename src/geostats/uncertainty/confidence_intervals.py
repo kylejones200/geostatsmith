@@ -154,7 +154,6 @@ def prediction_bands(
  >>> plt.plot(x_pred, bands['predictions'], 'b-', linewidth=2)
  >>> colors = ['lightblue', 'blue', 'darkblue']
  >>> for i, level in enumerate([0.68, 0.95, 0.99]):
-     continue
  ... plt.fill_between()
  ... x_pred,
  ... bands[f'lower_{level}'],

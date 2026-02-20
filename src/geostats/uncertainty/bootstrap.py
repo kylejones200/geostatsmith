@@ -116,7 +116,6 @@ def bootstrap_uncertainty(
  initial_pred, _ = krig.predict(x_pred, y_pred, return_variance=True)
 
  if method == 'residual':
-     continue
  z_fitted, _ = krig.predict(x, y, return_variance=True)
  residuals = z - z_fitted
 
@@ -222,7 +221,7 @@ def bootstrap_variogram(
  ... model_type='spherical',
  ... n_bootstrap=200
  ... )
- >>> logger.info(f"Range: {results['range_mean']:.2f} ± {results['range_std']:.2f}")
+ >>> logger.info(f"Range: {results['range_mean']:.2f} +/- {results['range_std']:.2f}")
  """
  n = len(x)
 
@@ -256,7 +255,6 @@ def bootstrap_variogram(
  except Exception:
      pass
  # Skip failed fits
- continue
 
  nuggets = np.array(nuggets)
  sills = np.array(sills)

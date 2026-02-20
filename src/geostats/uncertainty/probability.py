@@ -161,7 +161,6 @@ def conditional_probability(
  >>>
  >>> # Plot probability curves
  >>> for i, loc in enumerate([0, 100, 200]):
-     continue
  ... probs = [results[f'threshold_{t}'][loc] for t in thresholds]
  ... plt.plot(thresholds, probs, label=f'Location {loc}')
  """

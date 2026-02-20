@@ -96,7 +96,6 @@ def solve_kriging_system(
  method = "lu"
 
  if method not in solution_methods:
-     continue
  raise ValueError(
  f"Unknown solution method '{method}'. "
  f"Valid methods: {valid_methods}"

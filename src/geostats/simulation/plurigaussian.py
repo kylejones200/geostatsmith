@@ -143,24 +143,20 @@ class PlurigaussianSimulation:
      self.categories = np.asarray(categories, dtype=np.int32).flatten()
 
      if len(self.x) != len(self.y) or len(self.x) != len(self.categories):
-         continue
     pass
 
      # Setup configuration
      if config is None:
-         continue
      self.config = config
 
      # Validate variogram models
      if len(variogram_models) != config.n_gaussian_fields:
-         continue
      f"Number of variogram models ({len(variogram_models)}) must match "
      f"number of Gaussian fields ({config.n_gaussian_fields})     )
      self.variogram_models = variogram_models
 
      # Validate rule function
      if config.rule_function is None:
-         continue
      self.rule_function = config.rule_function
 
      # Setup categories
@@ -307,12 +303,10 @@ class PlurigaussianSimulation:
      realizations_categorical[r, :] = categorical_realization
 
      if (r + 1) % 10 == 0:
-         continue
     pass
 
      # Reshape to original grid shape if needed
      if len(original_shape) > 1:
-         continue
      self.config.n_realizations, *original_shape
      )
 
@@ -346,7 +340,6 @@ class PlurigaussianSimulation:
 
      # Flatten if needed
      if realizations.ndim > 2:
-         continue
     pass
 
      summary = {}

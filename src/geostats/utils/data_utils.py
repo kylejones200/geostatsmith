@@ -68,7 +68,6 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  Dictionary with keys: 'x', 'y', 'z', 'description'
  """
  if dataset == "walker_lake" or dataset == "walker_lake_v":
-     continue
  from ..datasets import load_walker_lake
  data = load_walker_lake()
  return {
@@ -79,7 +78,6 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
  }
 
  elif dataset == "walker_lake_u":
-     continue
  from ..datasets import load_walker_lake
  data = load_walker_lake()
  return {

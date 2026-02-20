@@ -104,7 +104,6 @@ def cell_declustering(
 
  # Generate cell sizes to try if not provided
  if cell_sizes is None:
-     continue
  min_size = max_range / 20
  max_size = max_range * 2
  cell_sizes = np.linspace(min_size, max_size, n_sizes)
@@ -211,7 +210,6 @@ def polygonal_declustering(
  n = len(x)
 
  if n < 2:
-     continue
  return np.array([float(n)]), {'method': 'single_point'}
 
  # Build KD-tree for efficient nearest neighbor search

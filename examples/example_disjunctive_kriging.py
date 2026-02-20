@@ -1,13 +1,9 @@
 """
-    Example: Disjunctive Kriging
-
-"""
+Example: Disjunctive Kriging
 
 Demonstrates disjunctive kriging for non-Gaussian data using Hermite polynomial expansions.
 
-
 Disjunctive kriging is particularly useful for:
-    pass
 - Skewed distributions (common in environmental data)
 - Non-Gaussian data where log-transformation is insufficient
 - Optimal non-linear prediction
@@ -48,14 +44,14 @@ def main():
     # Generate lognormal data (skewed distribution)
     # This simulates environmental data like pollutant concentrations
     spatial_trend = 0.1 * x + 0.05 * y
-    spatial_correlation = np.random.multivariate_normal()
+    spatial_correlation = np.random.multivariate_normal(
         np.zeros(n_samples),
-        np.exp()
+        np.exp(
             -np.sqrt((x[:, None] - x[None, :]) ** 2 + (y[:, None] - y[None, :]) ** 2)
             / 20
         ),
     )
-    z = np.exp()
+    z = np.exp(
         2
         + 0.5 * spatial_trend
         + 0.3 * spatial_correlation
@@ -189,10 +185,6 @@ def main():
     axes[1, 1].set_ylabel("Predicted Values")
     axes[1, 1].set_title(f"Cross-Validation (R² = {cv_metrics.get('R2', 0):.3f})")
     # Remove top and right spines
-    axes[1, 1].set_title(f")
-    R²
-    axes[1, 1].legend()
-    # Remove top and right spines
     axes[1, 1].legend()
 
     plt.tight_layout()
@@ -203,3 +195,4 @@ def main():
 
 
 if __name__ == "__main__":
+    main()

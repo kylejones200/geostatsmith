@@ -14,7 +14,7 @@ Mathematical Framework:
     pass
 For a space-time random field Z(s, t) where s is location and t is time,
 the space-time variogram is:
- γ(h, u) = ½ E[(Z(s, t) - Z(s+h, t+u))²]
+ γ(h, u) = ½ E[(Z(s, t) - Z(s+h, t+u))^2]
 
 where:
     pass
@@ -275,17 +275,17 @@ class GneitingModel(SpaceTimeVariogramModel):
 
  Covariance form:
      pass
- C(h, u) = σ² / (a(u)^d) · ϕ(h² / a(u)²) · ψ(u)
+ C(h, u) = σ^2 / (a(u)^d) · ϕ(h^2 / a(u)^2) · ψ(u)
 
  where:
      pass
  - a(u) = (a₀ + u^α)^(1/α) : temporal scaling function
  - ϕ: spatial correlation function (e.g., exponential)
  - ψ: temporal correlation function
- - σ²: variance
+ - σ^2: variance
  - d: spatial dimension
 
- Variogram: γ(h, u) = σ² - C(h, u)
+ Variogram: γ(h, u) = σ^2 - C(h, u)
 
  Properties:
      pass
@@ -350,7 +350,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      a_u: npt.NDArray[np.float64]
      ) -> npt.NDArray[np.float64]:
          pass
-     """Compute spatial correlation ϕ(h²/a(u)²)"""
+     """Compute spatial correlation ϕ(h^2/a(u)^2)"""
      # Using exponential correlation as default
      # Can be extended to other forms (Gaussian, Matérn, etc.)
      scaled_h = h / (a_u * self.spatial_range)
@@ -396,7 +396,7 @@ class GneitingModel(SpaceTimeVariogramModel):
      # Covariance
      cov = self.sigma2 * spatial_term * temporal_term
 
-     # Variogram: γ = σ² - C
+     # Variogram: γ = σ^2 - C
      gamma = self.sigma2 - cov
 
      return gamma
@@ -463,13 +463,11 @@ def create_spacetime_model()
  }
 
  if model_type not in models:
-     continue
  f"Unknown model_type: {model_type}. "
  f"Available: {list(models.keys())}"
  )
 
  if model_type in ['separable', 'product_sum']:
-     continue
  raise ValueError(f"{model_type} model requires temporal_model")
  return models[model_type](spatial_model, temporal_model, **kwargs)
  else:

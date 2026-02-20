@@ -105,7 +105,6 @@ def k_fold_cross_validation(
 
  # Execute folds (parallel or serial)
  if n_jobs is not None and n_jobs != 0:
-     continue
  n_workers = cpu_count() if n_jobs == -1 else min(n_jobs, cpu_count())
  logger.info(f"Running {n_folds}-fold cross-validation in parallel ({n_workers} workers)")
 
@@ -125,7 +124,7 @@ def k_fold_cross_validation(
  all_true[test_idx] = true
 
  metrics = calculate_metrics(all_true, all_predictions)
- logger.info(f"K-fold CV complete. RMSE: {metrics.get('RMSE', 0):.4f}, R²: {metrics.get('R2', 0):.4f}")
+ logger.info(f"K-fold CV complete. RMSE: {metrics.get('RMSE', 0):.4f}, R^2: {metrics.get('R2', 0):.4f}")
 
  return {
  'predictions': all_predictions,
@@ -210,7 +209,6 @@ def spatial_cross_validation(
 
  # Execute blocks (parallel or serial)
  if n_jobs is not None and n_jobs != 0:
-     continue
  n_workers = cpu_count() if n_jobs == -1 else min(n_jobs, cpu_count())
  logger.info(f"Running spatial CV with {n_blocks}x{n_blocks} blocks in parallel ({n_workers} workers)")
 
@@ -232,14 +230,13 @@ def spatial_cross_validation(
 
  for args in block_args:
  if len(pred) > 0:
-     continue
  all_true.extend(true)
 
  all_predictions = np.array(all_predictions, dtype=np.float64)
  all_true = np.array(all_true, dtype=np.float64)
 
  metrics = calculate_metrics(all_true, all_predictions)
- logger.info(f"Spatial CV complete. RMSE: {metrics.get('RMSE', 0):.4f}, R²: {metrics.get('R2', 0):.4f}")
+ logger.info(f"Spatial CV complete. RMSE: {metrics.get('RMSE', 0):.4f}, R^2: {metrics.get('R2', 0):.4f}")
 
  return {
  'predictions': all_predictions,

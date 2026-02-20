@@ -2,7 +2,6 @@
     Alternative interpolation method implementations.
 
 Provides non-kriging interpolation methods for comparison:
-    continue
 - Inverse Distance Weighting (IDW)
 - Radial Basis Function (RBF) interpolation
 - Natural Neighbor interpolation
@@ -31,17 +30,16 @@ DEFAULT_MAX_NEIGHBORS = 12
 MIN_DISTANCE = 1e-10
 
 def inverse_distance_weighting(
- y_data: npt.NDArray[np.float64],
- z_data: npt.NDArray[np.float64],
- x_pred: npt.NDArray[np.float64],
- y_pred: npt.NDArray[np.float64],
- power: float = DEFAULT_IDW_POWER,
- max_neighbors: Optional[int] = None,
- radius: Optional[float] = None,
-    ) -> npt.NDArray[np.float64]:
-        pass
- """
-     Inverse Distance Weighting (IDW) interpolation.
+    y_data: npt.NDArray[np.float64],
+    z_data: npt.NDArray[np.float64],
+    x_pred: npt.NDArray[np.float64],
+    y_pred: npt.NDArray[np.float64],
+    power: float = DEFAULT_IDW_POWER,
+    max_neighbors: Optional[int] = None,
+    radius: Optional[float] = None,
+) -> npt.NDArray[np.float64]:
+    """
+    Inverse Distance Weighting (IDW) interpolation.
 
  Simple but effective method where predicted values are weighted averages
  of nearby points, with weights inversely proportional to distance.
@@ -111,13 +109,10 @@ def inverse_distance_weighting(
 
  # Find neighbors
  if radius is not None:
-     continue
  indices = tree.query_ball_point(pred_point, radius)
  if len(indices) == 0:
-     continue
  indices = [tree.query(pred_point)[1]]
  elif max_neighbors is not None:
-     continue
  distances, indices = tree.query(pred_point, k=min(max_neighbors, len(x_data)))
  if isinstance(indices, np.integer):
  else:
@@ -133,7 +128,6 @@ def inverse_distance_weighting(
 
  # Handle coincident points
  if np.any(distances < MIN_DISTANCE):
-     continue
  coincident_idx = np.argmin(distances)
  z_pred[i] = z_neighbors[coincident_idx]
  else:
@@ -321,7 +315,6 @@ def natural_neighbor_interpolation(
  simplex_idx = tri.find_simplex(pred_point)
 
  if simplex_idx == -1:
-     continue
  tree = cKDTree(data_points)
  _, nearest_idx = tree.query(pred_point)
  z_pred[i] = z_data[nearest_idx]
@@ -370,7 +363,6 @@ def _barycentric_coordinates(
  denom = d00 * d11 - d01 * d01
 
  if abs(denom) < MIN_DISTANCE:
-     continue
  return np.array([1.0/3.0, 1.0/3.0, 1.0/3.0])
 
  v = (d11 * d20 - d01 * d21) / denom

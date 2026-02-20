@@ -1,16 +1,12 @@
 """
-    Recipe 2: Method Comparison for Spatial Data
+Recipe 2: Method Comparison for Spatial Data
 
 This recipe demonstrates how to compare different interpolation methods
 systematically using cross-validation and performance metrics.
 
-"""
-
 Inspired by: Python Recipes for Earth Sciences (Trauth 2024), Sections 7.6-7.7
 
-
 Key Concepts:
-    pass
 - Cross-validation for method selection
 - Speed vs accuracy tradeoffs
 - Visualization of interpolation quality
@@ -20,13 +16,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from geostats.datasets import generate_elevation_like_data
-from geostats.comparison import ()
+from geostats.comparison import (
+    compare_interpolation_methods,
+    cross_validate_interpolation,
+)
 import logging
 
 logger = logging.getLogger(__name__)
- compare_interpolation_methods,
- cross_validate_interpolation,
-)
 
 logger.info("RECIPE 2: SYSTEMATIC METHOD COMPARISON")
 
@@ -60,12 +56,12 @@ X_grid, Y_grid = np.meshgrid(x_pred, y_pred)
 logger.info("\nComparing interpolation methods...")
 methods = ['ordinary_kriging', 'simple_kriging', 'idw', 'rbf', 'natural_neighbor']
 
-results = compare_interpolation_methods()
- x, y, z,
- X_grid.flatten(), Y_grid.flatten(),
- methods=methods,
- cross_validate=True,
- benchmark_speed=True,
+results = compare_interpolation_methods(
+    x, y, z,
+    X_grid.flatten(), Y_grid.flatten(),
+    methods=methods,
+    cross_validate=True,
+    benchmark_speed=True,
  plot=False
 )
 
@@ -148,7 +144,8 @@ ax_tradeoff.scatter(speed_values, rmse_values, s=200, c=colors, alpha=0.6,
 
 # Add method labels
 for i, method in enumerate(methods):
- fontsize=8, ha='center', va='center')
+    ax_tradeoff.annotate(method, (speed_values[i], rmse_values[i]),
+                        fontsize=8, ha='center', va='center')
 
 ax_tradeoff.set_xlabel('Computation Time (seconds)')
 ax_tradeoff.set_ylabel('RMSE')
@@ -172,13 +169,14 @@ logger.info(f"{'Method':<25} {'RMSE':>10} {'R²':>8} {'MAE':>10} {'Time (s)':>12
 logger.info("-" * 70)
 
 for method in methods:
- timing = results['speed_results'][method]['mean_time']
+    metrics = results['cv_results'][method]
+    timing = results['speed_results'][method]['mean_time']
 
- # Highlight best
- marker = " " if method == methods[best_idx] else " "
+    # Highlight best
+    marker = " " if method == methods[best_idx] else " "
 
- logger.info(f"{method:<25} {metrics['rmse']:>10.3f} {metrics['r2']:>8.3f} ")
- f"{metrics['mae']:>10.3f} {timing:>12.4f}{marker}")
+    logger.info(f"{method:<25} {metrics['rmse']:>10.3f} {metrics['r2']:>8.3f} "
+                f"{metrics['mae']:>10.3f} {timing:>12.4f}{marker}")
 
 # Recommendations
 logger.info("\nRECOMMENDATIONS")

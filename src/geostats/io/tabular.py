@@ -103,7 +103,6 @@ def read_csv_spatial(
  extra = None
  if additional_cols:
  if missing_extra:
-     continue
  extra = df.loc[mask, additional_cols].copy()
 
  return x, y, z, extra
@@ -264,7 +263,6 @@ def read_excel_spatial(
  extra = None
  if additional_cols:
  if missing_extra:
-     continue
  extra = df.loc[mask, additional_cols].copy()
 
  return x, y, z, extra

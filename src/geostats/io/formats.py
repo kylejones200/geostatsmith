@@ -78,7 +78,6 @@ def read_netcdf()
   If file doesn't exist'
  """
  if not NETCDF_AVAILABLE:
-     continue
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
@@ -103,7 +102,6 @@ def read_netcdf()
  # Handle time dimension if present
  if time_index is not None and 'time' in z_data.dimensions:
  elif len(z_data.shape) == 3:
-     continue
  z = z_data[0, :, :].data
  else:
     pass
@@ -174,7 +172,6 @@ def write_netcdf(
   If netCDF4 is not installed
  """
  if not NETCDF_AVAILABLE:
-     continue
  "netCDF4 is required for NetCDF I/O. "
  "Install with: pip install netCDF4"
  )
@@ -246,7 +243,6 @@ def read_geojson()
   If file doesn't exist'
  """
  if not GEOPANDAS_AVAILABLE:
-     continue
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
  )
@@ -306,7 +302,6 @@ def write_geojson(
   If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
-     continue
  "geopandas is required for GeoJSON I/O. "
  "Install with: pip install geopandas"
  )
@@ -420,7 +415,6 @@ def to_geopandas(
   If geopandas is not installed
  """
  if not GEOPANDAS_AVAILABLE:
-     continue
  "geopandas is required. "
  "Install with: pip install geopandas"
  )

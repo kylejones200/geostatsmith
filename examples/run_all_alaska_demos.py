@@ -59,69 +59,63 @@ for i, demo in enumerate(demos, 1):
  logger.info(f"Running {demo['file']}...")
  start_time = datetime.now()
 
- try:
-     pass
- result = subprocess.run()
- [sys.executable, str(script_path)],
- cwd=EXAMPLES_DIR.parent,
- capture_output=True,
- text=True,
- timeout=300 # 5 minute timeout
- )
+try:
+    result = subprocess.run(
+        [sys.executable, str(script_path)],
+        cwd=EXAMPLES_DIR.parent,
+        capture_output=True,
+        text=True,
+        timeout=300  # 5 minute timeout
+    )
 
- end_time = datetime.now()
- duration = (end_time - start_time).total_seconds()
+    end_time = datetime.now()
+    duration = (end_time - start_time).total_seconds()
 
- # Save output
- with open(output_path, 'w') as f:
-     pass
- f.write(f"Script: {demo['file']}\n")
- f.write(f"Started: {start_time.strftime('%Y-%m-%d %H:%M:%S')}\n")
- f.write(f"Duration: {duration:.1f} seconds\n")
- f.write("\n")
- f.write("STDOUT:\n")
- f.write(result.stdout)
- f.write("\n\nSTDERR:\n")
- f.write(result.stderr)
- f.write("\n\nExit Code: " + str(result.returncode))
+    # Save output
+    with open(output_path, 'w') as f:
+        f.write(f"Script: {demo['file']}\n")
+        f.write(f"Started: {start_time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"Duration: {duration:.1f} seconds\n")
+        f.write("\n")
+        f.write("STDOUT:\n")
+        f.write(result.stdout)
+        f.write("\n\nSTDERR:\n")
+        f.write(result.stderr)
+        f.write("\n\nExit Code: " + str(result.returncode))
 
- if result.returncode == 0:
-     continue
- logger.info(f" Output saved to: {output_path.name}")
- results.append({
- 'demo': demo['name'],
- 'status': 'SUCCESS',
- 'duration': duration,
- 'output': output_path
- })
- else:
-     pass
- logger.info(f" Check output file for details: {output_path.name}")
- results.append({
- 'demo': demo['name'],
- 'status': 'FAILED',
- 'exit_code': result.returncode,
- 'output': output_path
- })
+    if result.returncode == 0:
+        logger.info(f" Output saved to: {output_path.name}")
+        results.append({
+            'demo': demo['name'],
+            'status': 'SUCCESS',
+            'duration': duration,
+            'output': output_path
+        })
+    else:
+        logger.info(f" Check output file for details: {output_path.name}")
+        results.append({
+            'demo': demo['name'],
+            'status': 'FAILED',
+            'exit_code': result.returncode,
+            'output': output_path
+        })
 
- except subprocess.TimeoutExpired:
-     pass
- logger.info(f"⏱ TIMEOUT - Demo took longer than 5 minutes")
- results.append({
- 'demo': demo['name'],
- 'status': 'TIMEOUT',
- 'output': None
- })
+except subprocess.TimeoutExpired:
+    logger.info(f"⏱ TIMEOUT - Demo took longer than 5 minutes")
+    results.append({
+        'demo': demo['name'],
+        'status': 'TIMEOUT',
+        'output': None
+    })
 
- except Exception as e:
-     pass
- logger.error(f" ERROR - {str(e)}")
- results.append({
- 'demo': demo['name'],
- 'status': 'ERROR',
- 'error': str(e),
- 'output': None
- })
+except Exception as e:
+    logger.error(f" ERROR - {str(e)}")
+    results.append({
+        'demo': demo['name'],
+        'status': 'ERROR',
+        'error': str(e),
+        'output': None
+    })
 
 # Summary
 logger.info("SUMMARY")
@@ -135,27 +129,24 @@ logger.error(f"Failed: {failed_count}")
 
 logger.info("Results:")
 for r in results:
- if 'duration' in r:
- else:
-    pass
-
- else:
-    pass
+    if 'duration' in r:
+        logger.info(f"  {r['demo']}: {r['status']} ({r['duration']:.1f}s)")
+    else:
+        logger.info(f"  {r['demo']}: {r['status']}")
 
 # Create summary file
 summary_path = OUTPUT_DIR / 'SUMMARY.txt'
 with open(summary_path, 'w') as f:
-    pass
+    for r in results:
+        f.write(f"{r['demo']}\n")
+        f.write(f"Status: {r['status']}\n")
+        if 'duration' in r:
+            f.write(f"Duration: {r['duration']:.1f}s\n")
+        if r.get('output'):
+            f.write(f"Output: {r['output']}\n")
+        f.write("\n")
 
- for r in results:
-     continue
- f.write(f"Status: {r['status']}\n")
- if 'duration' in r:
- if r['output']:
-     continue
- f.write("\n")
-
- f.write(f"\nSuccess Rate: {success_count}/{len(demos)} ({success_count/len(demos)*100:.0f}%)\n")
+    f.write(f"\nSuccess Rate: {success_count}/{len(demos)} ({success_count/len(demos)*100:.0f}%)\n")
 
 logger.info(f"Summary saved to: {summary_path.name}")
 logger.info("DEMO EXECUTION COMPLETE")

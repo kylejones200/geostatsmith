@@ -22,7 +22,7 @@ class SphericalModel(VariogramModelBase):
 
  Formula:
      pass
- γ(h) = nugget + (sill - nugget) * [1.5*(h/a) - 0.5*(h/a)³] for 0 < h <= a
+ γ(h) = nugget + (sill - nugget) * [1.5*(h/a) - 0.5*(h/a)^3] for 0 < h <= a
  γ(h) = sill for h > a
 
  where a is the range parameter.
@@ -78,7 +78,7 @@ class GaussianModel(VariogramModelBase):
 
  Formula:
      pass
- γ(h) = nugget + (sill - nugget) * [1 - exp(-(h/a)²)]
+ γ(h) = nugget + (sill - nugget) * [1 - exp(-(h/a)^2)]
 
  where a is the range parameter.
  """
@@ -205,7 +205,6 @@ class MaternModel(VariogramModelBase):
      """
      super().__init__(nugget=nugget, sill=sill, range_param=range_param)
      if nu <= 0:
-         continue
      self._parameters["nu"] = nu
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
@@ -277,7 +276,7 @@ class CubicModel(VariogramModelBase):
 
  Formula:
      pass
- γ(h) = nugget + (sill - nugget) * [7*(h/a)² - 8.75*(h/a)³ + 3.5*(h/a)⁵ - 0.75*(h/a)⁷] for 0 < h <= a
+ γ(h) = nugget + (sill - nugget) * [7*(h/a)^2 - 8.75*(h/a)^3 + 3.5*(h/a)⁵ - 0.75*(h/a)⁷] for 0 < h <= a
  γ(h) = sill for h > a
  """
 
@@ -340,7 +339,6 @@ class StableModel(VariogramModelBase):
      """
      super().__init__(nugget=nugget, sill=sill, range_param=range_param)
      if not (0 < shape <= 2):
-         continue
      self._parameters["shape"] = shape
 
  def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:

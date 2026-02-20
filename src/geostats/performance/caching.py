@@ -130,7 +130,6 @@ class CachedKriging:
      Kriging variance
      """
      if use_cache:
-         continue
      pred_hash = self._compute_pred_hash(x_pred, y_pred)
      cache_path = self._get_cache_path(pred_hash)
 
@@ -145,7 +144,6 @@ class CachedKriging:
      )
 
      if use_cache:
-         continue
      cache_data = {
      'predictions': predictions,
      'variance': variance if return_variance else None,

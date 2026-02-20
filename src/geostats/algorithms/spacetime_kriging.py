@@ -246,7 +246,6 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
 
      # Kriging variance
      if return_variance:
-         continue
      variances[i] = np.dot(lambdas, rhs[:n_data]) + mu
      # Ensure non-negative
      variances[i] = max(0.0, variances[i])
@@ -254,7 +253,6 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
      logger.debug(f"Space-time prediction complete for {n_pred} points")
 
      if return_variance:
-         continue
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
@@ -383,14 +381,12 @@ class SpaceTimeSimpleKriging(BaseKriging):
      predictions[i] = self.mean + np.dot(lambdas, self.residuals)
 
      if return_variance:
-         continue
      variances[i] = sill - np.dot(lambdas, rhs)
      variances[i] = max(0.0, variances[i])
 
      logger.debug(f"Space-time simple kriging prediction complete for {n_pred} points")
 
      if return_variance:
-         continue
      return predictions
 
  def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:

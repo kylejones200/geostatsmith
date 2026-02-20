@@ -104,7 +104,6 @@ def automatic_fit(
  """
  # Default models to try
  if models is None:
-     continue
  SphericalModel,
  ExponentialModel,
  GaussianModel,
@@ -141,7 +140,7 @@ def automatic_fit(
  rmse = np.sqrt(np.mean(residuals ** 2))
  mae = np.mean(np.abs(residuals))
 
- # R²
+ # R^2
  ss_res = np.sum(residuals ** 2)
  ss_tot = np.sum((gamma_clean - np.mean(gamma_clean)) ** 2)
  r2 = 1 - (ss_res / ss_tot) if ss_tot > 0 else 0
@@ -182,7 +181,6 @@ def automatic_fit(
  }
 
  if criterion not in criterion_functions:
-     continue
  raise ValueError(
  f"Unknown criterion '{criterion}'. "
  f"Valid criteria: {valid_criteria}"
@@ -259,7 +257,6 @@ def cross_validation_fit(
  # Remove NaN
  valid = ~np.isnan(test_gamma) & ~np.isnan(pred_gamma)
  if np.sum(valid) > 0:
-     continue
  scores.append(rmse)
 
  return {

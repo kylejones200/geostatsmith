@@ -314,188 +314,180 @@ def quantify_uncertainty(x, y, au, model, X, Y):
     plt.colorbar(im3, ax=axes[2], label='CV (%)')
 
     for ax in axes:
-     continue
- ax.set_ylabel('Latitude')
+        ax.set_ylabel('Latitude')
 
- plt.tight_layout()
- plt.savefig('alaska_gold_uncertainty.png', dpi=150)
- logger.info("Saved: alaska_gold_uncertainty.png")
+    plt.tight_layout()
+    plt.savefig('alaska_gold_uncertainty.png', dpi=150)
+    logger.info("Saved: alaska_gold_uncertainty.png")
 
- return ci_lower, ci_upper, variance
+    return ci_lower, ci_upper, variance
 
 # ==============================================================================
 # STEP 5: Optimal Sampling (Where to collect more samples?)
 # ==============================================================================
 
 def design_infill_sampling(x, y, au, model, X, Y):
- logger.info("Optimal Infill Sampling Design...")
+    logger.info("Optimal Infill Sampling Design...")
 
- # Find high-uncertainty areas that need more samples
- au_log = np.log10(au + 0.001)
- ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
- _, variance = ok.predict(X.flatten(), Y.flatten(), return_variance=True)
- variance = variance.reshape(X.shape)
+    # Find high-uncertainty areas that need more samples
+    au_log = np.log10(au + 0.001)
+    ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
+    _, variance = ok.predict(X.flatten(), Y.flatten(), return_variance=True)
+    variance = variance.reshape(X.shape)
 
- # Identify high-variance areas
- high_var_threshold = np.percentile(variance, 75)
- high_var_mask = variance > high_var_threshold
+    # Identify high-variance areas
+    high_var_threshold = np.percentile(variance, 75)
+    high_var_mask = variance > high_var_threshold
 
- # Suggest 10 new sample locations
- n_new = 10
- bounds = (x.min(), x.max(), y.min(), y.max())
+    # Suggest 10 new sample locations
+    n_new = 10
+    bounds = (x.min(), x.max(), y.min(), y.max())
 
- logger.info(f"Suggesting {n_new} optimal new sample locations...")
- new_locations = infill_sampling()
- x, y, au_log,
- variogram_model=model,
- n_new_samples=n_new,
- bounds=bounds
- )
+    logger.info(f"Suggesting {n_new} optimal new sample locations...")
+    new_locations = infill_sampling(
+        x, y, au_log,
+        variogram_model=model,
+        n_new_samples=n_new,
+        bounds=bounds
+    )
 
- # Visualize
- fig, ax = plt.subplots(figsize=(10, 8))
- # Remove top and right spines
- 
- # Variance map
- im = ax.contourf(X, Y, variance, levels=20, cmap='YlOrRd')
+    # Visualize
+    fig, ax = plt.subplots(figsize=(10, 8))
+    # Variance map
+    im = ax.contourf(X, Y, variance, levels=20, cmap='YlOrRd')
 
- # Existing samples
- ax.scatter(x, y, c='blue', s=20, alpha=0.5, label='Existing samples',
- edgecolors='k', linewidths=0.5)
+    # Existing samples
+    ax.scatter(x, y, c='blue', s=20, alpha=0.5, label='Existing samples',
+               edgecolors='k', linewidths=0.5)
 
- # Proposed new samples
- ax.scatter(new_locations[:, 0], new_locations[:, 1],
- c='lime', s=200, marker='*',
- edgecolors='darkgreen', linewidths=2,
- label=f'Proposed new samples (n={n_new})', zorder=10)
+    # Proposed new samples
+    ax.scatter(new_locations[:, 0], new_locations[:, 1],
+               c='lime', s=200, marker='*',
+               edgecolors='darkgreen', linewidths=2,
+               label=f'Proposed new samples (n={n_new})', zorder=10)
 
- # Add numbers to new samples
- for i, (nx, ny) in enumerate(new_locations, 1):
-     continue
- ha='center', va='center')
+    # Add numbers to new samples
+    for i, (nx, ny) in enumerate(new_locations, 1):
+        ax.text(nx, ny, str(i), fontsize=8, fontweight='bold', color='darkgreen',
+                ha='center', va='center')
 
- ax.set_title('Optimal Infill Sampling Design\n(targeting high-uncertainty areas)')
- ax.set_xlabel('Longitude')
- ax.set_ylabel('Latitude')
- ax.legend(loc='upper right')
- plt.colorbar(im, ax=ax, label='Kriging Variance')
- # Remove top and right spines
- 
- plt.tight_layout()
- plt.savefig('alaska_gold_sampling_design.png', dpi=150)
- logger.info("Saved: alaska_gold_sampling_design.png")
- logger.info(f"Cost Savings Estimate:")
- logger.info(f" Random sampling would need ~{n_new*3} samples")
- logger.info(f" Optimal design needs only {n_new} samples")
- logger.info(f" Savings: ~{(n_new*2)/1000:.0f}k USD (assuming $500/sample)")
+    ax.set_title('Optimal Infill Sampling Design\n(targeting high-uncertainty areas)')
+    ax.set_xlabel('Longitude')
+    ax.set_ylabel('Latitude')
+    ax.legend(loc='upper right')
+    plt.colorbar(im, ax=ax, label='Kriging Variance')
+    plt.tight_layout()
+    plt.savefig('alaska_gold_sampling_design.png', dpi=150)
+    logger.info("Saved: alaska_gold_sampling_design.png")
+    logger.info(f"Cost Savings Estimate:")
+    logger.info(f" Random sampling would need ~{n_new*3} samples")
+    logger.info(f" Optimal design needs only {n_new} samples")
+    logger.info(f" Savings: ~{(n_new*2)/1000:.0f}k USD (assuming $500/sample)")
 
- return new_locations
+    return new_locations
 
 # ==============================================================================
 # STEP 6: Performance Showcase (Parallel Processing)
 # ==============================================================================
 
 def performance_comparison(x, y, au, model, X, Y):
- logger.info("Performance Showcase...")
+    logger.info("Performance Showcase...")
 
- au_log = np.log10(au + 0.001)
- x_pred = X.flatten()
- y_pred = Y.flatten()
+    au_log = np.log10(au + 0.001)
+    x_pred = X.flatten()
+    y_pred = Y.flatten()
 
- # Standard kriging (single core)
- logger.info("Standard Kriging (single core)...")
- t0 = time.time()
- ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
- z_standard = ok.predict(x_pred, y_pred)
- t_standard = time.time() - t0
- logger.info(f" Time: {t_standard:.2f}s")
+    # Standard kriging (single core)
+    logger.info("Standard Kriging (single core)...")
+    t0 = time.time()
+    ok = OrdinaryKriging(x, y, au_log, variogram_model=model)
+    z_standard = ok.predict(x_pred, y_pred)
+    t_standard = time.time() - t0
+    logger.info(f" Time: {t_standard:.2f}s")
 
- # Parallel kriging (all cores)
- logger.info("Parallel Kriging (all cores)...")
- t0 = time.time()
- z_parallel, var_parallel = parallel_kriging()
- x, y, au_log, x_pred, y_pred,
- model, n_jobs=-1
- )
- t_parallel = time.time() - t0
- logger.info(f" Time: {t_parallel:.2f}s")
- logger.info(f" SPEEDUP: {t_standard/t_parallel:.1f}x faster!")
+    # Parallel kriging (all cores)
+    logger.info("Parallel Kriging (all cores)...")
+    t0 = time.time()
+    z_parallel, var_parallel = parallel_kriging(
+        x, y, au_log, x_pred, y_pred,
+        variogram_model=model, n_jobs=-1
+    )
+    t_parallel = time.time() - t0
+    logger.info(f" Time: {t_parallel:.2f}s")
+    logger.info(f" SPEEDUP: {t_standard/t_parallel:.1f}x faster!")
 
- return t_standard / t_parallel
+    return t_standard / t_parallel
 
 # ==============================================================================
 # STEP 7: Cross-Validation & Quality Assessment
 # ==============================================================================
 
 def validate_predictions(x, y, au, model):
- logger.info("Model Validation & Quality Assessment...")
+    logger.info("Model Validation & Quality Assessment...")
 
- au_log = np.log10(au + 0.001)
+    au_log = np.log10(au + 0.001)
 
- # Validation suite
- results = comprehensive_validation(x, y, au_log, model)
+    # Validation suite
+    results = comprehensive_validation(x, y, au_log, model)
 
- logger.info(f"Validation Metrics:")
- logger.info(f" RMSE: {results['cv_rmse']:.4f}")
- logger.info(f" MAE: {results['cv_mae']:.4f}")
- logger.info(f" R²: {results['cv_r2']:.4f}")
- logger.info(f" Overall Quality Score: {results['overall_score']:.0f}/100")
+    logger.info(f"Validation Metrics:")
+    logger.info(f" RMSE: {results['cv_rmse']:.4f}")
+    logger.info(f" MAE: {results['cv_mae']:.4f}")
+    logger.info(f" R²: {results['cv_r2']:.4f}")
+    logger.info(f" Overall Quality Score: {results['overall_score']:.0f}/100")
 
- if results['overall_score'] > 80:
- elif results['overall_score'] > 60:
- else:
-    pass
+    if results['overall_score'] > 80:
+        logger.info(" Excellent model quality!")
+    elif results['overall_score'] > 60:
+        logger.info(" Good model quality")
+    else:
+        logger.info(" Model quality needs improvement")
 
- return results
+    return results
 
 # ==============================================================================
 # MAIN EXECUTION
 # ==============================================================================
 
-    if __name__ == '__main__':
-    pass
+if __name__ == '__main__':
+    if not Path(AGDB_PATH).exists():
+        logger.info("Please download from: https://doi.org/10.5066/F7445KBJ")
+        exit(1)
 
- if not Path(AGDB_PATH).exists():
-     continue
- logger.info("Please download from: https://doi.org/10.5066/F7445KBJ")
- exit(1)
+    try:
+        x, y, au, data_df = load_fairbanks_gold_data(AGDB_PATH)
 
- try:
-     pass
- x, y, au, data_df = load_fairbanks_gold_data(AGDB_PATH)
+        # Variogram analysis
+        model = analyze_variogram_anisotropy(x, y, au)
 
- # Variogram analysis
- model = analyze_variogram_anisotropy(x, y, au)
+        # Compare kriging methods
+        results, X, Y = compare_kriging_methods(x, y, au, model)
 
- # Compare kriging methods
- results, X, Y = compare_kriging_methods(x, y, au, model)
+        # Uncertainty quantification
+        ci_lower, ci_upper, variance = quantify_uncertainty(x, y, au, model, X, Y)
 
- # Uncertainty quantification
- ci_lower, ci_upper, variance = quantify_uncertainty(x, y, au, model, X, Y)
+        # Optimal sampling design
+        new_locations = design_infill_sampling(x, y, au, model, X, Y)
 
- # Optimal sampling design
- new_locations = design_infill_sampling(x, y, au, model, X, Y)
+        # Performance comparison
+        speedup = performance_comparison(x, y, au, model, X, Y)
 
- # Performance comparison
- speedup = performance_comparison(x, y, au, model, X, Y)
+        # Validation
+        validation = validate_predictions(x, y, au, model)
 
- # Validation
- validation = validate_predictions(x, y, au, model)
+        logger.info(" COMPLETE! Generated 4 Publication-Quality Figures:")
+        logger.info(" 1. alaska_gold_anisotropy.png - Directional variograms")
+        logger.info(" 2. alaska_gold_methods_comparison.png - 3 kriging methods")
+        logger.info(" 3. alaska_gold_uncertainty.png - Uncertainty quantification")
+        logger.info(" 4. alaska_gold_sampling_design.png - Optimal sampling locations")
+        logger.info("This demo showcased:")
+        logger.info(" Multiple kriging methods (Ordinary, Lognormal, Indicator)")
+        logger.info(" Anisotropy detection")
+        logger.info(" Uncertainty quantification (Bootstrap, Variance)")
+        logger.info(" Optimal sampling design")
+        logger.info(f" Performance optimization ({speedup:.1f}x speedup!)")
+        logger.info(" Validation")
+        logger.info("GeoStats + Real Alaska Data = Professional Results!")
 
- logger.info(" COMPLETE! Generated 4 Publication-Quality Figures:")
- logger.info(" 1. alaska_gold_anisotropy.png - Directional variograms")
- logger.info(" 2. alaska_gold_methods_comparison.png - 3 kriging methods")
- logger.info(" 3. alaska_gold_uncertainty.png - Uncertainty quantification")
- logger.info(" 4. alaska_gold_sampling_design.png - Optimal sampling locations")
- logger.info("This demo showcased:")
- logger.info(" Multiple kriging methods (Ordinary, Lognormal, Indicator)")
- logger.info(" Anisotropy detection")
- logger.info(" Uncertainty quantification (Bootstrap, Variance)")
- logger.info(" Optimal sampling design")
- logger.info(f" Performance optimization ({speedup:.1f}x speedup!)")
- logger.info(" Validation")
- logger.info("GeoStats + Real Alaska Data = Professional Results!")
-
- except Exception as e:
-     pass
- logger.exception("Error in gold exploration workflow")
+    except Exception as e:
+        logger.exception("Error in gold exploration workflow")

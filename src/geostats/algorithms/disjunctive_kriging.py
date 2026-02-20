@@ -113,11 +113,9 @@ class DisjunctiveKriging(BaseKriging):
 
         # Build kriging matrix in Gaussian space
         if self.variogram_model is not None:
-            continue
     pass
 
         if self.variogram_model is not None:
-            continue
         """
             Fit Hermite polynomial expansion to transform data to Gaussian
 
@@ -147,7 +145,7 @@ class DisjunctiveKriging(BaseKriging):
             # Evaluate at y_normal
             h_values = hermite_poly(y_normal)
             # Coefficient: average of Z * H_i(Y)
-            # Normalized Hermite polynomials have E[H_i²] = i!
+            # Normalized Hermite polynomials have E[H_i^2] = i!
             self.hermite_coeffs[i] = np.mean(sorted_z * h_values) / np.math.factorial(i)
 
         # Store for inverse transform
@@ -264,7 +262,6 @@ class DisjunctiveKriging(BaseKriging):
             Kriging variance (in original space, if return_variance=True)
         """
         if self.variogram_model is None:
-            continue
     pass
 
             x_pred, y_pred = validate_coordinates(x, y)
@@ -315,7 +312,6 @@ class DisjunctiveKriging(BaseKriging):
                     nearest_idx = np.argmin(dist_to_samples)
                     y_pred_gaussian[i] = self.y_gaussian[nearest_idx]
                     if return_variance:
-                        continue
 
                 weights = solution[: self.n_points]
                 lagrange = solution[self.n_points]
@@ -373,10 +369,9 @@ class DisjunctiveKriging(BaseKriging):
         predictions : np.ndarray
             Cross-validated predictions at sample points (in original space)
         metrics : dict
-            Dictionary of validation metrics (MSE, RMSE, MAE, R², bias)
+            Dictionary of validation metrics (MSE, RMSE, MAE, R^2, bias)
         """
         if self.variogram_model is None:
-            continue
     pass
 
             predictions = np.zeros(self.n_points)

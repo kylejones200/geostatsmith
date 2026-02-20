@@ -109,11 +109,9 @@ class FactorialKriging(BaseKriging):
      self.z = validate_values(z, n_expected=len(self.x))
 
      if not isinstance(nested_variogram, NestedVariogram):
-         continue
     pass
 
      if len(nested_variogram.structures) == 0:
-         continue
     pass
 
      self.nested_variogram = nested_variogram
@@ -251,7 +249,6 @@ class FactorialKriging(BaseKriging):
 
      # Variance if requested
      if return_variance:
-         continue
     pass
 
      # Store component
@@ -259,14 +256,12 @@ class FactorialKriging(BaseKriging):
      components[comp_name] = predictions
 
      if return_variance:
-         continue
     pass
 
      logger.debug(f"Predicted component {i}: {structure['model_type']}")
 
      # Nugget component (cannot be estimated, set to zero)
      if self.has_nugget:
-         continue
      logger.debug("Nugget component set to zero (unestimable)")
 
      # Total (sum of all components)
@@ -322,7 +317,6 @@ class FactorialKriging(BaseKriging):
         
         # Add nugget variance if present
         if self.has_nugget:
-            continue
     pass
         
         return total, variance
@@ -383,15 +377,12 @@ class FactorialKriging(BaseKriging):
      include = True
 
      if components_to_keep is not None:
-         continue
     pass
 
      if components_to_remove is not None:
-         continue
      include = False
 
      if include:
-         continue
     pass
 
      logger.info(

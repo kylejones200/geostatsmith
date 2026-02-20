@@ -101,11 +101,9 @@ def optimal_sampling_design(
  """
  # Set bounds
  if x_bounds is None:
-     continue
  x_bounds = (x_existing.min() - x_margin, x_existing.max() + x_margin)
 
  if y_bounds is None:
-     continue
  y_bounds = (y_existing.min() - y_margin, y_existing.max() + y_margin)
 
  # Generate candidate locations
@@ -134,7 +132,6 @@ def optimal_sampling_design(
  best_idx = np.argmax(var)
 
  elif strategy == 'space_filling':
-     continue
  scores = _compute_space_filling_scores()
  x_candidates, y_candidates,
  x_current, y_current
@@ -142,7 +139,6 @@ def optimal_sampling_design(
  best_idx = np.argmax(scores)
 
  elif strategy == 'hybrid':
-     continue
  _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
  spacing_scores = _compute_space_filling_scores()
  x_candidates, y_candidates,

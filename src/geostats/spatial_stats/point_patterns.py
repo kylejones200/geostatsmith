@@ -2,7 +2,6 @@
     Point pattern analysis tools for spatial statistics.
 
 Provides methods for analyzing the spatial distribution of points:
-    continue
 - Nearest neighbor analysis
 - Ripley'
 - Quadrat analysis
@@ -102,7 +101,6 @@ def nearest_neighbor_analysis(
 
  # Determine study area
  if study_area is None:
-     continue
  xmin, xmax = x.min() - buffer, x.max() + buffer
  ymin, ymax = y.min() - buffer, y.max() + buffer
  else:
@@ -222,14 +220,14 @@ def ripley_k_function(
  -----
  """
      Ripley'
-  K(d) = (Area / n²) * Σ Σ I(dij < d)
+  K(d) = (Area / n^2) * Σ Σ I(dij < d)
 
  Where I(dij < d) is an indicator function that equals 1 if the distance
  between points i and j is less than d.
 
  """
 
- For a random pattern: K(d) = π * d²
+ For a random pattern: K(d) = π * d^2
 
  
  The L transformation (L = sqrt(K/π) - d) is often used because:
@@ -253,7 +251,6 @@ def ripley_k_function(
 
  # Determine study area
  if study_area is None:
-     continue
  ymin, ymax = y.min(), y.max()
  else:
     pass
@@ -262,7 +259,6 @@ def ripley_k_function(
 
  # Distance values
  if distances is None:
-     continue
  distances = np.linspace(0, max_distance, n_distances + 1)[1:] # Exclude 0
 
  distances = np.asarray(distances)
@@ -281,7 +277,6 @@ def ripley_k_function(
  # Edge correction
  if edge_correction == 'none':
  elif edge_correction == 'border':
-     continue
  buffer = d
  interior_mask = ()
  (x > xmin + buffer) & (x < xmax - buffer) &
@@ -395,7 +390,6 @@ def quadrat_analysis(
 
  # Determine study area
  if study_area is None:
-     continue
  ymin, ymax = y.min(), y.max()
  else:
     pass
@@ -417,7 +411,6 @@ def quadrat_analysis(
 
  # Handle edge case: points exactly on upper boundary
  if n_quadrats_x > 0 and n_quadrats_y > 0:
-     continue
  on_top_edge = (y == ymax)
  for i in range(n):
      continue
@@ -427,7 +420,6 @@ def quadrat_analysis(
      pass
  counts[i_idx, j_idx] += 1
  elif on_top_edge[i]:
-     continue
  j_idx = np.searchsorted(x_edges[:-1], x[i], side='right') - 1
  counts[i_idx, j_idx] += 1
 
@@ -450,7 +442,6 @@ def quadrat_analysis(
  min_expected = 5
  mask = expected_freq >= min_expected
  if np.sum(mask) < 2:
-     continue
  chi2_stat = np.nan
  chi2_p = np.nan
  else:
@@ -468,14 +459,12 @@ def quadrat_analysis(
 
  # Interpretation
  if not np.isnan(vmr):
-     continue
  pattern = "Regular/Dispersed"
  elif vmr > 1.1:
  else:
     pass
 
  if not np.isnan(chi2_p):
-     continue
  significance = "significant"
  else:
      pass
@@ -550,7 +539,6 @@ def spatial_randomness_test(
  results = {}
 
  if method in ['all', 'nearest_neighbor']:
-     continue
  results['nearest_neighbor'] = nearest_neighbor_analysis(x, y, **kwargs)
  except Exception as e:
      pass
@@ -558,7 +546,6 @@ def spatial_randomness_test(
  results['nearest_neighbor'] = {'error': str(e)}
 
  if method in ['all', 'ripley_k']:
-     continue
  results['ripley_k'] = ripley_k_function(x, y, **kwargs)
  except Exception as e:
      pass
@@ -566,7 +553,6 @@ def spatial_randomness_test(
  results['ripley_k'] = {'error': str(e)}
 
  if method in ['all', 'quadrat']:
-     continue
  results['quadrat'] = quadrat_analysis(x, y, **kwargs)
  except Exception as e:
      pass
@@ -613,9 +599,7 @@ def clustering_index(
  >>> logger.info(f"Clustering index: {index:.3f}")
  """
  if method == 'nearest_neighbor':
-     continue
  return results['R']
  elif method == 'vmr':
-     continue
  return results['vmr']
  else:
