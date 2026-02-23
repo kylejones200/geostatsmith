@@ -42,11 +42,11 @@ from ..models.variogram_models import (
 from ..core.constants import (
     MIN_SEMIVARIANCE_RATIO,
     MAX_SEMIVARIANCE_RATIO,
- MIN_RANGE_RATIO,
- MAX_RANGE_RATIO,
- MAX_ITERATIONS_GLOBAL,
- CONVERGENCE_TOLERANCE,
- OPTIMIZATION_ATOL,
+    MIN_RANGE_RATIO,
+    MAX_RANGE_RATIO,
+    MAX_ITERATIONS_GLOBAL,
+    CONVERGENCE_TOLERANCE,
+    OPTIMIZATION_ATOL,
 )
 from ..core.logging_config import get_logger
 
@@ -59,14 +59,14 @@ RANDOM_SEED = 42
 
 @dataclass
 class VariogramStructure:
- model_type: str # 'spherical', 'exponential', 'gaussian', etc.
- sill: float # Partial sill (Cᵢ)
- range: float # Range parameter (aᵢ)
- nugget: float = 0.0 # Only used for first structure
+    model_type: str  # 'spherical', 'exponential', 'gaussian', etc.
+    sill: float  # Partial sill (Cᵢ)
+    range: float  # Range parameter (aᵢ)
+    nugget: float = 0.0  # Only used for first structure
 
- def __str__(self):
-     nugget_str = f", nugget={self.nugget:.4f}" if self.nugget > 0 else ""
-     return f"VariogramStructure(model={self.model_type}, sill={self.sill:.4f}, range={self.range:.4f}{nugget_str})"
+    def __str__(self):
+        nugget_str = f", nugget={self.nugget:.4f}" if self.nugget > 0 else ""
+        return f"VariogramStructure(model={self.model_type}, sill={self.sill:.4f}, range={self.range:.4f}{nugget_str})"
 
 class NestedVariogram:
     """

@@ -5,6 +5,7 @@ Mathematical operations layer - distance calculations, matrix operations, numeri
 from .distance import (
     euclidean_distance,
     euclidean_distance_matrix,
+    manhattan_distance,
     anisotropic_distance,
     pairwise_distances,
 )
@@ -25,6 +26,7 @@ __all__ = [
     # Distance functions
     "euclidean_distance",
     "euclidean_distance_matrix",
+    "manhattan_distance",
     "anisotropic_distance",
     "pairwise_distances",
     # Matrix operations
