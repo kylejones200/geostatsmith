@@ -426,7 +426,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                         rhs = np.zeros(n_train + 1, dtype=np.float64)
                         rhs[:n_train] = k_vec
                         from ..core.constants import UNBIASEDNESS_CONSTRAINT
-                rhs[n_train] = UNBIASEDNESS_CONSTRAINT
+                        rhs[n_train] = UNBIASEDNESS_CONSTRAINT
                         weights = solve_kriging_system(self.K_, rhs)
                         lambdas = weights[:n_train]
                         mu = weights[n_train]
