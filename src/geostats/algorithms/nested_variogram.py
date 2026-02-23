@@ -35,13 +35,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-from ..models.variogram_models import ()
- SphericalModel, ExponentialModel, GaussianModel,
- LinearModel, PowerModel
+from ..models.variogram_models import (
+    SphericalModel, ExponentialModel, GaussianModel,
+    LinearModel, PowerModel
 )
-from ..core.constants import ()
- MIN_SEMIVARIANCE_RATIO,
- MAX_SEMIVARIANCE_RATIO,
+from ..core.constants import (
+    MIN_SEMIVARIANCE_RATIO,
+    MAX_SEMIVARIANCE_RATIO,
  MIN_RANGE_RATIO,
  MAX_RANGE_RATIO,
  MAX_ITERATIONS_GLOBAL,
@@ -68,11 +68,11 @@ class VariogramStructure:
      pass
 
 class NestedVariogram:
- Nested Variogram Model
+    """
+    Nested Variogram Model
 
- Combines multiple variogram structures at different scales:
-     pass
- γ(h) = nugget + Σᵢ sillᵢ · modelᵢ(h/rangeᵢ)
+    Combines multiple variogram structures at different scales:
+    gamma(h) = nugget + sum_i sill_i * model_i(h/range_i)
 
  Examples:
      pass
@@ -83,33 +83,35 @@ class NestedVariogram:
  All structures must be positive definite variogram models.
  """
 
- def __init__(self, nugget: float = 0.0):
-     Initialize nested variogram
+    def __init__(self, nugget: float = 0.0):
+        """
+        Initialize nested variogram
 
- Parameters
- ----------
- nugget : float
- Nugget effect (micro-scale discontinuity at h=0)
- """
- self.nugget = nugget
- self.structures: List[VariogramStructure] = []
+        Parameters
+        ----------
+        nugget : float
+        Nugget effect (micro-scale discontinuity at h=0)
+        """
+        self.nugget = nugget
+        self.structures: List[VariogramStructure] = []
 
- # Map model names to model classes
- self.model_classes = {
- 'spherical': SphericalModel,
- 'exponential': ExponentialModel,
- 'gaussian': GaussianModel,
- 'linear': LinearModel,
- 'power': PowerModel,
- }
+        # Map model names to model classes
+        from ..models.variogram_models import SphericalModel, ExponentialModel, GaussianModel, LinearModel, PowerModel
+        self.model_classes = {
+            'spherical': SphericalModel,
+            'exponential': ExponentialModel,
+            'gaussian': GaussianModel,
+            'linear': LinearModel,
+            'power': PowerModel,
+        }
 
- def add_structure()
-     model_type: str,
-     sill: float,
-     range: float
-     ):
-         pass
-     """
+    def add_structure(
+        self,
+        model_type: str,
+        sill: float,
+        range: float
+    ):
+        """
          Add a structure to the nested model
 
      Parameters
@@ -118,103 +120,109 @@ class NestedVariogram:
      Type of variogram model ('spherical', 'exponential', etc.)
      sill : float
      Partial sill (contribution to total variance)
-     range : float
-     Range parameter (correlation distance)
-     """
-     if model_type not in self.model_classes:
-     f"Unknown model type: {model_type}. "
-     f"Available: {list(self.model_classes.keys())}"
-     )
+    range : float
+        Range parameter (correlation distance)
+    """
+    if model_type not in self.model_classes:
+        raise ValueError(
+            f"Unknown model type: {model_type}. "
+            f"Available: {list(self.model_classes.keys())}"
+        )
 
-     if sill <= 0:
-    pass
+    if sill <= 0:
+        raise ValueError("Sill must be positive")
 
-     if range <= 0:
-    pass
+    if range <= 0:
+        raise ValueError("Range must be positive")
 
-     structure = VariogramStructure(
-     model_type=model_type,
-     sill=sill,
-     range=range
-     )
-     self.structures.append(structure)
+    structure = VariogramStructure(
+        model_type=model_type,
+        sill=sill,
+        range=range
+    )
+    self.structures.append(structure)
 
- def __call__(self, h: Union[float, npt.NDArray[np.float64]]) -> Union[float, npt.NDArray[np.float64]]:
-     Evaluate nested variogram at distance h
+    def __call__(self, h: Union[float, npt.NDArray[np.float64]]) -> Union[float, npt.NDArray[np.float64]]:
+        """
+        Evaluate nested variogram at distance h
 
- Parameters
- ----------
- h : float or np.ndarray
- Separation distance(s)
+        Parameters
+        ----------
+        h : float or np.ndarray
+            Separation distance(s)
 
- Returns
- -------
- float or np.ndarray
- Variogram value(s)
- """
- h = np.asarray(h, dtype=np.float64)
- gamma = np.full_like(h, self.nugget, dtype=np.float64)
+        Returns
+        -------
+        float or np.ndarray
+            Variogram value(s)
+        """
+        h = np.asarray(h, dtype=np.float64)
+        gamma = np.full_like(h, self.nugget, dtype=np.float64)
 
- for struct in self.structures:
-     # Create model instance with parameters
- model = model_class(nugget=0.0, sill=1.0, range_param=1.0)
- # Evaluate model at h and scale by sill and range
- gamma += struct.sill * model._model_function(h / struct.range)
+        for struct in self.structures:
+            # Create model instance with parameters
+            model_class = self.model_classes[struct.model_type]
+            model = model_class(nugget=0.0, sill=1.0, range_param=1.0)
+            # Evaluate model at h and scale by sill and range
+            gamma += struct.sill * model._model_function(h / struct.range)
 
- return gamma
+        return gamma
 
- def total_sill(self) -> float:
-     return self.nugget + sum(s.sill for s in self.structures)
+    def total_sill(self) -> float:
+        return self.nugget + sum(s.sill for s in self.structures)
 
- def effective_range(self) -> float:
-     if not self.structures:
-     return max(s.range for s in self.structures)
+    def effective_range(self) -> float:
+        if not self.structures:
+            return 0.0
+        return max(s.range for s in self.structures)
 
- def get_parameters(self) -> Dict:
-     return {
-     'nugget': self.nugget,
-     'total_sill': self.total_sill(),
-     'structures': [
-     {
-     'model': s.model_type,
-     'sill': s.sill,
-     'range': s.range,
-     }
-     for s in self.structures
-     ]
-     }
+    def get_parameters(self) -> Dict:
+        return {
+            'nugget': self.nugget,
+            'total_sill': self.total_sill(),
+            'structures': [
+                {
+                    'model': s.model_type,
+                    'sill': s.sill,
+                    'range': s.range,
+                }
+                for s in self.structures
+            ]
+        }
 
- def __str__(self):
-     for i, struct in enumerate(self.structures, 1):
-         continue
-     return "\n".join(parts)
+    def __str__(self):
+        parts = []
+        for i, struct in enumerate(self.structures, 1):
+            parts.append(f"Structure {i}: {struct.model_type}, sill={struct.sill}, range={struct.range}")
+        return "\n".join(parts)
+
 
 def fit_nested_variogram(
- semivariance: npt.NDArray[np.float64],
- n_structures: int = 2,
- model_types: Optional[List[str]] = None,
- nugget_bounds: Tuple[float, float] = (0.0, None),
- weights: Optional[npt.NDArray[np.float64]] = None,
-    ) -> NestedVariogram:
-        pass
- """
-     Fit nested variogram model to experimental variogram
+    lags: npt.NDArray[np.float64],
+    semivariance: npt.NDArray[np.float64],
+    n_structures: int = 2,
+    model_types: Optional[List[str]] = None,
+    nugget_bounds: Tuple[float, float] = (0.0, None),
+    weights: Optional[npt.NDArray[np.float64]] = None,
+) -> NestedVariogram:
+    """
+    Fit nested variogram model to experimental variogram
 
- Uses global optimization (differential evolution) followed by
- local refinement to find optimal parameters.
+    Uses global optimization (differential evolution) followed by
+    local refinement to find optimal parameters.
 
- Parameters
- ----------
- lags : np.ndarray
- Lag distances (experimental variogram x-axis)
- semivariance : np.ndarray
- Semivariance values (experimental variogram y-axis)
- n_structures : int
- Number of structures to fit (default 2)
- model_types : list of str, optional
- Model type for each structure
- If None, uses 'spherical' for all
- nugget_bounds : tuple
+    Parameters
+    ----------
+    lags : np.ndarray
+        Lag distances (experimental variogram x-axis)
+    semivariance : np.ndarray
+        Semivariance values (experimental variogram y-axis)
+    n_structures : int
+        Number of structures to fit (default 2)
+    model_types : list of str, optional
+        Model type for each structure
+        If None, uses 'spherical' for all
+    nugget_bounds : tuple
  (min, max) for nugget. If max is None, uses max(semivariance)
  weights : np.ndarray, optional
  Weights for each lag (e.g., number of pairs)
@@ -229,180 +237,195 @@ def fit_nested_variogram(
  >>> # Fit 2-structure nested model (nugget + 2 spherical)
  >>> lags = np.array([10, 20, 30, 40, 50])
  >>> gamma = np.array([0.1, 0.4, 0.7, 0.85, 0.92])
- >>> model = fit_nested_variogram(lags, gamma, n_structures=2)
- """
- lags = np.asarray(lags, dtype=np.float64)
- semivariance = np.asarray(semivariance, dtype=np.float64)
+>>> model = fit_nested_variogram(lags, gamma, n_structures=2)
+    """
+    lags = np.asarray(lags, dtype=np.float64)
+    semivariance = np.asarray(semivariance, dtype=np.float64)
 
- if len(lags) != len(semivariance):
-    pass
+    if len(lags) != len(semivariance):
+        raise ValueError("lags and semivariance must have the same length")
 
- # Default model types
- if model_types is None:
-    pass
+    # Default model types
+    if model_types is None:
+        model_types = ['spherical'] * n_structures
 
- if len(model_types) != n_structures:
-    pass
+    if len(model_types) != n_structures:
+        raise ValueError(f"model_types must have length {n_structures}")
 
- logger.debug(f"Fitting nested variogram with {n_structures} structures")
+    logger.debug(f"Fitting nested variogram with {n_structures} structures")
 
- # Set up bounds
- max_lag = float(np.max(lags))
- max_semivar = float(np.max(semivariance))
+    # Set up bounds
+    max_lag = float(np.max(lags))
+    max_semivar = float(np.max(semivariance))
 
- nugget_max = nugget_bounds[1] if nugget_bounds[1] is not None else max_semivar * NUGGET_MAX_FRACTION
+    NUGGET_MAX_FRACTION = 0.5
+    MIN_SEMIVARIANCE_RATIO = 0.1
+    MAX_SEMIVARIANCE_RATIO = 1.5
+    MIN_RANGE_RATIO = 0.1
+    MAX_RANGE_RATIO = 2.0
 
- # Bounds: [nugget, sill1, range1, sill2, range2, ...]
- bounds: List[Tuple[float, float]] = [(nugget_bounds[0], nugget_max)]
- for _ in range(n_structures):
-     continue
- bounds.append((MIN_SEMIVARIANCE_RATIO * max_semivar, MAX_SEMIVARIANCE_RATIO * max_semivar))
- # Range bounds
- bounds.append((MIN_RANGE_RATIO * max_lag, MAX_RANGE_RATIO * max_lag))
+    nugget_max = nugget_bounds[1] if nugget_bounds[1] is not None else max_semivar * NUGGET_MAX_FRACTION
 
- # Weights
- if weights is None:
- else:
-    pass
+    # Bounds: [nugget, sill1, range1, sill2, range2, ...]
+    bounds: List[Tuple[float, float]] = [(nugget_bounds[0], nugget_max)]
+    for _ in range(n_structures):
+        bounds.append((MIN_SEMIVARIANCE_RATIO * max_semivar, MAX_SEMIVARIANCE_RATIO * max_semivar))
+        # Range bounds
+        bounds.append((MIN_RANGE_RATIO * max_lag, MAX_RANGE_RATIO * max_lag))
 
- # Objective function (weighted sum of squared residuals)
- def objective(params: npt.NDArray[np.float64]) -> float:
-     pass
+    # Weights
+    if weights is None:
+        weights = np.ones_like(semivariance)
+    else:
+        weights = np.asarray(weights, dtype=np.float64)
 
-     # Penalty for invalid parameters
-     if nugget < 0:
-    pass
+    # Objective function (weighted sum of squared residuals)
+    def objective(params: npt.NDArray[np.float64]) -> float:
+        nugget = params[0]
 
-     nested_model = NestedVariogram(nugget=nugget)
+        # Penalty for invalid parameters
+        if nugget < 0:
+            return 1e10
 
-     for i in range(n_structures):
-         continue
-     range_param = params[2 + i * 2]
+        nested_model = NestedVariogram(nugget=nugget)
 
-     # Penalty for invalid parameters
-     if sill < 0 or range_param < 0:
-    pass
+        for i in range(n_structures):
+            sill = params[1 + i * 2]
+            range_param = params[2 + i * 2]
 
-     nested_model.add_structure(
-     model_type=model_types[i],
-     sill=sill,
-     range=range_param
-     )
+            # Penalty for invalid parameters
+            if sill < 0 or range_param < 0:
+                return 1e10
 
-     # Predicted semivariance (vectorized)
-     gamma_pred = nested_model(lags)
+            nested_model.add_structure(
+                model_type=model_types[i],
+                sill=sill,
+                range=range_param
+            )
 
-     # Weighted sum of squared residuals
-     residuals = semivariance - gamma_pred
-     wss = float(np.sum(weights * residuals**2))
+        # Predicted semivariance (vectorized)
+        gamma_pred = nested_model(lags)
 
-     return wss
+        # Weighted sum of squared residuals
+        residuals = semivariance - gamma_pred
+        wss = float(np.sum(weights * residuals**2))
 
-     logger.debug("Starting global optimization (differential evolution)")
+        return wss
 
-     # Global optimization with differential evolution
-     result = differential_evolution()
-     objective,
-     bounds,
-     seed=RANDOM_SEED,
-     maxiter=MAX_ITERATIONS_GLOBAL,
-     atol=OPTIMIZATION_ATOL,
-     tol=CONVERGENCE_TOLERANCE,
-     workers=1
-     )
+    logger.debug("Starting global optimization (differential evolution)")
 
-     logger.debug("Refining with local optimization (L-BFGS-B)")
+    # Global optimization with differential evolution
+    from scipy.optimize import differential_evolution
+    RANDOM_SEED = 42
+    MAX_ITERATIONS_GLOBAL = 100
+    OPTIMIZATION_ATOL = 1e-6
+    CONVERGENCE_TOLERANCE = 1e-4
 
-     # Local refinement
-     result_local = minimize()
-     objective,
-     result.x,
-     method='L-BFGS-B',
-     bounds=bounds
-     )
+    result = differential_evolution(
+        objective,
+        bounds,
+        seed=RANDOM_SEED,
+        maxiter=MAX_ITERATIONS_GLOBAL,
+        atol=OPTIMIZATION_ATOL,
+        tol=CONVERGENCE_TOLERANCE,
+        workers=1
+    )
 
-     # Use local result if successful, otherwise global result
-     best_params = result_local.x if result_local.success else result.x
-     final_wss = objective(best_params)
+    logger.debug("Refining with local optimization (L-BFGS-B)")
 
-     logger.debug(f"Optimization complete. Final WSS: {final_wss:.6f}")
+    # Local refinement
+    from scipy.optimize import minimize
+    result_local = minimize(
+        objective,
+        result.x,
+        method='L-BFGS-B',
+        bounds=bounds
+    )
 
-     # Build final model
-     nugget = float(best_params[0])
-     final_model = NestedVariogram(nugget=nugget)
+    # Use local result if successful, otherwise global result
+    best_params = result_local.x if result_local.success else result.x
+    final_wss = objective(best_params)
 
-     for i in range(n_structures):
-         continue
-     range_param = float(best_params[2 + i * 2])
+    logger.debug(f"Optimization complete. Final WSS: {final_wss:.6f}")
 
-     final_model.add_structure(
-     model_type=model_types[i],
-     sill=sill,
-     range=range_param
-     )
+    # Build final model
+    nugget = float(best_params[0])
+    final_model = NestedVariogram(nugget=nugget)
 
-     logger.info(f"Fitted nested variogram: {final_model.get_parameters()}")
+    for i in range(n_structures):
+        sill = float(best_params[1 + i * 2])
+        range_param = float(best_params[2 + i * 2])
 
-     return final_model
+        final_model.add_structure(
+            model_type=model_types[i],
+            sill=sill,
+            range=range_param
+        )
+
+    logger.info(f"Fitted nested variogram: {final_model.get_parameters()}")
+
+    return final_model
+
 
 def auto_fit_nested_variogram(
- semivariance: npt.NDArray[np.float64],
- max_structures: int = 3,
- weights: Optional[npt.NDArray[np.float64]] = None,
-    ) -> NestedVariogram:
-        pass
- """
-     Automatically determine optimal number of structures
+    lags: npt.NDArray[np.float64],
+    semivariance: npt.NDArray[np.float64],
+    max_structures: int = 3,
+    weights: Optional[npt.NDArray[np.float64]] = None,
+) -> NestedVariogram:
+    """
+    Automatically determine optimal number of structures
 
- Fits models with 1, 2, ..., max_structures and selects the best
- based on AIC (Akaike Information Criterion).
+    Fits models with 1, 2, ..., max_structures and selects the best
+    based on AIC (Akaike Information Criterion).
 
- Parameters
- ----------
- lags : np.ndarray
- Lag distances
- semivariance : np.ndarray
- Semivariance values
- max_structures : int
- Maximum number of structures to try
- weights : np.ndarray, optional
- Weights for fitting
+    Parameters
+    ----------
+    lags : np.ndarray
+        Lag distances
+    semivariance : np.ndarray
+        Semivariance values
+    max_structures : int
+        Maximum number of structures to try
+    weights : np.ndarray, optional
+        Weights for fitting
 
- Returns
- -------
- NestedVariogram
- Best model selected by AIC
- """
- n = len(lags)
- best_aic = np.inf
- best_model = None
+    Returns
+    -------
+    NestedVariogram
+        Best model selected by AIC
+    """
+    n = len(lags)
+    best_aic = np.inf
+    best_model = None
 
- for n_struct in range(1, max_structures + 1):
-     continue
- model = fit_nested_variogram()
- lags, semivariance,
- n_structures=n_struct,
- weights=weights
- )
+    for n_struct in range(1, max_structures + 1):
+        try:
+            model = fit_nested_variogram(
+                lags, semivariance,
+                n_structures=n_struct,
+                weights=weights
+            )
 
- # Calculate residuals
- gamma_pred = model(lags)
- residuals = semivariance - gamma_pred
+            # Calculate residuals
+            gamma_pred = model(lags)
+            residuals = semivariance - gamma_pred
 
- # Calculate AIC
- # AIC = n·ln(RSS/n) + 2k
- # where k = number of parameters
- k = 1 + 2 * n_struct # nugget + (sill, range) per structure
- rss = np.sum(residuals**2)
- aic = n * np.log(rss / n) + 2 * k
+            # Calculate AIC
+            # AIC = n * ln(RSS/n) + 2k
+            # where k = number of parameters
+            k = 1 + 2 * n_struct  # nugget + (sill, range) per structure
+            rss = np.sum(residuals**2)
+            aic = n * np.log(rss / n) + 2 * k
 
- if aic < best_aic:
- best_model = model
+            if aic < best_aic:
+                best_aic = aic
+                best_model = model
 
- except Exception:
-     pass
+        except Exception:
+            continue
 
- if best_model is None:
-    pass
+    if best_model is None:
+        raise RuntimeError("Failed to fit any nested variogram model")
 
- return best_model
+    return best_model

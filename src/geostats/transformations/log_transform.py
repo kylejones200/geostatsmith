@@ -213,50 +213,52 @@ def log_transform(
 ) -> Tuple[npt.NDArray[np.float64], LogTransform]:
     """
     Convenience function for log transform.
- 
-        Parameters
-        ----------
-        data : np.ndarray
+
+    Parameters
+    ----------
+    data : np.ndarray
         Data to transform
-        base : str
+    base : str
         'natural', '10', or '2'
 
-        Returns
-        -------
-        transformed_data : np.ndarray
+    Returns
+    -------
+    transformed_data : np.ndarray
         Log-transformed data
-        transformer : LogTransform
-        Fitted transformer
- 
-        Examples
-        --------
-        >>> import numpy as np
-        >>> data = np.array([1.0, 10.0, 100.0, 1000.0])
-        >>> log_data, transformer = log_transform(data, base='10')
-        >>> logger.info(log_data) # [0, 1, 2, 3]
-        >>> original = transformer.inverse_transform(log_data)
-        >>> np.allclose(original, data) # True
-        transformer = LogTransform(base=base)
-        transformed = transformer.fit_transform(data)
-        return transformed, transformer
-
-        def log_back_transform(
-        log_data: npt.NDArray[np.float64],
-        transformer: LogTransform
-        ) -> npt.NDArray[np.float64]:
-        """
-        Back-transform log data to original scale
-
-        Parameters
-        ----------
-        log_data : np.ndarray
-        Log-transformed data
-        transformer : LogTransform
+    transformer : LogTransform
         Fitted transformer
 
-        Returns
-        -------
-        np.ndarray
+    Examples
+    --------
+    >>> import numpy as np
+    >>> data = np.array([1.0, 10.0, 100.0, 1000.0])
+    >>> log_data, transformer = log_transform(data, base='10')
+    >>> logger.info(log_data) # [0, 1, 2, 3]
+    >>> original = transformer.inverse_transform(log_data)
+    >>> np.allclose(original, data) # True
+    """
+    transformer = LogTransform(base=base)
+    transformed = transformer.fit_transform(data)
+    return transformed, transformer
+
+
+def log_back_transform(
+    log_data: npt.NDArray[np.float64],
+    transformer: LogTransform
+) -> npt.NDArray[np.float64]:
+    """
+    Back-transform log data to original scale.
+
+    Parameters
+    ----------
+    log_data : np.ndarray
+        Log-transformed data
+    transformer : LogTransform
+        Fitted transformer
+
+    Returns
+    -------
+    np.ndarray
         Original scale data
-        """
-        return transformer.inverse_transform(log_data)
+    """
+    return transformer.inverse_transform(log_data)

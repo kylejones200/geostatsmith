@@ -21,39 +21,36 @@ logger = logging.getLogger(__name__)
 logger = get_logger(__name__)
 
 def morans_i(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- distance_threshold: Optional[float] = None,
-    ) -> Tuple[float, float]:
-        pass
- """
-     Calculate Moran'
- 
- Moran'
- nearby locations have similar attribute values.
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    distance_threshold: Optional[float] = None,
+) -> Tuple[float, float]:
+    """
+    Calculate Moran's I statistic.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of locations
- z : np.ndarray
- Attribute values at locations
- distance_threshold : float, optional
- """
-     Maximum distance for neighbors
-  If None, uses all pairs
+    Moran's I measures spatial autocorrelation - whether
+    nearby locations have similar attribute values.
 
- Returns
- -------
- """
-     I : float
-  Moran'
- - I > 0: Positive spatial autocorrelation (similar values cluster)
- - I = 0: No spatial autocorrelation
- - I < 0: Negative spatial autocorrelation (dissimilar values cluster)
- z_score : float
- """
-     Z-score for significance test
+    Parameters
+    ----------
+    x, y : np.ndarray
+        Coordinates of locations
+    z : np.ndarray
+        Attribute values at locations
+    distance_threshold : float, optional
+        Maximum distance for neighbors
+        If None, uses all pairs
+
+    Returns
+    -------
+    I : float
+        Moran's I statistic:
+        - I > 0: Positive spatial autocorrelation (similar values cluster)
+        - I = 0: No spatial autocorrelation
+        - I < 0: Negative spatial autocorrelation (dissimilar values cluster)
+    z_score : float
+        Z-score for significance test
  
  Examples
  --------
@@ -68,124 +65,118 @@ def morans_i(
  >>> y_flat = Y.flatten()[:200]
  >>> z = x_flat + y_flat + np.random.normal(0, 5, 200)
  >>>
- >>> I, z_score = morans_i(x_flat, y_flat, z, distance_threshold=20)
- >>> logger.info(f"Moran's I: {I:.3f}, Z-score: {z_score:.3f}"')
+    >>> I, z_score = morans_i(x_flat, y_flat, z, distance_threshold=20)
+    >>> logger.info(f"Moran's I: {I:.3f}, Z-score: {z_score:.3f}")
 
- Notes
- -----
- """
-     Moran'
+    Notes
+    -----
+    Moran's I is defined as:
  
  I = (n / W) * Σᵢ Σ wᵢ(zᵢ - z̄)(z - z̄) / Σᵢ(zᵢ - z̄)^2
 
- Where:
-     pass
- - n: number of locations
- - wᵢ: spatial weight between locations i and j
- - zᵢ: value at location i
- - z̄: mean of all values
- - W: sum of all weights
+    Where:
+    - n: number of locations
+    - wᵢⱼ: spatial weight between locations i and j
+    - zᵢ: value at location i
+    - z̄: mean of all values
+    - W: sum of all weights
 
- References
- ----------
- """
-     Moran, P.A.P. (1950). Notes on continuous stochastic phenomena.
-  Biometrika, 37, 17-23.
- """
- x = np.asarray(x, dtype=np.float64)
- y = np.asarray(y, dtype=np.float64)
- z = np.asarray(z, dtype=np.float64)
- n = len(x)
+    References
+    ----------
+    Moran, P.A.P. (1950). Notes on continuous stochastic phenomena.
+    Biometrika, 37, 17-23.
+    """
+    x = np.asarray(x, dtype=np.float64)
+    y = np.asarray(y, dtype=np.float64)
+    z = np.asarray(z, dtype=np.float64)
+    n = len(x)
 
- if n < 3:
-    pass
+    if n < 3:
+        raise ValueError("Need at least 3 points for Moran's I")
 
- # Calculate spatial weights
- points = np.column_stack([x, y])
- dist = distance_matrix(points, points)
+    # Calculate spatial weights
+    points = np.column_stack([x, y])
+    dist = distance_matrix(points, points)
 
- # Binary weights: 1 if within threshold, 0 otherwise
- if distance_threshold is not None:
- else:
- with np.errstate(divide='ignore', invalid='ignore'):
-     pass
- W_matrix[np.isinf(W_matrix)] = 0 # Self-distances
+    # Binary weights: 1 if within threshold, 0 otherwise
+    if distance_threshold is not None:
+        W_matrix = (dist <= distance_threshold).astype(float)
+    else:
+        with np.errstate(divide='ignore', invalid='ignore'):
+            W_matrix = 1.0 / dist  # Inverse distance weights
+        W_matrix[np.isinf(W_matrix)] = 0  # Self-distances
 
- np.fill_diagonal(W_matrix, 0) # No self-correlation
+    np.fill_diagonal(W_matrix, 0)  # No self-correlation
 
- W = np.sum(W_matrix)
+    W = np.sum(W_matrix)
 
- if W == 0:
- return np.nan, np.nan
+    if W == 0:
+        return np.nan, np.nan
 
- # Deviations from mean
- z_mean = np.mean(z)
- z_dev = z - z_mean
+    # Deviations from mean
+    z_mean = np.mean(z)
+    z_dev = z - z_mean
 
- # Moran'
- numerator = 0.0
- for i in range(n):
-     continue
- numerator += W_matrix[i, j] * z_dev[i] * z_dev[j]
+    # Moran's I numerator
+    numerator = 0.0
+    for i in range(n):
+        for j in range(n):
+            numerator += W_matrix[i, j] * z_dev[i] * z_dev[j]
 
- # Moran'
- denominator = np.sum(z_dev**2)
+    # Moran's I denominator
+    denominator = np.sum(z_dev**2)
 
- # Moran'
- I = (n / W) * (numerator / denominator)
+    # Moran's I
+    I = (n / W) * (numerator / denominator)
 
- # Expected value under null hypothesis (no spatial autocorrelation)
- E_I = -1.0 / (n - 1)
+    # Expected value under null hypothesis (no spatial autocorrelation)
+    E_I = -1.0 / (n - 1)
 
- # Variance (simplified formula)
- """
-     S1 = 0.5 * np.sum((W_matrix + W_matrix.T)**2)
-  S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
+    # Variance (simplified formula)
+    S1 = 0.5 * np.sum((W_matrix + W_matrix.T)**2)
+    S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
 
- b2 = (n * np.sum(z_dev**4)) / (np.sum(z_dev**2)**2)
+    b2 = (n * np.sum(z_dev**4)) / (np.sum(z_dev**2)**2)
 
- var_I = ((n * ((n**2 - 3*n + 3) * S1 - n * S2 + 3 * W**2) -)
- b2 * ((n**2 - n) * S1 - 2*n * S2 + 6 * W**2)) /
- ((n - 1) * (n - 2) * (n - 3) * W**2))
+    var_I = ((n * ((n**2 - 3*n + 3) * S1 - n * S2 + 3 * W**2) -
+              b2 * ((n**2 - n) * S1 - 2*n * S2 + 6 * W**2)) /
+             ((n - 1) * (n - 2) * (n - 3) * W**2))
 
- # Z-score
- z_score = (I - E_I) / np.sqrt(var_I) if var_I > 0 else 0.0
+    # Z-score
+    z_score = (I - E_I) / np.sqrt(var_I) if var_I > 0 else 0.0
 
- return I, z_score
+    return I, z_score
 
 def gearys_c(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- distance_threshold: Optional[float] = None,
-    ) -> Tuple[float, float]:
-        pass
- """
-     Calculate Geary'
- 
- Geary'
- more sensitive to local spatial autocorrelation than Moran'
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    distance_threshold: Optional[float] = None,
+) -> Tuple[float, float]:
+    """
+    Calculate Geary's C statistic.
 
- Parameters
- ----------
- x, y : np.ndarray
- Coordinates of locations
- z : np.ndarray
- Attribute values at locations
- distance_threshold : float, optional
- """
-     Maximum distance for neighbors
- 
- Returns
- -------
- """
-     C : float
-  Geary'
- - C < 1: Positive spatial autocorrelation
- - C = 1: No spatial autocorrelation
- - C > 1: Negative spatial autocorrelation
- z_score : float
- """
-     Z-score for significance test
+    Geary's C is another measure of spatial autocorrelation,
+    more sensitive to local spatial autocorrelation than Moran's I.
+
+    Parameters
+    ----------
+    x, y : np.ndarray
+        Coordinates of locations
+    z : np.ndarray
+        Attribute values at locations
+    distance_threshold : float, optional
+        Maximum distance for neighbors
+
+    Returns
+    -------
+    C : float
+        Geary's C statistic:
+        - C < 1: Positive spatial autocorrelation
+        - C = 1: No spatial autocorrelation
+        - C > 1: Negative spatial autocorrelation
+    z_score : float
+        Z-score for significance test
  
  Examples
  --------
@@ -196,76 +187,73 @@ def gearys_c(
  >>> y = np.random.uniform(0, 100, 100)
  >>> z = x + y + np.random.normal(0, 10, 100)
  >>>
- >>> C, z_score = gearys_c(x, y, z, distance_threshold=20)
- >>> logger.info(f"Geary's C: {C:.3f}, Z-score: {z_score:.3f}"')
+    >>> C, z_score = gearys_c(x, y, z, distance_threshold=20)
+    >>> logger.info(f"Geary's C: {C:.3f}, Z-score: {z_score:.3f}")
 
- Notes
- -----
- """
-     Geary'
- 
- C = ((n-1) / (2W)) * Σᵢ Σ wᵢ(zᵢ - z)^2 / Σᵢ(zᵢ - z̄)^2
+    Notes
+    -----
+    Geary's C is defined as:
 
- Geary's C is inversely related to Moran's I but emphasizes
- differences between pairs rather than deviations from the mean.
+    C = ((n-1) / (2W)) * Σᵢ Σⱼ wᵢⱼ(zᵢ - zⱼ)^2 / Σᵢ(zᵢ - z̄)^2
 
- References
- ----------
- """
-     Geary, R.C. (1954). The contiguity ratio and statistical mapping.
-  The Incorporated Statistician, 5, 115-145.
- """
- x = np.asarray(x, dtype=np.float64)
- y = np.asarray(y, dtype=np.float64)
- z = np.asarray(z, dtype=np.float64)
- n = len(x)
+    Geary's C is inversely related to Moran's I but emphasizes
+    differences between pairs rather than deviations from the mean.
 
- if n < 3:
-    pass
+    References
+    ----------
+    Geary, R.C. (1954). The contiguity ratio and statistical mapping.
+    The Incorporated Statistician, 5, 115-145.
+    """
+    x = np.asarray(x, dtype=np.float64)
+    y = np.asarray(y, dtype=np.float64)
+    z = np.asarray(z, dtype=np.float64)
+    n = len(x)
 
- # Calculate spatial weights
- points = np.column_stack([x, y])
- dist = distance_matrix(points, points)
+    if n < 3:
+        raise ValueError("Need at least 3 points for Geary's C")
 
- # Binary weights
- if distance_threshold is not None:
- else:
-     pass
- """
-     W_matrix = 1.0 / dist
-  W_matrix[np.isinf(W_matrix)] = 0
+    # Calculate spatial weights
+    points = np.column_stack([x, y])
+    dist = distance_matrix(points, points)
 
- np.fill_diagonal(W_matrix, 0)
+    # Binary weights
+    if distance_threshold is not None:
+        W_matrix = (dist <= distance_threshold).astype(float)
+    else:
+        with np.errstate(divide='ignore', invalid='ignore'):
+            W_matrix = 1.0 / dist
+        W_matrix[np.isinf(W_matrix)] = 0
 
- W = np.sum(W_matrix)
+    np.fill_diagonal(W_matrix, 0)
 
- if W == 0:
- return np.nan, np.nan
+    W = np.sum(W_matrix)
 
- # Geary'
- numerator = 0.0
- for i in range(n):
-     continue
- numerator += W_matrix[i, j] * (z[i] - z[j])**2
+    if W == 0:
+        return np.nan, np.nan
 
- # Geary'
- z_mean = np.mean(z)
- denominator = 2 * np.sum((z - z_mean)**2)
+    # Geary's C numerator
+    numerator = 0.0
+    for i in range(n):
+        for j in range(n):
+            numerator += W_matrix[i, j] * (z[i] - z[j])**2
 
- # Geary'
- C = ((n - 1) / W) * (numerator / denominator)
+    # Geary's C denominator
+    z_mean = np.mean(z)
+    denominator = 2 * np.sum((z - z_mean)**2)
 
- # Expected value
- E_C = 1.0
+    # Geary's C
+    C = ((n - 1) / W) * (numerator / denominator)
 
- # Variance (simplified)
- """
-     S1 = 0.5 * np.sum((W_matrix + W_matrix.T)**2)
-  S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
+    # Expected value
+    E_C = 1.0
 
- var_C = ((2*S1 + S2) * (n - 1) - 4*W**2) / (2 * (n + 1) * W**2)
+    # Variance (simplified)
+    S1 = 0.5 * np.sum((W_matrix + W_matrix.T)**2)
+    S2 = np.sum((np.sum(W_matrix, axis=1) + np.sum(W_matrix, axis=0))**2)
 
- # Z-score
- z_score = (C - E_C) / np.sqrt(var_C) if var_C > 0 else 0.0
+    var_C = ((2*S1 + S2) * (n - 1) - 4*W**2) / (2 * (n + 1) * W**2)
 
- return C, z_score
+    # Z-score
+    z_score = (C - E_C) / np.sqrt(var_C) if var_C > 0 else 0.0
+
+    return C, z_score

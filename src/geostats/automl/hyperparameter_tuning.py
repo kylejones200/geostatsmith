@@ -25,10 +25,9 @@ def tune_kriging(
     param_ranges: Dict,
     n_iterations: int = 20,
     verbose: bool = True,
-    ) -> Dict:
-        pass
+) -> Dict:
     """
-        Tune kriging hyperparameters via grid search.
+    Tune kriging hyperparameters via grid search.
 
     Parameters
     ----------
@@ -65,20 +64,24 @@ def tune_kriging(
     # Generate parameter grid
     param_grid = {}
     for param_name, param_range in param_ranges.items():
+        if isinstance(param_range, tuple) and len(param_range) == 2:
             param_grid[param_name] = np.linspace(
                 param_range[0], param_range[1], n_iterations
             )
         elif isinstance(param_range, list):
+            param_grid[param_name] = param_range
         else:
-            pass
+            param_grid[param_name] = [param_range]
 
     # Generate all combinations
+    from itertools import product
     param_names = list(param_grid.keys())
     param_values = list(param_grid.values())
     param_combinations = list(product(*param_values))
 
     # Limit to n_iterations if too many combinations
     if len(param_combinations) > n_iterations:
+        indices = np.random.choice(
             len(param_combinations), size=n_iterations, replace=False
         )
         param_combinations = [param_combinations[i] for i in indices]
@@ -89,26 +92,30 @@ def tune_kriging(
 
     # Test each parameter combination
     for i, param_combo in enumerate(param_combinations):
+        try:
             test_params = current_params.copy()
             for param_name, param_value in zip(param_names, param_combo):
-                continue
-    pass
+                test_params[param_name] = param_value
 
             # Create model instance
             test_model = model_class(**test_params)
 
             # Perform cross-validation
+            from ..algorithms.ordinary_kriging import OrdinaryKriging
+            from ..validation.cross_validation import leave_one_out
             ok = OrdinaryKriging(x, y, z, variogram_model=test_model)
-            predictions, metrics = leave_one_out(ok)
+            predictions, metrics = ok.cross_validate()
 
             # Use RMSE as score (lower is better)
-            score = metrics.get("rmse", np.inf)
+            score = metrics.get("RMSE", np.inf)
 
             if score < best_score:
+                best_score = score
+                best_params = test_params.copy()
                 best_model = test_model
 
             if verbose and (i + 1) % max(1, len(param_combinations) // 10) == 0:
-                )
+                logger.info(f"  Progress: {i + 1}/{len(param_combinations)}")
 
         except Exception as e:
             logger.debug(f"Failed to test parameter combination {i + 1}: {e}")
@@ -126,15 +133,15 @@ def tune_kriging(
 
 
 def optimize_neighborhood(
+    x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     max_neighbors_range: Tuple[int, int] = (10, 100),
     verbose: bool = True,
-    ) -> int:
-        pass
+) -> int:
     """
-        Optimize neighborhood size for approximate kriging.
+    Optimize neighborhood size for approximate kriging.
 
     Parameters
     ----------
@@ -167,6 +174,7 @@ def optimize_neighborhood(
     from ..algorithms.ordinary_kriging import OrdinaryKriging
 
     for n_neighbors in test_sizes:
+        try:
             neighborhood_config = NeighborhoodConfig(
                 max_neighbors=int(n_neighbors),
                 min_neighbors=3,
@@ -174,7 +182,7 @@ def optimize_neighborhood(
             )
 
             # Create kriging model with this neighborhood size
-            ok = OrdinaryKriging()
+            ok = OrdinaryKriging(
                 x,
                 y,
                 z,
@@ -183,21 +191,21 @@ def optimize_neighborhood(
             )
 
             # Perform cross-validation
-            predictions, metrics = leave_one_out(ok)
-            rmse = metrics.get("rmse", np.inf)
+            from ..validation.cross_validation import leave_one_out
+            predictions, metrics = ok.cross_validate()
+            rmse = metrics.get("RMSE", np.inf)
 
             if rmse < best_rmse:
-                continue
-    pass
+                best_rmse = rmse
+                best_neighbors = n_neighbors
 
             if verbose:
-    pass
+                logger.info(f"  {n_neighbors} neighbors: RMSE = {rmse:.4f}")
 
-                except Exception as e:
-                    pass
+        except Exception as e:
             logger.debug(f"Failed to test {n_neighbors} neighbors: {e}")
 
     if verbose:
-    pass
+        logger.info(f"Optimal neighborhood size: {best_neighbors} (RMSE: {best_rmse:.4f})")
 
-        return best_neighbors
+    return best_neighbors

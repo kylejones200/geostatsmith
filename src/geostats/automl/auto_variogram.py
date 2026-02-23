@@ -22,172 +22,180 @@ def auto_variogram(
  z: npt.NDArray[np.float64],
  model_types: Optional[List[str]] = None,
  n_lags: int = 15,
- verbose: bool = True,
-    ) -> VariogramModelBase:
-        pass
- """
-     Automatically select best variogram model.
+    verbose: bool = True,
+) -> VariogramModelBase:
+    """
+    Automatically select best variogram model.
 
- Tries multiple models and selects based on R^2 fit to experimental variogram.
+    Tries multiple models and selects based on R^2 fit to experimental variogram.
 
- Parameters
- ----------
- x, y, z : ndarray
- Sample data
- model_types : list of str, optional
- Models to try. Default: ['spherical', 'exponential', 'gaussian', 'linear']
- n_lags : int, default=15
- Number of lags
- verbose : bool, default=True
- Print selection process
+    Parameters
+    ----------
+    x, y, z : ndarray
+        Sample data
+    model_types : list of str, optional
+        Models to try. Default: ['spherical', 'exponential', 'gaussian', 'linear']
+    n_lags : int, default=15
+        Number of lags
+    verbose : bool, default=True
+        Print selection process
 
- Returns
- -------
- best_model : VariogramModelBase
- Best fitted variogram model
+    Returns
+    -------
+    best_model : VariogramModelBase
+        Best fitted variogram model
 
- Examples
- --------
- >>> from geostats.automl import auto_variogram
- >>>
- >>> # Automatically select best model
- >>> model = auto_variogram(x, y, z)
- >>> logger.info(f"Selected: {model.__class__.__name__}")
+    Examples
+    --------
+    >>> from geostats.automl import auto_variogram
+    >>>
+    >>> # Automatically select best model
+    >>> model = auto_variogram(x, y, z)
+    >>> logger.info(f"Selected: {model.__class__.__name__}")
 
- Notes
- -----
- This uses parallel_variogram_fit under the hood for speed.
- """
- if model_types is None:
-    pass
+    Notes
+    -----
+    This uses parallel_variogram_fit under the hood for speed.
+    """
+    if model_types is None:
+        model_types = ['spherical', 'exponential', 'gaussian', 'linear']
 
- try:
-    pass
+    try:
+        from ..algorithms.fitting import automatic_fit
+        from ..algorithms.variogram import experimental_variogram
 
- results = parallel_variogram_fit()
- x, y, z,
- model_types=model_types,
- n_lags=n_lags,
- n_jobs=-1
- )
+        lags, gamma, _ = experimental_variogram(x, y, z, n_lags=n_lags)
+        results = automatic_fit(lags, gamma, criterion='r2')
 
- if verbose:
- logger.info(f" Best model: {results['best_type']}")
- logger.info(f" R^2: {results['best_r2']:.4f}")
- logger.info(f"All models:")
- for r in results['all_results']:
-     continue
- logger.info(f" - {r['type']}: R^2 = {r['r2']:.4f}")
+        if verbose:
+            logger.info(f"✓ Best model: {results['model'].__class__.__name__}")
+            logger.info(f"  R^2: {results['score']:.4f}")
 
- return results['best_model']
+        return results['model']
 
- except ImportError:
-     pass
- lags, gamma, _ = experimental_variogram(x, y, z, n_lags=n_lags)
+    except ImportError:
+        # Fallback if automatic_fit not available
+        from ..algorithms.variogram import experimental_variogram
+        from ..algorithms.fitting import fit_variogram_model
+        from ..models.variogram_models import SphericalModel, ExponentialModel, GaussianModel, LinearModel
 
- best_model = None
- best_r2 = -np.inf
- best_type = None
+        lags, gamma, _ = experimental_variogram(x, y, z, n_lags=n_lags)
 
- for model_type in model_types:
-     continue
- model = fit_variogram(lags, gamma, model_type=model_type)
+        best_model = None
+        best_r2 = -np.inf
+        best_type = None
 
- gamma_fitted = model(lags)
- ss_res = np.sum((gamma - gamma_fitted)**2)
- ss_tot = np.sum((gamma - gamma.mean())**2)
- r2 = 1 - ss_res / ss_tot
+        model_classes = {
+            'spherical': SphericalModel,
+            'exponential': ExponentialModel,
+            'gaussian': GaussianModel,
+            'linear': LinearModel,
+        }
 
- if r2 > best_r2:
- best_model = model
- best_type = model_type
+        for model_type in model_types:
+            try:
+                model_class = model_classes.get(model_type)
+                if model_class is None:
+                    continue
+                model = model_class()
+                model = fit_variogram_model(model, lags, gamma)
 
- if verbose:
-    pass
+                gamma_fitted = model(lags)
+                ss_res = np.sum((gamma - gamma_fitted)**2)
+                ss_tot = np.sum((gamma - gamma.mean())**2)
+                r2 = 1 - ss_res / ss_tot if ss_tot > 0 else 0
 
- except Exception as e:
- if verbose:
-    pass
+                if r2 > best_r2:
+                    best_model = model
+                    best_r2 = r2
+                    best_type = model_type
 
- if best_model is None:
- f"All {len(model_types)} variogram models failed to fit. "
- "Check data quality (sufficient points, spatial structure, no duplicates)."
- )
+            except Exception:
+                continue
 
- if verbose:
-    pass
+        if verbose:
+            logger.info(f"✓ Best model: {best_type}")
+            logger.info(f"  R^2: {best_r2:.4f}")
 
- return best_model
+        if best_model is None:
+            raise RuntimeError(
+                f"All {len(model_types)} variogram models failed to fit. "
+                "Check data quality (sufficient points, spatial structure, no duplicates)."
+            )
+
+        return best_model
+
+    except Exception as e:
+        if verbose:
+            logger.error(f"Error in auto_variogram: {e}")
+        raise
 
 def auto_fit(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- cross_validate: bool = True,
- verbose: bool = True,
-    ) -> Dict:
-        pass
- """
-     Automatic model fitting with cross-validation.
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    cross_validate: bool = True,
+    verbose: bool = True,
+) -> Dict:
+    """
+    Automatic model fitting with cross-validation.
 
- Parameters
- ----------
- x, y, z : ndarray
- Sample data
- cross_validate : bool, default=True
- Perform cross-validation to assess fit
- verbose : bool, default=True
- Print results
+    Parameters
+    ----------
+    x, y, z : ndarray
+        Sample data
+    cross_validate : bool, default=True
+        Perform cross-validation to assess fit
+    verbose : bool, default=True
+        Print results
 
- Returns
- -------
- results : dict
- Dictionary with model, CV scores, etc.
+    Returns
+    -------
+    results : dict
+        Dictionary with model, CV scores, etc.
 
- Examples
- --------
- >>> results = auto_fit(x, y, z)
- >>> model = results['model']
- >>> logger.info(f"CV RMSE: {results['cv_rmse']:.3f}")
- """
- model = auto_variogram(x, y, z, verbose=verbose)
+    Examples
+    --------
+    >>> results = auto_fit(x, y, z)
+    >>> model = results['model']
+    >>> logger.info(f"CV RMSE: {results['cv_rmse']:.3f}")
+    """
+    model = auto_variogram(x, y, z, verbose=verbose)
 
- results = {
- 'model': model,
- 'model_type': model.__class__.__name__,
- 'parameters': model._parameters,
- }
+    results = {
+        'model': model,
+        'model_type': model.__class__.__name__,
+        'parameters': getattr(model, '_parameters', {}),
+    }
 
- if cross_validate:
-    pass
+    if cross_validate:
+        from ..algorithms.ordinary_kriging import OrdinaryKriging
+        n = len(x)
+        predictions = np.zeros(n)
 
- if verbose:
-    pass
+        for i in range(n):
+            train_idx = np.arange(n) != i
+            x_train = x[train_idx]
+            y_train = y[train_idx]
+            z_train = z[train_idx]
 
- n = len(x)
- predictions = np.zeros(n)
+            krig = OrdinaryKriging(x_train, y_train, z_train, model)
+            pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
+            predictions[i] = pred[0]
 
- for i in range(n):
-     continue
- x_train = x[train_idx]
- y_train = y[train_idx]
- z_train = z[train_idx]
+        errors = z - predictions
+        rmse = np.sqrt(np.mean(errors**2))
+        mae = np.mean(np.abs(errors))
+        r2 = 1 - np.sum(errors**2) / np.sum((z - z.mean())**2)
 
- krig = OrdinaryKriging(x_train, y_train, z_train, model)
- pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
- predictions[i] = pred[0]
+        results['cv_predictions'] = predictions
+        results['cv_rmse'] = rmse
+        results['cv_mae'] = mae
+        results['cv_r2'] = r2
 
- errors = z - predictions
- rmse = np.sqrt(np.mean(errors**2))
- mae = np.mean(np.abs(errors))
- r2 = 1 - np.sum(errors**2) / np.sum((z - z.mean())**2)
+        if verbose:
+            logger.info(f"  CV RMSE: {rmse:.4f}")
+            logger.info(f"  CV MAE: {mae:.4f}")
+            logger.info(f"  CV R^2: {r2:.4f}")
 
- results['cv_predictions'] = predictions
- results['cv_rmse'] = rmse
- results['cv_mae'] = mae
- results['cv_r2'] = r2
-
- if verbose:
- logger.info(f" MAE: {mae:.4f}")
- logger.info(f" R^2: {r2:.4f}")
-
- return results
+    return results

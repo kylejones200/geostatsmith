@@ -19,11 +19,10 @@ def interactive_variogram(
  z: npt.NDArray[np.float64],
  fitted_model: Optional[object] = None,
  n_lags: int = 15,
- title: str = 'Interactive Variogram',
-    ):
-        pass
- """
-     Create interactive variogram plot.
+    title: str = 'Interactive Variogram',
+):
+    """
+    Create interactive variogram plot.
 
  Parameters
  ----------
@@ -52,146 +51,153 @@ def interactive_variogram(
  >>> fig.show() # Opens in browser
  >>> # Or save to HTML
  >>> fig.write_html('variogram.html')
- """
- if not PLOTLY_AVAILABLE:
- "plotly is required for interactive plots. "
- "Install with: pip install plotly"
- )
+    """
+    if not PLOTLY_AVAILABLE:
+        raise ImportError(
+            "plotly is required for interactive plots. "
+            "Install with: pip install plotly"
+        )
 
- from ..algorithms.variogram import experimental_variogram
+    from ..variogram import experimental_variogram
 
- # Compute experimental variogram
- lags, gamma = experimental_variogram(x, y, z, n_lags=n_lags)
+    # Compute experimental variogram
+    lags, gamma, _ = experimental_variogram(x, y, z, n_lags=n_lags)
 
- # Create figure
- fig = go.Figure()
+    # Create figure
+    fig = go.Figure()
 
- # Experimental points
- fig.add_trace(go.Scatter(
- x=lags,
- y=gamma,
- mode='markers',
- name='Experimental',
- marker=dict(size=10, color='blue'),
- hovertemplate='Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>'
- ))
+    # Experimental points
+    fig.add_trace(go.Scatter(
+        x=lags,
+        y=gamma,
+        mode='markers',
+        name='Experimental',
+        marker=dict(size=10, color='blue'),
+        hovertemplate='Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>'
+    ))
 
- # Fitted model
- if fitted_model is not None:
- gamma_fit = fitted_model(h_fit)
+    # Fitted model
+    if fitted_model is not None:
+        h_fit = np.linspace(0, lags.max(), 200)
+        gamma_fit = fitted_model(h_fit)
 
- params = fitted_model.get_parameters()
- model_name = fitted_model.__class__.__name__
+        params = fitted_model.get_parameters()
+        model_name = fitted_model.__class__.__name__
 
- fig.add_trace(go.Scatter(
- x=h_fit,
- y=gamma_fit,
- mode='lines',
- name=f'Fitted ({model_name})',
- line=dict(color='red', width=2),
- hovertemplate='Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>'
- ))
+        fig.add_trace(go.Scatter(
+            x=h_fit,
+            y=gamma_fit,
+            mode='lines',
+            name=f'Fitted ({model_name})',
+            line=dict(color='red', width=2),
+            hovertemplate='Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>'
+        ))
 
- # Add parameter annotations
- param_text = f"<b>Parameters:</b><br>"
- param_text += f"Nugget: {params.get('nugget', 0):.3f}<br>"
- param_text += f"Sill: {params.get('sill', 0):.3f}<br>"
- param_text += f"Range: {params.get('range', 0):.3f}"
+        # Add parameter annotations
+        param_text = f"<b>Parameters:</b><br>"
+        param_text += f"Nugget: {params.get('nugget', 0):.3f}<br>"
+        param_text += f"Sill: {params.get('sill', 0):.3f}<br>"
+        param_text += f"Range: {params.get('range', 0):.3f}"
 
- fig.add_annotation(
- xref="paper", yref="paper",
- x=0.98, y=0.98,
- text=param_text,
- showarrow=False,
- bgcolor="white",
- bordercolor="black",
- borderwidth=1,
- align="left",
- xanchor="right",
- yanchor="top"
- )
+        fig.add_annotation(
+            xref="paper", yref="paper",
+            x=0.98, y=0.98,
+            text=param_text,
+            showarrow=False,
+            bgcolor="white",
+            bordercolor="black",
+            borderwidth=1,
+            align="left",
+            xanchor="right",
+            yanchor="top"
+        )
 
- fig.update_layout(
- title=title,
- xaxis_title='Distance (h)',
- yaxis_title='Semivariance γ(h)',
- hovermode='closest',
- template='plotly_white',
- width=800,
- height=500
- )
+    fig.update_layout(
+        title=title,
+        xaxis_title='Distance (h)',
+        yaxis_title='Semivariance gamma(h)',
+        hovermode='closest',
+        template='plotly_white',
+        width=800,
+        height=500
+    )
 
- return fig
+    return fig
 
 def interactive_variogram_cloud(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- max_pairs: int = 5000,
- title: str = 'Variogram Cloud',
-    ):
-        pass
- """
-     Create interactive variogram cloud plot.
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    max_pairs: int = 5000,
+    title: str = 'Variogram Cloud',
+):
+    """
+    Create interactive variogram cloud plot.
 
- Shows all pairwise semivariances vs. distances.
+    Shows all pairwise semivariances vs. distances.
 
- Parameters
- ----------
- x, y, z : ndarray
- Sample data
- max_pairs : int, default=5000
+    Parameters
+    ----------
+    x, y, z : ndarray
+        Sample data
+    max_pairs : int, default=5000
  Maximum pairs to plot (for performance)
  title : str
  Plot title
 
- Returns
- -------
- fig : plotly Figure
- """
- if not PLOTLY_AVAILABLE:
- "plotly is required for interactive plots. "
- "Install with: pip install plotly"
- )
+    Returns
+    -------
+    fig : plotly Figure
+    """
+    if not PLOTLY_AVAILABLE:
+        raise ImportError(
+            "plotly is required for interactive plots. "
+            "Install with: pip install plotly"
+        )
 
- from scipy.spatial.distance import pdist, squareform
+    from scipy.spatial.distance import pdist, squareform
 
- # Compute all pairwise distances and semivariances
- coords = np.column_stack([x, y])
- distances = squareform(pdist(coords))
+    # Compute all pairwise distances and semivariances
+    coords = np.column_stack([x, y])
+    distances = squareform(pdist(coords))
 
- n = len(z)
- gamma_pairs = []
- dist_pairs = []
+    n = len(z)
+    gamma_pairs = []
+    dist_pairs = []
 
- # Sample pairs if too many
- if n * (n - 1) // 2 > max_pairs:
- count = 0
- for i in range(n):
- if count in indices:
- dist_pairs.append(distances[i, j])
- count += 1
- else:
- for j in range(i + 1, n):
-     continue
- dist_pairs.append(distances[i, j])
+    # Sample pairs if too many
+    if n * (n - 1) // 2 > max_pairs:
+        indices = np.random.choice(n * (n - 1) // 2, max_pairs, replace=False)
+        count = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                if count in indices:
+                    dist_pairs.append(distances[i, j])
+                    gamma_pairs.append(0.5 * (z[i] - z[j])**2)
+                count += 1
+    else:
+        for i in range(n):
+            for j in range(i + 1, n):
+                dist_pairs.append(distances[i, j])
+                gamma_pairs.append(0.5 * (z[i] - z[j])**2)
 
- fig = go.Figure()
+    fig = go.Figure()
 
- fig.add_trace(go.Scatter(
- x=dist_pairs,
- y=gamma_pairs,
- mode='markers',
- marker=dict(size=3, opacity=0.3, color='blue'),
- hovertemplate='Distance: %{x:.2f}<br>Semivariance: %{y:.4f}<extra></extra>'
- ))
+    fig.add_trace(go.Scatter(
+        x=dist_pairs,
+        y=gamma_pairs,
+        mode='markers',
+        marker=dict(size=3, opacity=0.3, color='blue'),
+        hovertemplate='Distance: %{x:.2f}<br>Semivariance: %{y:.4f}<extra></extra>'
+    ))
 
- fig.update_layout(
- title=title,
- xaxis_title='Distance',
- yaxis_title='Semivariance',
- template='plotly_white',
- width=800,
- height=500
- )
+    fig.update_layout(
+        title=title,
+        xaxis_title='Distance',
+        yaxis_title='Semivariance',
+        template='plotly_white',
+        width=800,
+        height=500
+    )
 
- return fig
+    return fig

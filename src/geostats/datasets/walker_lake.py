@@ -91,7 +91,7 @@ def load_walker_lake() -> Dict:
         "y": y,
         "V": V,
         "U": U,
-        "description": ()
+        "description": (
             "Walker Lake dataset from Nevada. "
             "Measurements on a 10x10 grid (10m spacing). "
             "V: Arsenious contaminant (ppm), U: PCE concentration (ppm). "
@@ -113,15 +113,14 @@ def get_walker_lake_subset(n_samples: int = 50, seed: int = 42) -> Dict:
     Parameters
     ----------
     n_samples : int
-    Number of samples to extract
+        Number of samples to extract
     seed : int
-    """
         Random seed for reproducibility
-    
+
     Returns
     -------
     dict
-    Subset of Walker Lake data
+        Subset of Walker Lake data
     """
     np.random.seed(seed)
 

@@ -9,221 +9,221 @@ import numpy as np
 from typing import List, Optional, Dict, Any
 
 try:
- FASTAPI_AVAILABLE = True
+    from fastapi import APIRouter, HTTPException
+    from pydantic import BaseModel, Field
+    FASTAPI_AVAILABLE = True
 except ImportError:
- FASTAPI_AVAILABLE = False
- # Create dummy classes for when FastAPI not installed
- class BaseModel:
- class APIRouter:
-     pass
-
-     # Request/Response models
-class PredictionRequest(BaseModel):
- x_samples: List[float] = Field(..., description="Sample X coordinates")
- y_samples: List[float] = Field(..., description="Sample Y coordinates")
- z_samples: List[float] = Field(..., description="Sample values")
- x_pred: List[float] = Field(..., description="Prediction X coordinates")
- y_pred: List[float] = Field(..., description="Prediction Y coordinates")
- variogram_type: str = Field("spherical", description="Variogram model type")
- return_variance: bool = Field(True, description="Return kriging variance")
-
-class PredictionResponse(BaseModel):
- predictions: List[float]
- variance: Optional[List[float]] = None
- model_type: str
- model_parameters: Dict[str, float]
-
-class VariogramRequest(BaseModel):
- x: List[float]
- y: List[float]
- z: List[float]
- model_types: Optional[List[str]] = None
- n_lags: int = 15
-
-class VariogramResponse(BaseModel):
- best_model: str
- parameters: Dict[str, float]
- r2: float
- lags: List[float]
- gamma: List[float]
-
-class HealthResponse(BaseModel):
- status: str
- version: str
- modules_available: Dict[str, bool]
-
-    # Create router
-    if FASTAPI_AVAILABLE:
-    else:
+    FASTAPI_AVAILABLE = False
+    # Create dummy classes for when FastAPI not installed
+    class BaseModel:
         pass
-
-    if FASTAPI_AVAILABLE:
-        async def root():
+    class APIRouter:
+        pass
+    class Field:
+        def __init__(self, *args, **kwargs):
             pass
- """Root endpoint."""
- return {
- "message": "GeoStats API",
- "version": "0.3.0",
- "docs": "/docs"
- }
 
- @router.get("/health", response_model=HealthResponse, tags=["General"])
- async def health_check():
-     pass
- """
-     Health check endpoint.
+if FASTAPI_AVAILABLE:
+    router = APIRouter()
 
- Returns service status and available modules.
- """
- # Check which modules are available
- modules_available = {}
+    # Request/Response models
+    class PredictionRequest(BaseModel):
+        x_samples: List[float] = Field(..., description="Sample X coordinates")
+        y_samples: List[float] = Field(..., description="Sample Y coordinates")
+        z_samples: List[float] = Field(..., description="Sample values")
+        x_pred: List[float] = Field(..., description="Prediction X coordinates")
+        y_pred: List[float] = Field(..., description="Prediction Y coordinates")
+        variogram_type: str = Field("spherical", description="Variogram model type")
+        return_variance: bool = Field(True, description="Return kriging variance")
 
- try:
-     from geostats.performance import parallel_kriging
-     modules_available['performance'] = True
- except ImportError:
-     modules_available['performance'] = False
+    class PredictionResponse(BaseModel):
+        predictions: List[float]
+        variance: Optional[List[float]] = None
+        model_type: str
+        model_parameters: Dict[str, float]
 
- try:
-     from geostats.interactive import create_interactive_map
-     modules_available['interactive'] = True
- except ImportError:
-     modules_available['interactive'] = False
+    class VariogramRequest(BaseModel):
+        x: List[float]
+        y: List[float]
+        z: List[float]
+        model_types: Optional[List[str]] = None
+        n_lags: int = 15
 
- try:
-     from geostats.automl import auto_method
-     modules_available['automl'] = True
- except ImportError:
-     modules_available['automl'] = False
+    class VariogramResponse(BaseModel):
+        best_model: str
+        parameters: Dict[str, float]
+        r2: float
+        lags: List[float]
+        gamma: List[float]
 
- return HealthResponse(
- status="healthy",
- version="0.3.0",
- modules_available=modules_available
- )
+    class HealthResponse(BaseModel):
+        status: str
+        version: str
+        modules_available: Dict[str, bool]
 
- @router.post("/predict", response_model=PredictionResponse, tags=["Kriging"])
- async def predict(request: PredictionRequest):
-     pass
- """
-     Perform kriging prediction.
+    # Endpoints
+    @router.get("/", tags=["General"])
+    async def root():
+        """Root endpoint."""
+        return {
+            "message": "GeoStats API",
+            "version": "0.3.0",
+            "docs": "/docs"
+        }
 
- Returns predictions and optionally variance at requested locations.
- """
- try:
-     pass
- from ..algorithms.variogram import experimental_variogram
- from ..algorithms.fitting import fit_variogram_model as fit_variogram
+    @router.get("/health", response_model=HealthResponse, tags=["General"])
+    async def health_check():
+        """
+        Health check endpoint.
 
- # Convert to numpy arrays
- x = np.array(request.x_samples)
- y = np.array(request.y_samples)
- z = np.array(request.z_samples)
- x_pred = np.array(request.x_pred)
- y_pred = np.array(request.y_pred)
+        Returns service status and available modules.
+        """
+        # Check which modules are available
+        modules_available = {}
 
- # Fit variogram
- lags, gamma = experimental_variogram(x, y, z)
- model = fit_variogram(lags, gamma, model_type=request.variogram_type)
+        try:
+            from geostats.performance import parallel_kriging
+            modules_available['performance'] = True
+        except ImportError:
+            modules_available['performance'] = False
 
- # Kriging
- krig = OrdinaryKriging(x, y, z, model)
- predictions, variance = krig.predict()
- x_pred, y_pred,
- return_variance=request.return_variance
- )
+        try:
+            from geostats.interactive import create_interactive_map
+            modules_available['interactive'] = True
+        except ImportError:
+            modules_available['interactive'] = False
 
- # Get model parameters
- params = model.get_parameters()
+        try:
+            from geostats.automl import auto_method
+            modules_available['automl'] = True
+        except ImportError:
+            modules_available['automl'] = False
 
- return PredictionResponse(
- predictions=predictions.tolist(),
- variance=variance.tolist() if variance is not None else None,
- model_type=model.__class__.__name__,
- model_parameters=params
- )
+        return HealthResponse(
+            status="healthy",
+            version="0.3.0",
+            modules_available=modules_available
+        )
 
- except Exception as e:
-     pass
- raise HTTPException(status_code=500, detail=str(e))
+    @router.post("/predict", response_model=PredictionResponse, tags=["Kriging"])
+    async def predict(request: PredictionRequest):
+        """
+        Perform kriging prediction.
 
- @router.post("/variogram", response_model=VariogramResponse, tags=["Variogram"])
- async def fit_variogram_endpoint(request: VariogramRequest):
-     pass
- """
-     Fit variogram model to data.
+        Returns predictions and optionally variance at requested locations.
+        """
+        try:
+            from ..algorithms.variogram import experimental_variogram
+            from ..algorithms.fitting import fit_variogram_model as fit_variogram
+            from ..algorithms.ordinary_kriging import OrdinaryKriging
 
- Returns best fitted model and parameters.
- """
- try:
-     pass
- from ..algorithms.variogram import experimental_variogram
+            # Convert to numpy arrays
+            x = np.array(request.x_samples)
+            y = np.array(request.y_samples)
+            z = np.array(request.z_samples)
+            x_pred = np.array(request.x_pred)
+            y_pred = np.array(request.y_pred)
 
- # Convert to numpy
- x = np.array(request.x)
- y = np.array(request.y)
- z = np.array(request.z)
+            # Fit variogram
+            lags, gamma = experimental_variogram(x, y, z)
+            model = fit_variogram(lags, gamma, model_type=request.variogram_type)
 
- # Compute experimental variogram
- lags, gamma = experimental_variogram(x, y, z, n_lags=request.n_lags)
+            # Kriging
+            krig = OrdinaryKriging(x, y, z, model)
+            predictions, variance = krig.predict(
+                x_pred, y_pred,
+                return_variance=request.return_variance
+            )
 
- # Auto fit
- model = auto_variogram()
- x, y, z,
- model_types=request.model_types,
- verbose=False
- )
+            # Get model parameters
+            params = model.get_parameters()
 
- # Compute R^2
- gamma_fitted = model(lags)
- ss_res = np.sum((gamma - gamma_fitted)**2)
- ss_tot = np.sum((gamma - gamma.mean())**2)
- r2 = 1 - ss_res / ss_tot
+            return PredictionResponse(
+                predictions=predictions.tolist(),
+                variance=variance.tolist() if variance is not None else None,
+                model_type=model.__class__.__name__,
+                model_parameters=params
+            )
 
- return VariogramResponse(
- best_model=model.__class__.__name__,
- parameters=model.get_parameters(),
- r2=float(r2),
- lags=lags.tolist(),
- gamma=gamma.tolist()
- )
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
 
- except Exception as e:
-     pass
- raise HTTPException(status_code=500, detail=str(e))
+    @router.post("/variogram", response_model=VariogramResponse, tags=["Variogram"])
+    async def fit_variogram_endpoint(request: VariogramRequest):
+        """
+        Fit variogram model to data.
 
- @router.post("/auto-interpolate", tags=["AutoML"])
- async def auto_interpolate_endpoint(
- x_samples: List[float],
- y_samples: List[float],
- z_samples: List[float],
- x_pred: List[float],
- y_pred: List[float],
- ):
-     pass
- """
-     Automatic interpolation - one endpoint does everything!
+        Returns best fitted model and parameters.
+        """
+        try:
+            from ..algorithms.variogram import experimental_variogram
+            from ..automl import auto_variogram
 
- Automatically selects best method and makes predictions.
- """
- try:
-    pass
+            # Convert to numpy
+            x = np.array(request.x)
+            y = np.array(request.y)
+            z = np.array(request.z)
 
- x = np.array(x_samples)
- y = np.array(y_samples)
- z = np.array(z_samples)
- x_p = np.array(x_pred)
- y_p = np.array(y_pred)
+            # Compute experimental variogram
+            lags, gamma = experimental_variogram(x, y, z, n_lags=request.n_lags)
 
- results = auto_interpolate(x, y, z, x_p, y_p, verbose=False)
+            # Auto fit
+            model = auto_variogram(
+                x, y, z,
+                model_types=request.model_types,
+                verbose=False
+            )
 
- return {
- "best_method": results['best_method'],
- "cv_rmse": float(results['cv_rmse']),
- "predictions": results['predictions'].tolist(),
- "model_type": results['model'].__class__.__name__ if results['model'] else None
- }
+            # Compute R^2
+            gamma_fitted = model(lags)
+            ss_res = np.sum((gamma - gamma_fitted)**2)
+            ss_tot = np.sum((gamma - gamma.mean())**2)
+            r2 = 1 - ss_res / ss_tot
 
- except Exception as e:
-     pass
- raise HTTPException(status_code=500, detail=str(e))
+            return VariogramResponse(
+                best_model=model.__class__.__name__,
+                parameters=model.get_parameters(),
+                r2=float(r2),
+                lags=lags.tolist(),
+                gamma=gamma.tolist()
+            )
+
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    @router.post("/auto-interpolate", tags=["AutoML"])
+    async def auto_interpolate_endpoint(
+        x_samples: List[float],
+        y_samples: List[float],
+        z_samples: List[float],
+        x_pred: List[float],
+        y_pred: List[float],
+    ):
+        """
+        Automatic interpolation - one endpoint does everything!
+
+        Automatically selects best method and makes predictions.
+        """
+        try:
+            from ..automl import auto_interpolate
+
+            x = np.array(x_samples)
+            y = np.array(y_samples)
+            z = np.array(z_samples)
+            x_p = np.array(x_pred)
+            y_p = np.array(y_pred)
+
+            results = auto_interpolate(x, y, z, x_p, y_p, verbose=False)
+
+            return {
+                "best_method": results['best_method'],
+                "cv_rmse": float(results['cv_rmse']),
+                "predictions": results['predictions'].tolist(),
+                "model_type": results['model'].__class__.__name__ if results['model'] else None
+            }
+
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+else:
+    # Dummy router when FastAPI not available
+    router = None

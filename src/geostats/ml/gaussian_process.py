@@ -1,46 +1,40 @@
 """
-    Gaussian Process Regression for Geostatistics
+Gaussian Process Regression for Geostatistics
 
 Gaussian Processes (GP) provide a machine learning interpretation of kriging.
 This module bridges classical geostatistics and modern ML by:
-    pass
 1. Providing sklearn-compatible GP interface
 2. Using geostatistical variogram models as kernels
 3. Enabling hyperparameter optimization via ML methods
 4. Allowing easy integration with sklearn pipelines
 
 Relationship to Kriging:
-    pass
 - Simple Kriging = GP Regression with known mean
 - Ordinary Kriging = GP with constant mean function
 - Universal Kriging = GP with polynomial mean function
 - Variogram models = Covariance kernels
 
 Key Differences from sklearn.GaussianProcessRegressor:
-    pass
 - Uses geostatistical variogram models
 - Familiar to geostatisticians
 - Easy parameter interpretation
 - Optimized for spatial data
 
 Advantages:
-    pass
 - Probabilistic predictions (uncertainty quantification)
 - Hyperparameter optimization (kernel learning)
 - sklearn compatibility (pipelines, grid search)
 - Flexible kernel design
 
 Applications:
-    pass
 - Spatial interpolation with ML tools
 - Automated variogram parameter tuning
 - Combining spatial and non-spatial features
 - Uncertainty-aware predictions
 
 References:
-    pass
-- Rasmussen, C.E. & Williams, C.K.I. (2006). "Gaussian Processes for"
- Machine Learning". MIT Press."
+- Rasmussen, C.E. & Williams, C.K.I. (2006). "Gaussian Processes for
+  Machine Learning". MIT Press.
 - Cressie, N. (1993). "Statistics for Spatial Data". Wiley.
 - Diggle, P.J. & Ribeiro, P.J. (2007). "Model-based Geostatistics". Springer.
 """
@@ -72,7 +66,8 @@ except ImportError:
  logger.warning("scikit-learn not available. GP will have limited functionality.")
 
 class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
- Gaussian Process Regression with Geostatistical Kernels
+    """
+    Gaussian Process Regression with Geostatistical Kernels
 
  sklearn-compatible Gaussian Process using variogram-based kernels.
 
@@ -94,9 +89,8 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  f(x*) | X, y ~ N(μ*, σ^2*)
 
  where:
-     pass
- μ* = m(x*) + k(x*, X) K⁻¹ (y - m(X))
- σ^2* = k(x*, x*) - k(x*, X) K⁻¹ k(X, x*)
+ mu* = m(x*) + k(x*, X) K^(-1) (y - m(X))
+ sigma^2* = k(x*, x*) - k(x*, X) K^(-1) k(X, x*)
 
  Parameters
  ----------
@@ -105,10 +99,9 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  If str, will fit the specified model type
  mean_type : str
  Type of mean function:
-     pass
- - 'zero': m(x) = 0 (Simple Kriging with mean=0)
- - 'constant': m(x) = μ (Ordinary Kriging)
- - 'linear': m(x) = β₀ + β₁x + β₂y (Universal Kriging)
+    - 'zero': m(x) = 0 (Simple Kriging with mean=0)
+    - 'constant': m(x) = mu (Ordinary Kriging)
+    - 'linear': m(x) = beta0 + beta1*x + beta2*y (Universal Kriging)
  alpha : float
  Nugget/noise parameter for numerical stability
  optimize_kernel : bool
@@ -151,376 +144,401 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
  >>> pipe.fit(X, z)
  """
 
- def __init__(
-     kernel: Optional[Union[str, Callable]] = 'spherical',
-     mean_type: str = 'constant',
-     alpha: float = 1e-8,
-     optimize_kernel: bool = False,
-     n_lags: int = 15
-     ):
-         pass
-     """
-         Initialize Gaussian Process with geostatistical kernel
+    def __init__(
+        self,
+        kernel: Optional[Union[str, Callable]] = 'spherical',
+        mean_type: str = 'constant',
+        alpha: float = 1e-8,
+        optimize_kernel: bool = False,
+        n_lags: int = 15
+    ):
+        """
+        Initialize Gaussian Process with geostatistical kernel
 
-     Parameters
-     ----------
-     kernel : str or callable
-     Variogram model or model type
-     mean_type : str
-     'zero', 'constant', or 'linear'
-     alpha : float
-     Nugget for numerical stability
-     optimize_kernel : bool
-     Whether to optimize kernel hyperparameters
-     n_lags : int
-     Number of lags for variogram fitting if kernel is str
-     """
-     self.kernel = kernel
-     self.mean_type = mean_type.lower()
-     self.alpha = alpha
-     self.optimize_kernel = optimize_kernel
-     self.n_lags = n_lags
+        Parameters
+        ----------
+        kernel : str or callable
+            Variogram model or model type
+        mean_type : str
+            'zero', 'constant', or 'linear'
+        alpha : float
+            Nugget for numerical stability
+        optimize_kernel : bool
+            Whether to optimize kernel hyperparameters
+        n_lags : int
+            Number of lags for variogram fitting if kernel is str
+        """
+        self.kernel = kernel
+        self.mean_type = mean_type.lower()
+        self.alpha = alpha
+        self.optimize_kernel = optimize_kernel
+        self.n_lags = n_lags
+        self.fitted_ = False
 
-     self.X_train_ = None
-     self.y_train_ = None
-     self.K_ = None
-     self.fitted_kernel_ = None
+        self.X_train_ = None
+        self.y_train_ = None
+        self.K_ = None
+        self.fitted_kernel_ = None
 
-     mean_types = {'zero', 'constant', 'linear'}
-     if self.mean_type not in mean_types:
-    pass
+        mean_types = {'zero', 'constant', 'linear'}
+        if self.mean_type not in mean_types:
+            raise ValueError(f"mean_type must be one of {mean_types}, got {mean_type}")
 
-     logger.info(
-     f"Gaussian Process initialized: kernel={kernel}, mean={mean_type}, "
-     f"optimize={optimize_kernel}"
-     )
+        logger.info(
+            f"Gaussian Process initialized: kernel={kernel}, mean={mean_type}, "
+            f"optimize={optimize_kernel}"
+        )
 
- def fit(
-     X: npt.NDArray[np.float64],
-     y: npt.NDArray[np.float64]
-     ):
-         pass
-     """
-         Fit Gaussian Process model
+    def fit(
+        self,
+        X: npt.NDArray[np.float64],
+        y: npt.NDArray[np.float64]
+    ):
+        """
+        Fit Gaussian Process model
 
-     Parameters
-     ----------
-     X : np.ndarray, shape (n_samples, n_features)
-     Training features (typically [x, y] coordinates)
-     y : np.ndarray, shape (n_samples,)
-     Training targets (values)
+        Parameters
+        ----------
+        X : np.ndarray, shape (n_samples, n_features)
+            Training features (typically [x, y] coordinates)
+        y : np.ndarray, shape (n_samples,)
+            Training targets (values)
 
-     Returns
-     -------
-     self : GaussianProcessGeostat
-     Fitted model
-     """
-     if SKLEARN_AVAILABLE:
-     else:
-         pass
-     y = np.asarray(y, dtype=np.float64)
+        Returns
+        -------
+        self : GaussianProcessGeostat
+            Fitted model
+        """
+        X = np.asarray(X, dtype=np.float64)
+        if SKLEARN_AVAILABLE:
+            from sklearn.base import BaseEstimator, RegressorMixin
+        else:
+            BaseEstimator = object
+            RegressorMixin = object
+        y = np.asarray(y, dtype=np.float64)
 
-     self.X_train_ = X
-     self.y_train_ = y
+        self.X_train_ = X
+        self.y_train_ = y
 
-     n_samples = X.shape[0]
-     n_features = X.shape[1]
+        n_samples = X.shape[0]
+        n_features = X.shape[1]
 
-     # Extract spatial coordinates (assume first 2 columns are x, y)
-     if n_features >= 2:
-     y_coords = X[:, 1]
-     else:
-         pass
+        # Extract spatial coordinates (assume first 2 columns are x, y)
+        if n_features >= 2:
+            x_coords = X[:, 0]
+            y_coords = X[:, 1]
+        else:
+            raise ValueError("X must have at least 2 features (x, y coordinates)")
 
-     # Fit variogram kernel if string provided
-     if isinstance(self.kernel, str):
-    pass
+        # Fit variogram kernel if string provided
+        if isinstance(self.kernel, str):
+            from ..variogram import experimental_variogram
+            from ..algorithms.fitting import fit_variogram_model
 
-     from ..algorithms.variogram import experimental_variogram
-     from ..algorithms.fitting import fit_variogram_model
+            lag_dist, semivar, pairs = experimental_variogram(
+                x_coords, y_coords, y, n_lags=self.n_lags
+            )
 
-     lag_dist, semivar, pairs = experimental_variogram(
-     x_coords, y_coords, y, n_lags=self.n_lags
-     )
+            self.fitted_kernel_ = fit_variogram_model(
+                lag_dist, semivar, model_type=self.kernel
+            )
 
-     self.fitted_kernel_ = fit_variogram_model(
-     lag_dist, semivar, model_type=self.kernel
-     )
+            logger.info(
+                f"Fitted kernel: nugget={self.fitted_kernel_.get_parameters().get('nugget', 0):.4f}, "
+                f"sill={self.fitted_kernel_.get_parameters().get('sill', 0):.4f}, "
+                f"range={self.fitted_kernel_.get_parameters().get('range', 0):.2f}"
+            )
+        else:
+            self.fitted_kernel_ = self.kernel
 
-     logger.info(
-     f"Fitted kernel: nugget={self.fitted_kernel_.nugget:.4f}, "
-     f"sill={self.fitted_kernel_.sill:.4f}, "
-     f"range={self.fitted_kernel_.range:.2f}"
-     )
-     else:
-         pass
+        # Build covariance matrix
+        self._build_covariance_matrix(x_coords, y_coords)
 
-     # Build covariance matrix
-     self._build_covariance_matrix(x_coords, y_coords)
+        self.fitted_ = True
+        logger.info(f"Gaussian Process fitted with {n_samples} training points")
 
-     logger.info(f"Gaussian Process fitted with {n_samples} training points")
+        return self
 
-     return self
+    def _build_covariance_matrix(
+        self,
+        x: npt.NDArray[np.float64],
+        y: npt.NDArray[np.float64]
+    ):
+        """Build covariance matrix from variogram"""
+        from ..math.distance import euclidean_distance_matrix
+        
+        n = len(x)
 
- def _build_covariance_matrix(
-     x: npt.NDArray[np.float64],
-     y: npt.NDArray[np.float64]
-     ):
-         pass
-     """Build covariance matrix from variogram"""
-     n = len(x)
+        # Calculate distance matrix
+        dist_matrix = euclidean_distance_matrix(x, y)
 
-     # Calculate distance matrix
-     dist_matrix = euclidean_distance_matrix(x, y)
+        # Variogram values
+        gamma_matrix = self.fitted_kernel_(dist_matrix)
 
-     # Variogram values
-     gamma_matrix = self.fitted_kernel_(dist_matrix)
+        # Convert variogram to covariance: C(h) = sigma^2 - gamma(h)
+        params = self.fitted_kernel_.get_parameters()
+        sill = params.get('sill', 1.0)
+        cov_matrix = sill - gamma_matrix
 
-     # Convert variogram to covariance: C(h) = σ^2 - γ(h)
-     sill = getattr(self.fitted_kernel_, 'sill', 1.0)
-     cov_matrix = sill - gamma_matrix
+        # Add nugget/noise for numerical stability
+        nugget = params.get('nugget', 0.0)
+        total_noise = nugget + self.alpha
 
-     # Add nugget/noise for numerical stability
-     nugget = getattr(self.fitted_kernel_, 'nugget', 0.0)
-     total_noise = nugget + self.alpha
+        if self.mean_type == 'constant':
+            K = np.zeros((n + 1, n + 1), dtype=np.float64)
+            K[:n, :n] = cov_matrix
+            K[:n, n] = 1.0
+            K[n, :n] = 1.0
+            K[n, n] = 0.0
 
-     if self.mean_type == 'constant':
-     K = np.zeros((n + 1, n + 1), dtype=np.float64)
-     K[:n, :n] = cov_matrix
-     K[:n, n] = 1.0
-     K[n, :n] = 1.0
-     K[n, n] = 0.0
+            # Add regularization to covariance part only
+            K[:n, :n] += np.eye(n) * total_noise
+        else:
+            K = cov_matrix + np.eye(n) * total_noise
 
-     # Add regularization to covariance part only
-     K[:n, :n] += np.eye(n) * total_noise
-     else:
-         pass
-     K = cov_matrix + np.eye(n) * total_noise
+        from ..math.matrices import regularize_matrix
+        REGULARIZATION_FACTOR = 1e-6
+        self.K_ = regularize_matrix(K, factor=REGULARIZATION_FACTOR)
+        logger.debug("Covariance matrix built and regularized")
 
-     self.K_ = regularize_matrix(K, factor=REGULARIZATION_FACTOR)
-     logger.debug("Covariance matrix built and regularized")
-
- def predict(
-     X: npt.NDArray[np.float64],
-     return_std: bool = False,
-    return_cov: bool = False
+    def predict(
+        self,
+        X: npt.NDArray[np.float64],
+        return_std: bool = False,
+        return_cov: bool = False
     ) -> Union[
         npt.NDArray[np.float64],
         Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]],
         Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]
     ]:
-     """
-         Predict using Gaussian Process
+        """
+        Predict using Gaussian Process
 
-     Parameters
-     ----------
-     X : np.ndarray, shape (n_samples, n_features)
-     Prediction features
-    return_std : bool
-        Whether to return standard deviation
-    return_cov : bool
-        Whether to return full covariance matrix
+        Parameters
+        ----------
+        X : np.ndarray, shape (n_samples, n_features)
+            Prediction features
+        return_std : bool
+            Whether to return standard deviation
+        return_cov : bool
+            Whether to return full covariance matrix
 
-    Returns
-    -------
-    y_pred : np.ndarray
-        Predicted values
-    y_std : np.ndarray, optional
-        Standard deviation of predictions (if return_std=True)
-    cov : np.ndarray, optional
-        Covariance matrix (if return_cov=True)
-    """
-     if self.X_train_ is None:
-    pass
+        Returns
+        -------
+        y_pred : np.ndarray
+            Predicted values
+        y_std : np.ndarray, optional
+            Standard deviation of predictions (if return_std=True)
+        cov : np.ndarray, optional
+            Covariance matrix (if return_cov=True)
+        """
+        if not self.fitted_:
+            raise ValueError("Model must be fitted before prediction")
 
-     if SKLEARN_AVAILABLE:
-     else:
-         pass
+        X = np.asarray(X, dtype=np.float64)
+        n_pred = X.shape[0]
+        n_train = len(self.X_train_)
 
-     n_pred = X.shape[0]
-     n_train = len(self.X_train_)
+        # Extract coordinates
+        x_new = X[:, 0]
+        y_new = X[:, 1]
+        x_train = self.X_train_[:, 0]
+        y_train = self.X_train_[:, 1]
 
-     # Extract coordinates
-     x_new = X[:, 0]
-     y_new = X[:, 1]
-     x_train = self.X_train_[:, 0]
-     y_train = self.X_train_[:, 1]
+        predictions = np.zeros(n_pred, dtype=np.float64)
+        std_devs = np.zeros(n_pred, dtype=np.float64) if return_std else None
+        cov_matrix = np.zeros((n_pred, n_pred), dtype=np.float64) if return_cov else None
 
-    predictions = np.zeros(n_pred, dtype=np.float64)
-    std_devs = np.zeros(n_pred, dtype=np.float64) if return_std else None
-    cov_matrix = np.zeros((n_pred, n_pred), dtype=np.float64) if return_cov else None
+        params = self.fitted_kernel_.get_parameters()
+        sill = params.get('sill', 1.0)
 
-    sill = getattr(self.fitted_kernel_, 'sill', 1.0)
+        from ..math.distance import euclidean_distance
+        from ..math.matrices import solve_kriging_system
+        from scipy.spatial.distance import cdist
 
-    # Pre-compute distances between prediction points for covariance
-    if return_cov:
-        dist_pred = cdist(coords_pred, coords_pred)
+        # Pre-compute distances between prediction points for covariance
+        coords_pred = np.column_stack([x_new, y_new])
+        if return_cov:
+            dist_pred = cdist(coords_pred, coords_pred)
 
-    for i in range(n_pred):
-     gamma_vec = self.fitted_kernel_(h_vec)
-     k_vec = sill - gamma_vec # Convert to covariance
+        for i in range(n_pred):
+            # Distance from prediction point to all training points
+            h_vec = np.array([euclidean_distance(x_new[i], y_new[i], x_train[j], y_train[j]) 
+                             for j in range(n_train)])
+            
+            gamma_vec = self.fitted_kernel_(h_vec)
+            k_vec = sill - gamma_vec  # Convert to covariance
 
-     if self.mean_type == 'constant':
-         continue
-     rhs = np.zeros(n_train + 1, dtype=np.float64)
-     rhs[:n_train] = k_vec
-     rhs[n_train] = 1.0
+            if self.mean_type == 'constant':
+                rhs = np.zeros(n_train + 1, dtype=np.float64)
+                rhs[:n_train] = k_vec
+                rhs[n_train] = 1.0
 
-     weights = solve_kriging_system(self.K_, rhs)
-     lambdas = weights[:n_train]
-     mu = weights[n_train]
+                weights = solve_kriging_system(self.K_, rhs)
+                lambdas = weights[:n_train]
+                mu = weights[n_train]
 
-     predictions[i] = np.dot(lambdas, self.y_train_)
+                predictions[i] = np.dot(lambdas, self.y_train_)
 
-     if return_std:
-         continue
-     var = sill - (np.dot(lambdas, k_vec) + mu)
-     std_devs[i] = np.sqrt(max(0.0, var))
-
-     else: # Simple Kriging
-    pass
-
-     mean_y = np.mean(self.y_train_) if self.mean_type == 'zero' else 0.0
-     predictions[i] = mean_y + np.dot(lambdas, self.y_train_ - mean_y)
-
-     if return_std:
-     std_devs[i] = np.sqrt(max(0.0, var))
-
-    # Compute covariance matrix if requested
-    if return_cov:
-                h = dist_pred[i, j]
-                gamma = self.fitted_kernel_(h)
-                cov_ij = sill - gamma
-                cov_matrix[i, j] = cov_ij
-                if i != j:
-    pass
-        
-                    # Subtract kriging variance from diagonal
-        # The diagonal should be prediction variance, not prior covariance
-        if return_std:
-                cov_matrix[i, i] = std_devs[i]**2
-        else:
-                gamma_vec = self.fitted_kernel_(h_vec)
-                k_vec = sill - gamma_vec
-                
-                if self.mean_type == 'constant':
-                    rhs[n_train] = 1.0
-                    weights = solve_kriging_system(self.K_, rhs)
-                    lambdas = weights[:n_train]
-                    mu = weights[n_train]
+                if return_std:
                     var = sill - (np.dot(lambdas, k_vec) + mu)
-                else:
-                    pass
-                
-                cov_matrix[i, i] = max(0.0, var)
+                    std_devs[i] = np.sqrt(max(0.0, var))
+            else:  # Simple Kriging
+                weights = solve_kriging_system(self.K_[:n_train, :n_train], k_vec)
+                lambdas = weights
 
-    logger.debug(f"GP prediction complete for {n_pred} points")
+                mean_y = np.mean(self.y_train_) if self.mean_type == 'zero' else 0.0
+                predictions[i] = mean_y + np.dot(lambdas, self.y_train_ - mean_y)
 
-    if return_cov:
-        return predictions, cov_matrix
-    elif return_std:
-        return predictions
+                if return_std:
+                    var = sill - np.dot(lambdas, k_vec)
+                    std_devs[i] = np.sqrt(max(0.0, var))
 
- def score(
-     X: npt.NDArray[np.float64],
-     y: npt.NDArray[np.float64]
-     ) -> float:
-         pass
-     """
-         Return the coefficient of determination R^2 of the prediction
+        # Compute covariance matrix if requested
+        if return_cov:
+            for i in range(n_pred):
+                for j in range(n_pred):
+                    h = dist_pred[i, j]
+                    gamma = self.fitted_kernel_(h)
+                    cov_ij = sill - gamma
+                    cov_matrix[i, j] = cov_ij
+                    
+            # The diagonal should be prediction variance, not prior covariance
+            if return_std:
+                for i in range(n_pred):
+                    cov_matrix[i, i] = std_devs[i]**2
+            else:
+                for i in range(n_pred):
+                    h_vec = np.array([euclidean_distance(x_new[i], y_new[i], x_train[j], y_train[j]) 
+                                     for j in range(n_train)])
+                    gamma_vec = self.fitted_kernel_(h_vec)
+                    k_vec = sill - gamma_vec
+                    
+                    if self.mean_type == 'constant':
+                        rhs = np.zeros(n_train + 1, dtype=np.float64)
+                        rhs[:n_train] = k_vec
+                        rhs[n_train] = 1.0
+                        weights = solve_kriging_system(self.K_, rhs)
+                        lambdas = weights[:n_train]
+                        mu = weights[n_train]
+                        var = sill - (np.dot(lambdas, k_vec) + mu)
+                    else:
+                        weights = solve_kriging_system(self.K_[:n_train, :n_train], k_vec)
+                        lambdas = weights
+                        var = sill - np.dot(lambdas, k_vec)
+                    
+                    cov_matrix[i, i] = max(0.0, var)
 
-     sklearn-compatible scoring function.
+        logger.debug(f"GP prediction complete for {n_pred} points")
 
-     Parameters
-     ----------
-     X : np.ndarray
-     Test features
-     y : np.ndarray
-     True values
+        if return_cov:
+            return predictions, cov_matrix
+        elif return_std:
+            return predictions, std_devs
+        else:
+            return predictions
 
-     Returns
-     -------
-     score : float
-     R^2 score
-     """
-     y_pred = self.predict(X)
+    def score(
+        self,
+        X: npt.NDArray[np.float64],
+        y: npt.NDArray[np.float64]
+    ) -> float:
+        """
+        Return the coefficient of determination R^2 of the prediction
 
-     ss_res = np.sum((y - y_pred) ** 2)
-     ss_tot = np.sum((y - np.mean(y)) ** 2)
+        sklearn-compatible scoring function.
 
-     r2 = 1.0 - (ss_res / (ss_tot + EPSILON))
+        Parameters
+        ----------
+        X : np.ndarray
+            Test features
+        y : np.ndarray
+            True values
 
-     return r2
+        Returns
+        -------
+        score : float
+            R^2 score
+        """
+        y_pred = self.predict(X)
 
- def log_marginal_likelihood(self) -> float:
-     Compute log marginal likelihood of the model
+        ss_res = np.sum((y - y_pred) ** 2)
+        ss_tot = np.sum((y - np.mean(y)) ** 2)
 
- Used for hyperparameter optimization.
+        EPSILON = 1e-10
+        r2 = 1.0 - (ss_res / (ss_tot + EPSILON))
 
- Returns
- -------
- lml : float
- Log marginal likelihood
- """
- if self.K_ is None:
-    pass
+        return r2
 
-     n = len(self.y_train_)
+    def log_marginal_likelihood(self) -> float:
+        """
+        Compute log marginal likelihood of the model
 
- # For Ordinary Kriging, use reduced system
- if self.mean_type == 'constant':
-     y = self.y_train_
- else:
-     mean_y = np.mean(self.y_train_)
- y = self.y_train_ - mean_y
+        Used for hyperparameter optimization.
 
- # LML = -0.5 * (y^T K^{-1} y + log|K| + n*log(2π))
- try:
-     alpha = np.linalg.solve(L, y)
+        Returns
+        -------
+        lml : float
+            Log marginal likelihood
+        """
+        if self.K_ is None:
+            raise ValueError("Model must be fitted before computing log marginal likelihood")
 
- # y^T K^{-1} y = alpha^T alpha
- fit_term = np.dot(alpha, alpha)
+        n = len(self.y_train_)
 
- # log|K| = 2 * sum(log(diag(L)))
- det_term = 2.0 * np.sum(np.log(np.diag(L)))
+        # For Ordinary Kriging, use reduced system
+        if self.mean_type == 'constant':
+            y = self.y_train_
+        else:
+            mean_y = np.mean(self.y_train_)
+            y = self.y_train_ - mean_y
 
- lml = -0.5 * (fit_term + det_term + n * np.log(2 * np.pi))
+        # LML = -0.5 * (y^T K^-1 y + log|K| + n*log(2*pi))
+        try:
+            L = np.linalg.cholesky(self.K_)
+            alpha = np.linalg.solve(L, y)
 
- return lml
+            # y^T K^-1 y = alpha^T alpha
+            fit_term = np.dot(alpha, alpha)
 
- except np.linalg.LinAlgError:
-     pass
- logger.warning("Cholesky decomposition failed for LML computation")
- return -np.inf
+            # log|K| = 2 * sum(log(diag(L)))
+            det_term = 2.0 * np.sum(np.log(np.diag(L)))
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], dict]:
-     Perform leave-one-out cross-validation
+            lml = -0.5 * (fit_term + det_term + n * np.log(2 * np.pi))
 
- Returns
- -------
- predictions : np.ndarray
- Cross-validated predictions
- metrics : dict
- Dictionary of performance metrics
- """
- if self.X_train_ is None:
-    pass
+            return lml
 
-     from ..core.exceptions import KrigingError
+        except np.linalg.LinAlgError:
+            logger.warning("Cholesky decomposition failed for LML computation")
+            return -np.inf
 
- # Extract coordinates
- x = self.X_train_[:, 0]
- y = self.X_train_[:, 1]
- z = self.y_train_
+    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], dict]:
+        """
+        Perform leave-one-out cross-validation
 
- from ..validation.cross_validation import leave_one_out
- from ..validation.metrics import mean_squared_error, r_squared
+        Returns
+        -------
+        predictions : np.ndarray
+            Cross-validated predictions
+        metrics : dict
+            Dictionary of performance metrics
+        """
+        if self.X_train_ is None:
+            raise ValueError("Model must be fitted before cross-validation")
 
- predictions = leave_one_out(self, x, y, z)
+        # Extract coordinates
+        x = self.X_train_[:, 0]
+        y = self.X_train_[:, 1]
+        z = self.y_train_
 
- metrics = {
- 'mse': mean_squared_error(z, predictions),
- 'r2': r_squared(z, predictions)
- }
+        from ..validation.cross_validation import leave_one_out
+        from ..validation.metrics import mean_squared_error, r_squared
 
- return predictions, metrics
+        predictions = leave_one_out(self, x, y, z)
+
+        metrics = {
+            'mse': mean_squared_error(z, predictions),
+            'r2': r_squared(z, predictions)
+        }
+
+        return predictions, metrics

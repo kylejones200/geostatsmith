@@ -5,7 +5,6 @@ Cokriging uses a secondary variable to improve estimation of the primary variabl
 Useful when secondary variable is densely sampled or correlated with primary.
 
 Based on:
-    pass
 - Zhang, Y. (2010). Introduction to Geostatistics - Course Notes, Section 5.4.3
 - Wackernagel, H. (2003). Multivariate Geostatistics
 """
@@ -22,25 +21,26 @@ from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.numerical import cross_validation_score
 
 class Cokriging(BaseKriging):
- Ordinary Cokriging with secondary variable
+    """
+    Ordinary Cokriging with secondary variable
 
- Uses both primary and secondary variables for estimation.
- The secondary variable must be sampled at the same or more locations.
- """
+    Uses both primary and secondary variables for estimation.
+    The secondary variable must be sampled at the same or more locations.
+    """
 
- def __init__(
-     x_primary: npt.NDArray[np.float64],
-     y_primary: npt.NDArray[np.float64],
-     z_primary: npt.NDArray[np.float64],
-     x_secondary: npt.NDArray[np.float64],
-     y_secondary: npt.NDArray[np.float64],
-     z_secondary: npt.NDArray[np.float64],
-     variogram_primary: Optional[object] = None,
-     variogram_secondary: Optional[object] = None,
-     cross_variogram: Optional[object] = None,
-     ):
-         pass
-     """
+    def __init__(
+        self,
+        x_primary: npt.NDArray[np.float64],
+        y_primary: npt.NDArray[np.float64],
+        z_primary: npt.NDArray[np.float64],
+        x_secondary: npt.NDArray[np.float64],
+        y_secondary: npt.NDArray[np.float64],
+        z_secondary: npt.NDArray[np.float64],
+        variogram_primary: Optional[object] = None,
+        variogram_secondary: Optional[object] = None,
+        cross_variogram: Optional[object] = None,
+    ):
+        """
          Initialize Cokriging
 
      Parameters
@@ -57,99 +57,99 @@ class Cokriging(BaseKriging):
      Variogram model for primary variable
      variogram_secondary : VariogramModelBase
      Variogram model for secondary variable
-     cross_variogram : VariogramModelBase
-     Cross-variogram between primary and secondary
-     """
-     super().__init__(x_primary, y_primary, z_primary, variogram_primary)
+        cross_variogram : VariogramModelBase
+        Cross-variogram between primary and secondary
+        """
+        super().__init__(x_primary, y_primary, z_primary, variogram_primary)
 
-     # Validate primary data
-     self.x_primary, self.y_primary = validate_coordinates(x_primary, y_primary)
-     self.z_primary = validate_values(z_primary, n_expected=len(self.x_primary))
-     self.n_primary = len(self.x_primary)
+        # Validate primary data
+        self.x_primary, self.y_primary = validate_coordinates(x_primary, y_primary)
+        self.z_primary = validate_values(z_primary, n_expected=len(self.x_primary))
+        self.n_primary = len(self.x_primary)
 
-     # Validate secondary data
-     self.x_secondary, self.y_secondary = validate_coordinates(x_secondary, y_secondary)
-     self.z_secondary = validate_values(z_secondary, n_expected=len(self.x_secondary))
-     self.n_secondary = len(self.x_secondary)
+        # Validate secondary data
+        self.x_secondary, self.y_secondary = validate_coordinates(x_secondary, y_secondary)
+        self.z_secondary = validate_values(z_secondary, n_expected=len(self.x_secondary))
+        self.n_secondary = len(self.x_secondary)
 
-     # Store variogram models
-     self.variogram_primary = variogram_primary
-     self.variogram_secondary = variogram_secondary
-     self.cross_variogram = cross_variogram
+        # Store variogram models
+        self.variogram_primary = variogram_primary
+        self.variogram_secondary = variogram_secondary
+        self.cross_variogram = cross_variogram
 
-     # Build cokriging matrix
-     if all([variogram_primary, variogram_secondary, cross_variogram]):
-    pass
+        # Build cokriging matrix
+        if all([variogram_primary, variogram_secondary, cross_variogram]):
+            self._build_cokriging_matrix()
 
- def _build_cokriging_matrix(self) -> None:
-     n1 = self.n_primary
-     n2 = self.n_secondary
-     n_total = n1 + n2
+    def _build_cokriging_matrix(self) -> None:
+        n1 = self.n_primary
+        n2 = self.n_secondary
+        n_total = n1 + n2
 
- # Build block covariance matrix
- # | C11 C12 | 1 0 |
- # | C21 C22 | 0 1 |
- # | 1' 0' | 0 0 |
- # | 0' 1' | 0 0 |
+        # Build block covariance matrix
+        # | C11 C12 | 1 0 |
+        # | C21 C22 | 0 1 |
+        # | 1' 0' | 0 0 |
+        # | 0' 1' | 0 0 |
 
- self.cokriging_matrix = np.zeros((n_total + 2, n_total + 2))
+        self.cokriging_matrix = np.zeros((n_total + 2, n_total + 2))
 
- # C11: Primary-primary covariances
- dist_11 = euclidean_distance()
- self.x_primary, self.y_primary,
- self.x_primary, self.y_primary
- )
- gamma_11 = self.variogram_primary(dist_11)
- sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
- self.cokriging_matrix[:n1, :n1] = sill_1 - gamma_11
+        # C11: Primary-primary covariances
+        dist_11 = euclidean_distance(
+            self.x_primary, self.y_primary,
+            self.x_primary, self.y_primary
+        )
+        gamma_11 = self.variogram_primary(dist_11)
+        sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
+        self.cokriging_matrix[:n1, :n1] = sill_1 - gamma_11
 
- # C22: Secondary-secondary covariances
- dist_22 = euclidean_distance()
- self.x_secondary, self.y_secondary,
- self.x_secondary, self.y_secondary
- )
- gamma_22 = self.variogram_secondary(dist_22)
- sill_2 = self.variogram_secondary.parameters.get('sill', 1.0)
- self.cokriging_matrix[n1:n_total, n1:n_total] = sill_2 - gamma_22
+        # C22: Secondary-secondary covariances
+        dist_22 = euclidean_distance(
+            self.x_secondary, self.y_secondary,
+            self.x_secondary, self.y_secondary
+        )
+        gamma_22 = self.variogram_secondary(dist_22)
+        sill_2 = self.variogram_secondary.parameters.get('sill', 1.0)
+        self.cokriging_matrix[n1:n_total, n1:n_total] = sill_2 - gamma_22
 
- # C12 and C21: Cross-covariances
- dist_12 = euclidean_distance()
- self.x_primary, self.y_primary,
- self.x_secondary, self.y_secondary
- )
- gamma_12 = self.cross_variogram(dist_12)
+        # C12 and C21: Cross-covariances
+        dist_12 = euclidean_distance(
+            self.x_primary, self.y_primary,
+            self.x_secondary, self.y_secondary
+        )
+        gamma_12 = self.cross_variogram(dist_12)
 
- # Cross-covariance: C₁₂(h) = C₁₂(0) - γ₁₂(h)
- # where C₁₂(0) is the cross-sill (covariance at distance 0)
- # Assuming correlation coefficient ρ between variables:
- # C₁₂(0) = ρ * √(sill_1 * sill_2)
- # For simplicity, we estimate ρ from the cross-variogram properties
- # A more rigorous approach would require fitting the linear model of coregionalization
- cross_sill = np.sqrt(sill_1 * sill_2) * 0.7 # Assume moderate correlation
- cross_cov = cross_sill - gamma_12
+        # Cross-covariance: C12(h) = C12(0) - gamma12(h)
+        # where C12(0) is the cross-sill (covariance at distance 0)
+        # Assuming correlation coefficient rho between variables:
+        # C12(0) = rho * sqrt(sill_1 * sill_2)
+        # For simplicity, we estimate rho from the cross-variogram properties
+        # A more rigorous approach would require fitting the linear model of coregionalization
+        cross_sill = np.sqrt(sill_1 * sill_2) * 0.7  # Assume moderate correlation
+        cross_cov = cross_sill - gamma_12
 
- self.cokriging_matrix[:n1, n1:n_total] = cross_cov
- self.cokriging_matrix[n1:n_total, :n1] = cross_cov.T
+        self.cokriging_matrix[:n1, n1:n_total] = cross_cov
+        self.cokriging_matrix[n1:n_total, :n1] = cross_cov.T
 
- # Unbiasedness constraints
- self.cokriging_matrix[:n1, n_total] = 1.0
- self.cokriging_matrix[n_total, :n1] = 1.0
- self.cokriging_matrix[n1:n_total, n_total + 1] = 1.0
- self.cokriging_matrix[n_total + 1, n1:n_total] = 1.0
+        # Unbiasedness constraints
+        self.cokriging_matrix[:n1, n_total] = 1.0
+        self.cokriging_matrix[n_total, :n1] = 1.0
+        self.cokriging_matrix[n1:n_total, n_total + 1] = 1.0
+        self.cokriging_matrix[n_total + 1, n1:n_total] = 1.0
 
- # Regularize
- self.cokriging_matrix[:n_total, :n_total] = regularize_matrix(
- self.cokriging_matrix[:n_total, :n_total],
- epsilon=1e-10
- )
+        # Regularize
+        self.cokriging_matrix[:n_total, :n_total] = regularize_matrix(
+            self.cokriging_matrix[:n_total, :n_total],
+            epsilon=1e-10
+        )
 
- def predict(
-     x: npt.NDArray[np.float64],
-     y: npt.NDArray[np.float64],
-     return_variance: bool = True,
-     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
-         pass
-     """
+    def predict(
+        self,
+        x: npt.NDArray[np.float64],
+        y: npt.NDArray[np.float64],
+        return_variance: bool = True,
+    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+        """
          Perform Cokriging prediction
 
      Parameters
@@ -166,117 +166,124 @@ class Cokriging(BaseKriging):
      variance : np.ndarray or None
      Kriging variance (if return_variance=True)
      """
-     if any([v is None for v in [self.variogram_primary, self.variogram_secondary, self.cross_variogram]]):
-    pass
+        if any([v is None for v in [self.variogram_primary, self.variogram_secondary, self.cross_variogram]]):
+            raise KrigingError("All variogram models must be provided for cokriging")
 
-     x_pred, y_pred = validate_coordinates(x, y)
-     n_pred = len(x_pred)
+        x_pred, y_pred = validate_coordinates(x, y)
+        n_pred = len(x_pred)
 
-     predictions = np.zeros(n_pred)
-     variances = np.zeros(n_pred) if return_variance else None
+        predictions = np.zeros(n_pred)
+        variances = np.zeros(n_pred) if return_variance else None
 
-     n1 = self.n_primary
-     n2 = self.n_secondary
-     n_total = n1 + n2
+        n1 = self.n_primary
+        n2 = self.n_secondary
+        n_total = n1 + n2
 
-     # Get sills
-     sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
+        # Get sills
+        sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
 
-     for i in range(n_pred):
-         continue
-     dist_to_primary = euclidean_distance(
-     np.array([x_pred[i]]), np.array([y_pred[i]]),
-     self.x_primary, self.y_primary
-     ).flatten()
+        for i in range(n_pred):
+            dist_to_primary = euclidean_distance(
+                np.array([x_pred[i]]), np.array([y_pred[i]]),
+                self.x_primary, self.y_primary
+            ).flatten()
 
-     dist_to_secondary = euclidean_distance(
-     np.array([x_pred[i]]), np.array([y_pred[i]]),
-     self.x_secondary, self.y_secondary
-     ).flatten()
+            dist_to_secondary = euclidean_distance(
+                np.array([x_pred[i]]), np.array([y_pred[i]]),
+                self.x_secondary, self.y_secondary
+            ).flatten()
 
-     # Build RHS
-     rhs = np.zeros(n_total + 2)
+            # Build RHS
+            rhs = np.zeros(n_total + 2)
 
-     # Primary covariances
-     gamma_p = self.variogram_primary(dist_to_primary)
-     rhs[:n1] = sill_1 - gamma_p
+            # Primary covariances
+            gamma_p = self.variogram_primary(dist_to_primary)
+            rhs[:n1] = sill_1 - gamma_p
 
-     # Cross-covariances
-     gamma_c = self.cross_variogram(dist_to_secondary)
-     cross_sill = np.sqrt(sill_1 * self.variogram_secondary.parameters.get('sill', 1.0)) * 0.7
-     rhs[n1:n_total] = cross_sill - gamma_c
+            # Cross-covariances
+            gamma_c = self.cross_variogram(dist_to_secondary)
+            cross_sill = np.sqrt(sill_1 * self.variogram_secondary.parameters.get('sill', 1.0)) * 0.7
+            rhs[n1:n_total] = cross_sill - gamma_c
 
-     # Constraints
-     rhs[n_total] = 1.0
-     rhs[n_total + 1] = 0.0
+            # Constraints
+            rhs[n_total] = 1.0
+            rhs[n_total + 1] = 0.0
 
-     # Solve system
-     try:
-     except KrigingError:
-         pass
-     # Fallback to nearest primary point
-     nearest_idx = np.argmin(dist_to_primary)
-     predictions[i] = self.z_primary[nearest_idx]
-     if return_variance:
+            # Solve system
+            try:
+                solution = solve_kriging_system(self.cokriging_matrix, rhs)
+            except KrigingError:
+                # Fallback to nearest primary point
+                nearest_idx = np.argmin(dist_to_primary)
+                predictions[i] = self.z_primary[nearest_idx]
+                if return_variance:
+                    variances[i] = sill_1
+                continue
 
-     # Extract weights
-     weights_primary = solution[:n1]
-     weights_secondary = solution[n1:n_total]
+            # Extract weights
+            weights_primary = solution[:n1]
+            weights_secondary = solution[n1:n_total]
 
-     # Cokriging estimate
-     predictions[i] = (
-     np.dot(weights_primary, self.z_primary) +
-     np.dot(weights_secondary, self.z_secondary)
-     )
+            # Cokriging estimate
+            predictions[i] = (
+                np.dot(weights_primary, self.z_primary) +
+                np.dot(weights_secondary, self.z_secondary)
+            )
 
-     # Variance
-     if return_variance:
-     variances[i] = max(0.0, variances[i])
+            # Variance
+            if return_variance:
+                # Kriging variance calculation
+                var_term = sill_1 - np.dot(rhs[:n_total], solution[:n_total])
+                variances[i] = max(0.0, var_term)
 
-     if return_variance:
-     else:
-         pass
+        if return_variance:
+            return predictions, variances
+        else:
+            return predictions, None
 
- def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
-     # Simplified: only validate primary variable
-     predictions = np.zeros(self.n_primary)
+    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+        # Simplified: only validate primary variable
+        predictions = np.zeros(self.n_primary)
+        mask = np.ones(self.n_primary, dtype=bool)
 
- for i in range(self.n_primary):
-     mask[i] = False
+        for i in range(self.n_primary):
+            mask[i] = False
 
- # Temporary cokriging (keeping all secondary data)
- ck_temp = Cokriging(
- self.x_primary[mask], self.y_primary[mask], self.z_primary[mask],
- self.x_secondary, self.y_secondary, self.z_secondary,
- self.variogram_primary, self.variogram_secondary, self.cross_variogram
- )
+            # Temporary cokriging (keeping all secondary data)
+            ck_temp = Cokriging(
+                self.x_primary[mask], self.y_primary[mask], self.z_primary[mask],
+                self.x_secondary, self.y_secondary, self.z_secondary,
+                self.variogram_primary, self.variogram_secondary, self.cross_variogram
+            )
 
- pred, _ = ck_temp.predict(
- np.array([self.x_primary[i]]),
- np.array([self.y_primary[i]]),
- return_variance=False
- )
- predictions[i] = pred[0]
+            pred, _ = ck_temp.predict(
+                np.array([self.x_primary[i]]),
+                np.array([self.y_primary[i]]),
+                return_variance=False
+            )
+            predictions[i] = pred[0]
+            mask[i] = True
 
- metrics = cross_validation_score(self.z_primary, predictions)
- return predictions, metrics
+        metrics = cross_validation_score(self.z_primary, predictions)
+        return predictions, metrics
 
 class CollocatedCokriging(BaseKriging):
- Collocated Cokriging (simplified cokriging)
+    """
+    Collocated Cokriging (simplified cokriging)
 
- Uses only the colocated secondary value at the prediction location.
- Much simpler than full cokriging while retaining most benefits.
- """
+    Uses only the colocated secondary value at the prediction location.
+    Much simpler than full cokriging while retaining most benefits.
+    """
 
- def __init__(
-     x_primary: npt.NDArray[np.float64],
-     y_primary: npt.NDArray[np.float64],
-     z_primary: npt.NDArray[np.float64],
-     variogram_primary: Optional[object] = None,
-     correlation_coefficient: float = 0.7,
-     ):
-         pass
-     """
+    def __init__(
+        self,
+        x_primary: npt.NDArray[np.float64],
+        y_primary: npt.NDArray[np.float64],
+        z_primary: npt.NDArray[np.float64],
+        variogram_primary: Optional[object] = None,
+        correlation_coefficient: float = 0.7,
+    ):
+        """
          Initialize Collocated Cokriging
 
      Parameters
@@ -287,40 +294,40 @@ class CollocatedCokriging(BaseKriging):
      Primary variable values
      variogram_primary : VariogramModelBase
      Variogram for primary variable
-     correlation_coefficient : float
-     Correlation between primary and secondary variables
-     """
-     super().__init__(x_primary, y_primary, z_primary, variogram_primary)
+        correlation_coefficient : float
+        Correlation between primary and secondary variables
+        """
+        super().__init__(x_primary, y_primary, z_primary, variogram_primary)
 
-     self.x, self.y = validate_coordinates(x_primary, y_primary)
-     self.z = validate_values(z_primary, n_expected=len(self.x))
-     self.correlation = correlation_coefficient
+        self.x, self.y = validate_coordinates(x_primary, y_primary)
+        self.z = validate_values(z_primary, n_expected=len(self.x))
+        self.correlation = correlation_coefficient
 
-     if variogram_primary is not None:
-    pass
+        if variogram_primary is not None:
+            self._build_kriging_matrix()
 
- def _build_kriging_matrix(self) -> None:
-     dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
-     gamma_matrix = self.variogram_model(dist_matrix)
+    def _build_kriging_matrix(self) -> None:
+        dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
+        gamma_matrix = self.variogram_model(dist_matrix)
 
- n = self.n_points
- self.kriging_matrix = np.zeros((n + 1, n + 1))
- self.kriging_matrix[:n, :n] = gamma_matrix
- self.kriging_matrix[:n, n] = 1.0
- self.kriging_matrix[n, :n] = 1.0
+        n = len(self.x)
+        self.kriging_matrix = np.zeros((n + 1, n + 1))
+        self.kriging_matrix[:n, :n] = gamma_matrix
+        self.kriging_matrix[:n, n] = 1.0
+        self.kriging_matrix[n, :n] = 1.0
 
- self.kriging_matrix[:n, :n] = regularize_matrix(
- self.kriging_matrix[:n, :n], epsilon=1e-10
- )
+        self.kriging_matrix[:n, :n] = regularize_matrix(
+            self.kriging_matrix[:n, :n], epsilon=1e-10
+        )
 
- def predict_with_secondary(
-     x: npt.NDArray[np.float64],
-     y: npt.NDArray[np.float64],
-     z_secondary: npt.NDArray[np.float64],
-     return_variance: bool = True,
-     ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
-         pass
-     """
+    def predict_with_secondary(
+        self,
+        x: npt.NDArray[np.float64],
+        y: npt.NDArray[np.float64],
+        z_secondary: npt.NDArray[np.float64],
+        return_variance: bool = True,
+    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+        """
          Perform collocated cokriging prediction
 
      Parameters
@@ -339,36 +346,37 @@ class CollocatedCokriging(BaseKriging):
      variance : np.ndarray or None
      Kriging variance
      """
-     if self.variogram_model is None:
-    pass
+        if self.variogram_model is None:
+            raise KrigingError("Variogram model must be provided")
 
-     # First do ordinary kriging
-     from .ordinary_kriging import OrdinaryKriging
-     ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)
-     z_ok, var_ok = ok.predict(x, y, return_variance=True)
+        # First do ordinary kriging
+        from .ordinary_kriging import OrdinaryKriging
+        ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)
+        z_ok, var_ok = ok.predict(x, y, return_variance=True)
 
-     # Adjust with secondary variable using correlation
-     # Simplified collocated cokriging formula
-     mean_primary = np.mean(self.z)
-     z_secondary = np.asarray(z_secondary)
-     mean_secondary = np.mean(z_secondary)
+        # Adjust with secondary variable using correlation
+        # Simplified collocated cokriging formula
+        mean_primary = np.mean(self.z)
+        z_secondary = np.asarray(z_secondary)
+        mean_secondary = np.mean(z_secondary)
 
-     # Adjustment factor
-     adjustment = self.correlation * (z_secondary - mean_secondary)
-     predictions = z_ok + adjustment
+        # Adjustment factor
+        adjustment = self.correlation * (z_secondary - mean_secondary)
+        predictions = z_ok + adjustment
 
-     # Adjusted variance (reduced by correlation)
-     if return_variance:
-     return predictions, variances
-     else:
-         pass
+        # Adjusted variance (reduced by correlation)
+        if return_variance:
+            variances = var_ok * (1 - self.correlation**2)
+            return predictions, variances
+        else:
+            return predictions, None
 
- def predict(self, x, y, return_variance=True):
-     from .ordinary_kriging import OrdinaryKriging
-     ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)
-     return ok.predict(x, y, return_variance)
+    def predict(self, x, y, return_variance=True):
+        from .ordinary_kriging import OrdinaryKriging
+        ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)
+        return ok.predict(x, y, return_variance)
 
- def cross_validate(self):
-     from .ordinary_kriging import OrdinaryKriging
-     ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)
-     return ok.cross_validate()
+    def cross_validate(self):
+        from .ordinary_kriging import OrdinaryKriging
+        ok = OrdinaryKriging(self.x, self.y, self.z, self.variogram_model)
+        return ok.cross_validate()

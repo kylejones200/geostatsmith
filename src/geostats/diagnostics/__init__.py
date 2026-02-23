@@ -20,19 +20,19 @@ Examples
 >>> logger.info(results['diagnostics'])
 """
 
-from .validation_suite import ()
- comprehensive_validation,
- spatial_validation,
- model_diagnostics,
+from .validation_suite import (
+    comprehensive_validation,
+    spatial_validation,
+    model_diagnostics,
 )
 
-from .outlier_detection import ()
+from .outlier_detection import (
+    outlier_analysis,
+    robust_validation,
+)
 import logging
 
 logger = logging.getLogger(__name__)
- outlier_analysis,
- robust_validation,
-)
 
 __all__ = [
  'comprehensive_validation',
