@@ -37,9 +37,10 @@ class SphericalModel(VariogramModelBase):
         h_norm = h / range_param
 
         # Calculate variogram values
+        from ..core.constants import SPHERICAL_COEFFICIENT_1, SPHERICAL_COEFFICIENT_2, UNBIASEDNESS_CONSTRAINT
         result = np.where(
-            h_norm <= 1.0,
-            nugget + (sill - nugget) * (1.5 * h_norm - 0.5 * h_norm**3),
+            h_norm <= UNBIASEDNESS_CONSTRAINT,
+            nugget + (sill - nugget) * (SPHERICAL_COEFFICIENT_1 * h_norm - SPHERICAL_COEFFICIENT_2 * h_norm**3),
             sill,
         )
 

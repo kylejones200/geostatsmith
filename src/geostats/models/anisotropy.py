@@ -204,7 +204,7 @@ class DirectionalVariogram:
         ----------
         angles : np.ndarray, optional
             Angles to analyze (degrees)
-            Default: [0, 45, 90, 135]
+            Default: DEFAULT_DIRECTIONS
         n_lags : int
             Number of lag bins
 

@@ -79,14 +79,16 @@ class OrdinaryKriging(BaseKriging):
         n = self.n_points
         self.kriging_matrix = np.zeros((n + 1, n + 1))
         self.kriging_matrix[:n, :n] = gamma_matrix
-        self.kriging_matrix[:n, n] = 1.0
-        self.kriging_matrix[n, :n] = 1.0
-        self.kriging_matrix[n, n] = 0.0
+        from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+        self.kriging_matrix[:n, n] = UNBIASEDNESS_CONSTRAINT
+        self.kriging_matrix[n, :n] = UNBIASEDNESS_CONSTRAINT
+        self.kriging_matrix[n, n] = ZERO_VALUE
 
         # Regularize for numerical stability
+        from ..core.constants import EPSILON
         self.kriging_matrix[:n, :n] = regularize_matrix(
             self.kriging_matrix[:n, :n],
-            epsilon=1e-10
+            epsilon=EPSILON
         )
 
     def predict(
@@ -135,7 +137,8 @@ class OrdinaryKriging(BaseKriging):
             # Augmented right-hand side: [γ(h), 1]ᵀ
             rhs = np.zeros(self.n_points + 1)
             rhs[:self.n_points] = gamma_vec
-            rhs[self.n_points] = 1.0
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT
+            rhs[self.n_points] = UNBIASEDNESS_CONSTRAINT
 
             # Solve for weights and Lagrange multiplier
             try:
@@ -159,7 +162,8 @@ class OrdinaryKriging(BaseKriging):
                 variances[i] = np.dot(weights, gamma_vec) + lagrange
                 # Kriging variance should theoretically be non-negative
                 # Negative values indicate numerical issues or invalid variogram
-                if variances[i] < 0.0:
+                from ..core.constants import ZERO_VALUE
+                if variances[i] < ZERO_VALUE:
                     import warnings
                     warnings.warn(
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
@@ -167,7 +171,7 @@ class OrdinaryKriging(BaseKriging):
                         "Variance will be clamped to 0.",
                         RuntimeWarning
                     )
-                    variances[i] = 0.0
+                    variances[i] = ZERO_VALUE
 
         if return_variance:
             return predictions, variances

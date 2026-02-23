@@ -139,8 +139,9 @@ class ExternalDriftKriging(BaseKriging):
         K[:n, :n] = gamma_matrix
 
         # Unbiasedness constraint (sum of weights = 1)
-        K[:n, n] = 1.0
-        K[n, :n] = 1.0
+        from ..core.constants import UNBIASEDNESS_CONSTRAINT
+        K[:n, n] = UNBIASEDNESS_CONSTRAINT
+        K[n, :n] = UNBIASEDNESS_CONSTRAINT
 
         # External drift constraints (sum of lambda_j * Y_k(u_j) = Y_k(u))
         for k in range(n_cov):
@@ -227,7 +228,8 @@ class ExternalDriftKriging(BaseKriging):
         for i in range(n_pred):
             rhs = np.zeros(n_data + 1 + n_cov, dtype=np.float64)
             rhs[:n_data] = gamma_to_data[i, :]  # Variogram values (vectorized)
-            rhs[n_data] = 1.0  # Unbiasedness constraint
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT
+            rhs[n_data] = UNBIASEDNESS_CONSTRAINT  # Unbiasedness constraint
             rhs[n_data + 1:] = covariates_new[i, :]  # External drift constraints
 
             # Solve kriging system

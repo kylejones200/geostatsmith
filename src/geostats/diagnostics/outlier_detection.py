@@ -64,15 +64,16 @@ def outlier_analysis(
         tree = cKDTree(np.column_stack([x, y]))
 
         scores = np.zeros(len(z))
-        for i in range(len(z)):
-            distances, indices = tree.query([x[i], y[i]], k=6)  # 6 because includes self
+        for i, (x_val, y_val, z_val) in enumerate(zip(x, y, z)):
+            from ..core.constants import SPATIAL_QUERY_K_NEIGHBORS
+            distances, indices = tree.query([x_val, y_val], k=SPATIAL_QUERY_K_NEIGHBORS)  # Includes self
             neighbor_indices = indices[1:]  # Exclude self
 
             # Compare to neighbor mean
             neighbor_mean = z[neighbor_indices].mean()
             neighbor_std = z[neighbor_indices].std()
             if neighbor_std > 0:
-                scores[i] = np.abs(z[i] - neighbor_mean) / neighbor_std
+                scores[i] = np.abs(z_val - neighbor_mean) / neighbor_std
             else:
                 scores[i] = 0.0
 

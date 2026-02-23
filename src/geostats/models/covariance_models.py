@@ -30,10 +30,11 @@ class SphericalCovariance(CovarianceModelBase):
 
         h_norm = h / range_param
 
+        from ..core.constants import SPHERICAL_COEFFICIENT_1, SPHERICAL_COEFFICIENT_2, UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
         result = np.where(
-            h_norm <= 1.0,
-            sill * (1.0 - 1.5 * h_norm + 0.5 * h_norm**3),
-            0.0,
+            h_norm <= UNBIASEDNESS_CONSTRAINT,
+            sill * (UNBIASEDNESS_CONSTRAINT - SPHERICAL_COEFFICIENT_1 * h_norm + SPHERICAL_COEFFICIENT_2 * h_norm**3),
+            ZERO_VALUE,
         )
 
         # Set C(0) = sill

@@ -340,11 +340,20 @@ Then access API:
 
 ## Documentation
 
-### Guides
+### Comprehensive Guides
+- **[User Guide](docs/USER_GUIDE.md)** - Complete user guide with workflows and best practices
+- **[Tutorials](docs/TUTORIALS.md)** - Step-by-step tutorials for common tasks
+- **[Best Practices](docs/BEST_PRACTICES.md)** - Best practices and optimization tips
+- **[API Reference](docs/API_REFERENCE.md)** - Complete API documentation
+- **[Architecture](docs/ARCHITECTURE.md)** - Internal architecture and design
+
+### Quick References
 - **[Quick Start](docs/QUICKSTART.md)** - Getting started guide
 - **[Installation](docs/INSTALL.md)** - Detailed installation
-- **[Contributing](docs/CONTRIBUTING.md)** - Contribution guidelines
+- **[Config-Driven Workflows](docs/CONFIG_DRIVEN.md)** - Config-driven analysis guide
+- **[Constants Configuration](docs/CONSTANTS_CONFIG.md)** - Configuring constants
 - **[Quick Reference](docs/QUICK_REFERENCE.md)** - API quick reference
+- **[Contributing](docs/CONTRIBUTING.md)** - Contribution guidelines
 
 ### Examples
 

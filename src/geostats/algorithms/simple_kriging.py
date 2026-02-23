@@ -78,7 +78,8 @@ class SimpleKriging(BaseKriging):
         dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
         # Get sill from variogram
-        sill = self.variogram_model.parameters.get('sill', 1.0)
+        from ..core.constants import DEFAULT_SILL_VALUE
+        sill = self.variogram_model.parameters.get('sill', DEFAULT_SILL_VALUE)
         nugget = self.variogram_model.parameters.get('nugget', 0.0)
 
         # Convert variogram to covariance: C(h) = sill - gamma(h)
@@ -89,7 +90,8 @@ class SimpleKriging(BaseKriging):
         np.fill_diagonal(self.cov_matrix, sill)
 
         # Regularize for numerical stability
-        self.cov_matrix = regularize_matrix(self.cov_matrix, epsilon=1e-10)
+        from ..core.constants import EPSILON
+        self.cov_matrix = regularize_matrix(self.cov_matrix, epsilon=EPSILON)
 
     def predict(
         self,
@@ -124,7 +126,8 @@ class SimpleKriging(BaseKriging):
         variances = np.zeros(n_pred) if return_variance else None
 
         # Get sill for variance calculation
-        sill = self.variogram_model.parameters.get('sill', 1.0)
+        from ..core.constants import DEFAULT_SILL_VALUE
+        sill = self.variogram_model.parameters.get('sill', DEFAULT_SILL_VALUE)
 
         # Predict at each location
         for i in range(n_pred):
@@ -157,14 +160,15 @@ class SimpleKriging(BaseKriging):
             if return_variance:
                 variances[i] = sill - np.dot(weights, cov_vec)
                 # Variance should be non-negative; negative indicates numerical issues
-                if variances[i] < 0.0:
+                from ..core.constants import ZERO_VALUE
+                if variances[i] < ZERO_VALUE:
                     import warnings
                     warnings.warn(
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
                         "This may indicate numerical instability. Variance will be clamped to 0.",
                         RuntimeWarning
                     )
-                    variances[i] = 0.0
+                    variances[i] = ZERO_VALUE
 
         if return_variance:
             return predictions, variances

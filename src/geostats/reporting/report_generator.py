@@ -125,7 +125,7 @@ def _generate_html_report(
     <table class="metrics">
  """
     for key, val in params.items():
-     continue
+        model_html += f"<tr><td>{key}:</td><td>{val}</td></tr>\n"
     model_html += "</table>"
 
     # Compile HTML

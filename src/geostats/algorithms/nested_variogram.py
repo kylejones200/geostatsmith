@@ -65,7 +65,8 @@ class VariogramStructure:
  nugget: float = 0.0 # Only used for first structure
 
  def __str__(self):
-     pass
+     nugget_str = f", nugget={self.nugget:.4f}" if self.nugget > 0 else ""
+     return f"VariogramStructure(model={self.model_type}, sill={self.sill:.4f}, range={self.range:.4f}{nugget_str})"
 
 class NestedVariogram:
     """

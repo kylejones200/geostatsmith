@@ -217,8 +217,9 @@ class PlurigaussianSimulation:
         for i in range(n_cond):
             # Use rejection sampling to find Gaussian values
             # that produce the correct category
+            from ..core.constants import DEFAULT_N_CANDIDATES
             cat = self.categories[i]
-            max_attempts = 1000
+            max_attempts = DEFAULT_N_CANDIDATES
             found = False
 
             for attempt in range(max_attempts):

@@ -228,7 +228,8 @@ class UniversalKriging(BaseKriging):
                     np.dot(weights, gamma_vec) + np.dot(lagrange, drift_vec)
                 )
                 # Check for negative variance (indicates numerical issues)
-                if variances[i] < 0.0:
+                from ..core.constants import ZERO_VALUE
+                if variances[i] < ZERO_VALUE:
                     import warnings
                     warnings.warn(
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
@@ -236,7 +237,7 @@ class UniversalKriging(BaseKriging):
                         "Variance will be clamped to 0.",
                         RuntimeWarning
                     )
-                    variances[i] = 0.0
+                    variances[i] = ZERO_VALUE
 
         if return_variance:
             return predictions, variances

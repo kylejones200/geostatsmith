@@ -67,16 +67,17 @@ def experimental_variogram(
     # Calculate squared differences
     z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
 
+    from ..core.constants import SEMIVARIANCE_FACTOR, MAXLAG_FRACTION, LAG_TOL_FRACTION, SEMIVARIANCE_DIVISOR
     # Determine lag bins
     if maxlag is None:
-        maxlag = np.max(dist) / 2.0
+        maxlag = np.max(dist) * MAXLAG_FRACTION
 
     lag_width = maxlag / n_lags
     lag_bins = np.linspace(0, maxlag, n_lags + 1)
-    lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
+    lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2.0
 
     if lag_tol is None:
-        lag_tol = lag_width / 2.0
+        lag_tol = lag_width * LAG_TOL_FRACTION
 
     # Compute variogram for each lag
     gamma = np.zeros(n_lags)
@@ -93,7 +94,7 @@ def experimental_variogram(
         n_pairs_lag = np.sum(mask)
 
         if n_pairs_lag > 0:
-            gamma[i] = np.sum(z_diff_sq[mask]) / (2.0 * n_pairs_lag)
+            gamma[i] = np.sum(z_diff_sq[mask]) / (SEMIVARIANCE_DIVISOR * n_pairs_lag)
             n_pairs[i] = n_pairs_lag
         else:
             n_pairs[i] = 0
@@ -173,7 +174,7 @@ def experimental_variogram_directional(
         n_pairs_lag = np.sum(mask)
 
         if n_pairs_lag > 0:
-            gamma[i] = np.sum(z_diff_sq[mask]) / (2.0 * n_pairs_lag)
+            gamma[i] = np.sum(z_diff_sq[mask]) / (SEMIVARIANCE_DIVISOR * n_pairs_lag)
             n_pairs[i] = n_pairs_lag
         else:
             n_pairs[i] = 0
@@ -412,9 +413,10 @@ def madogram(
             # Extract differences for this lag
             diffs = z_diff_abs[mask]
 
-            # Madogram: 0.5 * [median(|differences|)]^2
+            from ..core.constants import SEMIVARIANCE_FACTOR
+            # Madogram: SEMIVARIANCE_FACTOR * [median(|differences|)]^2
             median_diff = np.median(diffs)
-            gamma[i] = 0.5 * (median_diff ** 2)
+            gamma[i] = SEMIVARIANCE_FACTOR * (median_diff ** 2)
             n_pairs[i] = n_pairs_lag
         else:
             n_pairs[i] = 0

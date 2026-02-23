@@ -128,8 +128,9 @@ class DisjunctiveKriging(BaseKriging):
         sorted_z = np.sort(self.z)
         n = len(sorted_z)
 
+        from ..core.constants import RANK_OFFSET
         # Empirical CDF values (avoid 0 and 1 at boundaries)
-        cdf_values = (np.arange(n) + 0.5) / n
+        cdf_values = (np.arange(n) + RANK_OFFSET) / n
 
         # Transform to standard normal quantiles
         y_normal = stats.norm.ppf(cdf_values)
@@ -182,11 +183,12 @@ class DisjunctiveKriging(BaseKriging):
         ranks = np.empty_like(sorted_indices)
         ranks[sorted_indices] = np.arange(n)
 
+        from ..core.constants import RANK_OFFSET, PROBABILITY_CLIP_MIN, PROBABILITY_CLIP_MAX
         # Empirical CDF values
-        cdf_values = (ranks + 0.5) / n
+        cdf_values = (ranks + RANK_OFFSET) / n
 
         # Map to standard normal quantiles
-        y_gaussian = stats.norm.ppf(np.clip(cdf_values, 1e-10, 1 - 1e-10))
+        y_gaussian = stats.norm.ppf(np.clip(cdf_values, PROBABILITY_CLIP_MIN, PROBABILITY_CLIP_MAX))
 
         return y_gaussian
 
@@ -210,11 +212,11 @@ class DisjunctiveKriging(BaseKriging):
         # Use Hermite expansion: Z = sum_i phi_i H_i(Y)
         z_pred = np.zeros_like(y_gaussian)
 
-        for i in range(len(self.hermite_coeffs)):
+        for i, coeff in enumerate(self.hermite_coeffs):
             from scipy.special import hermitenorm
             hermite_poly = hermitenorm(i)
             h_values = hermite_poly(y_gaussian)
-            z_pred += self.hermite_coeffs[i] * np.math.factorial(i) * h_values
+            z_pred += coeff * np.math.factorial(i) * h_values
 
         return z_pred
 
@@ -239,13 +241,14 @@ class DisjunctiveKriging(BaseKriging):
 
         # Regularize for numerical stability
         from ..math.matrices import regularize_matrix
+        from ..core.constants import EPSILON
         if self.kriging_type == "simple":
             self.kriging_matrix[:n, :n] = regularize_matrix(
-                self.kriging_matrix[:n, :n], epsilon=1e-10
+                self.kriging_matrix[:n, :n], epsilon=EPSILON
             )
         else:
             self.kriging_matrix[:n, :n] = regularize_matrix(
-                self.kriging_matrix[:n, :n], epsilon=1e-10
+                self.kriging_matrix[:n, :n], epsilon=EPSILON
             )
 
     def predict(
@@ -321,7 +324,8 @@ class DisjunctiveKriging(BaseKriging):
                 rhs = np.zeros(self.n_points + 1)
                 sill = self.variogram_model.parameters.get('sill', 1.0)
                 rhs[: self.n_points] = sill - gamma_vec
-                rhs[self.n_points] = 1.0
+                from ..core.constants import UNBIASEDNESS_CONSTRAINT
+                rhs[self.n_points] = UNBIASEDNESS_CONSTRAINT
 
                 try:
                     from ..math.matrices import solve_kriging_system
@@ -370,8 +374,9 @@ class DisjunctiveKriging(BaseKriging):
                             * h_deriv_values
                         )
 
+                from ..core.constants import HERMITE_DERIVATIVE_TOLERANCE
                 # If derivative is too small, use empirical scaling
-                if abs(dzdY) < 1e-6:
+                if abs(dzdY) < HERMITE_DERIVATIVE_TOLERANCE:
                     var_ratio = np.var(self.z) / np.var(self.y_gaussian)
                     variances[i] = y_var_gaussian[i] * var_ratio
                 else:

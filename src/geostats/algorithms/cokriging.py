@@ -100,7 +100,8 @@ class Cokriging(BaseKriging):
             self.x_primary, self.y_primary
         )
         gamma_11 = self.variogram_primary(dist_11)
-        sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
+        from ..core.constants import DEFAULT_SILL_VALUE
+        sill_1 = self.variogram_primary.parameters.get('sill', DEFAULT_SILL_VALUE)
         self.cokriging_matrix[:n1, :n1] = sill_1 - gamma_11
 
         # C22: Secondary-secondary covariances
@@ -125,22 +126,25 @@ class Cokriging(BaseKriging):
         # C12(0) = rho * sqrt(sill_1 * sill_2)
         # For simplicity, we estimate rho from the cross-variogram properties
         # A more rigorous approach would require fitting the linear model of coregionalization
-        cross_sill = np.sqrt(sill_1 * sill_2) * 0.7  # Assume moderate correlation
+        from ..core.constants import CORRELATION_THRESHOLD
+        cross_sill = np.sqrt(sill_1 * sill_2) * CORRELATION_THRESHOLD  # Assume moderate correlation
         cross_cov = cross_sill - gamma_12
 
         self.cokriging_matrix[:n1, n1:n_total] = cross_cov
         self.cokriging_matrix[n1:n_total, :n1] = cross_cov.T
 
         # Unbiasedness constraints
-        self.cokriging_matrix[:n1, n_total] = 1.0
-        self.cokriging_matrix[n_total, :n1] = 1.0
-        self.cokriging_matrix[n1:n_total, n_total + 1] = 1.0
-        self.cokriging_matrix[n_total + 1, n1:n_total] = 1.0
+        from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+        self.cokriging_matrix[:n1, n_total] = UNBIASEDNESS_CONSTRAINT
+        self.cokriging_matrix[n_total, :n1] = UNBIASEDNESS_CONSTRAINT
+        self.cokriging_matrix[n1:n_total, n_total + 1] = UNBIASEDNESS_CONSTRAINT
+        self.cokriging_matrix[n_total + 1, n1:n_total] = UNBIASEDNESS_CONSTRAINT
 
         # Regularize
+        from ..core.constants import EPSILON
         self.cokriging_matrix[:n_total, :n_total] = regularize_matrix(
             self.cokriging_matrix[:n_total, :n_total],
-            epsilon=1e-10
+            epsilon=EPSILON
         )
 
     def predict(
@@ -180,7 +184,8 @@ class Cokriging(BaseKriging):
         n_total = n1 + n2
 
         # Get sills
-        sill_1 = self.variogram_primary.parameters.get('sill', 1.0)
+        from ..core.constants import DEFAULT_SILL_VALUE
+        sill_1 = self.variogram_primary.parameters.get('sill', DEFAULT_SILL_VALUE)
 
         for i in range(n_pred):
             dist_to_primary = euclidean_distance(
@@ -202,12 +207,14 @@ class Cokriging(BaseKriging):
 
             # Cross-covariances
             gamma_c = self.cross_variogram(dist_to_secondary)
-            cross_sill = np.sqrt(sill_1 * self.variogram_secondary.parameters.get('sill', 1.0)) * 0.7
+            from ..core.constants import CORRELATION_THRESHOLD, DEFAULT_SILL_VALUE
+            cross_sill = np.sqrt(sill_1 * self.variogram_secondary.parameters.get('sill', DEFAULT_SILL_VALUE)) * CORRELATION_THRESHOLD
             rhs[n1:n_total] = cross_sill - gamma_c
 
             # Constraints
-            rhs[n_total] = 1.0
-            rhs[n_total + 1] = 0.0
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+            rhs[n_total] = UNBIASEDNESS_CONSTRAINT
+            rhs[n_total + 1] = ZERO_VALUE
 
             # Solve system
             try:
@@ -234,7 +241,8 @@ class Cokriging(BaseKriging):
             if return_variance:
                 # Kriging variance calculation
                 var_term = sill_1 - np.dot(rhs[:n_total], solution[:n_total])
-                variances[i] = max(0.0, var_term)
+                from ..core.constants import ZERO_VALUE
+                variances[i] = max(ZERO_VALUE, var_term)
 
         if return_variance:
             return predictions, variances

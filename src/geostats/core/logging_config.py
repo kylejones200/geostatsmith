@@ -35,8 +35,10 @@ def setup_logging(
     if stream is None:
         import sys
         stream = sys.stdout
-    pass
-
+    
+    # Set default log level
+    level = logging.INFO
+    
     logging.basicConfig(
         level=level,
         format=format_string,

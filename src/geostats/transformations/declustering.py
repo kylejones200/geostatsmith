@@ -29,13 +29,17 @@ def cell_declustering(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     cell_sizes: Optional[npt.NDArray[np.float64]] = None,
-    n_sizes: int = 10
+    n_sizes: int = None
 ) -> Tuple[npt.NDArray[np.float64], Dict]:
     """
     Cell Declustering.
 
     Assigns weights to samples based on spatial distribution to correct for
     preferential clustering. Samples in densely sampled areas get lower weights.
+    
+    from ..core.constants import DEFAULT_N_CELL_SIZES
+    if n_sizes is None:
+        n_sizes = DEFAULT_N_CELL_SIZES
 
     Method:
     1. Overlay grid of cells with varying cell sizes
@@ -61,6 +65,9 @@ def cell_declustering(
     results : dict
         Dictionary with optimization results
     """
+    from ..core.constants import DEFAULT_N_CELL_SIZES
+    if n_sizes is None:
+        n_sizes = DEFAULT_N_CELL_SIZES
     # Validate inputs
     x, y = validate_coordinates(x, y)
     z = validate_values(z, n_expected=len(x))
@@ -253,10 +260,11 @@ def detect_clustering(
     std_dist = np.std(nn_distances)
     cv = std_dist / mean_dist if mean_dist > 0 else 0
 
+    from ..core.constants import CLUSTERING_CV_THRESHOLD
     return {
     'mean_nn_dist': mean_dist,
     'std_nn_dist': std_dist,
     'cv_nn_dist': cv,
     'clustering_index': cv,
-    'is_likely_clustered': cv > 0.5, # Rule of thumb
+    'is_likely_clustered': cv > CLUSTERING_CV_THRESHOLD, # Rule of thumb
     }

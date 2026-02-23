@@ -23,7 +23,7 @@ def optimal_sampling_design(
     strategy: Literal['variance_reduction', 'space_filling', 'hybrid'] = 'variance_reduction',
     x_bounds: Optional[Tuple[float, float]] = None,
     y_bounds: Optional[Tuple[float, float]] = None,
-    n_candidates: int = 1000,
+    n_candidates: int = None,
 ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Design optimal locations for new sampling points.
@@ -96,9 +96,12 @@ def optimal_sampling_design(
     Müller, W. G. (2007). Collecting Spatial Data: Optimum Design of Experiments
     for Random Fields. Springer.
     """
+    from ..core.constants import DEFAULT_MARGIN_FRACTION, DEFAULT_N_CANDIDATES
+    if n_candidates is None:
+        n_candidates = DEFAULT_N_CANDIDATES
     # Set bounds
-    x_margin = (x_existing.max() - x_existing.min()) * 0.1
-    y_margin = (y_existing.max() - y_existing.min()) * 0.1
+    x_margin = (x_existing.max() - x_existing.min()) * DEFAULT_MARGIN_FRACTION
+    y_margin = (y_existing.max() - y_existing.min()) * DEFAULT_MARGIN_FRACTION
     
     if x_bounds is None:
         x_bounds = (x_existing.min() - x_margin, x_existing.max() + x_margin)
@@ -145,10 +148,13 @@ def optimal_sampling_design(
                 x_current, y_current
             )
 
+            from ..core.constants import NORMALIZATION_EPSILON
             # Normalize and combine (70% variance, 30% spacing)
-            var_norm = (var - var.min()) / (var.max() - var.min() + 1e-10)
-            spacing_norm = (spacing_scores - spacing_scores.min()) / (spacing_scores.max() - spacing_scores.min() + 1e-10)
-            combined_score = 0.7 * var_norm + 0.3 * spacing_norm
+            var_norm = (var - var.min()) / (var.max() - var.min() + NORMALIZATION_EPSILON)
+            spacing_norm = (spacing_scores - spacing_scores.min()) / (spacing_scores.max() - spacing_scores.min() + NORMALIZATION_EPSILON)
+            VARIANCE_WEIGHT = 0.7
+            SPACING_WEIGHT = 0.3
+            combined_score = VARIANCE_WEIGHT * var_norm + SPACING_WEIGHT * spacing_norm
             best_idx = np.argmax(combined_score)
 
         else:
@@ -195,10 +201,10 @@ def _compute_space_filling_scores(
     """Compute space-filling scores (minimum distance to existing points)."""
     scores = np.zeros(len(x_candidates))
 
-    for i in range(len(x_candidates)):
+    for i, (x_cand, y_cand) in enumerate(zip(x_candidates, y_candidates)):
         distances = np.sqrt(
-            (x_existing - x_candidates[i])**2 +
-            (y_existing - y_candidates[i])**2
+            (x_existing - x_cand)**2 +
+            (y_existing - y_cand)**2
         )
         # Score is minimum distance (want to maximize this)
         scores[i] = distances.min()
@@ -213,7 +219,7 @@ def infill_sampling(
     variance_threshold: float,
     x_bounds: Optional[Tuple[float, float]] = None,
     y_bounds: Optional[Tuple[float, float]] = None,
-    max_samples: int = 100,
+    max_samples: int = None,
 ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Identify locations where additional sampling is needed (infill).
@@ -254,13 +260,16 @@ def infill_sampling(
  ... variogram_model=model,
  ... variance_threshold=0.5
  ... )
- >>> logger.info(f"Need {len(x_infill)} additional samples")
+    >>> logger.info(f"Need {len(x_infill)} additional samples")
 
     Notes
     -----
     This is useful for adaptive sampling where you want to ensure
     prediction uncertainty is below a certain level everywhere in the domain.
     """
+    from ..core.constants import DEFAULT_MAX_SAMPLES
+    if max_samples is None:
+        max_samples = DEFAULT_MAX_SAMPLES
     # Start with existing samples
     x_current = x_existing.copy()
     y_current = y_existing.copy()
@@ -275,8 +284,9 @@ def infill_sampling(
     if y_bounds is None:
         y_bounds = (y_existing.min(), y_existing.max())
 
+    from ..core.constants import DEFAULT_N_EVAL_POINTS
     # Create grid for variance evaluation
-    n_eval = 50
+    n_eval = DEFAULT_N_EVAL_POINTS
     x_eval = np.linspace(x_bounds[0], x_bounds[1], n_eval)
     y_eval = np.linspace(y_bounds[0], y_bounds[1], n_eval)
     x_grid, y_grid = np.meshgrid(x_eval, y_eval)

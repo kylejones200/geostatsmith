@@ -144,7 +144,8 @@ class IndicatorKriging(BaseKriging):
             n_points = len(self.x)
             rhs = np.zeros(n_points + 1)
             rhs[:n_points] = gamma_vec
-            rhs[n_points] = 1.0
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT
+            rhs[n_points] = UNBIASEDNESS_CONSTRAINT
 
             # Solve for weights
             try:
@@ -170,7 +171,8 @@ class IndicatorKriging(BaseKriging):
             # Kriging variance
             if return_variance:
                 variances[i] = np.dot(weights, gamma_vec) + lagrange
-                variances[i] = max(0.0, variances[i])
+                from ..core.constants import ZERO_VALUE
+                variances[i] = max(ZERO_VALUE, variances[i])
 
         if return_variance:
             return probabilities, variances

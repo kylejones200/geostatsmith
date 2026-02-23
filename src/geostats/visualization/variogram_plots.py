@@ -54,13 +54,19 @@ ax : matplotlib.Axes
     from geostats.visualization.minimal_style import apply_minimalist_style
     apply_minimalist_style(ax)
 
+    from ..core.constants import (
+        SCATTER_ALPHA_DEFAULT,
+        SCATTER_SIZE_SCALE,
+        SCATTER_SIZE_BASE,
+    )
+    
     # Plot experimental variogram
     if n_pairs is not None:
-        sizes = n_pairs / np.max(n_pairs) * 100 + 20
-        ax.scatter(lags, gamma, s=sizes, alpha=0.6, c='#1f77b4',
+        sizes = n_pairs / np.max(n_pairs) * SCATTER_SIZE_SCALE + SCATTER_SIZE_BASE
+        ax.scatter(lags, gamma, s=sizes, alpha=SCATTER_ALPHA_DEFAULT, c='#1f77b4',
         edgecolors='#333333', linewidth=0.8, label='Experimental', **kwargs)
     else:
-        ax.scatter(lags, gamma, alpha=0.6, c='#1f77b4',
+        ax.scatter(lags, gamma, alpha=SCATTER_ALPHA_DEFAULT, c='#1f77b4',
         edgecolors='#333333', linewidth=0.8, label='Experimental', **kwargs)
 
     # Plot model if provided
@@ -71,15 +77,23 @@ ax : matplotlib.Axes
         ax.plot(h_plot, gamma_model, '#d62728', linewidth=2,
                 label=f'{model.__class__.__name__}')
 
+    from ..core.constants import (
+        TEXT_X_POSITION,
+        TEXT_Y_POSITION,
+        FONTSIZE_DEFAULT,
+        FONTSIZE_TITLE,
+        TITLE_PAD,
+    )
+    
     # Add model parameters as text
     params = model.parameters
     param_text = '\n'.join([f'{k}: {v:.3f}' for k, v in params.items()])
-    ax.text(0.65, 0.05, param_text, transform=ax.transAxes,
-            fontsize=9, verticalalignment='bottom',
+    ax.text(TEXT_X_POSITION, TEXT_Y_POSITION, param_text, transform=ax.transAxes,
+            fontsize=FONTSIZE_DEFAULT, verticalalignment='bottom',
             bbox=dict(boxstyle='round', facecolor='#f0f0f0', alpha=0.8, edgecolor='none'))
 
     # Descriptive title replaces axis labels
-    ax.set_title('Semivariance γ(h) vs Distance (h)', fontsize=11, pad=10)
+    ax.set_title('Semivariance γ(h) vs Distance (h)', fontsize=FONTSIZE_TITLE, pad=TITLE_PAD)
     ax.legend(fontsize=9, frameon=False)
 
     return ax
@@ -123,7 +137,8 @@ ax : matplotlib.Axes
     distances, semivariances = variogram_cloud(x, y, z, maxlag=maxlag)
 
     # Plot cloud
-    ax.scatter(distances, semivariances, alpha=0.3, s=10,
+    from ..core.constants import SCATTER_ALPHA_LIGHT, SCATTER_SIZE_SMALL
+    ax.scatter(distances, semivariances, alpha=SCATTER_ALPHA_LIGHT, s=SCATTER_SIZE_SMALL,
     c='blue', edgecolors='none', **kwargs)
 
     ax.set_xlabel('Distance (h)', fontsize=12)
@@ -137,9 +152,9 @@ def plot_h_scatterplot(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     h_distance: float,
-    tolerance: float = 0.5,
+    tolerance: float = None,
     direction: Optional[float] = None,
-    angle_tolerance: float = 45.0,
+    angle_tolerance: float = None,
     ax: Optional[plt.Axes] = None,
     ) -> ...:
     """
@@ -172,9 +187,16 @@ Returns
 ax : matplotlib.Axes
 """
     from ..math.distance import euclidean_distance_matrix, directional_distance
+    from ..core.constants import DEFAULT_DIRECTION_TOLERANCE, DEFAULT_ANGLE_TOLERANCE
 
     if ax is None:
         ax = plt.gca()
+    
+    # Set defaults if not provided
+    if tolerance is None:
+        tolerance = DEFAULT_DIRECTION_TOLERANCE
+    if angle_tolerance is None:
+        angle_tolerance = DEFAULT_ANGLE_TOLERANCE
 
     # Calculate distances
     dist = euclidean_distance_matrix(x, y)
@@ -226,8 +248,8 @@ ax : matplotlib.Axes
 def plot_directional_variograms(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    directions: List[float] = [0, 45, 90, 135],
-    tolerance: float = 22.5,
+    directions: List[float] = None,
+    tolerance: float = None,
     n_lags: int = 12,
     figsize: tuple = (12, 10),
     ) -> ...:
@@ -322,7 +344,8 @@ def plot_variogram_map(
     dx = x[:, np.newaxis] - x[np.newaxis, :]
     dy = y[:, np.newaxis] - y[np.newaxis, :]
     dz = z[:, np.newaxis] - z[np.newaxis, :]
-    semivar = 0.5 * dz**2
+    from ..core.constants import SEMIVARIANCE_FACTOR
+    semivar = SEMIVARIANCE_FACTOR * dz**2
 
     # Determine lag size
     if lag_size is None:
@@ -344,16 +367,17 @@ def plot_variogram_map(
     dy_flat = dy[mask]
     semivar_flat = semivar[mask]
 
-    for i in range(len(dx_flat)):
-        yi = np.digitize(dy_flat[i], y_bins) - 1
-        xi = np.digitize(dx_flat[i], x_bins) - 1
+    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat):
+        yi = np.digitize(dy_val, y_bins) - 1
+        xi = np.digitize(dx_val, x_bins) - 1
 
         if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
+            vario_map[yi, xi] += semivar_val
             counts[yi, xi] += 1
 
     # Average
     with np.errstate(divide='ignore', invalid='ignore'):
-     pass
+        vario_map = np.divide(vario_map, counts, out=np.zeros_like(vario_map), where=counts > 0)
 
     # Plot
     extent = [-max_dx, max_dx, -max_dy, max_dy]
@@ -364,8 +388,9 @@ def plot_variogram_map(
     ax.set_xlabel('Δx', fontsize=12)
     ax.set_ylabel('Δy', fontsize=12)
     ax.set_title('Variogram Map', fontsize=14, fontweight='bold')
-    ax.axhline(0, color='white', linestyle='--', linewidth=1, alpha=0.5)
-    ax.axvline(0, color='white', linestyle='--', linewidth=1, alpha=0.5)
+    from ..core.constants import GRID_LINE_WIDTH, GRID_LINE_ALPHA
+    ax.axhline(0, color='white', linestyle='--', linewidth=GRID_LINE_WIDTH, alpha=GRID_LINE_ALPHA)
+    ax.axvline(0, color='white', linestyle='--', linewidth=GRID_LINE_WIDTH, alpha=GRID_LINE_ALPHA)
 
     return fig
 
@@ -416,7 +441,7 @@ def plot_experimental_variogram(
     return fig, ax
 
 def plot_variogram_model(
-    max_distance: float = 100.0,
+    max_distance: float = None,
     ax: Optional[plt.Axes] = None,
     n_points: int = 200,
     **kwargs,
@@ -565,7 +590,8 @@ def plot_variogram_map(
     dx = x[:, np.newaxis] - x[np.newaxis, :]
     dy = y[:, np.newaxis] - y[np.newaxis, :]
     dz = z[:, np.newaxis] - z[np.newaxis, :]
-    semivar = 0.5 * dz**2
+    from ..core.constants import SEMIVARIANCE_FACTOR
+    semivar = SEMIVARIANCE_FACTOR * dz**2
 
     # Mask diagonal
     mask = ~np.eye(n, dtype=bool)
@@ -584,15 +610,17 @@ def plot_variogram_map(
     vario_map = np.zeros((2*n_lags, 2*n_lags))
     counts = np.zeros((2*n_lags, 2*n_lags))
 
-    for i in range(len(dx_flat)):
-        yi = np.digitize(dy_flat[i], y_bins) - 1
+    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat):
+        yi = np.digitize(dy_val, y_bins) - 1
+        xi = np.digitize(dx_val, x_bins) - 1
 
-    if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
-        counts[yi, xi] += 1
+        if 0 <= xi < 2*n_lags and 0 <= yi < 2*n_lags:
+            vario_map[yi, xi] += semivar_val
+            counts[yi, xi] += 1
 
     # Average
     with np.errstate(divide='ignore', invalid='ignore'):
-     pass
+        vario_map = np.divide(vario_map, counts, out=np.zeros_like(vario_map), where=counts > 0)
 
     # Plot
     extent = [-max_dx, max_dx, -max_dy, max_dy]
@@ -603,7 +631,8 @@ def plot_variogram_map(
     ax.set_xlabel('Δx', fontsize=12)
     ax.set_ylabel('Δy', fontsize=12)
     ax.set_title('Variogram Map', fontsize=14, fontweight='bold')
-    ax.axhline(0, color='white', linestyle='--', linewidth=1, alpha=0.5)
-    ax.axvline(0, color='white', linestyle='--', linewidth=1, alpha=0.5)
+    from ..core.constants import GRID_LINE_WIDTH, GRID_LINE_ALPHA
+    ax.axhline(0, color='white', linestyle='--', linewidth=GRID_LINE_WIDTH, alpha=GRID_LINE_ALPHA)
+    ax.axvline(0, color='white', linestyle='--', linewidth=GRID_LINE_WIDTH, alpha=GRID_LINE_ALPHA)
 
     return fig, ax

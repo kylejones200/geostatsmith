@@ -167,13 +167,14 @@ class FactorialKriging(BaseKriging):
             K[:n, :n] = C_i
 
             # Unbiasedness constraint
-            K[:n, n] = 1.0
-            K[n, :n] = 1.0
-            K[n, n] = 0.0
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+            K[:n, n] = UNBIASEDNESS_CONSTRAINT
+            K[n, :n] = UNBIASEDNESS_CONSTRAINT
+            K[n, n] = ZERO_VALUE
 
             # Regularize
             from ..math.matrices import regularize_matrix
-            REGULARIZATION_FACTOR = 1e-8
+            from ..core.constants import REGULARIZATION_FACTOR
             K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
 
             self.kriging_matrices.append(K)
@@ -238,7 +239,8 @@ class FactorialKriging(BaseKriging):
 
                 rhs = np.zeros(n_data + 1, dtype=np.float64)
                 rhs[:n_data] = cov_values
-                rhs[n_data] = 1.0
+                from ..core.constants import UNBIASEDNESS_CONSTRAINT
+                rhs[n_data] = UNBIASEDNESS_CONSTRAINT
 
                 # Solve kriging system
                 try:

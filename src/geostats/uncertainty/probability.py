@@ -21,7 +21,7 @@ def probability_map(
     variogram_model: VariogramModelBase,
     threshold: float,
     operator: str = '>',
-    n_realizations: int = 100,
+    n_realizations: int = None,
 ) -> npt.NDArray[np.float64]:
     """
     Create probability map: P(Z operator threshold).
@@ -208,7 +208,7 @@ def risk_assessment(
     threshold: float,
     cost_false_positive: float,
     cost_false_negative: float,
-    n_realizations: int = 100,
+    n_realizations: int = None,
 ) -> Dict[str, any]:
     """
     Perform risk-based decision analysis.

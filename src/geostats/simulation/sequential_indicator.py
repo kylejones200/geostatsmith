@@ -43,7 +43,12 @@ from scipy.interpolate import interp1d
 
 from ..algorithms.indicator_kriging import IndicatorKriging
 from ..core.exceptions import KrigingError
-from ..core.constants import PROBABILITY_BOUNDS, DEFAULT_N_REALIZATIONS, DEFAULT_N_THRESHOLDS
+from ..core.constants import (
+    PROBABILITY_BOUNDS,
+    DEFAULT_N_REALIZATIONS,
+    DEFAULT_N_THRESHOLDS,
+    EPSILON,
+)
 from ..core.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -248,9 +253,8 @@ class SequentialIndicatorSimulation:
                         probabilities[k] = np.mean(self.indicators[:, k])
 
                 # Clip probabilities (vectorized)
-                from ..core.constants import EPSILON
-                PROBABILITY_BOUNDS = (EPSILON, 1.0 - EPSILON)
-                probabilities = np.clip(probabilities, *PROBABILITY_BOUNDS)
+                from ..core.constants import PROBABILITY_CLIP_MIN, PROBABILITY_CLIP_MAX
+                probabilities = np.clip(probabilities, PROBABILITY_CLIP_MIN, PROBABILITY_CLIP_MAX)
 
                 # Correct order relations: P(z1) <= P(z2) for z1 < z2 (fully vectorized)
                 if self.config.correct_order_relations:

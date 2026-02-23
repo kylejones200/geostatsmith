@@ -18,6 +18,7 @@ from .schemas import (
     GridConfig,
     PlotConfig,
 )
+from .constants_config import ConstantsConfig
 
 from .parser import (
     load_config,
@@ -41,6 +42,7 @@ __all__ = [
     "NeighborhoodConfig",
     "GridConfig",
     "PlotConfig",
+    "ConstantsConfig",
     # Parser
     "load_config",
     "validate_config",

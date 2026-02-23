@@ -32,12 +32,15 @@ from ..math.distance import euclidean_distance_matrix
 
 logger = get_logger(__name__)
 
-# Outlier detection constants
-Z_SCORE_THRESHOLD = 3.0 # Standard: beyond 3 std devs
-MODIFIED_Z_THRESHOLD = 3.5 # Modified Z-score threshold
-IQR_MULTIPLIER = 1.5 # Standard IQR method
-SPATIAL_NEIGHBORS_MIN = 5 # Minimum neighbors for local outlier detection
-SPATIAL_THRESHOLD_FACTOR = 3.0 # Spatial outlier = >3 std from local mean
+# Import constants from core
+from ..core.constants import (
+    Z_SCORE_THRESHOLD,
+    MODIFIED_Z_THRESHOLD,
+    IQR_MULTIPLIER,
+    IQR_EXTREME_MULTIPLIER,
+    SPATIAL_NEIGHBORS_MIN,
+    SPATIAL_THRESHOLD_FACTOR,
+)
 
 def detect_outliers_zscore(
     data: npt.NDArray[np.float64],
@@ -182,7 +185,7 @@ def detect_outliers_iqr(
         Input data
     multiplier : float
         IQR multiplier (default: 1.5)
-        Standard: 1.5 for outliers, 3.0 for extreme outliers
+        Standard: IQR_MULTIPLIER for outliers, IQR_EXTREME_MULTIPLIER for extreme outliers
     return_bounds : bool
         If True, return (mask, (lower_bound, upper_bound))
 
@@ -282,8 +285,8 @@ def detect_spatial_outliers(
 
     outlier_mask = np.zeros(len(x), dtype=bool)
 
-    for i in range(len(x)):
-        distances, indices = tree.query(coords[i], k=n_neighbors + 1)
+    for i, coord in enumerate(coords):
+        distances, indices = tree.query(coord, k=n_neighbors + 1)
 
         # Exclude the point itself
         neighbor_indices = indices[1:]

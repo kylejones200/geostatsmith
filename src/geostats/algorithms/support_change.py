@@ -214,7 +214,7 @@ class BlockKriging(BaseKriging):
         K[n_data, n_data] = 0.0
 
         from ..math.matrices import regularize_matrix
-        REGULARIZATION_FACTOR = 1e-8
+        from ..core.constants import REGULARIZATION_FACTOR
         K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
         logger.debug(f"Block Kriging matrix built (vectorized): {n_data+1}x{n_data+1}")
 
@@ -231,7 +231,8 @@ class BlockKriging(BaseKriging):
                     x_new[i], y_new[i]
                 )
 
-            rhs[n_data] = 1.0  # Unbiasedness
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT
+            rhs[n_data] = UNBIASEDNESS_CONSTRAINT  # Unbiasedness
 
             # Solve
             try:

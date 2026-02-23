@@ -109,11 +109,12 @@ class LogTransform:
         if self.has_zeros:
             self.epsilon_fitted = self.epsilon_user
         else:
+            from ..core.constants import LOG_EPSILON_RATIO, EPSILON
             positive_values = valid_data[valid_data > 0]
             if len(positive_values) > 0:
-                self.epsilon_fitted = np.min(positive_values) * 0.01
+                self.epsilon_fitted = np.min(positive_values) * LOG_EPSILON_RATIO
             else:
-                self.epsilon_fitted = 1e-10
+                self.epsilon_fitted = EPSILON
 
         if self.has_zeros:
             import warnings

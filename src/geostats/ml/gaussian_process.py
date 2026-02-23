@@ -148,9 +148,9 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         self,
         kernel: Optional[Union[str, Callable]] = 'spherical',
         mean_type: str = 'constant',
-        alpha: float = 1e-8,
+        alpha: float = None,
         optimize_kernel: bool = False,
-        n_lags: int = 15
+        n_lags: int = None
     ):
         """
         Initialize Gaussian Process with geostatistical kernel
@@ -168,6 +168,11 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         n_lags : int
             Number of lags for variogram fitting if kernel is str
         """
+        from ..core.constants import REGULARIZATION_FACTOR, DEFAULT_N_LAGS
+        if alpha is None:
+            alpha = REGULARIZATION_FACTOR
+        if n_lags is None:
+            n_lags = DEFAULT_N_LAGS
         self.kernel = kernel
         self.mean_type = mean_type.lower()
         self.alpha = alpha
@@ -276,8 +281,9 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         gamma_matrix = self.fitted_kernel_(dist_matrix)
 
         # Convert variogram to covariance: C(h) = sigma^2 - gamma(h)
+        from ..core.constants import DEFAULT_SILL_VALUE
         params = self.fitted_kernel_.get_parameters()
-        sill = params.get('sill', 1.0)
+        sill = params.get('sill', DEFAULT_SILL_VALUE)
         cov_matrix = sill - gamma_matrix
 
         # Add nugget/noise for numerical stability
@@ -287,9 +293,10 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         if self.mean_type == 'constant':
             K = np.zeros((n + 1, n + 1), dtype=np.float64)
             K[:n, :n] = cov_matrix
-            K[:n, n] = 1.0
-            K[n, :n] = 1.0
-            K[n, n] = 0.0
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+            K[:n, n] = UNBIASEDNESS_CONSTRAINT
+            K[n, :n] = UNBIASEDNESS_CONSTRAINT
+            K[n, n] = ZERO_VALUE
 
             # Add regularization to covariance part only
             K[:n, :n] += np.eye(n) * total_noise
@@ -372,7 +379,8 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
             if self.mean_type == 'constant':
                 rhs = np.zeros(n_train + 1, dtype=np.float64)
                 rhs[:n_train] = k_vec
-                rhs[n_train] = 1.0
+                from ..core.constants import UNBIASEDNESS_CONSTRAINT
+                rhs[n_train] = UNBIASEDNESS_CONSTRAINT
 
                 weights = solve_kriging_system(self.K_, rhs)
                 lambdas = weights[:n_train]
@@ -417,7 +425,8 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                     if self.mean_type == 'constant':
                         rhs = np.zeros(n_train + 1, dtype=np.float64)
                         rhs[:n_train] = k_vec
-                        rhs[n_train] = 1.0
+                        from ..core.constants import UNBIASEDNESS_CONSTRAINT
+                rhs[n_train] = UNBIASEDNESS_CONSTRAINT
                         weights = solve_kriging_system(self.K_, rhs)
                         lambdas = weights[:n_train]
                         mu = weights[n_train]

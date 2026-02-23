@@ -4,10 +4,13 @@
 Uses Pydantic for validation and type checking.
 """
 
-from typing import Optional, List, Dict, Any, Literal
+from typing import Optional, List, Dict, Any, Literal, TYPE_CHECKING
 from pathlib import Path
 from pydantic import BaseModel, Field, field_validator, model_validator
 import numpy as np
+
+if TYPE_CHECKING:
+    from .constants_config import ConstantsConfig
 
 class ProjectConfig(BaseModel):
  name: str = Field(..., description="Project name")
@@ -190,6 +193,7 @@ class AnalysisConfig(BaseModel):
     validation: ValidationConfig = Field(default_factory=ValidationConfig, description="Validation")
     visualization: VisualizationConfig = Field(default_factory=VisualizationConfig, description="Visualization")
     output: OutputConfig = Field(default_factory=OutputConfig, description="Output configuration")
+    constants: Optional['ConstantsConfig'] = Field(default=None, description="Constants overrides")
 
     # Advanced options
     random_seed: Optional[int] = Field(None, description="Random seed for reproducibility")
@@ -213,7 +217,9 @@ class AnalysisConfig(BaseModel):
         # Check simple kriging mean
         if self.kriging.method == 'simple' and self.kriging.mean is None:
             # Auto-estimate mean if not provided
-            pass
+            # Mean will be estimated from data during kriging initialization
+            # This is handled in the SimpleKriging class itself
+            pass  # Intentional - mean estimation happens at runtime
 
         return self
 

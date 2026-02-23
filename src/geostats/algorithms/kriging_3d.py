@@ -106,7 +106,8 @@ class SimpleKriging3D(BaseKriging):
 
         # Build covariance matrix (vectorized distance calculation)
         # For simple kriging: C(h) = sill - gamma(h)
-        sill = self.variogram_model.sill if hasattr(self.variogram_model, 'sill') else 1.0
+        from ..core.constants import DEFAULT_SILL_VALUE
+        sill = self.variogram_model.sill if hasattr(self.variogram_model, 'sill') else DEFAULT_SILL_VALUE
 
         # Vectorized 3D distance matrix
         from ..math.distance import euclidean_distance
@@ -121,7 +122,7 @@ class SimpleKriging3D(BaseKriging):
 
         # Regularize if needed
         from ..math.matrices import regularize_matrix
-        REGULARIZATION_FACTOR = 1e-8
+        from ..core.constants import REGULARIZATION_FACTOR
         K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
 
         self.kriging_matrix = K
@@ -158,7 +159,8 @@ class SimpleKriging3D(BaseKriging):
         n_pred = len(x_new)
         n_data = len(self.x)
 
-        sill = self.variogram_model.sill if hasattr(self.variogram_model, 'sill') else 1.0
+        from ..core.constants import DEFAULT_SILL_VALUE
+        sill = self.variogram_model.sill if hasattr(self.variogram_model, 'sill') else DEFAULT_SILL_VALUE
 
         # Vectorized distance calculation from data to prediction points
         from ..math.distance import euclidean_distance
@@ -251,13 +253,14 @@ class OrdinaryKriging3D(BaseKriging):
         K[:n, :n] = self.variogram_model(dist_matrix)
 
         # Unbiasedness constraint
-        K[:n, n] = 1.0
-        K[n, :n] = 1.0
-        K[n, n] = 0.0
+        from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+        K[:n, n] = UNBIASEDNESS_CONSTRAINT
+        K[n, :n] = UNBIASEDNESS_CONSTRAINT
+        K[n, n] = ZERO_VALUE
 
         # Regularize
         from ..math.matrices import regularize_matrix
-        REGULARIZATION_FACTOR = 1e-8
+        from ..core.constants import REGULARIZATION_FACTOR
         K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
 
         self.kriging_matrix = K
@@ -311,7 +314,8 @@ class OrdinaryKriging3D(BaseKriging):
         for i in range(n_pred):
             rhs = np.zeros(n_data + 1, dtype=np.float64)
             rhs[:n_data] = gamma_to_pred[:, i]
-            rhs[n_data] = 1.0  # Unbiasedness constraint
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT
+            rhs[n_data] = UNBIASEDNESS_CONSTRAINT  # Unbiasedness constraint
 
             # Solve
             try:

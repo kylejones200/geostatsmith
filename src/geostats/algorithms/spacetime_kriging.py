@@ -177,12 +177,13 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
                 K[j, i] = gamma
 
         # Unbiasedness constraint
-        K[:n, n] = 1.0
-        K[n, :n] = 1.0
-        K[n, n] = 0.0
+        from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+        K[:n, n] = UNBIASEDNESS_CONSTRAINT
+        K[n, :n] = UNBIASEDNESS_CONSTRAINT
+        K[n, n] = ZERO_VALUE
 
         from ..math.matrices import regularize_matrix
-        REGULARIZATION_FACTOR = 1e-8
+        from ..core.constants import REGULARIZATION_FACTOR
         self.kriging_matrix = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
         logger.debug("Space-time kriging matrix built and regularized.")
 
@@ -231,7 +232,8 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
                 # Space-time variogram
                 rhs[j] = self.spacetime_model(h, u)
 
-            rhs[n_data] = 1.0  # Unbiasedness constraint
+            from ..core.constants import UNBIASEDNESS_CONSTRAINT
+            rhs[n_data] = UNBIASEDNESS_CONSTRAINT  # Unbiasedness constraint
 
             # Solve kriging system
             try:
@@ -251,7 +253,8 @@ class SpaceTimeOrdinaryKriging(BaseKriging):
             if return_variance:
                 variances[i] = np.dot(lambdas, rhs[:n_data]) + mu
                 # Ensure non-negative
-                variances[i] = max(0.0, variances[i])
+                from ..core.constants import ZERO_VALUE
+                variances[i] = max(ZERO_VALUE, variances[i])
 
         logger.debug(f"Space-time prediction complete for {n_pred} points")
 
@@ -349,7 +352,7 @@ class SpaceTimeSimpleKriging(BaseKriging):
                 K[j, i] = gamma
 
         from ..math.matrices import regularize_matrix
-        REGULARIZATION_FACTOR = 1e-8
+        from ..core.constants import REGULARIZATION_FACTOR
         self.kriging_matrix = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
         logger.debug("Space-time simple kriging matrix built.")
 
@@ -391,7 +394,8 @@ class SpaceTimeSimpleKriging(BaseKriging):
 
             if return_variance:
                 variances[i] = sill - np.dot(lambdas, rhs)
-                variances[i] = max(0.0, variances[i])
+                from ..core.constants import ZERO_VALUE
+                variances[i] = max(ZERO_VALUE, variances[i])
 
         logger.debug(f"Space-time simple kriging prediction complete for {n_pred} points")
 

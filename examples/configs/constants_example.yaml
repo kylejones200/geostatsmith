@@ -1,0 +1,41 @@
+# Constants Configuration Example
+#
+# This file allows you to override default constants for config-driven workloads.
+# All values are optional - missing values use Python defaults from core.constants.
+#
+# Usage:
+#   from geostats.core.constants_loader import get_constants
+#   constants = get_constants('config/constants.yaml')
+#   EPSILON = constants['EPSILON']
+
+# Numerical stability and tolerances
+epsilon: 1e-12  # More strict epsilon for high-precision work
+small_number: 1e-8
+regularization_factor: 1e-10
+
+# Kriging defaults
+default_max_neighbors: 30  # Increase for more stable estimates
+default_min_neighbors: 5
+default_search_radius_multiplier: 2.5
+
+# Variogram calculation
+default_n_lags: 20  # More lags for detailed variogram
+default_max_distance: 150.0
+
+# Sequential simulation
+default_n_realizations: 200  # More realizations for better uncertainty
+default_n_thresholds: 7
+
+# Outlier detection
+z_score_threshold: 2.5  # More sensitive outlier detection
+iqr_multiplier: 1.2
+spatial_threshold_factor: 2.5
+
+# Visualization
+scatter_size_multiplier: 150
+scatter_alpha_default: 0.7
+
+# Optimization
+max_iterations_global: 1000  # More iterations for difficult fits
+max_iterations_local: 2000
+convergence_tolerance: 1e-8  # Tighter convergence

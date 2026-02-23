@@ -333,7 +333,8 @@ class BoxCoxTransform:
             transformed = self._transform_array(data, lmbda)
             sorted_data = np.sort(transformed)
         n = len(sorted_data)
-        theoretical_quantiles = stats.norm.ppf((np.arange(1, n + 1) - 0.5) / n)
+        from ..core.constants import RANK_OFFSET
+        theoretical_quantiles = stats.norm.ppf((np.arange(1, n + 1) - RANK_OFFSET) / n)
         correlation = np.corrcoef(sorted_data, theoretical_quantiles)[0, 1]
         return -correlation # Minimize negative correlation
 
