@@ -19,7 +19,6 @@ from geostats.workflows import AnalysisPipeline, PipelineError
 
 @click.group()
 @click.version_option()
-@click.group()
 def cli():
     pass
 

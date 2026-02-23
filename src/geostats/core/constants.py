@@ -281,9 +281,31 @@ def get_all_constants() -> Dict[str, Any]:
     return _CONSTANTS.copy()
 
 
+# Alias for backward compatibility with constants_loader
+def get_constants(config_path: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Get all constants as a dictionary (alias for get_all_constants).
+    
+    This function provides backward compatibility. For config-driven workloads,
+    use geostats.core.constants_loader.get_constants() instead.
+    
+    Parameters
+    ----------
+    config_path : str, optional
+        Ignored for backward compatibility. Use constants_loader for config support.
+    
+    Returns
+    -------
+    dict
+        Dictionary of all constants
+    """
+    return get_all_constants()
+
+
 __all__ = list(_DEFAULT_CONSTANTS.keys()) + [
     'set_constants_config',
     'get_constants_config',
     'reload_constants',
     'get_all_constants',
+    'get_constants',
 ]

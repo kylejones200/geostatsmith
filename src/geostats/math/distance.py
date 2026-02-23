@@ -71,6 +71,50 @@ def euclidean_distance_matrix(
     return euclidean_distance(x, y, x, y, z, z)
 
 
+def manhattan_distance(
+    x1: npt.NDArray[np.float64],
+    y1: npt.NDArray[np.float64],
+    x2: npt.NDArray[np.float64],
+    y2: npt.NDArray[np.float64],
+    z1: Optional[npt.NDArray[np.float64]] = None,
+    z2: Optional[npt.NDArray[np.float64]] = None,
+) -> npt.NDArray[np.float64]:
+    """
+    Calculate Manhattan (L1) distance between two sets of points
+
+    Parameters
+    ----------
+    x1, y1 : np.ndarray
+        Coordinates of first set of points
+    x2, y2 : np.ndarray
+        Coordinates of second set of points
+    z1, z2 : np.ndarray, optional
+        Z coordinates (for 3D)
+
+    Returns
+    -------
+    np.ndarray
+        Distance matrix of shape (len(x1), len(x2))
+    """
+    x1 = np.asarray(x1).reshape(-1, 1)
+    y1 = np.asarray(y1).reshape(-1, 1)
+    x2 = np.asarray(x2).reshape(1, -1)
+    y2 = np.asarray(y2).reshape(1, -1)
+
+    dx = np.abs(x1 - x2)
+    dy = np.abs(y1 - y2)
+
+    dist = dx + dy
+
+    if z1 is not None and z2 is not None:
+        z1 = np.asarray(z1).reshape(-1, 1)
+        z2 = np.asarray(z2).reshape(1, -1)
+        dz = np.abs(z1 - z2)
+        dist += dz
+
+    return dist
+
+
 def anisotropic_distance(
     x1: npt.NDArray[np.float64],
     y1: npt.NDArray[np.float64],

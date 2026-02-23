@@ -47,7 +47,8 @@ class TestDistance:
         x1, y1 = 0.0, 0.0
         x2, y2 = 3.0, 4.0
         dist = manhattan_distance(x1, y1, x2, y2)
-        assert dist == 7.0
+        # Returns array, extract scalar value
+        assert abs(float(dist) - 7.0) < 1e-10
 
 
 class TestMatrices:

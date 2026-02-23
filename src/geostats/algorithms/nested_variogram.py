@@ -113,35 +113,35 @@ class NestedVariogram:
         range: float
     ):
         """
-         Add a structure to the nested model
+        Add a structure to the nested model
 
-     Parameters
-     ----------
-     model_type : str
-     Type of variogram model ('spherical', 'exponential', etc.)
-     sill : float
-     Partial sill (contribution to total variance)
-    range : float
-        Range parameter (correlation distance)
-    """
-    if model_type not in self.model_classes:
-        raise ValueError(
-            f"Unknown model type: {model_type}. "
-            f"Available: {list(self.model_classes.keys())}"
+        Parameters
+        ----------
+        model_type : str
+            Type of variogram model ('spherical', 'exponential', etc.)
+        sill : float
+            Partial sill (contribution to total variance)
+        range : float
+            Range parameter (correlation distance)
+        """
+        if model_type not in self.model_classes:
+            raise ValueError(
+                f"Unknown model type: {model_type}. "
+                f"Available: {list(self.model_classes.keys())}"
+            )
+
+        if sill <= 0:
+            raise ValueError("Sill must be positive")
+
+        if range <= 0:
+            raise ValueError("Range must be positive")
+
+        structure = VariogramStructure(
+            model_type=model_type,
+            sill=sill,
+            range=range
         )
-
-    if sill <= 0:
-        raise ValueError("Sill must be positive")
-
-    if range <= 0:
-        raise ValueError("Range must be positive")
-
-    structure = VariogramStructure(
-        model_type=model_type,
-        sill=sill,
-        range=range
-    )
-    self.structures.append(structure)
+        self.structures.append(structure)
 
     def __call__(self, h: Union[float, npt.NDArray[np.float64]]) -> Union[float, npt.NDArray[np.float64]]:
         """
