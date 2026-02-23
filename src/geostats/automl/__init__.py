@@ -26,6 +26,7 @@ Examples
 
 from .auto_variogram import (
     auto_variogram,
+    auto_fit_variogram,  # Alias for backward compatibility
     auto_fit,
 )
 
@@ -46,6 +47,7 @@ from .hyperparameter_tuning import (
 __all__ = [
  # Auto variogram
  'auto_variogram',
+ 'auto_fit_variogram',  # Alias for backward compatibility
  'auto_fit',
  # Auto method
  'auto_interpolate',

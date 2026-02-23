@@ -3,8 +3,15 @@ Tests for API endpoints
 """
 
 import pytest
-from fastapi.testclient import TestClient
-from geostats.api.app import create_app
+
+# Skip if FastAPI is not available
+try:
+    from fastapi.testclient import TestClient
+    from geostats.api.app import create_app
+    FASTAPI_AVAILABLE = True
+except ImportError:
+    FASTAPI_AVAILABLE = False
+    pytestmark = pytest.mark.skip(reason="FastAPI not available")
 
 
 class TestAPI:

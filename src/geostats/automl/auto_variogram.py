@@ -18,10 +18,11 @@ from ..core.exceptions import FittingError
 logger = logging.getLogger(__name__)
 
 def auto_variogram(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- model_types: Optional[List[str]] = None,
- n_lags: int = 15,
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    model_types: Optional[List[str]] = None,
+    n_lags: int = 15,
     verbose: bool = True,
 ) -> VariogramModelBase:
     """
@@ -129,6 +130,63 @@ def auto_variogram(
         if verbose:
             logger.error(f"Error in auto_variogram: {e}")
         raise
+
+# Alias for backward compatibility - returns dict like auto_fit
+def auto_fit_variogram(
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    model_types: Optional[List[str]] = None,
+    models: Optional[List] = None,  # Accept 'models' parameter for backward compatibility
+    n_lags: int = 15,
+    verbose: bool = True,
+    cross_validate: bool = False,
+) -> Dict:
+    """
+    Alias for auto_fit that returns a dictionary with model and parameters.
+    
+    This function provides backward compatibility for tests and code expecting
+    a dictionary return type instead of just the model.
+    """
+    # Convert models (classes) to model_types (strings) if provided
+    if models is not None and model_types is None:
+        # Extract model type names from model classes
+        # SphericalModel -> 'spherical', ExponentialModel -> 'exponential', etc.
+        model_type_map = {
+            'SphericalModel': 'spherical',
+            'ExponentialModel': 'exponential',
+            'GaussianModel': 'gaussian',
+            'LinearModel': 'linear',
+            'PowerModel': 'power',
+        }
+        model_types = [model_type_map.get(m.__name__, m.__name__.replace('Model', '').lower()) for m in models]
+    
+    model = auto_variogram(x, y, z, model_types=model_types, n_lags=n_lags, verbose=verbose)
+    
+    # Get fit quality if available
+    try:
+        from ..algorithms.variogram import experimental_variogram
+        lags, gamma, _ = experimental_variogram(x, y, z, n_lags=n_lags)
+        gamma_fitted = model(lags)
+        ss_res = np.sum((gamma - gamma_fitted)**2)
+        ss_tot = np.sum((gamma - gamma.mean())**2)
+        r2 = 1 - ss_res / ss_tot if ss_tot > 0 else 0
+        criterion = r2
+    except Exception:
+        criterion = None
+    
+    result = {
+        'model': model,
+        'parameters': getattr(model, '_parameters', {}),
+        'criterion': criterion,
+    }
+    
+    if cross_validate:
+        # Use auto_fit for CV
+        return auto_fit(x, y, z, cross_validate=True, verbose=verbose)
+    
+    return result
+
 
 def auto_fit(
     x: npt.NDArray[np.float64],
