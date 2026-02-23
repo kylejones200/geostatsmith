@@ -57,13 +57,14 @@ logger = get_logger(__name__)
 
 # Optional sklearn dependency
 try:
- SKLEARN_AVAILABLE = True
+    from sklearn.base import BaseEstimator, RegressorMixin
+    SKLEARN_AVAILABLE = True
 except ImportError:
- SKLEARN_AVAILABLE = False
- # Fallback base classes
- BaseEstimator = object
- RegressorMixin = object
- logger.warning("scikit-learn not available. GP will have limited functionality.")
+    SKLEARN_AVAILABLE = False
+    # Fallback base classes
+    BaseEstimator = object
+    RegressorMixin = object
+    logger.warning("scikit-learn not available. GP will have limited functionality.")
 
 class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
     """
@@ -215,11 +216,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
             Fitted model
         """
         X = np.asarray(X, dtype=np.float64)
-        if SKLEARN_AVAILABLE:
-            from sklearn.base import BaseEstimator, RegressorMixin
-        else:
-            BaseEstimator = object
-            RegressorMixin = object
         y = np.asarray(y, dtype=np.float64)
 
         self.X_train_ = X
