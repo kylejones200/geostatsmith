@@ -66,12 +66,9 @@ from ..core.logging_config import get_logger
 
 logger = get_logger(__name__)
 
-# Optional ML dependencies
-try:
- SKLEARN_AVAILABLE = True
-except ImportError:
- SKLEARN_AVAILABLE = False
- logger.warning("scikit-learn not available. ML-based kriging will be limited.")
+# sklearn is a required dependency
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.base import BaseEstimator, RegressorMixin
 
 try:
     import xgboost as xgb
@@ -166,9 +163,7 @@ class RegressionKriging(BaseKriging):
         n_lags : int
             Number of lags for variogram fitting
         """
-        if not SKLEARN_AVAILABLE:
-            raise ImportError("scikit-learn is required for RegressionKriging")
-
+        # sklearn is a required dependency, no check needed
         self.ml_model = ml_model
         self.kriging_type = kriging_type.lower()
         self.variogram_model_type = variogram_model
@@ -416,10 +411,7 @@ class RandomForestKriging(RegressionKriging):
         random_state: Optional[int] = None,
         **rf_kwargs
     ):
-        if not SKLEARN_AVAILABLE:
-            raise ImportError("scikit-learn is required for RandomForestKriging")
-
-        from sklearn.ensemble import RandomForestRegressor
+        # sklearn is a required dependency
         
         rf_model = RandomForestRegressor(
             n_estimators=n_estimators,

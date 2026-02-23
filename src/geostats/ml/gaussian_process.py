@@ -55,16 +55,8 @@ from ..math.distance import euclidean_distance_matrix
 
 logger = get_logger(__name__)
 
-# Optional sklearn dependency
-try:
-    from sklearn.base import BaseEstimator, RegressorMixin
-    SKLEARN_AVAILABLE = True
-except ImportError:
-    SKLEARN_AVAILABLE = False
-    # Fallback base classes
-    BaseEstimator = object
-    RegressorMixin = object
-    logger.warning("scikit-learn not available. GP will have limited functionality.")
+# sklearn is a required dependency
+from sklearn.base import BaseEstimator, RegressorMixin
 
 class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
     """
