@@ -49,11 +49,11 @@ logger = logging.getLogger(__name__)
 from ..core.base import BaseKriging
 from ..core.validators import validate_coordinates, validate_values
 from ..core.constants import EPSILON, REGULARIZATION_FACTOR
-from ..core.logging_config import setup_logger
+from ..core.logging_config import get_logger
 from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.distance import euclidean_distance_matrix
 
-logger = setup_logger(__name__)
+logger = get_logger(__name__)
 
 # Optional sklearn dependency
 try:

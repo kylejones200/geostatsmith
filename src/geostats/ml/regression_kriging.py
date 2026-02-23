@@ -62,9 +62,9 @@ from ..algorithms.simple_kriging import SimpleKriging
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..algorithms.variogram import experimental_variogram
 from ..algorithms.fitting import fit_variogram_model
-from ..core.logging_config import setup_logger
+from ..core.logging_config import get_logger
 
-logger = setup_logger(__name__)
+logger = get_logger(__name__)
 
 # Optional ML dependencies
 try:

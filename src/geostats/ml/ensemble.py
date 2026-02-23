@@ -44,9 +44,9 @@ logger = logging.getLogger(__name__)
 
 from ..core.base import BaseKriging
 from ..core.validators import validate_coordinates, validate_values
-from ..core.logging_config import setup_logger
+from ..core.logging_config import get_logger
 
-logger = setup_logger(__name__)
+logger = get_logger(__name__)
 
 class EnsembleKriging(BaseKriging):
     """

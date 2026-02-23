@@ -49,9 +49,9 @@ from ..core.validators import validate_coordinates, validate_values
 from ..core.constants import EPSILON, REGULARIZATION_FACTOR
 from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..models.spacetime_models import SpaceTimeVariogramModel
-from ..core.logging_config import setup_logger
+from ..core.logging_config import get_logger
 
-logger = setup_logger(__name__)
+logger = get_logger(__name__)
 
 def validate_coordinates_spacetime(
  y: npt.NDArray[np.float64],
