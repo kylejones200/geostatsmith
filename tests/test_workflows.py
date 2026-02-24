@@ -16,25 +16,38 @@ class TestConfigLoading:
 
     def test_load_valid_config(self):
         """Test loading a valid config"""
-        config_dict = {
-            "project": {
-                "name": "Test Analysis",
-                "output_dir": "./test_output",
-            },
-            "data": {
-                "input_file": "test_data.csv",
-                "x_column": "x",
-                "y_column": "y",
-                "z_column": "z",
-            },
-        }
-        config = AnalysisConfig(**config_dict)
-        assert config.project.name == "Test Analysis"
-        assert config.data.input_file == "test_data.csv"
+        # Create temporary file for validation
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
+            f.write("x,y,z\n0,0,1\n1,1,2\n")
+            temp_file = f.name
+
+        try:
+            config_dict = {
+                "project": {
+                    "name": "Test Analysis",
+                    "output_dir": "./test_output",
+                },
+                "data": {
+                    "input_file": temp_file,
+                    "x_column": "x",
+                    "y_column": "y",
+                    "z_column": "z",
+                },
+            }
+            config = AnalysisConfig(**config_dict)
+            assert config.project.name == "Test Analysis"
+            assert config.data.input_file == temp_file
+        finally:
+            Path(temp_file).unlink()
 
     def test_load_config_from_yaml(self):
         """Test loading config from YAML file"""
         import yaml
+
+        # Create temporary data file
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
+            f.write("x,y,z\n0,0,1\n1,1,2\n")
+            data_file = f.name
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             yaml.dump(
@@ -44,7 +57,7 @@ class TestConfigLoading:
                         "output_dir": "./yaml_output",
                     },
                     "data": {
-                        "input_file": "data.csv",
+                        "input_file": data_file,
                         "x_column": "x",
                         "y_column": "y",
                         "z_column": "z",
@@ -59,6 +72,7 @@ class TestConfigLoading:
             assert config.project.name == "YAML Test"
         finally:
             Path(config_path).unlink()
+            Path(data_file).unlink()
 
     def test_invalid_config(self):
         """Test handling of invalid config"""
@@ -77,22 +91,30 @@ class TestPipeline:
 
     def test_pipeline_initialization(self):
         """Test pipeline initialization"""
-        config_dict = {
-            "project": {
-                "name": "Test Pipeline",
-                "output_dir": "./test_output",
-            },
-            "data": {
-                "input_file": "test_data.csv",
-                "x_column": "x",
-                "y_column": "y",
-                "z_column": "z",
-            },
-        }
-        config = AnalysisConfig(**config_dict)
-        pipeline = AnalysisPipeline(config)
-        assert pipeline.config == config
-        assert pipeline.output_dir.exists()
+        # Create temporary file for validation
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
+            f.write("x,y,z\n0,0,1\n1,1,2\n")
+            temp_file = f.name
+
+        try:
+            config_dict = {
+                "project": {
+                    "name": "Test Pipeline",
+                    "output_dir": "./test_output",
+                },
+                "data": {
+                    "input_file": temp_file,
+                    "x_column": "x",
+                    "y_column": "y",
+                    "z_column": "z",
+                },
+            }
+            config = AnalysisConfig(**config_dict)
+            pipeline = AnalysisPipeline(config)
+            assert pipeline.config == config
+            assert pipeline.output_dir.exists()
+        finally:
+            Path(temp_file).unlink()
 
     def test_pipeline_with_missing_data(self):
         """Test pipeline with missing data file"""

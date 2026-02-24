@@ -48,6 +48,12 @@ def validate_coordinates(
 
     y = np.asarray(y, dtype=np.float64)
 
+    # Check for NaN and inf values
+    if np.any(np.isnan(x)) or np.any(np.isnan(y)):
+        raise ValidationError("Coordinates contain NaN values")
+    if np.any(np.isinf(x)) or np.any(np.isinf(y)):
+        raise ValidationError("Coordinates contain infinite values")
+
     if x.shape != y.shape:
         raise ValidationError(
             f"X and Y coordinates must have same shape, got {x.shape} and {y.shape}"

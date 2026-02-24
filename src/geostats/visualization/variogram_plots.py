@@ -516,10 +516,23 @@ def plot_experimental_variogram(
 
     # Plot experimental points
     if n_pairs is not None:
+        from ..core.constants import SCATTER_SIZE_BASE, SCATTER_SIZE_SCALE
+        sizes = n_pairs / np.max(n_pairs) * SCATTER_SIZE_SCALE + SCATTER_SIZE_BASE
         ax.scatter(
             lags,
             gamma,
             s=sizes,
+            alpha=0.7,
+            c="blue",
+            edgecolors="black",
+            linewidth=1,
+            label="Experimental",
+            **kwargs,
+        )
+    else:
+        ax.scatter(
+            lags,
+            gamma,
             alpha=0.7,
             c="blue",
             edgecolors="black",

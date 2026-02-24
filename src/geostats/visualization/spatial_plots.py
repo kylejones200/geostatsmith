@@ -264,6 +264,7 @@ def plot_kriging_results(
 
 
 def plot_data_points(
+    x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64] | None = None,
     ax: plt.Axes | None = None,
@@ -273,7 +274,7 @@ def plot_data_points(
     ylabel: str = "Y",
     cmap: str = "viridis",
     **kwargs,
-) -> ...:
+) -> tuple[plt.Figure, plt.Axes]:
     """
         Plot data points (API-compatible version)
 
@@ -339,7 +340,7 @@ def plot_contour(
     n_levels: int = 10,
     cmap: str = "viridis",
     **kwargs,
-) -> plt.Axes:
+) -> tuple[plt.Figure, plt.Axes]:
     """
        Create contour plot (lines only)
 
@@ -364,7 +365,9 @@ def plot_contour(
     ax : matplotlib.Axes
     """
     if ax is None:
-        ax = plt.gca()
+        fig, ax = plt.subplots(figsize=(8, 6))
+    else:
+        fig = ax.figure
 
     # Contour lines only
     contour = ax.contour(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)
@@ -377,7 +380,7 @@ def plot_contour(
     ax.set_title("Contour Plot", fontsize=14, fontweight="bold")
     ax.set_aspect("equal")
 
-    return ax
+    return fig, ax
 
 
 def plot_filled_contour(
@@ -388,7 +391,7 @@ def plot_filled_contour(
     n_levels: int = 15,
     cmap: str = "viridis",
     **kwargs,
-) -> plt.Axes:
+) -> tuple[plt.Figure, plt.Axes]:
     """
     Create filled contour plot
 
