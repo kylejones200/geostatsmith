@@ -37,19 +37,23 @@ if [ $# -gt 0 ]; then
     # Filter out test files
     FILES_TO_CHECK=()
     for file in "$@"; do
-        if [[ ! "$file" =~ test_.*\.py$ ]] && [[ ! "$file" =~ /tests/ ]]; then
+        if [[ ! "$file" =~ test_.*\.py$ ]] && [[ ! "$file" =~ /tests/ ]] && [[ ! "$file" =~ tests/ ]]; then
             FILES_TO_CHECK+=("$file")
         fi
     done
     if [ ${#FILES_TO_CHECK[@]} -gt 0 ]; then
         $TYPE_CMD "${FILES_TO_CHECK[@]}"
+    else
+        echo "⚠️  All provided files are test files. Skipping type check."
+        exit 0
     fi
 else
     # Full type check (Layer 2) - only check source, not tests
     # Tests often use dicts where typed configs are expected, which is fine
     if echo "$TYPE_CMD" | grep -q pyright; then
-        # pyright should respect pyrightconfig.json which excludes tests
-        $TYPE_CMD src/
+        # Explicitly only check src/ - pyrightconfig.json should also exclude tests
+        # But being explicit ensures tests are never checked
+        $TYPE_CMD src/ --exclude "**/tests/**" --exclude "**/test_*.py"
     else
         # For mypy, use a config that's more lenient
         $TYPE_CMD src/
