@@ -1,15 +1,46 @@
-name: Tests
+name: CI Tests (Layer 3)
+
+# Layer 3: Full CI checks
+# Runs after local-check passes
+# Includes full test suite, coverage, matrix builds
 
 on:
+  workflow_run:
+    workflows: ["Local Check (Layer 2)"]
+    types:
+      - completed
+    branches: [main, develop]
+  # Also run on direct push to main (bypass protection for admins)
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
+  # First job: Run Layer 2 checks again (fail fast)
+  quick-check:
+    name: Quick Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install pyright || echo "pyright not available"
+    - name: Run ./dev/check
+      run: ./dev/check
+
+  # Full test matrix
   test:
+    name: Tests (Python ${{ matrix.python-version }})
+    needs: quick-check
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.12", "3.13"]
     
@@ -35,7 +66,8 @@ jobs:
           --cov-report=html \
           --cov-report=term-missing \
           --cov-fail-under=60 \
-          -v
+          -v \
+          --tb=short
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
@@ -51,3 +83,72 @@ jobs:
       with:
         name: coverage-report-${{ matrix.python-version }}
         path: htmlcov/
+
+  # Format check (with annotations)
+  format-check:
+    name: Format Check
+    needs: quick-check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install ruff
+      run: pip install ruff
+    - name: Check formatting
+      run: |
+        ruff format --check src/ tests/ || {
+          echo "::error::Code is not formatted. Run './dev/fmt' to fix."
+          exit 1
+        }
+
+  # Lint check (with annotations)
+  lint-check:
+    name: Lint Check
+    needs: quick-check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install ruff
+      run: pip install ruff
+    - name: Run linting
+      run: |
+        ruff check --output-format=github src/ tests/ || {
+          echo "::error::Linting failed. Run './dev/lint' to fix."
+          exit 1
+        }
+
+  # Type check (with annotations)
+  type-check:
+    name: Type Check
+    needs: quick-check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install dependencies
+      run: |
+        pip install -e ".[dev]"
+        pip install pyright || pip install mypy
+    - name: Run type checking
+      run: |
+        if command -v pyright &> /dev/null; then
+          pyright --outputjson src/ tests/ || {
+            echo "::error::Type checking failed. Run './dev/type' to fix."
+            exit 1
+          }
+        else
+          mypy src/ tests/ || {
+            echo "::error::Type checking failed. Run './dev/type' to fix."
+            exit 1
+          }
+        fi

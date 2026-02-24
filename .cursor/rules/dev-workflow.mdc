@@ -1,0 +1,52 @@
+---
+alwaysApply: true
+description: Development workflow and pre-push requirements
+---
+
+# Development Workflow
+
+## Pre-Push Requirements
+
+**ALWAYS run `./dev/check` before pushing code.**
+
+This is a hard requirement. The `./dev/check` command runs all Layer 2 checks:
+- Formatting (`./dev/fmt`)
+- Linting (`./dev/lint`)
+- Type checking (`./dev/type`)
+- Fast tests (`./dev/test`)
+
+## Three-Layer Check System
+
+### Layer 1: Pre-commit (<5s)
+- Runs automatically on save/pre-commit
+- Formats and lints only staged files
+- Configured in `.pre-commit-config.yaml`
+
+### Layer 2: Pre-push (<1min)
+- **Run `./dev/check` before every push**
+- Runs format, lint, type check, and fast tests
+- This is what Cursor should run before push
+
+### Layer 3: CI
+- Full test suite with coverage
+- Matrix builds across Python versions
+- Runs after Layer 2 passes
+
+## Commands
+
+- `./dev/fmt` - Format code with ruff
+- `./dev/lint` - Lint code with ruff
+- `./dev/type` - Type check with pyright/mypy
+- `./dev/test` - Run fast tests
+- `./dev/check` - Run all Layer 2 checks (use this before push!)
+
+## When Making Changes
+
+1. Make your code changes
+2. Stage files: `git add ...`
+3. Pre-commit hooks run automatically (Layer 1)
+4. **Before pushing**: Run `./dev/check` (Layer 2)
+5. Push: `git push`
+6. CI runs full checks (Layer 3)
+
+**Never push without running `./dev/check` first.**

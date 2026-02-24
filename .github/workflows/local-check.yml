@@ -1,0 +1,40 @@
+name: Local Check (Layer 2)
+
+# This workflow runs fast checks for branch protection
+# It must pass before PRs can be merged
+# Runs the same ./dev/check that developers run locally
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  local-check:
+    name: Layer 2 Checks (<1min)
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        # Install pyright for type checking
+        pip install pyright || echo "pyright not available, will use mypy"
+    
+    - name: Run Layer 2 checks (./dev/check)
+      run: ./dev/check
+    
+    - name: Upload annotations
+      if: failure()
+      run: |
+        echo "::notice::Layer 2 checks failed. Run ./dev/check locally before pushing."

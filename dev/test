@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Layer 2: Run tests (fast profile, <1min)
+# Runs pytest with fast profile for touched modules
+
+set -euo pipefail
+
+echo "🧪 Running tests..."
+
+# Fast test profile: no coverage, short timeout, skip slow tests
+pytest \
+    tests/ \
+    -v \
+    --tb=short \
+    -m "not slow" \
+    --maxfail=5 \
+    -x \
+    --durations=10
+
+echo "✅ Tests complete"

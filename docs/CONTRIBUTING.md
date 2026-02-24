@@ -21,6 +21,26 @@ uv sync --dev
 git checkout -b feature/your-feature-name
 ```
 
+## Pre-Push Checklist
+
+**⚠️ IMPORTANT: Run `./dev/check` before pushing!**
+
+Before pushing your changes, always run:
+
+```bash
+./dev/check
+```
+
+This single command runs all Layer 2 checks:
+- Formatting (ruff format)
+- Linting (ruff check)
+- Type checking (pyright/mypy)
+- Fast tests (pytest, excluding slow tests)
+
+This takes less than 1 minute and catches most issues before CI.
+
+**Cursor users**: Cursor will automatically run `./dev/check` before push if configured. See `.cursor/rules/dev-workflow.mdc` for details.
+
 ## Code Standards
 
 ### Style Guidelines
@@ -32,21 +52,42 @@ git checkout -b feature/your-feature-name
 
 ### Code Formatting
 
-We use Black for code formatting:
+We use ruff for code formatting:
 
 ```bash
-uv run black src/geostats tests examples
+./dev/fmt
+```
+
+Or manually:
+```bash
+ruff format src/ tests/
 ```
 
 ### Type Checking
 
-Run mypy for type checking:
+Run type checking:
 
 ```bash
-uv run mypy src/geostats
+./dev/type
+```
+
+Or manually:
+```bash
+pyright src/ tests/  # or mypy src/ tests/
 ```
 
 ### Linting
+
+Run linting:
+
+```bash
+./dev/lint
+```
+
+Or manually:
+```bash
+ruff check src/ tests/
+```
 
 Run ruff for linting (recommended):
 

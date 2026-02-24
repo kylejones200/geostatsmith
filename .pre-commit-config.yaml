@@ -1,4 +1,9 @@
+# Layer 1: Fast checks on staged files (<5s)
+# Runs on every save/pre-commit
+# Only checks changed files for speed
+
 repos:
+  # Basic file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
@@ -12,35 +17,24 @@ repos:
       - id: debug-statements
       - id: mixed-line-ending
 
-  - repo: https://github.com/psf/black
-    rev: 24.1.1
-    hooks:
-      - id: black
-        language_version: python3.12
-        stages: [commit, push]
-
+  # Format with ruff (fast)
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.8
     hooks:
+      - id: ruff-format
+        args: [--line-length=88]
+        types_or: [python]
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
-        stages: [commit, push]
-      - id: ruff-format
-        stages: [commit, push]
+        types_or: [python]
 
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
+  # Type check only staged Python files (fast)
+  - repo: local
     hooks:
-      - id: flake8
-        args: [--max-line-length=88, --extend-ignore=E203]
-        stages: [commit, push]
-
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
-    hooks:
-      - id: mypy
-        additional_dependencies: [types-all]
-        args: [--ignore-missing-imports]
-        stages: [commit, push]
-
-
+      - id: type-check-staged
+        name: Type check (staged files)
+        entry: bash -c 'if [ -n "$(git diff --cached --name-only --diff-filter=ACM | grep "\.py$")" ]; then ./dev/type $(git diff --cached --name-only --diff-filter=ACM | grep "\.py$"); fi'
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [commit]

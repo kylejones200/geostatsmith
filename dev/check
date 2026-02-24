@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Layer 2: Pre-push check (<1min)
+# Runs format, lint, type check, and tests
+# This is the single command that Cursor and developers run before push
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "🚀 Running pre-push checks (Layer 2)..."
+echo ""
+
+# Run all Layer 2 checks
+"$SCRIPT_DIR/fmt" || exit 1
+"$SCRIPT_DIR/lint" || exit 1
+"$SCRIPT_DIR/type" || exit 1
+"$SCRIPT_DIR/test" || exit 1
+
+echo ""
+echo "✅ All pre-push checks passed!"

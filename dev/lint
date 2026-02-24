@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Layer 1: Lint code (fast, <5s)
+# Lints code using ruff check
+
+set -euo pipefail
+
+echo "🔍 Linting code with ruff..."
+
+# If files are provided, check only those (for pre-commit)
+if [ $# -gt 0 ]; then
+    ruff check "$@"
+else
+    ruff check src/ tests/
+fi
+
+echo "✅ Linting complete"

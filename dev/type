@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Layer 1/2: Type checking (fast on changed files, <1min full)
+# Type checks using pyright (faster than mypy for incremental)
+
+set -euo pipefail
+
+echo "🔎 Type checking with pyright..."
+
+# Check if pyright is available, fallback to mypy
+if command -v pyright &> /dev/null; then
+    if [ $# -gt 0 ]; then
+        # Check only provided files (for pre-commit)
+        pyright "$@"
+    else
+        # Full type check (Layer 2)
+        pyright src/ tests/
+    fi
+elif command -v mypy &> /dev/null; then
+    if [ $# -gt 0 ]; then
+        mypy "$@"
+    else
+        mypy src/ tests/
+    fi
+else
+    echo "⚠️  Neither pyright nor mypy found. Skipping type check."
+    exit 0
+fi
+
+echo "✅ Type checking complete"

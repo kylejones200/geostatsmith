@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Layer 1: Format code (fast, <5s)
+# Formats code using ruff format
+
+set -euo pipefail
+
+echo "🔧 Formatting code with ruff..."
+
+ruff format src/ tests/
+
+echo "✅ Formatting complete"
