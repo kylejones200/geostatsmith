@@ -28,6 +28,9 @@ from geostats.models.variogram_models import SphericalModel, ExponentialModel
 # Skip all tests if sklearn not available
 pytestmark = pytest.mark.skipif(not SKLEARN_AVAILABLE, reason="scikit-learn not installed")
 
+if SKLEARN_AVAILABLE:
+    from sklearn.linear_model import LinearRegression
+
 class TestRegressionKriging:
 
     def test_initialization(self):

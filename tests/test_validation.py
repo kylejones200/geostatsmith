@@ -9,48 +9,57 @@ from geostats.validation import metrics
 class TestMetrics:
 
     def test_rmse_perfect(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4, 5])
         rmse = metrics.root_mean_squared_error(y_true, y_pred)
         assert abs(rmse) < 1e-10
 
     def test_rmse_calculation(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1.5, 2.5, 3.5, 4.5, 5.5])
         rmse = metrics.root_mean_squared_error(y_true, y_pred)
         expected = 0.5
         assert abs(rmse - expected) < 1e-10
 
     def test_mae_perfect(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4, 5])
         mae = metrics.mean_absolute_error(y_true, y_pred)
         assert abs(mae) < 1e-10
 
     def test_mae_calculation(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([2, 3, 4, 5, 6])
         mae = metrics.mean_absolute_error(y_true, y_pred)
         assert abs(mae - 1.0) < 1e-10
 
     def test_r2_perfect(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4, 5])
         r2 = metrics.r_squared(y_true, y_pred)
         assert abs(r2 - 1.0) < 1e-10
 
     def test_r2_poor(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([3, 3, 3, 3, 3]) # Just predict mean
         r2 = metrics.r_squared(y_true, y_pred)
         assert abs(r2) < 1e-10 # R² should be 0 for mean prediction
 
     def test_bias_zero(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4, 5])
         # Bias is just mean(y_pred - y_true)
         bias = np.mean(y_pred - y_true)
         assert abs(bias) < 1e-10
 
     def test_bias_calculation(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([2, 3, 4, 5, 6])
         bias = np.mean(y_pred - y_true)
         assert abs(bias - 1.0) < 1e-10 # Consistently 1 unit too high
 
     def test_metrics_with_nan(self):
+        y_true = np.array([np.nan, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4, 5])
 
         # NaN will propagate
@@ -58,14 +67,20 @@ class TestMetrics:
         assert np.isnan(rmse)
 
     def test_metrics_different_lengths(self):
+        y_true = np.array([1, 2, 3, 4, 5])
         y_pred = np.array([1, 2, 3, 4])
 
         with pytest.raises((ValueError, IndexError)):
-            pass
+            metrics.root_mean_squared_error(y_true, y_pred)
 
-
+    def test_metrics_different_lengths_mae(self):
+        y_true = np.array([1, 2, 3, 4, 5])
+        y_pred = np.array([1, 2, 3, 4])
         with pytest.raises((ValueError, IndexError)):
-            pass
+            metrics.mean_absolute_error(y_true, y_pred)
+
+
+class TestCrossValidation:
     """Test cross-validation methods"""
 
     def setup_method(self):
