@@ -163,6 +163,7 @@ ignore = [
     "F823",  # Undefined name in __all__ (dynamic exports)
     "F811",  # Redefined (sometimes needed)
     "E741",  # Ambiguous variable name (common in math)
+    "UP007",  # Allow Union syntax (compatibility)
 ]
 
 [tool.ruff.lint.per-file-ignores]
