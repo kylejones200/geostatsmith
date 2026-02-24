@@ -124,10 +124,11 @@ def experimental_variogram_directional(
 
 
 def variogram_cloud(
+    x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     maxlag: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Calculate variogram cloud
 
@@ -136,29 +137,30 @@ def variogram_cloud(
     Parameters
     ----------
     x, y : array-like
-    Coordinates of sample points
+        Coordinates of sample points
     z : array-like
-    Values at sample points
+        Values at sample points
     maxlag : float, optional
-    Maximum lag distance to include
+        Maximum lag distance to include
 
     Returns
     -------
     distances : np.ndarray
-    All pairwise distances
+        All pairwise distances
     semivariances : np.ndarray
-    Squared differences / 2 for each pair
+        Squared differences / 2 for each pair
     """
     return _variogram_cloud(x, y, z, maxlag=maxlag)
 
 
 def robust_variogram(
+    x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 15,
     maxlag: Optional[float] = None,
     estimator: str = "cressie",
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate robust experimental variogram
 

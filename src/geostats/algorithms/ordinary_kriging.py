@@ -92,10 +92,11 @@ class OrdinaryKriging(BaseKriging):
         )
 
     def predict(
+        self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         return_variance: bool = True,
-        ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
         """
         Perform Ordinary Kriging prediction.
 
