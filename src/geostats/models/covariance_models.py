@@ -9,9 +9,10 @@ where C(0) is the sill variance.
 
 import numpy as np
 import numpy.typing as npt
-from scipy.special import gamma as gamma_func, kv
+from scipy.special import kv
 
 from .base_model import CovarianceModelBase
+
 
 class SphericalCovariance(CovarianceModelBase):
     """
@@ -30,10 +31,21 @@ class SphericalCovariance(CovarianceModelBase):
 
         h_norm = h / range_param
 
-        from ..core.constants import SPHERICAL_COEFFICIENT_1, SPHERICAL_COEFFICIENT_2, UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+        from ..core.constants import (
+            SPHERICAL_COEFFICIENT_1,
+            SPHERICAL_COEFFICIENT_2,
+            UNBIASEDNESS_CONSTRAINT,
+            ZERO_VALUE,
+        )
+
         result = np.where(
             h_norm <= UNBIASEDNESS_CONSTRAINT,
-            sill * (UNBIASEDNESS_CONSTRAINT - SPHERICAL_COEFFICIENT_1 * h_norm + SPHERICAL_COEFFICIENT_2 * h_norm**3),
+            sill
+            * (
+                UNBIASEDNESS_CONSTRAINT
+                - SPHERICAL_COEFFICIENT_1 * h_norm
+                + SPHERICAL_COEFFICIENT_2 * h_norm**3
+            ),
             ZERO_VALUE,
         )
 
@@ -81,6 +93,7 @@ class GaussianCovariance(CovarianceModelBase):
         h_norm = h / range_param
         return sill * np.exp(-(h_norm**2))
 
+
 class MaternCovariance(CovarianceModelBase):
     """
     Matérn covariance model
@@ -114,8 +127,8 @@ class MaternCovariance(CovarianceModelBase):
         range_param = self._parameters["range"]
         nu = self._parameters["nu"]
 
-        from scipy.special import gamma, kv
         import numpy as np
+        from scipy.special import gamma
 
         result = np.zeros_like(h)
         mask = h > 0
@@ -124,9 +137,9 @@ class MaternCovariance(CovarianceModelBase):
             h_scaled = h[mask] / range_param
             const = 2.0 ** (1.0 - nu) / gamma(nu)
             bessel_part = kv(nu, h_scaled)
-            spatial_part = const * (h_scaled ** nu) * bessel_part
+            spatial_part = const * (h_scaled**nu) * bessel_part
 
-            with np.errstate(over='ignore', invalid='ignore'):
+            with np.errstate(over="ignore", invalid="ignore"):
                 spatial_part = np.nan_to_num(spatial_part, nan=0.0, posinf=0.0)
 
             result[mask] = sill * spatial_part

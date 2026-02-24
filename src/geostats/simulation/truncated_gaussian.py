@@ -35,66 +35,65 @@ Comparison with Sequential Indicator Simulation (SIS):
 - SIS: Multiple indicator fields (slower, more flexible)
 """
 
-from typing import Optional, List, Tuple, Dict
+import logging
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from dataclasses import dataclass
-import logging
 
 logger = logging.getLogger(__name__)
 
-from ..core.exceptions import SimulationError
-from ..core.constants import OPTIMIZATION_SEED, DEFAULT_N_REALIZATIONS
+from ..core.constants import DEFAULT_N_REALIZATIONS, OPTIMIZATION_SEED
 from ..core.logging_config import get_logger
-from .gaussian_simulation import sequential_gaussian_simulation
-from ..algorithms.simple_kriging import SimpleKriging
 
 logger = get_logger(__name__)
 
+
 @dataclass
 class TGSConfig:
- n_realizations: int = DEFAULT_N_REALIZATIONS
- categories: List[int] = None # Category labels
- proportions: List[float] = None # Target proportions (must sum to 1)
- thresholds: Optional[List[float]] = None # If None, calculated from proportions
- random_seed: Optional[int] = OPTIMIZATION_SEED
- max_neighbors: int = 12
- search_radius: Optional[float] = None
+    n_realizations: int = DEFAULT_N_REALIZATIONS
+    categories: list[int] = None  # Category labels
+    proportions: list[float] = None  # Target proportions (must sum to 1)
+    thresholds: list[float] | None = None  # If None, calculated from proportions
+    random_seed: int | None = OPTIMIZATION_SEED
+    max_neighbors: int = 12
+    search_radius: float | None = None
+
 
 class TruncatedGaussianSimulation:
     """
-    Truncated Gaussian Simulation for categorical variables
+       Truncated Gaussian Simulation for categorical variables
 
-    Simulates categorical variables by thresholding a Gaussian random field.
-    The thresholds are set to honor target proportions of each category.
+       Simulates categorical variables by thresholding a Gaussian random field.
+       The thresholds are set to honor target proportions of each category.
 
-    Examples
- --------
- >>> # Define categories and proportions
- >>> categories = [1, 2, 3] # e.g., sand, silt, clay
- >>> proportions = [0.3, 0.5, 0.2]
- >>>
- >>> # Setup configuration
- >>> config = TGSConfig(
- ... n_realizations=100,
- ... categories=categories,
- ... proportions=proportions
- ... )
- >>>
- >>> # Create simulator
- >>> tgs = TruncatedGaussianSimulation(x, y, categories_data, variogram_model, config)
- >>>
- >>> # Generate realizations
- >>> realizations = tgs.simulate(x_grid, y_grid)
- """
+       Examples
+    --------
+    >>> # Define categories and proportions
+    >>> categories = [1, 2, 3] # e.g., sand, silt, clay
+    >>> proportions = [0.3, 0.5, 0.2]
+    >>>
+    >>> # Setup configuration
+    >>> config = TGSConfig(
+    ... n_realizations=100,
+    ... categories=categories,
+    ... proportions=proportions
+    ... )
+    >>>
+    >>> # Create simulator
+    >>> tgs = TruncatedGaussianSimulation(x, y, categories_data, variogram_model, config)
+    >>>
+    >>> # Generate realizations
+    >>> realizations = tgs.simulate(x_grid, y_grid)
+    """
 
     def __init__(
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         categories: npt.NDArray[np.int32],
-        variogram_model: Optional[object] = None,
-        config: Optional[TGSConfig] = None
+        variogram_model: object | None = None,
+        config: TGSConfig | None = None,
     ):
         """
         Initialize Truncated Gaussian Simulation
@@ -121,6 +120,7 @@ class TruncatedGaussianSimulation:
         # Setup configuration
         if config is None:
             from ..core.config import TGSConfig
+
             config = TGSConfig()
         self.config = config
 
@@ -134,6 +134,7 @@ class TruncatedGaussianSimulation:
         self._transform_conditioning_data()
 
         import logging
+
         logger = logging.getLogger(__name__)
         logger.info(
             f"TGS initialized: {len(self.unique_categories)} categories, "
@@ -156,6 +157,7 @@ class TruncatedGaussianSimulation:
         if self.config.proportions is not None:
             if len(self.config.proportions) != n_categories:
                 from ..core.exceptions import SimulationError
+
                 raise SimulationError(
                     f"Number of proportions ({len(self.config.proportions)}) "
                     f"must match number of categories ({n_categories})"
@@ -166,6 +168,7 @@ class TruncatedGaussianSimulation:
         else:
             self.proportions = counts / len(self.categories)
             import logging
+
             logger = logging.getLogger(__name__)
             logger.info(f"Estimated proportions from data: {self.proportions}")
 
@@ -181,8 +184,10 @@ class TruncatedGaussianSimulation:
 
         where Phi^-1 is the inverse standard normal CDF
         """
-        from scipy.stats import norm
         import logging
+
+        from scipy.stats import norm
+
         logger = logging.getLogger(__name__)
 
         if self.config.thresholds is not None:
@@ -203,8 +208,10 @@ class TruncatedGaussianSimulation:
         - Draw from truncated normal distribution N(0,1)
         - Truncated to interval corresponding to category c_i
         """
-        from scipy.stats import truncnorm
         import logging
+
+        from scipy.stats import truncnorm
+
         logger = logging.getLogger(__name__)
 
         n_cond = len(self.categories)
@@ -228,18 +235,33 @@ class TruncatedGaussianSimulation:
             # Sample from truncated normal
             if np.isfinite(a) and np.isfinite(b):
                 self.gaussian_values[i] = truncnorm.rvs(
-                    a, b, loc=0, scale=1,
-                    random_state=self.config.random_seed + i if self.config.random_seed else None
+                    a,
+                    b,
+                    loc=0,
+                    scale=1,
+                    random_state=self.config.random_seed + i
+                    if self.config.random_seed
+                    else None,
                 )
             elif np.isfinite(a):
                 self.gaussian_values[i] = truncnorm.rvs(
-                    a, 10, loc=0, scale=1,  # Use 10 as practical upper bound
-                    random_state=self.config.random_seed + i if self.config.random_seed else None
+                    a,
+                    10,
+                    loc=0,
+                    scale=1,  # Use 10 as practical upper bound
+                    random_state=self.config.random_seed + i
+                    if self.config.random_seed
+                    else None,
                 )
             elif np.isfinite(b):
                 self.gaussian_values[i] = truncnorm.rvs(
-                    -10, b, loc=0, scale=1,  # Use -10 as practical lower bound
-                    random_state=self.config.random_seed + i if self.config.random_seed else None
+                    -10,
+                    b,
+                    loc=0,
+                    scale=1,  # Use -10 as practical lower bound
+                    random_state=self.config.random_seed + i
+                    if self.config.random_seed
+                    else None,
                 )
             else:
                 self.gaussian_values[i] = 0.0
@@ -247,9 +269,7 @@ class TruncatedGaussianSimulation:
         logger.debug(f"Transformed {n_cond} conditioning points to Gaussian values")
 
     def simulate(
-        self,
-        x_grid: npt.NDArray[np.float64],
-        y_grid: npt.NDArray[np.float64]
+        self, x_grid: npt.NDArray[np.float64], y_grid: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.int32]:
         """
         Generate TGS realizations
@@ -276,11 +296,11 @@ class TruncatedGaussianSimulation:
 
         # Storage for realizations
         realizations_categorical = np.zeros(
-            (self.config.n_realizations, n_nodes),
-            dtype=np.int32
+            (self.config.n_realizations, n_nodes), dtype=np.int32
         )
 
         import logging
+
         logger = logging.getLogger(__name__)
         logger.info(
             f"Starting TGS: {self.config.n_realizations} realizations, "
@@ -289,6 +309,7 @@ class TruncatedGaussianSimulation:
 
         # Generate Gaussian realizations using SGS
         from ..simulation.gaussian_simulation import sequential_gaussian_simulation
+
         for r in range(self.config.n_realizations):
             if self.config.random_seed is not None:
                 seed = self.config.random_seed + r
@@ -304,7 +325,7 @@ class TruncatedGaussianSimulation:
                 y_grid=y_flat,
                 variogram_model=self.variogram_model,
                 mean=0.0,  # Standard normal
-                random_seed=seed
+                random_seed=seed,
             )
 
             # Apply thresholds to convert Gaussian to categories
@@ -312,7 +333,9 @@ class TruncatedGaussianSimulation:
             realizations_categorical[r, :] = categorical_realization
 
             if (r + 1) % 10 == 0:
-                logger.info(f"Completed {r + 1}/{self.config.n_realizations} realizations")
+                logger.info(
+                    f"Completed {r + 1}/{self.config.n_realizations} realizations"
+                )
 
         # Reshape to original grid shape if needed
         if len(original_shape) > 1:
@@ -324,8 +347,7 @@ class TruncatedGaussianSimulation:
         return realizations_categorical
 
     def _apply_thresholds(
-        self,
-        gaussian_field: npt.NDArray[np.float64]
+        self, gaussian_field: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.int32]:
         """
         Apply thresholds to Gaussian field to get categories
@@ -344,17 +366,19 @@ class TruncatedGaussianSimulation:
         # digitize returns indices where values fall into bins
         # bins are defined by thresholds: (-inf, t0), [t0, t1), [t1, t2), ..., [t_n-1, inf)
         bin_indices = np.digitize(gaussian_field, self.thresholds)
-        
+
         # Map bin indices to category labels
         # bin_indices: 0 -> first category, 1 -> second, ..., len(thresholds) -> last
-        categories = np.take(self.unique_categories, np.clip(bin_indices, 0, len(self.unique_categories) - 1))
-        
+        categories = np.take(
+            self.unique_categories,
+            np.clip(bin_indices, 0, len(self.unique_categories) - 1),
+        )
+
         return categories.astype(np.int32)
 
     def get_proportions_summary(
-        self,
-        realizations: npt.NDArray[np.int32]
-    ) -> Dict[int, Dict[str, float]]:
+        self, realizations: npt.NDArray[np.int32]
+    ) -> dict[int, dict[str, float]]:
         """
         Calculate realized proportions for each category
 
@@ -375,7 +399,11 @@ class TruncatedGaussianSimulation:
         }
         """
         n_realizations = realizations.shape[0]
-        n_nodes = realizations.shape[1] if realizations.ndim == 2 else np.prod(realizations.shape[1:])
+        n_nodes = (
+            realizations.shape[1]
+            if realizations.ndim == 2
+            else np.prod(realizations.shape[1:])
+        )
 
         # Flatten if needed
         if realizations.ndim > 2:
@@ -389,11 +417,11 @@ class TruncatedGaussianSimulation:
                 props_per_realization[r] = np.sum(realizations[r, :] == cat) / n_nodes
 
             summary[int(cat)] = {
-                'target': float(self.proportions[i]),
-                'mean': float(np.mean(props_per_realization)),
-                'std': float(np.std(props_per_realization)),
-                'min': float(np.min(props_per_realization)),
-                'max': float(np.max(props_per_realization)),
+                "target": float(self.proportions[i]),
+                "mean": float(np.mean(props_per_realization)),
+                "std": float(np.std(props_per_realization)),
+                "min": float(np.min(props_per_realization)),
+                "max": float(np.max(props_per_realization)),
             }
 
         return summary

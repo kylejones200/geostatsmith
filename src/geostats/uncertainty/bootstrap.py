@@ -5,16 +5,18 @@ Bootstrap Uncertainty Estimation
 Bootstrap methods for uncertainty quantification.
 """
 
-import numpy as np
-import numpy.typing as npt
-from typing import Dict, Tuple, Optional
-from ..algorithms.ordinary_kriging import OrdinaryKriging
-from ..models.base_model import VariogramModelBase
-from ..algorithms.variogram import experimental_variogram
-from ..algorithms.fitting import fit_variogram_model as fit_variogram
 import logging
 
+import numpy as np
+import numpy.typing as npt
+
+from ..algorithms.fitting import fit_variogram_model as fit_variogram
+from ..algorithms.ordinary_kriging import OrdinaryKriging
+from ..algorithms.variogram import experimental_variogram
+from ..models.base_model import VariogramModelBase
+
 logger = logging.getLogger(__name__)
+
 
 def bootstrap_uncertainty(
     x: npt.NDArray[np.float64],
@@ -25,8 +27,8 @@ def bootstrap_uncertainty(
     variogram_model: VariogramModelBase,
     n_bootstrap: int = 100,
     confidence_level: float = 0.95,
-    method: str = 'residual',
-) -> Dict[str, npt.NDArray[np.float64]]:
+    method: str = "residual",
+) -> dict[str, npt.NDArray[np.float64]]:
     """
     Estimate uncertainty using bootstrap resampling.
 
@@ -114,7 +116,7 @@ def bootstrap_uncertainty(
     )
     initial_pred, _ = krig.predict(x_pred, y_pred, return_variance=True)
 
-    if method == 'residual':
+    if method == "residual":
         z_fitted, _ = krig.predict(x, y, return_variance=True)
         residuals = z - z_fitted
 
@@ -135,7 +137,7 @@ def bootstrap_uncertainty(
             pred, _ = krig_boot.predict(x_pred, y_pred, return_variance=True)
             all_predictions[i, :] = pred
 
-    elif method == 'pairs':
+    elif method == "pairs":
         for i in range(n_bootstrap):
             indices = np.random.choice(n, size=n, replace=True)
             x_boot = x[indices]
@@ -170,14 +172,14 @@ def bootstrap_uncertainty(
     upper_bound = np.percentile(all_predictions, upper_percentile, axis=0)
 
     return {
-        'mean': mean_pred,
-        'std': std_pred,
-        'lower_bound': lower_bound,
-        'upper_bound': upper_bound,
-        'percentile_2.5': np.percentile(all_predictions, 2.5, axis=0),
-        'percentile_97.5': np.percentile(all_predictions, 97.5, axis=0),
-        'all_predictions': all_predictions,
-        'confidence_level': confidence_level,
+        "mean": mean_pred,
+        "std": std_pred,
+        "lower_bound": lower_bound,
+        "upper_bound": upper_bound,
+        "percentile_2.5": np.percentile(all_predictions, 2.5, axis=0),
+        "percentile_97.5": np.percentile(all_predictions, 97.5, axis=0),
+        "all_predictions": all_predictions,
+        "confidence_level": confidence_level,
     }
 
 
@@ -188,7 +190,7 @@ def bootstrap_variogram(
     model_type: str,
     n_bootstrap: int = 100,
     n_lags: int = 15,
-) -> Dict[str, any]:
+) -> dict[str, any]:
     """
     Bootstrap confidence intervals for variogram parameters.
 
@@ -236,8 +238,7 @@ def bootstrap_variogram(
 
         try:
             lags, gamma, _ = experimental_variogram(
-                x_boot, y_boot, z_boot,
-                n_lags=n_lags
+                x_boot, y_boot, z_boot, n_lags=n_lags
             )
 
             # Fit model
@@ -245,9 +246,9 @@ def bootstrap_variogram(
 
             # Extract parameters
             params = model.get_parameters()
-            nuggets.append(params.get('nugget', 0))
-            sills.append(params.get('sill', 0))
-            ranges.append(params.get('range', 0))
+            nuggets.append(params.get("nugget", 0))
+            sills.append(params.get("sill", 0))
+            ranges.append(params.get("range", 0))
         except Exception:
             # Skip failed fits
             continue
@@ -257,17 +258,17 @@ def bootstrap_variogram(
     ranges = np.array(ranges)
 
     return {
-        'nugget_mean': np.mean(nuggets),
-        'nugget_std': np.std(nuggets),
-        'nugget_ci': (np.percentile(nuggets, 2.5), np.percentile(nuggets, 97.5)),
-        'sill_mean': np.mean(sills),
-        'sill_std': np.std(sills),
-        'sill_ci': (np.percentile(sills, 2.5), np.percentile(sills, 97.5)),
-        'range_mean': np.mean(ranges),
-        'range_std': np.std(ranges),
-        'range_ci': (np.percentile(ranges, 2.5), np.percentile(ranges, 97.5)),
-        'n_successful': len(nuggets),
-        'n_bootstrap': n_bootstrap,
+        "nugget_mean": np.mean(nuggets),
+        "nugget_std": np.std(nuggets),
+        "nugget_ci": (np.percentile(nuggets, 2.5), np.percentile(nuggets, 97.5)),
+        "sill_mean": np.mean(sills),
+        "sill_std": np.std(sills),
+        "sill_ci": (np.percentile(sills, 2.5), np.percentile(sills, 97.5)),
+        "range_mean": np.mean(ranges),
+        "range_std": np.std(ranges),
+        "range_ci": (np.percentile(ranges, 2.5), np.percentile(ranges, 97.5)),
+        "n_successful": len(nuggets),
+        "n_bootstrap": n_bootstrap,
     }
 
 
@@ -277,9 +278,9 @@ def bootstrap_kriging(
     z: npt.NDArray[np.float64],
     x_pred: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
-    model_type: str = 'spherical',
+    model_type: str = "spherical",
     n_bootstrap: int = 100,
-) -> Dict[str, npt.NDArray[np.float64]]:
+) -> dict[str, npt.NDArray[np.float64]]:
     """
     Bootstrap kriging with variogram uncertainty.
 
@@ -351,10 +352,10 @@ def bootstrap_kriging(
 
     # Compute statistics
     return {
-        'mean': np.mean(all_predictions, axis=0),
-        'std': np.std(all_predictions, axis=0),
-        'lower_bound': np.percentile(all_predictions, 2.5, axis=0),
-        'upper_bound': np.percentile(all_predictions, 97.5, axis=0),
-        'all_predictions': all_predictions,
-        'n_successful': all_predictions.shape[0],
+        "mean": np.mean(all_predictions, axis=0),
+        "std": np.std(all_predictions, axis=0),
+        "lower_bound": np.percentile(all_predictions, 2.5, axis=0),
+        "upper_bound": np.percentile(all_predictions, 97.5, axis=0),
+        "all_predictions": all_predictions,
+        "n_successful": all_predictions.shape[0],
     }

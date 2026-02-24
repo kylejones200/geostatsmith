@@ -34,84 +34,85 @@ References:
 - Wolpert, D.H. (1992). "Stacked generalization"
 """
 
-from typing import List, Optional, Tuple, Union, Dict, Callable, Any
+import logging
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
-from abc import ABC, abstractmethod
-import logging
 
 logger = logging.getLogger(__name__)
 
 from ..core.base import BaseKriging
-from ..core.validators import validate_coordinates, validate_values
 from ..core.logging_config import get_logger
+from ..core.validators import validate_coordinates, validate_values
 
 logger = get_logger(__name__)
 
+
 class EnsembleKriging(BaseKriging):
     """
-    Ensemble Kriging: Combine Multiple Kriging Models
+       Ensemble Kriging: Combine Multiple Kriging Models
 
-    Aggregates predictions from multiple kriging models using weighted
-    averaging. Weights can be:
-    - Equal (simple average)
-    - Cross-validation based (performance-weighted)
-    - Variance-based (inverse variance weighting)
+       Aggregates predictions from multiple kriging models using weighted
+       averaging. Weights can be:
+       - Equal (simple average)
+       - Cross-validation based (performance-weighted)
+       - Variance-based (inverse variance weighting)
 
-    Mathematical Framework:
-    For ensemble of K models with predictions Z_k*(s) and weights w_k:
-    Z_ensemble*(s) = sum w_k * Z_k*(s)
+       Mathematical Framework:
+       For ensemble of K models with predictions Z_k*(s) and weights w_k:
+       Z_ensemble*(s) = sum w_k * Z_k*(s)
 
-    where sum w_k = 1.
+       where sum w_k = 1.
 
-    Ensemble Variance:
- Var[Z_ensemble*] = Σ w_k^2 · Var[Z_k*] + 2Σ Σ w_i·w_j·Cov[Z_i*, Z_j*]
+       Ensemble Variance:
+    Var[Z_ensemble*] = Σ w_k^2 · Var[Z_k*] + 2Σ Σ w_i·w_j·Cov[Z_i*, Z_j*]
 
- If models are independent: Var[Z_ensemble*] = Σ w_k^2 · Var[Z_k*]
+    If models are independent: Var[Z_ensemble*] = Σ w_k^2 · Var[Z_k*]
 
-    Parameters
-    ----------
-    models : list of BaseKriging
-        List of fitted kriging models
-    weighting : str
-        Weighting scheme:
-        - 'equal': w_k = 1/K
-        - 'inverse_variance': w_k proportional to 1/sigma^2_k
-        - 'performance': w_k proportional to cross-validation score
-    combine_variance : bool
-        Whether to combine variance estimates
+       Parameters
+       ----------
+       models : list of BaseKriging
+           List of fitted kriging models
+       weighting : str
+           Weighting scheme:
+           - 'equal': w_k = 1/K
+           - 'inverse_variance': w_k proportional to 1/sigma^2_k
+           - 'performance': w_k proportional to cross-validation score
+       combine_variance : bool
+           Whether to combine variance estimates
 
-    Attributes
-    ----------
-    models : list
-        Fitted kriging models
-    weights : np.ndarray
-        Model weights
+       Attributes
+       ----------
+       models : list
+           Fitted kriging models
+       weights : np.ndarray
+           Model weights
 
-    Examples
-    --------
-    >>> from geostats.algorithms import OrdinaryKriging, UniversalKriging
-    >>> from geostats.ml import EnsembleKriging
-    >>>
-    >>> # Create multiple models
-    >>> ok = OrdinaryKriging(x, y, z, variogram_model1)
-    >>> uk = UniversalKriging(x, y, z, variogram_model2, drift_terms=['linear'])
-    >>>
-    >>> # Combine in ensemble
-    >>> ensemble = EnsembleKriging(
-    ...     models=[ok, uk],
-    ...     weighting='inverse_variance'
-    ... )
-    >>>
-    >>> # Predict
-    >>> z_pred, var = ensemble.predict(x_new, y_new)
+       Examples
+       --------
+       >>> from geostats.algorithms import OrdinaryKriging, UniversalKriging
+       >>> from geostats.ml import EnsembleKriging
+       >>>
+       >>> # Create multiple models
+       >>> ok = OrdinaryKriging(x, y, z, variogram_model1)
+       >>> uk = UniversalKriging(x, y, z, variogram_model2, drift_terms=['linear'])
+       >>>
+       >>> # Combine in ensemble
+       >>> ensemble = EnsembleKriging(
+       ...     models=[ok, uk],
+       ...     weighting='inverse_variance'
+       ... )
+       >>>
+       >>> # Predict
+       >>> z_pred, var = ensemble.predict(x_new, y_new)
     """
 
     def __init__(
         self,
-        models: List[BaseKriging],
-        weighting: str = 'equal',
-        combine_variance: bool = True
+        models: list[BaseKriging],
+        weighting: str = "equal",
+        combine_variance: bool = True,
     ):
         """
         Initialize Ensemble Kriging
@@ -132,7 +133,7 @@ class EnsembleKriging(BaseKriging):
         self.weighting = weighting.lower()
         self.combine_variance = combine_variance
 
-        weighting_schemes = {'equal', 'inverse_variance', 'performance'}
+        weighting_schemes = {"equal", "inverse_variance", "performance"}
         if self.weighting not in weighting_schemes:
             raise ValueError(f"Unknown weighting scheme: {weighting}")
 
@@ -146,8 +147,8 @@ class EnsembleKriging(BaseKriging):
 
     def _compute_weights(
         self,
-        variances: Optional[npt.NDArray[np.float64]] = None,
-        scores: Optional[npt.NDArray[np.float64]] = None
+        variances: npt.NDArray[np.float64] | None = None,
+        scores: npt.NDArray[np.float64] | None = None,
     ) -> npt.NDArray[np.float64]:
         """
         Compute model weights based on weighting scheme
@@ -167,19 +168,19 @@ class EnsembleKriging(BaseKriging):
         n_models = len(self.models)
 
         weights_map = {
-            'equal': lambda: np.ones(n_models) / n_models,
-            'inverse_variance': lambda: 1.0 / (variances + 1e-8),
-            'performance': lambda: scores
+            "equal": lambda: np.ones(n_models) / n_models,
+            "inverse_variance": lambda: 1.0 / (variances + 1e-8),
+            "performance": lambda: scores,
         }
 
         if self.weighting not in weights_map:
             raise ValueError(f"Unknown weighting scheme: {self.weighting}")
 
-        if self.weighting == 'inverse_variance' and variances is None:
-            return weights_map['equal']()
+        if self.weighting == "inverse_variance" and variances is None:
+            return weights_map["equal"]()
 
-        if self.weighting == 'performance' and scores is None:
-            return weights_map['equal']()
+        if self.weighting == "performance" and scores is None:
+            return weights_map["equal"]()
 
         weights = weights_map[self.weighting]()
 
@@ -192,11 +193,11 @@ class EnsembleKriging(BaseKriging):
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        return_variance: bool = True
-    ) -> Union[
-        npt.NDArray[np.float64],
-        Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
-    ]:
+        return_variance: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
         Predict using ensemble of kriging models
 
@@ -236,7 +237,7 @@ class EnsembleKriging(BaseKriging):
                 raise
 
         # Compute weights
-        if self.weighting == 'inverse_variance' and return_variance:
+        if self.weighting == "inverse_variance" and return_variance:
             mean_vars = np.mean(all_variances, axis=1)
             weights = self._compute_weights(variances=mean_vars)
         else:
@@ -249,15 +250,13 @@ class EnsembleKriging(BaseKriging):
         for i in range(n_models):
             ensemble_pred += weights[i] * all_predictions[i]
 
-        logger.debug(
-            f"Ensemble prediction complete: weights={weights.round(3)}"
-        )
+        logger.debug(f"Ensemble prediction complete: weights={weights.round(3)}")
 
         if return_variance and self.combine_variance:
             # Var[sum w_i*Z_i] = sum w_i^2*Var[Z_i]
             ensemble_var = np.zeros(n_pred, dtype=np.float64)
             for i in range(n_models):
-                ensemble_var += weights[i]**2 * all_variances[i]
+                ensemble_var += weights[i] ** 2 * all_variances[i]
 
             return ensemble_pred, ensemble_var
         elif return_variance:
@@ -265,7 +264,7 @@ class EnsembleKriging(BaseKriging):
 
         return ensemble_pred
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform cross-validation on the ensemble
 
@@ -283,7 +282,7 @@ class EnsembleKriging(BaseKriging):
 
         # Use the first model's data for cross-validation
         first_model = self.models[0]
-        if not hasattr(first_model, 'x') or first_model.x is None:
+        if not hasattr(first_model, "x") or first_model.x is None:
             raise KrigingError("Models must have training data for cross-validation")
 
         from ..validation.cross_validation import leave_one_out
@@ -292,8 +291,8 @@ class EnsembleKriging(BaseKriging):
         predictions = leave_one_out(self, first_model.x, first_model.y, first_model.z)
 
         metrics = {
-            'mse': mean_squared_error(first_model.z, predictions),
-            'r2': r_squared(first_model.z, predictions)
+            "mse": mean_squared_error(first_model.z, predictions),
+            "r2": r_squared(first_model.z, predictions),
         }
 
         return predictions, metrics
@@ -301,57 +300,57 @@ class EnsembleKriging(BaseKriging):
 
 class BootstrapKriging(BaseKriging):
     """
-    Bootstrap Aggregating (Bagging) for Kriging
+       Bootstrap Aggregating (Bagging) for Kriging
 
-    Creates ensemble by training models on bootstrap samples of the data.
-    Reduces prediction variance through averaging.
+       Creates ensemble by training models on bootstrap samples of the data.
+       Reduces prediction variance through averaging.
 
-    Process:
-    1. Create B bootstrap samples (sample with replacement)
-    2. Fit kriging model on each sample
-    3. Average predictions from all models
-    4. Estimate uncertainty from prediction variance
+       Process:
+       1. Create B bootstrap samples (sample with replacement)
+       2. Fit kriging model on each sample
+       3. Average predictions from all models
+       4. Estimate uncertainty from prediction variance
 
-    Advantages:
-    - Reduces overfitting
-    - Quantifies model uncertainty
-    - Robust to outliers
-    - No assumptions about error distribution
+       Advantages:
+       - Reduces overfitting
+       - Quantifies model uncertainty
+       - Robust to outliers
+       - No assumptions about error distribution
 
- Parameters
- ----------
- base_model_type : type
- Kriging class (e.g., OrdinaryKriging)
- n_bootstrap : int
- Number of bootstrap iterations
- sample_fraction : float
- Fraction of data to sample in each bootstrap
- **model_kwargs
- Arguments for base model
+    Parameters
+    ----------
+    base_model_type : type
+    Kriging class (e.g., OrdinaryKriging)
+    n_bootstrap : int
+    Number of bootstrap iterations
+    sample_fraction : float
+    Fraction of data to sample in each bootstrap
+    **model_kwargs
+    Arguments for base model
 
- Examples
- --------
- >>> from geostats.ml import BootstrapKriging
- >>> from geostats.algorithms import OrdinaryKriging
- >>>
- >>> # Bootstrap ordinary kriging
- >>> bk = BootstrapKriging(
- ... base_model_type=OrdinaryKriging,
- ... n_bootstrap=100,
- ... sample_fraction=0.8,
- ... variogram_model=spherical_model
- ... )
- >>> bk.fit(x, y, z)
- >>> z_pred, z_std = bk.predict(x_new, y_new)
- """
+    Examples
+    --------
+    >>> from geostats.ml import BootstrapKriging
+    >>> from geostats.algorithms import OrdinaryKriging
+    >>>
+    >>> # Bootstrap ordinary kriging
+    >>> bk = BootstrapKriging(
+    ... base_model_type=OrdinaryKriging,
+    ... n_bootstrap=100,
+    ... sample_fraction=0.8,
+    ... variogram_model=spherical_model
+    ... )
+    >>> bk.fit(x, y, z)
+    >>> z_pred, z_std = bk.predict(x_new, y_new)
+    """
 
     def __init__(
         self,
         base_model_type: type,
         n_bootstrap: int = 100,
         sample_fraction: float = 1.0,
-        random_state: Optional[int] = None,
-        **model_kwargs
+        random_state: int | None = None,
+        **model_kwargs,
     ):
         """Initialize Bootstrap Kriging"""
         self.base_model_type = base_model_type
@@ -375,7 +374,7 @@ class BootstrapKriging(BaseKriging):
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
-        z: npt.NDArray[np.float64]
+        z: npt.NDArray[np.float64],
     ):
         """
         Fit bootstrap ensemble
@@ -427,11 +426,11 @@ class BootstrapKriging(BaseKriging):
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        return_std: bool = True
-    ) -> Union[
-        npt.NDArray[np.float64],
-        Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
-    ]:
+        return_std: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
         Predict using bootstrap ensemble
 
@@ -478,7 +477,7 @@ class BootstrapKriging(BaseKriging):
 
         return predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform cross-validation on bootstrap ensemble
 
@@ -500,8 +499,8 @@ class BootstrapKriging(BaseKriging):
         predictions = leave_one_out(self, self.x, self.y, self.z)
 
         metrics = {
-            'mse': mean_squared_error(self.z, predictions),
-            'r2': r_squared(self.z, predictions)
+            "mse": mean_squared_error(self.z, predictions),
+            "r2": r_squared(self.z, predictions),
         }
 
         return predictions, metrics
@@ -509,53 +508,53 @@ class BootstrapKriging(BaseKriging):
 
 class StackingKriging(BaseKriging):
     """
-    Stacking: Meta-Learning for Kriging Ensemble
+       Stacking: Meta-Learning for Kriging Ensemble
 
- Uses a meta-learner to optimally combine base kriging models.
+    Uses a meta-learner to optimally combine base kriging models.
 
- Process:
-     pass
- 1. Split data into train/validation
- 2. Train base models on training data
- 3. Get predictions on validation data
- 4. Train meta-model to combine base predictions
- 5. For new data: base predictions → meta-model → final prediction
+    Process:
+        pass
+    1. Split data into train/validation
+    2. Train base models on training data
+    3. Get predictions on validation data
+    4. Train meta-model to combine base predictions
+    5. For new data: base predictions → meta-model → final prediction
 
- The meta-model learns optimal weights for each base model based on
- their validation performance.
+    The meta-model learns optimal weights for each base model based on
+    their validation performance.
 
- Parameters
- ----------
- base_models : list of BaseKriging
- Base kriging models
- meta_model : callable, optional
- Meta-learner (default: linear regression)
- cv_folds : int
- Number of cross-validation folds
+    Parameters
+    ----------
+    base_models : list of BaseKriging
+    Base kriging models
+    meta_model : callable, optional
+    Meta-learner (default: linear regression)
+    cv_folds : int
+    Number of cross-validation folds
 
- Examples
- --------
- >>> from geostats.ml import StackingKriging
- >>> from sklearn.linear_model import Ridge
- >>>
- >>> # Create base models
- >>> models = [ok1, ok2, uk, sk]
- >>>
- >>> # Stacking with Ridge meta-learner
- >>> stacking = StackingKriging(
- ... base_models=models,
- ... meta_model=Ridge(alpha=1.0),
- ... cv_folds=5
- ... )
- >>> stacking.fit(x, y, z)
- >>> z_pred = stacking.predict(x_new, y_new)
- """
+    Examples
+    --------
+    >>> from geostats.ml import StackingKriging
+    >>> from sklearn.linear_model import Ridge
+    >>>
+    >>> # Create base models
+    >>> models = [ok1, ok2, uk, sk]
+    >>>
+    >>> # Stacking with Ridge meta-learner
+    >>> stacking = StackingKriging(
+    ... base_models=models,
+    ... meta_model=Ridge(alpha=1.0),
+    ... cv_folds=5
+    ... )
+    >>> stacking.fit(x, y, z)
+    >>> z_pred = stacking.predict(x_new, y_new)
+    """
 
     def __init__(
         self,
-        base_models: List[BaseKriging],
-        meta_model: Optional[Any] = None,
-        cv_folds: int = 5
+        base_models: list[BaseKriging],
+        meta_model: Any | None = None,
+        cv_folds: int = 5,
     ):
         """Initialize Stacking Kriging"""
         self.base_models = base_models
@@ -565,6 +564,7 @@ class StackingKriging(BaseKriging):
         if meta_model is None:
             try:
                 from sklearn.linear_model import Ridge
+
                 self.meta_model = Ridge(alpha=1.0)
                 logger.info("Using Ridge regression as meta-learner")
             except ImportError:
@@ -580,7 +580,7 @@ class StackingKriging(BaseKriging):
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
-        z: npt.NDArray[np.float64]
+        z: npt.NDArray[np.float64],
     ):
         """
         Fit stacking ensemble
@@ -593,55 +593,61 @@ class StackingKriging(BaseKriging):
             Values
         """
         from ..core.validators import validate_coordinates, validate_values
-        
+
         x, y = validate_coordinates(x, y)
         z = validate_values(z, n_expected=len(x))
 
         logger.info("Fitting stacking ensemble with cross-validation")
-        
+
         # Store data
         self.x = x
         self.y = y
         self.z = z
-        
+
         n_samples = len(x)
-        
+
         # Generate meta-features using k-fold cross-validation
         # Each base model predicts on out-of-fold samples
         try:
             from sklearn.model_selection import KFold
         except ImportError:
             raise ImportError("scikit-learn is required for StackingKriging")
-        
+
         kf = KFold(n_splits=self.cv_folds, shuffle=True, random_state=42)
         meta_features = np.zeros((n_samples, len(self.base_models)))
-        
+
         # Fit each base model and generate out-of-fold predictions
         for fold_idx, (train_idx, val_idx) in enumerate(kf.split(x)):
             x_train, y_train, z_train = x[train_idx], y[train_idx], z[train_idx]
             x_val, y_val = x[val_idx], y[val_idx]
-            
+
             # Get predictions from each base model
             for model_idx, base_model in enumerate(self.base_models):
                 try:
                     # Note: Base models should already be fitted, but we refit on fold
                     # For kriging models, we need to refit with fold data
-                    if hasattr(base_model, 'variogram_model'):
+                    if hasattr(base_model, "variogram_model"):
                         model_class = type(base_model)
                         fold_model = model_class(
-                            x_train, y_train, z_train,
-                            variogram_model=base_model.variogram_model
+                            x_train,
+                            y_train,
+                            z_train,
+                            variogram_model=base_model.variogram_model,
                         )
-                        pred, _ = fold_model.predict(x_val, y_val, return_variance=False)
+                        pred, _ = fold_model.predict(
+                            x_val, y_val, return_variance=False
+                        )
                     else:
                         pred = base_model.predict(x_val, y_val)
-                    
+
                     meta_features[val_idx, model_idx] = pred
                 except Exception as e:
-                    logger.warning(f"Base model {model_idx} failed on fold {fold_idx}: {e}")
+                    logger.warning(
+                        f"Base model {model_idx} failed on fold {fold_idx}: {e}"
+                    )
                     # Use mean as fallback
                     meta_features[val_idx, model_idx] = z_train.mean()
-        
+
         # Train meta-learner on meta-features
         if self.meta_model is not None:
             try:
@@ -650,7 +656,7 @@ class StackingKriging(BaseKriging):
             except Exception as e:
                 logger.warning(f"Meta-learner fitting failed: {e}, using equal weights")
                 self.meta_model = None
-        
+
         # Store meta-features for reference
         self.meta_features = meta_features
         self.fitted = True
@@ -659,19 +665,24 @@ class StackingKriging(BaseKriging):
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        return_variance: bool = False
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        return_variance: bool = False,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """Predict using stacking ensemble"""
-        if not hasattr(self, 'fitted') or not self.fitted:
+        if not hasattr(self, "fitted") or not self.fitted:
             raise ValueError("Model must be fitted before prediction")
-        
+
         from ..core.validators import validate_coordinates
-        
+
         x_new, y_new = validate_coordinates(x_new, y_new)
         n_new = len(x_new)
         base_predictions = np.zeros((n_new, len(self.base_models)))
-        base_variances = np.zeros((n_new, len(self.base_models))) if return_variance else None
-        
+        base_variances = (
+            np.zeros((n_new, len(self.base_models))) if return_variance else None
+        )
+
         # Get predictions from each base model
         for model_idx, base_model in enumerate(self.base_models):
             try:
@@ -688,30 +699,32 @@ class StackingKriging(BaseKriging):
                 base_predictions[:, model_idx] = self.z.mean()
                 if return_variance:
                     base_variances[:, model_idx] = np.var(self.z)
-        
+
         # Combine using meta-learner
         if self.meta_model is not None:
             try:
                 final_predictions = self.meta_model.predict(base_predictions)
             except Exception as e:
-                logger.warning(f"Meta-learner prediction failed: {e}, using equal weights")
+                logger.warning(
+                    f"Meta-learner prediction failed: {e}, using equal weights"
+                )
                 final_predictions = base_predictions.mean(axis=1)
         else:
             final_predictions = base_predictions.mean(axis=1)
-        
+
         if return_variance:
-            if self.meta_model is not None and hasattr(self.meta_model, 'coef_'):
+            if self.meta_model is not None and hasattr(self.meta_model, "coef_"):
                 weights = np.abs(self.meta_model.coef_)
                 weights = weights / weights.sum()  # Normalize
             else:
                 weights = np.ones(len(self.base_models)) / len(self.base_models)
-            
+
             final_variance = np.sum(weights * base_variances, axis=1)
             return final_predictions, final_variance
-        
+
         return final_predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform cross-validation on stacking ensemble
 
@@ -724,7 +737,7 @@ class StackingKriging(BaseKriging):
         """
         from ..core.exceptions import KrigingError
 
-        if not hasattr(self, 'x') or self.x is None:
+        if not hasattr(self, "x") or self.x is None:
             raise KrigingError("Model must be fitted before cross-validation")
 
         from ..validation.cross_validation import leave_one_out
@@ -733,8 +746,8 @@ class StackingKriging(BaseKriging):
         predictions = leave_one_out(self, self.x, self.y, self.z)
 
         metrics = {
-            'mse': mean_squared_error(self.z, predictions),
-            'r2': r_squared(self.z, predictions)
+            "mse": mean_squared_error(self.z, predictions),
+            "r2": r_squared(self.z, predictions),
         }
 
         return predictions, metrics

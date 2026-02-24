@@ -8,19 +8,18 @@ Tests:
 - Probability maps
 """
 
-import pytest
 import numpy as np
+import pytest
 
+from geostats.algorithms.fitting import fit_variogram_model
+from geostats.algorithms.variogram import experimental_variogram
+from geostats.models.variogram_models import SphericalModel
 from geostats.uncertainty.bootstrap import bootstrap_uncertainty
 from geostats.uncertainty.confidence_intervals import confidence_intervals
 from geostats.uncertainty.probability import probability_map
-from geostats.algorithms.variogram import experimental_variogram
-from geostats.algorithms.fitting import fit_variogram_model
-from geostats.models.variogram_models import SphericalModel
 
 
 class TestBootstrapUncertainty:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
@@ -128,6 +127,7 @@ class TestBootstrapUncertainty:
 
     def test_bootstrap_uncertainty_invalid_method(self):
         from geostats.uncertainty.bootstrap import bootstrap_uncertainty
+
         with pytest.raises(ValueError, match="Unknown method"):
             bootstrap_uncertainty(
                 self.x,
@@ -136,12 +136,11 @@ class TestBootstrapUncertainty:
                 self.x_pred,
                 self.y_pred,
                 variogram_model=self.model,
-                method="invalid_method"
+                method="invalid_method",
             )
 
 
 class TestConfidenceIntervals:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
@@ -230,7 +229,6 @@ class TestConfidenceIntervals:
 
 
 class TestProbabilityMaps:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 40
@@ -325,6 +323,7 @@ class TestProbabilityMaps:
 
     def test_probability_map_invalid_operator(self):
         from geostats.uncertainty.probability import probability_map
+
         with pytest.raises(ValueError, match="Unknown operator"):
             probability_map(
                 self.x,
@@ -333,5 +332,5 @@ class TestProbabilityMaps:
                 self.x_pred,
                 self.y_pred,
                 variogram_model=self.model,
-                operator="invalid_operator"
+                operator="invalid_operator",
             )

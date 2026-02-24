@@ -17,7 +17,6 @@ The kriging system becomes:
 where μ is the Lagrange multiplier.
 """
 
-from typing import Optional, Tuple, Dict
 import numpy as np
 import numpy.typing as npt
 
@@ -25,8 +24,9 @@ from ..core.base import BaseKriging
 from ..core.exceptions import KrigingError
 from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance
-from ..math.matrices import solve_kriging_system, regularize_matrix
+from ..math.matrices import regularize_matrix, solve_kriging_system
 from ..math.numerical import cross_validation_score
+
 
 class OrdinaryKriging(BaseKriging):
     """
@@ -41,7 +41,7 @@ class OrdinaryKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
-        variogram_model: Optional[object] = None,
+        variogram_model: object | None = None,
     ):
         """
         Initialize Ordinary Kriging.
@@ -80,15 +80,16 @@ class OrdinaryKriging(BaseKriging):
         self.kriging_matrix = np.zeros((n + 1, n + 1))
         self.kriging_matrix[:n, :n] = gamma_matrix
         from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+
         self.kriging_matrix[:n, n] = UNBIASEDNESS_CONSTRAINT
         self.kriging_matrix[n, :n] = UNBIASEDNESS_CONSTRAINT
         self.kriging_matrix[n, n] = ZERO_VALUE
 
         # Regularize for numerical stability
         from ..core.constants import EPSILON
+
         self.kriging_matrix[:n, :n] = regularize_matrix(
-            self.kriging_matrix[:n, :n],
-            epsilon=EPSILON
+            self.kriging_matrix[:n, :n], epsilon=EPSILON
         )
 
     def predict(
@@ -96,7 +97,7 @@ class OrdinaryKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         return_variance: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
         Perform Ordinary Kriging prediction.
 
@@ -137,8 +138,9 @@ class OrdinaryKriging(BaseKriging):
 
             # Augmented right-hand side: [γ(h), 1]ᵀ
             rhs = np.zeros(self.n_points + 1)
-            rhs[:self.n_points] = gamma_vec
+            rhs[: self.n_points] = gamma_vec
             from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
             rhs[self.n_points] = UNBIASEDNESS_CONSTRAINT
 
             # Solve for weights and Lagrange multiplier
@@ -152,7 +154,7 @@ class OrdinaryKriging(BaseKriging):
                     variances[i] = np.var(self.z)
                 continue
 
-            weights = solution[:self.n_points]
+            weights = solution[: self.n_points]
             lagrange = solution[self.n_points]
 
             # Ordinary kriging prediction: ẑ(x₀) = Σλᵢz(xᵢ)
@@ -164,13 +166,15 @@ class OrdinaryKriging(BaseKriging):
                 # Kriging variance should theoretically be non-negative
                 # Negative values indicate numerical issues or invalid variogram
                 from ..core.constants import ZERO_VALUE
+
                 if variances[i] < ZERO_VALUE:
                     import warnings
+
                     warnings.warn(
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
                         "This may indicate numerical instability or an invalid variogram model. "
                         "Variance will be clamped to 0.",
-                        RuntimeWarning
+                        RuntimeWarning,
                     )
                     variances[i] = ZERO_VALUE
 
@@ -179,7 +183,7 @@ class OrdinaryKriging(BaseKriging):
         else:
             return predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
 
@@ -227,10 +231,10 @@ class OrdinaryKriging(BaseKriging):
 
     def predict_block(
         self,
-        x_block: Tuple[float, float],
-        y_block: Tuple[float, float],
+        x_block: tuple[float, float],
+        y_block: tuple[float, float],
         discretization: int = 10,
-    ) -> Tuple[float, float]:
+    ) -> tuple[float, float]:
         """
         Block kriging: predict average value over a block
 

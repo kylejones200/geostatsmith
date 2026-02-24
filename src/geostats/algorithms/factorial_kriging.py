@@ -40,49 +40,48 @@ References:
 - Chilès & Delfiner (2012) §4.3.4: Factorial kriging analysis
 """
 
-from typing import List, Tuple, Optional, Dict, Union
+import logging
+
 import numpy as np
 import numpy.typing as npt
-import logging
 
 logger = logging.getLogger(__name__)
 
+from ..algorithms.nested_variogram import NestedVariogram
 from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
-from ..core.validators import validate_coordinates, validate_values
 from ..core.constants import REGULARIZATION_FACTOR
 from ..core.logging_config import get_logger
-from ..math.distance import euclidean_distance_matrix
-from ..math.matrices import solve_kriging_system, regularize_matrix
-from ..algorithms.nested_variogram import NestedVariogram
+from ..core.validators import validate_coordinates, validate_values
+from ..math.matrices import regularize_matrix
 
 logger = get_logger(__name__)
 
+
 class FactorialKriging(BaseKriging):
     """
-    Factorial Kriging for multi-scale spatial analysis
+       Factorial Kriging for multi-scale spatial analysis
 
-    Decomposes a spatial variable into independent components
-    corresponding to different scales of spatial variation defined
-    by nested variogram structures.
+       Decomposes a spatial variable into independent components
+       corresponding to different scales of spatial variation defined
+       by nested variogram structures.
 
-    Examples
- --------
- >>> # Fit nested variogram with 2 structures
- >>> nested_model = NestedVariogram(nugget=0.1)
- >>> nested_model.add_structure('spherical', sill=0.3, range=10) # Short-range
- >>> nested_model.add_structure('spherical', sill=0.6, range=100) # Long-range
- >>>
- >>> # Create factorial kriging
- >>> fk = FactorialKriging(x, y, z, nested_model)
- >>>
- >>> # Estimate components at new locations
- >>> components = fk.predict_components(x_new, y_new)
- >>> # components = {'short_range': Y1, 'long_range': Y2, 'nugget': ε}
- >>>
- >>> # Or get filtered version (e.g., remove short-range noise)
- >>> filtered = fk.filter(x_new, y_new, components_to_keep=['long_range'])
- """
+       Examples
+    --------
+    >>> # Fit nested variogram with 2 structures
+    >>> nested_model = NestedVariogram(nugget=0.1)
+    >>> nested_model.add_structure('spherical', sill=0.3, range=10) # Short-range
+    >>> nested_model.add_structure('spherical', sill=0.6, range=100) # Long-range
+    >>>
+    >>> # Create factorial kriging
+    >>> fk = FactorialKriging(x, y, z, nested_model)
+    >>>
+    >>> # Estimate components at new locations
+    >>> components = fk.predict_components(x_new, y_new)
+    >>> # components = {'short_range': Y1, 'long_range': Y2, 'nugget': ε}
+    >>>
+    >>> # Or get filtered version (e.g., remove short-range noise)
+    >>> filtered = fk.filter(x_new, y_new, components_to_keep=['long_range'])
+    """
 
     def __init__(
         self,
@@ -90,21 +89,21 @@ class FactorialKriging(BaseKriging):
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
         nested_variogram: NestedVariogram,
-        mean: Optional[float] = None
+        mean: float | None = None,
     ):
         """
-        Initialize Factorial Kriging
+           Initialize Factorial Kriging
 
-        Parameters
-        ----------
-        x, y : np.ndarray
-        Coordinates of sample points
-     z : np.ndarray
-     Values at sample points
-     nested_variogram : NestedVariogram
-     Fitted nested variogram model with multiple structures
-     mean : float, optional
-     Known mean. If None, estimated from data.
+           Parameters
+           ----------
+           x, y : np.ndarray
+           Coordinates of sample points
+        z : np.ndarray
+        Values at sample points
+        nested_variogram : NestedVariogram
+        Fitted nested variogram model with multiple structures
+        mean : float, optional
+        Known mean. If None, estimated from data.
         """
         self.x, self.y = validate_coordinates(x, y)
         self.z = validate_values(z, n_expected=len(self.x))
@@ -149,6 +148,7 @@ class FactorialKriging(BaseKriging):
 
         # Calculate distance matrix once
         from ..math.distance import euclidean_distance
+
         dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
         # Storage for kriging matrices (one per structure)
@@ -158,57 +158,60 @@ class FactorialKriging(BaseKriging):
             K = np.zeros((n + 1, n + 1), dtype=np.float64)
 
             # Get variogram for this structure only
-            gamma_i = structure['model'](dist_matrix)
+            gamma_i = structure["model"](dist_matrix)
 
             # Convert to covariance: C_i(h) = sill_i - gamma_i(h)
-            sill_i = structure['sill']
+            sill_i = structure["sill"]
             C_i = sill_i - gamma_i
 
             K[:n, :n] = C_i
 
             # Unbiasedness constraint
             from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+
             K[:n, n] = UNBIASEDNESS_CONSTRAINT
             K[n, :n] = UNBIASEDNESS_CONSTRAINT
             K[n, n] = ZERO_VALUE
 
             # Regularize
-            from ..math.matrices import regularize_matrix
-            from ..core.constants import REGULARIZATION_FACTOR
+
             K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
 
             self.kriging_matrices.append(K)
 
-            logger.debug(f"Built kriging matrix for structure {i}: {structure['model_type']}")
+            logger.debug(
+                f"Built kriging matrix for structure {i}: {structure['model_type']}"
+            )
 
     def predict_components(
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        return_variance: bool = False
-    ) -> Dict[str, npt.NDArray[np.float64]]:
+        return_variance: bool = False,
+    ) -> dict[str, npt.NDArray[np.float64]]:
         """
-        Predict each spatial component independently
+           Predict each spatial component independently
 
-        Parameters
-        ----------
-        x_new, y_new : np.ndarray
-            Coordinates of prediction points
-        return_variance : bool
-            If True, include variance estimates for each component
+           Parameters
+           ----------
+           x_new, y_new : np.ndarray
+               Coordinates of prediction points
+           return_variance : bool
+               If True, include variance estimates for each component
 
-     Returns
-     -------
-     components : dict
-     Dictionary with keys:
-         pass
-     - 'structure_0', 'structure_1', ...: spatial components
-     - 'nugget': nugget component (if present)
-     - 'total': sum of all components (= Z(x) - μ)
-     - 'mean': the estimated mean
-        - Optional: 'variance_0', 'variance_1', ... if return_variance=True
+        Returns
+        -------
+        components : dict
+        Dictionary with keys:
+            pass
+        - 'structure_0', 'structure_1', ...: spatial components
+        - 'nugget': nugget component (if present)
+        - 'total': sum of all components (= Z(x) - μ)
+        - 'mean': the estimated mean
+           - Optional: 'variance_0', 'variance_1', ... if return_variance=True
         """
         from ..utils.validation import validate_coordinates
+
         x_new, y_new = validate_coordinates(x_new, y_new)
         n_pred = len(x_new)
         n_data = len(self.x)
@@ -223,6 +226,7 @@ class FactorialKriging(BaseKriging):
 
         # For each prediction point, calculate distance to all data points
         from scipy.spatial.distance import cdist
+
         dist_to_pred = cdist(coords_pred, coords_data)
 
         # Predict each structure component
@@ -231,15 +235,16 @@ class FactorialKriging(BaseKriging):
             variances = np.zeros(n_pred, dtype=np.float64) if return_variance else None
 
             # Get variogram for this structure
-            sill_i = structure['sill']
+            sill_i = structure["sill"]
 
             for j in range(n_pred):
-                gamma_values = structure['model'](dist_to_pred[j])
+                gamma_values = structure["model"](dist_to_pred[j])
                 cov_values = sill_i - gamma_values
 
                 rhs = np.zeros(n_data + 1, dtype=np.float64)
                 rhs[:n_data] = cov_values
                 from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
                 rhs[n_data] = UNBIASEDNESS_CONSTRAINT
 
                 # Solve kriging system
@@ -247,7 +252,10 @@ class FactorialKriging(BaseKriging):
                     weights = np.linalg.solve(self.kriging_matrices[i], rhs)
                 except np.linalg.LinAlgError as e:
                     from ..exceptions import KrigingError
-                    logger.error(f"Failed to solve FK system for structure {i}, point {j}: {e}")
+
+                    logger.error(
+                        f"Failed to solve FK system for structure {i}, point {j}: {e}"
+                    )
                     raise KrigingError(f"Failed to solve factorial kriging system: {e}")
 
                 lambdas = weights[:n_data]
@@ -264,7 +272,7 @@ class FactorialKriging(BaseKriging):
             components[comp_name] = predictions
 
             if return_variance:
-                components[f'variance_{i}'] = variances
+                components[f"variance_{i}"] = variances
 
             logger.debug(f"Predicted component {i}: {structure['model_type']}")
 
@@ -276,12 +284,14 @@ class FactorialKriging(BaseKriging):
         total = np.zeros(n_pred, dtype=np.float64)
         for i in range(self.n_structures):
             total += components[f"structure_{i}"]
-        components['total'] = total
+        components["total"] = total
 
         # Mean
-        components['mean'] = np.full(n_pred, self.mean, dtype=np.float64)
+        components["mean"] = np.full(n_pred, self.mean, dtype=np.float64)
 
-        logger.info(f"Factorial kriging predicted {n_pred} points across {self.n_structures} components")
+        logger.info(
+            f"Factorial kriging predicted {n_pred} points across {self.n_structures} components"
+        )
 
         return components
 
@@ -289,8 +299,11 @@ class FactorialKriging(BaseKriging):
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        return_variance: bool = True
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        return_variance: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
         Predict at new locations (sum of all components)
 
@@ -308,7 +321,9 @@ class FactorialKriging(BaseKriging):
         variance : np.ndarray, optional
             Prediction variance (if return_variance=True)
         """
-        components = self.predict_components(x_new, y_new, return_variance=return_variance)
+        components = self.predict_components(
+            x_new, y_new, return_variance=return_variance
+        )
 
         # Sum all components
         total = self.mean * np.ones(len(x_new))
@@ -319,12 +334,12 @@ class FactorialKriging(BaseKriging):
             # Variance is simply the sum of component variances
             variance = np.zeros(len(x_new))
             for i in range(self.n_structures):
-                variance += components[f'variance_{i}']
-        
+                variance += components[f"variance_{i}"]
+
             # Add nugget variance if present
             if self.has_nugget:
                 variance += self.nested_variogram.nugget
-        
+
             return total, variance
         return total
 
@@ -334,8 +349,8 @@ class FactorialKriging(BaseKriging):
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        components_to_keep: Optional[List[str]] = None,
-        components_to_remove: Optional[List[str]] = None
+        components_to_keep: list[str] | None = None,
+        components_to_remove: list[str] | None = None,
     ) -> npt.NDArray[np.float64]:
         """
         Filter spatial data by selecting specific components
@@ -373,7 +388,7 @@ class FactorialKriging(BaseKriging):
         components = self.predict_components(x_new, y_new, return_variance=False)
 
         # Start with mean
-        filtered = components['mean'].copy()
+        filtered = components["mean"].copy()
 
         # Determine which components to include
         for i in range(self.n_structures):
@@ -396,7 +411,7 @@ class FactorialKriging(BaseKriging):
 
         return filtered
 
-    def get_component_info(self) -> Dict[str, Dict[str, float]]:
+    def get_component_info(self) -> dict[str, dict[str, float]]:
         """
         Get information about each spatial component
 
@@ -415,24 +430,28 @@ class FactorialKriging(BaseKriging):
         total_sill = self.nested_variogram.total_sill()
 
         for i, structure in enumerate(self.nested_variogram.structures):
-            info[f'structure_{i}'] = {
-                'model_type': structure['model_type'],
-                'sill': structure['sill'],
-                'range': structure.get('range', None),
-                'contribution': (structure['sill'] / total_sill) * 100 if total_sill > 0 else 0
+            info[f"structure_{i}"] = {
+                "model_type": structure["model_type"],
+                "sill": structure["sill"],
+                "range": structure.get("range", None),
+                "contribution": (structure["sill"] / total_sill) * 100
+                if total_sill > 0
+                else 0,
             }
 
         if self.has_nugget:
-            info['nugget'] = {
-                'model_type': 'nugget',
-                'sill': self.nested_variogram.nugget,
-                'range': 0.0,
-                'contribution': (self.nested_variogram.nugget / total_sill) * 100 if total_sill > 0 else 0
+            info["nugget"] = {
+                "model_type": "nugget",
+                "sill": self.nested_variogram.nugget,
+                "range": 0.0,
+                "contribution": (self.nested_variogram.nugget / total_sill) * 100
+                if total_sill > 0
+                else 0,
             }
 
         return info
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
 
@@ -449,8 +468,8 @@ class FactorialKriging(BaseKriging):
         predictions = leave_one_out(self, self.x, self.y, self.z)
 
         metrics = {
-            'mse': mean_squared_error(self.z, predictions),
-            'r2': r_squared(self.z, predictions)
+            "mse": mean_squared_error(self.z, predictions),
+            "r2": r_squared(self.z, predictions),
         }
 
         return predictions, metrics

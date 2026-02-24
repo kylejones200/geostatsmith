@@ -2,8 +2,8 @@
 Tests for kriging methods
 """
 
-import pytest
 import numpy as np
+
 from geostats import kriging, variogram
 
 

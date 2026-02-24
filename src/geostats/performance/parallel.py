@@ -5,19 +5,20 @@ Parallel Processing for Kriging
 Multi-core parallel implementations of kriging and related operations.
 """
 
-import numpy as np
-import numpy.typing as npt
-from typing import Tuple, Optional, List
-from joblib import Parallel, delayed
+import logging
 import multiprocessing
 
-from ..algorithms.ordinary_kriging import OrdinaryKriging
-from ..models.base_model import VariogramModelBase
-from ..algorithms.variogram import experimental_variogram
+import numpy as np
+import numpy.typing as npt
+from joblib import Parallel, delayed
+
 from ..algorithms.fitting import fit_variogram_model as fit_variogram
-import logging
+from ..algorithms.ordinary_kriging import OrdinaryKriging
+from ..algorithms.variogram import experimental_variogram
+from ..models.base_model import VariogramModelBase
 
 logger = logging.getLogger(__name__)
+
 
 def parallel_kriging(
     x: npt.NDArray[np.float64],
@@ -29,7 +30,7 @@ def parallel_kriging(
     n_jobs: int = -1,
     batch_size: int = 1000,
     return_variance: bool = True,
-) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
     """
     Perform kriging in parallel across multiple CPU cores.
 
@@ -105,8 +106,7 @@ def parallel_kriging(
         return krig.predict(x_batch, y_batch, return_variance=return_variance)
 
     results = Parallel(n_jobs=n_jobs)(
-        delayed(process_batch)(x_b, y_b, s, e)
-        for x_b, y_b, s, e in batches
+        delayed(process_batch)(x_b, y_b, s, e) for x_b, y_b, s, e in batches
     )
 
     # Combine results
@@ -118,12 +118,13 @@ def parallel_kriging(
         predictions = np.concatenate([r for r in results])
         return predictions, None
 
+
 def parallel_cross_validation(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
-    method: str = 'leave_one_out',
+    method: str = "leave_one_out",
     n_folds: int = 5,
     n_jobs: int = -1,
 ) -> dict:
@@ -181,28 +182,25 @@ def parallel_cross_validation(
         )
 
         z_pred, var = krig.predict(
-            np.array([x[i]]),
-            np.array([y[i]]),
-            return_variance=True
+            np.array([x[i]]), np.array([y[i]]), return_variance=True
         )
 
         return z_pred[0], var[0]
 
-    if method == 'leave_one_out':
+    if method == "leave_one_out":
         results_list = Parallel(n_jobs=n_jobs)(
-            delayed(predict_single)(i, np.delete(np.arange(n), i))
-            for i in range(n)
+            delayed(predict_single)(i, np.delete(np.arange(n), i)) for i in range(n)
         )
 
         predictions = np.array([r[0] for r in results_list])
         variances = np.array([r[1] for r in results_list])
 
-    elif method == 'k_fold':
+    elif method == "k_fold":
         try:
             from sklearn.model_selection import KFold
         except ImportError:
             raise ImportError("scikit-learn is required for k-fold cross-validation")
-        
+
         kf = KFold(n_splits=n_folds, shuffle=True, random_state=42)
 
         predictions = np.zeros(n)
@@ -210,8 +208,7 @@ def parallel_cross_validation(
 
         for train_idx, test_idx in kf.split(x):
             fold_results = Parallel(n_jobs=n_jobs)(
-                delayed(predict_single)(i, train_idx)
-                for i in test_idx
+                delayed(predict_single)(i, train_idx) for i in test_idx
             )
 
             predictions[test_idx] = [r[0] for r in fold_results]
@@ -224,23 +221,24 @@ def parallel_cross_validation(
     errors = z - predictions
     rmse = np.sqrt(np.mean(errors**2))
     mae = np.mean(np.abs(errors))
-    r2 = 1 - np.sum(errors**2) / np.sum((z - z.mean())**2)
+    r2 = 1 - np.sum(errors**2) / np.sum((z - z.mean()) ** 2)
 
     return {
-        'predictions': predictions,
-        'variances': variances,
-        'errors': errors,
-        'rmse': rmse,
-        'mae': mae,
-        'r2': r2,
-        'observed': z,
+        "predictions": predictions,
+        "variances": variances,
+        "errors": errors,
+        "rmse": rmse,
+        "mae": mae,
+        "r2": r2,
+        "observed": z,
     }
+
 
 def parallel_variogram_fit(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    model_types: List[str] = None,
+    model_types: list[str] = None,
     n_lags: int = 15,
     n_jobs: int = -1,
 ) -> dict:
@@ -278,7 +276,7 @@ def parallel_variogram_fit(
     >>> logger.info(f"Best: {results['best_type']} (R^2 = {results['best_r2']:.3f})")
     """
     if model_types is None:
-        model_types = ['spherical', 'exponential', 'gaussian']
+        model_types = ["spherical", "exponential", "gaussian"]
 
     if n_jobs == -1:
         n_jobs = multiprocessing.cpu_count()
@@ -293,24 +291,19 @@ def parallel_variogram_fit(
 
             # Compute R^2
             gamma_fitted = model(lags)
-            ss_res = np.sum((gamma - gamma_fitted)**2)
-            ss_tot = np.sum((gamma - gamma.mean())**2)
+            ss_res = np.sum((gamma - gamma_fitted) ** 2)
+            ss_tot = np.sum((gamma - gamma.mean()) ** 2)
             r2 = 1 - ss_res / ss_tot
 
-            return {
-                'model': model,
-                'type': model_type,
-                'r2': r2,
-                'success': True
-            }
+            return {"model": model, "type": model_type, "r2": r2, "success": True}
         except Exception as e:
             logger.warning(f"Failed to fit {model_type}: {e}")
             return {
-                'model': None,
-                'type': model_type,
-                'r2': -np.inf,
-                'success': False,
-                'error': str(e)
+                "model": None,
+                "type": model_type,
+                "r2": -np.inf,
+                "success": False,
+                "error": str(e),
             }
 
     fit_results = Parallel(n_jobs=n_jobs)(
@@ -318,18 +311,18 @@ def parallel_variogram_fit(
     )
 
     # Find best model
-    successful = [r for r in fit_results if r['success']]
+    successful = [r for r in fit_results if r["success"]]
 
     if not successful:
         raise ValueError("All variogram model fits failed")
 
-    best = max(successful, key=lambda x: x['r2'])
+    best = max(successful, key=lambda x: x["r2"])
 
     return {
-        'best_model': best['model'],
-        'best_type': best['type'],
-        'best_r2': best['r2'],
-        'all_results': fit_results,
-        'lags': lags,
-        'gamma': gamma,
+        "best_model": best["model"],
+        "best_type": best["type"],
+        "best_r2": best["r2"],
+        "all_results": fit_results,
+        "lags": lags,
+        "gamma": gamma,
     }

@@ -6,8 +6,24 @@ set -euo pipefail
 
 echo "🧪 Running tests..."
 
+# Try uv run pytest, then venv, then python3 -m pytest, then pytest command
+if command -v uv &> /dev/null && uv run pytest --version &>/dev/null 2>&1; then
+    PYTEST_CMD="uv run pytest"
+elif [ -d "venv" ] && source venv/bin/activate && python -m pytest --version &>/dev/null 2>&1; then
+    source venv/bin/activate
+    PYTEST_CMD="python -m pytest"
+elif python3 -m pytest --version &>/dev/null 2>&1; then
+    PYTEST_CMD="python3 -m pytest"
+elif command -v pytest &> /dev/null; then
+    PYTEST_CMD="pytest"
+else
+    echo "❌ Error: pytest not found."
+    echo "   Install with: uv sync --dev  or  pip install pytest"
+    exit 1
+fi
+
 # Fast test profile: no coverage, short timeout, skip slow tests
-pytest \
+$PYTEST_CMD \
     tests/ \
     -v \
     --tb=short \

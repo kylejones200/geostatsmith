@@ -1,15 +1,15 @@
 """
-    Base classes for variogram and covariance models
+Base classes for variogram and covariance models
 """
 
 from abc import abstractmethod
-from typing import Dict, Any, Optional
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 
 from ..core.base import BaseModel
-from ..core.validators import validate_positive
-from ..math.numerical import weighted_least_squares
+
 
 class VariogramModelBase(BaseModel):
     """
@@ -22,8 +22,8 @@ class VariogramModelBase(BaseModel):
     def __init__(
         self,
         nugget: float = 0.0,
-        sill: Optional[float] = None,
-        range_param: Optional[float] = None,
+        sill: float | None = None,
+        range_param: float | None = None,
     ) -> None:
         """
         Initialize variogram model
@@ -91,6 +91,7 @@ class VariogramModelBase(BaseModel):
             Semivariance values
         """
         import numpy as np
+
         h = np.asarray(h, dtype=np.float64)
         nugget = self._parameters["nugget"]
 
@@ -109,7 +110,7 @@ class VariogramModelBase(BaseModel):
         self,
         lags: npt.NDArray[np.float64],
         gamma: npt.NDArray[np.float64],
-        weights: Optional[npt.NDArray[np.float64]] = None,
+        weights: npt.NDArray[np.float64] | None = None,
         fit_nugget: bool = True,
         **kwargs: Any,
     ) -> "VariogramModelBase":
@@ -135,6 +136,7 @@ class VariogramModelBase(BaseModel):
             Fitted model
         """
         import numpy as np
+
         lags = np.asarray(lags, dtype=np.float64)
         gamma = np.asarray(gamma, dtype=np.float64)
 
@@ -161,6 +163,7 @@ class VariogramModelBase(BaseModel):
 
         try:
             from scipy.optimize import curve_fit
+
             params, _ = curve_fit(
                 self._fitting_function,
                 lags_fit,
@@ -173,7 +176,7 @@ class VariogramModelBase(BaseModel):
             self._update_parameters_from_fit(params, fit_nugget)
             self._is_fitted = True
 
-        except Exception as e:
+        except Exception:
             # Use initial estimates if fitting fails
             self._parameters["nugget"] = nugget_init
             self._parameters["sill"] = sill_init
@@ -191,6 +194,7 @@ class VariogramModelBase(BaseModel):
     ) -> tuple:
         """Prepare initial parameters and bounds for fitting"""
         import numpy as np
+
         if fit_nugget:
             p0 = [nugget_init, sill_init, range_init]
             bounds_lower = [0.0, 0.0, 0.0]
@@ -202,7 +206,9 @@ class VariogramModelBase(BaseModel):
 
         return p0, bounds_lower, bounds_upper
 
-    def _fitting_function(self, h: npt.NDArray[np.float64], *params: float) -> npt.NDArray[np.float64]:
+    def _fitting_function(
+        self, h: npt.NDArray[np.float64], *params: float
+    ) -> npt.NDArray[np.float64]:
         # Temporarily set parameters
         old_params = self._parameters.copy()
 
@@ -219,7 +225,9 @@ class VariogramModelBase(BaseModel):
         self._parameters = old_params
         return result
 
-    def _update_parameters_from_fit(self, params: npt.NDArray[np.float64], fit_nugget: bool) -> None:
+    def _update_parameters_from_fit(
+        self, params: npt.NDArray[np.float64], fit_nugget: bool
+    ) -> None:
         if fit_nugget:
             self._parameters["nugget"] = max(0.0, params[0])
             self._parameters["sill"] = max(0.0, params[1])
@@ -254,6 +262,7 @@ class CovarianceModelBase(BaseModel):
         """
         super().__init__(nugget=0.0, sill=sill, range_param=range_param)
         from ..utils.validation import validate_positive
+
         self._parameters = {
             "sill": validate_positive(sill, "sill"),
             "range": validate_positive(range_param, "range"),
@@ -278,6 +287,7 @@ class CovarianceModelBase(BaseModel):
             Covariance values
         """
         import numpy as np
+
         h = np.asarray(h, dtype=np.float64)
         return self._model_function(h)
 
@@ -306,6 +316,7 @@ class CovarianceModelBase(BaseModel):
         """
         # Convert covariance to variogram for fitting
         import numpy as np
+
         sill = np.max(cov) if len(cov) > 0 else 1.0
         gamma = sill - cov
         return super().fit(lags, gamma, fit_nugget=False, **kwargs)

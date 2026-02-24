@@ -6,14 +6,13 @@ Optimize hyperparameters for kriging and related methods.
 """
 
 import logging
+from itertools import product
+
 import numpy as np
 import numpy.typing as npt
-from typing import Dict, Tuple
-from itertools import product
 
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
-from ..validation.cross_validation import leave_one_out
 
 logger = logging.getLogger(__name__)
 
@@ -23,10 +22,10 @@ def tune_kriging(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
-    param_ranges: Dict,
+    param_ranges: dict,
     n_iterations: int = 20,
     verbose: bool = True,
-) -> Dict:
+) -> dict:
     """
     Tune kriging hyperparameters via grid search.
 
@@ -75,7 +74,7 @@ def tune_kriging(
             param_grid[param_name] = [param_range]
 
     # Generate all combinations
-    from itertools import product
+
     param_names = list(param_grid.keys())
     param_values = list(param_grid.values())
     param_combinations = list(product(*param_values))
@@ -103,7 +102,7 @@ def tune_kriging(
 
             # Perform cross-validation
             from ..algorithms.ordinary_kriging import OrdinaryKriging
-            from ..validation.cross_validation import leave_one_out
+
             ok = OrdinaryKriging(x, y, z, variogram_model=test_model)
             predictions, metrics = ok.cross_validate()
 
@@ -138,7 +137,7 @@ def optimize_neighborhood(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
-    max_neighbors_range: Tuple[int, int] = (10, 100),
+    max_neighbors_range: tuple[int, int] = (10, 100),
     verbose: bool = True,
 ) -> int:
     """
@@ -172,7 +171,6 @@ def optimize_neighborhood(
     test_sizes = np.unique(test_sizes)  # Remove duplicates
 
     from ..algorithms.neighborhood_search import NeighborhoodConfig
-    from ..algorithms.ordinary_kriging import OrdinaryKriging
 
     for n_neighbors in test_sizes:
         try:
@@ -192,7 +190,7 @@ def optimize_neighborhood(
             )
 
             # Perform cross-validation
-            from ..validation.cross_validation import leave_one_out
+
             predictions, metrics = ok.cross_validate()
             rmse = metrics.get("RMSE", np.inf)
 
@@ -207,7 +205,9 @@ def optimize_neighborhood(
             logger.debug(f"Failed to test {n_neighbors} neighbors: {e}")
 
     if verbose:
-        logger.info(f"Optimal neighborhood size: {best_neighbors} (RMSE: {best_rmse:.4f})")
+        logger.info(
+            f"Optimal neighborhood size: {best_neighbors} (RMSE: {best_rmse:.4f})"
+        )
 
     return best_neighbors
 
@@ -219,13 +219,13 @@ def tune_variogram_hyperparameters(
     model_class: type,
     n_trials: int = 20,
     verbose: bool = True,
-) -> Dict:
+) -> dict:
     """
     Tune variogram hyperparameters for a given model class.
-    
+
     This is a convenience function that automatically determines parameter
     ranges and tunes the variogram model via cross-validation.
-    
+
     Parameters
     ----------
     x, y, z : ndarray
@@ -236,13 +236,13 @@ def tune_variogram_hyperparameters(
         Number of parameter combinations to try
     verbose : bool, default=True
         Print progress
-    
+
     Returns
     -------
     results : dict
         Dictionary with 'best_params' (containing 'nugget', 'sill', 'range')
         and 'best_score' (CV RMSE)
-    
+
     Examples
     --------
     >>> from geostats.models.variogram_models import SphericalModel
@@ -250,91 +250,107 @@ def tune_variogram_hyperparameters(
     >>> print(f"Best nugget: {results['best_params']['nugget']}")
     """
     from ..algorithms.variogram import experimental_variogram
-    from ..algorithms.fitting import fit_variogram_model
-    
+
     # Get experimental variogram to determine reasonable parameter ranges
     lags, gamma, _ = experimental_variogram(x, y, z)
-    
+
     # Estimate reasonable parameter ranges from data
     nugget_max = gamma[0] * 0.5  # Nugget should be less than first semivariance
     sill_min = gamma[-1] * 0.5
     sill_max = gamma[-1] * 2.0
     range_min = lags[1] if len(lags) > 1 else lags[0] * 0.1
     range_max = lags[-1] * 2.0
-    
+
     # Create initial model to get default parameters
     initial_model = model_class()
-    current_params = getattr(initial_model, '_parameters', {})
-    
+    current_params = getattr(initial_model, "_parameters", {})
+
     # Define parameter ranges
     param_ranges = {
-        'nugget': (0.0, nugget_max),
-        'sill': (sill_min, sill_max),
-        'range': (range_min, range_max),
+        "nugget": (0.0, nugget_max),
+        "sill": (sill_min, sill_max),
+        "range": (range_min, range_max),
     }
-    
+
     # Use grid search to find best parameters
     best_score = np.inf
     best_params = current_params.copy()
-    
+
     # Generate parameter grid
-    nugget_vals = np.linspace(param_ranges['nugget'][0], param_ranges['nugget'][1], max(3, n_trials // 4))
-    sill_vals = np.linspace(param_ranges['sill'][0], param_ranges['sill'][1], max(3, n_trials // 4))
-    range_vals = np.linspace(param_ranges['range'][0], param_ranges['range'][1], max(3, n_trials // 4))
-    
+    nugget_vals = np.linspace(
+        param_ranges["nugget"][0], param_ranges["nugget"][1], max(3, n_trials // 4)
+    )
+    sill_vals = np.linspace(
+        param_ranges["sill"][0], param_ranges["sill"][1], max(3, n_trials // 4)
+    )
+    range_vals = np.linspace(
+        param_ranges["range"][0], param_ranges["range"][1], max(3, n_trials // 4)
+    )
+
     # Limit total combinations
     if len(nugget_vals) * len(sill_vals) * len(range_vals) > n_trials:
         # Randomly sample
         from itertools import product
+
         all_combos = list(product(nugget_vals, sill_vals, range_vals))
         indices = np.random.choice(len(all_combos), size=n_trials, replace=False)
         combos = [all_combos[i] for i in indices]
     else:
         from itertools import product
+
         combos = list(product(nugget_vals, sill_vals, range_vals))
-    
+
     if verbose:
-        logger.info(f"Tuning {model_class.__name__} with {len(combos)} parameter combinations")
-    
+        logger.info(
+            f"Tuning {model_class.__name__} with {len(combos)} parameter combinations"
+        )
+
     # Test each combination via cross-validation
     for nugget, sill, range_param in combos:
         try:
             # Create model with these parameters
             test_model = model_class(nugget=nugget, sill=sill, range_param=range_param)
-            
+
             # Perform simple cross-validation
             from ..algorithms.ordinary_kriging import OrdinaryKriging
+
             n = len(x)
             cv_preds = np.zeros(n)
-            
+
             for i in range(n):
                 train_idx = np.arange(n) != i
                 try:
-                    krig = OrdinaryKriging(x[train_idx], y[train_idx], z[train_idx], test_model)
-                    pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
+                    krig = OrdinaryKriging(
+                        x[train_idx], y[train_idx], z[train_idx], test_model
+                    )
+                    pred, _ = krig.predict(
+                        np.array([x[i]]), np.array([y[i]]), return_variance=True
+                    )
                     cv_preds[i] = pred[0]
                 except Exception:
                     cv_preds[i] = z[train_idx].mean()  # Fallback
-            
+
             errors = z - cv_preds
             rmse = np.sqrt(np.mean(errors**2))
-            
+
             if rmse < best_score:
                 best_score = rmse
                 best_params = {
-                    'nugget': float(nugget),
-                    'sill': float(sill),
-                    'range': float(range_param),
+                    "nugget": float(nugget),
+                    "sill": float(sill),
+                    "range": float(range_param),
                 }
         except Exception:
             continue
-    
+
     if verbose:
-        logger.info(f"Best parameters: nugget={best_params['nugget']:.4f}, "
-                   f"sill={best_params['sill']:.4f}, range={best_params['range']:.4f}")
+        logger.info(
+            f"Best parameters: nugget={best_params['nugget']:.4f}, "
+            f"sill={best_params['sill']:.4f}, range={best_params['range']:.4f}"
+        )
         logger.info(f"Best CV RMSE: {best_score:.4f}")
-    
+
     return {
-        'best_params': best_params,
-        'best_score': float(best_score),
+        "best_params": best_params,
+        "best_score": float(best_score),
     }

@@ -6,27 +6,27 @@ Generate professional analysis reports.
 """
 
 import logging
+from datetime import datetime
+from pathlib import Path
+
 import numpy as np
 import numpy.typing as npt
-from typing import Optional, Dict, Any
-from pathlib import Path
-from datetime import datetime
-import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
+
 
 def generate_report(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    output: str = 'report.html',
-    title: str = 'Geostatistical Analysis Report',
-    author: str = 'GeoStats',
+    output: str = "report.html",
+    title: str = "Geostatistical Analysis Report",
+    author: str = "GeoStats",
     include_cv: bool = True,
     include_uncertainty: bool = True,
-    ) -> str:
+) -> str:
     """
     Generate analysis report.
- 
+
     Parameters
     ----------
     x, y, z : ndarray
@@ -61,13 +61,15 @@ def generate_report(
     Notes
     -----
     HTML reports are always generated. PDF requires wkhtmltopdf or similar.
- """
+    """
     html = _generate_html_report(
-        x, y, z,
+        x,
+        y,
+        z,
         title=title,
         author=author,
         include_cv=include_cv,
-        include_uncertainty=include_uncertainty
+        include_uncertainty=include_uncertainty,
     )
 
     output_path = Path(output)
@@ -76,6 +78,7 @@ def generate_report(
     logger.info(f"Report generated: {output_path}")
     return str(output_path)
 
+
 def _generate_html_report(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
@@ -83,10 +86,9 @@ def _generate_html_report(
     author: str,
     include_cv: bool,
     include_uncertainty: bool,
-    ) -> str:
+) -> str:
     """Generate HTML report content."""
-    from ..automl import auto_variogram, auto_fit
-    from ..algorithms.ordinary_kriging import OrdinaryKriging
+    from ..automl import auto_variogram
 
     # Fit model
     model = auto_variogram(x, y, z, verbose=False)
@@ -100,9 +102,9 @@ def _generate_html_report(
         cv_html = f"""
     <h2>Cross-Validation</h2>
     <table class="metrics">
-    <tr><td>RMSE:</td><td>{results['cv_rmse']:.4f}</td></tr>
-    <tr><td>MAE:</td><td>{results['cv_mae']:.4f}</td></tr>
-    <tr><td>R^2:</td><td>{results['cv_r2']:.4f}</td></tr>
+    <tr><td>RMSE:</td><td>{results["cv_rmse"]:.4f}</td></tr>
+    <tr><td>MAE:</td><td>{results["cv_mae"]:.4f}</td></tr>
+    <tr><td>R^2:</td><td>{results["cv_r2"]:.4f}</td></tr>
     </table>
  """
 
@@ -185,7 +187,7 @@ def _generate_html_report(
     <h1>{title}</h1>
     <div class="metadata">
     <p><strong>Author:</strong> {author}</p>
-    <p><strong>Generated:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+    <p><strong>Generated:</strong> {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</p>
     <p><strong>Tool:</strong> GeoStats v0.3.0</p>
     </div>
 
@@ -202,16 +204,17 @@ def _generate_html_report(
 
     return html
 
+
 def create_kriging_report(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     x_pred: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
-    output: str = 'kriging_report.html',
-    ) -> str:
+    output: str = "kriging_report.html",
+) -> str:
     """
     Generate kriging-specific report with prediction maps.
- 
+
     Parameters
     ----------
     x, y, z : ndarray
@@ -220,39 +223,42 @@ def create_kriging_report(
     Prediction locations
     output : str
     Output filename
- 
+
     Returns
     -------
     output_path : str
     Path to report
- """
+    """
     # Simplified version - full implementation would include plots
-    return generate_report(x, y, z, output=output, title='Kriging Analysis Report')
+    return generate_report(x, y, z, output=output, title="Kriging Analysis Report")
+
 
 def create_validation_report(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    output: str = 'validation_report.html',
-    ) -> str:
+    output: str = "validation_report.html",
+) -> str:
     """
     Generate validation-focused report.
- 
+
     Parameters
     ----------
     x, y, z : ndarray
     Sample data
     output : str
     Output filename
- 
+
     Returns
     -------
     output_path : str
     Path to report
- """
+    """
     return generate_report(
-        x, y, z,
+        x,
+        y,
+        z,
         output=output,
-        title='Model Validation Report',
+        title="Model Validation Report",
         include_cv=True,
-        include_uncertainty=True
+        include_uncertainty=True,
     )

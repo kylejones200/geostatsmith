@@ -8,15 +8,16 @@ Tests all transformation methods:
 - Declustering
 """
 
-import pytest
 import numpy as np
-from geostats.transformations.normal_score import NormalScoreTransform
-from geostats.transformations.log_transform import LogTransform
+import pytest
+
 from geostats.transformations.boxcox import BoxCoxTransform
 from geostats.transformations.declustering import cell_declustering
+from geostats.transformations.log_transform import LogTransform
+from geostats.transformations.normal_score import NormalScoreTransform
+
 
 class TestNormalScoreTransform:
-
     def test_basic_transform(self):
         np.random.seed(42)
         # Skewed data
@@ -89,8 +90,8 @@ class TestNormalScoreTransform:
             # Also acceptable to raise error for constant data
             pass
 
-class TestLogTransformExtended:
 
+class TestLogTransformExtended:
     def test_fit_and_transform_separate(self):
         data = np.array([1, 2, 3, 4, 5, 10, 20, 30])
 
@@ -131,6 +132,7 @@ class TestLogTransformExtended:
 
         # Calculate skewness before
         from scipy import stats
+
         skew_before = stats.skew(data)
 
         lt = LogTransform()
@@ -153,8 +155,8 @@ class TestLogTransformExtended:
         expected = np.array([0, 1, 2, 3])
         np.testing.assert_array_almost_equal(transformed, expected, decimal=10)
 
-class TestBoxCoxTransform:
 
+class TestBoxCoxTransform:
     def test_basic_boxcox(self):
         np.random.seed(42)
         # Positive data only
@@ -174,7 +176,7 @@ class TestBoxCoxTransform:
         bc.fit(data)
 
         # Lambda should be stored
-        assert hasattr(bc, 'lambda_')
+        assert hasattr(bc, "lambda_")
         assert np.isfinite(bc.lambda_)
 
     def test_inverse_transform(self):
@@ -195,7 +197,7 @@ class TestBoxCoxTransform:
         from scipy import stats
 
         # Test normality before
-        _, p_before = stats.shapiro(data[:50]) # Use subset for faster test
+        _, p_before = stats.shapiro(data[:50])  # Use subset for faster test
 
         bc = BoxCoxTransform()
         transformed = bc.fit_transform(data)
@@ -207,8 +209,8 @@ class TestBoxCoxTransform:
         # Note: This test might be flaky
         assert p_after > p_before or p_after > 0.01
 
-class TestDeclustering:
 
+class TestDeclustering:
     def test_cell_declustering_basic(self):
         np.random.seed(42)
 
@@ -233,7 +235,7 @@ class TestDeclustering:
         assert len(weights) == 40
         assert all(weights > 0)
         assert all(np.isfinite(weights))
-        assert 'optimal_cell_size' in info
+        assert "optimal_cell_size" in info
 
     def test_declustering_reduces_bias(self):
         np.random.seed(42)
@@ -304,8 +306,8 @@ class TestDeclustering:
         assert len(weights_few) == len(z)
         assert len(weights_many) == len(z)
 
-class TestTransformationEdgeCases:
 
+class TestTransformationEdgeCases:
     def test_empty_data(self):
         data = np.array([])
 
@@ -336,7 +338,7 @@ class TestTransformationEdgeCases:
         data = np.array([-5, -2, 0, 1, 2, 5])
 
         # Should either shift or raise error
-        lt = LogTransform(offset=10) # Large offset to make all positive
+        lt = LogTransform(offset=10)  # Large offset to make all positive
         lt.fit(data)
 
         try:
@@ -345,6 +347,7 @@ class TestTransformationEdgeCases:
         except ValueError:
             # Acceptable to raise error for negative values
             pass
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

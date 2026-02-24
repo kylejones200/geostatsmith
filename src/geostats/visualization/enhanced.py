@@ -9,8 +9,8 @@ Provides additional visualization capabilities including:
 Reference: Python Recipes for Earth Sciences (Trauth 2024), Chapter 7
 """
 
+from .comparison_plots import plot_error_analysis, plot_method_comparison
 from .hillshade import hillshade, plot_hillshaded_dem
-from .comparison_plots import plot_method_comparison, plot_error_analysis
 
 __all__ = [
     "hillshade",

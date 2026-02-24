@@ -12,38 +12,42 @@ Tests:
 - Data conversion utilities
 """
 
-import pytest
-import numpy as np
-import pandas as pd
-import tempfile
 import shutil
+import tempfile
 from pathlib import Path
 
-from geostats.io.tabular import (
-    read_csv_spatial,
-    write_csv_spatial,
-    read_excel_spatial,
-)
+import numpy as np
+import pandas as pd
+import pytest
+
 from geostats.io.formats import (
     to_dataframe,
     to_geopandas,
+)
+from geostats.io.tabular import (
+    read_csv_spatial,
+    read_excel_spatial,
+    write_csv_spatial,
 )
 
 # Check for optional dependencies
 try:
     import rasterio
+
     RASTERIO_AVAILABLE = True
 except ImportError:
     RASTERIO_AVAILABLE = False
 
 try:
     import netCDF4
+
     NETCDF_AVAILABLE = True
 except ImportError:
     NETCDF_AVAILABLE = False
 
 try:
     import geopandas
+
     GEOPANDAS_AVAILABLE = True
 except ImportError:
     GEOPANDAS_AVAILABLE = False
@@ -61,11 +65,10 @@ if NETCDF_AVAILABLE:
 
 # Import GeoJSON functions if available
 if GEOPANDAS_AVAILABLE:
-    from geostats.io.formats import read_geojson, write_geojson
+    from geostats.io.formats import read_geojson
 
 
 class TestCSVIO:
-
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -143,7 +146,7 @@ class TestCSVIO:
 
     def test_read_csv_spatial_file_not_found(self):
         with pytest.raises(FileNotFoundError):
-            read_csv_spatial('/nonexistent/file.csv', x_col='x', y_col='y', z_col='z')
+            read_csv_spatial("/nonexistent/file.csv", x_col="x", y_col="y", z_col="z")
 
     def test_read_csv_spatial_missing_columns(self):
         """Test that missing columns raise error"""
@@ -152,7 +155,6 @@ class TestCSVIO:
         df.to_csv(csv_file, index=False)
 
         with pytest.raises(KeyError, match="Missing columns"):
-
             pass
         """Test basic CSV writing"""
         csv_file = self.temp_dir / "output.csv"
@@ -202,7 +204,6 @@ class TestCSVIO:
 
     def test_read_excel_spatial(self):
         try:
-
             x_read, y_read, z_read, _ = read_excel_spatial(str(excel_file))
 
             np.testing.assert_allclose(x_read, self.x)
@@ -213,7 +214,6 @@ class TestCSVIO:
 
 
 class TestRasterIO:
-
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def setup_method(self):
         np.random.seed(42)
@@ -275,7 +275,7 @@ class TestRasterIO:
     @pytest.mark.skipif(not RASTERIO_AVAILABLE, reason="rasterio not available")
     def test_read_geotiff_file_not_found(self):
         with pytest.raises(FileNotFoundError):
-            read_geotiff('/nonexistent/file.tif')
+            read_geotiff("/nonexistent/file.tif")
 
     def test_write_ascii_grid(self):
         asc_file = self.temp_dir / "test.asc"
@@ -308,7 +308,6 @@ class TestRasterIO:
 
 
 class TestNetCDFIO:
-
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def setup_method(self):
         np.random.seed(42)
@@ -348,16 +347,15 @@ class TestNetCDFIO:
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def test_read_netcdf_file_not_found(self):
         with pytest.raises(FileNotFoundError):
-            read_netcdf('/nonexistent/file.nc')
+            read_netcdf("/nonexistent/file.nc")
 
     def test_read_netcdf_missing_variable(self):
         nc_file = self.temp_dir / "test.nc"
         write_netcdf(str(nc_file), self.x, self.y, self.z, z_var="temp")
 
         with pytest.raises(KeyError, match="Variable"):
-
-
             pass
+
     """Tests for data conversion utilities"""
 
     def setup_method(self):

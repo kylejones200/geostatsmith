@@ -8,11 +8,13 @@ Main FastAPI application for geostatistics web service.
 try:
     from fastapi import FastAPI
     from fastapi.middleware.cors import CORSMiddleware
+
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
 
-def create_app() -> 'FastAPI':
+
+def create_app() -> "FastAPI":
     """
     Create FastAPI application.
 
@@ -36,8 +38,7 @@ def create_app() -> 'FastAPI':
     """
     if not FASTAPI_AVAILABLE:
         raise ImportError(
-            "FastAPI is required for web API. "
-            "Install with: pip install fastapi uvicorn"
+            "FastAPI is required for web API. Install with: pip install fastapi uvicorn"
         )
 
     app = FastAPI(
@@ -45,7 +46,7 @@ def create_app() -> 'FastAPI':
         description="RESTful API for geostatistical analysis",
         version="0.3.0",
         docs_url="/docs",
-        redoc_url="/redoc"
+        redoc_url="/redoc",
     )
 
     # CORS middleware
@@ -59,9 +60,11 @@ def create_app() -> 'FastAPI':
 
     # Register routes
     from .endpoints import router
+
     app.include_router(router)
 
     return app
+
 
 # Create default app instance
 try:

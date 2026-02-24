@@ -17,16 +17,14 @@ Common trends:
 The kriging system includes additional constraints for unbiasedness.
 """
 
-from typing import Optional, Tuple, Dict, Callable, List
 import numpy as np
 import numpy.typing as npt
 
 from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
 from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance
-from ..math.matrices import solve_kriging_system, regularize_matrix
-from ..math.numerical import cross_validation_score
+from ..math.matrices import regularize_matrix
+
 
 class UniversalKriging(BaseKriging):
     """
@@ -41,25 +39,25 @@ class UniversalKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
-        variogram_model: Optional[object] = None,
+        variogram_model: object | None = None,
         drift_terms: str = "linear",
     ):
         """
-        Initialize Universal Kriging
+           Initialize Universal Kriging
 
-        Parameters
-        ----------
-        x, y : np.ndarray
-        Coordinates of sample points
-        z : np.ndarray
-     Values at sample points
-     variogram_model : VariogramModelBase, optional
-     Fitted variogram model (should be fitted to residuals)
-     drift_terms : str
-     Type of drift/trend:
-         pass
-     - 'linear': β₀ + β₁x + β₂y
-     - 'quadratic': β₀ + β₁x + β₂y + β₃x^2 + β₄xy + β₅y^2
+           Parameters
+           ----------
+           x, y : np.ndarray
+           Coordinates of sample points
+           z : np.ndarray
+        Values at sample points
+        variogram_model : VariogramModelBase, optional
+        Fitted variogram model (should be fitted to residuals)
+        drift_terms : str
+        Type of drift/trend:
+            pass
+        - 'linear': β₀ + β₁x + β₂y
+        - 'quadratic': β₀ + β₁x + β₂y + β₃x^2 + β₄xy + β₅y^2
         """
         super().__init__(x, y, z, variogram_model)
 
@@ -98,21 +96,25 @@ class UniversalKriging(BaseKriging):
         n = len(x)
 
         if self.drift_terms == "linear":
-            F = np.column_stack([
-                np.ones(n),
-                x,
-                y,
-            ])
+            F = np.column_stack(
+                [
+                    np.ones(n),
+                    x,
+                    y,
+                ]
+            )
 
         elif self.drift_terms == "quadratic":
-            F = np.column_stack([
-                np.ones(n),
-                x,
-                y,
-                x**2,
-                x * y,
-                y**2,
-            ])
+            F = np.column_stack(
+                [
+                    np.ones(n),
+                    x,
+                    y,
+                    x**2,
+                    x * y,
+                    y**2,
+                ]
+            )
 
         else:
             raise ValueError(f"Unknown drift_terms: {self.drift_terms}")
@@ -121,7 +123,7 @@ class UniversalKriging(BaseKriging):
 
     def _build_kriging_matrix(self) -> None:
         # Calculate pairwise distances
-        from ..math.distance import euclidean_distance
+
         dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
         # Get variogram values
@@ -140,10 +142,9 @@ class UniversalKriging(BaseKriging):
         self.kriging_matrix[n:, n:] = 0.0
 
         # Regularize for numerical stability
-        from ..math.matrices import regularize_matrix
+
         self.kriging_matrix[:n, :n] = regularize_matrix(
-            self.kriging_matrix[:n, :n],
-            epsilon=1e-10
+            self.kriging_matrix[:n, :n], epsilon=1e-10
         )
 
     def predict(
@@ -151,7 +152,7 @@ class UniversalKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         return_variance: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
         Perform Universal Kriging prediction
 
@@ -173,6 +174,7 @@ class UniversalKriging(BaseKriging):
             raise ValueError("Variogram model must be fitted before prediction")
 
         from ..utils.validation import validate_coordinates
+
         x_pred, y_pred = validate_coordinates(x, y)
         n_pred = len(x_pred)
 
@@ -181,7 +183,6 @@ class UniversalKriging(BaseKriging):
 
         # Predict at each location
         for i in range(n_pred):
-            from ..math.distance import euclidean_distance
             dist_to_samples = euclidean_distance(
                 np.array([x_pred[i]]),
                 np.array([y_pred[i]]),
@@ -208,7 +209,6 @@ class UniversalKriging(BaseKriging):
             try:
                 solution = np.linalg.solve(self.kriging_matrix, rhs)
             except Exception:
-                from ..exceptions import KrigingError
                 # Fallback: use nearest neighbor
                 nearest_idx = np.argmin(dist_to_samples)
                 predictions[i] = self.z[nearest_idx]
@@ -224,18 +224,18 @@ class UniversalKriging(BaseKriging):
 
             # Kriging variance
             if return_variance:
-                variances[i] = (
-                    np.dot(weights, gamma_vec) + np.dot(lagrange, drift_vec)
-                )
+                variances[i] = np.dot(weights, gamma_vec) + np.dot(lagrange, drift_vec)
                 # Check for negative variance (indicates numerical issues)
                 from ..core.constants import ZERO_VALUE
+
                 if variances[i] < ZERO_VALUE:
                     import warnings
+
                     warnings.warn(
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
                         "This may indicate numerical instability or trend overfitting. "
                         "Variance will be clamped to 0.",
-                        RuntimeWarning
+                        RuntimeWarning,
                     )
                     variances[i] = ZERO_VALUE
 
@@ -243,7 +243,7 @@ class UniversalKriging(BaseKriging):
             return predictions, variances
         return predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
 
@@ -288,11 +288,12 @@ class UniversalKriging(BaseKriging):
 
         # Calculate metrics
         from ..validation.metrics import cross_validation_score
+
         metrics = cross_validation_score(self.z, predictions)
 
         return predictions, metrics
 
-    def estimate_trend(self) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    def estimate_trend(self) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
         """
         Estimate trend coefficients and residuals
 

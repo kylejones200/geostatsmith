@@ -127,16 +127,33 @@ python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
+# Skip type checking tests (they often use dicts where typed configs are expected)
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+ignore_errors = true
 
 [tool.ruff]
 line-length = 88
 target-version = "py312"
 
 [tool.ruff.lint]
-# Minimal linting - only check for truly critical issues
-# Most checks disabled to keep linting lenient
-select = []  # Don't select any linting rules by default
-ignore = []  # Nothing to ignore if nothing is selected
+# Select essential linting rules for code quality
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+    "E203",  # Whitespace before ':' (conflicts with Black)
+]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Unused imports in __init__.py are fine
+"tests/**" = ["S101", "N806", "E741", "F841", "B017", "B904"]  # Allow common test patterns

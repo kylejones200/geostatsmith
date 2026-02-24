@@ -10,26 +10,25 @@ Tests:
 - Data validators
 """
 
-import pytest
-import numpy as np
 import matplotlib
+import numpy as np
+import pytest
 
 matplotlib.use("Agg")  # Use non-interactive backend for testing
 import matplotlib.pyplot as plt
 
 from geostats import variogram
-from geostats.visualization import spatial_plots, variogram_plots, diagnostic_plots
 from geostats.core.validators import (
-    validate_coordinates,
-    validate_values,
-    validate_positive,
     validate_array_shapes_match,
+    validate_coordinates,
+    validate_positive,
+    validate_values,
 )
 from geostats.models.variogram_models import SphericalModel
+from geostats.visualization import diagnostic_plots, spatial_plots, variogram_plots
 
 
 class TestSpatialPlots:
-
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -95,7 +94,6 @@ class TestSpatialPlots:
 
 
 class TestVariogramPlots:
-
     def setup_method(self):
         np.random.seed(42)
         n = 100
@@ -152,7 +150,6 @@ class TestVariogramPlots:
 
 
 class TestDiagnosticPlots:
-
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -195,7 +192,6 @@ class TestDiagnosticPlots:
 
 
 class TestValidators:
-
     def test_validate_coordinates_valid(self):
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, 3, 4, 5])
@@ -208,6 +204,7 @@ class TestValidators:
         y = np.array([1, 2, 3])
 
         from geostats.core.validators import validate_coordinates
+
         with pytest.raises((ValueError, AssertionError)):
             validate_coordinates(x, y)
 
@@ -217,6 +214,7 @@ class TestValidators:
         y = np.array([1, 2, 3, 4, 5])
 
         from geostats.core.validators import validate_coordinates
+
         with pytest.raises((ValueError, AssertionError)):
             validate_coordinates(x, y)
 
@@ -226,6 +224,7 @@ class TestValidators:
         y = np.array([1, 2, np.inf, 4, 5])
 
         from geostats.core.validators import validate_coordinates
+
         with pytest.raises((ValueError, AssertionError)):
             validate_coordinates(x, y)
 
@@ -240,6 +239,7 @@ class TestValidators:
         z = np.array([10, 20, np.nan, 40, 50])
 
         from geostats.core.validators import validate_values
+
         with pytest.raises((ValueError, AssertionError)):
             validate_values(z)
 
@@ -248,6 +248,7 @@ class TestValidators:
         z = np.array([10, 20, np.inf, 40, 50])
 
         from geostats.core.validators import validate_values
+
         with pytest.raises((ValueError, AssertionError)):
             validate_values(z)
 
@@ -262,6 +263,7 @@ class TestValidators:
     def test_validate_positive_rejects_negative(self):
         value = -5.0
         from geostats.core.validators import validate_positive
+
         with pytest.raises((ValueError, AssertionError)):
             validate_positive(value)
 
@@ -269,6 +271,7 @@ class TestValidators:
         """Test that zero is rejected"""
         value = 0.0
         from geostats.core.validators import validate_positive
+
         with pytest.raises((ValueError, AssertionError)):
             validate_positive(value)
 
@@ -284,26 +287,21 @@ class TestValidators:
         b = np.array([6, 7, 8])
 
         with pytest.raises((ValueError, AssertionError)):
-
-
             pass
+
     """Tests for parameter validation"""
 
     def test_negative_nugget_rejected(self):
         with pytest.raises((ValueError, AssertionError)):
-
             pass
         """Test that negative sill is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-
             pass
         """Test that negative range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-
             pass
         """Test that zero range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-
             pass
         """Test that valid parameters are accepted"""
         model = SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
@@ -314,7 +312,6 @@ class TestValidators:
 
 
 class TestDataQuality:
-
     def test_data_coverage_check(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 50)
@@ -329,7 +326,6 @@ class TestDataQuality:
 
 
 class TestPlotSaving:
-
     def setup_method(self):
         np.random.seed(42)
         self.x = np.random.uniform(0, 100, 50)
@@ -351,7 +347,7 @@ class TestPlotSaving:
             with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
                 tmp_path = tmp.name
                 fig.savefig(tmp_path)
-                
+
                 # Check file was created
                 assert os.path.exists(tmp_path)
                 assert os.path.getsize(tmp_path) > 0
@@ -359,5 +355,7 @@ class TestPlotSaving:
             # Clean up
             if tmp_path and os.path.exists(tmp_path):
                 os.remove(tmp_path)
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

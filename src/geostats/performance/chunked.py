@@ -6,45 +6,46 @@ Process large prediction grids in chunks to manage memory usage.
 """
 
 import logging
+
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Optional
 
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 logger = logging.getLogger(__name__)
 
+
 class ChunkedKriging:
     """
-    Kriging with chunked processing for large prediction grids.
+       Kriging with chunked processing for large prediction grids.
 
- Processes predictions in chunks to avoid memory issues with
- very large grids (millions of points).
+    Processes predictions in chunks to avoid memory issues with
+    very large grids (millions of points).
 
- Parameters
- ----------
- x : ndarray
- Sample X coordinates
- y : ndarray
- Sample Y coordinates
- z : ndarray
- Sample values
- variogram_model : VariogramModelBase
- Fitted variogram model
+    Parameters
+    ----------
+    x : ndarray
+    Sample X coordinates
+    y : ndarray
+    Sample Y coordinates
+    z : ndarray
+    Sample values
+    variogram_model : VariogramModelBase
+    Fitted variogram model
 
- Examples
- --------
- >>> from geostats.performance import ChunkedKriging
- >>>
- >>> # Create chunked kriging object
- >>> chunked = ChunkedKriging(x, y, z, variogram_model)
- >>>
- >>> # Predict on large grid (1M+ points)
- >>> x_grid = np.linspace(0, 100, 1000)
- >>> y_grid = np.linspace(0, 100, 1000)
- >>> z_pred = chunked.predict_large_grid(x_grid, y_grid, chunk_size=10000)
- """
+    Examples
+    --------
+    >>> from geostats.performance import ChunkedKriging
+    >>>
+    >>> # Create chunked kriging object
+    >>> chunked = ChunkedKriging(x, y, z, variogram_model)
+    >>>
+    >>> # Predict on large grid (1M+ points)
+    >>> x_grid = np.linspace(0, 100, 1000)
+    >>> y_grid = np.linspace(0, 100, 1000)
+    >>> z_pred = chunked.predict_large_grid(x_grid, y_grid, chunk_size=10000)
+    """
 
     def __init__(
         self,
@@ -59,10 +60,7 @@ class ChunkedKriging:
         self.variogram_model = variogram_model
 
         # Create kriging object
-        self.krig = OrdinaryKriging(
-            x=x, y=y, z=z,
-            variogram_model=variogram_model
-        )
+        self.krig = OrdinaryKriging(x=x, y=y, z=z, variogram_model=variogram_model)
 
     def predict_chunked(
         self,
@@ -71,7 +69,7 @@ class ChunkedKriging:
         chunk_size: int = 10000,
         return_variance: bool = False,
         verbose: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
         Predict in chunks to manage memory.
 
@@ -110,7 +108,7 @@ class ChunkedKriging:
 
             if verbose and (i % 10 == 0 or i == n_chunks - 1):
                 progress = (i + 1) / n_chunks * 100
-                logger.info(f"Processing chunk {i+1}/{n_chunks} ({progress:.1f}%)")
+                logger.info(f"Processing chunk {i + 1}/{n_chunks} ({progress:.1f}%)")
 
             x_chunk = x_pred[start_idx:end_idx]
             y_chunk = y_pred[start_idx:end_idx]
@@ -122,9 +120,7 @@ class ChunkedKriging:
                 predictions[start_idx:end_idx] = pred_chunk
                 variance[start_idx:end_idx] = var_chunk
             else:
-                pred_chunk = self.krig.predict(
-                    x_chunk, y_chunk, return_variance=False
-                )
+                pred_chunk = self.krig.predict(x_chunk, y_chunk, return_variance=False)
                 predictions[start_idx:end_idx] = pred_chunk
 
         return predictions, variance
@@ -136,7 +132,7 @@ class ChunkedKriging:
         chunk_size: int = 10000,
         return_variance: bool = False,
         verbose: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
         Predict on large 2D grid.
 
@@ -167,10 +163,11 @@ class ChunkedKriging:
 
         # Predict in chunks
         z_flat, var_flat = self.predict_chunked(
-            x_flat, y_flat,
+            x_flat,
+            y_flat,
             chunk_size=chunk_size,
             return_variance=return_variance,
-            verbose=verbose
+            verbose=verbose,
         )
 
         # Reshape to grid
@@ -192,7 +189,7 @@ def chunked_predict(
     variogram_model: VariogramModelBase,
     chunk_size: int = 10000,
     return_variance: bool = False,
-) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
     """
     Convenience function for chunked prediction.
 
@@ -236,8 +233,9 @@ def chunked_predict(
     """
     chunked = ChunkedKriging(x, y, z, variogram_model)
     return chunked.predict_chunked(
-        x_pred, y_pred,
- chunk_size=chunk_size,
- return_variance=return_variance,
- verbose=False
- )
+        x_pred,
+        y_pred,
+        chunk_size=chunk_size,
+        return_variance=return_variance,
+        verbose=False,
+    )

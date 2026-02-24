@@ -2,11 +2,12 @@
 Pytest configuration and shared fixtures
 """
 
-import pytest
-import numpy as np
-from pathlib import Path
-import tempfile
 import shutil
+import tempfile
+from pathlib import Path
+
+import numpy as np
+import pytest
 
 
 @pytest.fixture
@@ -36,6 +37,7 @@ def sample_data_3d():
 def variogram_model():
     """Create a simple variogram model"""
     from geostats.models.variogram_models import SphericalModel
+
     return SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
 
 
@@ -60,6 +62,7 @@ def temp_dir():
 def reset_constants():
     """Reset constants to defaults before each test"""
     from geostats.core.constants import set_constants_config
+
     set_constants_config(None)
     yield
     set_constants_config(None)

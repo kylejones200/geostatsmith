@@ -27,20 +27,18 @@ Examples
 >>> fig.show()
 """
 
-from .variogram_plots import (
-    interactive_variogram,
-    interactive_variogram_cloud,
-)
-
-from .prediction_maps import (
-    interactive_prediction_map,
-    interactive_uncertainty_map,
-    interactive_3d_surface,
-)
-
 from .comparison import (
     interactive_comparison,
     interactive_cross_validation,
+)
+from .prediction_maps import (
+    interactive_3d_surface,
+    interactive_prediction_map,
+    interactive_uncertainty_map,
+)
+from .variogram_plots import (
+    interactive_variogram,
+    interactive_variogram_cloud,
 )
 
 __all__ = [

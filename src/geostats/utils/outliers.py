@@ -17,36 +17,33 @@ References:
 - geokniga §2.3: "Data quality and outlier identification"
 """
 
-from typing import Tuple, Optional, Dict, List, Union
+import logging
+
 import numpy as np
 import numpy.typing as npt
-from scipy import stats
-import logging
 
 logger = logging.getLogger(__name__)
 
-from ..core.exceptions import GeoStatsError
-from ..core.constants import EPSILON, SMALL_NUMBER
+from ..core.constants import EPSILON
 from ..core.logging_config import get_logger
-from ..math.distance import euclidean_distance_matrix
 
 logger = get_logger(__name__)
 
 # Import constants from core
 from ..core.constants import (
-    Z_SCORE_THRESHOLD,
-    MODIFIED_Z_THRESHOLD,
     IQR_MULTIPLIER,
-    IQR_EXTREME_MULTIPLIER,
+    MODIFIED_Z_THRESHOLD,
     SPATIAL_NEIGHBORS_MIN,
     SPATIAL_THRESHOLD_FACTOR,
+    Z_SCORE_THRESHOLD,
 )
+
 
 def detect_outliers_zscore(
     data: npt.NDArray[np.float64],
     threshold: float = Z_SCORE_THRESHOLD,
-    return_scores: bool = False
-) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
+    return_scores: bool = False,
+) -> npt.NDArray[np.bool_] | tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]:
     """
     Detect outliers using z-score method
 
@@ -94,7 +91,9 @@ def detect_outliers_zscore(
     outlier_mask = z_scores > threshold
 
     n_outliers = np.sum(outlier_mask)
-    logger.info(f"Z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
+    logger.info(
+        f"Z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})"
+    )
 
     if return_scores:
         return outlier_mask, z_scores
@@ -104,8 +103,8 @@ def detect_outliers_zscore(
 def detect_outliers_modified_zscore(
     data: npt.NDArray[np.float64],
     threshold: float = MODIFIED_Z_THRESHOLD,
-    return_scores: bool = False
-) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]]:
+    return_scores: bool = False,
+) -> npt.NDArray[np.bool_] | tuple[npt.NDArray[np.bool_], npt.NDArray[np.float64]]:
     """
     Detect outliers using modified z-score (robust method)
 
@@ -161,7 +160,9 @@ def detect_outliers_modified_zscore(
     outlier_mask = modified_z > threshold
 
     n_outliers = np.sum(outlier_mask)
-    logger.info(f"Modified z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})")
+    logger.info(
+        f"Modified z-score method: {n_outliers} outliers detected (threshold={threshold:.1f})"
+    )
 
     if return_scores:
         return outlier_mask, modified_z
@@ -171,8 +172,8 @@ def detect_outliers_modified_zscore(
 def detect_outliers_iqr(
     data: npt.NDArray[np.float64],
     multiplier: float = IQR_MULTIPLIER,
-    return_bounds: bool = False
-) -> Union[npt.NDArray[np.bool_], Tuple[npt.NDArray[np.bool_], Tuple[float, float]]]:
+    return_bounds: bool = False,
+) -> npt.NDArray[np.bool_] | tuple[npt.NDArray[np.bool_], tuple[float, float]]:
     """
     Detect outliers using Interquartile Range (IQR) method
 
@@ -315,78 +316,78 @@ def detect_spatial_outliers(
 
 def detect_outliers_ensemble(
     z: npt.NDArray[np.float64],
-    x: Optional[npt.NDArray[np.float64]] = None,
-    y: Optional[npt.NDArray[np.float64]] = None,
-    methods: Optional[List[str]] = None,
+    x: npt.NDArray[np.float64] | None = None,
+    y: npt.NDArray[np.float64] | None = None,
+    methods: list[str] | None = None,
     min_detections: int = 2,
-) -> Tuple[npt.NDArray[np.bool_], Dict[str, npt.NDArray[np.bool_]]]:
+) -> tuple[npt.NDArray[np.bool_], dict[str, npt.NDArray[np.bool_]]]:
     """
-    Ensemble outlier detection using multiple methods
+       Ensemble outlier detection using multiple methods
 
-    Combines multiple outlier detection methods. A point is flagged
-    as an outlier if detected by at least `min_detections` methods.
+       Combines multiple outlier detection methods. A point is flagged
+       as an outlier if detected by at least `min_detections` methods.
 
-    Parameters
-    ----------
-    z : np.ndarray
-        Values at sample points
-    x, y : np.ndarray, optional
-        Coordinates (required for spatial method)
-    methods : list of str, optional
-        Methods to use. Options: 'zscore', 'modified_zscore', 'iqr', 'spatial'
-        If None, uses all applicable methods
-    min_detections : int
-        Minimum number of methods that must flag a point (default: 2)
+       Parameters
+       ----------
+       z : np.ndarray
+           Values at sample points
+       x, y : np.ndarray, optional
+           Coordinates (required for spatial method)
+       methods : list of str, optional
+           Methods to use. Options: 'zscore', 'modified_zscore', 'iqr', 'spatial'
+           If None, uses all applicable methods
+       min_detections : int
+           Minimum number of methods that must flag a point (default: 2)
 
-    Returns
-    -------
-    outlier_mask : np.ndarray (bool)
-        Boolean mask where True indicates an outlier
-    method_results : dict
-        Results from each individual method
+       Returns
+       -------
+       outlier_mask : np.ndarray (bool)
+           Boolean mask where True indicates an outlier
+       method_results : dict
+           Results from each individual method
 
- Notes
- -----
- - More conservative than single methods
- - Reduces false positives
- - Recommended for production use
+    Notes
+    -----
+    - More conservative than single methods
+    - Reduces false positives
+    - Recommended for production use
 
-    Examples
-    --------
-    >>> # Non-spatial data
-    >>> outliers, results = detect_outliers_ensemble(z=data)
-    >>>
-    >>> # Spatial data
-    >>> outliers, results = detect_outliers_ensemble(x=x, y=y, z=z, methods=['spatial', 'modified_zscore'])
+       Examples
+       --------
+       >>> # Non-spatial data
+       >>> outliers, results = detect_outliers_ensemble(z=data)
+       >>>
+       >>> # Spatial data
+       >>> outliers, results = detect_outliers_ensemble(x=x, y=y, z=z, methods=['spatial', 'modified_zscore'])
     """
     z = np.asarray(z, dtype=np.float64).flatten()
 
     # Determine which methods to use
     if methods is None:
-        methods = ['zscore', 'modified_zscore', 'iqr']
+        methods = ["zscore", "modified_zscore", "iqr"]
         if x is not None and y is not None:
-            methods.append('spatial')
+            methods.append("spatial")
 
     method_results = {}
     detection_count = np.zeros(len(z), dtype=int)
 
     # Apply each method
     for method in methods:
-        if method == 'zscore':
+        if method == "zscore":
             mask = detect_outliers_zscore(z)
-            method_results['zscore'] = mask
-        elif method == 'modified_zscore':
+            method_results["zscore"] = mask
+        elif method == "modified_zscore":
             mask = detect_outliers_modified_zscore(z)
-            method_results['modified_zscore'] = mask
-        elif method == 'iqr':
+            method_results["modified_zscore"] = mask
+        elif method == "iqr":
             mask = detect_outliers_iqr(z)
-            method_results['iqr'] = mask
-        elif method == 'spatial':
+            method_results["iqr"] = mask
+        elif method == "spatial":
             if x is None or y is None:
                 logger.warning("Spatial method requires x, y coordinates. Skipping.")
                 continue
             mask = detect_spatial_outliers(x, y, z)
-            method_results['spatial'] = mask
+            method_results["spatial"] = mask
         else:
             logger.warning(f"Unknown method: {method}. Skipping.")
             continue

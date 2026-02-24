@@ -14,7 +14,8 @@ Reference:
 - Used for Sequential Gaussian Simulation (SGS)
 """
 
-from typing import Tuple, Optional, Dict, Any
+import logging
+
 import numpy as np
 import numpy.typing as npt
 from scipy import stats
@@ -22,16 +23,16 @@ from scipy.interpolate import interp1d
 
 from ..core.constants import RANK_OFFSET
 from ..core.logging_config import get_logger
-import logging
 
 logger = logging.getLogger(__name__)
 
 logger = get_logger(__name__)
 
+
 class NormalScoreTransform:
     """
     Normal Score Transform for geostatistical data
- 
+
         Transforms data to follow a standard normal distribution while
         preserving the rank order. Essential preprocessing for:
      pass
@@ -41,16 +42,16 @@ class NormalScoreTransform:
 
         The transformation maps empirical CDF values to standard normal
         quantiles, ensuring the transformed data has mean=0 and variance=1.
- """
+    """
 
     def __init__(self):
-        self.original_values: Optional[npt.NDArray[np.float64]] = None
-        self.normal_scores: Optional[npt.NDArray[np.float64]] = None
-        self.forward_interp: Optional[interp1d] = None
-        self.backward_interp: Optional[interp1d] = None
+        self.original_values: npt.NDArray[np.float64] | None = None
+        self.normal_scores: npt.NDArray[np.float64] | None = None
+        self.forward_interp: interp1d | None = None
+        self.backward_interp: interp1d | None = None
         self.is_fitted: bool = False
 
-    def fit(self, data: npt.NDArray[np.float64]) -> 'NormalScoreTransform':
+    def fit(self, data: npt.NDArray[np.float64]) -> "NormalScoreTransform":
         """
         Fit the normal score transform to data.
 
@@ -100,18 +101,21 @@ class NormalScoreTransform:
         self.forward_interp = interp1d(
             unique_orig,
             unique_scores,
-            kind='linear',
+            kind="linear",
             bounds_error=False,
-            fill_value=(unique_scores[0], unique_scores[-1])  # Extrapolate at boundaries
+            fill_value=(
+                unique_scores[0],
+                unique_scores[-1],
+            ),  # Extrapolate at boundaries
         )
 
         # Backward: normal score -> original
         self.backward_interp = interp1d(
             unique_scores,
             unique_orig,
-            kind='linear',
+            kind="linear",
             bounds_error=False,
-            fill_value=(unique_orig[0], unique_orig[-1])  # Extrapolate at boundaries
+            fill_value=(unique_orig[0], unique_orig[-1]),  # Extrapolate at boundaries
         )
 
         self.is_fitted = True
@@ -120,7 +124,7 @@ class NormalScoreTransform:
     def transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Transform data to normal scores.
-     
+
         Parameters
         ----------
         data : np.ndarray
@@ -143,7 +147,9 @@ class NormalScoreTransform:
 
         return transformed.reshape(original_shape)
 
-    def inverse_transform(self, normal_scores: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    def inverse_transform(
+        self, normal_scores: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         """
         Back-transform normal scores to original scale.
 
@@ -156,7 +162,7 @@ class NormalScoreTransform:
         -------
         np.ndarray
             Values in original data space
- 
+
         Notes
         -----
         From Olea (2009): "Geostatistics for Engineers and Earth Scientists".
@@ -193,7 +199,7 @@ class NormalScoreTransform:
         self.fit(data)
         return self.transform(data)
 
-    def get_statistics(self) -> Dict[str, float]:
+    def get_statistics(self) -> dict[str, float]:
         """
         Get statistics of the fitted transform.
 
@@ -209,21 +215,21 @@ class NormalScoreTransform:
         assert self.normal_scores is not None
 
         return {
-        'n_samples': float(len(self.original_values)),
-        'original_mean': float(np.mean(self.original_values)),
-        'original_std': float(np.std(self.original_values)),
-        'original_min': float(np.min(self.original_values)),
-        'original_max': float(np.max(self.original_values)),
-        'scores_mean': float(np.mean(self.normal_scores)),
-        'scores_std': float(np.std(self.normal_scores)),
-        'scores_min': float(np.min(self.normal_scores)),
-        'scores_max': float(np.max(self.normal_scores)),
+            "n_samples": float(len(self.original_values)),
+            "original_mean": float(np.mean(self.original_values)),
+            "original_std": float(np.std(self.original_values)),
+            "original_min": float(np.min(self.original_values)),
+            "original_max": float(np.max(self.original_values)),
+            "scores_mean": float(np.mean(self.normal_scores)),
+            "scores_std": float(np.std(self.normal_scores)),
+            "scores_min": float(np.min(self.normal_scores)),
+            "scores_max": float(np.max(self.normal_scores)),
         }
 
 
 def normal_score_transform(
-    data: npt.NDArray[np.float64]
-) -> Tuple[npt.NDArray[np.float64], NormalScoreTransform]:
+    data: npt.NDArray[np.float64],
+) -> tuple[npt.NDArray[np.float64], NormalScoreTransform]:
     """
     Convenience function for normal score transform.
 
@@ -238,7 +244,7 @@ def normal_score_transform(
         Normal scores
     transformer : NormalScoreTransform
         Fitted transformer (for back-transformation)
- 
+
         Examples
         --------
         >>> import numpy as np
@@ -247,15 +253,14 @@ def normal_score_transform(
         >>> logger.info(normal_scores) # Should have mean~=0, std~=1
         >>> original = transformer.inverse_transform(normal_scores)
         >>> np.allclose(original, data) # Should be True
-        """
+    """
     transformer = NormalScoreTransform()
     transformed = transformer.fit_transform(data)
     return transformed, transformer
 
 
 def back_transform(
-    normal_scores: npt.NDArray[np.float64],
-    transformer: NormalScoreTransform
+    normal_scores: npt.NDArray[np.float64], transformer: NormalScoreTransform
 ) -> npt.NDArray[np.float64]:
     """
     Back-transform normal scores to original scale.
@@ -266,7 +271,7 @@ def back_transform(
         Normal scores from SGS or kriging
     transformer : NormalScoreTransform
         Fitted transformer from forward transform
- 
+
     Returns
     -------
     np.ndarray

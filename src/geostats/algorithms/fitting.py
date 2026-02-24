@@ -1,26 +1,28 @@
 """
-    Variogram model fitting algorithms
+Variogram model fitting algorithms
 """
 
-from typing import Optional, Dict, Any, List, Type
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 
+from ..core.exceptions import FittingError
 from ..models.base_model import VariogramModelBase
 from ..models.variogram_models import (
-    SphericalModel,
     ExponentialModel,
     GaussianModel,
     MaternModel,
+    SphericalModel,
 )
-from ..core.exceptions import FittingError
+
 
 def fit_variogram_model(
- lags: npt.NDArray[np.float64],
- gamma: npt.NDArray[np.float64],
- weights: Optional[npt.NDArray[np.float64]] = None,
- fit_nugget: bool = True,
- **kwargs: Any,
+    lags: npt.NDArray[np.float64],
+    gamma: npt.NDArray[np.float64],
+    weights: npt.NDArray[np.float64] | None = None,
+    fit_nugget: bool = True,
+    **kwargs: Any,
 ) -> VariogramModelBase:
     """
     Fit a variogram model to experimental data
@@ -59,17 +61,20 @@ def fit_variogram_model(
         raise FittingError("No valid data points after removing NaN values")
 
     # Fit the model
-    model.fit(lags_clean, gamma_clean, weights=weights_clean, fit_nugget=fit_nugget, **kwargs)
+    model.fit(
+        lags_clean, gamma_clean, weights=weights_clean, fit_nugget=fit_nugget, **kwargs
+    )
 
     return model
+
 
 def automatic_fit(
     lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
-    models: Optional[List[Type[VariogramModelBase]]] = None,
-    weights: Optional[npt.NDArray[np.float64]] = None,
+    models: list[type[VariogramModelBase]] | None = None,
+    weights: npt.NDArray[np.float64] | None = None,
     criterion: str = "rmse",
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Automatically select and fit the best variogram model
 
@@ -102,8 +107,7 @@ def automatic_fit(
     >>> result = automatic_fit(lags, gamma)
     >>> best_model = result['model']
     """
-    from ..models.variogram_models import SphericalModel, ExponentialModel, GaussianModel, MaternModel
-    
+
     # Default models to try
     if models is None:
         models = [
@@ -141,11 +145,11 @@ def automatic_fit(
             # Calculate goodness-of-fit metrics
             residuals = gamma_clean - gamma_pred
 
-            rmse = np.sqrt(np.mean(residuals ** 2))
+            rmse = np.sqrt(np.mean(residuals**2))
             mae = np.mean(np.abs(residuals))
 
             # R^2
-            ss_res = np.sum(residuals ** 2)
+            ss_res = np.sum(residuals**2)
             ss_tot = np.sum((gamma_clean - np.mean(gamma_clean)) ** 2)
             r2 = 1 - (ss_res / ss_tot) if ss_tot > 0 else 0
 
@@ -154,62 +158,68 @@ def automatic_fit(
             k = len(model.parameters)  # Number of parameters
             aic = n * np.log(ss_res / n) + 2 * k if ss_res > 0 else np.inf
 
-            results.append({
-                'model': model,
-                'model_name': model_class.__name__,
-                'rmse': rmse,
-                'mae': mae,
-                'r2': r2,
-                'aic': aic,
-            })
+            results.append(
+                {
+                    "model": model,
+                    "model_name": model_class.__name__,
+                    "rmse": rmse,
+                    "mae": mae,
+                    "r2": r2,
+                    "aic": aic,
+                }
+            )
 
         except Exception as e:
             # Skip models that fail to fit
-            results.append({
-                'model': None,
-                'model_name': model_class.__name__,
-                'error': str(e),
-                'rmse': np.inf,
-                'mae': np.inf,
-                'r2': -np.inf,
-                'aic': np.inf,
-            })
+            results.append(
+                {
+                    "model": None,
+                    "model_name": model_class.__name__,
+                    "error": str(e),
+                    "rmse": np.inf,
+                    "mae": np.inf,
+                    "r2": -np.inf,
+                    "aic": np.inf,
+                }
+            )
 
     # Select best model based on criterion using dictionary dispatch
     criterion_functions = {
-        'rmse': (np.argmin, 'rmse'),
-        'mae': (np.argmin, 'mae'),
-        'r2': (np.argmax, 'r2'),
-        'aic': (np.argmin, 'aic'),
+        "rmse": (np.argmin, "rmse"),
+        "mae": (np.argmin, "mae"),
+        "r2": (np.argmax, "r2"),
+        "aic": (np.argmin, "aic"),
     }
 
     valid_criteria = list(criterion_functions.keys())
     if criterion not in criterion_functions:
         raise ValueError(
-            f"Unknown criterion '{criterion}'. "
-            f"Valid criteria: {valid_criteria}"
+            f"Unknown criterion '{criterion}'. Valid criteria: {valid_criteria}"
         )
 
     select_fn, metric = criterion_functions[criterion]
     best_idx = select_fn([r[metric] for r in results])
     best_result = results[best_idx]
 
-    if best_result['model'] is None:
-        raise FittingError(f"All models failed to fit. Last error: {best_result.get('error', 'Unknown')}")
+    if best_result["model"] is None:
+        raise FittingError(
+            f"All models failed to fit. Last error: {best_result.get('error', 'Unknown')}"
+        )
 
     return {
-        'model': best_result['model'],
-        'score': best_result[criterion],
-        'all_results': results,
+        "model": best_result["model"],
+        "score": best_result[criterion],
+        "all_results": results,
     }
+
 
 def cross_validation_fit(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    model_class: Type[VariogramModelBase],
+    model_class: type[VariogramModelBase],
     n_folds: int = 5,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """
     Cross-validate variogram model fitting
 
@@ -250,6 +260,7 @@ def cross_validation_fit(
 
         # Fit model on training data
         from ..algorithms.variogram import experimental_variogram
+
         lags, gamma, _ = experimental_variogram(x_train, y_train, z_train)
         model = model_class()
         model.fit(lags, gamma)
@@ -262,11 +273,11 @@ def cross_validation_fit(
         valid = ~np.isnan(test_gamma) & ~np.isnan(pred_gamma)
         if np.sum(valid) > 0:
             residuals = test_gamma[valid] - pred_gamma[valid]
-            rmse = np.sqrt(np.mean(residuals ** 2))
+            rmse = np.sqrt(np.mean(residuals**2))
             scores.append(rmse)
 
     return {
-        'mean_rmse': np.mean(scores),
-        'std_rmse': np.std(scores),
-        'scores': scores,
- }
+        "mean_rmse": np.mean(scores),
+        "std_rmse": np.std(scores),
+        "scores": scores,
+    }

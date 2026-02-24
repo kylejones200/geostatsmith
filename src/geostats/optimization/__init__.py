@@ -30,17 +30,16 @@ Examples
 ... )
 """
 
-from .sampling_design import (
-    optimal_sampling_design,
-    infill_sampling,
-    stratified_sampling,
-    adaptive_sampling,
-)
-
 from .cost_benefit import (
-    sample_size_calculator,
     cost_benefit_analysis,
     estimate_interpolation_error,
+    sample_size_calculator,
+)
+from .sampling_design import (
+    adaptive_sampling,
+    infill_sampling,
+    optimal_sampling_design,
+    stratified_sampling,
 )
 
 __all__ = [

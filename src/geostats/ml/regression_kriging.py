@@ -48,106 +48,103 @@ References:
  and regression-kriging"
 """
 
-from typing import Optional, Tuple, Union, Dict, Any
+import logging
+
 import numpy as np
 import numpy.typing as npt
-import logging
 
 logger = logging.getLogger(__name__)
 
-from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
-from ..core.validators import validate_coordinates, validate_values
-from ..algorithms.simple_kriging import SimpleKriging
-from ..algorithms.ordinary_kriging import OrdinaryKriging
-from ..algorithms.variogram import experimental_variogram
 from ..algorithms.fitting import fit_variogram_model
+from ..core.base import BaseKriging
 from ..core.logging_config import get_logger
+from ..core.validators import validate_coordinates, validate_values
 
 logger = get_logger(__name__)
 
 # sklearn is a required dependency
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.base import BaseEstimator, RegressorMixin
 
 try:
     import xgboost as xgb
+
     XGBOOST_AVAILABLE = True
 except ImportError:
     XGBOOST_AVAILABLE = False
     logger.debug("XGBoost not available")
 
+
 class RegressionKriging(BaseKriging):
     """
-    Regression Kriging with Machine Learning Models
+       Regression Kriging with Machine Learning Models
 
-    Combines any sklearn-compatible regression model with kriging of residuals.
+       Combines any sklearn-compatible regression model with kriging of residuals.
 
-    Process:
-    1. Fit ML model to predict trend: m(X) ~ Z
-    2. Calculate residuals: epsilon = Z - m(X)
-    3. Fit variogram to residuals
-    4. Krige residuals
-    5. Combine: Z* = m*(X*) + epsilon*
+       Process:
+       1. Fit ML model to predict trend: m(X) ~ Z
+       2. Calculate residuals: epsilon = Z - m(X)
+       3. Fit variogram to residuals
+       4. Krige residuals
+       5. Combine: Z* = m*(X*) + epsilon*
 
-    Parameters
-    ----------
-    ml_model : sklearn-compatible regressor
-        Any model with fit() and predict() methods
-    kriging_type : str
-        Type of kriging for residuals: 'simple' or 'ordinary'
-    variogram_model : str
-        Variogram model for residuals
+       Parameters
+       ----------
+       ml_model : sklearn-compatible regressor
+           Any model with fit() and predict() methods
+       kriging_type : str
+           Type of kriging for residuals: 'simple' or 'ordinary'
+       variogram_model : str
+           Variogram model for residuals
 
-    Attributes
-    ----------
-    ml_model : regressor
- Fitted ML model for trend
- kriging_model : BaseKriging
- Fitted kriging model for residuals
- residuals : np.ndarray
- Model residuals
+       Attributes
+       ----------
+       ml_model : regressor
+    Fitted ML model for trend
+    kriging_model : BaseKriging
+    Fitted kriging model for residuals
+    residuals : np.ndarray
+    Model residuals
 
- Examples
- --------
- >>> from sklearn.ensemble import RandomForestRegressor
- >>> from geostats.ml import RegressionKriging
- >>>
- >>> # Sample data with covariates
- >>> x = np.random.uniform(0, 100, 50)
- >>> y = np.random.uniform(0, 100, 50)
- >>> elevation = np.random.uniform(0, 500, 50)
- >>> slope = np.random.uniform(0, 30, 50)
- >>> X = np.column_stack([x, y, elevation, slope])
- >>>
- >>> # Target variable (e.g., soil property)
- >>> z = 10 + 0.05*elevation - 0.1*slope + np.random.normal(0, 2, 50)
- >>>
- >>> # Regression Kriging with Random Forest
- >>> rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
- >>> rk = RegressionKriging(ml_model=rf_model)
- >>> rk.fit(x, y, z, covariates=X)
- >>>
- >>> # Predict at new locations
- >>> x_new = np.array([50, 60, 70])
- >>> y_new = np.array([50, 60, 70])
- >>> X_new = np.column_stack([x_new, y_new, [250, 300, 350], [10, 15, 20]])
- >>> z_pred, variance = rk.predict(x_new, y_new, covariates_new=X_new)
+    Examples
+    --------
+    >>> from sklearn.ensemble import RandomForestRegressor
+    >>> from geostats.ml import RegressionKriging
+    >>>
+    >>> # Sample data with covariates
+    >>> x = np.random.uniform(0, 100, 50)
+    >>> y = np.random.uniform(0, 100, 50)
+    >>> elevation = np.random.uniform(0, 500, 50)
+    >>> slope = np.random.uniform(0, 30, 50)
+    >>> X = np.column_stack([x, y, elevation, slope])
+    >>>
+    >>> # Target variable (e.g., soil property)
+    >>> z = 10 + 0.05*elevation - 0.1*slope + np.random.normal(0, 2, 50)
+    >>>
+    >>> # Regression Kriging with Random Forest
+    >>> rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+    >>> rk = RegressionKriging(ml_model=rf_model)
+    >>> rk.fit(x, y, z, covariates=X)
+    >>>
+    >>> # Predict at new locations
+    >>> x_new = np.array([50, 60, 70])
+    >>> y_new = np.array([50, 60, 70])
+    >>> X_new = np.column_stack([x_new, y_new, [250, 300, 350], [10, 15, 20]])
+    >>> z_pred, variance = rk.predict(x_new, y_new, covariates_new=X_new)
 
- Notes
- -----
- - Covariates can include spatial coordinates (x, y) and external variables
- - The ML model captures the deterministic trend
- - Kriging captures the spatial correlation in residuals
- - Variance estimates combine ML and kriging uncertainties
- """
+    Notes
+    -----
+    - Covariates can include spatial coordinates (x, y) and external variables
+    - The ML model captures the deterministic trend
+    - Kriging captures the spatial correlation in residuals
+    - Variance estimates combine ML and kriging uncertainties
+    """
 
     def __init__(
         self,
         ml_model,
-        kriging_type: str = 'simple',
-        variogram_model: str = 'spherical',
-        n_lags: int = 15
+        kriging_type: str = "simple",
+        variogram_model: str = "spherical",
+        n_lags: int = 15,
     ):
         """
         Initialize Regression Kriging
@@ -183,7 +180,7 @@ class RegressionKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
-        covariates: Optional[npt.NDArray[np.float64]] = None
+        covariates: npt.NDArray[np.float64] | None = None,
     ):
         """
         Fit the Regression Kriging model
@@ -198,8 +195,7 @@ class RegressionKriging(BaseKriging):
             Covariate matrix (n_samples, n_features)
             If None, uses only coordinates [x, y]
         """
-        from ..core.validators import validate_coordinates, validate_values
-        
+
         self.x, self.y = validate_coordinates(x, y)
         self.z = validate_values(z, n_expected=len(self.x))
 
@@ -233,15 +229,13 @@ class RegressionKriging(BaseKriging):
         # Step 3: Fit variogram to residuals
         logger.info("Fitting variogram to residuals...")
         from ..variogram import experimental_variogram
-        from ..algorithms.fitting import fit_variogram_model
-        
+
         lag_dist, semivar, pairs = experimental_variogram(
             self.x, self.y, self.residuals, n_lags=self.n_lags
         )
 
         fitted_model = fit_variogram_model(
-            lag_dist, semivar,
-            model_type=self.variogram_model_type
+            lag_dist, semivar, model_type=self.variogram_model_type
         )
 
         params = fitted_model.get_parameters()
@@ -254,18 +248,21 @@ class RegressionKriging(BaseKriging):
         # Step 4: Create kriging model for residuals
         mean_residual = np.mean(self.residuals)
 
-        if self.kriging_type == 'simple':
+        if self.kriging_type == "simple":
             from ..algorithms.simple_kriging import SimpleKriging
+
             self.kriging_model = SimpleKriging(
-                self.x, self.y, self.residuals,
+                self.x,
+                self.y,
+                self.residuals,
                 variogram_model=fitted_model,
-                mean=mean_residual
+                mean=mean_residual,
             )
-        elif self.kriging_type == 'ordinary':
+        elif self.kriging_type == "ordinary":
             from ..algorithms.ordinary_kriging import OrdinaryKriging
+
             self.kriging_model = OrdinaryKriging(
-                self.x, self.y, self.residuals,
-                variogram_model=fitted_model
+                self.x, self.y, self.residuals, variogram_model=fitted_model
             )
         else:
             raise ValueError(f"Unknown kriging_type: {self.kriging_type}")
@@ -277,9 +274,12 @@ class RegressionKriging(BaseKriging):
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        covariates_new: Optional[npt.NDArray[np.float64]] = None,
-        return_variance: bool = True
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        covariates_new: npt.NDArray[np.float64] | None = None,
+        return_variance: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
         Predict at new locations using Regression Kriging
 
@@ -303,8 +303,6 @@ class RegressionKriging(BaseKriging):
         if not self.fitted:
             raise ValueError("Model must be fitted before prediction")
 
-        from ..core.validators import validate_coordinates
-        
         x_new, y_new = validate_coordinates(x_new, y_new)
 
         # Prepare feature matrix for new points
@@ -313,7 +311,9 @@ class RegressionKriging(BaseKriging):
         else:
             X_new = np.asarray(covariates_new, dtype=np.float64)
             if X_new.shape[0] != len(x_new):
-                raise ValueError(f"Covariates shape mismatch: {X_new.shape[0]} != {len(x_new)}")
+                raise ValueError(
+                    f"Covariates shape mismatch: {X_new.shape[0]} != {len(x_new)}"
+                )
             if X_new.shape[1] != self.X.shape[1]:
                 raise ValueError(
                     f"Feature count mismatch: expected {self.X.shape[1]}, "
@@ -343,7 +343,7 @@ class RegressionKriging(BaseKriging):
             return predictions, residual_var
         return predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
 
@@ -363,8 +363,8 @@ class RegressionKriging(BaseKriging):
         predictions = leave_one_out(self, self.x, self.y, self.z)
 
         metrics = {
-            'mse': mean_squared_error(self.z, predictions),
-            'r2': r_squared(self.z, predictions)
+            "mse": mean_squared_error(self.z, predictions),
+            "r2": r_squared(self.z, predictions),
         }
 
         return predictions, metrics
@@ -372,63 +372,63 @@ class RegressionKriging(BaseKriging):
 
 class RandomForestKriging(RegressionKriging):
     """
-    Regression Kriging with Random Forest
+       Regression Kriging with Random Forest
 
-    Convenience class that uses Random Forest for trend modeling.
+       Convenience class that uses Random Forest for trend modeling.
 
-    Random Forest advantages:
-    - Handles non-linear relationships
-    - Robust to outliers
-    - Automatic feature interaction
-    - Built-in feature importance
- - No need for feature scaling
+       Random Forest advantages:
+       - Handles non-linear relationships
+       - Robust to outliers
+       - Automatic feature interaction
+       - Built-in feature importance
+    - No need for feature scaling
 
- Parameters
- ----------
- n_estimators : int
- Number of trees in the forest
- max_depth : int, optional
- Maximum depth of trees
- **kwargs
- Additional arguments for RandomForestRegressor
+    Parameters
+    ----------
+    n_estimators : int
+    Number of trees in the forest
+    max_depth : int, optional
+    Maximum depth of trees
+    **kwargs
+    Additional arguments for RandomForestRegressor
 
- Examples
- --------
- >>> from geostats.ml import RandomForestKriging
- >>>
- >>> # Simple interface
- >>> rfk = RandomForestKriging(n_estimators=100, max_depth=10)
- >>> rfk.fit(x, y, z, covariates=X)
- >>> z_pred, var = rfk.predict(x_new, y_new, covariates_new=X_new)
- """
+    Examples
+    --------
+    >>> from geostats.ml import RandomForestKriging
+    >>>
+    >>> # Simple interface
+    >>> rfk = RandomForestKriging(n_estimators=100, max_depth=10)
+    >>> rfk.fit(x, y, z, covariates=X)
+    >>> z_pred, var = rfk.predict(x_new, y_new, covariates_new=X_new)
+    """
 
     def __init__(
         self,
         n_estimators: int = 100,
-        max_depth: Optional[int] = None,
-        kriging_type: str = 'simple',
-        variogram_model: str = 'spherical',
-        random_state: Optional[int] = None,
-        **rf_kwargs
+        max_depth: int | None = None,
+        kriging_type: str = "simple",
+        variogram_model: str = "spherical",
+        random_state: int | None = None,
+        **rf_kwargs,
     ):
         # sklearn is a required dependency
-        
+
         rf_model = RandomForestRegressor(
             n_estimators=n_estimators,
             max_depth=max_depth,
             random_state=random_state,
-            **rf_kwargs
+            **rf_kwargs,
         )
 
         super().__init__(
             ml_model=rf_model,
             kriging_type=kriging_type,
-            variogram_model=variogram_model
+            variogram_model=variogram_model,
         )
 
         logger.info(f"Random Forest Kriging initialized with {n_estimators} trees")
 
-    def get_feature_importance(self) -> Optional[npt.NDArray[np.float64]]:
+    def get_feature_importance(self) -> npt.NDArray[np.float64] | None:
         """Return feature importance from Random Forest model"""
         if not self.fitted:
             return None
@@ -437,64 +437,64 @@ class RandomForestKriging(RegressionKriging):
 
 class XGBoostKriging(RegressionKriging):
     """
-    Regression Kriging with XGBoost
+       Regression Kriging with XGBoost
 
-    Convenience class that uses XGBoost for trend modeling.
+       Convenience class that uses XGBoost for trend modeling.
 
-    XGBoost advantages:
-    - Often best predictive performance
-    - Handles missing values
-    - Regularization built-in
-    - Fast training with GPU support
-    - Excellent for tabular data
+       XGBoost advantages:
+       - Often best predictive performance
+       - Handles missing values
+       - Regularization built-in
+       - Fast training with GPU support
+       - Excellent for tabular data
 
-    Parameters
-    ----------
-    n_estimators : int
-        Number of boosting rounds
-    max_depth : int
-        Maximum tree depth
-    learning_rate : float
-        Boosting learning rate
- **kwargs
- Additional arguments for XGBRegressor
+       Parameters
+       ----------
+       n_estimators : int
+           Number of boosting rounds
+       max_depth : int
+           Maximum tree depth
+       learning_rate : float
+           Boosting learning rate
+    **kwargs
+    Additional arguments for XGBRegressor
 
- Examples
- --------
- >>> from geostats.ml import XGBoostKriging
- >>>
- >>> xgbk = XGBoostKriging(n_estimators=100, max_depth=6, learning_rate=0.1)
- >>> xgbk.fit(x, y, z, covariates=X)
- >>> z_pred, var = xgbk.predict(x_new, y_new, covariates_new=X_new)
- """
+    Examples
+    --------
+    >>> from geostats.ml import XGBoostKriging
+    >>>
+    >>> xgbk = XGBoostKriging(n_estimators=100, max_depth=6, learning_rate=0.1)
+    >>> xgbk.fit(x, y, z, covariates=X)
+    >>> z_pred, var = xgbk.predict(x_new, y_new, covariates_new=X_new)
+    """
 
     def __init__(
         self,
         n_estimators: int = 100,
         max_depth: int = 6,
         learning_rate: float = 0.1,
-        kriging_type: str = 'simple',
-        variogram_model: str = 'spherical',
-        random_state: Optional[int] = None,
-        **xgb_kwargs
+        kriging_type: str = "simple",
+        variogram_model: str = "spherical",
+        random_state: int | None = None,
+        **xgb_kwargs,
     ):
         if not XGBOOST_AVAILABLE:
             raise ImportError("XGBoost is required for XGBoostKriging")
 
         import xgboost as xgb
-        
+
         xgb_model = xgb.XGBRegressor(
             n_estimators=n_estimators,
             max_depth=max_depth,
             learning_rate=learning_rate,
             random_state=random_state,
-            **xgb_kwargs
+            **xgb_kwargs,
         )
 
         super().__init__(
             ml_model=xgb_model,
             kriging_type=kriging_type,
-            variogram_model=variogram_model
+            variogram_model=variogram_model,
         )
 
         logger.info(
@@ -503,9 +503,8 @@ class XGBoostKriging(RegressionKriging):
         )
 
     def get_feature_importance(
-        self,
-        importance_type: str = 'weight'
-    ) -> Optional[Dict[str, float]]:
+        self, importance_type: str = "weight"
+    ) -> dict[str, float] | None:
         """
         Get feature importances from XGBoost model
 

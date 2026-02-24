@@ -27,25 +27,22 @@ Examples
 >>> z_pred = chunked.predict_large_grid(x_grid, y_grid, chunk_size=10000)
 """
 
-from .parallel import (
-    parallel_kriging,
-    parallel_cross_validation,
-    parallel_variogram_fit,
+from .approximate import (
+    approximate_kriging,
+    coarse_to_fine,
 )
-
-from .chunked import (
-    ChunkedKriging,
-    chunked_predict,
-)
-
 from .caching import (
     CachedKriging,
     clear_cache,
 )
-
-from .approximate import (
-    approximate_kriging,
-    coarse_to_fine,
+from .chunked import (
+    ChunkedKriging,
+    chunked_predict,
+)
+from .parallel import (
+    parallel_cross_validation,
+    parallel_kriging,
+    parallel_variogram_fit,
 )
 
 __all__ = [

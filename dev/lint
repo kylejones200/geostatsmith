@@ -6,11 +6,27 @@ set -euo pipefail
 
 echo "🔍 Linting code with ruff..."
 
+# Try uv run ruff, then venv, then python3 -m ruff, then ruff command
+if command -v uv &> /dev/null && uv run ruff --version &>/dev/null 2>&1; then
+    RUFF_CMD="uv run ruff"
+elif [ -d "venv" ] && source venv/bin/activate && python -m ruff --version &>/dev/null 2>&1; then
+    source venv/bin/activate
+    RUFF_CMD="python -m ruff"
+elif python3 -m ruff --version &>/dev/null 2>&1; then
+    RUFF_CMD="python3 -m ruff"
+elif command -v ruff &> /dev/null; then
+    RUFF_CMD="ruff"
+else
+    echo "❌ Error: ruff not found."
+    echo "   Install with: uv sync --dev  or  pip install ruff"
+    exit 1
+fi
+
 # If files are provided, check only those (for pre-commit)
 if [ $# -gt 0 ]; then
-    ruff check "$@"
+    $RUFF_CMD check "$@"
 else
-    ruff check src/ tests/
+    $RUFF_CMD check src/ tests/
 fi
 
 echo "✅ Linting complete"

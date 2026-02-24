@@ -12,11 +12,11 @@ from .grid_utils import (
     interpolate_to_grid,
 )
 from .outliers import (
-    detect_outliers_zscore,
-    detect_outliers_modified_zscore,
-    detect_outliers_iqr,
-    detect_spatial_outliers,
     detect_outliers_ensemble,
+    detect_outliers_iqr,
+    detect_outliers_modified_zscore,
+    detect_outliers_zscore,
+    detect_spatial_outliers,
 )
 
 __all__ = [

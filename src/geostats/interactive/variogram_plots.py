@@ -7,55 +7,54 @@ Interactive variogram visualizations using Plotly.
 
 import numpy as np
 import numpy.typing as npt
-from typing import Optional
 
 try:
- PLOTLY_AVAILABLE = True
+    PLOTLY_AVAILABLE = True
 except ImportError:
- PLOTLY_AVAILABLE = False
+    PLOTLY_AVAILABLE = False
+
 
 def interactive_variogram(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- fitted_model: Optional[object] = None,
- n_lags: int = 15,
-    title: str = 'Interactive Variogram',
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    fitted_model: object | None = None,
+    n_lags: int = 15,
+    title: str = "Interactive Variogram",
 ):
     """
-    Create interactive variogram plot.
+       Create interactive variogram plot.
 
- Parameters
- ----------
- x : ndarray
- X coordinates
- y : ndarray
- Y coordinates
- z : ndarray
- Values
- fitted_model : VariogramModelBase, optional
- Fitted variogram model to overlay
- n_lags : int, default=15
- Number of lags
- title : str
- Plot title
+    Parameters
+    ----------
+    x : ndarray
+    X coordinates
+    y : ndarray
+    Y coordinates
+    z : ndarray
+    Values
+    fitted_model : VariogramModelBase, optional
+    Fitted variogram model to overlay
+    n_lags : int, default=15
+    Number of lags
+    title : str
+    Plot title
 
- Returns
- -------
- fig : plotly.graph_objects.Figure
- Interactive figure
+    Returns
+    -------
+    fig : plotly.graph_objects.Figure
+    Interactive figure
 
- Examples
- --------
- >>> from geostats.interactive import interactive_variogram
- >>> fig = interactive_variogram(x, y, z, fitted_model=model)
- >>> fig.show() # Opens in browser
- >>> # Or save to HTML
- >>> fig.write_html('variogram.html')
+    Examples
+    --------
+    >>> from geostats.interactive import interactive_variogram
+    >>> fig = interactive_variogram(x, y, z, fitted_model=model)
+    >>> fig.show() # Opens in browser
+    >>> # Or save to HTML
+    >>> fig.write_html('variogram.html')
     """
     if not PLOTLY_AVAILABLE:
         raise ImportError(
-            "plotly is required for interactive plots. "
-            "Install with: pip install plotly"
+            "plotly is required for interactive plots. Install with: pip install plotly"
         )
 
     from ..variogram import experimental_variogram
@@ -67,14 +66,16 @@ def interactive_variogram(
     fig = go.Figure()
 
     # Experimental points
-    fig.add_trace(go.Scatter(
-        x=lags,
-        y=gamma,
-        mode='markers',
-        name='Experimental',
-        marker=dict(size=10, color='blue'),
-        hovertemplate='Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=lags,
+            y=gamma,
+            mode="markers",
+            name="Experimental",
+            marker=dict(size=10, color="blue"),
+            hovertemplate="Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>",
+        )
+    )
 
     # Fitted model
     if fitted_model is not None:
@@ -84,24 +85,28 @@ def interactive_variogram(
         params = fitted_model.get_parameters()
         model_name = fitted_model.__class__.__name__
 
-        fig.add_trace(go.Scatter(
-            x=h_fit,
-            y=gamma_fit,
-            mode='lines',
-            name=f'Fitted ({model_name})',
-            line=dict(color='red', width=2),
-            hovertemplate='Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>'
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=h_fit,
+                y=gamma_fit,
+                mode="lines",
+                name=f"Fitted ({model_name})",
+                line=dict(color="red", width=2),
+                hovertemplate="Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>",
+            )
+        )
 
         # Add parameter annotations
-        param_text = f"<b>Parameters:</b><br>"
+        param_text = "<b>Parameters:</b><br>"
         param_text += f"Nugget: {params.get('nugget', 0):.3f}<br>"
         param_text += f"Sill: {params.get('sill', 0):.3f}<br>"
         param_text += f"Range: {params.get('range', 0):.3f}"
 
         fig.add_annotation(
-            xref="paper", yref="paper",
-            x=0.98, y=0.98,
+            xref="paper",
+            yref="paper",
+            x=0.98,
+            y=0.98,
             text=param_text,
             showarrow=False,
             bgcolor="white",
@@ -109,50 +114,50 @@ def interactive_variogram(
             borderwidth=1,
             align="left",
             xanchor="right",
-            yanchor="top"
+            yanchor="top",
         )
 
     fig.update_layout(
         title=title,
-        xaxis_title='Distance (h)',
-        yaxis_title='Semivariance gamma(h)',
-        hovermode='closest',
-        template='plotly_white',
+        xaxis_title="Distance (h)",
+        yaxis_title="Semivariance gamma(h)",
+        hovermode="closest",
+        template="plotly_white",
         width=800,
-        height=500
+        height=500,
     )
 
     return fig
+
 
 def interactive_variogram_cloud(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     max_pairs: int = 5000,
-    title: str = 'Variogram Cloud',
+    title: str = "Variogram Cloud",
 ):
     """
-    Create interactive variogram cloud plot.
+       Create interactive variogram cloud plot.
 
-    Shows all pairwise semivariances vs. distances.
+       Shows all pairwise semivariances vs. distances.
 
-    Parameters
-    ----------
-    x, y, z : ndarray
-        Sample data
-    max_pairs : int, default=5000
- Maximum pairs to plot (for performance)
- title : str
- Plot title
+       Parameters
+       ----------
+       x, y, z : ndarray
+           Sample data
+       max_pairs : int, default=5000
+    Maximum pairs to plot (for performance)
+    title : str
+    Plot title
 
-    Returns
-    -------
-    fig : plotly Figure
+       Returns
+       -------
+       fig : plotly Figure
     """
     if not PLOTLY_AVAILABLE:
         raise ImportError(
-            "plotly is required for interactive plots. "
-            "Install with: pip install plotly"
+            "plotly is required for interactive plots. Install with: pip install plotly"
         )
 
     from scipy.spatial.distance import pdist, squareform
@@ -173,31 +178,33 @@ def interactive_variogram_cloud(
             for j in range(i + 1, n):
                 if count in indices:
                     dist_pairs.append(distances[i, j])
-                    gamma_pairs.append(0.5 * (z[i] - z[j])**2)
+                    gamma_pairs.append(0.5 * (z[i] - z[j]) ** 2)
                 count += 1
     else:
         for i in range(n):
             for j in range(i + 1, n):
                 dist_pairs.append(distances[i, j])
-                gamma_pairs.append(0.5 * (z[i] - z[j])**2)
+                gamma_pairs.append(0.5 * (z[i] - z[j]) ** 2)
 
     fig = go.Figure()
 
-    fig.add_trace(go.Scatter(
-        x=dist_pairs,
-        y=gamma_pairs,
-        mode='markers',
-        marker=dict(size=3, opacity=0.3, color='blue'),
-        hovertemplate='Distance: %{x:.2f}<br>Semivariance: %{y:.4f}<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=dist_pairs,
+            y=gamma_pairs,
+            mode="markers",
+            marker=dict(size=3, opacity=0.3, color="blue"),
+            hovertemplate="Distance: %{x:.2f}<br>Semivariance: %{y:.4f}<extra></extra>",
+        )
+    )
 
     fig.update_layout(
         title=title,
-        xaxis_title='Distance',
-        yaxis_title='Semivariance',
-        template='plotly_white',
+        xaxis_title="Distance",
+        yaxis_title="Semivariance",
+        template="plotly_white",
         width=800,
-        height=500
+        height=500,
     )
 
     return fig

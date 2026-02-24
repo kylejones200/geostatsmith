@@ -8,12 +8,12 @@ for testing interpolation methods and demonstrating concepts.
 Reference: Python Recipes for Earth Sciences (Trauth 2024)
 """
 
-from typing import Tuple, Optional
+import logging
+
 import numpy as np
 import numpy.typing as npt
 
 from ..core.logging_config import get_logger
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -26,14 +26,15 @@ DEFAULT_NOISE_LEVEL = 0.1
 MIN_POINTS = 10
 MAX_POINTS = 100000
 
+
 def generate_random_field(
     n_points: int = DEFAULT_N_POINTS,
-    x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
-    y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
-    trend_type: str = 'linear',
+    x_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    y_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    trend_type: str = "linear",
     noise_level: float = DEFAULT_NOISE_LEVEL,
-    seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    seed: int | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Generate a synthetic random field with specified trend and noise.
 
@@ -59,7 +60,7 @@ def generate_random_field(
     -------
     x, y, z : np.ndarray
         Coordinates and values
- 
+
     Examples
     --------
     >>> from geostats.datasets.synthetic import generate_random_field
@@ -95,18 +96,17 @@ def generate_random_field(
 
     # Generate trend using dispatch pattern
     trend_functions = {
-        'linear': lambda xn, yn: 2.0 * xn + 3.0 * yn,
-        'quadratic': lambda xn, yn: xn**2 + 2.0 * yn**2,
-        'saddle': lambda xn, yn: (xn - 0.5)**2 - (yn - 0.5)**2,
-        'wave': lambda xn, yn: np.sin(4 * np.pi * xn) * np.cos(4 * np.pi * yn),
-        'none': lambda xn, yn: np.zeros(len(xn)),
+        "linear": lambda xn, yn: 2.0 * xn + 3.0 * yn,
+        "quadratic": lambda xn, yn: xn**2 + 2.0 * yn**2,
+        "saddle": lambda xn, yn: (xn - 0.5) ** 2 - (yn - 0.5) ** 2,
+        "wave": lambda xn, yn: np.sin(4 * np.pi * xn) * np.cos(4 * np.pi * yn),
+        "none": lambda xn, yn: np.zeros(len(xn)),
     }
 
     valid_types = list(trend_functions.keys())
     if trend_type not in trend_functions:
         raise ValueError(
-            f"Unknown trend_type '{trend_type}'. "
-            f"Valid types: {valid_types}"
+            f"Unknown trend_type '{trend_type}'. Valid types: {valid_types}"
         )
 
     z = trend_functions[trend_type](x_norm, y_norm)
@@ -118,15 +118,16 @@ def generate_random_field(
 
     return x, y, z
 
+
 def generate_clustered_samples(
     n_clusters: int = 3,
     points_per_cluster: int = 20,
     cluster_std: float = 5.0,
-    x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
-    y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    x_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    y_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
     value_by_cluster: bool = True,
-    seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    seed: int | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Generate clustered spatial samples.
 
@@ -189,8 +190,12 @@ def generate_clustered_samples(
         end_idx = (i + 1) * points_per_cluster
 
         # Cluster coordinates
-        x[start_idx:end_idx] = cluster_x[i] + np.random.normal(0, cluster_std, points_per_cluster)
-        y[start_idx:end_idx] = cluster_y[i] + np.random.normal(0, cluster_std, points_per_cluster)
+        x[start_idx:end_idx] = cluster_x[i] + np.random.normal(
+            0, cluster_std, points_per_cluster
+        )
+        y[start_idx:end_idx] = cluster_y[i] + np.random.normal(
+            0, cluster_std, points_per_cluster
+        )
 
         # Clip to bounds
         x[start_idx:end_idx] = np.clip(x[start_idx:end_idx], x_range[0], x_range[1])
@@ -198,22 +203,27 @@ def generate_clustered_samples(
 
         # Values
         if value_by_cluster:
-            z[start_idx:end_idx] = cluster_values[i] + np.random.normal(0, 0.5, points_per_cluster)
+            z[start_idx:end_idx] = cluster_values[i] + np.random.normal(
+                0, 0.5, points_per_cluster
+            )
         else:
             x_norm = (x[start_idx:end_idx] - x_range[0]) / (x_range[1] - x_range[0])
             y_norm = (y[start_idx:end_idx] - y_range[0]) / (y_range[1] - y_range[0])
-            z[start_idx:end_idx] = x_norm + 2*y_norm + np.random.normal(0, 0.3, points_per_cluster)
+            z[start_idx:end_idx] = (
+                x_norm + 2 * y_norm + np.random.normal(0, 0.3, points_per_cluster)
+            )
 
     return x, y, z
 
+
 def generate_elevation_like_data(
     n_points: int = DEFAULT_N_POINTS,
-    x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
-    y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    x_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    y_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
     n_hills: int = 3,
     roughness: float = 0.1,
-    seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    seed: int | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Generate synthetic elevation-like data with hills and valleys.
 
@@ -279,7 +289,7 @@ def generate_elevation_like_data(
         dx = x - hill_x[i]
         dy = y - hill_y[i]
         dist_sq = dx**2 + dy**2
-        z += hill_heights[i] * np.exp(-dist_sq / (2 * hill_widths[i]**2))
+        z += hill_heights[i] * np.exp(-dist_sq / (2 * hill_widths[i] ** 2))
 
     # Add baseline elevation
     base_elevation = 100.0
@@ -292,15 +302,16 @@ def generate_elevation_like_data(
 
     return x, y, z
 
+
 def generate_anisotropic_field(
     n_points: int = DEFAULT_N_POINTS,
-    x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
-    y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    x_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    y_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
     anisotropy_ratio: float = 3.0,
     anisotropy_angle: float = 45.0,
     correlation_length: float = 20.0,
-    seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    seed: int | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Generate synthetic data with anisotropic spatial correlation.
 
@@ -385,15 +396,16 @@ def generate_anisotropic_field(
 
     return x, y, z
 
+
 def generate_sparse_dense_mix(
     n_sparse: int = 30,
     n_dense: int = 100,
-    dense_region_center: Tuple[float, float] = (50.0, 50.0),
+    dense_region_center: tuple[float, float] = (50.0, 50.0),
     dense_region_radius: float = 20.0,
-    x_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
-    y_range: Tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
-    seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    x_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    y_range: tuple[float, float] = (0.0, DEFAULT_SPATIAL_RANGE),
+    seed: int | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Generate dataset with both sparse and densely sampled regions.
 
@@ -444,7 +456,7 @@ def generate_sparse_dense_mix(
     y_sparse = np.random.uniform(y_range[0], y_range[1], n_sparse)
 
     # Dense points (concentrated in one region)
-    angles = np.random.uniform(0, 2*np.pi, n_dense)
+    angles = np.random.uniform(0, 2 * np.pi, n_dense)
     radii = np.random.uniform(0, dense_region_radius, n_dense)
     x_dense = dense_region_center[0] + radii * np.cos(angles)
     y_dense = dense_region_center[1] + radii * np.sin(angles)

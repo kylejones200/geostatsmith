@@ -39,111 +39,112 @@ References:
 - Diggle, P.J. & Ribeiro, P.J. (2007). "Model-based Geostatistics". Springer.
 """
 
-from typing import Optional, Tuple, Union, Callable
+import logging
+from collections.abc import Callable
+
 import numpy as np
 import numpy.typing as npt
-import logging
 
 logger = logging.getLogger(__name__)
 
 from ..core.base import BaseKriging
-from ..core.validators import validate_coordinates, validate_values
-from ..core.constants import EPSILON, REGULARIZATION_FACTOR
+from ..core.constants import REGULARIZATION_FACTOR
 from ..core.logging_config import get_logger
-from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..math.distance import euclidean_distance_matrix
+from ..math.matrices import regularize_matrix, solve_kriging_system
 
 logger = get_logger(__name__)
 
 # sklearn is a required dependency
 from sklearn.base import BaseEstimator, RegressorMixin
 
+
 class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
     """
-    Gaussian Process Regression with Geostatistical Kernels
+       Gaussian Process Regression with Geostatistical Kernels
 
- sklearn-compatible Gaussian Process using variogram-based kernels.
+    sklearn-compatible Gaussian Process using variogram-based kernels.
 
- This class provides the familiar GP interface while using geostatistical
- variogram models as covariance kernels.
+    This class provides the familiar GP interface while using geostatistical
+    variogram models as covariance kernels.
 
- Mathematical Framework:
- A Gaussian Process is a distribution over functions:
-     pass
- f ~ GP(m, k)
+    Mathematical Framework:
+    A Gaussian Process is a distribution over functions:
+        pass
+    f ~ GP(m, k)
 
- where:
-     pass
- - m: mean function
- - k: covariance kernel (related to variogram by k(h) = σ^2 - γ(h))
+    where:
+        pass
+    - m: mean function
+    - k: covariance kernel (related to variogram by k(h) = σ^2 - γ(h))
 
- Prediction at new point x*:
-     pass
- f(x*) | X, y ~ N(μ*, σ^2*)
+    Prediction at new point x*:
+        pass
+    f(x*) | X, y ~ N(μ*, σ^2*)
 
- where:
- mu* = m(x*) + k(x*, X) K^(-1) (y - m(X))
- sigma^2* = k(x*, x*) - k(x*, X) K^(-1) k(X, x*)
+    where:
+    mu* = m(x*) + k(x*, X) K^(-1) (y - m(X))
+    sigma^2* = k(x*, x*) - k(x*, X) K^(-1) k(X, x*)
 
- Parameters
- ----------
- kernel : VariogramModelBase or str
- Covariance kernel (variogram model)
- If str, will fit the specified model type
- mean_type : str
- Type of mean function:
-    - 'zero': m(x) = 0 (Simple Kriging with mean=0)
-    - 'constant': m(x) = mu (Ordinary Kriging)
-    - 'linear': m(x) = beta0 + beta1*x + beta2*y (Universal Kriging)
- alpha : float
- Nugget/noise parameter for numerical stability
- optimize_kernel : bool
- Whether to optimize kernel parameters
+    Parameters
+    ----------
+    kernel : VariogramModelBase or str
+    Covariance kernel (variogram model)
+    If str, will fit the specified model type
+    mean_type : str
+    Type of mean function:
+       - 'zero': m(x) = 0 (Simple Kriging with mean=0)
+       - 'constant': m(x) = mu (Ordinary Kriging)
+       - 'linear': m(x) = beta0 + beta1*x + beta2*y (Universal Kriging)
+    alpha : float
+    Nugget/noise parameter for numerical stability
+    optimize_kernel : bool
+    Whether to optimize kernel parameters
 
- Attributes
- ----------
- X_train_ : np.ndarray
- Training features (spatial coordinates)
- y_train_ : np.ndarray
- Training targets (values)
- K_ : np.ndarray
- Fitted covariance matrix
+    Attributes
+    ----------
+    X_train_ : np.ndarray
+    Training features (spatial coordinates)
+    y_train_ : np.ndarray
+    Training targets (values)
+    K_ : np.ndarray
+    Fitted covariance matrix
 
- Examples
- --------
- >>> from geostats.ml import GaussianProcessGeostat
- >>> from geostats.models.variogram_models import SphericalModel
- >>>
- >>> # Create GP with spherical kernel
- >>> kernel = SphericalModel(nugget=0.1, sill=1.0, range=100)
- >>> gp = GaussianProcessGeostat(kernel=kernel, mean_type='constant')
- >>>
- >>> # Fit (sklearn interface)
- >>> X = np.column_stack([x, y]) # Features: coordinates
- >>> gp.fit(X, z)
- >>>
- >>> # Predict (sklearn interface)
- >>> X_new = np.column_stack([x_new, y_new])
- >>> y_pred, y_std = gp.predict(X_new, return_std=True)
- >>>
- >>> # Use in sklearn pipeline
- >>> from sklearn.pipeline import Pipeline
- >>> from sklearn.preprocessing import StandardScaler
- >>>
- >>> pipe = Pipeline([
- ... ('scaler', StandardScaler()),
- ... ('gp', gp)
- ... ])
- >>> pipe.fit(X, z)
- """
+    Examples
+    --------
+    >>> from geostats.ml import GaussianProcessGeostat
+    >>> from geostats.models.variogram_models import SphericalModel
+    >>>
+    >>> # Create GP with spherical kernel
+    >>> kernel = SphericalModel(nugget=0.1, sill=1.0, range=100)
+    >>> gp = GaussianProcessGeostat(kernel=kernel, mean_type='constant')
+    >>>
+    >>> # Fit (sklearn interface)
+    >>> X = np.column_stack([x, y]) # Features: coordinates
+    >>> gp.fit(X, z)
+    >>>
+    >>> # Predict (sklearn interface)
+    >>> X_new = np.column_stack([x_new, y_new])
+    >>> y_pred, y_std = gp.predict(X_new, return_std=True)
+    >>>
+    >>> # Use in sklearn pipeline
+    >>> from sklearn.pipeline import Pipeline
+    >>> from sklearn.preprocessing import StandardScaler
+    >>>
+    >>> pipe = Pipeline([
+    ... ('scaler', StandardScaler()),
+    ... ('gp', gp)
+    ... ])
+    >>> pipe.fit(X, z)
+    """
 
     def __init__(
         self,
-        kernel: Optional[Union[str, Callable]] = 'spherical',
-        mean_type: str = 'constant',
+        kernel: str | Callable | None = "spherical",
+        mean_type: str = "constant",
         alpha: float = None,
         optimize_kernel: bool = False,
-        n_lags: int = None
+        n_lags: int = None,
     ):
         """
         Initialize Gaussian Process with geostatistical kernel
@@ -161,7 +162,8 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         n_lags : int
             Number of lags for variogram fitting if kernel is str
         """
-        from ..core.constants import REGULARIZATION_FACTOR, DEFAULT_N_LAGS
+        from ..core.constants import DEFAULT_N_LAGS
+
         if alpha is None:
             alpha = REGULARIZATION_FACTOR
         if n_lags is None:
@@ -178,7 +180,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         self.K_ = None
         self.fitted_kernel_ = None
 
-        mean_types = {'zero', 'constant', 'linear'}
+        mean_types = {"zero", "constant", "linear"}
         if self.mean_type not in mean_types:
             raise ValueError(f"mean_type must be one of {mean_types}, got {mean_type}")
 
@@ -187,11 +189,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
             f"optimize={optimize_kernel}"
         )
 
-    def fit(
-        self,
-        X: npt.NDArray[np.float64],
-        y: npt.NDArray[np.float64]
-    ):
+    def fit(self, X: npt.NDArray[np.float64], y: npt.NDArray[np.float64]):
         """
         Fit Gaussian Process model
 
@@ -225,8 +223,8 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
         # Fit variogram kernel if string provided
         if isinstance(self.kernel, str):
-            from ..variogram import experimental_variogram
             from ..algorithms.fitting import fit_variogram_model
+            from ..variogram import experimental_variogram
 
             lag_dist, semivar, pairs = experimental_variogram(
                 x_coords, y_coords, y, n_lags=self.n_lags
@@ -253,13 +251,10 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         return self
 
     def _build_covariance_matrix(
-        self,
-        x: npt.NDArray[np.float64],
-        y: npt.NDArray[np.float64]
+        self, x: npt.NDArray[np.float64], y: npt.NDArray[np.float64]
     ):
         """Build covariance matrix from variogram"""
-        from ..math.distance import euclidean_distance_matrix
-        
+
         n = len(x)
 
         # Calculate distance matrix
@@ -270,18 +265,20 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
         # Convert variogram to covariance: C(h) = sigma^2 - gamma(h)
         from ..core.constants import DEFAULT_SILL_VALUE
+
         params = self.fitted_kernel_.get_parameters()
-        sill = params.get('sill', DEFAULT_SILL_VALUE)
+        sill = params.get("sill", DEFAULT_SILL_VALUE)
         cov_matrix = sill - gamma_matrix
 
         # Add nugget/noise for numerical stability
-        nugget = params.get('nugget', 0.0)
+        nugget = params.get("nugget", 0.0)
         total_noise = nugget + self.alpha
 
-        if self.mean_type == 'constant':
+        if self.mean_type == "constant":
             K = np.zeros((n + 1, n + 1), dtype=np.float64)
             K[:n, :n] = cov_matrix
             from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+
             K[:n, n] = UNBIASEDNESS_CONSTRAINT
             K[n, :n] = UNBIASEDNESS_CONSTRAINT
             K[n, n] = ZERO_VALUE
@@ -291,7 +288,6 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         else:
             K = cov_matrix + np.eye(n) * total_noise
 
-        from ..math.matrices import regularize_matrix
         REGULARIZATION_FACTOR = 1e-6
         self.K_ = regularize_matrix(K, factor=REGULARIZATION_FACTOR)
         logger.debug("Covariance matrix built and regularized")
@@ -300,12 +296,14 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         self,
         X: npt.NDArray[np.float64],
         return_std: bool = False,
-        return_cov: bool = False
-    ) -> Union[
-        npt.NDArray[np.float64],
-        Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]],
-        Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]
-    ]:
+        return_cov: bool = False,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+        | tuple[
+            npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
+        ]
+    ):
         """
         Predict using Gaussian Process
 
@@ -342,14 +340,16 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
         predictions = np.zeros(n_pred, dtype=np.float64)
         std_devs = np.zeros(n_pred, dtype=np.float64) if return_std else None
-        cov_matrix = np.zeros((n_pred, n_pred), dtype=np.float64) if return_cov else None
+        cov_matrix = (
+            np.zeros((n_pred, n_pred), dtype=np.float64) if return_cov else None
+        )
 
         params = self.fitted_kernel_.get_parameters()
-        sill = params.get('sill', 1.0)
+        sill = params.get("sill", 1.0)
+
+        from scipy.spatial.distance import cdist
 
         from ..math.distance import euclidean_distance
-        from ..math.matrices import solve_kriging_system
-        from scipy.spatial.distance import cdist
 
         # Pre-compute distances between prediction points for covariance
         coords_pred = np.column_stack([x_new, y_new])
@@ -358,16 +358,21 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
 
         for i in range(n_pred):
             # Distance from prediction point to all training points
-            h_vec = np.array([euclidean_distance(x_new[i], y_new[i], x_train[j], y_train[j]) 
-                             for j in range(n_train)])
-            
+            h_vec = np.array(
+                [
+                    euclidean_distance(x_new[i], y_new[i], x_train[j], y_train[j])
+                    for j in range(n_train)
+                ]
+            )
+
             gamma_vec = self.fitted_kernel_(h_vec)
             k_vec = sill - gamma_vec  # Convert to covariance
 
-            if self.mean_type == 'constant':
+            if self.mean_type == "constant":
                 rhs = np.zeros(n_train + 1, dtype=np.float64)
                 rhs[:n_train] = k_vec
                 from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
                 rhs[n_train] = UNBIASEDNESS_CONSTRAINT
 
                 weights = solve_kriging_system(self.K_, rhs)
@@ -383,7 +388,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                 weights = solve_kriging_system(self.K_[:n_train, :n_train], k_vec)
                 lambdas = weights
 
-                mean_y = np.mean(self.y_train_) if self.mean_type == 'zero' else 0.0
+                mean_y = np.mean(self.y_train_) if self.mean_type == "zero" else 0.0
                 predictions[i] = mean_y + np.dot(lambdas, self.y_train_ - mean_y)
 
                 if return_std:
@@ -398,32 +403,41 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
                     gamma = self.fitted_kernel_(h)
                     cov_ij = sill - gamma
                     cov_matrix[i, j] = cov_ij
-                    
+
             # The diagonal should be prediction variance, not prior covariance
             if return_std:
                 for i in range(n_pred):
-                    cov_matrix[i, i] = std_devs[i]**2
+                    cov_matrix[i, i] = std_devs[i] ** 2
             else:
                 for i in range(n_pred):
-                    h_vec = np.array([euclidean_distance(x_new[i], y_new[i], x_train[j], y_train[j]) 
-                                     for j in range(n_train)])
+                    h_vec = np.array(
+                        [
+                            euclidean_distance(
+                                x_new[i], y_new[i], x_train[j], y_train[j]
+                            )
+                            for j in range(n_train)
+                        ]
+                    )
                     gamma_vec = self.fitted_kernel_(h_vec)
                     k_vec = sill - gamma_vec
-                    
-                    if self.mean_type == 'constant':
+
+                    if self.mean_type == "constant":
                         rhs = np.zeros(n_train + 1, dtype=np.float64)
                         rhs[:n_train] = k_vec
                         from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
                         rhs[n_train] = UNBIASEDNESS_CONSTRAINT
                         weights = solve_kriging_system(self.K_, rhs)
                         lambdas = weights[:n_train]
                         mu = weights[n_train]
                         var = sill - (np.dot(lambdas, k_vec) + mu)
                     else:
-                        weights = solve_kriging_system(self.K_[:n_train, :n_train], k_vec)
+                        weights = solve_kriging_system(
+                            self.K_[:n_train, :n_train], k_vec
+                        )
                         lambdas = weights
                         var = sill - np.dot(lambdas, k_vec)
-                    
+
                     cov_matrix[i, i] = max(0.0, var)
 
         logger.debug(f"GP prediction complete for {n_pred} points")
@@ -435,11 +449,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         else:
             return predictions
 
-    def score(
-        self,
-        X: npt.NDArray[np.float64],
-        y: npt.NDArray[np.float64]
-    ) -> float:
+    def score(self, X: npt.NDArray[np.float64], y: npt.NDArray[np.float64]) -> float:
         """
         Return the coefficient of determination R^2 of the prediction
 
@@ -479,12 +489,14 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
             Log marginal likelihood
         """
         if self.K_ is None:
-            raise ValueError("Model must be fitted before computing log marginal likelihood")
+            raise ValueError(
+                "Model must be fitted before computing log marginal likelihood"
+            )
 
         n = len(self.y_train_)
 
         # For Ordinary Kriging, use reduced system
-        if self.mean_type == 'constant':
+        if self.mean_type == "constant":
             y = self.y_train_
         else:
             mean_y = np.mean(self.y_train_)
@@ -509,7 +521,7 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
             logger.warning("Cholesky decomposition failed for LML computation")
             return -np.inf
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], dict]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict]:
         """
         Perform leave-one-out cross-validation
 
@@ -534,8 +546,8 @@ class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):
         predictions = leave_one_out(self, x, y, z)
 
         metrics = {
-            'mse': mean_squared_error(z, predictions),
-            'r2': r_squared(z, predictions)
+            "mse": mean_squared_error(z, predictions),
+            "r2": r_squared(z, predictions),
         }
 
         return predictions, metrics

@@ -22,38 +22,38 @@ This extends Universal Kriging to handle arbitrary spatial covariates beyond
 just polynomial functions of coordinates.
 """
 
-from typing import Optional, Tuple, Union, Dict
+import logging
+
 import numpy as np
 import numpy.typing as npt
-import logging
 
 logger = logging.getLogger(__name__)
 
 from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
-from ..core.validators import validate_coordinates, validate_values
-from ..math.distance import euclidean_distance_matrix, euclidean_distance
-from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..core.logging_config import get_logger
+from ..core.validators import validate_coordinates, validate_values
+from ..math.distance import euclidean_distance
+from ..math.matrices import regularize_matrix
 
 logger = get_logger(__name__)
 
+
 class ExternalDriftKriging(BaseKriging):
     """
-    External Drift Kriging (also known as Regression Kriging)
+       External Drift Kriging (also known as Regression Kriging)
 
-    Uses external covariate(s) to improve estimation. The mean is modeled as
-    a linear function of external variables:
+       Uses external covariate(s) to improve estimation. The mean is modeled as
+       a linear function of external variables:
 
-    m(x) = beta0 + beta1*Y1(x) + beta2*Y2(x) + ...
+       m(x) = beta0 + beta1*Y1(x) + beta2*Y2(x) + ...
 
-    where Y1, Y2, ... are external covariates (elevation, temperature, etc.)
+       where Y1, Y2, ... are external covariates (elevation, temperature, etc.)
 
-    Advantages over Universal Kriging:
- - Can use actual measured covariates (not just coordinates)
- - Better for variables with clear relationships to auxiliary data
- - More flexible trend modeling
- """
+       Advantages over Universal Kriging:
+    - Can use actual measured covariates (not just coordinates)
+    - Better for variables with clear relationships to auxiliary data
+    - More flexible trend modeling
+    """
 
     def __init__(
         self,
@@ -61,7 +61,7 @@ class ExternalDriftKriging(BaseKriging):
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
         covariates_data: npt.NDArray[np.float64],
-        variogram_model: Optional[object] = None,
+        variogram_model: object | None = None,
     ):
         """
         Initialize External Drift Kriging
@@ -104,18 +104,18 @@ class ExternalDriftKriging(BaseKriging):
 
     def _build_kriging_matrix(self) -> None:
         """
-        Build the external drift kriging system matrix
+               Build the external drift kriging system matrix
 
-        System (from geokniga §5974-5994):
-        [ Gamma 1 Y ] [ lambda ] [ gamma0 ]
-        [ 1^T 0 0 ] [ mu1 ] = [ 1 ]
-        [ Y^T 0 0 ] [ mu2 ] [ y0 ]
+               System (from geokniga §5974-5994):
+               [ Gamma 1 Y ] [ lambda ] [ gamma0 ]
+               [ 1^T 0 0 ] [ mu1 ] = [ 1 ]
+               [ Y^T 0 0 ] [ mu2 ] [ y0 ]
 
- where:
-        - Gamma is the n*n variogram matrix
-        - 1 is vector of ones
-        - Y is the n*n_covariates matrix of external covariate values
-        - y0 is the covariate value(s) at prediction location
+        where:
+               - Gamma is the n*n variogram matrix
+               - 1 is vector of ones
+               - Y is the n*n_covariates matrix of external covariate values
+               - y0 is the covariate value(s) at prediction location
         """
         n = len(self.x)
         n_cov = self.n_covariates
@@ -124,7 +124,7 @@ class ExternalDriftKriging(BaseKriging):
 
         # Build variogram matrix (vectorized)
         # Compute all pairwise distances at once
-        from ..math.distance import euclidean_distance
+
         dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
         # Apply variogram function to all distances (vectorized)
@@ -140,6 +140,7 @@ class ExternalDriftKriging(BaseKriging):
 
         # Unbiasedness constraint (sum of weights = 1)
         from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
         K[:n, n] = UNBIASEDNESS_CONSTRAINT
         K[n, :n] = UNBIASEDNESS_CONSTRAINT
 
@@ -149,7 +150,7 @@ class ExternalDriftKriging(BaseKriging):
             K[n + 1 + k, :n] = self.covariates_data[:, k]
 
         # Regularize if needed
-        from ..math.matrices import regularize_matrix
+
         K = regularize_matrix(K)
 
         self.kriging_matrix = K
@@ -159,32 +160,36 @@ class ExternalDriftKriging(BaseKriging):
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
         covariates_new: npt.NDArray[np.float64],
-        return_variance: bool = True
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        return_variance: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
-        Predict at new locations using external drift kriging
+           Predict at new locations using external drift kriging
 
-        Parameters
-        ----------
-        x_new, y_new : np.ndarray
-        Coordinates of prediction points
-        covariates_new : np.ndarray
-        External covariate values at prediction points
-     Shape: (n_pred, n_covariates) or (n_pred,) for single covariate
-     return_variance : bool
-     If True, return both predictions and kriging variance
+           Parameters
+           ----------
+           x_new, y_new : np.ndarray
+           Coordinates of prediction points
+           covariates_new : np.ndarray
+           External covariate values at prediction points
+        Shape: (n_pred, n_covariates) or (n_pred,) for single covariate
+        return_variance : bool
+        If True, return both predictions and kriging variance
 
-     Returns
-     -------
-     predictions : np.ndarray
-     Predicted values
-        variance : np.ndarray, optional
-        Kriging variance at each prediction point
+        Returns
+        -------
+        predictions : np.ndarray
+        Predicted values
+           variance : np.ndarray, optional
+           Kriging variance at each prediction point
         """
         if self.variogram_model is None:
             raise ValueError("Variogram model must be fitted before prediction")
 
         from ..utils.validation import validate_coordinates
+
         x_new, y_new = validate_coordinates(x_new, y_new)
         n_pred = len(x_new)
         n_data = len(self.x)
@@ -211,10 +216,12 @@ class ExternalDriftKriging(BaseKriging):
 
         # Vectorized distance calculation for all prediction points
         # Shape: (n_pred, n_data)
-        from ..math.distance import euclidean_distance
+
         dist_to_data = euclidean_distance(
-            x_new.reshape(-1, 1), y_new.reshape(-1, 1),
-            self.x.reshape(1, -1), self.y.reshape(1, -1)
+            x_new.reshape(-1, 1),
+            y_new.reshape(-1, 1),
+            self.x.reshape(1, -1),
+            self.y.reshape(1, -1),
         )
 
         # Apply variogram to all distances (vectorized)
@@ -229,14 +236,16 @@ class ExternalDriftKriging(BaseKriging):
             rhs = np.zeros(n_data + 1 + n_cov, dtype=np.float64)
             rhs[:n_data] = gamma_to_data[i, :]  # Variogram values (vectorized)
             from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
             rhs[n_data] = UNBIASEDNESS_CONSTRAINT  # Unbiasedness constraint
-            rhs[n_data + 1:] = covariates_new[i, :]  # External drift constraints
+            rhs[n_data + 1 :] = covariates_new[i, :]  # External drift constraints
 
             # Solve kriging system
             try:
                 weights = np.linalg.solve(self.kriging_matrix, rhs)
             except np.linalg.LinAlgError as e:
                 from ..exceptions import KrigingError
+
                 raise KrigingError(f"Failed to solve kriging system at point {i}: {e}")
 
             # Prediction: sum of lambda_i * z_i
@@ -250,7 +259,7 @@ class ExternalDriftKriging(BaseKriging):
             return predictions, variances
         return predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Leave-one-out cross-validation for external drift kriging
 
@@ -274,15 +283,15 @@ class ExternalDriftKriging(BaseKriging):
                 self.y[mask],
                 self.z[mask],
                 self.covariates_data[mask],
-                self.variogram_model
+                self.variogram_model,
             )
 
             # Predict at left-out point
             pred = edk_temp.predict(
                 np.array([self.x[i]]),
                 np.array([self.y[i]]),
-                self.covariates_data[i:i+1],
-                return_variance=False
+                self.covariates_data[i : i + 1],
+                return_variance=False,
             )
             predictions[i] = pred[0]
 
@@ -290,12 +299,12 @@ class ExternalDriftKriging(BaseKriging):
         errors = self.z - predictions
 
         metrics = {
-            'MSE': np.mean(errors**2),
-            'RMSE': np.sqrt(np.mean(errors**2)),
-            'MAE': np.mean(np.abs(errors)),
-            'R2': 1 - np.sum(errors**2) / np.sum((self.z - np.mean(self.z))**2),
-            'bias': np.mean(errors),
-            'predictions': predictions,
+            "MSE": np.mean(errors**2),
+            "RMSE": np.sqrt(np.mean(errors**2)),
+            "MAE": np.mean(np.abs(errors)),
+            "R2": 1 - np.sum(errors**2) / np.sum((self.z - np.mean(self.z)) ** 2),
+            "bias": np.mean(errors),
+            "predictions": predictions,
         }
 
         return errors, metrics

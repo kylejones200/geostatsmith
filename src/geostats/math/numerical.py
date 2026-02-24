@@ -1,22 +1,23 @@
 """
-    Numerical methods for optimization and fitting
+Numerical methods for optimization and fitting
 """
 
-from typing import Callable, Dict, Any, Optional, Tuple
+from collections.abc import Callable
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
-from scipy.optimize import curve_fit, minimize, OptimizeResult
+from scipy.optimize import curve_fit, minimize
 
-from ..core.exceptions import FittingError, ConvergenceError
 
 def weighted_least_squares(
- xdata: npt.NDArray[np.float64],
- ydata: npt.NDArray[np.float64],
- weights: Optional[npt.NDArray[np.float64]] = None,
- p0: Optional[npt.NDArray[np.float64]] = None,
- bounds: Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
+    xdata: npt.NDArray[np.float64],
+    ydata: npt.NDArray[np.float64],
+    weights: npt.NDArray[np.float64] | None = None,
+    p0: npt.NDArray[np.float64] | None = None,
+    bounds: tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
     **kwargs: Any,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Perform weighted least squares fitting
 
@@ -49,7 +50,7 @@ def weighted_least_squares(
     FittingError
         If fitting fails
     """
-    from scipy.optimize import curve_fit
+
     try:
         if weights is not None:
             sigma = 1.0 / np.sqrt(weights)
@@ -71,6 +72,7 @@ def weighted_least_squares(
 
     except Exception as e:
         from ..exceptions import FittingError
+
         raise FittingError(f"Weighted least squares fitting failed: {e}")
 
 
@@ -78,10 +80,10 @@ def ordinary_least_squares(
     func: Callable,
     xdata: npt.NDArray[np.float64],
     ydata: npt.NDArray[np.float64],
-    p0: Optional[npt.NDArray[np.float64]] = None,
-    bounds: Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
+    p0: npt.NDArray[np.float64] | None = None,
+    bounds: tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] = (-np.inf, np.inf),
     **kwargs: Any,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Perform ordinary least squares fitting
 
@@ -107,13 +109,15 @@ def ordinary_least_squares(
     cov : np.ndarray
         Covariance matrix of parameters
     """
-    return weighted_least_squares(func, xdata, ydata, weights=None, p0=p0, bounds=bounds, **kwargs)
+    return weighted_least_squares(
+        func, xdata, ydata, weights=None, p0=p0, bounds=bounds, **kwargs
+    )
 
 
 def optimize_parameters(
     objective: Callable,
     x0: npt.NDArray[np.float64],
-    bounds: Optional[Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]] = None,
+    bounds: tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]] | None = None,
     method: str = "L-BFGS-B",
     **kwargs: Any,
 ) -> Any:
@@ -143,7 +147,7 @@ def optimize_parameters(
     ConvergenceError
         If optimization fails to converge
     """
-    from scipy.optimize import minimize
+
     result = minimize(
         objective,
         x0,
@@ -154,6 +158,7 @@ def optimize_parameters(
 
     if not result.success:
         from ..exceptions import ConvergenceError
+
         raise ConvergenceError(f"Optimization failed: {result.message}")
 
     return result
@@ -162,7 +167,7 @@ def optimize_parameters(
 def cross_validation_score(
     y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """
     Calculate cross-validation metrics
 
@@ -192,7 +197,7 @@ def cross_validation_score(
 
     # R-squared
     ss_res = np.sum(errors**2)
-    ss_tot = np.sum((y_true - np.mean(y_true))**2)
+    ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
     r2 = 1 - (ss_res / ss_tot) if ss_tot > 0 else 0.0
 
     return {
@@ -201,7 +206,8 @@ def cross_validation_score(
         "mae": mae,
         "r2": r2,
         "bias": bias,
- }
+    }
+
 
 def compute_weights(
     n_pairs: npt.NDArray[np.int_],

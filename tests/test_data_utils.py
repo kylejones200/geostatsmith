@@ -1,12 +1,13 @@
 """
 Tests for data utility functions
 """
-import pytest
+
 import numpy as np
+
 from geostats.utils.data_utils import generate_synthetic_data, split_train_test
 
-class TestGenerateSyntheticData:
 
+class TestGenerateSyntheticData:
     def test_generate_synthetic_data_basic(self):
         x, y, z = generate_synthetic_data(n_points=50, seed=42)
 
@@ -33,15 +34,15 @@ class TestGenerateSyntheticData:
         assert not np.allclose(y1, y2)
         assert not np.allclose(z1, z2)
 
-class TestSplitTrainTest:
 
+class TestSplitTrainTest:
     def test_split_train_test_basic(self):
         x = np.arange(100, dtype=float)
         y = np.arange(100, dtype=float)
         z = np.arange(100, dtype=float)
 
         x_train, y_train, z_train, x_test, y_test, z_test = split_train_test(
-        x, y, z, test_size=0.3, random_state=42
+            x, y, z, test_size=0.3, random_state=42
         )
 
         assert len(x_train) == 70
@@ -54,7 +55,7 @@ class TestSplitTrainTest:
         z = np.arange(50, dtype=float)
 
         x_train, y_train, z_train, x_test, y_test, z_test = split_train_test(
-        x, y, z, test_size=0.2, random_state=42
+            x, y, z, test_size=0.2, random_state=42
         )
 
         # Check no indices overlap

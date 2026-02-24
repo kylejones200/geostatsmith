@@ -6,70 +6,70 @@ REST API endpoints for geostatistics operations.
 """
 
 import numpy as np
-from typing import List, Optional, Dict, Any
 
 try:
     from fastapi import APIRouter, HTTPException
     from pydantic import BaseModel, Field
+
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
+
     # Create dummy classes for when FastAPI not installed
     class BaseModel:
         pass
+
     class APIRouter:
         pass
+
     class Field:
         def __init__(self, *args, **kwargs):
             pass
+
 
 if FASTAPI_AVAILABLE:
     router = APIRouter()
 
     # Request/Response models
     class PredictionRequest(BaseModel):
-        x_samples: List[float] = Field(..., description="Sample X coordinates")
-        y_samples: List[float] = Field(..., description="Sample Y coordinates")
-        z_samples: List[float] = Field(..., description="Sample values")
-        x_pred: List[float] = Field(..., description="Prediction X coordinates")
-        y_pred: List[float] = Field(..., description="Prediction Y coordinates")
+        x_samples: list[float] = Field(..., description="Sample X coordinates")
+        y_samples: list[float] = Field(..., description="Sample Y coordinates")
+        z_samples: list[float] = Field(..., description="Sample values")
+        x_pred: list[float] = Field(..., description="Prediction X coordinates")
+        y_pred: list[float] = Field(..., description="Prediction Y coordinates")
         variogram_type: str = Field("spherical", description="Variogram model type")
         return_variance: bool = Field(True, description="Return kriging variance")
 
     class PredictionResponse(BaseModel):
-        predictions: List[float]
-        variance: Optional[List[float]] = None
+        predictions: list[float]
+        variance: list[float] | None = None
         model_type: str
-        model_parameters: Dict[str, float]
+        model_parameters: dict[str, float]
 
     class VariogramRequest(BaseModel):
-        x: List[float]
-        y: List[float]
-        z: List[float]
-        model_types: Optional[List[str]] = None
+        x: list[float]
+        y: list[float]
+        z: list[float]
+        model_types: list[str] | None = None
         n_lags: int = 15
 
     class VariogramResponse(BaseModel):
         best_model: str
-        parameters: Dict[str, float]
+        parameters: dict[str, float]
         r2: float
-        lags: List[float]
-        gamma: List[float]
+        lags: list[float]
+        gamma: list[float]
 
     class HealthResponse(BaseModel):
         status: str
         version: str
-        modules_available: Dict[str, bool]
+        modules_available: dict[str, bool]
 
     # Endpoints
     @router.get("/", tags=["General"])
     async def root():
         """Root endpoint."""
-        return {
-            "message": "GeoStats API",
-            "version": "0.3.0",
-            "docs": "/docs"
-        }
+        return {"message": "GeoStats API", "version": "0.3.0", "docs": "/docs"}
 
     @router.get("/health", response_model=HealthResponse, tags=["General"])
     async def health_check():
@@ -83,26 +83,27 @@ if FASTAPI_AVAILABLE:
 
         try:
             from geostats.performance import parallel_kriging
-            modules_available['performance'] = True
+
+            modules_available["performance"] = True
         except ImportError:
-            modules_available['performance'] = False
+            modules_available["performance"] = False
 
         try:
             from geostats.interactive import create_interactive_map
-            modules_available['interactive'] = True
+
+            modules_available["interactive"] = True
         except ImportError:
-            modules_available['interactive'] = False
+            modules_available["interactive"] = False
 
         try:
             from geostats.automl import auto_method
-            modules_available['automl'] = True
+
+            modules_available["automl"] = True
         except ImportError:
-            modules_available['automl'] = False
+            modules_available["automl"] = False
 
         return HealthResponse(
-            status="healthy",
-            version="0.3.0",
-            modules_available=modules_available
+            status="healthy", version="0.3.0", modules_available=modules_available
         )
 
     @router.post("/predict", response_model=PredictionResponse, tags=["Kriging"])
@@ -113,9 +114,9 @@ if FASTAPI_AVAILABLE:
         Returns predictions and optionally variance at requested locations.
         """
         try:
-            from ..algorithms.variogram import experimental_variogram
             from ..algorithms.fitting import fit_variogram_model as fit_variogram
             from ..algorithms.ordinary_kriging import OrdinaryKriging
+            from ..algorithms.variogram import experimental_variogram
 
             # Convert to numpy arrays
             x = np.array(request.x_samples)
@@ -131,8 +132,7 @@ if FASTAPI_AVAILABLE:
             # Kriging
             krig = OrdinaryKriging(x, y, z, model)
             predictions, variance = krig.predict(
-                x_pred, y_pred,
-                return_variance=request.return_variance
+                x_pred, y_pred, return_variance=request.return_variance
             )
 
             # Get model parameters
@@ -142,7 +142,7 @@ if FASTAPI_AVAILABLE:
                 predictions=predictions.tolist(),
                 variance=variance.tolist() if variance is not None else None,
                 model_type=model.__class__.__name__,
-                model_parameters=params
+                model_parameters=params,
             )
 
         except Exception as e:
@@ -169,15 +169,13 @@ if FASTAPI_AVAILABLE:
 
             # Auto fit
             model = auto_variogram(
-                x, y, z,
-                model_types=request.model_types,
-                verbose=False
+                x, y, z, model_types=request.model_types, verbose=False
             )
 
             # Compute R^2
             gamma_fitted = model(lags)
-            ss_res = np.sum((gamma - gamma_fitted)**2)
-            ss_tot = np.sum((gamma - gamma.mean())**2)
+            ss_res = np.sum((gamma - gamma_fitted) ** 2)
+            ss_tot = np.sum((gamma - gamma.mean()) ** 2)
             r2 = 1 - ss_res / ss_tot
 
             return VariogramResponse(
@@ -185,7 +183,7 @@ if FASTAPI_AVAILABLE:
                 parameters=model.get_parameters(),
                 r2=float(r2),
                 lags=lags.tolist(),
-                gamma=gamma.tolist()
+                gamma=gamma.tolist(),
             )
 
         except Exception as e:
@@ -193,11 +191,11 @@ if FASTAPI_AVAILABLE:
 
     @router.post("/auto-interpolate", tags=["AutoML"])
     async def auto_interpolate_endpoint(
-        x_samples: List[float],
-        y_samples: List[float],
-        z_samples: List[float],
-        x_pred: List[float],
-        y_pred: List[float],
+        x_samples: list[float],
+        y_samples: list[float],
+        z_samples: list[float],
+        x_pred: list[float],
+        y_pred: list[float],
     ):
         """
         Automatic interpolation - one endpoint does everything!
@@ -216,10 +214,12 @@ if FASTAPI_AVAILABLE:
             results = auto_interpolate(x, y, z, x_p, y_p, verbose=False)
 
             return {
-                "best_method": results['best_method'],
-                "cv_rmse": float(results['cv_rmse']),
-                "predictions": results['predictions'].tolist(),
-                "model_type": results['model'].__class__.__name__ if results['model'] else None
+                "best_method": results["best_method"],
+                "cv_rmse": float(results["cv_rmse"]),
+                "predictions": results["predictions"].tolist(),
+                "model_type": results["model"].__class__.__name__
+                if results["model"]
+                else None,
             }
 
         except Exception as e:

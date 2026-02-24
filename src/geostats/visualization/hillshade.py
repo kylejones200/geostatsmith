@@ -7,17 +7,18 @@ a common technique in geosciences for visualizing topography.
 Reference: Python Recipes for Earth Sciences (Trauth 2024)
 """
 
-from typing import Tuple, Optional
+import logging
+
+import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
-import matplotlib.pyplot as plt
 
 from ..core.logging_config import get_logger
-import logging
 
 logger = logging.getLogger(__name__)
 
 logger = get_logger(__name__)
+
 
 def hillshade(
     elevation: npt.NDArray[np.float64],
@@ -26,10 +27,10 @@ def hillshade(
     z_factor: float = 1.0,
     dx: float = 1.0,
     dy: float = 1.0,
-    ) -> npt.NDArray[np.float64]:
+) -> npt.NDArray[np.float64]:
     """
     Calculate hillshade from elevation data.
- 
+
     Creates a shaded relief representation of terrain by simulating
     illumination from a specified sun position.
 
@@ -87,7 +88,7 @@ def hillshade(
     ----------
     Horn, B.K.P. (1981). Hill shading and the reflectance map.
     Proceedings of the IEEE, 69(1), 14-47.
-"""
+    """
     elevation = np.asarray(elevation, dtype=np.float64)
 
     if elevation.ndim != 2:
@@ -109,13 +110,11 @@ def hillshade(
 
     # Calculate hillshade
     # Formula: cos(zenith) * cos(slope) + sin(zenith) * sin(slope) * cos(sun_azimuth - aspect)
-    zenith_rad = np.pi/2 - altitude_rad
+    zenith_rad = np.pi / 2 - altitude_rad
 
-    hillshade_value = (
-        np.cos(zenith_rad) * np.cos(slope) +
-        np.sin(zenith_rad) * np.sin(slope) *
-        np.cos(azimuth_rad - np.pi/2 - aspect)
-    )
+    hillshade_value = np.cos(zenith_rad) * np.cos(slope) + np.sin(zenith_rad) * np.sin(
+        slope
+    ) * np.cos(azimuth_rad - np.pi / 2 - aspect)
 
     # Normalize to 0-255
     hillshade_value = np.clip(hillshade_value, 0, 1)
@@ -123,15 +122,16 @@ def hillshade(
 
     return hillshade_8bit
 
+
 def plot_hillshaded_dem(
     y: npt.NDArray[np.float64],
     elevation: npt.NDArray[np.float64],
     azimuth: float = 315.0,
     altitude: float = 45.0,
-    cmap: str = 'terrain',
+    cmap: str = "terrain",
     alpha: float = 0.6,
-    figsize: Tuple[int, int] = (12, 10),
-    ) -> Tuple[plt.Figure, plt.Axes]:
+    figsize: tuple[int, int] = (12, 10),
+) -> tuple[plt.Figure, plt.Axes]:
     """
     Create a hillshaded DEM visualization.
 
@@ -177,7 +177,7 @@ def plot_hillshaded_dem(
 
     The hillshade provides depth perception while the colors show
     actual elevation values.
-"""
+    """
     # Calculate hillshade
     hs = hillshade(elevation, azimuth=azimuth, altitude=altitude)
 
@@ -191,27 +191,33 @@ def plot_hillshaded_dem(
         X, Y = x, y
 
     # Plot hillshade (grayscale base)
-    ax.imshow(hs, extent=[X.min(), X.max(), Y.min(), Y.max()],
-              cmap='gray', origin='lower', aspect='auto')
+    ax.imshow(
+        hs,
+        extent=[X.min(), X.max(), Y.min(), Y.max()],
+        cmap="gray",
+        origin="lower",
+        aspect="auto",
+    )
 
     # Overlay colored elevation with transparency
     im = ax.contourf(X, Y, elevation, levels=20, cmap=cmap, alpha=alpha)
 
     # Add colorbar
-    cbar = plt.colorbar(im, ax=ax, label='Elevation', fraction=0.046, pad=0.04)
+    cbar = plt.colorbar(im, ax=ax, label="Elevation", fraction=0.046, pad=0.04)
 
     # Labels and title
-    ax.set_xlabel('X', fontsize=12)
-    ax.set_ylabel('Y', fontsize=12)
-    ax.set_title('Hillshaded Digital Elevation Model', fontsize=14, fontweight='bold')
-    ax.set_aspect('equal')
+    ax.set_xlabel("X", fontsize=12)
+    ax.set_ylabel("Y", fontsize=12)
+    ax.set_title("Hillshaded Digital Elevation Model", fontsize=14, fontweight="bold")
+    ax.set_aspect("equal")
 
     return fig, ax
 
+
 def create_multi_azimuth_hillshade(
-    azimuths: Optional[list] = None,
+    azimuths: list | None = None,
     altitude: float = 45.0,
-    ) -> npt.NDArray[np.float64]:
+) -> npt.NDArray[np.float64]:
     """
     Create combined hillshade from multiple sun azimuths.
 
@@ -255,14 +261,16 @@ def create_multi_azimuth_hillshade(
     - Create more balanced visualization
 
     Common in professional cartography and GIS.
-"""
+    """
     if azimuths is None:
         azimuths = [315, 45, 135, 225]
 
     # Calculate hillshade for each azimuth
     hillshades = []
     for az in azimuths:
-        hs = hillshade(elevation, azimuth=az, altitude=altitude, z_factor=z_factor, dx=dx, dy=dy)
+        hs = hillshade(
+            elevation, azimuth=az, altitude=altitude, z_factor=z_factor, dx=dx, dy=dy
+        )
         hillshades.append(hs.astype(float))
 
     # Average
@@ -271,50 +279,51 @@ def create_multi_azimuth_hillshade(
     # Convert back to uint8
     return combined.astype(np.uint8)
 
+
 def slope_map(
     dx: float = 1.0,
     dy: float = 1.0,
-    units: str = 'degrees',
-    ) -> npt.NDArray[np.float64]:
+    units: str = "degrees",
+) -> npt.NDArray[np.float64]:
     """
-    Calculate slope from elevation data.
+        Calculate slope from elevation data.
 
-    Parameters
-    ----------
-    elevation : np.ndarray
-    2D elevation array
-    dx, dy : float
-    Grid spacing
-units : str, default='degrees'
-    Output units: 'degrees', 'radians', or 'percent'
+        Parameters
+        ----------
+        elevation : np.ndarray
+        2D elevation array
+        dx, dy : float
+        Grid spacing
+    units : str, default='degrees'
+        Output units: 'degrees', 'radians', or 'percent'
 
-Returns
-    -------
-    slope : np.ndarray
-    2D array of slope values
+    Returns
+        -------
+        slope : np.ndarray
+        2D array of slope values
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> from geostats.visualization.enhanced import slope_map
-    >>>
-    >>> # Create elevation
-    >>> x = np.linspace(0, 100, 100)
-    >>> y = np.linspace(0, 100, 100)
-    >>> X, Y = np.meshgrid(x, y)
-    >>> Z = 0.5 * X + 0.3 * Y # Tilted plane
-    >>>
-    >>> slope_deg = slope_map(Z, units='degrees')
-    >>> logger.info(f"Mean slope: {np.mean(slope_deg):.2f} degrees")
+        Examples
+        --------
+        >>> import numpy as np
+        >>> from geostats.visualization.enhanced import slope_map
+        >>>
+        >>> # Create elevation
+        >>> x = np.linspace(0, 100, 100)
+        >>> y = np.linspace(0, 100, 100)
+        >>> X, Y = np.meshgrid(x, y)
+        >>> Z = 0.5 * X + 0.3 * Y # Tilted plane
+        >>>
+        >>> slope_deg = slope_map(Z, units='degrees')
+        >>> logger.info(f"Mean slope: {np.mean(slope_deg):.2f} degrees")
 
-Notes
------
-Slope is the rate of change in elevation - important for:
-- Erosion modeling
-    - Landslide hazard assessment
-    - Habitat suitability
-    - Hydrological modeling
-"""
+    Notes
+    -----
+    Slope is the rate of change in elevation - important for:
+    - Erosion modeling
+        - Landslide hazard assessment
+        - Habitat suitability
+        - Hydrological modeling
+    """
     # Calculate gradients
     dz_dy, dz_dx = np.gradient(elevation, dy, dx)
 
@@ -323,72 +332,70 @@ Slope is the rate of change in elevation - important for:
 
     # Unit conversions using dispatch
     unit_conversions = {
-        'degrees': lambda s: np.rad2deg(s),
-        'radians': lambda s: s,
-        'percent': lambda s: np.tan(s) * 100,
+        "degrees": lambda s: np.rad2deg(s),
+        "radians": lambda s: s,
+        "percent": lambda s: np.tan(s) * 100,
     }
 
     if units not in unit_conversions:
         valid_units = list(unit_conversions.keys())
-        raise ValueError(
-            f"Unknown units '{units}'. "
-            f"Valid units: {valid_units}"
-        )
+        raise ValueError(f"Unknown units '{units}'. Valid units: {valid_units}")
 
     return unit_conversions[units](slope_rad)
+
 
 def aspect_map(
     dx: float = 1.0,
     dy: float = 1.0,
-    ) -> npt.NDArray[np.float64]:
+) -> npt.NDArray[np.float64]:
     """
-    Calculate aspect (slope direction) from elevation data.
- 
-    Parameters
-    ----------
-    elevation : np.ndarray
-    2D elevation array
-dx, dy : float
-    Grid spacing
+        Calculate aspect (slope direction) from elevation data.
 
-Returns
-    -------
-    aspect : np.ndarray
-    2D array of aspect values in degrees (0-360)
-    0/360 = North, 90 = East, 180 = South, 270 = West
+        Parameters
+        ----------
+        elevation : np.ndarray
+        2D elevation array
+    dx, dy : float
+        Grid spacing
 
-    Examples
-    --------
-    >>> import numpy as np
-    >>> from geostats.visualization.enhanced import aspect_map
-    >>>
-    >>> # Create elevation
-    >>> x = np.linspace(0, 100, 100)
-    >>> y = np.linspace(0, 100, 100)
-    >>> X, Y = np.meshgrid(x, y)
-    >>> Z = X # Slopes to the east
-    >>>
-    >>> aspect_deg = aspect_map(Z)
-    >>> logger.info(f"Mean aspect: {np.mean(aspect_deg):.1f} degrees")
+    Returns
+        -------
+        aspect : np.ndarray
+        2D array of aspect values in degrees (0-360)
+        0/360 = North, 90 = East, 180 = South, 270 = West
 
-    Notes
-    -----
-    Aspect indicates the direction a slope faces - important for:
-     pass
-    - Solar radiation modeling
-    - Snow accumulation
-    - Vegetation patterns
-    - Microclimate analysis
- """
- # Calculate gradients
+        Examples
+        --------
+        >>> import numpy as np
+        >>> from geostats.visualization.enhanced import aspect_map
+        >>>
+        >>> # Create elevation
+        >>> x = np.linspace(0, 100, 100)
+        >>> y = np.linspace(0, 100, 100)
+        >>> X, Y = np.meshgrid(x, y)
+        >>> Z = X # Slopes to the east
+        >>>
+        >>> aspect_deg = aspect_map(Z)
+        >>> logger.info(f"Mean aspect: {np.mean(aspect_deg):.1f} degrees")
+
+        Notes
+        -----
+        Aspect indicates the direction a slope faces - important for:
+         pass
+        - Solar radiation modeling
+        - Snow accumulation
+        - Vegetation patterns
+        - Microclimate analysis
+    """
+    # Calculate gradients
     dz_dy, dz_dx = np.gradient(elevation, dy, dx)
 
- # Calculate aspect
- # atan2 gives angle from -π to π, we convert to 0-360 degrees
+    # Calculate aspect
+    # atan2 gives angle from -π to π, we convert to 0-360 degrees
     aspect_rad = np.arctan2(-dz_dy, dz_dx)
     aspect_deg = np.rad2deg(aspect_rad)
 
- # Convert to 0-360 range (0=North, clockwise)
+    # Convert to 0-360 range (0=North, clockwise)
     aspect_deg = 90 - aspect_deg
     aspect_deg[aspect_deg < 0] += 360
 

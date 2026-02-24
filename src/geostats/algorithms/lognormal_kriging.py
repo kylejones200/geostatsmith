@@ -19,39 +19,36 @@ Reference:
 - Back-transformation considerations (§3622-3624)
 """
 
-from typing import Tuple, Optional, Union
 import numpy as np
 import numpy.typing as npt
 
 from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
 from ..core.validators import validate_coordinates, validate_values
-from .simple_kriging import SimpleKriging
-from .ordinary_kriging import OrdinaryKriging
+
 
 class LognormalKriging(BaseKriging):
     """
-    Lognormal Kriging
+       Lognormal Kriging
 
-    Performs kriging in log-space and back-transforms to original space
-    with proper variance correction for the lognormal distribution.
+       Performs kriging in log-space and back-transforms to original space
+       with proper variance correction for the lognormal distribution.
 
-    For lognormal data Z = exp(Y) where Y ~ Normal:
- 1. Transform: Y = log(Z)
- 2. Krige Y to get Ŷ and σ^2ʏ
- 3. Back-transform: Ẑ = exp(Ŷ + σ^2ʏ/2) # Variance correction
+       For lognormal data Z = exp(Y) where Y ~ Normal:
+    1. Transform: Y = log(Z)
+    2. Krige Y to get Ŷ and σ^2ʏ
+    3. Back-transform: Ẑ = exp(Ŷ + σ^2ʏ/2) # Variance correction
 
- This is critical for unbiased estimates in original space.
- """
+    This is critical for unbiased estimates in original space.
+    """
 
     def __init__(
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
-        variogram_model: Optional[object] = None,
-        kriging_type: str = 'ordinary',
-        mean_log: Optional[float] = None,
+        variogram_model: object | None = None,
+        kriging_type: str = "ordinary",
+        mean_log: float | None = None,
     ):
         """
         Initialize Lognormal Kriging
@@ -89,18 +86,21 @@ class LognormalKriging(BaseKriging):
         # Select kriging method
         self.kriging_type = kriging_type.lower()
 
-        if self.kriging_type == 'simple':
+        if self.kriging_type == "simple":
             from .simple_kriging import SimpleKriging
+
             self.kriging = SimpleKriging(
-                self.x, self.y, self.log_z,
+                self.x,
+                self.y,
+                self.log_z,
                 variogram_model=variogram_model,
-                known_mean=self.mean_log
+                known_mean=self.mean_log,
             )
-        elif self.kriging_type == 'ordinary':
+        elif self.kriging_type == "ordinary":
             from .ordinary_kriging import OrdinaryKriging
+
             self.kriging = OrdinaryKriging(
-                self.x, self.y, self.log_z,
-                variogram_model=variogram_model
+                self.x, self.y, self.log_z, variogram_model=variogram_model
             )
         else:
             raise ValueError(f"Unknown kriging type: {self.kriging_type}")
@@ -110,42 +110,41 @@ class LognormalKriging(BaseKriging):
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
         return_variance: bool = True,
-        back_transform_method: str = 'unbiased'
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        back_transform_method: str = "unbiased",
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
-        Predict at new locations using lognormal kriging
+           Predict at new locations using lognormal kriging
 
-        Parameters
-        ----------
-        x_new, y_new : np.ndarray
-            Coordinates of prediction points
-     return_variance : bool
-     If True, return both predictions and variance
-     back_transform_method : str
-     Method for back-transformation:
-     - 'unbiased': exp(Ŷ + σ^2/2) - proper unbiased estimator
-     - 'median': exp(Ŷ) - returns median of lognormal
-     - 'simple': exp(Ŷ) - simple back-transform (biased low)
+           Parameters
+           ----------
+           x_new, y_new : np.ndarray
+               Coordinates of prediction points
+        return_variance : bool
+        If True, return both predictions and variance
+        back_transform_method : str
+        Method for back-transformation:
+        - 'unbiased': exp(Ŷ + σ^2/2) - proper unbiased estimator
+        - 'median': exp(Ŷ) - returns median of lognormal
+        - 'simple': exp(Ŷ) - simple back-transform (biased low)
 
-        Returns
-        -------
-        predictions : np.ndarray
-            Predicted values in original space
-        variance : np.ndarray, optional
-            Variance in original space (approximate)
+           Returns
+           -------
+           predictions : np.ndarray
+               Predicted values in original space
+           variance : np.ndarray, optional
+               Variance in original space (approximate)
         """
         if self.variogram_model is None:
             raise ValueError("Variogram model must be fitted before prediction")
 
         # Krige in log-space
         if return_variance:
-            log_pred, log_var = self.kriging.predict(
-                x_new, y_new, return_variance=True
-            )
+            log_pred, log_var = self.kriging.predict(x_new, y_new, return_variance=True)
         else:
-            log_pred = self.kriging.predict(
-                x_new, y_new, return_variance=False
-            )
+            log_pred = self.kriging.predict(x_new, y_new, return_variance=False)
             log_variances = None
 
         # Back-transform to original space using dispatch
@@ -155,9 +154,9 @@ class LognormalKriging(BaseKriging):
             return np.exp(log_pred)
 
         back_transform_methods = {
-            'unbiased': unbiased_transform,
-            'median': lambda lp, lv: np.exp(lp),
-            'simple': lambda lp, lv: np.exp(lp),
+            "unbiased": unbiased_transform,
+            "median": lambda lp, lv: np.exp(lp),
+            "simple": lambda lp, lv: np.exp(lp),
         }
 
         if back_transform_method not in back_transform_methods:
@@ -180,9 +179,8 @@ class LognormalKriging(BaseKriging):
         return predictions
 
     def cross_validate(
-        self,
-        back_transform_method: str = 'unbiased'
-    ) -> Tuple[npt.NDArray[np.float64], dict]:
+        self, back_transform_method: str = "unbiased"
+    ) -> tuple[npt.NDArray[np.float64], dict]:
         """
         Leave-one-out cross-validation
 
@@ -212,7 +210,7 @@ class LognormalKriging(BaseKriging):
                 self.z[mask],
                 self.variogram_model,
                 kriging_type=self.kriging_type,
-                mean_log=self.mean_log if self.kriging_type == 'simple' else None
+                mean_log=self.mean_log if self.kriging_type == "simple" else None,
             )
 
             # Predict at left-out point
@@ -220,7 +218,7 @@ class LognormalKriging(BaseKriging):
                 np.array([self.x[i]]),
                 np.array([self.y[i]]),
                 return_variance=False,
-                back_transform_method=back_transform_method
+                back_transform_method=back_transform_method,
             )
             predictions[i] = pred[0]
 
@@ -228,12 +226,12 @@ class LognormalKriging(BaseKriging):
         errors = self.z - predictions
 
         metrics = {
-            'MSE': np.mean(errors**2),
-            'RMSE': np.sqrt(np.mean(errors**2)),
-            'MAE': np.mean(np.abs(errors)),
-            'R2': 1 - np.sum(errors**2) / np.sum((self.z - np.mean(self.z))**2),
-            'bias': np.mean(errors),
-            'predictions': predictions,
+            "MSE": np.mean(errors**2),
+            "RMSE": np.sqrt(np.mean(errors**2)),
+            "MAE": np.mean(np.abs(errors)),
+            "R2": 1 - np.sum(errors**2) / np.sum((self.z - np.mean(self.z)) ** 2),
+            "bias": np.mean(errors),
+            "predictions": predictions,
         }
 
         return errors, metrics
@@ -248,12 +246,12 @@ class LognormalKriging(BaseKriging):
             Statistics in both original and log space
         """
         return {
-            'original_mean': np.mean(self.z),
-            'original_std': np.std(self.z),
-            'original_min': np.min(self.z),
-            'original_max': np.max(self.z),
-            'log_mean': np.mean(self.log_z),
-            'log_std': np.std(self.log_z),
-            'log_min': np.min(self.log_z),
-            'log_max': np.max(self.log_z),
+            "original_mean": np.mean(self.z),
+            "original_std": np.std(self.z),
+            "original_min": np.min(self.z),
+            "original_max": np.max(self.z),
+            "log_mean": np.mean(self.log_z),
+            "log_std": np.std(self.log_z),
+            "log_min": np.min(self.log_z),
+            "log_max": np.max(self.log_z),
         }

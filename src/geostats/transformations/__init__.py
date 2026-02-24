@@ -8,10 +8,10 @@ Based on:
 - Box-Cox transformation (Box & Cox 1964)
 """
 
-from .normal_score import NormalScoreTransform, normal_score_transform, back_transform
-from .log_transform import LogTransform, log_transform, log_back_transform
 from .boxcox import BoxCoxTransform, boxcox_transform
 from .declustering import cell_declustering, polygonal_declustering
+from .log_transform import LogTransform, log_back_transform, log_transform
+from .normal_score import NormalScoreTransform, back_transform, normal_score_transform
 
 __all__ = [
     "NormalScoreTransform",

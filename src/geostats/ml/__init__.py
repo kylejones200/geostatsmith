@@ -27,13 +27,13 @@ gaussian_process : Gaussian Process interface
 ensemble : Ensemble geostatistical methods
 """
 
+from .ensemble import EnsembleKriging
+from .gaussian_process import GaussianProcessGeostat
 from .regression_kriging import (
-    RegressionKriging,
     RandomForestKriging,
+    RegressionKriging,
     XGBoostKriging,
 )
-from .gaussian_process import GaussianProcessGeostat
-from .ensemble import EnsembleKriging
 
 __all__ = [
     "RegressionKriging",

@@ -9,25 +9,25 @@ Provides non-kriging interpolation methods for comparison:
 Reference: Python Recipes for Earth Sciences (Trauth 2024)
 """
 
-from typing import Optional, Tuple
+import logging
+
 import numpy as np
 import numpy.typing as npt
-from scipy.spatial import cKDTree, Delaunay
 from scipy.interpolate import RBFInterpolator
-import logging
+from scipy.spatial import Delaunay, cKDTree
 
 logger = logging.getLogger(__name__)
 
 from ..core.logging_config import get_logger
-from ..math.distance import euclidean_distance
 
 logger = get_logger(__name__)
 
 # Constants
 DEFAULT_IDW_POWER = 2.0
-DEFAULT_RBF_KERNEL = 'thin_plate_spline'
+DEFAULT_RBF_KERNEL = "thin_plate_spline"
 DEFAULT_MAX_NEIGHBORS = 12
 MIN_DISTANCE = 1e-10
+
 
 def inverse_distance_weighting(
     y_data: npt.NDArray[np.float64],
@@ -35,61 +35,61 @@ def inverse_distance_weighting(
     x_pred: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
     power: float = DEFAULT_IDW_POWER,
-    max_neighbors: Optional[int] = None,
-    radius: Optional[float] = None,
+    max_neighbors: int | None = None,
+    radius: float | None = None,
 ) -> npt.NDArray[np.float64]:
     """
-    Inverse Distance Weighting (IDW) interpolation.
+       Inverse Distance Weighting (IDW) interpolation.
 
- Simple but effective method where predicted values are weighted averages
- of nearby points, with weights inversely proportional to distance.
+    Simple but effective method where predicted values are weighted averages
+    of nearby points, with weights inversely proportional to distance.
 
- w_i = 1 / d_i^p
+    w_i = 1 / d_i^p
 
- where d_i is distance to point i and p is the power parameter.
+    where d_i is distance to point i and p is the power parameter.
 
- Parameters
- ----------
- x_data, y_data : np.ndarray
- Coordinates of known data points
- z_data : np.ndarray
- Values at known data points
- x_pred, y_pred : np.ndarray
- Coordinates where predictions are desired
- power : float, default=2.0
- Power parameter (higher values give more weight to nearest points)
- max_neighbors : int, optional
- Maximum number of neighbors to use (uses all if None)
- radius : float, optional
- Search radius (uses all points if None)
-
- Returns
- -------
- z_pred : np.ndarray
- Predicted values at prediction locations
-
- Examples
- --------
- >>> import numpy as np
- >>> x_data = np.array([0, 1, 2, 0, 1, 2])
- >>> y_data = np.array([0, 0, 0, 1, 1, 1])
- >>> z_data = np.array([1, 2, 3, 4, 5, 6])
- >>> x_pred = np.array([0.5, 1.5])
- >>> y_pred = np.array([0.5, 0.5])
- >>> z_pred = inverse_distance_weighting(x_data, y_data, z_data, x_pred, y_pred)
-
-    Notes
-    -----
-    IDW is a simple, fast method but:
-    - Does not provide uncertainty estimates
-    - Can produce bull's-eye patterns around data points
-    - Does not honor spatial correlation structure
-
-    References
+    Parameters
     ----------
-    Shepard, D. (1968). A two-dimensional interpolation function for
-    irregularly-spaced data. ACM '68: Proceedings of the 1968 23rd ACM
-    national conference.
+    x_data, y_data : np.ndarray
+    Coordinates of known data points
+    z_data : np.ndarray
+    Values at known data points
+    x_pred, y_pred : np.ndarray
+    Coordinates where predictions are desired
+    power : float, default=2.0
+    Power parameter (higher values give more weight to nearest points)
+    max_neighbors : int, optional
+    Maximum number of neighbors to use (uses all if None)
+    radius : float, optional
+    Search radius (uses all points if None)
+
+    Returns
+    -------
+    z_pred : np.ndarray
+    Predicted values at prediction locations
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> x_data = np.array([0, 1, 2, 0, 1, 2])
+    >>> y_data = np.array([0, 0, 0, 1, 1, 1])
+    >>> z_data = np.array([1, 2, 3, 4, 5, 6])
+    >>> x_pred = np.array([0.5, 1.5])
+    >>> y_pred = np.array([0.5, 0.5])
+    >>> z_pred = inverse_distance_weighting(x_data, y_data, z_data, x_pred, y_pred)
+
+       Notes
+       -----
+       IDW is a simple, fast method but:
+       - Does not provide uncertainty estimates
+       - Can produce bull's-eye patterns around data points
+       - Does not honor spatial correlation structure
+
+       References
+       ----------
+       Shepard, D. (1968). A two-dimensional interpolation function for
+       irregularly-spaced data. ACM '68: Proceedings of the 1968 23rd ACM
+       national conference.
     """
     x_data = np.asarray(x_data, dtype=np.float64)
     y_data = np.asarray(y_data, dtype=np.float64)
@@ -112,7 +112,9 @@ def inverse_distance_weighting(
             if len(indices) == 0:
                 indices = [tree.query(pred_point)[1]]
         elif max_neighbors is not None:
-            distances, indices = tree.query(pred_point, k=min(max_neighbors, len(x_data)))
+            distances, indices = tree.query(
+                pred_point, k=min(max_neighbors, len(x_data))
+            )
             if isinstance(indices, np.integer):
                 indices = [indices]
         else:
@@ -123,7 +125,9 @@ def inverse_distance_weighting(
         y_neighbors = y_data[indices]
         z_neighbors = z_data[indices]
 
-        distances = np.sqrt((x_neighbors - x_pred[i])**2 + (y_neighbors - y_pred[i])**2)
+        distances = np.sqrt(
+            (x_neighbors - x_pred[i]) ** 2 + (y_neighbors - y_pred[i]) ** 2
+        )
 
         # Handle coincident points
         if np.any(distances < MIN_DISTANCE):
@@ -137,6 +141,7 @@ def inverse_distance_weighting(
             z_pred[i] = np.sum(weights * z_neighbors) / weights_sum
 
     return z_pred
+
 
 def radial_basis_function_interpolation(
     x_data: npt.NDArray[np.float64],
@@ -228,6 +233,7 @@ def radial_basis_function_interpolation(
     z_pred = rbf(pred_points)
 
     return z_pred
+
 
 def natural_neighbor_interpolation(
     x_data: npt.NDArray[np.float64],
@@ -324,9 +330,9 @@ def natural_neighbor_interpolation(
 
     return z_pred
 
+
 def _barycentric_coordinates(
-    point: npt.NDArray[np.float64],
-    triangle: npt.NDArray[np.float64]
+    point: npt.NDArray[np.float64], triangle: npt.NDArray[np.float64]
 ) -> npt.NDArray[np.float64]:
     """
     Calculate barycentric coordinates of a point in a triangle.
@@ -356,7 +362,7 @@ def _barycentric_coordinates(
     denom = d00 * d11 - d01 * d01
 
     if abs(denom) < MIN_DISTANCE:
-        return np.array([1.0/3.0, 1.0/3.0, 1.0/3.0])
+        return np.array([1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0])
 
     v = (d11 * d20 - d01 * d21) / denom
     w = (d00 * d21 - d01 * d20) / denom

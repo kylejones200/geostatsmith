@@ -5,13 +5,11 @@ This module provides a consistent logging setup across the entire library.
 """
 
 import logging
-import sys
-from typing import Optional
 
 
 def setup_logging(
-    format_string: Optional[str] = None,
-    stream: Optional[object] = None,
+    format_string: str | None = None,
+    stream: object | None = None,
 ) -> None:
     """
     Configure logging for GeoStats.
@@ -30,15 +28,16 @@ def setup_logging(
     >>> setup_logging()
     """
     if format_string is None:
-        format_string = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        format_string = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
     if stream is None:
         import sys
+
         stream = sys.stdout
-    
+
     # Set default log level
     level = logging.INFO
-    
+
     logging.basicConfig(
         level=level,
         format=format_string,

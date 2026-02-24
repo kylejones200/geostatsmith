@@ -5,54 +5,55 @@ Caching for Performance
 Cache kriging results to avoid recomputation.
 """
 
-import numpy as np
-import numpy.typing as npt
-from typing import Tuple, Optional
 import hashlib
+import logging
 import pickle
 from pathlib import Path
 
+import numpy as np
+import numpy.typing as npt
+
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
-import logging
 
 logger = logging.getLogger(__name__)
 
 # Global cache directory
-CACHE_DIR = Path.home() / '.geostats_cache'
+CACHE_DIR = Path.home() / ".geostats_cache"
 CACHE_DIR.mkdir(exist_ok=True)
+
 
 class CachedKriging:
     """
-    Kriging with result caching to avoid recomputation.
+       Kriging with result caching to avoid recomputation.
 
- Useful when repeatedly predicting at the same locations
- with the same data and model.
+    Useful when repeatedly predicting at the same locations
+    with the same data and model.
 
- Parameters
- ----------
- x : ndarray
- Sample X coordinates
- y : ndarray
- Sample Y coordinates
- z : ndarray
- Sample values
- variogram_model : VariogramModelBase
- Variogram model
- cache_dir : str or Path, optional
- Cache directory. Default: ~/.geostats_cache
+    Parameters
+    ----------
+    x : ndarray
+    Sample X coordinates
+    y : ndarray
+    Sample Y coordinates
+    z : ndarray
+    Sample values
+    variogram_model : VariogramModelBase
+    Variogram model
+    cache_dir : str or Path, optional
+    Cache directory. Default: ~/.geostats_cache
 
- Examples
- --------
- >>> from geostats.performance import CachedKriging
- >>>
- >>> # First call: computes and caches
- >>> krig = CachedKriging(x, y, z, variogram_model)
- >>> z_pred1, var1 = krig.predict(x_pred, y_pred)
- >>>
- >>> # Second call: uses cache (instant)
- >>> z_pred2, var2 = krig.predict(x_pred, y_pred)
- """
+    Examples
+    --------
+    >>> from geostats.performance import CachedKriging
+    >>>
+    >>> # First call: computes and caches
+    >>> krig = CachedKriging(x, y, z, variogram_model)
+    >>> z_pred1, var1 = krig.predict(x_pred, y_pred)
+    >>>
+    >>> # Second call: uses cache (instant)
+    >>> z_pred2, var2 = krig.predict(x_pred, y_pred)
+    """
 
     def __init__(
         self,
@@ -60,7 +61,7 @@ class CachedKriging:
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
         variogram_model: VariogramModelBase,
-        cache_dir: Optional[Path] = None,
+        cache_dir: Path | None = None,
     ):
         self.x = x
         self.y = y
@@ -71,10 +72,7 @@ class CachedKriging:
         self.cache_dir.mkdir(exist_ok=True)
 
         # Create kriging object
-        self.krig = OrdinaryKriging(
-            x=x, y=y, z=z,
-            variogram_model=variogram_model
-        )
+        self.krig = OrdinaryKriging(x=x, y=y, z=z, variogram_model=variogram_model)
 
         # Data hash for cache key
         self.data_hash = self._compute_data_hash()
@@ -83,12 +81,7 @@ class CachedKriging:
         """Compute hash of data and model parameters."""
         # Combine data arrays and model parameters
         params = self.variogram_model.get_parameters()
-        data_str = (
-            f"{self.x.tobytes()}"
-            f"{self.y.tobytes()}"
-            f"{self.z.tobytes()}"
-            f"{params}"
-        )
+        data_str = f"{self.x.tobytes()}{self.y.tobytes()}{self.z.tobytes()}{params}"
         return hashlib.md5(data_str.encode()).hexdigest()
 
     def _compute_pred_hash(
@@ -109,7 +102,7 @@ class CachedKriging:
         y_pred: npt.NDArray[np.float64],
         return_variance: bool = True,
         use_cache: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
         Predict with caching.
 
@@ -136,9 +129,9 @@ class CachedKriging:
             cache_path = self._get_cache_path(pred_hash)
 
             if cache_path.exists():
-                with open(cache_path, 'rb') as f:
+                with open(cache_path, "rb") as f:
                     cached = pickle.load(f)
-                return cached['predictions'], cached.get('variance')
+                return cached["predictions"], cached.get("variance")
 
         # Compute predictions
         predictions, variance = self.krig.predict(
@@ -147,16 +140,16 @@ class CachedKriging:
 
         if use_cache:
             cache_data = {
-                'predictions': predictions,
-                'variance': variance if return_variance else None,
+                "predictions": predictions,
+                "variance": variance if return_variance else None,
             }
-            with open(cache_path, 'wb') as f:
+            with open(cache_path, "wb") as f:
                 pickle.dump(cache_data, f)
 
         return predictions, variance
 
 
-def clear_cache(cache_dir: Optional[Path] = None) -> int:
+def clear_cache(cache_dir: Path | None = None) -> int:
     """
     Clear the kriging cache.
 
@@ -182,7 +175,7 @@ def clear_cache(cache_dir: Optional[Path] = None) -> int:
         return 0
 
     n_deleted = 0
-    for cache_file in cache_dir.glob('*.pkl'):
+    for cache_file in cache_dir.glob("*.pkl"):
         cache_file.unlink()
         n_deleted += 1
 

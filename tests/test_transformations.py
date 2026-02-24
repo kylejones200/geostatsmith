@@ -2,14 +2,14 @@
 Tests for data transformations
 """
 
-import pytest
 import numpy as np
-from geostats.transformations import normal_score
+import pytest
+
 from geostats.transformations.log_transform import LogTransform
 from geostats.transformations.normal_score import NormalScoreTransform
 
-class TestNormalScoreTransform:
 
+class TestNormalScoreTransform:
     def test_basic_transformation(self):
         np.random.seed(42)
         data = np.random.exponential(scale=2.0, size=100)
@@ -20,8 +20,8 @@ class TestNormalScoreTransform:
 
         # Transformed data should be approximately normal
         assert len(transformed) == len(data)
-        assert abs(np.mean(transformed)) < 0.2 # Mean close to 0
-        assert abs(np.std(transformed) - 1.0) < 0.2 # Std close to 1
+        assert abs(np.mean(transformed)) < 0.2  # Mean close to 0
+        assert abs(np.std(transformed) - 1.0) < 0.2  # Std close to 1
 
     def test_back_transformation(self):
         np.random.seed(42)
@@ -52,8 +52,8 @@ class TestNormalScoreTransform:
         assert len(transformed) == len(data)
         assert all(np.isfinite(transformed))
 
-class TestLogTransform:
 
+class TestLogTransform:
     def test_basic_log_transform(self):
         data = np.array([1, 10, 100, 1000])
 
@@ -85,6 +85,7 @@ class TestLogTransform:
     def test_rejects_negative(self):
         # Skip this test if the transform doesn't validate input
         pytest.skip("LogTransform input validation not implemented yet")
+
 
 if __name__ == "__main__":
     pass

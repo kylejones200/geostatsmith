@@ -9,23 +9,25 @@ Based on classical geostatistics theory:
 
 import numpy as np
 import numpy.typing as npt
-from scipy.special import gamma as gamma_func, kv
+from scipy.special import gamma as gamma_func
+from scipy.special import kv
 
 from .base_model import VariogramModelBase
 
+
 class SphericalModel(VariogramModelBase):
     """
-    Spherical variogram model
+       Spherical variogram model
 
-    The spherical model is one of the most commonly used variogram models.
-    It reaches the sill at exactly the range parameter.
+       The spherical model is one of the most commonly used variogram models.
+       It reaches the sill at exactly the range parameter.
 
-    Formula:
- γ(h) = nugget + (sill - nugget) * [1.5*(h/a) - 0.5*(h/a)^3] for 0 < h <= a
- γ(h) = sill for h > a
+       Formula:
+    γ(h) = nugget + (sill - nugget) * [1.5*(h/a) - 0.5*(h/a)^3] for 0 < h <= a
+    γ(h) = sill for h > a
 
- where a is the range parameter.
- """
+    where a is the range parameter.
+    """
 
     def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         h = np.asarray(h, dtype=np.float64)
@@ -37,10 +39,17 @@ class SphericalModel(VariogramModelBase):
         h_norm = h / range_param
 
         # Calculate variogram values
-        from ..core.constants import SPHERICAL_COEFFICIENT_1, SPHERICAL_COEFFICIENT_2, UNBIASEDNESS_CONSTRAINT
+        from ..core.constants import (
+            SPHERICAL_COEFFICIENT_1,
+            SPHERICAL_COEFFICIENT_2,
+            UNBIASEDNESS_CONSTRAINT,
+        )
+
         result = np.where(
             h_norm <= UNBIASEDNESS_CONSTRAINT,
-            nugget + (sill - nugget) * (SPHERICAL_COEFFICIENT_1 * h_norm - SPHERICAL_COEFFICIENT_2 * h_norm**3),
+            nugget
+            + (sill - nugget)
+            * (SPHERICAL_COEFFICIENT_1 * h_norm - SPHERICAL_COEFFICIENT_2 * h_norm**3),
             sill,
         )
 
@@ -228,10 +237,10 @@ class MaternModel(VariogramModelBase):
             # Matérn formula
             const = 2.0 ** (1.0 - nu) / gamma_func(nu)
             bessel_part = kv(nu, h_scaled)
-            spatial_part = const * (h_scaled ** nu) * bessel_part
+            spatial_part = const * (h_scaled**nu) * bessel_part
 
             # For numerical stability
-            with np.errstate(over='ignore', invalid='ignore'):
+            with np.errstate(over="ignore", invalid="ignore"):
                 spatial_part = np.nan_to_num(spatial_part, nan=0.0, posinf=1.0)
 
             result[mask] = nugget + (sill - nugget) * (1.0 - spatial_part)
@@ -239,6 +248,7 @@ class MaternModel(VariogramModelBase):
         result[~mask] = nugget
 
         return result
+
 
 class HoleEffectModel(VariogramModelBase):
     """
@@ -264,7 +274,7 @@ class HoleEffectModel(VariogramModelBase):
 
         if np.any(mask):
             h_scaled = h[mask] / range_param
-            with np.errstate(divide='ignore', invalid='ignore'):
+            with np.errstate(divide="ignore", invalid="ignore"):
                 sinc_val = np.sin(h_scaled) / h_scaled
             sinc_val = np.nan_to_num(sinc_val, nan=1.0)
 
@@ -297,12 +307,9 @@ class CubicModel(VariogramModelBase):
 
         result = np.where(
             h_norm <= 1.0,
-            nugget + (sill - nugget) * (
-                7.0 * h_norm**2
-                - 8.75 * h_norm**3
-                + 3.5 * h_norm**5
-                - 0.75 * h_norm**7
-            ),
+            nugget
+            + (sill - nugget)
+            * (7.0 * h_norm**2 - 8.75 * h_norm**3 + 3.5 * h_norm**5 - 0.75 * h_norm**7),
             sill,
         )
 
@@ -357,6 +364,6 @@ class StableModel(VariogramModelBase):
         shape = self._parameters["shape"]
 
         h_norm = h / range_param
-        result = nugget + (sill - nugget) * (1.0 - np.exp(-(h_norm ** shape)))
+        result = nugget + (sill - nugget) * (1.0 - np.exp(-(h_norm**shape)))
 
         return result

@@ -10,16 +10,14 @@ Based on:
 - Journel, A.G. (1983). Nonparametric estimation of spatial distributions
 """
 
-from typing import Optional, Tuple, Dict, List
 import numpy as np
 import numpy.typing as npt
 
 from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
 from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance
-from ..math.matrices import solve_kriging_system, regularize_matrix
-from ..math.numerical import cross_validation_score
+from ..math.matrices import regularize_matrix
+
 
 class IndicatorKriging(BaseKriging):
     """
@@ -39,7 +37,7 @@ class IndicatorKriging(BaseKriging):
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
         threshold: float,
-        variogram_model: Optional[object] = None,
+        variogram_model: object | None = None,
     ):
         """
         Initialize Indicator Kriging
@@ -86,10 +84,9 @@ class IndicatorKriging(BaseKriging):
         self.kriging_matrix[n, n] = 0.0
 
         # Regularize
-        from ..math.matrices import regularize_matrix
+
         self.kriging_matrix[:n, :n] = regularize_matrix(
- self.kriging_matrix[:n, :n],
-            epsilon=1e-10
+            self.kriging_matrix[:n, :n], epsilon=1e-10
         )
 
     def predict(
@@ -97,30 +94,31 @@ class IndicatorKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         return_variance: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
-         Perform Indicator Kriging prediction
+            Perform Indicator Kriging prediction
 
-     Returns probability of exceeding the threshold.
+        Returns probability of exceeding the threshold.
 
-     Parameters
-     ----------
-     x, y : np.ndarray
-     Coordinates for prediction
-     return_variance : bool
-     Whether to return kriging variance
+        Parameters
+        ----------
+        x, y : np.ndarray
+        Coordinates for prediction
+        return_variance : bool
+        Whether to return kriging variance
 
-     Returns
-     -------
-     probabilities : np.ndarray
-     Estimated probabilities P{Z(x₀) > threshold}
-        variance : np.ndarray or None
-            Kriging variance (if return_variance=True)
+        Returns
+        -------
+        probabilities : np.ndarray
+        Estimated probabilities P{Z(x₀) > threshold}
+           variance : np.ndarray or None
+               Kriging variance (if return_variance=True)
         """
         if self.variogram_model is None:
             raise ValueError("Variogram model must be fitted before prediction")
 
         from ..utils.validation import validate_coordinates
+
         x_pred, y_pred = validate_coordinates(x, y)
         n_pred = len(x_pred)
 
@@ -130,6 +128,7 @@ class IndicatorKriging(BaseKriging):
         # Predict at each location
         for i in range(n_pred):
             from ..math.distance import euclidean_distance
+
             dist_to_samples = euclidean_distance(
                 np.array([x_pred[i]]),
                 np.array([y_pred[i]]),
@@ -145,13 +144,13 @@ class IndicatorKriging(BaseKriging):
             rhs = np.zeros(n_points + 1)
             rhs[:n_points] = gamma_vec
             from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
             rhs[n_points] = UNBIASEDNESS_CONSTRAINT
 
             # Solve for weights
             try:
                 solution = np.linalg.solve(self.kriging_matrix, rhs)
             except Exception:
-                from ..exceptions import KrigingError
                 # Fallback: use nearest neighbor
                 nearest_idx = np.argmin(dist_to_samples)
                 probabilities[i] = self.z[nearest_idx]
@@ -172,6 +171,7 @@ class IndicatorKriging(BaseKriging):
             if return_variance:
                 variances[i] = np.dot(weights, gamma_vec) + lagrange
                 from ..core.constants import ZERO_VALUE
+
                 variances[i] = max(ZERO_VALUE, variances[i])
 
         if return_variance:
@@ -179,7 +179,7 @@ class IndicatorKriging(BaseKriging):
         else:
             return probabilities
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
 
@@ -224,6 +224,7 @@ class IndicatorKriging(BaseKriging):
 
         # Calculate metrics (comparing probabilities to indicators)
         from ..validation.metrics import cross_validation_score
+
         metrics = cross_validation_score(self.z, predictions)
 
         return predictions, metrics
@@ -238,25 +239,25 @@ class MultiThresholdIndicatorKriging:
     """
 
     def __init__(
-     x: npt.NDArray[np.float64],
-     y: npt.NDArray[np.float64],
-     z: npt.NDArray[np.float64],
-     thresholds: Optional[List[float]] = None,
+        x: npt.NDArray[np.float64],
+        y: npt.NDArray[np.float64],
+        z: npt.NDArray[np.float64],
+        thresholds: list[float] | None = None,
         n_thresholds: int = 5,
     ):
         """
-        Initialize Multiple Indicator Kriging
+           Initialize Multiple Indicator Kriging
 
-        Parameters
-     ----------
-     x, y : np.ndarray
-     Coordinates of sample points
-     z : np.ndarray
-     Values at sample points
-     thresholds : list of float, optional
-     Threshold values. If None, uses quantiles.
-     n_thresholds : int
-     Number of thresholds if not explicitly provided
+           Parameters
+        ----------
+        x, y : np.ndarray
+        Coordinates of sample points
+        z : np.ndarray
+        Values at sample points
+        thresholds : list of float, optional
+        Threshold values. If None, uses quantiles.
+        n_thresholds : int
+        Number of thresholds if not explicitly provided
         """
         self.x = np.asarray(x, dtype=np.float64)
         self.y = np.asarray(y, dtype=np.float64)
@@ -276,8 +277,8 @@ class MultiThresholdIndicatorKriging:
         """
         Fit indicator variogram models for each threshold
         """
-        from ..algorithms.variogram import experimental_variogram
         from ..algorithms.fitting import fit_variogram_model
+        from ..algorithms.variogram import experimental_variogram
         from ..models.variogram_models import SphericalModel
 
         for threshold in self.thresholds:
@@ -299,9 +300,7 @@ class MultiThresholdIndicatorKriging:
 
             # Create indicator kriging object
             ik = IndicatorKriging(
-                self.x, self.y, self.z,
-                threshold=threshold,
-                variogram_model=model
+                self.x, self.y, self.z, threshold=threshold, variogram_model=model
             )
 
             self.kriging_objects.append(ik)
@@ -311,7 +310,7 @@ class MultiThresholdIndicatorKriging:
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
-    ) -> Tuple[List[npt.NDArray[np.float64]], npt.NDArray[np.float64]]:
+    ) -> tuple[list[npt.NDArray[np.float64]], npt.NDArray[np.float64]]:
         """
         Predict full CDF at locations
 

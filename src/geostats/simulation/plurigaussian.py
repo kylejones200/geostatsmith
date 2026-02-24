@@ -47,97 +47,98 @@ References:
  model: New developments and computer programs"
 """
 
-from typing import List, Tuple, Optional, Dict, Callable
+import logging
+from collections.abc import Callable
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from dataclasses import dataclass
-import logging
 
 logger = logging.getLogger(__name__)
 
-from ..core.exceptions import SimulationError
-from ..core.constants import OPTIMIZATION_SEED, DEFAULT_N_REALIZATIONS
+from ..core.constants import DEFAULT_N_REALIZATIONS, OPTIMIZATION_SEED
 from ..core.logging_config import get_logger
-from .gaussian_simulation import sequential_gaussian_simulation
 
 logger = get_logger(__name__)
 
+
 @dataclass
 class PlurigaussianConfig:
- n_realizations: int = DEFAULT_N_REALIZATIONS
- n_gaussian_fields: int = 2 # Number of independent Gaussian fields
- categories: List[int] = None # Category labels
- rule_function: Optional[Callable] = None # Lithotype rule function
- random_seed: Optional[int] = OPTIMIZATION_SEED
- max_neighbors: int = 12
- search_radius: Optional[float] = None
+    n_realizations: int = DEFAULT_N_REALIZATIONS
+    n_gaussian_fields: int = 2  # Number of independent Gaussian fields
+    categories: list[int] = None  # Category labels
+    rule_function: Callable | None = None  # Lithotype rule function
+    random_seed: int | None = OPTIMIZATION_SEED
+    max_neighbors: int = 12
+    search_radius: float | None = None
+
 
 class PlurigaussianSimulation:
     """
-    Plurigaussian Simulation for complex categorical variables
+       Plurigaussian Simulation for complex categorical variables
 
- Uses multiple independent Gaussian fields with a rule function
- to simulate complex categorical relationships.
+    Uses multiple independent Gaussian fields with a rule function
+    to simulate complex categorical relationships.
 
- Examples
- --------
- >>> # Define lithotype rule for 3 facies using 2 Gaussian fields
- >>> def lithotype_rule(y1, y2):
-     pass
- ... '''
- ... Sand: Y1 < -0.5
- ... Silt: Y1 >= -0.5 AND Y2 < 0
- ... Clay: Y1 >= -0.5 AND Y2 >= 0
- ... '''
- ... facies = np.zeros(len(y1), dtype=np.int32)
- ... sand_mask = y1 < -0.5
- ... silt_mask = (y1 >= -0.5) & (y2 < 0)
- ... clay_mask = (y1 >= -0.5) & (y2 >= 0)
- ... facies[sand_mask] = 1 # Sand
- ... facies[silt_mask] = 2 # Silt
- ... facies[clay_mask] = 3 # Clay
- ... return facies
- >>>
- >>> # Create configuration
- >>> config = PlurigaussianConfig(
- ... n_realizations=100,
- ... n_gaussian_fields=2,
- ... categories=[1, 2, 3],
- ... rule_function=lithotype_rule
- ... )
- >>>
- >>> # Initialize simulator
- >>> pgs = PlurigaussianSimulation(
- ...     x, y, categories_data,
- ...     variogram_models=[variogram1, variogram2],
- ...     config=config
- ... )
- >>>
- >>> # Generate realizations
- >>> realizations = pgs.simulate(x_grid, y_grid)
- """
+    Examples
+    --------
+    >>> # Define lithotype rule for 3 facies using 2 Gaussian fields
+    >>> def lithotype_rule(y1, y2):
+        pass
+    ... '''
+    ... Sand: Y1 < -0.5
+    ... Silt: Y1 >= -0.5 AND Y2 < 0
+    ... Clay: Y1 >= -0.5 AND Y2 >= 0
+    ... '''
+    ... facies = np.zeros(len(y1), dtype=np.int32)
+    ... sand_mask = y1 < -0.5
+    ... silt_mask = (y1 >= -0.5) & (y2 < 0)
+    ... clay_mask = (y1 >= -0.5) & (y2 >= 0)
+    ... facies[sand_mask] = 1 # Sand
+    ... facies[silt_mask] = 2 # Silt
+    ... facies[clay_mask] = 3 # Clay
+    ... return facies
+    >>>
+    >>> # Create configuration
+    >>> config = PlurigaussianConfig(
+    ... n_realizations=100,
+    ... n_gaussian_fields=2,
+    ... categories=[1, 2, 3],
+    ... rule_function=lithotype_rule
+    ... )
+    >>>
+    >>> # Initialize simulator
+    >>> pgs = PlurigaussianSimulation(
+    ...     x, y, categories_data,
+    ...     variogram_models=[variogram1, variogram2],
+    ...     config=config
+    ... )
+    >>>
+    >>> # Generate realizations
+    >>> realizations = pgs.simulate(x_grid, y_grid)
+    """
 
     def __init__(
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         categories: npt.NDArray[np.int32],
-        variogram_models: List[object],
-        config: Optional[PlurigaussianConfig] = None
+        variogram_models: list[object],
+        config: PlurigaussianConfig | None = None,
     ):
         """
-        Initialize Plurigaussian Simulation
+           Initialize Plurigaussian Simulation
 
-        Parameters
-        ----------
-        x, y : np.ndarray
-        Coordinates of conditioning data
-     categories : np.ndarray (int)
-     Category labels at conditioning points
-     variogram_models : list of VariogramModelBase
-     Variogram models for each Gaussian field
-     config : PlurigaussianConfig, optional
-     Simulation configuration
+           Parameters
+           ----------
+           x, y : np.ndarray
+           Coordinates of conditioning data
+        categories : np.ndarray (int)
+        Category labels at conditioning points
+        variogram_models : list of VariogramModelBase
+        Variogram models for each Gaussian field
+        config : PlurigaussianConfig, optional
+        Simulation configuration
         """
         self.x = np.asarray(x, dtype=np.float64).flatten()
         self.y = np.asarray(y, dtype=np.float64).flatten()
@@ -149,6 +150,7 @@ class PlurigaussianSimulation:
         # Setup configuration
         if config is None:
             from ..core.config import PlurigaussianConfig
+
             config = PlurigaussianConfig()
         self.config = config
 
@@ -172,6 +174,7 @@ class PlurigaussianSimulation:
         self._transform_conditioning_data()
 
         import logging
+
         logger = logging.getLogger(__name__)
         logger.info(
             f"Plurigaussian Simulation initialized: "
@@ -191,6 +194,7 @@ class PlurigaussianSimulation:
         self.n_categories = len(self.unique_categories)
 
         import logging
+
         logger = logging.getLogger(__name__)
         logger.debug(f"Categories: {self.unique_categories}")
 
@@ -218,6 +222,7 @@ class PlurigaussianSimulation:
             # Use rejection sampling to find Gaussian values
             # that produce the correct category
             from ..core.constants import DEFAULT_N_CANDIDATES
+
             cat = self.categories[i]
             max_attempts = DEFAULT_N_CANDIDATES
             found = False
@@ -244,6 +249,7 @@ class PlurigaussianSimulation:
 
             if not found:
                 import logging
+
                 logger = logging.getLogger(__name__)
                 logger.warning(
                     f"Could not find valid Gaussian values for category {cat} "
@@ -254,13 +260,14 @@ class PlurigaussianSimulation:
                     self.gaussian_fields_cond[j][i] = 0.0
 
         import logging
+
         logger = logging.getLogger(__name__)
-        logger.debug(f"Transformed {n_cond} conditioning points to {n_fields} Gaussian fields")
+        logger.debug(
+            f"Transformed {n_cond} conditioning points to {n_fields} Gaussian fields"
+        )
 
     def simulate(
-        self,
-        x_grid: npt.NDArray[np.float64],
-        y_grid: npt.NDArray[np.float64]
+        self, x_grid: npt.NDArray[np.float64], y_grid: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.int32]:
         """
         Generate Plurigaussian realizations
@@ -284,11 +291,11 @@ class PlurigaussianSimulation:
 
         # Storage for realizations
         realizations_categorical = np.zeros(
-            (self.config.n_realizations, n_nodes),
-            dtype=np.int32
+            (self.config.n_realizations, n_nodes), dtype=np.int32
         )
 
         import logging
+
         logger = logging.getLogger(__name__)
         logger.info(
             f"Starting Plurigaussian Simulation: {self.config.n_realizations} realizations, "
@@ -297,12 +304,17 @@ class PlurigaussianSimulation:
 
         # Generate realizations
         from ..simulation.gaussian_simulation import sequential_gaussian_simulation
+
         for r in range(self.config.n_realizations):
             gaussian_realizations = []
 
             for field_idx in range(self.config.n_gaussian_fields):
                 if self.config.random_seed is not None:
-                    seed = self.config.random_seed + r * self.config.n_gaussian_fields + field_idx
+                    seed = (
+                        self.config.random_seed
+                        + r * self.config.n_gaussian_fields
+                        + field_idx
+                    )
                 else:
                     seed = None
 
@@ -315,7 +327,7 @@ class PlurigaussianSimulation:
                     y_grid=y_flat,
                     variogram_model=self.variogram_models[field_idx],
                     mean=0.0,
-                    random_seed=seed
+                    random_seed=seed,
                 )
 
                 gaussian_realizations.append(gaussian_field)
@@ -328,7 +340,9 @@ class PlurigaussianSimulation:
             realizations_categorical[r, :] = categorical_realization
 
             if (r + 1) % 10 == 0:
-                logger.info(f"Completed {r + 1}/{self.config.n_realizations} realizations")
+                logger.info(
+                    f"Completed {r + 1}/{self.config.n_realizations} realizations"
+                )
 
         # Reshape to original grid shape if needed
         if len(original_shape) > 1:
@@ -340,9 +354,8 @@ class PlurigaussianSimulation:
         return realizations_categorical
 
     def get_proportions_summary(
-        self,
-        realizations: npt.NDArray[np.int32]
-    ) -> Dict[int, Dict[str, float]]:
+        self, realizations: npt.NDArray[np.int32]
+    ) -> dict[int, dict[str, float]]:
         """
         Calculate realized proportions for each category
 
@@ -362,7 +375,11 @@ class PlurigaussianSimulation:
             }
         """
         n_realizations = realizations.shape[0]
-        n_nodes = realizations.shape[1] if realizations.ndim == 2 else np.prod(realizations.shape[1:])
+        n_nodes = (
+            realizations.shape[1]
+            if realizations.ndim == 2
+            else np.prod(realizations.shape[1:])
+        )
 
         # Flatten if needed
         if realizations.ndim > 2:
@@ -376,19 +393,17 @@ class PlurigaussianSimulation:
                 props_per_realization[r] = np.sum(realizations[r, :] == cat) / n_nodes
 
             summary[int(cat)] = {
-                'mean': float(np.mean(props_per_realization)),
-                'std': float(np.std(props_per_realization)),
-                'min': float(np.min(props_per_realization)),
-                'max': float(np.max(props_per_realization)),
+                "mean": float(np.mean(props_per_realization)),
+                "std": float(np.std(props_per_realization)),
+                "min": float(np.min(props_per_realization)),
+                "max": float(np.max(props_per_realization)),
             }
 
         return summary
 
 
 def create_rectangular_rule(
-    thresholds_y1: List[float],
-    thresholds_y2: List[float],
-    layout: str = 'grid'
+    thresholds_y1: list[float], thresholds_y2: list[float], layout: str = "grid"
 ) -> Callable:
     """
     Create a rectangular lithotype rule function
@@ -421,7 +436,8 @@ def create_rectangular_rule(
     ...     thresholds_y2=[0.0]
     ... )
     """
-    if layout == 'grid':
+    if layout == "grid":
+
         def grid_rule(y1, y2):
             y1 = np.asarray(y1).flatten()
             y2 = np.asarray(y2).flatten()

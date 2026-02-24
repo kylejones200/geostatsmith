@@ -7,11 +7,11 @@ Fast approximate kriging methods for large datasets.
 
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Optional
 from scipy.spatial import cKDTree
 
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
+
 
 def approximate_kriging(
     x: npt.NDArray[np.float64],
@@ -21,8 +21,8 @@ def approximate_kriging(
     y_pred: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     max_neighbors: int = 50,
-    search_radius: Optional[float] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    search_radius: float | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Approximate kriging using local neighborhoods.
 
@@ -86,15 +86,11 @@ def approximate_kriging(
         if search_radius is not None:
             indices = tree.query_ball_point(pred_point, search_radius)
             if len(indices) > max_neighbors:
-                distances = np.linalg.norm(
-                    sample_coords[indices] - pred_point, axis=1
-                )
+                distances = np.linalg.norm(sample_coords[indices] - pred_point, axis=1)
                 closest = np.argsort(distances)[:max_neighbors]
                 indices = [indices[j] for j in closest]
         else:
-            distances, indices = tree.query(
-                pred_point, k=min(max_neighbors, len(x))
-            )
+            distances, indices = tree.query(pred_point, k=min(max_neighbors, len(x)))
             if isinstance(indices, np.ndarray) and indices.ndim > 0:
                 indices = indices.flatten()
             else:
@@ -118,15 +114,14 @@ def approximate_kriging(
         )
 
         pred, var = krig_local.predict(
-            np.array([x_pred[i]]),
-            np.array([y_pred[i]]),
-            return_variance=True
+            np.array([x_pred[i]]), np.array([y_pred[i]]), return_variance=True
         )
 
         predictions[i] = pred[0]
         variance[i] = var[0]
 
     return predictions, variance
+
 
 def coarse_to_fine(
     x: npt.NDArray[np.float64],
@@ -136,7 +131,7 @@ def coarse_to_fine(
     y_grid: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     coarse_factor: int = 4,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Coarse-to-fine kriging for large grids.
 

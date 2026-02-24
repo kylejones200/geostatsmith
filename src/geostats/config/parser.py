@@ -4,22 +4,24 @@
 Supports YAML and JSON formats with validation.
 """
 
-import yaml
 import json
+import logging
 from pathlib import Path
-from typing import Union
+
+import yaml
 from pydantic import ValidationError
 
-from .schemas import AnalysisConfig
 from ..core.exceptions import GeoStatsError
-import logging
+from .schemas import AnalysisConfig
 
 logger = logging.getLogger(__name__)
 
-class ConfigError(GeoStatsError):
- pass
 
-def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
+class ConfigError(GeoStatsError):
+    pass
+
+
+def load_config(config_path: str | Path) -> AnalysisConfig:
     """
     Load and validate configuration file
 
@@ -54,16 +56,15 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
     suffix = config_path.suffix.lower()
 
     try:
-        if suffix in ['.yaml', '.yml']:
-            with open(config_path, 'r') as f:
+        if suffix in [".yaml", ".yml"]:
+            with open(config_path) as f:
                 data = yaml.safe_load(f)
-        elif suffix == '.json':
-            with open(config_path, 'r') as f:
+        elif suffix == ".json":
+            with open(config_path) as f:
                 data = json.load(f)
         else:
             raise ConfigError(
-                f"Unsupported config format: {suffix}. "
-                f"Use .yaml, .yml, or .json"
+                f"Unsupported config format: {suffix}. Use .yaml, .yml, or .json"
             )
     except yaml.YAMLError as e:
         raise ConfigError(f"Invalid YAML syntax: {e}")
@@ -80,40 +81,42 @@ def load_config(config_path: Union[str, Path]) -> AnalysisConfig:
         # Format validation errors nicely
         error_msg = "Configuration validation failed:\n"
         for error in e.errors():
-            field = '.'.join(str(loc) for loc in error['loc'])
-            msg = error['msg']
+            field = ".".join(str(loc) for loc in error["loc"])
+            msg = error["msg"]
             error_msg += f" • {field}: {msg}\n"
         raise ConfigError(error_msg)
 
-def validate_config(config_path: Union[str, Path]) -> tuple[bool, str]:
+
+def validate_config(config_path: str | Path) -> tuple[bool, str]:
     """
-    Validate configuration file without loading
+       Validate configuration file without loading
 
-    Parameters
-    ----------
-    config_path : str or Path
-        Path to configuration file
+       Parameters
+       ----------
+       config_path : str or Path
+           Path to configuration file
 
-    Returns
-    -------
-    is_valid : bool
-        True if valid, False otherwise
-    message : str
-        Success message or error details
- 
- Examples
- --------
- >>> valid, msg = validate_config('analysis.yaml')
-    >>> if valid:
-    ...     logger.info("Config is valid!")
-    ... else:
-    ...     logger.error("Errors: {msg}")
+       Returns
+       -------
+       is_valid : bool
+           True if valid, False otherwise
+       message : str
+           Success message or error details
+
+    Examples
+    --------
+    >>> valid, msg = validate_config('analysis.yaml')
+       >>> if valid:
+       ...     logger.info("Config is valid!")
+       ... else:
+       ...     logger.error("Errors: {msg}")
     """
     try:
         load_config(config_path)
         return True, f"Configuration is valid ({config_path})"
     except ConfigError as e:
         return False, str(e)
+
 
 def load_config_dict(config_dict: dict) -> AnalysisConfig:
     """
@@ -137,34 +140,35 @@ def load_config_dict(config_dict: dict) -> AnalysisConfig:
     except ValidationError as e:
         error_msg = "Configuration validation failed:\n"
         for error in e.errors():
-            field = '.'.join(str(loc) for loc in error['loc'])
-            msg = error['msg']
+            field = ".".join(str(loc) for loc in error["loc"])
+            msg = error["msg"]
             error_msg += f" • {field}: {msg}\n"
         raise ConfigError(error_msg)
 
+
 def merge_configs(base_config: AnalysisConfig, override_dict: dict) -> AnalysisConfig:
     """
-    Merge configuration with overrides
+       Merge configuration with overrides
 
-    Useful for command-line overrides or parameter sweeps.
+       Useful for command-line overrides or parameter sweeps.
 
-    Parameters
-    ----------
-    base_config : AnalysisConfig
-        Base configuration
-    override_dict : dict
-        Dictionary with values to override
+       Parameters
+       ----------
+       base_config : AnalysisConfig
+           Base configuration
+       override_dict : dict
+           Dictionary with values to override
 
-    Returns
-    -------
-    AnalysisConfig
-        Merged configuration
+       Returns
+       -------
+       AnalysisConfig
+           Merged configuration
 
- Examples
- --------
- >>> base = load_config('base.yaml')
- >>> overrides = {'project': {'name': 'Modified Analysis'}}
- >>> config = merge_configs(base, overrides)
+    Examples
+    --------
+    >>> base = load_config('base.yaml')
+    >>> overrides = {'project': {'name': 'Modified Analysis'}}
+    >>> config = merge_configs(base, overrides)
     """
     # Convert base config to dict
     config_dict = base_config.model_dump()

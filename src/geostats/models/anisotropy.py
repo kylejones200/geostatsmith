@@ -8,12 +8,12 @@ Two types:
 2. Zonal anisotropy: Different sills in different directions
 """
 
-from typing import Optional
 import numpy as np
 import numpy.typing as npt
 
-from .base_model import VariogramModelBase
 from ..math.distance import anisotropic_distance
+from .base_model import VariogramModelBase
+
 
 class AnisotropicModel:
     """
@@ -53,8 +53,8 @@ class AnisotropicModel:
         self,
         x1: npt.NDArray[np.float64],
         y1: npt.NDArray[np.float64],
-        x2: Optional[npt.NDArray[np.float64]] = None,
-        y2: Optional[npt.NDArray[np.float64]] = None,
+        x2: npt.NDArray[np.float64] | None = None,
+        y2: npt.NDArray[np.float64] | None = None,
     ) -> npt.NDArray[np.float64]:
         """
         Evaluate anisotropic variogram
@@ -78,7 +78,7 @@ class AnisotropicModel:
             y2 = y1
 
         # Calculate anisotropic distances
-        from ..math.distance import anisotropic_distance
+
         dist = anisotropic_distance(x1, y1, x2, y2, self.angle, self.ratio)
 
         # Apply base model to transformed distances
@@ -87,10 +87,12 @@ class AnisotropicModel:
     @property
     def parameters(self):
         params = self.base_model.parameters.copy()
-        params.update({
-            "angle": self.angle,
-            "ratio": self.ratio,
-        })
+        params.update(
+            {
+                "angle": self.angle,
+                "ratio": self.ratio,
+            }
+        )
         return params
 
     @property
@@ -145,6 +147,7 @@ class DirectionalVariogram:
             Values
         """
         import numpy as np
+
         self.x = np.asarray(x, dtype=np.float64)
         self.y = np.asarray(y, dtype=np.float64)
         self.z = np.asarray(z, dtype=np.float64)
@@ -154,7 +157,7 @@ class DirectionalVariogram:
         angle: float,
         tolerance: float = 22.5,
         n_lags: int = 15,
-        maxlag: Optional[float] = None,
+        maxlag: float | None = None,
     ):
         """
         Compute experimental variogram in a specific direction
@@ -194,7 +197,7 @@ class DirectionalVariogram:
 
     def fit_anisotropy(
         self,
-        angles: Optional[npt.NDArray[np.float64]] = None,
+        angles: npt.NDArray[np.float64] | None = None,
         n_lags: int = 15,
     ):
         """
@@ -219,6 +222,7 @@ class DirectionalVariogram:
             - 'ratio': Anisotropy ratio (minor/major)
         """
         import numpy as np
+
         if angles is None:
             angles = np.array([0, 45, 90, 135])
 
@@ -250,5 +254,7 @@ class DirectionalVariogram:
             "minor_angle": angles[minor_idx],
             "major_range": ranges[major_idx],
             "minor_range": ranges[minor_idx],
-            "ratio": ranges[minor_idx] / ranges[major_idx] if ranges[major_idx] > 0 else 1.0,
+            "ratio": ranges[minor_idx] / ranges[major_idx]
+            if ranges[major_idx] > 0
+            else 1.0,
         }

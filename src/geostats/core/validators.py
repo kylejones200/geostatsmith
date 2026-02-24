@@ -1,18 +1,18 @@
 """
-    Input validation utilities
+Input validation utilities
 """
 
-from typing import Optional, Tuple
 import numpy as np
 import numpy.typing as npt
 
 from .exceptions import ValidationError
 
+
 def validate_coordinates(
     x: npt.NDArray[np.float64],
-    y: Optional[npt.NDArray[np.float64]] = None,
-    z: Optional[npt.NDArray[np.float64]] = None,
-    ) -> Tuple[npt.NDArray[np.float64], ...]:
+    y: npt.NDArray[np.float64] | None = None,
+    z: npt.NDArray[np.float64] | None = None,
+) -> tuple[npt.NDArray[np.float64], ...]:
     """
     Validate and convert coordinate arrays
 
@@ -63,14 +63,15 @@ def validate_coordinates(
 
     return (x, y)
 
+
 def validate_values(
     values: npt.NDArray[np.float64],
-    n_expected: Optional[int] = None,
+    n_expected: int | None = None,
     allow_nan: bool = False,
 ) -> npt.NDArray[np.float64]:
     """
     Validate values array
- 
+
     Parameters
     ----------
     values : array-like
@@ -96,9 +97,7 @@ def validate_values(
         raise ValidationError(f"Values must be 1D array, got {values.ndim}D")
 
     if n_expected is not None and len(values) != n_expected:
-        raise ValidationError(
-            f"Expected {n_expected} values, got {len(values)}"
-        )
+        raise ValidationError(f"Expected {n_expected} values, got {len(values)}")
 
     if not allow_nan and np.any(np.isnan(values)):
         raise ValidationError("Values contain NaN, which is not allowed")
@@ -107,6 +106,7 @@ def validate_values(
         raise ValidationError("Values contain infinity, which is not allowed")
 
     return values
+
 
 def validate_positive(value: float, name: str = "value") -> float:
     """
@@ -133,12 +133,13 @@ def validate_positive(value: float, name: str = "value") -> float:
         raise ValidationError(f"{name} must be positive, got {value}")
     return value
 
+
 def validate_in_range(
     value: float,
-    min_val: Optional[float] = None,
-    max_val: Optional[float] = None,
+    min_val: float | None = None,
+    max_val: float | None = None,
     name: str = "value",
-    ) -> float:
+) -> float:
     """
     Validate that a value is within a range
 
@@ -171,10 +172,11 @@ def validate_in_range(
 
     return value
 
+
 def validate_array_shapes_match(
     *arrays: npt.NDArray[np.float64],
-    names: Optional[Tuple[str, ...]] = None,
-    ) -> None:
+    names: tuple[str, ...] | None = None,
+) -> None:
     """
     Validate that multiple arrays have matching shapes
 

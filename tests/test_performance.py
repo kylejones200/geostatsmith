@@ -8,15 +8,19 @@ Tests:
 - Approximate methods
 """
 
-import pytest
-import numpy as np
 import tempfile
-import shutil
 from pathlib import Path
 
-from geostats.performance.parallel import (
-    parallel_kriging,
-    parallel_cross_validation,
+import numpy as np
+import pytest
+
+from geostats.algorithms.fitting import fit_variogram_model
+from geostats.algorithms.ordinary_kriging import OrdinaryKriging
+from geostats.algorithms.variogram import experimental_variogram
+from geostats.models.variogram_models import SphericalModel
+from geostats.performance.approximate import (
+    approximate_kriging,
+    coarse_to_fine,
 )
 from geostats.performance.caching import (
     CachedKriging,
@@ -26,18 +30,13 @@ from geostats.performance.chunked import (
     ChunkedKriging,
     chunked_predict,
 )
-from geostats.performance.approximate import (
-    approximate_kriging,
-    coarse_to_fine,
+from geostats.performance.parallel import (
+    parallel_cross_validation,
+    parallel_kriging,
 )
-from geostats.algorithms.variogram import experimental_variogram
-from geostats.algorithms.fitting import fit_variogram_model
-from geostats.models.variogram_models import SphericalModel
-from geostats.algorithms.ordinary_kriging import OrdinaryKriging
 
 
 class TestParallelKriging:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
@@ -213,6 +212,7 @@ class TestParallelKriging:
 
     def test_parallel_cross_validation_invalid_method(self):
         from geostats.performance.parallel import parallel_cross_validate
+
         with pytest.raises(ValueError, match="Unknown method"):
             parallel_cross_validate(
                 self.x,
@@ -224,7 +224,6 @@ class TestParallelKriging:
 
 
 class TestCaching:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 40
@@ -370,7 +369,6 @@ class TestCaching:
 
 
 class TestChunkedProcessing:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 50
@@ -515,7 +513,6 @@ class TestChunkedProcessing:
 
 
 class TestApproximateKriging:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_samples = 100

@@ -9,19 +9,19 @@ Tests all simulation approaches with actual library APIs:
 - Statistical validation
 """
 
-import pytest
 import numpy as np
+import pytest
+
 from geostats import variogram
+from geostats.models.variogram_models import SphericalModel
 from geostats.simulation.gaussian_simulation import (
- sequential_gaussian_simulation,
- SequentialGaussianSimulation
+    SequentialGaussianSimulation,
+    sequential_gaussian_simulation,
 )
 from geostats.simulation.unconditional import unconditional_gaussian_simulation
-from geostats.transformations.normal_score import NormalScoreTransform
-from geostats.models.variogram_models import SphericalModel, ExponentialModel
+
 
 class TestUnconditionalSimulation:
-
     def setup_method(self):
         np.random.seed(42)
         # Variogram model (convert to covariance)
@@ -35,13 +35,13 @@ class TestUnconditionalSimulation:
 
         # Run unconditional simulation
         realizations = unconditional_gaussian_simulation(
-        X.flatten(),
-        Y.flatten(),
-        covariance_model=self.model,
-        n_realizations=1,
-        mean=0.0,
-        method="cholesky",
-        seed=42
+            X.flatten(),
+            Y.flatten(),
+            covariance_model=self.model,
+            n_realizations=1,
+            mean=0.0,
+            method="cholesky",
+            seed=42,
         )
 
         assert realizations.shape == (1, 400)
@@ -54,12 +54,12 @@ class TestUnconditionalSimulation:
 
         n_realizations = 5
         realizations = unconditional_gaussian_simulation(
-        X.flatten(),
-        Y.flatten(),
-        covariance_model=self.model,
-        n_realizations=n_realizations,
-        mean=0.0,
-        seed=42
+            X.flatten(),
+            Y.flatten(),
+            covariance_model=self.model,
+            n_realizations=n_realizations,
+            mean=0.0,
+            seed=42,
         )
 
         assert realizations.shape == (5, 100)
@@ -74,12 +74,12 @@ class TestUnconditionalSimulation:
 
         # Generate many realizations
         realizations = unconditional_gaussian_simulation(
-        X.flatten(),
-        Y.flatten(),
-        covariance_model=self.model,
-        n_realizations=20,
-        mean=5.0,
-        seed=42
+            X.flatten(),
+            Y.flatten(),
+            covariance_model=self.model,
+            n_realizations=20,
+            mean=5.0,
+            seed=42,
         )
 
         # Check mean
@@ -92,17 +92,19 @@ class TestUnconditionalSimulation:
         X, Y = np.meshgrid(x_sim, y_sim)
 
         real1 = unconditional_gaussian_simulation(
-        X.flatten(), Y.flatten(),
-        covariance_model=self.model,
-        n_realizations=1,
-        seed=123
+            X.flatten(),
+            Y.flatten(),
+            covariance_model=self.model,
+            n_realizations=1,
+            seed=123,
         )
 
         real2 = unconditional_gaussian_simulation(
-        X.flatten(), Y.flatten(),
-        covariance_model=self.model,
-        n_realizations=1,
-        seed=123
+            X.flatten(),
+            Y.flatten(),
+            covariance_model=self.model,
+            n_realizations=1,
+            seed=123,
         )
 
         np.testing.assert_array_equal(real1, real2)
@@ -114,12 +116,13 @@ class TestUnconditionalSimulation:
 
         # Use turning bands method
         realization = unconditional_gaussian_simulation(
-        X.flatten(), Y.flatten(),
-        covariance_model=self.model,
-        n_realizations=1,
-        method="turning_bands",
-        n_bands=50,
-        seed=42
+            X.flatten(),
+            Y.flatten(),
+            covariance_model=self.model,
+            n_realizations=1,
+            method="turning_bands",
+            n_bands=50,
+            seed=42,
         )
 
         assert realization.shape == (1, 400)
@@ -130,16 +133,14 @@ class TestUnconditionalSimulation:
         y = np.array([0, 10, 20])
 
         from geostats.simulation.unconditional import unconditional_simulation
+
         with pytest.raises(ValueError, match="Unknown method"):
             unconditional_simulation(
-                x,
-                y,
-                covariance_model=self.model,
-                method="invalid_method"
+                x, y, covariance_model=self.model, method="invalid_method"
             )
 
-class TestSequentialGaussianSimulation:
 
+class TestSequentialGaussianSimulation:
     def setup_method(self):
         np.random.seed(42)
         self.n_data = 30
@@ -149,9 +150,9 @@ class TestSequentialGaussianSimulation:
 
         # Fit variogram
         lags, gamma, n_pairs = variogram.experimental_variogram(
-        self.x_data, self.y_data, self.z_data, n_lags=10
+            self.x_data, self.y_data, self.z_data, n_lags=10
         )
-        self.model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
+        self.model = variogram.fit_model("spherical", lags, gamma, weights=n_pairs)
 
     def test_sgs_basic(self):
         # Simulation grid
@@ -161,14 +162,14 @@ class TestSequentialGaussianSimulation:
 
         # Run SGS
         realizations = sequential_gaussian_simulation(
-        x_data=self.x_data,
-        y_data=self.y_data,
-        z_data=self.z_data,
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        variogram_model=self.model,
-        n_realizations=1,
-        seed=42
+            x_data=self.x_data,
+            y_data=self.y_data,
+            z_data=self.z_data,
+            x_grid=X.flatten(),
+            y_grid=Y.flatten(),
+            variogram_model=self.model,
+            n_realizations=1,
+            seed=42,
         )
 
         assert realizations.shape == (1, 225)
@@ -180,14 +181,14 @@ class TestSequentialGaussianSimulation:
         X, Y = np.meshgrid(x_sim, y_sim)
 
         realizations = sequential_gaussian_simulation(
-        x_data=self.x_data,
-        y_data=self.y_data,
-        z_data=self.z_data,
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        variogram_model=self.model,
-        n_realizations=5,
-        seed=42
+            x_data=self.x_data,
+            y_data=self.y_data,
+            z_data=self.z_data,
+            x_grid=X.flatten(),
+            y_grid=Y.flatten(),
+            variogram_model=self.model,
+            n_realizations=5,
+            seed=42,
         )
 
         assert realizations.shape == (5, 100)
@@ -201,17 +202,14 @@ class TestSequentialGaussianSimulation:
         X, Y = np.meshgrid(x_sim, y_sim)
 
         sgs = SequentialGaussianSimulation(
-        x_data=self.x_data,
-        y_data=self.y_data,
-        z_data=self.z_data,
-        variogram_model=self.model
+            x_data=self.x_data,
+            y_data=self.y_data,
+            z_data=self.z_data,
+            variogram_model=self.model,
         )
 
         realizations = sgs.simulate(
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        n_realizations=2,
-        seed=42
+            x_grid=X.flatten(), y_grid=Y.flatten(), n_realizations=2, seed=42
         )
 
         assert realizations.shape == (2, 144)
@@ -224,14 +222,14 @@ class TestSequentialGaussianSimulation:
 
         # Generate many realizations
         realizations = sequential_gaussian_simulation(
-        x_data=self.x_data,
-        y_data=self.y_data,
-        z_data=self.z_data,
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        variogram_model=self.model,
-        n_realizations=10,
-        seed=42
+            x_data=self.x_data,
+            y_data=self.y_data,
+            z_data=self.z_data,
+            x_grid=X.flatten(),
+            y_grid=Y.flatten(),
+            variogram_model=self.model,
+            n_realizations=10,
+            seed=42,
         )
 
         # E-type is mean of realizations
@@ -249,31 +247,31 @@ class TestSequentialGaussianSimulation:
         X, Y = np.meshgrid(x_sim, y_sim)
 
         real1 = sequential_gaussian_simulation(
-        x_data=self.x_data,
-        y_data=self.y_data,
-        z_data=self.z_data,
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        variogram_model=self.model,
-        n_realizations=1,
-        seed=123
+            x_data=self.x_data,
+            y_data=self.y_data,
+            z_data=self.z_data,
+            x_grid=X.flatten(),
+            y_grid=Y.flatten(),
+            variogram_model=self.model,
+            n_realizations=1,
+            seed=123,
         )
 
         real2 = sequential_gaussian_simulation(
-        x_data=self.x_data,
-        y_data=self.y_data,
-        z_data=self.z_data,
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        variogram_model=self.model,
-        n_realizations=1,
-        seed=123
+            x_data=self.x_data,
+            y_data=self.y_data,
+            z_data=self.z_data,
+            x_grid=X.flatten(),
+            y_grid=Y.flatten(),
+            variogram_model=self.model,
+            n_realizations=1,
+            seed=123,
         )
 
         np.testing.assert_array_almost_equal(real1, real2)
 
-class TestSimulationStatistics:
 
+class TestSimulationStatistics:
     def test_histogram_reproduction(self):
         np.random.seed(42)
 
@@ -285,7 +283,7 @@ class TestSimulationStatistics:
 
         # Fit variogram
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=10)
-        model = variogram.fit_model('exponential', lags, gamma, weights=n_pairs)
+        model = variogram.fit_model("exponential", lags, gamma, weights=n_pairs)
 
         # Simulate many points
         x_sim = np.linspace(0, 100, 20)
@@ -293,14 +291,14 @@ class TestSimulationStatistics:
         X, Y = np.meshgrid(x_sim, y_sim)
 
         realizations = sequential_gaussian_simulation(
-        x_data=x,
-        y_data=y,
-        z_data=z,
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        variogram_model=model,
-        n_realizations=5,
-        seed=42
+            x_data=x,
+            y_data=y,
+            z_data=z,
+            x_grid=X.flatten(),
+            y_grid=Y.flatten(),
+            variogram_model=model,
+            n_realizations=5,
+            seed=42,
         )
 
         all_values = realizations.flatten()
@@ -309,8 +307,8 @@ class TestSimulationStatistics:
         assert abs(np.mean(all_values) - 10.0) < 2.0
         assert abs(np.std(all_values) - 2.0) < 1.0
 
-class TestSimulationEdgeCases:
 
+class TestSimulationEdgeCases:
     def test_simulation_single_conditioning_point(self):
         x_data = np.array([50.0])
         y_data = np.array([50.0])
@@ -324,14 +322,14 @@ class TestSimulationEdgeCases:
 
         # Should work with single point
         realizations = sequential_gaussian_simulation(
-        x_data=x_data,
-        y_data=y_data,
-        z_data=z_data,
-        x_grid=X.flatten(),
-        y_grid=Y.flatten(),
-        variogram_model=model,
-        n_realizations=1,
-        seed=42
+            x_data=x_data,
+            y_data=y_data,
+            z_data=z_data,
+            x_grid=X.flatten(),
+            y_grid=Y.flatten(),
+            variogram_model=model,
+            n_realizations=1,
+            seed=42,
         )
 
         assert realizations.shape == (1, 100)
@@ -345,15 +343,12 @@ class TestSimulationEdgeCases:
         model = SphericalModel(nugget=0.1, sill=1.0, range_param=15.0)
 
         realizations = unconditional_gaussian_simulation(
-        X.flatten(),
-        Y.flatten(),
-        covariance_model=model,
-        n_realizations=1,
-        seed=42
+            X.flatten(), Y.flatten(), covariance_model=model, n_realizations=1, seed=42
         )
 
         assert realizations.shape == (1, 9)
         assert all(np.isfinite(realizations.flatten()))
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

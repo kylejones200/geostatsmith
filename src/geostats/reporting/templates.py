@@ -5,14 +5,13 @@
 Templates for different types of reports.
 """
 
-from typing import Dict, Any
 
 class ReportTemplate:
     def __init__(self, title: str = "Analysis Report"):
         self.sections = []
 
     def add_section(self, title: str, content: str):
-        self.sections.append({'title': title, 'content': content})
+        self.sections.append({"title": title, "content": content})
 
     def render(self) -> str:
         html = f"<h1>{self.title}</h1>\n"
@@ -20,9 +19,11 @@ class ReportTemplate:
             html += f"<div>{section['content']}</div>\n"
         return html
 
+
 class KrigingTemplate(ReportTemplate):
     def __init__(self):
         super().__init__("Kriging Analysis Report")
+
 
 class ValidationTemplate(ReportTemplate):
     def __init__(self):

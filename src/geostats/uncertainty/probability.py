@@ -7,10 +7,11 @@ Functions for creating probability maps and assessing risks.
 
 import numpy as np
 import numpy.typing as npt
-from typing import Dict, Optional, Tuple, Union
+
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 from ..simulation.gaussian_simulation import SequentialGaussianSimulation
+
 
 def probability_map(
     x: npt.NDArray[np.float64],
@@ -20,7 +21,7 @@ def probability_map(
     y_pred: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     threshold: float,
-    operator: str = '>',
+    operator: str = ">",
     n_realizations: int = None,
 ) -> npt.NDArray[np.float64]:
     """
@@ -95,17 +96,19 @@ def probability_map(
 
     # Vectorized operator mapping
     operator_map = {
-        '>': lambda z, t: z > t,
-        '>=': lambda z, t: z >= t,
-        '<': lambda z, t: z < t,
-        '<=': lambda z, t: z <= t,
+        ">": lambda z, t: z > t,
+        ">=": lambda z, t: z >= t,
+        "<": lambda z, t: z < t,
+        "<=": lambda z, t: z <= t,
     }
-    
+
     if operator not in operator_map:
-        raise ValueError(f"Unknown operator: {operator}. Must be one of {list(operator_map.keys())}")
-    
+        raise ValueError(
+            f"Unknown operator: {operator}. Must be one of {list(operator_map.keys())}"
+        )
+
     comparison_func = operator_map[operator]
-    
+
     # Run multiple realizations - vectorized accumulation
     exceedance_count = np.zeros(n_pred)
 
@@ -128,7 +131,7 @@ def conditional_probability(
     y_pred: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     thresholds: npt.NDArray[np.float64],
-) -> Dict[str, npt.NDArray[np.float64]]:
+) -> dict[str, npt.NDArray[np.float64]]:
     """
     Compute conditional probabilities for multiple thresholds.
 
@@ -186,14 +189,14 @@ def conditional_probability(
     from scipy.stats import norm
 
     results = {
-        'mean': mean,
-        'std': std,
+        "mean": mean,
+        "std": std,
     }
 
     for threshold in thresholds:
         z_score = (threshold - mean) / (std + 1e-10)
         prob_exceed = 1 - norm.cdf(z_score)
-        results[f'threshold_{threshold}'] = prob_exceed
+        results[f"threshold_{threshold}"] = prob_exceed
 
     return results
 
@@ -209,7 +212,7 @@ def risk_assessment(
     cost_false_positive: float,
     cost_false_negative: float,
     n_realizations: int = None,
-) -> Dict[str, any]:
+) -> dict[str, any]:
     """
     Perform risk-based decision analysis.
 
@@ -281,11 +284,14 @@ def risk_assessment(
     """
     # Compute probability of exceeding threshold
     prob_exceed = probability_map(
-        x, y, z,
-        x_pred, y_pred,
+        x,
+        y,
+        z,
+        x_pred,
+        y_pred,
         variogram_model=variogram_model,
         threshold=threshold,
-        operator='>',
+        operator=">",
         n_realizations=n_realizations,
     )
 
@@ -302,9 +308,7 @@ def risk_assessment(
 
     # Optimal decision: choose classification with lower expected cost
     optimal_decision = np.where(
-        expected_cost_positive < expected_cost_negative,
-        'positive',
-        'negative'
+        expected_cost_positive < expected_cost_negative, "positive", "negative"
     )
 
     # Expected savings from optimal vs. suboptimal decision
@@ -314,14 +318,14 @@ def risk_assessment(
     total_expected_cost = np.minimum(expected_cost_positive, expected_cost_negative)
 
     return {
-        'probability_exceed': prob_exceed,
-        'probability_not_exceed': prob_not_exceed,
-        'expected_cost_positive': expected_cost_positive,
-        'expected_cost_negative': expected_cost_negative,
-        'optimal_decision': optimal_decision,
-        'expected_savings': expected_savings,
-        'total_expected_cost': total_expected_cost,
-        'threshold': threshold,
-        'cost_false_positive': cost_false_positive,
-        'cost_false_negative': cost_false_negative,
+        "probability_exceed": prob_exceed,
+        "probability_not_exceed": prob_not_exceed,
+        "expected_cost_positive": expected_cost_positive,
+        "expected_cost_negative": expected_cost_negative,
+        "optimal_decision": optimal_decision,
+        "expected_savings": expected_savings,
+        "total_expected_cost": total_expected_cost,
+        "threshold": threshold,
+        "cost_false_positive": cost_false_positive,
+        "cost_false_negative": cost_false_negative,
     }

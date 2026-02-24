@@ -26,7 +26,7 @@ Examples
 >>> # GET /health - Health check
 """
 
-from .app import create_app, app
+from .app import app, create_app
 from .endpoints import router
 
 __all__ = [

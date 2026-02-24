@@ -16,13 +16,14 @@ Reference:
 - Lognormal transformation for kriging (§2805-2810)
 """
 
-from typing import Tuple, Optional
+import logging
+import warnings
+
 import numpy as np
 import numpy.typing as npt
-import warnings
-import logging
 
 logger = logging.getLogger(__name__)
+
 
 class LogTransform:
     """
@@ -37,7 +38,7 @@ class LogTransform:
     Handles zero and negative values appropriately.
     """
 
-    def __init__(self, base: str = 'natural', epsilon: Optional[float] = None):
+    def __init__(self, base: str = "natural", epsilon: float | None = None):
         """
         Initialize Log Transform.
 
@@ -51,28 +52,26 @@ class LogTransform:
         """
         self.base = base
         self.epsilon_user = epsilon
-        self.epsilon_fitted: Optional[float] = None
-        self.min_original: Optional[float] = None
-        self.max_original: Optional[float] = None
+        self.epsilon_fitted: float | None = None
+        self.min_original: float | None = None
+        self.max_original: float | None = None
         self.has_zeros: bool = False
         self.has_negatives: bool = False
         self.is_fitted: bool = False
 
         # Set log/exp functions using dispatch
         log_functions = {
-        'natural': (np.log, np.exp),
-        '10': (np.log10, lambda x: np.power(10, x)),
-        '2': (np.log2, lambda x: np.power(2, x)),
+            "natural": (np.log, np.exp),
+            "10": (np.log10, lambda x: np.power(10, x)),
+            "2": (np.log2, lambda x: np.power(2, x)),
         }
 
         if base not in log_functions:
-            raise ValueError(
-                f"base must be one of {valid_bases}, got '{base}'"
-        )
+            raise ValueError(f"base must be one of {valid_bases}, got '{base}'")
 
         self.log_func, self.exp_func = log_functions[base]
 
-    def fit(self, data: npt.NDArray[np.float64]) -> 'LogTransform':
+    def fit(self, data: npt.NDArray[np.float64]) -> "LogTransform":
         """
         Fit the log transform to data.
 
@@ -109,7 +108,8 @@ class LogTransform:
         if self.has_zeros:
             self.epsilon_fitted = self.epsilon_user
         else:
-            from ..core.constants import LOG_EPSILON_RATIO, EPSILON
+            from ..core.constants import EPSILON, LOG_EPSILON_RATIO
+
             positive_values = valid_data[valid_data > 0]
             if len(positive_values) > 0:
                 self.epsilon_fitted = np.min(positive_values) * LOG_EPSILON_RATIO
@@ -118,6 +118,7 @@ class LogTransform:
 
         if self.has_zeros:
             import warnings
+
             warnings.warn(
                 f"Data contains zeros. Adding epsilon={self.epsilon_fitted:.2e} "
                 "before log transform."
@@ -152,14 +153,16 @@ class LogTransform:
             data_flat = data_flat + self.epsilon_fitted
 
         # Transform
-        import warnings
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             transformed = self.log_func(data_flat)
 
         return transformed.reshape(original_shape)
 
-    def inverse_transform(self, log_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+    def inverse_transform(
+        self, log_data: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         """
         Back-transform log data to original scale.
 
@@ -193,12 +196,12 @@ class LogTransform:
     def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Fit and transform data in one step.
-     
+
         Parameters
         ----------
         data : np.ndarray
         Data to transform
- 
+
         Returns
         -------
         np.ndarray
@@ -209,9 +212,8 @@ class LogTransform:
 
 
 def log_transform(
-    data: npt.NDArray[np.float64],
-    base: str = 'natural'
-) -> Tuple[npt.NDArray[np.float64], LogTransform]:
+    data: npt.NDArray[np.float64], base: str = "natural"
+) -> tuple[npt.NDArray[np.float64], LogTransform]:
     """
     Convenience function for log transform.
 
@@ -244,8 +246,7 @@ def log_transform(
 
 
 def log_back_transform(
-    log_data: npt.NDArray[np.float64],
-    transformer: LogTransform
+    log_data: npt.NDArray[np.float64], transformer: LogTransform
 ) -> npt.NDArray[np.float64]:
     """
     Back-transform log data to original scale.

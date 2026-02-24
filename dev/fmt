@@ -6,6 +6,20 @@ set -euo pipefail
 
 echo "🔧 Formatting code with ruff..."
 
-ruff format src/ tests/
+# Try uv run ruff, then python3 -m ruff, then ruff command
+if command -v uv &> /dev/null && uv run ruff --version &>/dev/null 2>&1; then
+    uv run ruff format src/ tests/
+elif [ -d "venv" ] && source venv/bin/activate && python -m ruff --version &>/dev/null 2>&1; then
+    source venv/bin/activate
+    python -m ruff format src/ tests/
+elif python3 -m ruff --version &>/dev/null 2>&1; then
+    python3 -m ruff format src/ tests/
+elif command -v ruff &> /dev/null; then
+    ruff format src/ tests/
+else
+    echo "❌ Error: ruff not found."
+    echo "   Install with: uv sync --dev  or  pip install ruff"
+    exit 1
+fi
 
 echo "✅ Formatting complete"

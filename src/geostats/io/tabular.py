@@ -5,19 +5,25 @@
 Functions for reading and writing tabular spatial data (CSV, Excel).
 """
 
+from pathlib import Path
+
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-from typing import Tuple, Optional, List, Union
-from pathlib import Path
+
 
 def read_csv_spatial(
- x_col: str = 'x',
- y_col: str = 'y',
- z_col: str = 'z',
- additional_cols: Optional[List[str]] = None,
+    x_col: str = "x",
+    y_col: str = "y",
+    z_col: str = "z",
+    additional_cols: list[str] | None = None,
     **kwargs,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
+) -> tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    pd.DataFrame | None,
+]:
     """
     Read spatial data from CSV file.
 
@@ -71,13 +77,14 @@ def read_csv_spatial(
     KeyError
         If specified columns don't exist
     """
-    from pathlib import Path
+
     if not Path(filename).exists():
         raise FileNotFoundError(f"File not found: {filename}")
 
     # Read CSV
-    import pandas as pd
     import numpy as np
+    import pandas as pd
+
     df = pd.read_csv(filename, **kwargs)
 
     # Check columns exist
@@ -107,15 +114,16 @@ def read_csv_spatial(
 
     return x, y, z, extra
 
+
 def write_csv_spatial(
     filename: str,
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    x_col: str = 'x',
-    y_col: str = 'y',
-    z_col: str = 'z',
-    extra: Optional[pd.DataFrame] = None,
+    x_col: str = "x",
+    y_col: str = "y",
+    z_col: str = "z",
+    extra: pd.DataFrame | None = None,
     **kwargs,
 ) -> None:
     """
@@ -161,11 +169,14 @@ def write_csv_spatial(
     """
     # Create DataFrame
     import pandas as pd
-    df = pd.DataFrame({
-        x_col: x,
-        y_col: y,
-        z_col: z,
-    })
+
+    df = pd.DataFrame(
+        {
+            x_col: x,
+            y_col: y,
+            z_col: z,
+        }
+    )
 
     # Add extra columns if provided
     if extra is not None:
@@ -175,15 +186,21 @@ def write_csv_spatial(
     # Write to CSV
     df.to_csv(filename, index=False, **kwargs)
 
+
 def read_excel_spatial(
     filename: str,
-    x_col: str = 'x',
-    y_col: str = 'y',
-    z_col: str = 'z',
-    sheet_name: Union[str, int] = 0,
-    additional_cols: Optional[List[str]] = None,
+    x_col: str = "x",
+    y_col: str = "y",
+    z_col: str = "z",
+    sheet_name: str | int = 0,
+    additional_cols: list[str] | None = None,
     **kwargs,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Optional[pd.DataFrame]]:
+) -> tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    pd.DataFrame | None,
+]:
     """
     Read spatial data from Excel file.
 
@@ -226,17 +243,17 @@ def read_excel_spatial(
     ImportError
         If openpyxl is not installed
     """
-    from pathlib import Path
+
     if not Path(filename).exists():
         raise FileNotFoundError(f"File not found: {filename}")
 
     try:
         import pandas as pd
+
         df = pd.read_excel(filename, sheet_name=sheet_name, **kwargs)
     except ImportError:
         raise ImportError(
-            "openpyxl is required for Excel I/O. "
-            "Install with: pip install openpyxl"
+            "openpyxl is required for Excel I/O. Install with: pip install openpyxl"
         )
 
     # Check columns exist
@@ -247,6 +264,7 @@ def read_excel_spatial(
 
     # Extract coordinates and values
     import numpy as np
+
     x = df[x_col].values
     y = df[y_col].values
     z = df[z_col].values

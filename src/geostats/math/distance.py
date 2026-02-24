@@ -1,18 +1,18 @@
 """
-    Distance calculation functions for geostatistics
+Distance calculation functions for geostatistics
 """
 
-from typing import Optional, Tuple
 import numpy as np
 import numpy.typing as npt
+
 
 def euclidean_distance(
     x1: npt.NDArray[np.float64],
     y1: npt.NDArray[np.float64],
     x2: npt.NDArray[np.float64],
     y2: npt.NDArray[np.float64],
-    z1: Optional[npt.NDArray[np.float64]] = None,
-    z2: Optional[npt.NDArray[np.float64]] = None,
+    z1: npt.NDArray[np.float64] | None = None,
+    z2: npt.NDArray[np.float64] | None = None,
 ) -> npt.NDArray[np.float64]:
     """
     Calculate Euclidean distance between two sets of points
@@ -49,10 +49,11 @@ def euclidean_distance(
 
     return np.sqrt(dist_sq)
 
+
 def euclidean_distance_matrix(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
-    z: Optional[npt.NDArray[np.float64]] = None,
+    z: npt.NDArray[np.float64] | None = None,
 ) -> npt.NDArray[np.float64]:
     """
     Calculate pairwise Euclidean distance matrix for a set of points
@@ -77,8 +78,8 @@ def manhattan_distance(
     y1: npt.NDArray[np.float64],
     x2: npt.NDArray[np.float64],
     y2: npt.NDArray[np.float64],
-    z1: Optional[npt.NDArray[np.float64]] = None,
-    z2: Optional[npt.NDArray[np.float64]] = None,
+    z1: npt.NDArray[np.float64] | None = None,
+    z2: npt.NDArray[np.float64] | None = None,
 ) -> npt.NDArray[np.float64]:
     """
     Calculate Manhattan (L1) distance between two sets of points
@@ -175,9 +176,10 @@ def anisotropic_distance(
     # Calculate distance
     return np.sqrt(dx_rot**2 + dy_rot**2)
 
+
 def pairwise_distances(
     coords1: npt.NDArray[np.float64],
-    coords2: Optional[npt.NDArray[np.float64]] = None,
+    coords2: npt.NDArray[np.float64] | None = None,
 ) -> npt.NDArray[np.float64]:
     """
     Calculate pairwise distances between coordinate arrays
@@ -214,13 +216,9 @@ def pairwise_distances(
     # Sum squared differences along last axis and take square root
     return np.sqrt(np.sum(diff**2, axis=-1))
 
+
 def euclidean_distance_3d(
-    x1: float,
-    y1: float,
-    z1: float,
-    x2: float,
-    y2: float,
-    z2: float
+    x1: float, y1: float, z1: float, x2: float, y2: float, z2: float
 ) -> float:
     """
     Calculate Euclidean distance between two points in 3D space
@@ -243,12 +241,11 @@ def euclidean_distance_3d(
     dx = x2 - x1
     dy = y2 - y1
     dz = z2 - z1
-    return np.sqrt(dx*dx + dy*dy + dz*dz)
+    return np.sqrt(dx * dx + dy * dy + dz * dz)
+
 
 def euclidean_distance_matrix_3d(
-    x: npt.NDArray[np.float64],
-    y: npt.NDArray[np.float64],
-    z: npt.NDArray[np.float64]
+    x: npt.NDArray[np.float64], y: npt.NDArray[np.float64], z: npt.NDArray[np.float64]
 ) -> npt.NDArray[np.float64]:
     """
     Calculate pairwise 3D Euclidean distance matrix (vectorized)
@@ -273,7 +270,7 @@ def directional_distance(
     y2: npt.NDArray[np.float64],
     angle: float,
     tolerance: float = 45.0,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.bool_]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.bool_]]:
     """
     Calculate distance and direction mask for directional variograms
 

@@ -13,7 +13,6 @@ C is the covariance matrix between sample points,
 c₀ is the covariance vector between sample points and prediction point.
 """
 
-from typing import Optional, Tuple, Dict
 import numpy as np
 import numpy.typing as npt
 
@@ -21,8 +20,9 @@ from ..core.base import BaseKriging
 from ..core.exceptions import KrigingError
 from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance
-from ..math.matrices import solve_kriging_system, regularize_matrix
+from ..math.matrices import regularize_matrix, solve_kriging_system
 from ..math.numerical import cross_validation_score
+
 
 class SimpleKriging(BaseKriging):
     """
@@ -37,22 +37,22 @@ class SimpleKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
-        variogram_model: Optional[object] = None,
-        mean: Optional[float] = None,
+        variogram_model: object | None = None,
+        mean: float | None = None,
     ):
         """
-         Initialize Simple Kriging
+            Initialize Simple Kriging
 
-     Parameters
-     ----------
-     x, y : np.ndarray
-     Coordinates of sample points
-     z : np.ndarray
-     Values at sample points
-        variogram_model : VariogramModelBase, optional
-        Fitted variogram model
-        mean : float, optional
-        Known mean value. If None, estimated from data.
+        Parameters
+        ----------
+        x, y : np.ndarray
+        Coordinates of sample points
+        z : np.ndarray
+        Values at sample points
+           variogram_model : VariogramModelBase, optional
+           Fitted variogram model
+           mean : float, optional
+           Known mean value. If None, estimated from data.
         """
         super().__init__(x, y, z, variogram_model)
 
@@ -79,8 +79,9 @@ class SimpleKriging(BaseKriging):
 
         # Get sill from variogram
         from ..core.constants import DEFAULT_SILL_VALUE
-        sill = self.variogram_model.parameters.get('sill', DEFAULT_SILL_VALUE)
-        nugget = self.variogram_model.parameters.get('nugget', 0.0)
+
+        sill = self.variogram_model.parameters.get("sill", DEFAULT_SILL_VALUE)
+        nugget = self.variogram_model.parameters.get("nugget", 0.0)
 
         # Convert variogram to covariance: C(h) = sill - gamma(h)
         gamma_matrix = self.variogram_model(dist_matrix)
@@ -91,6 +92,7 @@ class SimpleKriging(BaseKriging):
 
         # Regularize for numerical stability
         from ..core.constants import EPSILON
+
         self.cov_matrix = regularize_matrix(self.cov_matrix, epsilon=EPSILON)
 
     def predict(
@@ -98,24 +100,24 @@ class SimpleKriging(BaseKriging):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         return_variance: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
-         Perform Simple Kriging prediction
+            Perform Simple Kriging prediction
 
-     Parameters
-     ----------
-     x, y : np.ndarray
-     Coordinates for prediction
-     return_variance : bool
-     Whether to return kriging variance
+        Parameters
+        ----------
+        x, y : np.ndarray
+        Coordinates for prediction
+        return_variance : bool
+        Whether to return kriging variance
 
-     Returns
-     -------
-     predictions : np.ndarray
-     Predicted values
-     variance : np.ndarray or None
-     Kriging variance (if return_variance=True)
-     """
+        Returns
+        -------
+        predictions : np.ndarray
+        Predicted values
+        variance : np.ndarray or None
+        Kriging variance (if return_variance=True)
+        """
         if self.variogram_model is None:
             raise KrigingError("Variogram model must be provided for prediction")
 
@@ -127,7 +129,8 @@ class SimpleKriging(BaseKriging):
 
         # Get sill for variance calculation
         from ..core.constants import DEFAULT_SILL_VALUE
-        sill = self.variogram_model.parameters.get('sill', DEFAULT_SILL_VALUE)
+
+        sill = self.variogram_model.parameters.get("sill", DEFAULT_SILL_VALUE)
 
         # Predict at each location
         for i in range(n_pred):
@@ -161,12 +164,14 @@ class SimpleKriging(BaseKriging):
                 variances[i] = sill - np.dot(weights, cov_vec)
                 # Variance should be non-negative; negative indicates numerical issues
                 from ..core.constants import ZERO_VALUE
+
                 if variances[i] < ZERO_VALUE:
                     import warnings
+
                     warnings.warn(
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
                         "This may indicate numerical instability. Variance will be clamped to 0.",
-                        RuntimeWarning
+                        RuntimeWarning,
                     )
                     variances[i] = ZERO_VALUE
 
@@ -175,7 +180,7 @@ class SimpleKriging(BaseKriging):
         else:
             return predictions, None
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
 

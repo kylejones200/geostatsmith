@@ -1,13 +1,13 @@
 """
-    Matrix operations and utilities for kriging
+Matrix operations and utilities for kriging
 """
 
-from typing import Callable, Optional
+from collections.abc import Callable
+
 import numpy as np
 import numpy.typing as npt
 from scipy import linalg
 
-from ..core.exceptions import KrigingError
 
 def build_covariance_matrix(
     covariance_func: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]],
@@ -81,18 +81,18 @@ def solve_kriging_system(
     KrigingError
         If system cannot be solved
     """
-    from scipy import linalg
+
     try:
         solution_methods = {
-            'cholesky': lambda: linalg.cho_solve(linalg.cho_factor(A), b),
-            'lu': lambda: linalg.solve(A, b),
-            'lstsq': lambda: linalg.lstsq(A, b)[0],
+            "cholesky": lambda: linalg.cho_solve(linalg.cho_factor(A), b),
+            "lu": lambda: linalg.solve(A, b),
+            "lstsq": lambda: linalg.lstsq(A, b)[0],
         }
 
         if method == "auto":
             try:
                 # Try Cholesky first (fastest for positive definite)
-                return solution_methods['cholesky']()
+                return solution_methods["cholesky"]()
             except linalg.LinAlgError:
                 # Fall back to LU decomposition
                 method = "lu"
@@ -100,14 +100,14 @@ def solve_kriging_system(
         valid_methods = list(solution_methods.keys())
         if method not in solution_methods:
             raise ValueError(
-                f"Unknown solution method '{method}'. "
-                f"Valid methods: {valid_methods}"
+                f"Unknown solution method '{method}'. Valid methods: {valid_methods}"
             )
 
         return solution_methods[method]()
 
     except linalg.LinAlgError as e:
         from ..exceptions import KrigingError
+
         raise KrigingError(f"Failed to solve kriging system: {e}")
 
 
@@ -130,7 +130,7 @@ def is_positive_definite(
     bool
         True if matrix is positive definite
     """
-    from scipy import linalg
+
     try:
         linalg.cholesky(matrix)
         return True
@@ -138,6 +138,7 @@ def is_positive_definite(
         # Check eigenvalues as fallback
         eigenvalues = linalg.eigvalsh(matrix)
         return np.all(eigenvalues > tol)
+
 
 def regularize_matrix(
     matrix: npt.NDArray[np.float64],
@@ -162,8 +163,9 @@ def regularize_matrix(
     """
     result = matrix.copy()
     n = min(result.shape)
-    result.flat[::n + 1] += epsilon
+    result.flat[:: n + 1] += epsilon
     return result
+
 
 def condition_number(matrix: npt.NDArray[np.float64]) -> float:
     """
@@ -223,5 +225,5 @@ def add_nugget_effect(
     """
     result = matrix.copy()
     n = min(result.shape)
-    result.flat[::n + 1] += nugget
+    result.flat[:: n + 1] += nugget
     return result

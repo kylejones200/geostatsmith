@@ -5,89 +5,96 @@
 Functions for reading/writing NetCDF, GeoJSON, and conversion utilities.
 """
 
+from pathlib import Path
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-from typing import Tuple, Dict, Optional, Any, List
-from pathlib import Path
-import json
 
 try:
     import netCDF4
+
     NETCDF_AVAILABLE = True
 except ImportError:
     NETCDF_AVAILABLE = False
 
 try:
- GEOPANDAS_AVAILABLE = True
+    GEOPANDAS_AVAILABLE = True
 except ImportError:
- GEOPANDAS_AVAILABLE = False
+    GEOPANDAS_AVAILABLE = False
+
 
 def read_netcdf(
     filepath: str,
     z_var: str,
-    x_var: str = 'x',
-    y_var: str = 'y',
-    time_index: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
+    x_var: str = "x",
+    y_var: str = "y",
+    time_index: int | None = None,
+) -> tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    dict[str, Any],
+]:
     """
-     Read spatial data from NetCDF file.
- 
- Parameters
- ----------
- filename : str
- Path to NetCDF file
- x_var : str, default='x'
- Name of X coordinate variable (e.g., 'lon', 'longitude')
- y_var : str, default='y'
- Name of Y coordinate variable (e.g., 'lat', 'latitude')
-    z_var : str
-        Name of data variable (e.g., 'temperature', 'precipitation')
-    time_index : int, optional
-        If data has time dimension, specify which time slice to read
+        Read spatial data from NetCDF file.
 
-    Returns
-    -------
-    x : ndarray
-        X coordinates (1D)
-    y : ndarray
-        Y coordinates (1D)
-    z : ndarray
-        Values (2D or flattened)
-    metadata : dict
-        Variable metadata and attributes
+    Parameters
+    ----------
+    filename : str
+    Path to NetCDF file
+    x_var : str, default='x'
+    Name of X coordinate variable (e.g., 'lon', 'longitude')
+    y_var : str, default='y'
+    Name of Y coordinate variable (e.g., 'lat', 'latitude')
+       z_var : str
+           Name of data variable (e.g., 'temperature', 'precipitation')
+       time_index : int, optional
+           If data has time dimension, specify which time slice to read
 
-    Examples
-    --------
- >>> # Read temperature data
- >>> x, y, temp, meta = read_netcdf()
- ... 'climate.nc',
- ... x_var='longitude',
- ... y_var='latitude',
- ... z_var='temperature',
- ... time_index=0
- ... )
+       Returns
+       -------
+       x : ndarray
+           X coordinates (1D)
+       y : ndarray
+           Y coordinates (1D)
+       z : ndarray
+           Values (2D or flattened)
+       metadata : dict
+           Variable metadata and attributes
 
-    Raises
-    ------
-    ImportError
-        If netCDF4 is not installed
-    FileNotFoundError
-        If file doesn't exist
+       Examples
+       --------
+    >>> # Read temperature data
+    >>> x, y, temp, meta = read_netcdf()
+    ... 'climate.nc',
+    ... x_var='longitude',
+    ... y_var='latitude',
+    ... z_var='temperature',
+    ... time_index=0
+    ... )
+
+       Raises
+       ------
+       ImportError
+           If netCDF4 is not installed
+       FileNotFoundError
+           If file doesn't exist
     """
     if not NETCDF_AVAILABLE:
         raise ImportError(
-            "netCDF4 is required for NetCDF I/O. "
-            "Install with: pip install netCDF4"
+            "netCDF4 is required for NetCDF I/O. Install with: pip install netCDF4"
         )
 
     if not Path(filename).exists():
         raise FileNotFoundError(f"File not found: {filename}")
 
     # Open NetCDF file
+
     import netCDF4 as nc
-    from pathlib import Path
-    with nc.Dataset(filename, 'r') as dataset:
+
+    with nc.Dataset(filename, "r") as dataset:
         if x_var not in dataset.variables:
             raise KeyError(f"Variable '{x_var}' not found in dataset")
         if y_var not in dataset.variables:
@@ -103,7 +110,7 @@ def read_netcdf(
         z_data = dataset.variables[z_var]
 
         # Handle time dimension if present
-        if time_index is not None and 'time' in z_data.dimensions:
+        if time_index is not None and "time" in z_data.dimensions:
             z = z_data[time_index, :, :].data
         elif len(z_data.shape) == 3:
             z = z_data[0, :, :].data
@@ -111,28 +118,29 @@ def read_netcdf(
             z = z_data[:].data
 
         # Handle masked arrays
-        if hasattr(z, 'mask'):
+        if hasattr(z, "mask"):
             z = np.ma.filled(z, fill_value=np.nan)
 
         # Collect metadata
         metadata = {
-            'dimensions': dict(dataset.dimensions),
-            'attributes': {attr: dataset.getncattr(attr) for attr in dataset.ncattrs()},
-            'z_attributes': {attr: z_data.getncattr(attr) for attr in z_data.ncattrs()},
+            "dimensions": dict(dataset.dimensions),
+            "attributes": {attr: dataset.getncattr(attr) for attr in dataset.ncattrs()},
+            "z_attributes": {attr: z_data.getncattr(attr) for attr in z_data.ncattrs()},
         }
 
     return x, y, z, metadata
+
 
 def write_netcdf(
     filename: str,
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    z_varname: str = 'data',
-    x_varname: str = 'x',
-    y_varname: str = 'y',
-    units: Optional[str] = None,
-    long_name: Optional[str] = None,
+    z_varname: str = "data",
+    x_varname: str = "x",
+    y_varname: str = "y",
+    units: str | None = None,
+    long_name: str | None = None,
 ) -> None:
     """
     Write spatial data to NetCDF file.
@@ -177,23 +185,21 @@ def write_netcdf(
         import netCDF4 as nc
     except ImportError:
         raise ImportError(
-            "netCDF4 is required for NetCDF I/O. "
-            "Install with: pip install netCDF4"
+            "netCDF4 is required for NetCDF I/O. Install with: pip install netCDF4"
         )
 
-    import numpy as np
     if z.ndim != 2:
         raise ValueError("z must be a 2D array")
 
     # Create NetCDF file
-    with nc.Dataset(filename, 'w', format='NETCDF4') as dataset:
+    with nc.Dataset(filename, "w", format="NETCDF4") as dataset:
         dataset.createDimension(y_varname, len(y))
         dataset.createDimension(x_varname, len(x))
 
         # Create coordinate variables
-        x_var = dataset.createVariable(x_varname, 'f8', (x_varname,))
-        y_var = dataset.createVariable(y_varname, 'f8', (y_varname,))
-        z_var = dataset.createVariable(z_varname, 'f8', (y_varname, x_varname))
+        x_var = dataset.createVariable(x_varname, "f8", (x_varname,))
+        y_var = dataset.createVariable(y_varname, "f8", (y_varname,))
+        z_var = dataset.createVariable(z_varname, "f8", (y_varname, x_varname))
 
         # Write data
         x_var[:] = x
@@ -207,13 +213,14 @@ def write_netcdf(
             z_var.long_name = long_name
 
         # Global attributes
-        dataset.description = 'Geostatistics output'
-        dataset.source = 'geostats library'
+        dataset.description = "Geostatistics output"
+        dataset.source = "geostats library"
+
 
 def read_geojson(
     filename: str,
     z_property: str,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Read point data from GeoJSON file.
 
@@ -248,11 +255,11 @@ def read_geojson(
         import geopandas as gpd
     except ImportError:
         raise ImportError(
-            "geopandas is required for GeoJSON I/O. "
-            "Install with: pip install geopandas"
+            "geopandas is required for GeoJSON I/O. Install with: pip install geopandas"
         )
 
     from pathlib import Path
+
     if not Path(filename).exists():
         raise FileNotFoundError(f"File not found: {filename}")
 
@@ -276,8 +283,8 @@ def write_geojson(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    z_property: str = 'value',
-    crs: str = 'EPSG:4326',
+    z_property: str = "value",
+    crs: str = "EPSG:4326",
 ) -> None:
     """
     Write point data to GeoJSON file.
@@ -311,29 +318,24 @@ def write_geojson(
         from shapely.geometry import Point
     except ImportError:
         raise ImportError(
-            "geopandas is required for GeoJSON I/O. "
-            "Install with: pip install geopandas"
+            "geopandas is required for GeoJSON I/O. Install with: pip install geopandas"
         )
 
     # Create GeoDataFrame
     geometry = [Point(xi, yi) for xi, yi in zip(x, y)]
-    gdf = gpd.GeoDataFrame(
-        {z_property: z},
-        geometry=geometry,
-        crs=crs
-    )
+    gdf = gpd.GeoDataFrame({z_property: z}, geometry=geometry, crs=crs)
 
     # Write to file
-    gdf.to_file(filename, driver='GeoJSON')
+    gdf.to_file(filename, driver="GeoJSON")
 
 
 def to_dataframe(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    x_col: str = 'x',
-    y_col: str = 'y',
-    z_col: str = 'z',
+    x_col: str = "x",
+    y_col: str = "y",
+    z_col: str = "z",
     **extra_cols,
 ) -> pd.DataFrame:
     """
@@ -367,11 +369,14 @@ def to_dataframe(
     >>> df = to_dataframe(x, y, z, variance=var, std=std)
     """
     import pandas as pd
-    df = pd.DataFrame({
-        x_col: x,
-        y_col: y,
-        z_col: z,
-    })
+
+    df = pd.DataFrame(
+        {
+            x_col: x,
+            y_col: y,
+            z_col: z,
+        }
+    )
 
     # Add extra columns
     for col_name, col_data in extra_cols.items():
@@ -379,12 +384,13 @@ def to_dataframe(
 
     return df
 
+
 def to_geopandas(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    z_col: str = 'value',
-    crs: str = 'EPSG:4326',
+    z_col: str = "value",
+    crs: str = "EPSG:4326",
     **extra_cols,
 ) -> Any:
     """
@@ -424,10 +430,7 @@ def to_geopandas(
         import geopandas as gpd
         from shapely.geometry import Point
     except ImportError:
-        raise ImportError(
-            "geopandas is required. "
-            "Install with: pip install geopandas"
-        )
+        raise ImportError("geopandas is required. Install with: pip install geopandas")
 
     # Create geometry
     geometry = [Point(xi, yi) for xi, yi in zip(x, y)]

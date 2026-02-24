@@ -2,12 +2,13 @@
 Tests for ML module (regression kriging, gaussian process, ensemble)
 """
 
-import pytest
 import numpy as np
+import pytest
 
 # Check if sklearn is available
 try:
     import sklearn
+
     SKLEARN_AVAILABLE = True
 except ImportError:
     SKLEARN_AVAILABLE = False
@@ -15,29 +16,32 @@ except ImportError:
 # Check if xgboost is available
 try:
     import xgboost
+
     XGBOOST_AVAILABLE = True
 except ImportError:
     XGBOOST_AVAILABLE = False
 
-from geostats.ml.regression_kriging import RegressionKriging, RandomForestKriging
-from geostats.ml.gaussian_process import GaussianProcessGeostat
-from geostats.ml.ensemble import EnsembleKriging
 from geostats.algorithms.ordinary_kriging import OrdinaryKriging
-from geostats.models.variogram_models import SphericalModel, ExponentialModel
+from geostats.ml.ensemble import EnsembleKriging
+from geostats.ml.gaussian_process import GaussianProcessGeostat
+from geostats.ml.regression_kriging import RandomForestKriging, RegressionKriging
+from geostats.models.variogram_models import ExponentialModel, SphericalModel
 
 # Skip all tests if sklearn not available
-pytestmark = pytest.mark.skipif(not SKLEARN_AVAILABLE, reason="scikit-learn not installed")
+pytestmark = pytest.mark.skipif(
+    not SKLEARN_AVAILABLE, reason="scikit-learn not installed"
+)
 
 if SKLEARN_AVAILABLE:
     from sklearn.linear_model import LinearRegression
 
-class TestRegressionKriging:
 
+class TestRegressionKriging:
     def test_initialization(self):
         ml_model = LinearRegression()
-        rk = RegressionKriging(ml_model=ml_model, variogram_model='spherical')
+        rk = RegressionKriging(ml_model=ml_model, variogram_model="spherical")
         assert rk is not None
-        assert rk.variogram_model_type == 'spherical'
+        assert rk.variogram_model_type == "spherical"
 
     def test_fit_predict(self):
         # Generate synthetic data
@@ -50,7 +54,7 @@ class TestRegressionKriging:
         covariates = np.column_stack([x**2, y**2])
 
         ml_model = LinearRegression()
-        rk = RegressionKriging(ml_model=ml_model, variogram_model='spherical')
+        rk = RegressionKriging(ml_model=ml_model, variogram_model="spherical")
         rk.fit(x, y, z, covariates=covariates)
 
         # Predict at new locations
@@ -71,7 +75,7 @@ class TestRegressionKriging:
         z = np.sin(x) + np.cos(y) + np.random.normal(0, 0.1, 20)
 
         ml_model = LinearRegression()
-        rk = RegressionKriging(ml_model=ml_model, variogram_model='exponential')
+        rk = RegressionKriging(ml_model=ml_model, variogram_model="exponential")
         rk.fit(x, y, z)
 
         predictions, variance = rk.predict(np.array([5.0]), np.array([5.0]))
@@ -79,10 +83,10 @@ class TestRegressionKriging:
         assert predictions.shape == (1,)
         assert variance.shape == (1,)
 
-class TestRandomForestKriging:
 
+class TestRandomForestKriging:
     def test_initialization(self):
-        rfk = RandomForestKriging(n_estimators=10, variogram_model='spherical')
+        rfk = RandomForestKriging(n_estimators=10, variogram_model="spherical")
         assert rfk is not None
         assert rfk.n_estimators == 10
 
@@ -92,15 +96,15 @@ class TestRandomForestKriging:
         y = np.random.uniform(0, 10, 40)
 
         # Non-linear relationship
-        covariates = np.column_stack([x, y, x**2, y**2, x*y])
+        covariates = np.column_stack([x, y, x**2, y**2, x * y])
         z = np.sin(x) * np.cos(y) + 0.5 * x + np.random.normal(0, 0.2, 40)
 
-        rfk = RandomForestKriging(n_estimators=10, variogram_model='exponential')
+        rfk = RandomForestKriging(n_estimators=10, variogram_model="exponential")
         rfk.fit(x, y, z, covariates=covariates)
 
         x_new = np.array([5.0, 6.0])
         y_new = np.array([5.0, 6.0])
-        cov_new = np.column_stack([x_new, y_new, x_new**2, y_new**2, x_new*y_new])
+        cov_new = np.column_stack([x_new, y_new, x_new**2, y_new**2, x_new * y_new])
 
         predictions, variance = rfk.predict(x_new, y_new, covariates_new=cov_new)
 
@@ -110,14 +114,15 @@ class TestRandomForestKriging:
 
 @pytest.mark.skipif(not XGBOOST_AVAILABLE, reason="xgboost not installed")
 class TestXGBoostKriging:
-
     def test_initialization(self):
         from geostats.ml.regression_kriging import XGBoostKriging
-        xgbk = XGBoostKriging(n_estimators=10, variogram_model='gaussian')
+
+        xgbk = XGBoostKriging(n_estimators=10, variogram_model="gaussian")
         assert xgbk is not None
 
     def test_fit_predict(self):
         from geostats.ml.regression_kriging import XGBoostKriging
+
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
@@ -125,7 +130,7 @@ class TestXGBoostKriging:
         covariates = np.column_stack([x, y, np.sqrt(x), np.sqrt(y)])
         z = x**1.5 + y**1.5 + np.random.normal(0, 0.3, 50)
 
-        xgbk = XGBoostKriging(n_estimators=10, variogram_model='spherical')
+        xgbk = XGBoostKriging(n_estimators=10, variogram_model="spherical")
         xgbk.fit(x, y, z, covariates=covariates)
 
         x_new = np.array([3.0, 7.0])
@@ -137,10 +142,10 @@ class TestXGBoostKriging:
         assert predictions.shape == (2,)
         assert variance.shape == (2,)
 
-class TestGaussianProcessGeostat:
 
+class TestGaussianProcessGeostat:
     def test_initialization(self):
-        gp = GaussianProcessGeostat(kernel='rbf')
+        gp = GaussianProcessGeostat(kernel="rbf")
         assert gp is not None
 
     def test_fit_predict(self):
@@ -149,7 +154,7 @@ class TestGaussianProcessGeostat:
         y = np.random.uniform(0, 10, 30)
         z = np.sin(x) + np.cos(y) + np.random.normal(0, 0.1, 30)
 
-        gp = GaussianProcessGeostat(kernel='rbf')
+        gp = GaussianProcessGeostat(kernel="rbf")
         X = np.column_stack([x, y])
         gp.fit(X, z)
 
@@ -170,7 +175,7 @@ class TestGaussianProcessGeostat:
         z = x + y + np.random.normal(0, 0.1, 25)
 
         X = np.column_stack([x, y])
-        for kernel in ['rbf', 'matern', 'rational_quadratic']:
+        for kernel in ["rbf", "matern", "rational_quadratic"]:
             gp = GaussianProcessGeostat(kernel=kernel)
             gp.fit(X, z)
 
@@ -184,19 +189,19 @@ class TestGaussianProcessGeostat:
         y = np.random.uniform(0, 10, 40)
         z = np.sin(x) * np.cos(y) + np.random.normal(0, 0.2, 40)
 
-        gp = GaussianProcessGeostat(kernel='rbf', optimize_kernel=True)
+        gp = GaussianProcessGeostat(kernel="rbf", optimize_kernel=True)
         X = np.column_stack([x, y])
         gp.fit(X, z)
 
         # Check that hyperparameters were optimized
-        assert hasattr(gp, 'fitted_kernel_')
+        assert hasattr(gp, "fitted_kernel_")
 
         X_new = np.column_stack([np.array([5.0]), np.array([5.0])])
         predictions, _ = gp.predict(X_new, return_std=True)
         assert predictions.shape == (1,)
 
-class TestEnsembleKriging:
 
+class TestEnsembleKriging:
     def test_initialization(self):
         # Create some simple kriging models
         np.random.seed(42)
@@ -235,15 +240,12 @@ class TestEnsembleKriging:
         np.random.seed(42)
         x = np.random.uniform(0, 10, 30)
         y = np.random.uniform(0, 10, 30)
-        z = x + 2*y + np.random.normal(0, 0.2, 30)
+        z = x + 2 * y + np.random.normal(0, 0.2, 30)
 
         model1 = OrdinaryKriging(x, y, z, SphericalModel(sill=1.0, range_param=5.0))
         model2 = OrdinaryKriging(x, y, z, ExponentialModel(sill=1.0, range_param=5.0))
 
-        ek = EnsembleKriging(
-        models=[model1, model2],
-        weighting='equal'
-        )
+        ek = EnsembleKriging(models=[model1, model2], weighting="equal")
 
         predictions, variance = ek.predict(np.array([5.0]), np.array([5.0]))
 
@@ -259,23 +261,20 @@ class TestEnsembleKriging:
         model1 = OrdinaryKriging(x, y, z, SphericalModel(sill=1.0, range_param=5.0))
         model2 = OrdinaryKriging(x, y, z, ExponentialModel(sill=1.0, range_param=5.0))
 
-        ek = EnsembleKriging(
-        models=[model1, model2],
-        weighting='inverse_variance'
-        )
+        ek = EnsembleKriging(models=[model1, model2], weighting="inverse_variance")
 
         predictions, variance = ek.predict(np.array([5.0, 6.0]), np.array([5.0, 6.0]))
 
         assert predictions.shape == (2,)
         assert variance.shape == (2,)
 
-class TestMLIntegration:
 
+class TestMLIntegration:
     def test_compare_methods(self):
         np.random.seed(42)
         x = np.random.uniform(0, 10, 50)
         y = np.random.uniform(0, 10, 50)
-        z = 2*x + 3*y + np.random.normal(0, 0.5, 50)
+        z = 2 * x + 3 * y + np.random.normal(0, 0.5, 50)
 
         covariates = np.column_stack([x, y])
 
@@ -284,9 +283,9 @@ class TestMLIntegration:
         ml_model2 = RandomForestRegressor(n_estimators=10, random_state=42)
 
         methods = [
-        RegressionKriging(ml_model=ml_model1, variogram_model='spherical'),
-        RandomForestKriging(n_estimators=10, variogram_model='spherical'),
-        GaussianProcessGeostat(kernel='spherical'),
+            RegressionKriging(ml_model=ml_model1, variogram_model="spherical"),
+            RandomForestKriging(n_estimators=10, variogram_model="spherical"),
+            GaussianProcessGeostat(kernel="spherical"),
         ]
 
         x_new = np.array([5.0])
@@ -297,7 +296,7 @@ class TestMLIntegration:
         for method in methods:
             X = np.column_stack([x, y])
             X_new = np.column_stack([x_new, y_new])
-            
+
             if isinstance(method, GaussianProcessGeostat):
                 method.fit(X, z)
                 pred, _ = method.predict(X_new, return_std=True)
@@ -310,6 +309,7 @@ class TestMLIntegration:
         assert len(predictions) == 3
         # For linear data, predictions should be similar
         assert np.std(predictions) < 10.0
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

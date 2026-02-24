@@ -20,36 +20,37 @@ References:
 - Chilès & Delfiner (2012) - Geostatistics (Chapter 3)
 """
 
-from typing import Optional, Tuple, Union, Dict
+import logging
+
 import numpy as np
 import numpy.typing as npt
-import logging
 
 logger = logging.getLogger(__name__)
 
 from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
-from ..core.validators import validate_values
-from ..math.distance import euclidean_distance_3d, euclidean_distance_matrix_3d, euclidean_distance
-from ..math.matrices import solve_kriging_system, regularize_matrix
 from ..core.constants import REGULARIZATION_FACTOR
 from ..core.logging_config import get_logger
+from ..math.distance import (
+    euclidean_distance,
+)
+from ..math.matrices import regularize_matrix
 
 logger = get_logger(__name__)
 
+
 def validate_coordinates_3d(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64]
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
-        """Validate 3D coordinates"""
-        x = np.asarray(x, dtype=np.float64).flatten()
-        y = np.asarray(y, dtype=np.float64).flatten()
-        z = np.asarray(z, dtype=np.float64).flatten()
+    y: npt.NDArray[np.float64], z: npt.NDArray[np.float64]
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    """Validate 3D coordinates"""
+    x = np.asarray(x, dtype=np.float64).flatten()
+    y = np.asarray(y, dtype=np.float64).flatten()
+    z = np.asarray(z, dtype=np.float64).flatten()
 
-        if not (len(x) == len(y) == len(z)):
-            raise ValueError("x, y, z must have the same length")
+    if not (len(x) == len(y) == len(z)):
+        raise ValueError("x, y, z must have the same length")
 
-        return x, y, z
+    return x, y, z
+
 
 class SimpleKriging3D(BaseKriging):
     """
@@ -65,8 +66,8 @@ class SimpleKriging3D(BaseKriging):
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
         values: npt.NDArray[np.float64],
-     variogram_model: Optional[object] = None,
-        known_mean: Optional[float] = None,
+        variogram_model: object | None = None,
+        known_mean: float | None = None,
     ):
         """
         Initialize 3D Simple Kriging
@@ -86,6 +87,7 @@ class SimpleKriging3D(BaseKriging):
         # We'll override to handle 3D properly
         self.x, self.y, self.z = validate_coordinates_3d(x, y, z)
         from ..utils.validation import validate_values
+
         self.values = validate_values(values, n_expected=len(self.x))
         self.variogram_model = variogram_model
 
@@ -107,10 +109,15 @@ class SimpleKriging3D(BaseKriging):
         # Build covariance matrix (vectorized distance calculation)
         # For simple kriging: C(h) = sill - gamma(h)
         from ..core.constants import DEFAULT_SILL_VALUE
-        sill = self.variogram_model.sill if hasattr(self.variogram_model, 'sill') else DEFAULT_SILL_VALUE
+
+        sill = (
+            self.variogram_model.sill
+            if hasattr(self.variogram_model, "sill")
+            else DEFAULT_SILL_VALUE
+        )
 
         # Vectorized 3D distance matrix
-        from ..math.distance import euclidean_distance
+
         coords = np.column_stack([self.x, self.y, self.z])
         dist_matrix = euclidean_distance(coords, coords, coords, coords)
 
@@ -121,8 +128,7 @@ class SimpleKriging3D(BaseKriging):
         K = sill - gamma_matrix
 
         # Regularize if needed
-        from ..math.matrices import regularize_matrix
-        from ..core.constants import REGULARIZATION_FACTOR
+
         K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
 
         self.kriging_matrix = K
@@ -133,8 +139,11 @@ class SimpleKriging3D(BaseKriging):
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
         z_new: npt.NDArray[np.float64],
-        return_variance: bool = True
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        return_variance: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
         Predict at new 3D locations
 
@@ -160,13 +169,19 @@ class SimpleKriging3D(BaseKriging):
         n_data = len(self.x)
 
         from ..core.constants import DEFAULT_SILL_VALUE
-        sill = self.variogram_model.sill if hasattr(self.variogram_model, 'sill') else DEFAULT_SILL_VALUE
+
+        sill = (
+            self.variogram_model.sill
+            if hasattr(self.variogram_model, "sill")
+            else DEFAULT_SILL_VALUE
+        )
 
         # Vectorized distance calculation from data to prediction points
-        from ..math.distance import euclidean_distance
+
         coords_data = np.column_stack([self.x, self.y, self.z])
         coords_pred = np.column_stack([x_new, y_new, z_new])
         from scipy.spatial.distance import cdist
+
         dist_to_pred = cdist(coords_pred, coords_data)
 
         # Vectorized variogram evaluation
@@ -185,6 +200,7 @@ class SimpleKriging3D(BaseKriging):
                 lambdas = np.linalg.solve(self.kriging_matrix, cov_to_pred[:, i])
             except np.linalg.LinAlgError as e:
                 from ..exceptions import KrigingError
+
                 logger.error(f"Failed to solve 3D kriging system at point {i}: {e}")
                 raise KrigingError(f"Failed to solve kriging system: {e}")
 
@@ -195,7 +211,9 @@ class SimpleKriging3D(BaseKriging):
             if return_variance:
                 variances[i] = sill - np.dot(lambdas, cov_to_pred[:, i])
 
-        logger.info(f"3D Simple Kriging completed for {n_pred} prediction points (vectorized)")
+        logger.info(
+            f"3D Simple Kriging completed for {n_pred} prediction points (vectorized)"
+        )
         if return_variance:
             return predictions, variances
         return predictions
@@ -215,7 +233,7 @@ class OrdinaryKriging3D(BaseKriging):
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
         values: npt.NDArray[np.float64],
-        variogram_model: Optional[object] = None,
+        variogram_model: object | None = None,
     ):
         """
         Initialize 3D Ordinary Kriging
@@ -231,6 +249,7 @@ class OrdinaryKriging3D(BaseKriging):
         """
         self.x, self.y, self.z = validate_coordinates_3d(x, y, z)
         from ..utils.validation import validate_values
+
         self.values = validate_values(values, n_expected=len(self.x))
         self.variogram_model = variogram_model
 
@@ -244,9 +263,10 @@ class OrdinaryKriging3D(BaseKriging):
         K = np.zeros((n + 1, n + 1), dtype=np.float64)
 
         # Vectorized 3D distance matrix
-        from ..math.distance import euclidean_distance
+
         coords = np.column_stack([self.x, self.y, self.z])
         from scipy.spatial.distance import cdist
+
         dist_matrix = cdist(coords, coords)
 
         # Vectorized variogram evaluation
@@ -254,25 +274,28 @@ class OrdinaryKriging3D(BaseKriging):
 
         # Unbiasedness constraint
         from ..core.constants import UNBIASEDNESS_CONSTRAINT, ZERO_VALUE
+
         K[:n, n] = UNBIASEDNESS_CONSTRAINT
         K[n, :n] = UNBIASEDNESS_CONSTRAINT
         K[n, n] = ZERO_VALUE
 
         # Regularize
-        from ..math.matrices import regularize_matrix
-        from ..core.constants import REGULARIZATION_FACTOR
+
         K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
 
         self.kriging_matrix = K
-        logger.debug(f"3D Ordinary Kriging matrix built (vectorized): {n+1}x{n+1}")
+        logger.debug(f"3D Ordinary Kriging matrix built (vectorized): {n + 1}x{n + 1}")
 
     def predict(
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
         z_new: npt.NDArray[np.float64],
-        return_variance: bool = True
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        return_variance: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
         Predict at new 3D locations using ordinary kriging
 
@@ -298,10 +321,11 @@ class OrdinaryKriging3D(BaseKriging):
         n_data = len(self.x)
 
         # Vectorized distance calculation from data to prediction points
-        from ..math.distance import euclidean_distance
+
         coords_data = np.column_stack([self.x, self.y, self.z])
         coords_pred = np.column_stack([x_new, y_new, z_new])
         from scipy.spatial.distance import cdist
+
         dist_to_pred = cdist(coords_pred, coords_data)
 
         # Vectorized variogram evaluation
@@ -315,6 +339,7 @@ class OrdinaryKriging3D(BaseKriging):
             rhs = np.zeros(n_data + 1, dtype=np.float64)
             rhs[:n_data] = gamma_to_pred[:, i]
             from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
             rhs[n_data] = UNBIASEDNESS_CONSTRAINT  # Unbiasedness constraint
 
             # Solve
@@ -322,6 +347,7 @@ class OrdinaryKriging3D(BaseKriging):
                 weights = np.linalg.solve(self.kriging_matrix, rhs)
             except np.linalg.LinAlgError as e:
                 from ..exceptions import KrigingError
+
                 logger.error(f"Failed to solve 3D OK system at point {i}: {e}")
                 raise KrigingError(f"Failed to solve kriging system: {e}")
 
@@ -336,12 +362,14 @@ class OrdinaryKriging3D(BaseKriging):
             if return_variance:
                 variances[i] = np.dot(weights, rhs)
 
-        logger.info(f"3D Ordinary Kriging completed for {n_pred} prediction points (vectorized)")
+        logger.info(
+            f"3D Ordinary Kriging completed for {n_pred} prediction points (vectorized)"
+        )
         if return_variance:
             return predictions, variances
         return predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         n = len(self.x)
         predictions = np.zeros(n)
 
@@ -355,7 +383,7 @@ class OrdinaryKriging3D(BaseKriging):
                 self.y[mask],
                 self.z[mask],
                 self.values[mask],
-                self.variogram_model
+                self.variogram_model,
             )
 
             # Predict at left-out point
@@ -363,7 +391,7 @@ class OrdinaryKriging3D(BaseKriging):
                 np.array([self.x[i]]),
                 np.array([self.y[i]]),
                 np.array([self.z[i]]),
-                return_variance=False
+                return_variance=False,
             )
             predictions[i] = pred[0]
 
@@ -371,12 +399,13 @@ class OrdinaryKriging3D(BaseKriging):
         errors = self.values - predictions
 
         metrics = {
-            'MSE': np.mean(errors**2),
-            'RMSE': np.sqrt(np.mean(errors**2)),
-            'MAE': np.mean(np.abs(errors)),
-            'R2': 1 - np.sum(errors**2) / np.sum((self.values - np.mean(self.values))**2),
-            'bias': np.mean(errors),
-            'predictions': predictions,
+            "MSE": np.mean(errors**2),
+            "RMSE": np.sqrt(np.mean(errors**2)),
+            "MAE": np.mean(np.abs(errors)),
+            "R2": 1
+            - np.sum(errors**2) / np.sum((self.values - np.mean(self.values)) ** 2),
+            "bias": np.mean(errors),
+            "predictions": predictions,
         }
 
         return errors, metrics

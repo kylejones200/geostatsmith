@@ -5,73 +5,78 @@
 Functions for reading and writing raster data formats (GeoTIFF, ASCII Grid).
 """
 
+import logging
+from pathlib import Path
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Dict, Optional, Any
-from pathlib import Path
-import logging
 
 logger = logging.getLogger(__name__)
 
 try:
- RASTERIO_AVAILABLE = True
+    RASTERIO_AVAILABLE = True
 except ImportError:
- RASTERIO_AVAILABLE = False
+    RASTERIO_AVAILABLE = False
+
 
 def read_geotiff(
- band: int = 1,
+    band: int = 1,
     as_grid: bool = True,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
+) -> tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    dict[str, Any],
+]:
     """
-    Read a GeoTIFF file.
+       Read a GeoTIFF file.
 
-    Parameters
-    ----------
-    filename : str
-        Path to GeoTIFF file
-    band : int, default=1
-        Band number to read (1-indexed)
-    as_grid : bool, default=True
-        If True, return data as 2D grid with coordinate arrays
-        If False, return flattened arrays
+       Parameters
+       ----------
+       filename : str
+           Path to GeoTIFF file
+       band : int, default=1
+           Band number to read (1-indexed)
+       as_grid : bool, default=True
+           If True, return data as 2D grid with coordinate arrays
+           If False, return flattened arrays
 
-    Returns
-    -------
-    x : ndarray
-        X coordinates (1D if as_grid=True, else flattened)
-    y : ndarray
-        Y coordinates (1D if as_grid=True, else flattened)
-    z : ndarray
-        Values (2D if as_grid=True, else flattened)
-    metadata : dict
-        Metadata including CRS, transform, nodata value
+       Returns
+       -------
+       x : ndarray
+           X coordinates (1D if as_grid=True, else flattened)
+       y : ndarray
+           Y coordinates (1D if as_grid=True, else flattened)
+       z : ndarray
+           Values (2D if as_grid=True, else flattened)
+       metadata : dict
+           Metadata including CRS, transform, nodata value
 
-    Examples
-    --------
- >>> # Read as grid (for plotting/analysis)
- >>> x, y, z, meta = read_geotiff('elevation.tif', as_grid=True)
- >>> logger.info(z.shape) # (nrows, ncols)
+       Examples
+       --------
+    >>> # Read as grid (for plotting/analysis)
+    >>> x, y, z, meta = read_geotiff('elevation.tif', as_grid=True)
+    >>> logger.info(z.shape) # (nrows, ncols)
 
- >>> # Read as points (for kriging)
- >>> x, y, z, meta = read_geotiff('elevation.tif', as_grid=False)
- >>> logger.info(x.shape) # (n_points,)
+    >>> # Read as points (for kriging)
+    >>> x, y, z, meta = read_geotiff('elevation.tif', as_grid=False)
+    >>> logger.info(x.shape) # (n_points,)
 
-    Raises
-    ------
-    ImportError
-        If rasterio is not installed
-    FileNotFoundError
-        If file doesn't exist
+       Raises
+       ------
+       ImportError
+           If rasterio is not installed
+       FileNotFoundError
+           If file doesn't exist
     """
     try:
         import rasterio
     except ImportError:
         raise ImportError(
-            "rasterio is required for GeoTIFF I/O. "
-            "Install with: pip install rasterio"
+            "rasterio is required for GeoTIFF I/O. Install with: pip install rasterio"
         )
 
-    from pathlib import Path
     if not Path(filename).exists():
         raise FileNotFoundError(f"File not found: {filename}")
 
@@ -84,6 +89,7 @@ def read_geotiff(
 
         # Create coordinate arrays
         import numpy as np
+
         x_coords = np.arange(width) * transform[0] + transform[2] + transform[0] / 2
         y_coords = np.arange(height) * transform[4] + transform[5] + transform[4] / 2
 
@@ -94,13 +100,13 @@ def read_geotiff(
 
         # Metadata
         metadata = {
-            'crs': str(src.crs) if src.crs else None,
-            'transform': transform,
-            'nodata': nodata,
-            'width': width,
-            'height': height,
-            'bounds': src.bounds,
-            'resolution': (abs(transform[0]), abs(transform[4])),
+            "crs": str(src.crs) if src.crs else None,
+            "transform": transform,
+            "nodata": nodata,
+            "width": width,
+            "height": height,
+            "bounds": src.bounds,
+            "resolution": (abs(transform[0]), abs(transform[4])),
         }
 
         if as_grid:
@@ -116,13 +122,14 @@ def read_geotiff(
             mask = ~np.isnan(z_flat)
             return x_flat[mask], y_flat[mask], z_flat[mask], metadata
 
+
 def write_geotiff(
     filename: str,
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    crs: str = 'EPSG:4326',
-    nodata: Optional[float] = -9999.0,
+    crs: str = "EPSG:4326",
+    nodata: float | None = -9999.0,
 ) -> None:
     """
     Write data to a GeoTIFF file.
@@ -160,11 +167,11 @@ def write_geotiff(
         from rasterio.transform import from_bounds
     except ImportError:
         raise ImportError(
-            "rasterio is required for GeoTIFF I/O. "
-            "Install with: pip install rasterio"
+            "rasterio is required for GeoTIFF I/O. Install with: pip install rasterio"
         )
 
     import numpy as np
+
     # Ensure z is 2D
     if z.ndim != 2:
         raise ValueError("z must be a 2D array")
@@ -177,8 +184,9 @@ def write_geotiff(
 
     # Create affine transform
     from affine import Affine
+
     # Upper-left corner
-    transform = Affine.translation(x[0] - dx/2, y[0] - dy/2) * Affine.scale(dx, dy)
+    transform = Affine.translation(x[0] - dx / 2, y[0] - dy / 2) * Affine.scale(dx, dy)
 
     # Replace NaN with nodata value
     z_out = z.copy()
@@ -188,8 +196,8 @@ def write_geotiff(
     # Write to file
     with rasterio.open(
         filename,
-        'w',
-        driver='GTiff',
+        "w",
+        driver="GTiff",
         height=height,
         width=width,
         count=1,
@@ -197,72 +205,79 @@ def write_geotiff(
         crs=crs,
         transform=transform,
         nodata=nodata,
-        compress='lzw',  # Compress output
+        compress="lzw",  # Compress output
     ) as dst:
         dst.write(z_out, 1)
+
 
 def read_ascii_grid(
     filename: str,
     as_grid: bool = True,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], Dict[str, Any]]:
+) -> tuple[
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    npt.NDArray[np.float64],
+    dict[str, Any],
+]:
     """
-    Read an ASCII Grid file (.asc, .grd).
+       Read an ASCII Grid file (.asc, .grd).
 
-    ASCII Grid format:
-    ncols 100
-    nrows 100
-    xllcorner 0.0
-    yllcorner 0.0
-    cellsize 1.0
-    NODATA_value -9999
-    [data values...]
+       ASCII Grid format:
+       ncols 100
+       nrows 100
+       xllcorner 0.0
+       yllcorner 0.0
+       cellsize 1.0
+       NODATA_value -9999
+       [data values...]
 
-    Parameters
-    ----------
-    filename : str
-        Path to ASCII grid file
-    as_grid : bool, default=True
-        If True, return as grid; if False, return as points
+       Parameters
+       ----------
+       filename : str
+           Path to ASCII grid file
+       as_grid : bool, default=True
+           If True, return as grid; if False, return as points
 
-    Returns
-    -------
-    x : ndarray
-        X coordinates
-    y : ndarray
-        Y coordinates
-    z : ndarray
-        Values
-    metadata : dict
-        Grid metadata
+       Returns
+       -------
+       x : ndarray
+           X coordinates
+       y : ndarray
+           Y coordinates
+       z : ndarray
+           Values
+       metadata : dict
+           Grid metadata
 
-    Examples
-    --------
- >>> x, y, z, meta = read_ascii_grid('elevation.asc')
+       Examples
+       --------
+    >>> x, y, z, meta = read_ascii_grid('elevation.asc')
     """
-    from pathlib import Path
+
     if not Path(filename).exists():
         raise FileNotFoundError(f"File not found: {filename}")
 
     # Read header
     metadata = {}
-    with open(filename, 'r') as f:
+    with open(filename) as f:
         for i in range(6):
             line = f.readline().strip().split()
             key = line[0].lower()
-            value = float(line[1]) if '.' in line[1] else int(line[1])
+            value = float(line[1]) if "." in line[1] else int(line[1])
             metadata[key] = value
 
     # Read data
     import numpy as np
+
     z_grid = np.loadtxt(filename, skiprows=6)
 
     # Extract metadata
-    ncols = int(metadata['ncols'])
-    nrows = int(metadata['nrows'])
-    xllcorner = float(metadata['xllcorner'])
-    yllcorner = float(metadata['yllcorner'])
-    cellsize = float(metadata['cellsize'])
-    nodata = metadata.get('nodata_value', -9999)
+    ncols = int(metadata["ncols"])
+    nrows = int(metadata["nrows"])
+    xllcorner = float(metadata["xllcorner"])
+    yllcorner = float(metadata["yllcorner"])
+    cellsize = float(metadata["cellsize"])
+    nodata = metadata.get("nodata_value", -9999)
 
     # Create coordinate arrays (cell centers)
     x_coords = xllcorner + (np.arange(ncols) + 0.5) * cellsize
@@ -272,9 +287,12 @@ def read_ascii_grid(
     # Handle nodata
     z_grid = np.where(z_grid == nodata, np.nan, z_grid)
 
-    metadata['bounds'] = (xllcorner, yllcorner,
-                          xllcorner + ncols * cellsize,
-                          yllcorner + nrows * cellsize)
+    metadata["bounds"] = (
+        xllcorner,
+        yllcorner,
+        xllcorner + ncols * cellsize,
+        yllcorner + nrows * cellsize,
+    )
 
     if as_grid:
         x_grid, y_grid = np.meshgrid(x_coords, y_coords)
@@ -288,6 +306,7 @@ def read_ascii_grid(
         # Remove NaN values
         mask = ~np.isnan(z_flat)
         return x_flat[mask], y_flat[mask], z_flat[mask], metadata
+
 
 def write_ascii_grid(
     filename: str,
@@ -317,6 +336,7 @@ def write_ascii_grid(
     >>> write_ascii_grid('output.asc', x, y, z)
     """
     import numpy as np
+
     if z.ndim != 2:
         raise ValueError("z must be a 2D array")
 
@@ -331,7 +351,7 @@ def write_ascii_grid(
     z_out = np.where(np.isnan(z), nodata, z)
 
     # Write header
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f:
         f.write(f"ncols {ncols}\n")
         f.write(f"nrows {nrows}\n")
         f.write(f"xllcorner {xllcorner:.6f}\n")
@@ -340,6 +360,6 @@ def write_ascii_grid(
         f.write(f"NODATA_value {nodata}\n")
 
     # Write data (top-to-bottom, reversed for ASCII grid format)
-    with open(filename, 'a') as f:
+    with open(filename, "a") as f:
         for row in reversed(z_out):
-            f.write(' '.join(f"{val:.6f}" for val in row) + '\n')
+            f.write(" ".join(f"{val:.6f}" for val in row) + "\n")

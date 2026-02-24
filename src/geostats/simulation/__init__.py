@@ -9,29 +9,29 @@ Simulation generates multiple realizations that honor:
 Based on Zhang, Y. (2010). Introduction to Geostatistics - Course Notes, Chapter 6.3
 """
 
-from .gaussian_simulation import (
-    sequential_gaussian_simulation,
-    SequentialGaussianSimulation,
-)
 from .conditional_simulation import (
-    conditional_simulation,
     cholesky_simulation,
+    conditional_simulation,
 )
-from .unconditional import (
-    unconditional_gaussian_simulation,
+from .gaussian_simulation import (
+    SequentialGaussianSimulation,
+    sequential_gaussian_simulation,
+)
+from .plurigaussian import (
+    PlurigaussianConfig,
+    PlurigaussianSimulation,
+    create_rectangular_rule,
 )
 from .sequential_indicator import (
     SequentialIndicatorSimulation,
     SISConfig,
 )
 from .truncated_gaussian import (
-    TruncatedGaussianSimulation,
     TGSConfig,
+    TruncatedGaussianSimulation,
 )
-from .plurigaussian import (
-    PlurigaussianSimulation,
-    PlurigaussianConfig,
-    create_rectangular_rule,
+from .unconditional import (
+    unconditional_gaussian_simulation,
 )
 
 __all__ = [

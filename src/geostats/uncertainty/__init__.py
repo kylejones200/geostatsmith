@@ -32,21 +32,19 @@ Examples
 """
 
 from .bootstrap import (
+    bootstrap_kriging,
     bootstrap_uncertainty,
     bootstrap_variogram,
-    bootstrap_kriging,
 )
-
-from .probability import (
-    probability_map,
-    conditional_probability,
-    risk_assessment,
-)
-
 from .confidence_intervals import (
     confidence_intervals,
     prediction_bands,
     uncertainty_ellipse,
+)
+from .probability import (
+    conditional_probability,
+    probability_map,
+    risk_assessment,
 )
 
 __all__ = [

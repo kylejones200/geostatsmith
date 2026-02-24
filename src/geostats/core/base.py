@@ -3,32 +3,34 @@ Abstract base classes and interfaces
 """
 
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, Tuple
+from typing import Any, Optional
+
 import numpy as np
 import numpy.typing as npt
+
 
 class BaseModel(ABC):
     """
     Abstract base class for all geostatistical models
-    
+
     This provides a common interface for variogram models,
     covariance models, and other spatial models.
     """
 
     def __init__(self, **kwargs: Any) -> None:
-        self._parameters: Dict[str, float] = {}
+        self._parameters: dict[str, float] = {}
         self._is_fitted: bool = False
 
     @abstractmethod
     def __call__(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
         Evaluate the model at distance h
-        
+
         Parameters
         ----------
         h : np.ndarray
             Distance values
-        
+
         Returns
         -------
         np.ndarray
@@ -37,7 +39,7 @@ class BaseModel(ABC):
         pass
 
     @property
-    def parameters(self) -> Dict[str, float]:
+    def parameters(self) -> dict[str, float]:
         return self._parameters.copy()
 
     @property
@@ -53,7 +55,7 @@ class BaseModel(ABC):
     ) -> "BaseModel":
         """
         Fit the model to data
-        
+
         Parameters
         ----------
         lags : np.ndarray
@@ -62,7 +64,7 @@ class BaseModel(ABC):
             Values at each lag
         **kwargs
             Additional fitting parameters
-        
+
         Returns
         -------
         self
@@ -73,7 +75,7 @@ class BaseModel(ABC):
     def set_parameters(self, **params: float) -> None:
         """
         Set model parameters manually
-        
+
         Parameters
         ----------
         **params
@@ -86,10 +88,11 @@ class BaseModel(ABC):
         params_str = ", ".join(f"{k}={v:.4f}" for k, v in self._parameters.items())
         return f"{self.__class__.__name__}({params_str})"
 
+
 class BaseKriging(ABC):
     """
     Abstract base class for all kriging methods
-    
+
     This provides a common interface for simple kriging,
     ordinary kriging, universal kriging, etc.
     """
@@ -103,7 +106,7 @@ class BaseKriging(ABC):
     ) -> None:
         """
         Initialize kriging with data
-        
+
         Parameters
         ----------
         x : np.ndarray
@@ -127,10 +130,10 @@ class BaseKriging(ABC):
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         return_variance: bool = True,
-    ) -> Tuple[npt.NDArray[np.float64], Optional[npt.NDArray[np.float64]]]:
+    ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64] | None]:
         """
         Perform kriging prediction
-        
+
         Parameters
         ----------
         x : np.ndarray
@@ -139,7 +142,7 @@ class BaseKriging(ABC):
             Y coordinates for prediction
         return_variance : bool
             Whether to return kriging variance
-        
+
         Returns
         -------
         predictions : np.ndarray
@@ -150,10 +153,10 @@ class BaseKriging(ABC):
         pass
 
     @abstractmethod
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
-        
+
         Returns
         -------
         predictions : np.ndarray

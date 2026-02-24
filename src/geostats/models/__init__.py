@@ -2,28 +2,28 @@
 Models layer - variogram models, covariance models, anisotropy
 """
 
-from .base_model import VariogramModelBase, CovarianceModelBase
-from .variogram_models import (
-    SphericalModel,
-    ExponentialModel,
-    GaussianModel,
-    LinearModel,
-    PowerModel,
-    MaternModel,
-    HoleEffectModel,
-)
+from .anisotropy import AnisotropicModel
+from .base_model import CovarianceModelBase, VariogramModelBase
 from .covariance_models import (
-    SphericalCovariance,
     ExponentialCovariance,
     GaussianCovariance,
+    SphericalCovariance,
 )
-from .anisotropy import AnisotropicModel
 from .spacetime_models import (
-    SpaceTimeVariogramModel,
-    SeparableModel,
-    ProductSumModel,
     GneitingModel,
+    ProductSumModel,
+    SeparableModel,
+    SpaceTimeVariogramModel,
     create_spacetime_model,
+)
+from .variogram_models import (
+    ExponentialModel,
+    GaussianModel,
+    HoleEffectModel,
+    LinearModel,
+    MaternModel,
+    PowerModel,
+    SphericalModel,
 )
 
 __all__ = [

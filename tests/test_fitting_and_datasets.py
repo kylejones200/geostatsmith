@@ -8,18 +8,21 @@ Tests:
 - Data validation
 """
 
-import pytest
 import numpy as np
+import pytest
+
 from geostats import variogram
 from geostats.algorithms import fitting
-from geostats.models.variogram_models import (
- SphericalModel, ExponentialModel, GaussianModel,
- LinearModel, PowerModel
-)
 from geostats.datasets.walker_lake import load_walker_lake
+from geostats.models.variogram_models import (
+    ExponentialModel,
+    GaussianModel,
+    LinearModel,
+    SphericalModel,
+)
+
 
 class TestVariogramFitting:
-
     def setup_method(self):
         np.random.seed(42)
 
@@ -36,15 +39,12 @@ class TestVariogramFitting:
 
         # Compute experimental variogram
         self.lags, self.gamma, self.n_pairs = variogram.experimental_variogram(
-        self.x, self.y, self.z, n_lags=15
+            self.x, self.y, self.z, n_lags=15
         )
 
     def test_fit_spherical_model(self):
         fitted_model = variogram.fit_model(
-        'spherical',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "spherical", self.lags, self.gamma, weights=self.n_pairs
         )
 
         assert fitted_model is not None
@@ -55,10 +55,7 @@ class TestVariogramFitting:
 
     def test_fit_exponential_model(self):
         fitted_model = variogram.fit_model(
-        'exponential',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "exponential", self.lags, self.gamma, weights=self.n_pairs
         )
 
         assert fitted_model is not None
@@ -69,10 +66,7 @@ class TestVariogramFitting:
 
     def test_fit_gaussian_model(self):
         fitted_model = variogram.fit_model(
-        'gaussian',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "gaussian", self.lags, self.gamma, weights=self.n_pairs
         )
 
         assert fitted_model is not None
@@ -83,10 +77,7 @@ class TestVariogramFitting:
 
     def test_fit_linear_model(self):
         fitted_model = variogram.fit_model(
-        'linear',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "linear", self.lags, self.gamma, weights=self.n_pairs
         )
 
         assert fitted_model is not None
@@ -95,18 +86,12 @@ class TestVariogramFitting:
     def test_fit_with_weights(self):
         # Fit with weights (more emphasis on reliable lags)
         fitted_weighted = variogram.fit_model(
-        'spherical',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "spherical", self.lags, self.gamma, weights=self.n_pairs
         )
 
         # Fit without weights
         fitted_unweighted = variogram.fit_model(
-        'spherical',
-        self.lags,
-        self.gamma,
-        weights=None
+            "spherical", self.lags, self.gamma, weights=None
         )
 
         # Both should be valid, but may differ
@@ -120,10 +105,7 @@ class TestVariogramFitting:
 
     def test_fit_evaluates_on_lags(self):
         fitted_model = variogram.fit_model(
-        'spherical',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "spherical", self.lags, self.gamma, weights=self.n_pairs
         )
 
         # Evaluate fitted model at lag distances
@@ -131,14 +113,11 @@ class TestVariogramFitting:
 
         assert len(gamma_fitted) == len(self.lags)
         assert all(np.isfinite(gamma_fitted))
-        assert all(gamma_fitted >= 0) # Variogram values should be non-negative
+        assert all(gamma_fitted >= 0)  # Variogram values should be non-negative
 
     def test_goodness_of_fit(self):
         fitted_model = variogram.fit_model(
-        'spherical',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "spherical", self.lags, self.gamma, weights=self.n_pairs
         )
 
         # Calculate R-squared or similar metric
@@ -158,37 +137,31 @@ class TestVariogramFitting:
 
         # Should still fit, though quality may be poor
         fitted_model = variogram.fit_model(
-        'spherical',
-        lags_few,
-        gamma_few,
-        weights=n_pairs_few
+            "spherical", lags_few, gamma_few, weights=n_pairs_few
         )
 
         assert fitted_model is not None
 
     def test_fitting_preserves_nugget_behavior(self):
         fitted_model = variogram.fit_model(
-        'spherical',
-        self.lags,
-        self.gamma,
-        weights=self.n_pairs
+            "spherical", self.lags, self.gamma, weights=self.n_pairs
         )
 
         # At distance 0, should be close to nugget
         gamma_0 = fitted_model(np.array([0.0]))
         assert abs(gamma_0[0] - fitted_model.nugget) < 0.1
 
-class TestFittingMethods:
 
+class TestFittingMethods:
     def test_weighted_least_squares(self):
         # Create simple linear problem: y = 2*x + 1
         x = np.array([1, 2, 3, 4, 5])
-        y = 2*x + 1 + np.random.randn(5) * 0.1
-        weights = np.array([1, 1, 2, 2, 2]) # More weight on later points
+        y = 2 * x + 1 + np.random.randn(5) * 0.1
+        weights = np.array([1, 1, 2, 2, 2])  # More weight on later points
 
         # This is a simplified test - actual implementation uses scipy.optimize
         # We're just checking that the fitting module exists and can be called
-        assert hasattr(fitting, 'fit_variogram_model')
+        assert hasattr(fitting, "fit_variogram_model")
 
     def test_parameter_bounds(self):
         np.random.seed(42)
@@ -198,7 +171,7 @@ class TestFittingMethods:
 
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=10)
 
-        fitted_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
+        fitted_model = variogram.fit_model("spherical", lags, gamma, weights=n_pairs)
 
         # Check that parameters are within reasonable bounds
         assert 0 <= fitted_model.nugget <= 10 * np.var(z)
@@ -214,7 +187,7 @@ class TestFittingMethods:
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=12)
 
         # Should converge without errors
-        fitted_model = variogram.fit_model('exponential', lags, gamma, weights=n_pairs)
+        fitted_model = variogram.fit_model("exponential", lags, gamma, weights=n_pairs)
 
         assert fitted_model is not None
         # If it converged, model should produce reasonable values
@@ -222,29 +195,29 @@ class TestFittingMethods:
         gamma_test = fitted_model(test_lags)
         assert all(np.isfinite(gamma_test))
 
-class TestWalkerLakeDataset:
 
+class TestWalkerLakeDataset:
     def test_load_dataset(self):
         data = load_walker_lake()
 
         assert data is not None
-        assert 'x' in data or 'X' in data
-        assert 'y' in data or 'Y' in data
-        assert 'V' in data or 'value' in data
+        assert "x" in data or "X" in data
+        assert "y" in data or "Y" in data
+        assert "V" in data or "value" in data
 
     def test_dataset_shape(self):
         data = load_walker_lake()
 
         # Should have at least 100 points (Walker Lake is a standard dataset)
-        n_points = len(data.get('x', data.get('X', [])))
+        n_points = len(data.get("x", data.get("X", [])))
         assert n_points > 50
 
     def test_dataset_values_valid(self):
         data = load_walker_lake()
 
-        x_key = 'x' if 'x' in data else 'X'
-        y_key = 'y' if 'y' in data else 'Y'
-        v_key = 'V' if 'V' in data else 'value'
+        x_key = "x" if "x" in data else "X"
+        y_key = "y" if "y" in data else "Y"
+        v_key = "V" if "V" in data else "value"
 
         x = data[x_key]
         y = data[y_key]
@@ -261,8 +234,8 @@ class TestWalkerLakeDataset:
     def test_dataset_coordinates_reasonable(self):
         data = load_walker_lake()
 
-        x_key = 'x' if 'x' in data else 'X'
-        y_key = 'y' if 'y' in data else 'Y'
+        x_key = "x" if "x" in data else "X"
+        y_key = "y" if "y" in data else "Y"
 
         x = data[x_key]
         y = data[y_key]
@@ -270,11 +243,11 @@ class TestWalkerLakeDataset:
         # Coordinates should be positive and within reasonable bounds
         assert np.min(x) >= 0
         assert np.min(y) >= 0
-        assert np.max(x) < 1e6 # Not unreasonably large
+        assert np.max(x) < 1e6  # Not unreasonably large
         assert np.max(y) < 1e6
 
-class TestVariogramComputation:
 
+class TestVariogramComputation:
     def test_variogram_with_different_lag_numbers(self):
         np.random.seed(42)
         x = np.random.uniform(0, 100, 60)
@@ -295,9 +268,7 @@ class TestVariogramComputation:
         z = np.random.randn(50)
 
         # Compute with default tolerance
-        lags1, gamma1, n_pairs1 = variogram.experimental_variogram(
-        x, y, z, n_lags=10
-        )
+        lags1, gamma1, n_pairs1 = variogram.experimental_variogram(x, y, z, n_lags=10)
 
         # Both should be valid
         assert len(lags1) > 0
@@ -311,9 +282,7 @@ class TestVariogramComputation:
         z = np.sin(x / 20) + 0.1 * np.sin(y / 20) + np.random.randn(80) * 0.2
 
         # Standard omnidirectional variogram
-        lags, gamma, n_pairs = variogram.experimental_variogram(
-        x, y, z, n_lags=12
-        )
+        lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=12)
 
         assert len(lags) > 0
         assert all(np.isfinite(gamma))
@@ -328,9 +297,7 @@ class TestVariogramComputation:
         # Simple approach: base value + smooth component + noise
         z = 10 + np.sin(x / 30) * np.cos(y / 30) + np.random.randn(n) * 0.5
 
-        lags, gamma, n_pairs = variogram.experimental_variogram(
-        x, y, z, n_lags=15
-        )
+        lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=15)
 
         # In general, gamma should increase with lag
         # (though not strictly monotonic due to sampling variation)
@@ -338,19 +305,22 @@ class TestVariogramComputation:
         if len(gamma) >= 5:
             late_mean = np.mean(gamma[-2:])
             # Late lags should generally be larger (more variance)
-        assert late_mean >= early_mean * 0.5 # Allow some flexibility
+        assert late_mean >= early_mean * 0.5  # Allow some flexibility
+
 
 class TestEdgeCases:
-
     def test_fit_with_constant_variogram(self):
         lags = np.array([10, 20, 30, 40, 50])
-        gamma = np.array([1.0, 1.0, 1.0, 1.0, 1.0]) # Constant
+        gamma = np.array([1.0, 1.0, 1.0, 1.0, 1.0])  # Constant
         n_pairs = np.array([100, 90, 80, 70, 60])
 
         # Should handle constant variogram
         try:
             from geostats.algorithms import fit_variogram_model
-            fitted_model = fit_variogram_model('spherical', lags, gamma, weights=n_pairs)
+
+            fitted_model = fit_variogram_model(
+                "spherical", lags, gamma, weights=n_pairs
+            )
             # If successful, should have large nugget, small sill
             assert fitted_model.nugget > 0
         except (ValueError, RuntimeError):
@@ -359,11 +329,11 @@ class TestEdgeCases:
 
     def test_fit_with_decreasing_variogram(self):
         lags = np.array([10, 20, 30, 40, 50])
-        gamma = np.array([0.5, 1.0, 0.8, 0.6, 0.7]) # Non-monotonic
+        gamma = np.array([0.5, 1.0, 0.8, 0.6, 0.7])  # Non-monotonic
         n_pairs = np.array([100, 90, 80, 70, 60])
 
         # Should handle non-monotonic variogram
-        fitted_model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
+        fitted_model = variogram.fit_model("spherical", lags, gamma, weights=n_pairs)
 
         # Fit may not be perfect, but should be valid
         assert fitted_model is not None
@@ -371,8 +341,8 @@ class TestEdgeCases:
 
     def test_fit_with_missing_values(self):
         lags = np.array([10, 20, 30, 40, 50])
-        gamma = np.array([0.5, 1.0, np.nan, 1.8, 2.0]) # Has NaN
-        n_pairs = np.array([100, 90, 0, 70, 60]) # Zero pairs for NaN lag
+        gamma = np.array([0.5, 1.0, np.nan, 1.8, 2.0])  # Has NaN
+        n_pairs = np.array([100, 90, 0, 70, 60])  # Zero pairs for NaN lag
 
         # Should handle NaN by filtering or skipping
         # Remove NaN values before fitting
@@ -382,13 +352,11 @@ class TestEdgeCases:
         n_pairs_valid = n_pairs[valid]
 
         fitted_model = variogram.fit_model(
-        'spherical',
-        lags_valid,
-        gamma_valid,
-        weights=n_pairs_valid
+            "spherical", lags_valid, gamma_valid, weights=n_pairs_valid
         )
 
         assert fitted_model is not None
+
 
 if __name__ == "__main__":
     pytest.main([__file__])

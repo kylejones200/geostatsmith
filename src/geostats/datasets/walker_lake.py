@@ -15,17 +15,17 @@ Reference:
 - Isaaks, E.H., & Srivastava, R.M. (1989). An Introduction to Applied Geostatistics
 """
 
-from typing import Dict
-import numpy as np
 import logging
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
 
-def load_walker_lake() -> Dict:
+def load_walker_lake() -> dict:
     """
         Load the Walker Lake dataset
-    
+
     Returns
     -------
     dict
@@ -104,10 +104,10 @@ def load_walker_lake() -> Dict:
     }
 
 
-def get_walker_lake_subset(n_samples: int = 50, seed: int = 42) -> Dict:
+def get_walker_lake_subset(n_samples: int = 50, seed: int = 42) -> dict:
     """
         Get a random subset of Walker Lake data
-    
+
     Useful for testing algorithms on smaller datasets.
 
     Parameters

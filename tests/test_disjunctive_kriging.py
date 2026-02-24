@@ -5,19 +5,18 @@ Tests the non-linear kriging method that handles non-Gaussian data
 through Hermite polynomial expansions.
 """
 
-import pytest
 import numpy as np
+import pytest
 from scipy import stats
 
 from geostats.algorithms.disjunctive_kriging import DisjunctiveKriging
-from geostats.algorithms.variogram import experimental_variogram
 from geostats.algorithms.fitting import fit_variogram_model
-from geostats.models.variogram_models import SphericalModel, ExponentialModel
+from geostats.algorithms.variogram import experimental_variogram
 from geostats.core.exceptions import KrigingError
+from geostats.models.variogram_models import ExponentialModel, SphericalModel
 
 
 class TestDisjunctiveKriging:
-
     def setup_method(self):
         np.random.seed(42)
         self.n = 80
@@ -90,13 +89,16 @@ class TestDisjunctiveKriging:
 
     def test_initialization_invalid_kriging_type(self):
         from geostats.algorithms.disjunctive_kriging import DisjunctiveKriging
-        with pytest.raises(ValueError, match="kriging_type must be 'simple' or 'ordinary'"):
+
+        with pytest.raises(
+            ValueError, match="kriging_type must be 'simple' or 'ordinary'"
+        ):
             DisjunctiveKriging(
                 self.x,
                 self.y,
                 self.z,
                 variogram_model=self.model,
-                kriging_type='invalid'
+                kriging_type="invalid",
             )
 
     def test_hermite_expansion_fitting(self):

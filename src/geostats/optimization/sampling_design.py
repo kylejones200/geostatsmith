@@ -5,14 +5,17 @@
 Functions for designing optimal spatial sampling strategies.
 """
 
+import logging
+from typing import Literal
+
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Optional, Literal, Union
+
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
-import logging
 
 logger = logging.getLogger(__name__)
+
 
 def optimal_sampling_design(
     x_existing: npt.NDArray[np.float64],
@@ -20,89 +23,92 @@ def optimal_sampling_design(
     z_existing: npt.NDArray[np.float64],
     n_new_samples: int,
     variogram_model: VariogramModelBase,
-    strategy: Literal['variance_reduction', 'space_filling', 'hybrid'] = 'variance_reduction',
-    x_bounds: Optional[Tuple[float, float]] = None,
-    y_bounds: Optional[Tuple[float, float]] = None,
+    strategy: Literal[
+        "variance_reduction", "space_filling", "hybrid"
+    ] = "variance_reduction",
+    x_bounds: tuple[float, float] | None = None,
+    y_bounds: tuple[float, float] | None = None,
     n_candidates: int = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
-    Design optimal locations for new sampling points.
+       Design optimal locations for new sampling points.
 
-    Uses kriging variance to identify locations where uncertainty is highest,
-    or space-filling designs to ensure good spatial coverage.
+       Uses kriging variance to identify locations where uncertainty is highest,
+       or space-filling designs to ensure good spatial coverage.
 
-    Parameters
-    ----------
-    x_existing : ndarray
-        X coordinates of existing samples
-    y_existing : ndarray
-        Y coordinates of existing samples
-    z_existing : ndarray
-        Values at existing samples
-    n_new_samples : int
-        Number of new samples to add
-    variogram_model : VariogramModelBase
-        Fitted variogram model
-    strategy : {'variance_reduction', 'space_filling', 'hybrid'}, default='variance_reduction'
-        Optimization strategy:
-        - 'variance_reduction': Minimize kriging variance (maximize information)
-        - 'space_filling': Maximize spatial coverage (Latin hypercube style)
-        - 'hybrid': Combine both objectives
-    x_bounds : tuple, optional
-        (xmin, xmax) bounds for new samples
-        If None, uses existing data bounds
-    y_bounds : tuple, optional
-        (ymin, ymax) bounds for new samples
-        If None, uses existing data bounds
-    n_candidates : int, default=1000
-        Number of candidate locations to evaluate
+       Parameters
+       ----------
+       x_existing : ndarray
+           X coordinates of existing samples
+       y_existing : ndarray
+           Y coordinates of existing samples
+       z_existing : ndarray
+           Values at existing samples
+       n_new_samples : int
+           Number of new samples to add
+       variogram_model : VariogramModelBase
+           Fitted variogram model
+       strategy : {'variance_reduction', 'space_filling', 'hybrid'}, default='variance_reduction'
+           Optimization strategy:
+           - 'variance_reduction': Minimize kriging variance (maximize information)
+           - 'space_filling': Maximize spatial coverage (Latin hypercube style)
+           - 'hybrid': Combine both objectives
+       x_bounds : tuple, optional
+           (xmin, xmax) bounds for new samples
+           If None, uses existing data bounds
+       y_bounds : tuple, optional
+           (ymin, ymax) bounds for new samples
+           If None, uses existing data bounds
+       n_candidates : int, default=1000
+           Number of candidate locations to evaluate
 
-    Returns
-    -------
-    x_new : ndarray
-        X coordinates of proposed new sample locations
-    y_new : ndarray
-        Y coordinates of proposed new sample locations
+       Returns
+       -------
+       x_new : ndarray
+           X coordinates of proposed new sample locations
+       y_new : ndarray
+           Y coordinates of proposed new sample locations
 
-    Examples
-    --------
- >>> from geostats.models.variogram_models import SphericalModel
- >>> from geostats.optimization import optimal_sampling_design
- >>>
- >>> # Existing samples
- >>> x = np.array([0, 50, 100])
- >>> y = np.array([0, 50, 100])
- >>> z = np.array([10, 15, 20])
- >>>
- >>> # Fit variogram
- >>> model = SphericalModel(nugget=0.1, sill=1.0, range_param=50)
- >>>
- >>> # Find optimal locations for 5 new samples
- >>> x_new, y_new = optimal_sampling_design()
- ... x, y, z,
- ... n_new_samples=5,
- ... variogram_model=model,
- ... strategy='variance_reduction'
- ... )
+       Examples
+       --------
+    >>> from geostats.models.variogram_models import SphericalModel
+    >>> from geostats.optimization import optimal_sampling_design
+    >>>
+    >>> # Existing samples
+    >>> x = np.array([0, 50, 100])
+    >>> y = np.array([0, 50, 100])
+    >>> z = np.array([10, 15, 20])
+    >>>
+    >>> # Fit variogram
+    >>> model = SphericalModel(nugget=0.1, sill=1.0, range_param=50)
+    >>>
+    >>> # Find optimal locations for 5 new samples
+    >>> x_new, y_new = optimal_sampling_design()
+    ... x, y, z,
+    ... n_new_samples=5,
+    ... variogram_model=model,
+    ... strategy='variance_reduction'
+    ... )
 
- Notes
- -----
- - Variance reduction strategy: Greedily selects locations with highest kriging variance
- - Space-filling strategy: Maximizes minimum distance between all points
- - Hybrid strategy: Weighted combination (70% variance, 30% spacing)
+    Notes
+    -----
+    - Variance reduction strategy: Greedily selects locations with highest kriging variance
+    - Space-filling strategy: Maximizes minimum distance between all points
+    - Hybrid strategy: Weighted combination (70% variance, 30% spacing)
 
-    References
-    ----------
-    Müller, W. G. (2007). Collecting Spatial Data: Optimum Design of Experiments
-    for Random Fields. Springer.
+       References
+       ----------
+       Müller, W. G. (2007). Collecting Spatial Data: Optimum Design of Experiments
+       for Random Fields. Springer.
     """
     from ..core.constants import DEFAULT_MARGIN_FRACTION, DEFAULT_N_CANDIDATES
+
     if n_candidates is None:
         n_candidates = DEFAULT_N_CANDIDATES
     # Set bounds
     x_margin = (x_existing.max() - x_existing.min()) * DEFAULT_MARGIN_FRACTION
     y_margin = (y_existing.max() - y_existing.min()) * DEFAULT_MARGIN_FRACTION
-    
+
     if x_bounds is None:
         x_bounds = (x_existing.min() - x_margin, x_existing.max() + x_margin)
 
@@ -129,29 +135,32 @@ def optimal_sampling_design(
     z_current = z_existing.copy()
 
     for i in range(n_new_samples):
-        if strategy == 'variance_reduction':
+        if strategy == "variance_reduction":
             # Select location with maximum kriging variance
             _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
             best_idx = np.argmax(var)
 
-        elif strategy == 'space_filling':
+        elif strategy == "space_filling":
             scores = _compute_space_filling_scores(
-                x_candidates, y_candidates,
-                x_current, y_current
+                x_candidates, y_candidates, x_current, y_current
             )
             best_idx = np.argmax(scores)
 
-        elif strategy == 'hybrid':
+        elif strategy == "hybrid":
             _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
             spacing_scores = _compute_space_filling_scores(
-                x_candidates, y_candidates,
-                x_current, y_current
+                x_candidates, y_candidates, x_current, y_current
             )
 
             from ..core.constants import NORMALIZATION_EPSILON
+
             # Normalize and combine (70% variance, 30% spacing)
-            var_norm = (var - var.min()) / (var.max() - var.min() + NORMALIZATION_EPSILON)
-            spacing_norm = (spacing_scores - spacing_scores.min()) / (spacing_scores.max() - spacing_scores.min() + NORMALIZATION_EPSILON)
+            var_norm = (var - var.min()) / (
+                var.max() - var.min() + NORMALIZATION_EPSILON
+            )
+            spacing_norm = (spacing_scores - spacing_scores.min()) / (
+                spacing_scores.max() - spacing_scores.min() + NORMALIZATION_EPSILON
+            )
             VARIANCE_WEIGHT = 0.7
             SPACING_WEIGHT = 0.3
             combined_score = VARIANCE_WEIGHT * var_norm + SPACING_WEIGHT * spacing_norm
@@ -172,7 +181,7 @@ def optimal_sampling_design(
         z_pred, _ = krig.predict(
             np.array([x_candidates[best_idx]]),
             np.array([y_candidates[best_idx]]),
-            return_variance=True
+            return_variance=True,
         )
         z_current = np.append(z_current, z_pred[0])
 
@@ -192,6 +201,7 @@ def optimal_sampling_design(
 
     return np.array(x_new), np.array(y_new)
 
+
 def _compute_space_filling_scores(
     x_candidates: npt.NDArray[np.float64],
     y_candidates: npt.NDArray[np.float64],
@@ -202,14 +212,12 @@ def _compute_space_filling_scores(
     scores = np.zeros(len(x_candidates))
 
     for i, (x_cand, y_cand) in enumerate(zip(x_candidates, y_candidates)):
-        distances = np.sqrt(
-            (x_existing - x_cand)**2 +
-            (y_existing - y_cand)**2
-        )
+        distances = np.sqrt((x_existing - x_cand) ** 2 + (y_existing - y_cand) ** 2)
         # Score is minimum distance (want to maximize this)
         scores[i] = distances.min()
 
     return scores
+
 
 def infill_sampling(
     x_existing: npt.NDArray[np.float64],
@@ -217,57 +225,58 @@ def infill_sampling(
     z_existing: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     variance_threshold: float,
-    x_bounds: Optional[Tuple[float, float]] = None,
-    y_bounds: Optional[Tuple[float, float]] = None,
+    x_bounds: tuple[float, float] | None = None,
+    y_bounds: tuple[float, float] | None = None,
     max_samples: int = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
-    Identify locations where additional sampling is needed (infill).
+       Identify locations where additional sampling is needed (infill).
 
-    Adds samples until kriging variance is below threshold everywhere.
+       Adds samples until kriging variance is below threshold everywhere.
 
-    Parameters
-    ----------
-    x_existing : ndarray
-        X coordinates of existing samples
-    y_existing : ndarray
-        Y coordinates of existing samples
-    z_existing : ndarray
-        Values at existing samples
-    variogram_model : VariogramModelBase
-        Fitted variogram model
-    variance_threshold : float
-        Target maximum kriging variance
-    x_bounds : tuple, optional
-        Domain bounds for X
-    y_bounds : tuple, optional
-        Domain bounds for Y
-    max_samples : int, default=100
-        Maximum number of new samples to add
+       Parameters
+       ----------
+       x_existing : ndarray
+           X coordinates of existing samples
+       y_existing : ndarray
+           Y coordinates of existing samples
+       z_existing : ndarray
+           Values at existing samples
+       variogram_model : VariogramModelBase
+           Fitted variogram model
+       variance_threshold : float
+           Target maximum kriging variance
+       x_bounds : tuple, optional
+           Domain bounds for X
+       y_bounds : tuple, optional
+           Domain bounds for Y
+       max_samples : int, default=100
+           Maximum number of new samples to add
 
-    Returns
-    -------
-    x_infill : ndarray
-        X coordinates of infill sample locations
-    y_infill : ndarray
-        Y coordinates of infill sample locations
- 
- Examples
- --------
- >>> # Add samples until variance < 0.5 everywhere
- >>> x_infill, y_infill = infill_sampling()
- ... x, y, z,
- ... variogram_model=model,
- ... variance_threshold=0.5
- ... )
-    >>> logger.info(f"Need {len(x_infill)} additional samples")
+       Returns
+       -------
+       x_infill : ndarray
+           X coordinates of infill sample locations
+       y_infill : ndarray
+           Y coordinates of infill sample locations
 
-    Notes
-    -----
-    This is useful for adaptive sampling where you want to ensure
-    prediction uncertainty is below a certain level everywhere in the domain.
+    Examples
+    --------
+    >>> # Add samples until variance < 0.5 everywhere
+    >>> x_infill, y_infill = infill_sampling()
+    ... x, y, z,
+    ... variogram_model=model,
+    ... variance_threshold=0.5
+    ... )
+       >>> logger.info(f"Need {len(x_infill)} additional samples")
+
+       Notes
+       -----
+       This is useful for adaptive sampling where you want to ensure
+       prediction uncertainty is below a certain level everywhere in the domain.
     """
     from ..core.constants import DEFAULT_MAX_SAMPLES
+
     if max_samples is None:
         max_samples = DEFAULT_MAX_SAMPLES
     # Start with existing samples
@@ -285,6 +294,7 @@ def infill_sampling(
         y_bounds = (y_existing.min(), y_existing.max())
 
     from ..core.constants import DEFAULT_N_EVAL_POINTS
+
     # Create grid for variance evaluation
     n_eval = DEFAULT_N_EVAL_POINTS
     x_eval = np.linspace(x_bounds[0], x_bounds[1], n_eval)
@@ -319,7 +329,9 @@ def infill_sampling(
         y_infill.append(y_new)
 
         # Predict value at new location
-        z_new, _ = krig.predict(np.array([x_new]), np.array([y_new]), return_variance=True)
+        z_new, _ = krig.predict(
+            np.array([x_new]), np.array([y_new]), return_variance=True
+        )
 
         # Update current set
         x_current = np.append(x_current, x_new)
@@ -328,13 +340,14 @@ def infill_sampling(
 
     return np.array(x_infill), np.array(y_infill)
 
+
 def stratified_sampling(
-    x_bounds: Tuple[float, float],
-    y_bounds: Tuple[float, float],
+    x_bounds: tuple[float, float],
+    y_bounds: tuple[float, float],
     n_samples: int,
-    n_strata_x: Optional[int] = None,
-    n_strata_y: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    n_strata_x: int | None = None,
+    n_strata_y: int | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Generate stratified random sample locations.
 
@@ -417,6 +430,7 @@ def stratified_sampling(
 
     return np.array(x_samples), np.array(y_samples)
 
+
 def adaptive_sampling(
     x_existing: npt.NDArray[np.float64],
     y_existing: npt.NDArray[np.float64],
@@ -424,9 +438,9 @@ def adaptive_sampling(
     variogram_model: VariogramModelBase,
     n_iterations: int,
     samples_per_iteration: int = 5,
-    x_bounds: Optional[Tuple[float, float]] = None,
-    y_bounds: Optional[Tuple[float, float]] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    x_bounds: tuple[float, float] | None = None,
+    y_bounds: tuple[float, float] | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Adaptive sampling: iteratively add samples where uncertainty is highest.
 
@@ -485,10 +499,12 @@ def adaptive_sampling(
 
     for iteration in range(n_iterations):
         x_new, y_new = optimal_sampling_design(
-            x_current, y_current, z_current,
+            x_current,
+            y_current,
+            z_current,
             n_new_samples=samples_per_iteration,
             variogram_model=variogram_model,
-            strategy='variance_reduction',
+            strategy="variance_reduction",
             x_bounds=x_bounds,
             y_bounds=y_bounds,
         )

@@ -35,19 +35,15 @@ References:
 - Journel & Isaaks (1984) Conditional indicator simulation
 """
 
-from typing import List, Tuple, Optional, Callable, Dict
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
-from dataclasses import dataclass
-from scipy.interpolate import interp1d
 
 from ..algorithms.indicator_kriging import IndicatorKriging
-from ..core.exceptions import KrigingError
 from ..core.constants import (
-    PROBABILITY_BOUNDS,
     DEFAULT_N_REALIZATIONS,
     DEFAULT_N_THRESHOLDS,
-    EPSILON,
 )
 from ..core.logging_config import get_logger
 
@@ -56,41 +52,43 @@ logger = get_logger(__name__)
 # Simulation constants
 CDF_EXTRAPOLATION_FACTOR = 0.1
 
+
 @dataclass
 class SISConfig:
- n_realizations: int = DEFAULT_N_REALIZATIONS
- thresholds: Optional[List[float]] = None # If None, use quantiles
- n_thresholds: int = DEFAULT_N_THRESHOLDS
- max_neighbors: int = 12
- search_radius: Optional[float] = None
- random_seed: Optional[int] = None
- correct_order_relations: bool = True # Enforce P(z1) <= P(z2) for z1 < z2
+    n_realizations: int = DEFAULT_N_REALIZATIONS
+    thresholds: list[float] | None = None  # If None, use quantiles
+    n_thresholds: int = DEFAULT_N_THRESHOLDS
+    max_neighbors: int = 12
+    search_radius: float | None = None
+    random_seed: int | None = None
+    correct_order_relations: bool = True  # Enforce P(z1) <= P(z2) for z1 < z2
+
 
 class SequentialIndicatorSimulation:
     """
-    Sequential Indicator Simulation (SIS)
+       Sequential Indicator Simulation (SIS)
 
-    Generates conditional stochastic realizations using indicator approach.
-    Works for both continuous and categorical variables.
+       Generates conditional stochastic realizations using indicator approach.
+       Works for both continuous and categorical variables.
 
-    For continuous variables:
- - Transform to indicators at multiple thresholds
- - Krige probabilities at each threshold
- - Build conditional CDF and sample from it
+       For continuous variables:
+    - Transform to indicators at multiple thresholds
+    - Krige probabilities at each threshold
+    - Build conditional CDF and sample from it
 
- For categorical variables:
-     pass
- - Each category becomes an indicator
- - Krige category probabilities
- - Sample category from multinomial distribution
- """
+    For categorical variables:
+        pass
+    - Each category becomes an indicator
+    - Krige category probabilities
+    - Sample category from multinomial distribution
+    """
 
     def __init__(
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
-        config: Optional[SISConfig] = None
+        config: SISConfig | None = None,
     ):
         """
         Initialize Sequential Indicator Simulation
@@ -112,6 +110,7 @@ class SequentialIndicatorSimulation:
             raise ValueError("x, y, and z must have the same length")
 
         from ..core.config import SISConfig
+
         self.config = config if config is not None else SISConfig()
 
         # Set random seed
@@ -131,12 +130,13 @@ class SequentialIndicatorSimulation:
         self.indicators = self._compute_indicators(self.z)
 
         # Indicator kriging objects (to be fitted with variogram models)
-        from ..algorithms.indicator_kriging import IndicatorKriging
-        self.indicator_krigers: List[Optional[IndicatorKriging]] = [None] * self.n_thresholds
+
+        self.indicator_krigers: list[IndicatorKriging | None] = [
+            None
+        ] * self.n_thresholds
 
     def _compute_indicators(
-        self,
-        values: npt.NDArray[np.float64]
+        self, values: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.float64]:
         """
         Transform values to indicators
@@ -157,10 +157,7 @@ class SequentialIndicatorSimulation:
         indicators = (values <= thresholds).astype(np.float64)
         return indicators
 
-    def fit_indicator_variograms(
-        self,
-        variogram_models: List[object]
-    ):
+    def fit_indicator_variograms(self, variogram_models: list[object]):
         """
         Fit indicator variogram models
 
@@ -176,20 +173,18 @@ class SequentialIndicatorSimulation:
             )
 
         # Create indicator kriging objects
-        from ..algorithms.indicator_kriging import IndicatorKriging
+
         for k in range(self.n_thresholds):
             self.indicator_krigers[k] = IndicatorKriging(
                 x=self.x,
                 y=self.y,
                 z=self.indicators[:, k],
                 threshold=self.thresholds[k],
-                variogram_model=variogram_models[k]
+                variogram_model=variogram_models[k],
             )
 
     def simulate(
-        self,
-        x_grid: npt.NDArray[np.float64],
-        y_grid: npt.NDArray[np.float64]
+        self, x_grid: npt.NDArray[np.float64], y_grid: npt.NDArray[np.float64]
     ) -> npt.NDArray[np.float64]:
         """
         Generate conditional realizations
@@ -243,9 +238,7 @@ class SequentialIndicatorSimulation:
                 for k in range(self.n_thresholds):
                     try:
                         prob, _ = self.indicator_krigers[k].predict(
-                            np.array([x_loc]),
-                            np.array([y_loc]),
-                            return_variance=True
+                            np.array([x_loc]), np.array([y_loc]), return_variance=True
                         )
                         probabilities[k] = prob[0]
                     except Exception:
@@ -253,8 +246,11 @@ class SequentialIndicatorSimulation:
                         probabilities[k] = np.mean(self.indicators[:, k])
 
                 # Clip probabilities (vectorized)
-                from ..core.constants import PROBABILITY_CLIP_MIN, PROBABILITY_CLIP_MAX
-                probabilities = np.clip(probabilities, PROBABILITY_CLIP_MIN, PROBABILITY_CLIP_MAX)
+                from ..core.constants import PROBABILITY_CLIP_MAX, PROBABILITY_CLIP_MIN
+
+                probabilities = np.clip(
+                    probabilities, PROBABILITY_CLIP_MIN, PROBABILITY_CLIP_MAX
+                )
 
                 # Correct order relations: P(z1) <= P(z2) for z1 < z2 (fully vectorized)
                 if self.config.correct_order_relations:
@@ -274,14 +270,13 @@ class SequentialIndicatorSimulation:
 
         # Reshape to original grid shape
         if len(original_shape) > 1:
-            realizations = realizations.reshape((self.config.n_realizations,) + original_shape)
+            realizations = realizations.reshape(
+                (self.config.n_realizations,) + original_shape
+            )
 
         return realizations
 
-    def _sample_from_cdf(
-        self,
-        probabilities: npt.NDArray[np.float64]
-    ) -> float:
+    def _sample_from_cdf(self, probabilities: npt.NDArray[np.float64]) -> float:
         """
         Sample a value from conditional CDF
 
@@ -299,17 +294,15 @@ class SequentialIndicatorSimulation:
         # Build CDF: (threshold, probability) pairs (vectorized)
         CDF_EXTRAPOLATION_FACTOR = 0.1
         z_range = self.z.max() - self.z.min()
-        cdf_z = np.concatenate([
-            [self.z.min() - z_range * CDF_EXTRAPOLATION_FACTOR],
-            self.thresholds,
-            [self.z.max() + z_range * CDF_EXTRAPOLATION_FACTOR]
-        ])
+        cdf_z = np.concatenate(
+            [
+                [self.z.min() - z_range * CDF_EXTRAPOLATION_FACTOR],
+                self.thresholds,
+                [self.z.max() + z_range * CDF_EXTRAPOLATION_FACTOR],
+            ]
+        )
 
-        cdf_p = np.concatenate([
-            [0.0],
-            probabilities,
-            [1.0]
-        ])
+        cdf_p = np.concatenate([[0.0], probabilities, [1.0]])
 
         # Draw random uniform value
         u = np.random.uniform(0, 1)
@@ -318,7 +311,8 @@ class SequentialIndicatorSimulation:
         # Use linear interpolation (could use more sophisticated methods)
         try:
             from scipy.interpolate import interp1d
-            interp = interp1d(cdf_p, cdf_z, kind='linear', fill_value='extrapolate')
+
+            interp = interp1d(cdf_p, cdf_z, kind="linear", fill_value="extrapolate")
             sampled_value = float(interp(u))
         except Exception:
             # Fallback: simple linear search
@@ -328,8 +322,8 @@ class SequentialIndicatorSimulation:
             elif idx >= len(cdf_z):
                 sampled_value = cdf_z[-1]
             else:
-                p1, p2 = cdf_p[idx-1], cdf_p[idx]
-                z1, z2 = cdf_z[idx-1], cdf_z[idx]
+                p1, p2 = cdf_p[idx - 1], cdf_p[idx]
+                z1, z2 = cdf_z[idx - 1], cdf_z[idx]
                 if p2 > p1:
                     sampled_value = z1 + (z2 - z1) * (u - p1) / (p2 - p1)
                 else:
@@ -339,17 +333,17 @@ class SequentialIndicatorSimulation:
 
     def get_statistics(self, realizations: npt.NDArray[np.float64]) -> dict:
         """
-        Calculate statistics of realizations
+               Calculate statistics of realizations
 
-        Parameters
- ----------
- realizations : np.ndarray
- Simulation results from simulate()
+               Parameters
+        ----------
+        realizations : np.ndarray
+        Simulation results from simulate()
 
-        Returns
-        -------
-        dict
-            Statistics including mean, std, quantiles
+               Returns
+               -------
+               dict
+                   Statistics including mean, std, quantiles
         """
         # Flatten to (n_realizations, n_nodes)
         original_shape = realizations.shape
@@ -368,18 +362,18 @@ class SequentialIndicatorSimulation:
         p90 = np.percentile(realizations, 90, axis=0)
 
         stats = {
-            'e_type': e_type,
-            'uncertainty': uncertainty,
-            'p10': p10,
-            'p50': p50,
-            'p90': p90,
-            'mean': np.mean(realizations),
-            'std': np.std(realizations),
+            "e_type": e_type,
+            "uncertainty": uncertainty,
+            "p10": p10,
+            "p50": p50,
+            "p90": p90,
+            "mean": np.mean(realizations),
+            "std": np.std(realizations),
         }
 
         # Reshape if needed
         if len(original_shape) > 2:
-            for key in ['e_type', 'uncertainty', 'p10', 'p50', 'p90']:
+            for key in ["e_type", "uncertainty", "p10", "p50", "p90"]:
                 stats[key] = stats[key].reshape(original_shape[1:])
 
         return stats

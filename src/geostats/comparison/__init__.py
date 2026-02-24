@@ -10,15 +10,15 @@ Based on concepts from:
 """
 
 from .interpolation_comparison import (
+    benchmark_interpolation_speed,
     compare_interpolation_methods,
     cross_validate_interpolation,
-    benchmark_interpolation_speed,
     interpolation_error_metrics,
 )
 from .method_implementations import (
     inverse_distance_weighting,
-    radial_basis_function_interpolation,
     natural_neighbor_interpolation,
+    radial_basis_function_interpolation,
 )
 
 __all__ = [

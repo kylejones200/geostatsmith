@@ -21,41 +21,47 @@ Reference:
 - Optimal number of estimation points (page 247)
 """
 
-from typing import Tuple, Optional, List, Dict
+from dataclasses import dataclass
+
 import numpy as np
 import numpy.typing as npt
 from scipy.spatial import KDTree
-from dataclasses import dataclass
+
 
 @dataclass
 class NeighborhoodConfig:
- max_neighbors: int = 25 # Maximum samples to use (ofr: "25 are more than adequate")
- min_neighbors: int = 3 # Minimum samples required (ofr: "3 are a reasonable bare minimum")
- search_radius: Optional[float] = None # Maximum search distance
- search_ellipse: Optional[Tuple[float, float, float]] = None # (major, minor, angle_deg)
- use_octants: bool = False # Octant search for radial distribution
- max_per_octant: Optional[int] = None # Max samples per octant
- use_quadrants: bool = False # Simpler quadrant search
- max_per_quadrant: Optional[int] = None # Max samples per quadrant
+    max_neighbors: int = 25  # Maximum samples to use (ofr: "25 are more than adequate")
+    min_neighbors: int = (
+        3  # Minimum samples required (ofr: "3 are a reasonable bare minimum")
+    )
+    search_radius: float | None = None  # Maximum search distance
+    search_ellipse: tuple[float, float, float] | None = (
+        None  # (major, minor, angle_deg)
+    )
+    use_octants: bool = False  # Octant search for radial distribution
+    max_per_octant: int | None = None  # Max samples per octant
+    use_quadrants: bool = False  # Simpler quadrant search
+    max_per_quadrant: int | None = None  # Max samples per quadrant
+
 
 class NeighborhoodSearch:
     """
-    Efficient neighborhood search for kriging
+       Efficient neighborhood search for kriging
 
-    Uses KD-tree for fast spatial queries with options for:
-    - Circular/elliptical search regions
-    - Octant/quadrant search for good radial distribution
-    - Min/max sample constraints
+       Uses KD-tree for fast spatial queries with options for:
+       - Circular/elliptical search regions
+       - Octant/quadrant search for good radial distribution
+       - Min/max sample constraints
 
-    From Olea (2009): "Use octant search to further ensure good radial"
- distribution" to avoid clustering of samples in one direction."
- """
+       From Olea (2009): "Use octant search to further ensure good radial"
+    distribution" to avoid clustering of samples in one direction."
+    """
 
     def __init__(
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
-        config: Optional[NeighborhoodConfig] = None
+        config: NeighborhoodConfig | None = None,
     ):
         """
         Initialize neighborhood search
@@ -81,10 +87,8 @@ class NeighborhoodSearch:
         self.kdtree = KDTree(self.points)
 
     def find_neighbors(
-        self,
-        x0: float,
-        y0: float
-    ) -> Tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
+        self, x0: float, y0: float
+    ) -> tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
         """
         Find neighbors for a prediction point
 
@@ -136,8 +140,8 @@ class NeighborhoodSearch:
         # Apply max_neighbors limit
         if len(indices) > self.config.max_neighbors:
             sort_idx = np.argsort(distances)
-            indices = indices[sort_idx[:self.config.max_neighbors]]
-            distances = distances[sort_idx[:self.config.max_neighbors]]
+            indices = indices[sort_idx[: self.config.max_neighbors]]
+            distances = distances[sort_idx[: self.config.max_neighbors]]
 
         # Check min_neighbors constraint
         if len(indices) < self.config.min_neighbors:
@@ -150,10 +154,7 @@ class NeighborhoodSearch:
         return indices, distances
 
     def _in_search_ellipse(
-        self,
-        x0: float,
-        y0: float,
-        indices: npt.NDArray[np.int64]
+        self, x0: float, y0: float, indices: npt.NDArray[np.int64]
     ) -> npt.NDArray[np.bool_]:
         """
         Check which points are within search ellipse
@@ -187,15 +188,15 @@ class NeighborhoodSearch:
         dy_rot = -sin_a * dx + cos_a * dy
 
         # Check ellipse equation
-        dist_ellipse = (dx_rot / major)**2 + (dy_rot / minor)**2
+        dist_ellipse = (dx_rot / major) ** 2 + (dy_rot / minor) ** 2
         return dist_ellipse <= 1.0
 
     def _octant_search(
-     x0: float,
-     y0: float,
-     indices: npt.NDArray[np.int64],
-     distances: npt.NDArray[np.float64]
-    ) -> Tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
+        x0: float,
+        y0: float,
+        indices: npt.NDArray[np.int64],
+        distances: npt.NDArray[np.float64],
+    ) -> tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
         """
         Octant search for good radial distribution
 
@@ -251,8 +252,8 @@ class NeighborhoodSearch:
         x0: float,
         y0: float,
         indices: npt.NDArray[np.int64],
-        distances: npt.NDArray[np.float64]
-    ) -> Tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
+        distances: npt.NDArray[np.float64],
+    ) -> tuple[npt.NDArray[np.int64], npt.NDArray[np.float64]]:
         """
         Quadrant search for radial distribution (simpler than octant)
 
@@ -289,7 +290,7 @@ class NeighborhoodSearch:
 
         return np.array(selected_indices, dtype=np.int64), np.array(selected_distances)
 
-    def get_neighborhood_stats(self, x0: float, y0: float) -> Dict:
+    def get_neighborhood_stats(self, x0: float, y0: float) -> dict:
         """
         Get statistics about the neighborhood
 
@@ -307,17 +308,17 @@ class NeighborhoodSearch:
 
         if len(indices) == 0:
             return {
-                'n_neighbors': 0,
-                'mean_distance': np.nan,
-                'min_distance': np.nan,
-                'max_distance': np.nan,
+                "n_neighbors": 0,
+                "mean_distance": np.nan,
+                "min_distance": np.nan,
+                "max_distance": np.nan,
             }
 
         return {
-            'n_neighbors': len(indices),
-            'mean_distance': np.mean(distances),
-            'min_distance': np.min(distances),
-            'max_distance': np.max(distances),
-            'indices': indices,
-            'distances': distances,
- }
+            "n_neighbors": len(indices),
+            "mean_distance": np.mean(distances),
+            "min_distance": np.min(distances),
+            "max_distance": np.max(distances),
+            "indices": indices,
+            "distances": distances,
+        }

@@ -9,19 +9,19 @@ Provides access to:
 Reference: Python Recipes for Earth Sciences (Trauth 2024)
 """
 
-from .walker_lake import load_walker_lake
-from .synthetic import (
-    generate_random_field,
-    generate_clustered_samples,
-    generate_elevation_like_data,
-    generate_anisotropic_field,
-    generate_sparse_dense_mix,
-)
 from .elevation_samples import (
     load_synthetic_dem_sample,
-    load_volcano_sample,
     load_valley_sample,
+    load_volcano_sample,
 )
+from .synthetic import (
+    generate_anisotropic_field,
+    generate_clustered_samples,
+    generate_elevation_like_data,
+    generate_random_field,
+    generate_sparse_dense_mix,
+)
+from .walker_lake import load_walker_lake
 
 __all__ = [
     # Classic dataset

@@ -2,9 +2,9 @@
 Data utility functions
 """
 
-from typing import Tuple, Optional, Dict
 import numpy as np
 import numpy.typing as npt
+
 
 def generate_synthetic_data(
     n_points: int = 100,
@@ -12,8 +12,8 @@ def generate_synthetic_data(
     nugget: float = 0.1,
     sill: float = 1.0,
     range_param: float = 20.0,
-    seed: Optional[int] = None,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    seed: int | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Generate synthetic spatial data with known variogram structure
 
@@ -54,7 +54,7 @@ def generate_synthetic_data(
     return x, y, z
 
 
-def load_sample_data(dataset: str = "walker_lake") -> Dict:
+def load_sample_data(dataset: str = "walker_lake") -> dict:
     """
     Load sample geostatistical dataset
 
@@ -71,22 +71,24 @@ def load_sample_data(dataset: str = "walker_lake") -> Dict:
     """
     if dataset == "walker_lake" or dataset == "walker_lake_v":
         from ..datasets.walker_lake import load_walker_lake
+
         data = load_walker_lake()
         return {
-            'x': data['x'],
-            'y': data['y'],
-            'z': data['V'],
-            'description': 'Walker Lake V (arsenious contaminant)',
+            "x": data["x"],
+            "y": data["y"],
+            "z": data["V"],
+            "description": "Walker Lake V (arsenious contaminant)",
         }
 
     elif dataset == "walker_lake_u":
         from ..datasets.walker_lake import load_walker_lake
+
         data = load_walker_lake()
         return {
-            'x': data['x'],
-            'y': data['y'],
-            'z': data['U'],
-            'description': 'Walker Lake U (PCE concentration)',
+            "x": data["x"],
+            "y": data["y"],
+            "z": data["U"],
+            "description": "Walker Lake U (PCE concentration)",
         }
 
     else:
@@ -98,10 +100,10 @@ def split_train_test(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     test_fraction: float = 0.2,
-    test_size: Optional[int] = None,
-    random_state: Optional[int] = None,
-    seed: Optional[int] = None,
-) -> Tuple:
+    test_size: int | None = None,
+    random_state: int | None = None,
+    seed: int | None = None,
+) -> tuple:
     """
     Split data into training and test sets
 
@@ -142,8 +144,12 @@ def split_train_test(
     train_idx = indices[n_test:]
 
     return (
-        x[train_idx], y[train_idx], z[train_idx],
-        x[test_idx], y[test_idx], z[test_idx],
+        x[train_idx],
+        y[train_idx],
+        z[train_idx],
+        x[test_idx],
+        y[test_idx],
+        z[test_idx],
     )
 
 
@@ -173,7 +179,7 @@ def find_duplicate_locations(
 
     for i in range(n):
         for j in range(i + 1, n):
-            dist = np.sqrt((x[i] - x[j])**2 + (y[i] - y[j])**2)
+            dist = np.sqrt((x[i] - x[j]) ** 2 + (y[i] - y[j]) ** 2)
             if dist < tolerance:
                 duplicates.append((i, j))
 
@@ -215,10 +221,11 @@ def check_collinearity(
 
     return abs(det) < tolerance
 
+
 def compute_data_spacing(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
-) -> Tuple[float, float, float]:
+) -> tuple[float, float, float]:
     """
     Compute statistics about data spacing
 

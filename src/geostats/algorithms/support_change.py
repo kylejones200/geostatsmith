@@ -32,23 +32,23 @@ References:
 - Journel & Huijbregts (1978) Mining Geostatistics, Chapter VI
 """
 
-from typing import Tuple, Optional, Union, Callable, Dict
+import logging
+from collections.abc import Callable
+
 import numpy as np
 import numpy.typing as npt
-from scipy.integrate import dblquad, tplquad
-import logging
 
 logger = logging.getLogger(__name__)
 
 from ..core.base import BaseKriging
-from ..core.exceptions import KrigingError
-from ..core.validators import validate_coordinates, validate_values
-from ..math.distance import euclidean_distance, euclidean_distance_matrix
-from ..math.matrices import solve_kriging_system, regularize_matrix
-from ..core.constants import REGULARIZATION_FACTOR, DEFAULT_N_DISCRETIZATION
+from ..core.constants import REGULARIZATION_FACTOR
 from ..core.logging_config import get_logger
+from ..core.validators import validate_coordinates, validate_values
+from ..math.distance import euclidean_distance
+from ..math.matrices import regularize_matrix
 
 logger = get_logger(__name__)
+
 
 class BlockKriging(BaseKriging):
     """
@@ -61,33 +61,33 @@ class BlockKriging(BaseKriging):
 
     The block average has lower variance than point estimates:
     "As block size increases, estimation variance decreases."
- """
+    """
 
     def __init__(
         self,
         x: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
-        variogram_model: Optional[object] = None,
-        block_size: Tuple[float, float] = (10.0, 10.0),
+        variogram_model: object | None = None,
+        block_size: tuple[float, float] = (10.0, 10.0),
         n_disc: int = 5,
     ):
         """
-        Initialize Block Kriging
+           Initialize Block Kriging
 
-        Parameters
-        ----------
-        x, y : np.ndarray
-     Coordinates of sample points (point support)
-     z : np.ndarray
-     Values at sample points
-     variogram_model : VariogramModelBase
-     Fitted point variogram model
-     block_size : tuple
-     Block dimensions (width, height) in same units as coordinates
-     n_disc : int
-     Number of discretization points per dimension for block integration
-     (n_disc^2 points used to approximate block average)
+           Parameters
+           ----------
+           x, y : np.ndarray
+        Coordinates of sample points (point support)
+        z : np.ndarray
+        Values at sample points
+        variogram_model : VariogramModelBase
+        Fitted point variogram model
+        block_size : tuple
+        Block dimensions (width, height) in same units as coordinates
+        n_disc : int
+        Number of discretization points per dimension for block integration
+        (n_disc^2 points used to approximate block average)
         """
         super().__init__(x, y, z, variogram_model)
 
@@ -98,8 +98,8 @@ class BlockKriging(BaseKriging):
         self.n_disc = n_disc
 
         # Discretization points for block (relative to block center)
-        disc_x = np.linspace(-block_size[0]/2, block_size[0]/2, n_disc)
-        disc_y = np.linspace(-block_size[1]/2, block_size[1]/2, n_disc)
+        disc_x = np.linspace(-block_size[0] / 2, block_size[0] / 2, n_disc)
+        disc_y = np.linspace(-block_size[1] / 2, block_size[1] / 2, n_disc)
         self.disc_xx, self.disc_yy = np.meshgrid(disc_x, disc_y)
         self.disc_xx = self.disc_xx.flatten()
         self.disc_yy = self.disc_yy.flatten()
@@ -117,22 +117,22 @@ class BlockKriging(BaseKriging):
         Approximated using discretization points.
         """
         # Vectorized distance matrix for all discretization point pairs
-        from ..math.distance import euclidean_distance
-        dist_matrix = euclidean_distance(self.disc_xx, self.disc_yy, self.disc_xx, self.disc_yy)
+
+        dist_matrix = euclidean_distance(
+            self.disc_xx, self.disc_yy, self.disc_xx, self.disc_yy
+        )
 
         # Vectorized variogram evaluation
         gamma_matrix = self.variogram_model(dist_matrix)
 
         # Average over all pairs (including self-pairs)
         self.gamma_VV = np.mean(gamma_matrix)
-        logger.debug(f"Precomputed block variance gamma(V,V) = {self.gamma_VV:.6f} (vectorized)")
+        logger.debug(
+            f"Precomputed block variance gamma(V,V) = {self.gamma_VV:.6f} (vectorized)"
+        )
 
     def _point_to_block_variogram(
-        self,
-        x_point: float,
-        y_point: float,
-        x_block: float,
-        y_block: float
+        self, x_point: float, y_point: float, x_block: float, y_block: float
     ) -> float:
         """
         Calculate gamma(point, block) - average variogram from point to block (vectorized)
@@ -160,7 +160,7 @@ class BlockKriging(BaseKriging):
         # Vectorized distance calculation
         dx = x_point - x_disc
         dy = y_point - y_disc
-        h = np.sqrt(dx*dx + dy*dy)
+        h = np.sqrt(dx * dx + dy * dy)
 
         # Vectorized variogram evaluation
         gamma_vals = self.variogram_model(h)
@@ -171,8 +171,11 @@ class BlockKriging(BaseKriging):
         self,
         x_new: npt.NDArray[np.float64],
         y_new: npt.NDArray[np.float64],
-        return_variance: bool = True
-    ) -> Union[npt.NDArray[np.float64], Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]]:
+        return_variance: bool = True,
+    ) -> (
+        npt.NDArray[np.float64]
+        | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
+    ):
         """
         Predict block averages at new locations
 
@@ -194,6 +197,7 @@ class BlockKriging(BaseKriging):
             raise ValueError("Variogram model must be fitted before prediction")
 
         from ..utils.validation import validate_coordinates
+
         x_new, y_new = validate_coordinates(x_new, y_new)
         n_pred = len(x_new)
         n_data = len(self.x)
@@ -202,7 +206,7 @@ class BlockKriging(BaseKriging):
         K = np.zeros((n_data + 1, n_data + 1), dtype=np.float64)
 
         # Vectorized distance matrix
-        from ..math.distance import euclidean_distance
+
         dist_matrix = euclidean_distance(self.x, self.y, self.x, self.y)
 
         # Vectorized variogram evaluation
@@ -213,10 +217,10 @@ class BlockKriging(BaseKriging):
         K[n_data, :n_data] = 1.0
         K[n_data, n_data] = 0.0
 
-        from ..math.matrices import regularize_matrix
-        from ..core.constants import REGULARIZATION_FACTOR
         K = regularize_matrix(K, epsilon=REGULARIZATION_FACTOR)
-        logger.debug(f"Block Kriging matrix built (vectorized): {n_data+1}x{n_data+1}")
+        logger.debug(
+            f"Block Kriging matrix built (vectorized): {n_data + 1}x{n_data + 1}"
+        )
 
         predictions = np.zeros(n_pred)
         variances = np.zeros(n_pred) if return_variance else None
@@ -227,11 +231,11 @@ class BlockKriging(BaseKriging):
             # Vectorized point-to-block calculation
             for j in range(n_data):
                 rhs[j] = self._point_to_block_variogram(
-                    self.x[j], self.y[j],
-                    x_new[i], y_new[i]
+                    self.x[j], self.y[j], x_new[i], y_new[i]
                 )
 
             from ..core.constants import UNBIASEDNESS_CONSTRAINT
+
             rhs[n_data] = UNBIASEDNESS_CONSTRAINT  # Unbiasedness
 
             # Solve
@@ -239,6 +243,7 @@ class BlockKriging(BaseKriging):
                 weights = np.linalg.solve(K, rhs)
             except np.linalg.LinAlgError as e:
                 from ..exceptions import KrigingError
+
                 logger.error(f"Failed to solve block kriging system at point {i}: {e}")
                 raise KrigingError(f"Failed to solve kriging system: {e}")
 
@@ -261,13 +266,15 @@ class BlockKriging(BaseKriging):
 
                 variances[i] = variance_term1 + variance_term2 + variance_term3
 
-        logger.info(f"Block Kriging completed for {n_pred} blocks (vectorized discretization)")
+        logger.info(
+            f"Block Kriging completed for {n_pred} blocks (vectorized discretization)"
+        )
 
         if return_variance:
             return predictions, variances
         return predictions
 
-    def cross_validate(self) -> Tuple[npt.NDArray[np.float64], Dict[str, float]]:
+    def cross_validate(self) -> tuple[npt.NDArray[np.float64], dict[str, float]]:
         """
         Perform leave-one-out cross-validation
 
@@ -284,8 +291,8 @@ class BlockKriging(BaseKriging):
         predictions = leave_one_out(self, self.x, self.y, self.z)
 
         metrics = {
-            'mse': mean_squared_error(self.z, predictions),
-            'r2': r_squared(self.z, predictions)
+            "mse": mean_squared_error(self.z, predictions),
+            "r2": r_squared(self.z, predictions),
         }
 
         return predictions, metrics
@@ -303,9 +310,7 @@ class SupportCorrection:
 
     @staticmethod
     def regularize_variogram(
-        variogram_point: Callable,
-        block_size: Tuple[float, float],
-        n_disc: int = 10
+        variogram_point: Callable, block_size: tuple[float, float], n_disc: int = 10
     ) -> Callable[[float], float]:
         """
         Regularize point variogram to block variogram
@@ -332,20 +337,20 @@ class SupportCorrection:
             Block variogram function gamma_V(h)
         """
         # Create discretization grid for block
-        disc_x = np.linspace(-block_size[0]/2, block_size[0]/2, n_disc)
-        disc_y = np.linspace(-block_size[1]/2, block_size[1]/2, n_disc)
+        disc_x = np.linspace(-block_size[0] / 2, block_size[0] / 2, n_disc)
+        disc_y = np.linspace(-block_size[1] / 2, block_size[1] / 2, n_disc)
         disc_xx, disc_yy = np.meshgrid(disc_x, disc_y)
         disc_xx = disc_xx.flatten()
         disc_yy = disc_yy.flatten()
         n_points = len(disc_xx)
 
         # Compute gamma_bar(V, V) - internal block variance (vectorized)
-        from ..math.distance import euclidean_distance
+
         dist_matrix_VV = euclidean_distance(disc_xx, disc_yy, disc_xx, disc_yy)
         gamma_matrix_VV = variogram_point(dist_matrix_VV)
         gamma_VV = np.mean(gamma_matrix_VV)
 
-        def block_variogram(h: Union[float, npt.NDArray]) -> Union[float, npt.NDArray]:
+        def block_variogram(h: float | npt.NDArray) -> float | npt.NDArray:
             h = np.asarray(h)
             scalar_input = h.ndim == 0
             h = np.atleast_1d(h)
@@ -357,7 +362,9 @@ class SupportCorrection:
                 disc_xx_shifted = disc_xx + h_val
 
                 # Distance matrix between shifted and original blocks
-                dist_matrix_VVh = euclidean_distance(disc_xx_shifted, disc_yy, disc_xx, disc_yy)
+                dist_matrix_VVh = euclidean_distance(
+                    disc_xx_shifted, disc_yy, disc_xx, disc_yy
+                )
                 gamma_matrix_VVh = variogram_point(dist_matrix_VVh)
                 gamma_VVh = np.mean(gamma_matrix_VVh)
 
@@ -371,9 +378,9 @@ class SupportCorrection:
     @staticmethod
     def dispersion_variance(
         variogram: Callable,
-        domain_size: Tuple[float, float],
-        block_size: Tuple[float, float],
-        n_disc: int = 10
+        domain_size: tuple[float, float],
+        block_size: tuple[float, float],
+        n_disc: int = 10,
     ) -> float:
         """
         Calculate dispersion variance D^2(v/V)
@@ -411,16 +418,18 @@ class SupportCorrection:
         n_domain = len(xx_domain)
 
         # Discretize block
-        disc_x_block = np.linspace(-block_size[0]/2, block_size[0]/2, n_disc)
-        disc_y_block = np.linspace(-block_size[1]/2, block_size[1]/2, n_disc)
+        disc_x_block = np.linspace(-block_size[0] / 2, block_size[0] / 2, n_disc)
+        disc_y_block = np.linspace(-block_size[1] / 2, block_size[1] / 2, n_disc)
         xx_block, yy_block = np.meshgrid(disc_x_block, disc_y_block)
         xx_block = xx_block.flatten()
         yy_block = yy_block.flatten()
         n_block = len(xx_block)
 
         # gamma_bar(V,V) - domain internal variance (vectorized)
-        from ..math.distance import euclidean_distance
-        dist_matrix_domain = euclidean_distance(xx_domain, yy_domain, xx_domain, yy_domain)
+
+        dist_matrix_domain = euclidean_distance(
+            xx_domain, yy_domain, xx_domain, yy_domain
+        )
         gamma_matrix_domain = variogram(dist_matrix_domain)
         gamma_VV = np.mean(gamma_matrix_domain)
 

@@ -9,21 +9,21 @@ from sample data using Matheron's estimator:
 where N(h) is the number of pairs separated by distance h.
 """
 
-from typing import Optional, Tuple
 import numpy as np
 import numpy.typing as npt
 
 from ..core.validators import validate_coordinates, validate_values
-from ..math.distance import euclidean_distance_matrix, directional_distance
+from ..math.distance import directional_distance, euclidean_distance_matrix
+
 
 def experimental_variogram(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 15,
-    maxlag: Optional[float] = None,
-    lag_tol: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    maxlag: float | None = None,
+    lag_tol: float | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate experimental (empirical) variogram
 
@@ -67,7 +67,12 @@ def experimental_variogram(
     # Calculate squared differences
     z_diff_sq = (z[:, np.newaxis] - z[np.newaxis, :]) ** 2
 
-    from ..core.constants import SEMIVARIANCE_FACTOR, MAXLAG_FRACTION, LAG_TOL_FRACTION, SEMIVARIANCE_DIVISOR
+    from ..core.constants import (
+        LAG_TOL_FRACTION,
+        MAXLAG_FRACTION,
+        SEMIVARIANCE_DIVISOR,
+    )
+
     # Determine lag bins
     if maxlag is None:
         maxlag = np.max(dist) * MAXLAG_FRACTION
@@ -101,6 +106,7 @@ def experimental_variogram(
 
     return lag_centers, gamma, n_pairs
 
+
 def experimental_variogram_directional(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
@@ -108,8 +114,8 @@ def experimental_variogram_directional(
     angle: float = 0.0,
     tolerance: float = 22.5,
     n_lags: int = 15,
-    maxlag: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    maxlag: float | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate directional experimental variogram
 
@@ -181,12 +187,13 @@ def experimental_variogram_directional(
 
     return lag_centers, gamma, n_pairs
 
+
 def variogram_cloud(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    maxlag: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+    maxlag: float | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Calculate variogram cloud (all pairwise points)
 
@@ -231,14 +238,15 @@ def variogram_cloud(
 
     return distances, semivariances
 
+
 def robust_variogram(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 15,
-    maxlag: Optional[float] = None,
+    maxlag: float | None = None,
     estimator: str = "cressie",
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate robust experimental variogram
 
@@ -308,12 +316,12 @@ def robust_variogram(
 
             if estimator == "cressie":
                 # γ(h) = [(1/N(h) * Σ|z_i - z_j|^0.5)^4] / [0.457 + 0.494/N(h)]
-                mean_fourth_root = np.mean(z_diff ** 0.5)
-                gamma[i] = (mean_fourth_root ** 4) / (0.457 + 0.494 / n_pairs_lag)
+                mean_fourth_root = np.mean(z_diff**0.5)
+                gamma[i] = (mean_fourth_root**4) / (0.457 + 0.494 / n_pairs_lag)
             elif estimator == "dowd":
                 # γ(h) = 2.198 * median(|z_i - z_j|)^2
                 median_diff = np.median(z_diff)
-                gamma[i] = 2.198 * (median_diff ** 2)
+                gamma[i] = 2.198 * (median_diff**2)
             else:
                 raise ValueError(f"Unknown estimator: {estimator}")
 
@@ -323,13 +331,14 @@ def robust_variogram(
 
     return lag_centers, gamma, n_pairs
 
+
 def madogram(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
- n_lags: int = 15,
- maxlag: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    n_lags: int = 15,
+    maxlag: float | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate Madogram (median-based variogram)
 
@@ -414,22 +423,24 @@ def madogram(
             diffs = z_diff_abs[mask]
 
             from ..core.constants import SEMIVARIANCE_FACTOR
+
             # Madogram: SEMIVARIANCE_FACTOR * [median(|differences|)]^2
             median_diff = np.median(diffs)
-            gamma[i] = SEMIVARIANCE_FACTOR * (median_diff ** 2)
+            gamma[i] = SEMIVARIANCE_FACTOR * (median_diff**2)
             n_pairs[i] = n_pairs_lag
         else:
             n_pairs[i] = 0
 
     return lag_centers, gamma, n_pairs
 
+
 def rodogram(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
- n_lags: int = 15,
- maxlag: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+    n_lags: int = 15,
+    maxlag: float | None = None,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate Rodogram (robust variogram estimator)
 
@@ -519,9 +530,9 @@ def rodogram(
 
             # Rodogram (Cressie-Hawkins):
             # γ(h) = [mean(|diff|^0.5)]^4 / [0.457 + 0.494/N(h)]
-            mean_fourth_root = np.mean(diffs ** 0.5)
+            mean_fourth_root = np.mean(diffs**0.5)
             normalization = 0.457 + 0.494 / n_pairs_lag
-            gamma[i] = (mean_fourth_root ** 4) / normalization
+            gamma[i] = (mean_fourth_root**4) / normalization
             n_pairs[i] = n_pairs_lag
         else:
             n_pairs[i] = 0

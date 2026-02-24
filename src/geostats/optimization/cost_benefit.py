@@ -5,17 +5,21 @@
 Functions for sample size estimation and cost-benefit analysis.
 """
 
+import logging
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
-from typing import Tuple, Optional, Dict, Any
+
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
-import logging
 
 logger = logging.getLogger(__name__)
 
+
 def _rmse(y_true: npt.NDArray[np.float64], y_pred: npt.NDArray[np.float64]) -> float:
- return np.sqrt(np.mean((y_true - y_pred) ** 2))
+    return np.sqrt(np.mean((y_true - y_pred) ** 2))
+
 
 def sample_size_calculator(
     x_initial: npt.NDArray[np.float64],
@@ -23,70 +27,70 @@ def sample_size_calculator(
     z_initial: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     target_rmse: float,
-    x_bounds: Optional[Tuple[float, float]] = None,
-    y_bounds: Optional[Tuple[float, float]] = None,
+    x_bounds: tuple[float, float] | None = None,
+    y_bounds: tuple[float, float] | None = None,
     max_samples: int = 500,
     n_simulations: int = 10,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
-    Estimate the number of samples needed to achieve target accuracy.
+       Estimate the number of samples needed to achieve target accuracy.
 
-    Uses cross-validation to estimate how prediction error decreases
-    with increasing sample size.
+       Uses cross-validation to estimate how prediction error decreases
+       with increasing sample size.
 
-    Parameters
-    ----------
-    x_initial : ndarray
-        Initial X coordinates
-    y_initial : ndarray
-        Initial Y coordinates
-    z_initial : ndarray
-        Initial values
-    variogram_model : VariogramModelBase
-        Fitted variogram model
-    target_rmse : float
-        Target RMSE for predictions
-    x_bounds : tuple, optional
-        Domain bounds for X
-    y_bounds : tuple, optional
-        Domain bounds for Y
-    max_samples : int, default=500
-        Maximum samples to consider
-    n_simulations : int, default=10
-        Number of Monte Carlo simulations
+       Parameters
+       ----------
+       x_initial : ndarray
+           Initial X coordinates
+       y_initial : ndarray
+           Initial Y coordinates
+       z_initial : ndarray
+           Initial values
+       variogram_model : VariogramModelBase
+           Fitted variogram model
+       target_rmse : float
+           Target RMSE for predictions
+       x_bounds : tuple, optional
+           Domain bounds for X
+       y_bounds : tuple, optional
+           Domain bounds for Y
+       max_samples : int, default=500
+           Maximum samples to consider
+       n_simulations : int, default=10
+           Number of Monte Carlo simulations
 
-    Returns
-    -------
-    results : dict
-        Dictionary containing:
-        - 'required_samples': Estimated number of samples needed
-        - 'current_rmse': RMSE with current samples
-        - 'target_rmse': Target RMSE
-        - 'sample_sizes': Array of sample sizes evaluated
-        - 'rmse_values': Corresponding RMSE values
- - 'confidence_90': 90% confidence interval
+       Returns
+       -------
+       results : dict
+           Dictionary containing:
+           - 'required_samples': Estimated number of samples needed
+           - 'current_rmse': RMSE with current samples
+           - 'target_rmse': Target RMSE
+           - 'sample_sizes': Array of sample sizes evaluated
+           - 'rmse_values': Corresponding RMSE values
+    - 'confidence_90': 90% confidence interval
 
- Examples
- --------
- >>> from geostats.optimization import sample_size_calculator
- >>>
- >>> results = sample_size_calculator()
- ... x, y, z,
- ... variogram_model=model,
- ... target_rmse=0.5
- ... )
- >>> logger.info(f"Need approximately {results['required_samples']} samples")
- >>> logger.info(f"Current RMSE: {results['current_rmse']:.3f}")
+    Examples
+    --------
+    >>> from geostats.optimization import sample_size_calculator
+    >>>
+    >>> results = sample_size_calculator()
+    ... x, y, z,
+    ... variogram_model=model,
+    ... target_rmse=0.5
+    ... )
+    >>> logger.info(f"Need approximately {results['required_samples']} samples")
+    >>> logger.info(f"Current RMSE: {results['current_rmse']:.3f}")
 
-    Notes
-    -----
-    This uses a power law relationship: RMSE = a * n^b
-    where n is sample size. Parameters are estimated empirically.
+       Notes
+       -----
+       This uses a power law relationship: RMSE = a * n^b
+       where n is sample size. Parameters are estimated empirically.
 
-    References
-    ----------
-    Webster, R., & Oliver, M. A. (2007). Geostatistics for Environmental
-    Scientists. Wiley.
+       References
+       ----------
+       Webster, R., & Oliver, M. A. (2007). Geostatistics for Environmental
+       Scientists. Wiley.
     """
     n_initial = len(x_initial)
 
@@ -97,7 +101,9 @@ def sample_size_calculator(
         y_bounds = (y_initial.min(), y_initial.max())
 
     # Evaluate different sample sizes
-    sample_sizes = np.linspace(n_initial, min(max_samples, n_initial * 10), 20, dtype=int)
+    sample_sizes = np.linspace(
+        n_initial, min(max_samples, n_initial * 10), 20, dtype=int
+    )
     rmse_values = []
     rmse_std = []
 
@@ -185,15 +191,16 @@ def sample_size_calculator(
     confidence_90 = 1.645 * rmse_std  # 90% CI
 
     return {
-        'required_samples': required_samples,
-        'current_rmse': current_rmse,
-        'target_rmse': target_rmse,
-        'sample_sizes': sample_sizes,
-        'rmse_values': rmse_values,
-        'confidence_90': confidence_90,
-        'power_law_params': {'a': a, 'b': b},
-        'achievable': required_samples <= max_samples,
+        "required_samples": required_samples,
+        "current_rmse": current_rmse,
+        "target_rmse": target_rmse,
+        "sample_sizes": sample_sizes,
+        "rmse_values": rmse_values,
+        "confidence_90": confidence_90,
+        "power_law_params": {"a": a, "b": b},
+        "achievable": required_samples <= max_samples,
     }
+
 
 def cost_benefit_analysis(
     x: npt.NDArray[np.float64],
@@ -203,71 +210,73 @@ def cost_benefit_analysis(
     cost_per_sample: float,
     benefit_per_rmse_reduction: float,
     max_budget: float,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
-    Perform cost-benefit analysis for sampling.
+       Perform cost-benefit analysis for sampling.
 
-    Determines optimal number of samples by balancing cost of sampling
-    against benefit of improved predictions.
+       Determines optimal number of samples by balancing cost of sampling
+       against benefit of improved predictions.
 
-    Parameters
-    ----------
-    x : ndarray
-        Current X coordinates
-    y : ndarray
-        Current Y coordinates
-    z : ndarray
-        Current values
-    variogram_model : VariogramModelBase
-        Fitted variogram model
-    cost_per_sample : float
-        Cost to collect one additional sample
-    benefit_per_rmse_reduction : float
-        Benefit (in same units as cost) per unit RMSE reduction
-    max_budget : float
-        Maximum budget available
+       Parameters
+       ----------
+       x : ndarray
+           Current X coordinates
+       y : ndarray
+           Current Y coordinates
+       z : ndarray
+           Current values
+       variogram_model : VariogramModelBase
+           Fitted variogram model
+       cost_per_sample : float
+           Cost to collect one additional sample
+       benefit_per_rmse_reduction : float
+           Benefit (in same units as cost) per unit RMSE reduction
+       max_budget : float
+           Maximum budget available
 
-    Returns
-    -------
-    results : dict
-        Dictionary containing:
-        - 'optimal_n_samples': Optimal number of samples
-        - 'optimal_total_cost': Total cost at optimum
-        - 'optimal_net_benefit': Net benefit at optimum
-        - 'sample_sizes': Array of sample sizes evaluated
- - 'net_benefits': Net benefit for each sample size
+       Returns
+       -------
+       results : dict
+           Dictionary containing:
+           - 'optimal_n_samples': Optimal number of samples
+           - 'optimal_total_cost': Total cost at optimum
+           - 'optimal_net_benefit': Net benefit at optimum
+           - 'sample_sizes': Array of sample sizes evaluated
+    - 'net_benefits': Net benefit for each sample size
 
- Examples
- --------
- >>> results = cost_benefit_analysis()
- ... x, y, z,
- ... variogram_model=model,
- ... cost_per_sample=100, # $100 per sample
- ... benefit_per_rmse_reduction=1000, # $1000 per RMSE unit reduced
- ... max_budget=10000 # $10,000 budget
- ... )
- >>> logger.info(f"Optimal: {results['optimal_n_samples']} samples")
- >>> logger.info(f"Net benefit: ${results['optimal_net_benefit']:.2f}")
+    Examples
+    --------
+    >>> results = cost_benefit_analysis()
+    ... x, y, z,
+    ... variogram_model=model,
+    ... cost_per_sample=100, # $100 per sample
+    ... benefit_per_rmse_reduction=1000, # $1000 per RMSE unit reduced
+    ... max_budget=10000 # $10,000 budget
+    ... )
+    >>> logger.info(f"Optimal: {results['optimal_n_samples']} samples")
+    >>> logger.info(f"Net benefit: ${results['optimal_net_benefit']:.2f}")
 
-    Notes
-    -----
-    Net benefit = (RMSE_reduction * benefit_per_rmse) - (n_new * cost_per_sample)
+       Notes
+       -----
+       Net benefit = (RMSE_reduction * benefit_per_rmse) - (n_new * cost_per_sample)
 
-    Optimal sample size maximizes net benefit subject to budget constraint.
+       Optimal sample size maximizes net benefit subject to budget constraint.
     """
     n_current = len(x)
     max_samples = int(max_budget / cost_per_sample) + n_current
 
     # Get RMSE curve
     size_results = sample_size_calculator(
-        x, y, z,
+        x,
+        y,
+        z,
         variogram_model=variogram_model,
         target_rmse=0.1,  # Arbitrary target
         max_samples=max_samples,
     )
 
-    sample_sizes = size_results['sample_sizes']
-    rmse_values = size_results['rmse_values']
+    sample_sizes = size_results["sample_sizes"]
+    rmse_values = size_results["rmse_values"]
     baseline_rmse = rmse_values[0]
 
     # Calculate costs and benefits
@@ -292,17 +301,18 @@ def cost_benefit_analysis(
     optimal_net_benefit = net_benefits[optimal_idx]
 
     return {
-        'optimal_n_samples': optimal_n_samples,
-        'optimal_n_additional': int(n_additional[optimal_idx]),
-        'optimal_total_cost': optimal_total_cost,
-        'optimal_net_benefit': optimal_net_benefit,
-        'optimal_rmse': rmse_values[optimal_idx],
-        'baseline_rmse': baseline_rmse,
-        'sample_sizes': sample_sizes,
-        'costs': costs,
-        'benefits': benefits,
-        'net_benefits': net_benefits,
+        "optimal_n_samples": optimal_n_samples,
+        "optimal_n_additional": int(n_additional[optimal_idx]),
+        "optimal_total_cost": optimal_total_cost,
+        "optimal_net_benefit": optimal_net_benefit,
+        "optimal_rmse": rmse_values[optimal_idx],
+        "baseline_rmse": baseline_rmse,
+        "sample_sizes": sample_sizes,
+        "costs": costs,
+        "benefits": benefits,
+        "net_benefits": net_benefits,
     }
+
 
 def estimate_interpolation_error(
     x: npt.NDArray[np.float64],
@@ -312,7 +322,7 @@ def estimate_interpolation_error(
     x_pred: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
     confidence_level: float = 0.95,
-) -> Dict[str, npt.NDArray[np.float64]]:
+) -> dict[str, npt.NDArray[np.float64]]:
     """
     Estimate interpolation error and confidence intervals.
 
@@ -382,6 +392,7 @@ def estimate_interpolation_error(
 
     # Confidence interval multiplier (z-score)
     from scipy.stats import norm
+
     z_score = norm.ppf((1 + confidence_level) / 2)
 
     # Confidence bounds
@@ -393,11 +404,11 @@ def estimate_interpolation_error(
     relative_error = 100 * std_errors / (np.abs(predictions) + 1e-10)
 
     return {
-        'predictions': predictions,
-        'variance': variance,
-        'std_errors': std_errors,
-        'lower_bound': lower_bound,
-        'upper_bound': upper_bound,
-        'relative_error': relative_error,
-        'confidence_level': confidence_level,
+        "predictions": predictions,
+        "variance": variance,
+        "std_errors": std_errors,
+        "lower_bound": lower_bound,
+        "upper_bound": upper_bound,
+        "relative_error": relative_error,
+        "confidence_level": confidence_level,
     }

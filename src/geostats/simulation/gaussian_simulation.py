@@ -21,17 +21,16 @@ Reference:
 - Deutsch & Journel (1998). GSLIB, Chapter 6
 """
 
-from typing import Optional, Tuple
 import numpy as np
 import numpy.typing as npt
 from scipy import stats
 
 from ..algorithms.simple_kriging import SimpleKriging
-from ..core.exceptions import KrigingError
+
 
 def normal_score_transform(
-    data: npt.NDArray[np.float64]
-) -> Tuple[npt.NDArray[np.float64], callable]:
+    data: npt.NDArray[np.float64],
+) -> tuple[npt.NDArray[np.float64], callable]:
     """
     Transform data to standard normal distribution
 
@@ -53,7 +52,7 @@ def normal_score_transform(
     n = len(data)
 
     # Rank the data
-    ranks = stats.rankdata(data, method='average')
+    ranks = stats.rankdata(data, method="average")
 
     # Convert ranks to probabilities (avoid 0 and 1)
     probs = (ranks - 0.5) / n
@@ -67,10 +66,16 @@ def normal_score_transform(
     sorted_transformed = transformed[sorted_indices]
 
     def back_transform(y_gaussian):
-        return np.interp(y_gaussian, sorted_transformed, sorted_data,
-                        left=sorted_data[0], right=sorted_data[-1])
+        return np.interp(
+            y_gaussian,
+            sorted_transformed,
+            sorted_data,
+            left=sorted_data[0],
+            right=sorted_data[-1],
+        )
 
     return transformed, back_transform
+
 
 def sequential_gaussian_simulation(
     x_data: npt.NDArray[np.float64],
@@ -80,7 +85,7 @@ def sequential_gaussian_simulation(
     y_grid: npt.NDArray[np.float64],
     variogram_model,
     n_realizations: int = 1,
-    seed: Optional[int] = None,
+    seed: int | None = None,
 ) -> npt.NDArray[np.float64]:
     """
     Perform Sequential Gaussian Simulation
@@ -133,15 +138,15 @@ def sequential_gaussian_simulation(
             # Simple kriging to get mean and variance
             try:
                 sk = SimpleKriging(
-                    x_sim, y_sim, z_sim,
+                    x_sim,
+                    y_sim,
+                    z_sim,
                     variogram_model=variogram_model,
-                    mean=0.0  # Standard normal has mean 0
+                    mean=0.0,  # Standard normal has mean 0
                 )
 
                 mean, variance = sk.predict(
-                    np.array([x0]),
-                    np.array([y0]),
-                    return_variance=True
+                    np.array([x0]), np.array([y0]), return_variance=True
                 )
 
                 mean = mean[0]
@@ -211,7 +216,7 @@ class SequentialGaussianSimulation:
         x_grid: npt.NDArray[np.float64],
         y_grid: npt.NDArray[np.float64],
         n_realizations: int = 1,
-        seed: Optional[int] = None,
+        seed: int | None = None,
     ) -> npt.NDArray[np.float64]:
         """
         Generate realizations
@@ -250,8 +255,8 @@ class SequentialGaussianSimulation:
         nx: int = 50,
         ny: int = 50,
         n_realizations: int = 1,
-        seed: Optional[int] = None,
-    ) -> Tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
+        seed: int | None = None,
+    ) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
         """
         Simulate on a regular grid
 
@@ -283,9 +288,7 @@ class SequentialGaussianSimulation:
 
         # Simulate
         realizations_flat = self.simulate(
-            x_grid, y_grid,
-            n_realizations=n_realizations,
-            seed=seed
+            x_grid, y_grid, n_realizations=n_realizations, seed=seed
         )
 
         # Reshape to grid
@@ -296,7 +299,7 @@ class SequentialGaussianSimulation:
 
 def get_statistics(
     realizations: npt.NDArray[np.float64],
-) -> Tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]:
+) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]:
     """
     Calculate statistics from multiple realizations
 

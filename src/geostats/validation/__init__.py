@@ -3,16 +3,16 @@ Validation and diagnostics module
 """
 
 from .cross_validation import (
-    leave_one_out,
     k_fold_cross_validation,
+    leave_one_out,
     spatial_cross_validation,
 )
 from .metrics import (
     calculate_metrics,
-    mean_squared_error,
-    root_mean_squared_error,
     mean_absolute_error,
+    mean_squared_error,
     r_squared,
+    root_mean_squared_error,
 )
 
 __all__ = [

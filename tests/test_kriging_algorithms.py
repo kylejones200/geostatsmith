@@ -10,15 +10,16 @@ Tests all major kriging variants with various scenarios:
 - Edge cases and error handling
 """
 
-import pytest
 import numpy as np
-from geostats import kriging, variogram
-from geostats.algorithms import simple_kriging, ordinary_kriging, universal_kriging
-from geostats.models.variogram_models import SphericalModel, ExponentialModel
+import pytest
+
+from geostats import variogram
+from geostats.algorithms import ordinary_kriging, simple_kriging, universal_kriging
 from geostats.core.exceptions import KrigingError
+from geostats.models.variogram_models import SphericalModel
+
 
 class TestSimpleKriging:
-
     def setup_method(self):
         np.random.seed(42)
         self.n = 50
@@ -32,9 +33,7 @@ class TestSimpleKriging:
 
     def test_initialization(self):
         sk = simple_kriging.SimpleKriging(
-        self.x, self.y, self.z,
-        variogram_model=self.model,
-        mean=self.mean
+            self.x, self.y, self.z, variogram_model=self.model, mean=self.mean
         )
         assert sk.n_points == self.n
         assert sk.mean == self.mean
@@ -42,9 +41,7 @@ class TestSimpleKriging:
 
     def test_prediction_single_point(self):
         sk = simple_kriging.SimpleKriging(
-        self.x, self.y, self.z,
-        variogram_model=self.model,
-        mean=self.mean
+            self.x, self.y, self.z, variogram_model=self.model, mean=self.mean
         )
 
         pred, var = sk.predict(np.array([50.0]), np.array([50.0]))
@@ -57,9 +54,7 @@ class TestSimpleKriging:
 
     def test_prediction_multiple_points(self):
         sk = simple_kriging.SimpleKriging(
-        self.x, self.y, self.z,
-        variogram_model=self.model,
-        mean=self.mean
+            self.x, self.y, self.z, variogram_model=self.model, mean=self.mean
         )
 
         x_new = np.array([25, 50, 75])
@@ -74,16 +69,11 @@ class TestSimpleKriging:
 
     def test_prediction_at_data_point(self):
         sk = simple_kriging.SimpleKriging(
-        self.x, self.y, self.z,
-        variogram_model=self.model,
-        mean=self.mean
+            self.x, self.y, self.z, variogram_model=self.model, mean=self.mean
         )
 
         # Predict at first data point
-        pred, var = sk.predict(
-        np.array([self.x[0]]),
-        np.array([self.y[0]])
-        )
+        pred, var = sk.predict(np.array([self.x[0]]), np.array([self.y[0]]))
 
         # Should be close to actual value
         assert abs(pred[0] - self.z[0]) < 0.1
@@ -92,9 +82,7 @@ class TestSimpleKriging:
 
     def test_prediction_returns_mean_at_infinity(self):
         sk = simple_kriging.SimpleKriging(
-        self.x, self.y, self.z,
-        variogram_model=self.model,
-        mean=self.mean
+            self.x, self.y, self.z, variogram_model=self.model, mean=self.mean
         )
 
         # Predict very far from data
@@ -105,9 +93,7 @@ class TestSimpleKriging:
 
     def test_without_variogram_model(self):
         sk = simple_kriging.SimpleKriging(
-        self.x, self.y, self.z,
-        variogram_model=None,
-        mean=self.mean
+            self.x, self.y, self.z, variogram_model=None, mean=self.mean
         )
 
         with pytest.raises(KrigingError):
@@ -117,9 +103,7 @@ class TestSimpleKriging:
             pass
         """Test prediction on regular grid"""
         sk = simple_kriging.SimpleKriging(
-        self.x, self.y, self.z,
-        variogram_model=self.model,
-        mean=self.mean
+            self.x, self.y, self.z, variogram_model=self.model, mean=self.mean
         )
 
         # Create grid
@@ -138,25 +122,26 @@ class TestSimpleKriging:
         Z_pred = pred.reshape(10, 10)
         assert Z_pred.shape == (10, 10)
 
-class TestOrdinaryKrigingExtended:
 
+class TestOrdinaryKrigingExtended:
     def setup_method(self):
         np.random.seed(42)
         self.n = 100
         self.x = np.random.uniform(0, 100, self.n)
         self.y = np.random.uniform(0, 100, self.n)
-        self.z = np.sin(self.x / 20) + np.cos(self.y / 20) + np.random.randn(self.n) * 0.2
+        self.z = (
+            np.sin(self.x / 20) + np.cos(self.y / 20) + np.random.randn(self.n) * 0.2
+        )
 
         # Fit variogram
         lags, gamma, n_pairs = variogram.experimental_variogram(
-        self.x, self.y, self.z, n_lags=15
+            self.x, self.y, self.z, n_lags=15
         )
-        self.model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
+        self.model = variogram.fit_model("spherical", lags, gamma, weights=n_pairs)
 
     def test_weights_sum_to_one(self):
         ok = ordinary_kriging.OrdinaryKriging(
-        self.x, self.y, self.z,
-        variogram_model=self.model
+            self.x, self.y, self.z, variogram_model=self.model
         )
 
         # The weights should sum to 1 due to Lagrange multiplier
@@ -175,8 +160,7 @@ class TestOrdinaryKrigingExtended:
 
         # Should handle duplicates gracefully
         ok = ordinary_kriging.OrdinaryKriging(
-        x_dup, y_dup, z_dup,
-        variogram_model=model
+            x_dup, y_dup, z_dup, variogram_model=model
         )
 
         pred, var = ok.predict(np.array([15.0]), np.array([15.0]))
@@ -191,7 +175,7 @@ class TestOrdinaryKrigingExtended:
         z = np.sin(x / 30) + 0.2 * np.sin(y / 10) + np.random.randn(n) * 0.1
 
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=12)
-        model = variogram.fit_model('exponential', lags, gamma, weights=n_pairs)
+        model = variogram.fit_model("exponential", lags, gamma, weights=n_pairs)
 
         ok = ordinary_kriging.OrdinaryKriging(x, y, z, variogram_model=model)
         pred, var = ok.predict(np.array([50.0]), np.array([25.0]))
@@ -199,8 +183,8 @@ class TestOrdinaryKrigingExtended:
         assert np.isfinite(pred[0])
         assert var[0] > 0
 
-class TestUniversalKrigingExtended:
 
+class TestUniversalKrigingExtended:
     def test_linear_drift_recovery(self):
         np.random.seed(42)
         n = 100
@@ -211,12 +195,10 @@ class TestUniversalKrigingExtended:
         z = 0.5 * x + 0.3 * y + 10 + np.random.randn(n) * 0.5
 
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=15)
-        model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
+        model = variogram.fit_model("spherical", lags, gamma, weights=n_pairs)
 
         uk = universal_kriging.UniversalKriging(
-        x, y, z,
-        variogram_model=model,
-        drift_terms='linear'
+            x, y, z, variogram_model=model, drift_terms="linear"
         )
 
         # Predict on grid
@@ -240,12 +222,10 @@ class TestUniversalKrigingExtended:
         z = 0.01 * x**2 + 0.02 * y**2 + np.random.randn(n) * 0.5
 
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=12)
-        model = variogram.fit_model('gaussian', lags, gamma, weights=n_pairs)
+        model = variogram.fit_model("gaussian", lags, gamma, weights=n_pairs)
 
         uk = universal_kriging.UniversalKriging(
-        x, y, z,
-        variogram_model=model,
-        drift_terms='quadratic'
+            x, y, z, variogram_model=model, drift_terms="quadratic"
         )
 
         pred, var = uk.predict(np.array([25.0]), np.array([25.0]))
@@ -253,8 +233,8 @@ class TestUniversalKrigingExtended:
         assert np.isfinite(pred[0])
         assert var[0] > 0
 
-class TestBlockKriging:
 
+class TestBlockKriging:
     def test_block_kriging_basic(self):
         np.random.seed(42)
         n = 60
@@ -263,15 +243,13 @@ class TestBlockKriging:
         z = np.sin(x / 20) + np.random.randn(n) * 0.3
 
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=12)
-        model = variogram.fit_model('spherical', lags, gamma, weights=n_pairs)
+        model = variogram.fit_model("spherical", lags, gamma, weights=n_pairs)
 
         ok = ordinary_kriging.OrdinaryKriging(x, y, z, variogram_model=model)
 
         # Block prediction
         block_pred, block_var = ok.predict_block(
-        x_block=(40, 60),
-        y_block=(40, 60),
-        discretization=5
+            x_block=(40, 60), y_block=(40, 60), discretization=5
         )
 
         assert np.isfinite(block_pred)
@@ -293,16 +271,14 @@ class TestBlockKriging:
 
         # Block prediction
         block_pred, block_var = ok.predict_block(
-        x_block=(45, 55),
-        y_block=(45, 55),
-        discretization=5
+            x_block=(45, 55), y_block=(45, 55), discretization=5
         )
 
         # Block variance should be smaller (averaging effect)
         assert block_var < point_var[0]
 
-class TestKrigingEdgeCases:
 
+class TestKrigingEdgeCases:
     def test_single_data_point(self):
         x = np.array([50.0])
         y = np.array([50.0])
@@ -319,7 +295,7 @@ class TestKrigingEdgeCases:
 
     def test_collinear_points(self):
         x = np.array([0, 10, 20, 30, 40])
-        y = np.array([0, 0, 0, 0, 0]) # All on same line
+        y = np.array([0, 0, 0, 0, 0])  # All on same line
         z = np.array([1, 2, 3, 4, 5])
 
         model = SphericalModel(nugget=0.1, sill=2.0, range_param=15.0)
@@ -337,7 +313,7 @@ class TestKrigingEdgeCases:
         z = np.random.randn(20)
 
         lags, gamma, n_pairs = variogram.experimental_variogram(x, y, z, n_lags=8)
-        model = variogram.fit_model('exponential', lags, gamma, weights=n_pairs)
+        model = variogram.fit_model("exponential", lags, gamma, weights=n_pairs)
 
         ok = ordinary_kriging.OrdinaryKriging(x, y, z, variogram_model=model)
 
@@ -381,6 +357,7 @@ class TestKrigingEdgeCases:
         # Invalid coordinates
         with pytest.raises((ValueError, Exception)):
             ok.predict(np.array([50.0]), np.array([np.inf]))
+
     """Test kriging variance properties"""
 
     def test_variance_at_data_point_is_small(self):
@@ -430,7 +407,8 @@ class TestKrigingEdgeCases:
         _, var = ok.predict(np.array([500.0]), np.array([500.0]))
 
         # Should approach sill
-        assert var[0] > 0.8 # Close to sill of 1.0
+        assert var[0] > 0.8  # Close to sill of 1.0
+
 
 if __name__ == "__main__":
     pass

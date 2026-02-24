@@ -16,27 +16,28 @@ Reference:
 - Cell declustering and distance-based methods
 """
 
-from typing import Tuple, Optional, Dict
-import numpy as np
-import numpy.typing as npt
-from scipy.spatial import distance_matrix, KDTree
 import logging
 
+import numpy as np
+import numpy.typing as npt
+from scipy.spatial import KDTree
+
 logger = logging.getLogger(__name__)
+
 
 def cell_declustering(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    cell_sizes: Optional[npt.NDArray[np.float64]] = None,
-    n_sizes: int = None
-) -> Tuple[npt.NDArray[np.float64], Dict]:
+    cell_sizes: npt.NDArray[np.float64] | None = None,
+    n_sizes: int = None,
+) -> tuple[npt.NDArray[np.float64], dict]:
     """
     Cell Declustering.
 
     Assigns weights to samples based on spatial distribution to correct for
     preferential clustering. Samples in densely sampled areas get lower weights.
-    
+
     from ..core.constants import DEFAULT_N_CELL_SIZES
     if n_sizes is None:
         n_sizes = DEFAULT_N_CELL_SIZES
@@ -66,6 +67,7 @@ def cell_declustering(
         Dictionary with optimization results
     """
     from ..core.constants import DEFAULT_N_CELL_SIZES
+
     if n_sizes is None:
         n_sizes = DEFAULT_N_CELL_SIZES
     # Validate inputs
@@ -101,7 +103,7 @@ def cell_declustering(
         iy = np.floor((y - y_min) / cell_size).astype(int)
 
         # Create cell IDs
-        cell_ids = ix * 10000 + iy # Simple hash
+        cell_ids = ix * 10000 + iy  # Simple hash
 
         # Count samples per cell
         unique_cells, cell_counts = np.unique(cell_ids, return_counts=True)
@@ -127,18 +129,18 @@ def cell_declustering(
         unweighted_mean = np.mean(z)
         unweighted_var = np.var(z)
         weighted_mean = np.average(z, weights=optimal_weights)
-        weighted_var = np.average((z - weighted_mean)**2, weights=optimal_weights)
+        weighted_var = np.average((z - weighted_mean) ** 2, weights=optimal_weights)
 
         info = {
-        'optimal_cell_size': optimal_cell_size,
-        'cell_sizes_tried': cell_sizes,
-        'variances': np.array(variances),
-        'weights_by_cell_size': weights_all,
-        'unweighted_mean': unweighted_mean,
-        'unweighted_var': unweighted_var,
-        'weighted_mean': weighted_mean,
-        'weighted_var': weighted_var,
-        'mean_difference': weighted_mean - unweighted_mean,
+            "optimal_cell_size": optimal_cell_size,
+            "cell_sizes_tried": cell_sizes,
+            "variances": np.array(variances),
+            "weights_by_cell_size": weights_all,
+            "unweighted_mean": unweighted_mean,
+            "unweighted_var": unweighted_var,
+            "weighted_mean": weighted_mean,
+            "weighted_var": weighted_var,
+            "mean_difference": weighted_mean - unweighted_mean,
         }
 
         return optimal_weights, info
@@ -148,11 +150,11 @@ def polygonal_declustering(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
-    power: float = 2.0
-    ) -> Tuple[npt.NDArray[np.float64], Dict]:
+    power: float = 2.0,
+) -> tuple[npt.NDArray[np.float64], dict]:
     """
     Polygonal (Voronoi-based) Declustering.
- 
+
     Assigns weights based on the area of influence (Voronoi polygon) around
     each sample. Samples in dense areas have smaller polygons and lower weights.
 
@@ -192,18 +194,18 @@ def polygonal_declustering(
     n = len(x)
 
     if n < 2:
-        return np.array([float(n)]), {'method': 'single_point'}
+        return np.array([float(n)]), {"method": "single_point"}
 
     # Build KD-tree for efficient nearest neighbor search
     points = np.column_stack([x, y])
     tree = KDTree(points)
 
     # Find distance to nearest neighbor for each point
-    distances, indices = tree.query(points, k=2) # k=2 includes self
-    nearest_distances = distances[:, 1] # Second closest is nearest neighbor
+    distances, indices = tree.query(points, k=2)  # k=2 includes self
+    nearest_distances = distances[:, 1]  # Second closest is nearest neighbor
 
     # Weight proportional to distance^power (proxy for area)
-    weights = nearest_distances ** power
+    weights = nearest_distances**power
 
     # Normalize to sum to n
     weights = weights * n / np.sum(weights)
@@ -213,21 +215,20 @@ def polygonal_declustering(
     weighted_mean = np.average(z, weights=weights)
 
     info = {
-    'method': 'polygonal',
-    'power': power,
-    'nearest_distances': nearest_distances,
-    'unweighted_mean': unweighted_mean,
-    'weighted_mean': weighted_mean,
-    'mean_difference': weighted_mean - unweighted_mean,
+        "method": "polygonal",
+        "power": power,
+        "nearest_distances": nearest_distances,
+        "unweighted_mean": unweighted_mean,
+        "weighted_mean": weighted_mean,
+        "mean_difference": weighted_mean - unweighted_mean,
     }
 
     return weights, info
 
 
 def detect_clustering(
-    x: npt.NDArray[np.float64],
-    y: npt.NDArray[np.float64]
-    ) -> Dict[str, float]:
+    x: npt.NDArray[np.float64], y: npt.NDArray[np.float64]
+) -> dict[str, float]:
     """
     Detect presence of spatial clustering.
 
@@ -261,10 +262,11 @@ def detect_clustering(
     cv = std_dist / mean_dist if mean_dist > 0 else 0
 
     from ..core.constants import CLUSTERING_CV_THRESHOLD
+
     return {
-    'mean_nn_dist': mean_dist,
-    'std_nn_dist': std_dist,
-    'cv_nn_dist': cv,
-    'clustering_index': cv,
-    'is_likely_clustered': cv > CLUSTERING_CV_THRESHOLD, # Rule of thumb
+        "mean_nn_dist": mean_dist,
+        "std_nn_dist": std_dist,
+        "cv_nn_dist": cv,
+        "clustering_index": cv,
+        "is_likely_clustered": cv > CLUSTERING_CV_THRESHOLD,  # Rule of thumb
     }

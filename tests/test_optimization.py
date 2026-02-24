@@ -7,21 +7,20 @@ Tests:
 - Sample size calculation
 """
 
-import pytest
 import numpy as np
+import pytest
 
-from geostats.optimization.sampling_design import optimal_sampling_design
-from geostats.optimization.cost_benefit import (
-    sample_size_calculator,
-    cost_benefit_analysis,
-)
-from geostats.algorithms.variogram import experimental_variogram
 from geostats.algorithms.fitting import fit_variogram_model
+from geostats.algorithms.variogram import experimental_variogram
 from geostats.models.variogram_models import SphericalModel
+from geostats.optimization.cost_benefit import (
+    cost_benefit_analysis,
+    sample_size_calculator,
+)
+from geostats.optimization.sampling_design import optimal_sampling_design
 
 
 class TestSamplingDesign:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_existing = 20
@@ -100,6 +99,7 @@ class TestSamplingDesign:
 
     def test_optimal_sampling_design_invalid_strategy(self):
         from geostats.optimization.sampling_design import optimal_sampling_design
+
         with pytest.raises(ValueError, match="Unknown strategy"):
             optimal_sampling_design(
                 self.x_existing,
@@ -112,7 +112,6 @@ class TestSamplingDesign:
 
 
 class TestCostBenefit:
-
     def setup_method(self):
         np.random.seed(42)
         self.n_initial = 30

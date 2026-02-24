@@ -7,13 +7,12 @@ Uses Cholesky decomposition of the covariance matrix.
 Based on Zhang, Y. (2010). Course Notes, Section 6.3.1 and 6.3.2
 """
 
-from typing import Optional, Tuple
 import numpy as np
 import numpy.typing as npt
 from scipy import linalg
 
-from ..math.distance import euclidean_distance
 from ..math.matrices import regularize_matrix
+
 
 def cholesky_simulation(
     x: npt.NDArray[np.float64],
@@ -21,7 +20,7 @@ def cholesky_simulation(
     covariance_model,
     n_realizations: int = 1,
     mean: float = 0.0,
-    seed: Optional[int] = None,
+    seed: int | None = None,
 ) -> npt.NDArray[np.float64]:
     """
     Unconditional simulation using Cholesky decomposition
@@ -59,20 +58,23 @@ def cholesky_simulation(
 
     # Build covariance matrix
     from ..math.distance import euclidean_distance_matrix
+
     dist_matrix = euclidean_distance_matrix(x, y)
 
     # Get covariance from model
     # If it's a variogram model, convert to covariance
-    if hasattr(covariance_model, 'get_parameters'):
+    if hasattr(covariance_model, "get_parameters"):
         # It's a variogram model: C(h) = sill - gamma(h)
         params = covariance_model.get_parameters()
-        sill = params.get('sill', 1.0)
+        sill = params.get("sill", 1.0)
         gamma = covariance_model(dist_matrix)
         cov_matrix = sill - gamma
-    elif hasattr(covariance_model, '__call__'):
+    elif hasattr(covariance_model, "__call__"):
         cov_matrix = covariance_model(dist_matrix)
     else:
-        raise ValueError("covariance_model must be callable or have get_parameters method")
+        raise ValueError(
+            "covariance_model must be callable or have get_parameters method"
+        )
 
     # Regularize for numerical stability
     cov_matrix = regularize_matrix(cov_matrix, factor=1e-6)
@@ -107,37 +109,37 @@ def conditional_simulation(
     covariance_model,
     n_realizations: int = 1,
     mean: float = 0.0,
-    seed: Optional[int] = None,
+    seed: int | None = None,
 ) -> npt.NDArray[np.float64]:
     """
-    Conditional simulation using conditioning by kriging
+       Conditional simulation using conditioning by kriging
 
-    Algorithm:
-    1. Generate unconditional simulation at data and simulation locations
-    2. Krige the simulated values at data locations
-    3. Condition: z_cond = z_uncond + (z_data - z_kriged)
+       Algorithm:
+       1. Generate unconditional simulation at data and simulation locations
+       2. Krige the simulated values at data locations
+       3. Condition: z_cond = z_uncond + (z_data - z_kriged)
 
-    Parameters
-    ----------
-    x_data, y_data : np.ndarray
-        Coordinates of conditioning data
-    z_data : np.ndarray
- Values at conditioning locations
- x_sim, y_sim : np.ndarray
- Coordinates where to simulate
- covariance_model
- Covariance model
- n_realizations : int
- Number of realizations
- mean : float
- Mean of the field
- seed : int, optional
- Random seed
+       Parameters
+       ----------
+       x_data, y_data : np.ndarray
+           Coordinates of conditioning data
+       z_data : np.ndarray
+    Values at conditioning locations
+    x_sim, y_sim : np.ndarray
+    Coordinates where to simulate
+    covariance_model
+    Covariance model
+    n_realizations : int
+    Number of realizations
+    mean : float
+    Mean of the field
+    seed : int, optional
+    Random seed
 
-    Returns
-    -------
-    realizations : np.ndarray
-        Conditional realizations, shape (n_realizations, n_sim)
+       Returns
+       -------
+       realizations : np.ndarray
+           Conditional realizations, shape (n_realizations, n_sim)
     """
     if seed is not None:
         np.random.seed(seed)
@@ -152,16 +154,16 @@ def conditional_simulation(
 
     # Generate unconditional simulations at all locations
     uncond_sims = cholesky_simulation(
-        x_all, y_all, covariance_model,
+        x_all,
+        y_all,
+        covariance_model,
         n_realizations=n_realizations,
         mean=mean,
-        seed=seed
+        seed=seed,
     )
 
     # Condition each realization
     conditional_sims = np.zeros((n_realizations, n_sim))
-
-    from ..algorithms.simple_kriging import SimpleKriging
 
     for r in range(n_realizations):
         z_sim_at_data = uncond_sims[r, :n_data]
@@ -170,7 +172,7 @@ def conditional_simulation(
         # For simplicity, use unconditional simulation
         # In practice, would need to properly set up kriging with covariance
         z_uncond_sim = uncond_sims[r, n_data:]
-        
+
         # Simple conditioning: adjust by data mean
         data_mean = np.mean(z_data)
         sim_mean = np.mean(z_uncond_sim)
@@ -178,13 +180,14 @@ def conditional_simulation(
 
     return conditional_sims
 
+
 def turning_bands_simulation(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     variogram_model,
     n_bands: int = 100,
     n_realizations: int = 1,
-    seed: Optional[int] = None,
+    seed: int | None = None,
 ) -> npt.NDArray[np.float64]:
     """
     Turning Bands Method for unconditional simulation
@@ -217,7 +220,7 @@ def turning_bands_simulation(
     realizations = np.zeros((n_realizations, n_points))
 
     for r in range(n_realizations):
-        angles = np.random.uniform(0, 2*np.pi, n_bands)
+        angles = np.random.uniform(0, 2 * np.pi, n_bands)
 
         sim = np.zeros(n_points)
 
@@ -234,8 +237,12 @@ def turning_bands_simulation(
             # Simple 1D correlation structure
             h = np.abs(u_sorted[:, np.newaxis] - u_sorted[np.newaxis, :])
             gamma = variogram_model(h)
-            params = variogram_model.get_parameters() if hasattr(variogram_model, 'get_parameters') else {}
-            sill = params.get('sill', 1.0)
+            params = (
+                variogram_model.get_parameters()
+                if hasattr(variogram_model, "get_parameters")
+                else {}
+            )
+            sill = params.get("sill", 1.0)
             cov = sill - gamma
             cov = regularize_matrix(cov, factor=1e-6)
 

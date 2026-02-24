@@ -7,9 +7,10 @@ Functions for computing confidence intervals and visualization utilities.
 
 import numpy as np
 import numpy.typing as npt
-from typing import Dict, Tuple, Optional
+
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
+
 
 def confidence_intervals(
     x: npt.NDArray[np.float64],
@@ -19,7 +20,7 @@ def confidence_intervals(
     y_pred: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
     confidence_level: float = 0.95,
-) -> Dict[str, npt.NDArray[np.float64]]:
+) -> dict[str, npt.NDArray[np.float64]]:
     """
     Compute confidence intervals for kriging predictions.
 
@@ -86,6 +87,7 @@ def confidence_intervals(
 
     # Confidence interval multiplier
     from scipy.stats import norm
+
     z_score = norm.ppf((1 + confidence_level) / 2)
 
     # Confidence bounds
@@ -94,13 +96,13 @@ def confidence_intervals(
     upper_bound = predictions + margin
 
     return {
-        'predictions': predictions,
-        'variance': variance,
-        'std_errors': std_errors,
-        'lower_bound': lower_bound,
-        'upper_bound': upper_bound,
-        'confidence_level': confidence_level,
-        'z_score': z_score,
+        "predictions": predictions,
+        "variance": variance,
+        "std_errors": std_errors,
+        "lower_bound": lower_bound,
+        "upper_bound": upper_bound,
+        "confidence_level": confidence_level,
+        "z_score": z_score,
     }
 
 
@@ -111,8 +113,8 @@ def prediction_bands(
     x_pred: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
     variogram_model: VariogramModelBase,
-    confidence_levels: Optional[npt.NDArray[np.float64]] = None,
-) -> Dict[str, any]:
+    confidence_levels: npt.NDArray[np.float64] | None = None,
+) -> dict[str, any]:
     """
     Compute multiple prediction bands at different confidence levels.
 
@@ -181,18 +183,18 @@ def prediction_bands(
     from scipy.stats import norm
 
     results = {
-        'predictions': predictions,
-        'std_errors': std_errors,
-        'confidence_levels': confidence_levels,
+        "predictions": predictions,
+        "std_errors": std_errors,
+        "confidence_levels": confidence_levels,
     }
 
     for level in confidence_levels:
         z_score = norm.ppf((1 + level) / 2)
         margin = z_score * std_errors
 
-        results[f'lower_{level}'] = predictions - margin
-        results[f'upper_{level}'] = predictions + margin
-        results[f'z_score_{level}'] = z_score
+        results[f"lower_{level}"] = predictions - margin
+        results[f"upper_{level}"] = predictions + margin
+        results[f"z_score_{level}"] = z_score
 
     return results
 
@@ -206,7 +208,7 @@ def uncertainty_ellipse(
     y_center: float,
     confidence_level: float = 0.95,
     n_points: int = 100,
-) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """
     Compute uncertainty ellipse for a prediction location.
 
@@ -264,22 +266,21 @@ def uncertainty_ellipse(
     )
 
     _, variance = krig.predict(
-        np.array([x_center]),
-        np.array([y_center]),
-        return_variance=True
+        np.array([x_center]), np.array([y_center]), return_variance=True
     )
 
     std = np.sqrt(variance[0])
 
     # Confidence multiplier
     from scipy.stats import norm
+
     z_score = norm.ppf((1 + confidence_level) / 2)
 
     # Radius of ellipse
     radius = z_score * std
 
     # Generate circle (assuming isotropy)
-    theta = np.linspace(0, 2*np.pi, n_points)
+    theta = np.linspace(0, 2 * np.pi, n_points)
     x_ellipse = x_center + radius * np.cos(theta)
     y_ellipse = y_center + radius * np.sin(theta)
 

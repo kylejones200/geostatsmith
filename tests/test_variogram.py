@@ -2,8 +2,8 @@
 Tests for variogram calculation and models
 """
 
-import pytest
 import numpy as np
+
 from geostats import variogram
 from geostats.models import variogram_models
 

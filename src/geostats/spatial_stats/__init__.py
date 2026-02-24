@@ -11,15 +11,15 @@ Reference: Python Recipes for Earth Sciences (Trauth 2024), Section 7.8
 """
 
 from .point_patterns import (
-    nearest_neighbor_analysis,
-    ripley_k_function,
-    quadrat_analysis,
-    spatial_randomness_test,
     clustering_index,
+    nearest_neighbor_analysis,
+    quadrat_analysis,
+    ripley_k_function,
+    spatial_randomness_test,
 )
 from .spatial_autocorrelation import (
-    morans_i,
     gearys_c,
+    morans_i,
 )
 
 __all__ = [
