@@ -41,33 +41,34 @@ __all__ = [
 
 
 def experimental_variogram(
+    x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 15,
     maxlag: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate experimental variogram
 
     Parameters
     ----------
     x, y : array-like
-    Coordinates of sample points
+        Coordinates of sample points
     z : array-like
-    Values at sample points
+        Values at sample points
     n_lags : int, default=15
-    Number of lag bins
+        Number of lag bins
     maxlag : float, optional
-    Maximum lag distance. If None, uses half the maximum distance.
+        Maximum lag distance. If None, uses half the maximum distance.
 
     Returns
     -------
     lags : np.ndarray
-    Lag distances (bin centers)
+        Lag distances (bin centers)
     gamma : np.ndarray
-    Semivariance values
+        Semivariance values
     n_pairs : np.ndarray
-    Number of pairs in each lag bin
+        Number of pairs in each lag bin
 
     Examples
     --------
@@ -82,30 +83,31 @@ def experimental_variogram(
 
 
 def experimental_variogram_directional(
+    x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     angle: float = 0.0,
     tolerance: float = 22.5,
     n_lags: int = 15,
     maxlag: Optional[float] = None,
-    ) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
+) -> Tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.int64]]:
     """
     Calculate directional experimental variogram
 
     Parameters
     ----------
     x, y : array-like
-    Coordinates of sample points
+        Coordinates of sample points
     z : array-like
-    Values at sample points
+        Values at sample points
     angle : float, default=0.0
-    Direction angle in degrees (0=East, 90=North)
+        Direction angle in degrees (0=East, 90=North)
     tolerance : float, default=22.5
-    Angular tolerance in degrees
+        Angular tolerance in degrees
     n_lags : int, default=15
-    Number of lag bins
+        Number of lag bins
     maxlag : float, optional
-    Maximum lag distance
+        Maximum lag distance
 
     Returns
     -------

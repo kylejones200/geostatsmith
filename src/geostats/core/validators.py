@@ -64,18 +64,19 @@ def validate_coordinates(
     return (x, y)
 
 def validate_values(
+    values: npt.NDArray[np.float64],
     n_expected: Optional[int] = None,
     allow_nan: bool = False,
-    ) -> npt.NDArray[np.float64]:
+) -> npt.NDArray[np.float64]:
     """
     Validate values array
  
- Parameters
- ----------
- values : array-like
- Values to validate
- n_expected : int, optional
- Expected number of values
+    Parameters
+    ----------
+    values : array-like
+        Values to validate
+    n_expected : int, optional
+        Expected number of values
     allow_nan : bool
         Whether to allow NaN values
 
