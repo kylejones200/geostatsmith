@@ -1,4 +1,13 @@
-[build-system]
+[build-system    "B904",  # Style/preference
+    "N803",  # Style/preference
+    "F401",  # Style/preference
+    "F4",  # Style/preference
+    "N813",  # Style/preference
+    "F823",  # Style/preference
+    "P007",  # Style/preference
+    "F811",  # Style/preference
+    "E741",  # Style/preference
+]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
