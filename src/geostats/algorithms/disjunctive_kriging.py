@@ -33,10 +33,13 @@ from scipy.special import hermitenorm
 
 from ..core.base import BaseKriging
 from ..core.exceptions import KrigingError
+from ..core.logging_config import get_logger
 from ..core.validators import validate_coordinates, validate_values
 from ..math.distance import euclidean_distance
 from ..math.matrices import regularize_matrix
 from ..math.numerical import cross_validation_score
+
+logger = get_logger(__name__)
 
 
 class DisjunctiveKriging(BaseKriging):
