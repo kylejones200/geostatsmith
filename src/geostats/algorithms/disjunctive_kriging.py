@@ -146,8 +146,8 @@ class DisjunctiveKriging(BaseKriging):
         # Compute coefficients using orthogonality property
         # φᵢ = E[Z * Hᵢ(Y)] / i! (for normalized Hermite polynomials)
         for i in range(self.max_hermite_order + 1):
-            # Evaluate at y_normal
-            h_values = hermite_poly(y_normal)
+            # Evaluate normalized Hermite polynomial of order i at y_normal
+            h_values = hermitenorm(i)(y_normal)
             # Coefficient: average of Z * H_i(Y)
             # Normalized Hermite polynomials have E[H_i^2] = i!
             self.hermite_coeffs[i] = np.mean(sorted_z * h_values) / np.math.factorial(i)

@@ -260,7 +260,6 @@ def cross_validation_fit(
         x_test, y_test, z_test = x[test_idx], y[test_idx], z[test_idx]
 
         # Fit model on training data
-        from ..algorithms.variogram import experimental_variogram
 
         lags, gamma, _ = experimental_variogram(x_train, y_train, z_train)
         model = model_class()
