@@ -372,10 +372,14 @@ class DisjunctiveKriging(BaseKriging):
             # More accurate would require full Hermite expansion of variance
             variances = np.zeros(n_pred)
             for i in range(n_pred):
+                # Get transformed value at prediction point
+                y_pred_normal = y_pred_gaussian[i]
                 dzdY = 0.0
                 for j in range(1, len(self.hermite_coeffs)):
                     # Derivative of H_j is j * H_{j-1}
                     if j > 0:
+                        # Evaluate H_{j-1} at y_pred_normal
+                        h_deriv_values = hermitenorm(j - 1)(y_pred_normal)
                         dzdY += (
                             self.hermite_coeffs[j]
                             * np.math.factorial(j)
