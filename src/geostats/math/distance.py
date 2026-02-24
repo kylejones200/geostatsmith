@@ -7,10 +7,11 @@ import numpy as np
 import numpy.typing as npt
 
 def euclidean_distance(
- y1: npt.NDArray[np.float64],
- x2: npt.NDArray[np.float64],
- y2: npt.NDArray[np.float64],
- z1: Optional[npt.NDArray[np.float64]] = None,
+    x1: npt.NDArray[np.float64],
+    y1: npt.NDArray[np.float64],
+    x2: npt.NDArray[np.float64],
+    y2: npt.NDArray[np.float64],
+    z1: Optional[npt.NDArray[np.float64]] = None,
     z2: Optional[npt.NDArray[np.float64]] = None,
 ) -> npt.NDArray[np.float64]:
     """
