@@ -44,6 +44,21 @@ class VariogramModelBase(BaseModel):
             "range": range_param if range_param is not None else 1.0,
         }
 
+    @property
+    def nugget(self) -> float:
+        """Nugget effect"""
+        return self._parameters["nugget"]
+
+    @property
+    def sill(self) -> float:
+        """Sill (maximum variance)"""
+        return self._parameters["sill"]
+
+    @property
+    def range_param(self) -> float:
+        """Range parameter"""
+        return self._parameters["range"]
+
     @abstractmethod
     def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
