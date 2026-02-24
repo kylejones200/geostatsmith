@@ -32,6 +32,7 @@ from .auto_variogram import (
 
 from .auto_method import (
     auto_interpolate,
+    auto_select_method,  # Alias for backward compatibility
     suggest_method,
 )
 
@@ -41,6 +42,7 @@ logger = logging.getLogger(__name__)
 
 from .hyperparameter_tuning import (
     tune_kriging,
+    tune_variogram_hyperparameters,  # Alias for backward compatibility
     optimize_neighborhood,
 )
 
@@ -51,8 +53,10 @@ __all__ = [
  'auto_fit',
  # Auto method
  'auto_interpolate',
+ 'auto_select_method',  # Alias for backward compatibility
  'suggest_method',
  # Hyperparameter tuning
  'tune_kriging',
+ 'tune_variogram_hyperparameters',  # Alias for backward compatibility
  'optimize_neighborhood',
 ]

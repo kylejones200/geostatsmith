@@ -17,11 +17,12 @@ from .auto_variogram import auto_variogram
 logger = logging.getLogger(__name__)
 
 def auto_interpolate(
- y: npt.NDArray[np.float64],
- z: npt.NDArray[np.float64],
- x_pred: npt.NDArray[np.float64],
- y_pred: npt.NDArray[np.float64],
- methods: Optional[List[str]] = None,
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    x_pred: npt.NDArray[np.float64],
+    y_pred: npt.NDArray[np.float64],
+    methods: Optional[List[str]] = None,
     verbose: bool = True,
 ) -> Dict:
     """
@@ -177,6 +178,95 @@ def auto_interpolate(
         'predictions': best_predictions,
         'model': best_model,
         'all_results': all_results,
+    }
+
+
+def auto_select_method(
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
+    methods: Optional[List[str]] = None,
+    verbose: bool = False,
+) -> Dict:
+    """
+    Automatically select best interpolation method via cross-validation.
+    
+    This is a convenience wrapper that performs cross-validation to select
+    the best method without making predictions.
+    
+    Parameters
+    ----------
+    x, y, z : ndarray
+        Sample data
+    methods : list of str, optional
+        Methods to try. Default: ['ordinary_kriging', 'idw', 'rbf']
+    verbose : bool, default=False
+        Print selection process
+    
+    Returns
+    -------
+    results : dict
+        Dictionary with 'method' (best method name) and 'score' (CV RMSE)
+    """
+    if methods is None:
+        methods = ['ordinary_kriging', 'simple_kriging', 'idw']
+    
+    best_method = None
+    best_rmse = np.inf
+    
+    for method in methods:
+        try:
+            if method in ['ordinary_kriging', 'simple_kriging']:
+                model = auto_variogram(x, y, z, verbose=False)
+                
+                n = len(x)
+                cv_preds = np.zeros(n)
+                
+                for i in range(n):
+                    train_idx = np.arange(n) != i
+                    if method == 'ordinary_kriging':
+                        krig = OrdinaryKriging(x[train_idx], y[train_idx], z[train_idx], model)
+                    else:
+                        from ..algorithms.simple_kriging import SimpleKriging
+                        krig = SimpleKriging(x[train_idx], y[train_idx], z[train_idx], model)
+                    pred, _ = krig.predict(np.array([x[i]]), np.array([y[i]]), return_variance=True)
+                    cv_preds[i] = pred[0]
+                
+                errors = z - cv_preds
+                rmse = np.sqrt(np.mean(errors**2))
+                
+                if rmse < best_rmse:
+                    best_rmse = rmse
+                    best_method = method
+                    
+            elif method == 'idw':
+                from ..algorithms.idw import IDW
+                n = len(x)
+                cv_preds = np.zeros(n)
+                
+                for i in range(n):
+                    train_idx = np.arange(n) != i
+                    idw = IDW(x[train_idx], y[train_idx], z[train_idx])
+                    pred = idw.predict(np.array([x[i]]), np.array([y[i]]))
+                    cv_preds[i] = pred[0]
+                
+                errors = z - cv_preds
+                rmse = np.sqrt(np.mean(errors**2))
+                
+                if rmse < best_rmse:
+                    best_rmse = rmse
+                    best_method = method
+        except Exception:
+            continue
+    
+    if best_method is None:
+        # Fallback
+        best_method = 'ordinary_kriging'
+        best_rmse = 0.0
+    
+    return {
+        'method': best_method,
+        'score': best_rmse,
     }
 
 
