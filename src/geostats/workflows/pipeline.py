@@ -53,7 +53,7 @@ class AnalysisPipeline:
     """
 
     def __init__(self, config: AnalysisConfig):
-        self.logger = self._setup_logging()
+        self.config = config
         self.output_dir = Path(config.project.output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -70,6 +70,9 @@ class AnalysisPipeline:
         self.predictions = None
         self.variance = None
         self.cv_results = None
+        self.start_time: datetime | None = None
+        
+        self.logger = self._setup_logging()
 
     def _setup_logging(self) -> logging.Logger:
         logger = logging.getLogger("geostats.pipeline")
@@ -96,7 +99,8 @@ class AnalysisPipeline:
 
     def run(self):
         self.logger.info(f"=== Starting analysis: {self.config.project.name} ===")
-        start_time = datetime.now()
+        self.start_time = datetime.now()
+        start_time = self.start_time
 
         try:
             if self.config.random_seed is not None:
@@ -736,11 +740,13 @@ class AnalysisPipeline:
             f.write("Data Summary\n")
             f.write(f"{'-' * 70}\n")
             f.write(f"Input: {self.config.data.input_file}\n")
-            f.write(f"Records: {len(self.z)}\n")
-            f.write(f"Variable: {self.config.data.z_column}\n")
-            f.write(f"Range: [{self.z.min():.4f}, {self.z.max():.4f}]\n")
-            f.write(f"Mean: {self.z.mean():.4f}\n")
-            f.write(f"Std: {self.z.std():.4f}\n\n")
+            if self.z is not None:
+                f.write(f"Records: {len(self.z)}\n")
+                f.write(f"Variable: {self.config.data.z_column}\n")
+                z_arr = np.asarray(self.z)
+                f.write(f"Range: [{z_arr.min():.4f}, {z_arr.max():.4f}]\n")
+                f.write(f"Mean: {z_arr.mean():.4f}\n")
+                f.write(f"Std: {z_arr.std():.4f}\n\n")
 
             if self.variogram_model:
                 f.write("Variogram Model\n")
@@ -749,7 +755,7 @@ class AnalysisPipeline:
                     "Model", ""
                 )
                 f.write(f"Type: {model_name}\n")
-                params = self.variogram_model.get_parameters()
+                params = self.variogram_model._parameters  # type: ignore[attr-defined]
                 f.write(f"Nugget: {params.get('nugget', 0):.4f}\n")
                 f.write(f"Sill: {params.get('sill', 0):.4f}\n")
                 f.write(f"Range: {params.get('range', 0):.4f}\n\n")
