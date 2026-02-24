@@ -400,7 +400,8 @@ def plot_variogram_map(
     fig, ax = plt.subplots(figsize=figsize)
 
     # Calculate all pairwise differences
-    euclidean_distance_matrix(x, y)
+    dist_matrix = euclidean_distance_matrix(x, y)
+    max_dist = np.max(dist_matrix)
     dx = x[:, np.newaxis] - x[np.newaxis, :]
     dy = y[:, np.newaxis] - y[np.newaxis, :]
     dz = z[:, np.newaxis] - z[np.newaxis, :]

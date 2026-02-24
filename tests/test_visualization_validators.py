@@ -288,22 +288,22 @@ class TestValidators:
         b = np.array([6, 7, 8])
 
         with pytest.raises((ValueError, AssertionError)):
-            pass
+            validate_array_shapes_match(a, b)
 
     """Tests for parameter validation"""
 
     def test_negative_nugget_rejected(self):
         with pytest.raises((ValueError, AssertionError)):
-            pass
+            validate_array_shapes_match(a, b)
         """Test that negative sill is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            pass
+            validate_array_shapes_match(a, b)
         """Test that negative range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            pass
+            validate_array_shapes_match(a, b)
         """Test that zero range is rejected"""
         with pytest.raises((ValueError, AssertionError)):
-            pass
+            validate_array_shapes_match(a, b)
         """Test that valid parameters are accepted"""
         model = SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
 
@@ -348,8 +348,6 @@ class TestPlotSaving:
             with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
                 tmp_path = tmp.name
             fig.savefig(tmp_path)
-            assert os.path.exists(tmp_path)
-                fig.savefig(tmp_path)
 
                 # Check file was created
                 assert os.path.exists(tmp_path)
