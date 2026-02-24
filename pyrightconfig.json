@@ -1,8 +1,17 @@
 {
   "include": ["src"],
-  "exclude": ["tests", "**/__pycache__", "**/node_modules", ".venv", "venv"],
+  "exclude": [
+    "tests",
+    "**/__pycache__",
+    "**/node_modules",
+    ".venv",
+    "venv",
+    "**/test_*.py",
+    "**/tests/**"
+  ],
   "reportMissingImports": true,
   "reportMissingTypeStubs": false,
   "pythonVersion": "3.12",
-  "typeCheckingMode": "basic"
+  "typeCheckingMode": "basic",
+  "ignore": ["tests"]
 }

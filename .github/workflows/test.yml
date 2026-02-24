@@ -32,7 +32,10 @@ jobs:
         pip install -e ".[dev]"
         pip install pyright || echo "pyright not available"
     - name: Run ./dev/check
-      run: ./dev/check
+      run: |
+        # Ensure pyright respects pyrightconfig.json
+        export PYRIGHT_PYTHON_FORCE_VERSION=latest
+        ./dev/check
 
   # Full test matrix
   test:

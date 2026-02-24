@@ -32,7 +32,10 @@ jobs:
         pip install pyright || echo "pyright not available, will use mypy"
     
     - name: Run Layer 2 checks (./dev/check)
-      run: ./dev/check
+      run: |
+        # Ensure pyright respects pyrightconfig.json
+        export PYRIGHT_PYTHON_FORCE_VERSION=latest
+        ./dev/check
     
     - name: Upload annotations
       if: failure()
