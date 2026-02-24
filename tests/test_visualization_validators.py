@@ -357,9 +357,9 @@ class TestPlotSaving:
                 tmp_path = tmp.name
             fig.savefig(tmp_path)
 
-                # Check file was created
-                assert os.path.exists(tmp_path)
-                assert os.path.getsize(tmp_path) > 0
+            # Check file was created
+            assert os.path.exists(tmp_path)
+            assert os.path.getsize(tmp_path) > 0
         finally:
             # Clean up
             if tmp_path and os.path.exists(tmp_path):
