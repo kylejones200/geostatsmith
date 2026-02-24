@@ -2,11 +2,14 @@
 Grid utility functions for spatial interpolation
 """
 
+from typing import Any
+
 import numpy as np
 import numpy.typing as npt
 
 
 def create_grid(
+    x_min: float,
     x_max: float,
     y_min: float,
     y_max: float,
@@ -44,12 +47,13 @@ def create_grid(
 
     x_grid = np.linspace(x_min, x_max, nx)
     y_grid = np.linspace(y_min, y_max, ny)
-    X, Y = np.meshgrid(x_grid, y_grid)
+    x_mesh, y_mesh = np.meshgrid(x_grid, y_grid)
 
-    return X, Y
+    return x_mesh, y_mesh
 
 
 def interpolate_to_grid(
+    kriging_obj: Any,
     x_min: float,
     x_max: float,
     y_min: float,
@@ -85,11 +89,11 @@ def interpolate_to_grid(
     Kriging variance on grid (if return_variance=True)
     """
     # Create grid
-    X, Y = create_grid(x_min, x_max, y_min, y_max, resolution)
+    x_grid, y_grid = create_grid(x_min, x_max, y_min, y_max, resolution)
 
     # Flatten for prediction
-    x_flat = X.flatten()
-    y_flat = Y.flatten()
+    x_flat = x_grid.flatten()
+    y_flat = y_grid.flatten()
 
     # Predict
     z_flat, v_flat = kriging_obj.predict(
@@ -97,7 +101,7 @@ def interpolate_to_grid(
     )
 
     # Reshape to grid
-    Z = z_flat.reshape(X.shape)
-    V = v_flat.reshape(X.shape) if return_variance else None
+    z_grid = z_flat.reshape(x_grid.shape)
+    v_grid = v_flat.reshape(x_grid.shape) if return_variance else None
 
-    return X, Y, Z, V
+    return x_grid, y_grid, z_grid, v_grid

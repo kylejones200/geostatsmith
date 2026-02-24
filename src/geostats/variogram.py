@@ -257,6 +257,7 @@ def fit_model(
 
 
 def auto_fit(
+    lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
     weights: npt.NDArray[np.float64] | None = None,
     criterion: str = "rmse",

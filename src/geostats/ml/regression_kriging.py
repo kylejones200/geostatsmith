@@ -235,6 +235,7 @@ class RegressionKriging(BaseKriging):
         )
 
         from ..variogram import fit_model
+
         fitted_model = fit_model(
             self.variogram_model_type, lag_dist, semivar, weights=pairs
         )

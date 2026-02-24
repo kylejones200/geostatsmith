@@ -186,9 +186,9 @@ def plot_hillshaded_dem(
 
     # Create meshgrid if needed
     if x.ndim == 1 and y.ndim == 1:
-        X, Y = np.meshgrid(x, y)
+        x_grid, y_grid = np.meshgrid(x, y)
     else:
-        X, Y = x, y
+        x_grid, y_grid = x, y
 
     # Plot hillshade (grayscale base)
     ax.imshow(

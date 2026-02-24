@@ -9,6 +9,7 @@ from scipy import stats
 
 
 def plot_cross_validation(
+    y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
     ax: plt.Axes | None = None,
     **kwargs,
@@ -78,6 +79,7 @@ def plot_cross_validation(
 
 
 def plot_histogram(
+    data: npt.NDArray[np.float64],
     bins: int = 30,
     ax: plt.Axes | None = None,
     fit_normal: bool = True,
@@ -187,6 +189,7 @@ def plot_qq_plot(
 
 
 def plot_residuals(
+    y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
     figsize: tuple = (14, 5),
 ) -> ...:
@@ -337,6 +340,7 @@ def plot_histogram(
 
 
 def plot_obs_vs_pred(
+    observed: npt.NDArray[np.float64],
     predicted: npt.NDArray[np.float64],
     ax: plt.Axes | None = None,
     **kwargs,
@@ -431,6 +435,7 @@ def plot_residuals(
     else:
         fig = ax.figure
 
+    # predicted and residuals are parameters, so they're defined
     ax.scatter(
         predicted, residuals, alpha=0.6, s=60, edgecolors="black", linewidth=1, **kwargs
     )
@@ -447,6 +452,7 @@ def plot_residuals(
 
 
 def plot_residual_histogram(
+    residuals: npt.NDArray[np.float64],
     bins: int = 30,
     ax: plt.Axes | None = None,
     **kwargs,

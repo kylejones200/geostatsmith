@@ -7,6 +7,7 @@ import numpy.typing as npt
 
 
 def mean_squared_error(
+    y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
 ) -> float:
     """Calculate Mean Squared Error"""
@@ -14,6 +15,7 @@ def mean_squared_error(
 
 
 def root_mean_squared_error(
+    y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
 ) -> float:
     """Calculate Root Mean Squared Error"""
@@ -21,6 +23,7 @@ def root_mean_squared_error(
 
 
 def mean_absolute_error(
+    y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
 ) -> float:
     """Calculate Mean Absolute Error"""
@@ -28,6 +31,7 @@ def mean_absolute_error(
 
 
 def r_squared(
+    y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
 ) -> float:
     """Calculate R-squared (coefficient of determination)"""
@@ -41,6 +45,7 @@ def r_squared(
 
 
 def calculate_metrics(
+    y_true: npt.NDArray[np.float64],
     y_pred: npt.NDArray[np.float64],
 ) -> dict[str, float]:
     """
