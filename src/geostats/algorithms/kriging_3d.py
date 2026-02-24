@@ -35,7 +35,9 @@ logger = get_logger(__name__)
 
 
 def validate_coordinates_3d(
-    y: npt.NDArray[np.float64], z: npt.NDArray[np.float64]
+    x: npt.NDArray[np.float64],
+    y: npt.NDArray[np.float64],
+    z: npt.NDArray[np.float64],
 ) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]]:
     """Validate 3D coordinates"""
     x = np.asarray(x, dtype=np.float64).flatten()
