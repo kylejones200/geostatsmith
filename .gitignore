@@ -184,3 +184,4 @@ archive/
 # Experiments folder
 experiments/
 
+.cursor/

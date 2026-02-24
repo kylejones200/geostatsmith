@@ -319,9 +319,7 @@ class TestNetCDFIO:
         self.z = 50 + 0.1 * x_2d + 0.05 * y_2d + np.random.randn(50, 50) * 2
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
-    def teardown_method(self):
-        if self.temp_dir.exists():
-            shutil.rmtree(self.temp_dir)
+    def test_write_read_netcdf(self):
         nc_file = self.temp_dir / "test.nc"
 
         # Write
@@ -343,6 +341,11 @@ class TestNetCDFIO:
         )
 
         np.testing.assert_allclose(z_read, self.z, rtol=1e-5)
+
+    @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
+    def teardown_method(self):
+        if hasattr(self, 'temp_dir') and self.temp_dir.exists():
+            shutil.rmtree(self.temp_dir)
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def test_read_netcdf_file_not_found(self):
