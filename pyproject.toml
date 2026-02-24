@@ -161,7 +161,6 @@ ignore = [
     "F4",    # Flake8 errors (general)
     "N813",  # camelCase (API compatibility)
     "F823",  # Undefined name in __all__ (dynamic exports)
-    "P007",  # Placeholder (intentional)
     "F811",  # Redefined (sometimes needed)
     "E741",  # Ambiguous variable name (common in math)
 ]
