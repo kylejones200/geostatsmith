@@ -27,7 +27,8 @@ class TestDistance:
         x1, y1 = 0.0, 0.0
         x2, y2 = 3.0, 4.0
         dist = euclidean_distance(x1, y1, x2, y2)
-        assert abs(dist - 5.0) < 1e-10
+        # Returns array, extract scalar value
+        assert abs(float(dist) - 5.0) < 1e-10
     
     def test_euclidean_distance_matrix(self):
         """Test Euclidean distance matrix"""

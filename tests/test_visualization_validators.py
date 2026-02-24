@@ -207,7 +207,7 @@ class TestValidators:
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, 3])
 
-        from geostats.validation.validators import validate_coordinates
+        from geostats.core.validators import validate_coordinates
         with pytest.raises((ValueError, AssertionError)):
             validate_coordinates(x, y)
 
@@ -216,7 +216,7 @@ class TestValidators:
         x = np.array([1, 2, np.nan, 4, 5])
         y = np.array([1, 2, 3, 4, 5])
 
-        from geostats.validation.validators import validate_coordinates
+        from geostats.core.validators import validate_coordinates
         with pytest.raises((ValueError, AssertionError)):
             validate_coordinates(x, y)
 
@@ -225,7 +225,7 @@ class TestValidators:
         x = np.array([1, 2, 3, 4, 5])
         y = np.array([1, 2, np.inf, 4, 5])
 
-        from geostats.validation.validators import validate_coordinates
+        from geostats.core.validators import validate_coordinates
         with pytest.raises((ValueError, AssertionError)):
             validate_coordinates(x, y)
 
@@ -234,12 +234,12 @@ class TestValidators:
         z = np.array([10, 20, 30, 40, 50])
 
         # Should not raise error
-        validate_values(z, name="z")
+        validate_values(z)
 
     def test_validate_values_with_nan(self):
         z = np.array([10, 20, np.nan, 40, 50])
 
-        from geostats.validation.validators import validate_values
+        from geostats.core.validators import validate_values
         with pytest.raises((ValueError, AssertionError)):
             validate_values(z)
 
@@ -247,7 +247,7 @@ class TestValidators:
         """Test validation catches infinite values"""
         z = np.array([10, 20, np.inf, 40, 50])
 
-        from geostats.validation.validators import validate_values
+        from geostats.core.validators import validate_values
         with pytest.raises((ValueError, AssertionError)):
             validate_values(z)
 
@@ -261,14 +261,14 @@ class TestValidators:
 
     def test_validate_positive_rejects_negative(self):
         value = -5.0
-        from geostats.validation.validators import validate_positive
+        from geostats.core.validators import validate_positive
         with pytest.raises((ValueError, AssertionError)):
             validate_positive(value)
 
     def test_validate_positive_rejects_zero(self):
         """Test that zero is rejected"""
         value = 0.0
-        from geostats.validation.validators import validate_positive
+        from geostats.core.validators import validate_positive
         with pytest.raises((ValueError, AssertionError)):
             validate_positive(value)
 
