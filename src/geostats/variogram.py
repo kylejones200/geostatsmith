@@ -201,6 +201,7 @@ def robust_variogram(
 
 
 def fit_model(
+    model_type: str,
     lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
     weights: npt.NDArray[np.float64] | None = None,

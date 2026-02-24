@@ -18,6 +18,7 @@ from ..models.variogram_models import (
 
 
 def fit_variogram_model(
+    model: VariogramModelBase,
     lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
     weights: npt.NDArray[np.float64] | None = None,

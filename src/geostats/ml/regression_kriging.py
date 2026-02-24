@@ -234,8 +234,9 @@ class RegressionKriging(BaseKriging):
             self.x, self.y, self.residuals, n_lags=self.n_lags
         )
 
-        fitted_model = fit_variogram_model(
-            lag_dist, semivar, model_type=self.variogram_model_type
+        from ..variogram import fit_model
+        fitted_model = fit_model(
+            self.variogram_model_type, lag_dist, semivar, weights=pairs
         )
 
         params = fitted_model.get_parameters()
