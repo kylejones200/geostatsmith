@@ -150,7 +150,8 @@ select = [
     "SIM", # flake8-simplify
 ]
 ignore = [
-    "E501",  # Line too long (handled by formatter)
+    "E501",
+    "F821",  # False positives from ruff (logger, dynamic imports)  # Line too long (handled by formatter)
     "E203",  # Whitespace before ':' (conflicts with Black)
     "N806",  # Allow uppercase
     "SIM",  # Allow if-else blocks (ternary operators are optional style) variables for mathematical notation (K, X, Y, Z, dzdY are standard in geostatistics)
