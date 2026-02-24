@@ -65,7 +65,7 @@ def plot_cross_validation(
         transform=ax.transAxes,
         fontsize=10,
         verticalalignment="top",
-        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.8),
+        bbox={"boxstyle": "round", "facecolor": "wheat", "alpha": 0.8},
     )
 
     ax.set_xlabel("True Values", fontsize=12)
@@ -135,7 +135,7 @@ def plot_histogram(
         transform=ax.transAxes,
         fontsize=10,
         verticalalignment="top",
-        bbox=dict(boxstyle="round", facecolor="lightblue", alpha=0.8),
+        bbox={"boxstyle": "round", "facecolor": "lightblue", "alpha": 0.8},
     )
 
     ax.set_xlabel("Value", fontsize=12)
@@ -363,7 +363,7 @@ def plot_obs_vs_pred(
         transform=ax.transAxes,
         fontsize=12,
         verticalalignment="top",
-        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5),
+        bbox={"boxstyle": "round", "facecolor": "wheat", "alpha": 0.5},
     )
 
     ax.set_xlabel("Observed", fontsize=12)

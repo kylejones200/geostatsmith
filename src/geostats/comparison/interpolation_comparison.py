@@ -89,10 +89,7 @@ def interpolation_error_metrics(
     ss_res = np.sum(errors**2)
     ss_tot = np.sum((y_true - np.mean(y_true)) ** 2)
 
-    if ss_tot < 1e-10:
-        r2 = np.nan
-    else:
-        r2 = 1.0 - (ss_res / ss_tot)
+    r2 = np.nan if ss_tot < 1e-10 else 1.0 - ss_res / ss_tot
 
     return {
         "mae": mae,

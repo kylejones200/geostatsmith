@@ -72,7 +72,7 @@ def interactive_variogram(
             y=gamma,
             mode="markers",
             name="Experimental",
-            marker=dict(size=10, color="blue"),
+            marker={"size": 10, "color": "blue"},
             hovertemplate="Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>",
         )
     )
@@ -91,7 +91,7 @@ def interactive_variogram(
                 y=gamma_fit,
                 mode="lines",
                 name=f"Fitted ({model_name})",
-                line=dict(color="red", width=2),
+                line={"color": "red", "width": 2},
                 hovertemplate="Lag: %{x:.2f}<br>Gamma: %{y:.4f}<extra></extra>",
             )
         )
@@ -193,7 +193,7 @@ def interactive_variogram_cloud(
             x=dist_pairs,
             y=gamma_pairs,
             mode="markers",
-            marker=dict(size=3, opacity=0.3, color="blue"),
+            marker={"size": 3, "opacity": 0.3, "color": "blue"},
             hovertemplate="Distance: %{x:.2f}<br>Semivariance: %{y:.4f}<extra></extra>",
         )
     )

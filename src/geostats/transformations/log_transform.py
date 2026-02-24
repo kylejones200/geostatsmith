@@ -118,7 +118,7 @@ class LogTransform:
 
             warnings.warn(
                 f"Data contains zeros. Adding epsilon={self.epsilon_fitted:.2e} "
-                "before log transform."
+                "before log transform.", stacklevel=2
             )
 
         self.is_fitted = True

@@ -105,7 +105,6 @@ def sample_size_calculator(
     rmse_std = []
 
     for n in sample_sizes:
-        rmse_sims = []
 
         for _ in range(n_simulations):
             if n <= n_initial:

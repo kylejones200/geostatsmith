@@ -91,7 +91,7 @@ def tune_kriging(
     for i, param_combo in enumerate(param_combinations):
         try:
             test_params = current_params.copy()
-            for param_name, param_value in zip(param_names, param_combo):
+            for param_name, param_value in zip(param_names, param_combo, strict=False):
                 test_params[param_name] = param_value
 
             # Create model instance

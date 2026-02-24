@@ -324,10 +324,7 @@ class SequentialIndicatorSimulation:
             else:
                 p1, p2 = cdf_p[idx - 1], cdf_p[idx]
                 z1, z2 = cdf_z[idx - 1], cdf_z[idx]
-                if p2 > p1:
-                    sampled_value = z1 + (z2 - z1) * (u - p1) / (p2 - p1)
-                else:
-                    sampled_value = z1
+                sampled_value = z1 + (z2 - z1) * (u - p1) / (p2 - p1) if p2 > p1 else z1
 
         return sampled_value
 

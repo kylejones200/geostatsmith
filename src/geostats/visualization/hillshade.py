@@ -199,7 +199,7 @@ def plot_hillshaded_dem(
     im = ax.contourf(x_grid, y_grid, elevation, levels=20, cmap=cmap, alpha=alpha)
 
     # Add colorbar
-    cbar = plt.colorbar(im, ax=ax, label="Elevation", fraction=0.046, pad=0.04)
+    plt.colorbar(im, ax=ax, label="Elevation", fraction=0.046, pad=0.04)
 
     # Labels and title
     ax.set_xlabel("X", fontsize=12)

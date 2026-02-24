@@ -131,7 +131,7 @@ def optimal_sampling_design(
     y_current = y_existing.copy()
     z_current = z_existing.copy()
 
-    for i in range(n_new_samples):
+    for _i in range(n_new_samples):
         if strategy == "variance_reduction":
             # Select location with maximum kriging variance
             _, var = krig.predict(x_candidates, y_candidates, return_variance=True)
@@ -208,7 +208,7 @@ def _compute_space_filling_scores(
     """Compute space-filling scores (minimum distance to existing points)."""
     scores = np.zeros(len(x_candidates))
 
-    for i, (x_cand, y_cand) in enumerate(zip(x_candidates, y_candidates)):
+    for i, (x_cand, y_cand) in enumerate(zip(x_candidates, y_candidates, strict=False)):
         distances = np.sqrt((x_existing - x_cand) ** 2 + (y_existing - y_cand) ** 2)
         # Score is minimum distance (want to maximize this)
         scores[i] = distances.min()
@@ -300,7 +300,7 @@ def infill_sampling(
     x_eval_flat = x_grid.ravel()
     y_eval_flat = y_grid.ravel()
 
-    for i in range(max_samples):
+    for _i in range(max_samples):
         krig = OrdinaryKriging(
             x=x_current,
             y=y_current,
@@ -494,7 +494,7 @@ def adaptive_sampling(
     y_current = y_existing.copy()
     z_current = z_existing.copy()
 
-    for iteration in range(n_iterations):
+    for _iteration in range(n_iterations):
         x_new, y_new = optimal_sampling_design(
             x_current,
             y_current,

@@ -226,7 +226,7 @@ def bootstrap_variogram(
     sills = []
     ranges = []
 
-    for i in range(n_bootstrap):
+    for _i in range(n_bootstrap):
         indices = np.random.choice(n, size=n, replace=True)
         x_boot = x[indices]
         y_boot = y[indices]

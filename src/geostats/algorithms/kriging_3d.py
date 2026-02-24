@@ -162,7 +162,7 @@ class SimpleKriging3D(BaseKriging):
 
         x_new, y_new, z_new = validate_coordinates_3d(x_new, y_new, z_new)
         n_pred = len(x_new)
-        n_data = len(self.x)
+        len(self.x)
 
         from ..core.constants import DEFAULT_SILL_VALUE
 
@@ -349,7 +349,7 @@ class OrdinaryKriging3D(BaseKriging):
 
             # Extract lambda weights
             lambdas = weights[:n_data]
-            mu = weights[n_data]  # Lagrange multiplier
+            weights[n_data]  # Lagrange multiplier
 
             # Prediction
             predictions[i] = np.dot(lambdas, self.values)

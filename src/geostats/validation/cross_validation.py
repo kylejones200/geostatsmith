@@ -121,7 +121,7 @@ def k_fold_cross_validation(
         results = [_process_fold(*args) for args in fold_args]
 
     # Collect results
-    for fold_idx, test_idx, pred, true in results:
+    for _fold_idx, test_idx, pred, true in results:
         all_predictions[test_idx] = pred
         all_true[test_idx] = true
 

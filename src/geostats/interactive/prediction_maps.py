@@ -71,7 +71,7 @@ def interactive_prediction_map(
             z=z_grid,
             colorscale=colorscale,
             name="Predictions",
-            colorbar=dict(title="Value"),
+            colorbar={"title": "Value"},
             hovertemplate="X: %{x:.2f}<br>Y: %{y:.2f}<br>Value: %{z:.3f}<extra></extra>",
         )
     )
@@ -85,13 +85,13 @@ def interactive_prediction_map(
                 y=y_samples,
                 mode="markers",
                 name="Samples",
-                marker=dict(
-                    size=8,
-                    color=z_samples,
-                    colorscale=colorscale,
-                    line=dict(width=1, color="white"),
-                    showscale=False,
-                ),
+                marker={
+                    "size": 8,
+                    "color": z_samples,
+                    "colorscale": colorscale,
+                    "line": {"width": 1, "color": "white"},
+                    "showscale": False,
+                },
                 text=[f"Value: {z:.3f}" for z in z_samples],
                 hovertemplate="X: %{x:.2f}<br>Y: %{y:.2f}<br>%{text}<extra></extra>",
             )
@@ -104,7 +104,7 @@ def interactive_prediction_map(
         template="plotly_white",
         width=800,
         height=600,
-        xaxis=dict(scaleanchor="y", scaleratio=1),
+        xaxis={"scaleanchor": "y", "scaleratio": 1},
     )
 
     return fig
@@ -156,7 +156,7 @@ def interactive_uncertainty_map(
             y=y_grid,
             z=z_grid,
             colorscale="Viridis",
-            colorbar=dict(x=0.45, title="Value"),
+            colorbar={"x": 0.45, "title": "Value"},
             hovertemplate="X: %{x:.2f}<br>Y: %{y:.2f}<br>Value: %{z:.3f}<extra></extra>",
         ),
         row=1,
@@ -171,7 +171,7 @@ def interactive_uncertainty_map(
             y=y_grid,
             z=std_grid,
             colorscale="YlOrRd",
-            colorbar=dict(x=1.02, title="Std. Dev."),
+            colorbar={"x": 1.02, "title": "Std. Dev."},
             hovertemplate="X: %{x:.2f}<br>Y: %{y:.2f}<br>Std: %{z:.3f}<extra></extra>",
         ),
         row=1,
@@ -187,9 +187,9 @@ def interactive_uncertainty_map(
                     x=x_s,
                     y=y_s,
                     mode="markers",
-                    marker=dict(
-                        size=6, color="white", line=dict(width=1, color="black")
-                    ),
+                    marker={
+                        "size": 6, "color": "white", "line": {"width": 1, "color": "black"}
+                    },
                     showlegend=False,
                     hoverinfo="skip",
                 ),
@@ -249,13 +249,13 @@ def interactive_3d_surface(
                 z=z_s,
                 mode="markers",
                 name="Samples",
-                marker=dict(size=5, color="red", symbol="circle"),
+                marker={"size": 5, "color": "red", "symbol": "circle"},
             )
         )
 
     fig.update_layout(
         title=title,
-        scene=dict(xaxis_title="X", yaxis_title="Y", zaxis_title="Value"),
+        scene={"xaxis_title": "X", "yaxis_title": "Y", "zaxis_title": "Value"},
         width=900,
         height=700,
     )

@@ -192,7 +192,7 @@ class NeighborhoodSearch:
         return dist_ellipse <= 1.0
 
     def _octant_search(
-        x0: float,
+        self: float,
         y0: float,
         indices: npt.NDArray[np.int64],
         distances: npt.NDArray[np.float64],
@@ -222,7 +222,7 @@ class NeighborhoodSearch:
             return np.array([], dtype=np.int64), np.array([], dtype=np.float64)
 
         # Calculate angles
-        dx = self.x[indices] - x0
+        dx = self.x[indices] - self
         dy = self.y[indices] - y0
         angles = np.arctan2(dy, dx)  # Range: [-pi, pi]
 

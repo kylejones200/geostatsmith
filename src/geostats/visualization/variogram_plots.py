@@ -116,7 +116,7 @@ def plot_variogram(
         transform=ax.transAxes,
         fontsize=FONTSIZE_DEFAULT,
         verticalalignment="bottom",
-        bbox=dict(boxstyle="round", facecolor="#f0f0f0", alpha=0.8, edgecolor="none"),
+        bbox={"boxstyle": "round", "facecolor": "#f0f0f0", "alpha": 0.8, "edgecolor": "none"},
     )
 
     # Descriptive title replaces axis labels
@@ -325,11 +325,11 @@ def plot_directional_variograms(
     """
     from ..algorithms.variogram import experimental_variogram_directional
 
-    n_dir = len(directions)
+    len(directions)
     fig, axes = plt.subplots(2, 2, figsize=figsize)
     axes = axes.flatten()
 
-    for i, direction in enumerate(directions):
+    for _i, direction in enumerate(directions):
         # Calculate directional variogram
         lags, gamma, n_pairs = experimental_variogram_directional(
             x, y, z, angle=direction, tolerance=tolerance, n_lags=n_lags
@@ -394,7 +394,7 @@ def plot_variogram_map(
     fig, ax = plt.subplots(figsize=figsize)
 
     # Calculate all pairwise differences
-    dist_matrix = euclidean_distance_matrix(x, y)
+    euclidean_distance_matrix(x, y)
     dx = x[:, np.newaxis] - x[np.newaxis, :]
     dy = y[:, np.newaxis] - y[np.newaxis, :]
     dz = z[:, np.newaxis] - z[np.newaxis, :]
@@ -422,7 +422,7 @@ def plot_variogram_map(
     dy_flat = dy[mask]
     semivar_flat = semivar[mask]
 
-    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat):
+    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat, strict=False):
         yi = np.digitize(dy_val, y_bins) - 1
         xi = np.digitize(dx_val, x_bins) - 1
 
@@ -577,7 +577,7 @@ def plot_variogram_model(
         transform=ax.transAxes,
         fontsize=9,
         verticalalignment="bottom",
-        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5),
+        bbox={"boxstyle": "round", "facecolor": "wheat", "alpha": 0.5},
     )
 
     ax.set_xlabel("Distance (h)", fontsize=12)
@@ -660,7 +660,7 @@ def plot_variogram_with_model(
         transform=ax.transAxes,
         fontsize=9,
         verticalalignment="bottom",
-        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5),
+        bbox={"boxstyle": "round", "facecolor": "wheat", "alpha": 0.5},
     )
 
     ax.set_xlabel("Distance (h)", fontsize=12)
@@ -728,7 +728,7 @@ def plot_variogram_map(
     vario_map = np.zeros((2 * n_lags, 2 * n_lags))
     counts = np.zeros((2 * n_lags, 2 * n_lags))
 
-    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat):
+    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat, strict=False):
         yi = np.digitize(dy_val, y_bins) - 1
         xi = np.digitize(dx_val, x_bins) - 1
 

@@ -174,7 +174,7 @@ class OrdinaryKriging(BaseKriging):
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
                         "This may indicate numerical instability or an invalid variogram model. "
                         "Variance will be clamped to 0.",
-                        RuntimeWarning,
+                        RuntimeWarning, stacklevel=2,
                     )
                     variances[i] = ZERO_VALUE
 

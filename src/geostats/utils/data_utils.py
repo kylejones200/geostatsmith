@@ -243,7 +243,7 @@ def compute_data_spacing(
     max_spacing : float
         Maximum distance between any two points
     """
-    n = len(x)
+    len(x)
 
     # Compute all pairwise distances
     from scipy.spatial.distance import pdist, squareform

@@ -105,7 +105,7 @@ def cell_declustering(
         unique_cells, cell_counts = np.unique(cell_ids, return_counts=True)
 
         # Create mapping from cell_id to count
-        cell_count_map = dict(zip(unique_cells, cell_counts))
+        cell_count_map = dict(zip(unique_cells, cell_counts, strict=False))
 
         # Assign weights (1 / samples_in_cell)
         weights = np.array([1.0 / cell_count_map[cell_id] for cell_id in cell_ids])

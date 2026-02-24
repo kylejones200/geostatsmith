@@ -69,7 +69,7 @@ def cholesky_simulation(
         sill = params.get("sill", 1.0)
         gamma = covariance_model(dist_matrix)
         cov_matrix = sill - gamma
-    elif hasattr(covariance_model, "__call__"):
+    elif callable(covariance_model):
         cov_matrix = covariance_model(dist_matrix)
     else:
         raise ValueError(
@@ -150,7 +150,7 @@ def conditional_simulation(
     # Combine data and simulation locations
     x_all = np.concatenate([x_data, x_sim])
     y_all = np.concatenate([y_data, y_sim])
-    n_all = len(x_all)
+    len(x_all)
 
     # Generate unconditional simulations at all locations
     uncond_sims = cholesky_simulation(
@@ -166,7 +166,7 @@ def conditional_simulation(
     conditional_sims = np.zeros((n_realizations, n_sim))
 
     for r in range(n_realizations):
-        z_sim_at_data = uncond_sims[r, :n_data]
+        uncond_sims[r, :n_data]
 
         # Krige the simulated values to get smooth field
         # For simplicity, use unconditional simulation

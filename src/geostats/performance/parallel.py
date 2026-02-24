@@ -112,7 +112,7 @@ def parallel_kriging(
         variance = np.concatenate([r[1] for r in results])
         return predictions, variance
     else:
-        predictions = np.concatenate([r for r in results])
+        predictions = np.concatenate(list(results))
         return predictions, None
 
 

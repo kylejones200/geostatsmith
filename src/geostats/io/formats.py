@@ -322,7 +322,7 @@ def write_geojson(
         )
 
     # Create GeoDataFrame
-    geometry = [Point(xi, yi) for xi, yi in zip(x, y)]
+    geometry = [Point(xi, yi) for xi, yi in zip(x, y, strict=False)]
     gdf = gpd.GeoDataFrame({z_property: z}, geometry=geometry, crs=crs)
 
     # Write to file
@@ -433,7 +433,7 @@ def to_geopandas(
         raise ImportError("geopandas is required. Install with: pip install geopandas")
 
     # Create geometry
-    geometry = [Point(xi, yi) for xi, yi in zip(x, y)]
+    geometry = [Point(xi, yi) for xi, yi in zip(x, y, strict=False)]
 
     # Create data dictionary
     data = {z_col: z}

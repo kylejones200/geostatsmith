@@ -81,7 +81,7 @@ class SimpleKriging(BaseKriging):
         from ..core.constants import DEFAULT_SILL_VALUE
 
         sill = self.variogram_model.parameters.get("sill", DEFAULT_SILL_VALUE)
-        nugget = self.variogram_model.parameters.get("nugget", 0.0)
+        self.variogram_model.parameters.get("nugget", 0.0)
 
         # Convert variogram to covariance: C(h) = sill - gamma(h)
         gamma_matrix = self.variogram_model(dist_matrix)
@@ -171,7 +171,7 @@ class SimpleKriging(BaseKriging):
                     warnings.warn(
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
                         "This may indicate numerical instability. Variance will be clamped to 0.",
-                        RuntimeWarning,
+                        RuntimeWarning, stacklevel=2,
                     )
                     variances[i] = ZERO_VALUE
 

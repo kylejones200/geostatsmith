@@ -239,7 +239,7 @@ class MultiThresholdIndicatorKriging:
     """
 
     def __init__(
-        x: npt.NDArray[np.float64],
+        self: npt.NDArray[np.float64],
         y: npt.NDArray[np.float64],
         z: npt.NDArray[np.float64],
         thresholds: list[float] | None = None,
@@ -259,7 +259,7 @@ class MultiThresholdIndicatorKriging:
         n_thresholds : int
         Number of thresholds if not explicitly provided
         """
-        self.x = np.asarray(x, dtype=np.float64)
+        self.x = np.asarray(self, dtype=np.float64)
         self.y = np.asarray(y, dtype=np.float64)
         self.z = np.asarray(z, dtype=np.float64)
 
@@ -329,7 +329,7 @@ class MultiThresholdIndicatorKriging:
         if not self.kriging_objects:
             raise ValueError("Must call fit() before predict_cdf()")
 
-        n_pred = len(x)
+        len(x)
         cdfs = []
 
         for ik in self.kriging_objects:

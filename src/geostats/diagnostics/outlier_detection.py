@@ -62,7 +62,7 @@ def outlier_analysis(
         tree = cKDTree(np.column_stack([x, y]))
 
         scores = np.zeros(len(z))
-        for i, (x_val, y_val, z_val) in enumerate(zip(x, y, z)):
+        for i, (x_val, y_val, z_val) in enumerate(zip(x, y, z, strict=False)):
             from ..core.constants import SPATIAL_QUERY_K_NEIGHBORS
 
             distances, indices = tree.query(

@@ -329,7 +329,7 @@ class BoxCoxTransform:
         def neg_correlation(lmbda):
             # Correlation with theoretical normal quantiles
             transformed = self._transform_array(data, lmbda)
-            sorted_data = np.sort(transformed)
+            np.sort(transformed)
 
         n = len(sorted_data)
         from ..core.constants import RANK_OFFSET

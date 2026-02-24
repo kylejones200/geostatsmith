@@ -257,7 +257,7 @@ def read_ascii_grid(
     # Read header
     metadata = {}
     with open(filename) as f:
-        for i in range(6):
+        for _i in range(6):
             line = f.readline().strip().split()
             key = line[0].lower()
             value = float(line[1]) if "." in line[1] else int(line[1])

@@ -347,7 +347,7 @@ class DisjunctiveKriging(BaseKriging):
                     continue
 
                 weights = solution[: self.n_points]
-                lagrange = solution[self.n_points]
+                solution[self.n_points]
 
                 # Prediction: Y_hat = sum(lambda_i * Y_i)
                 y_pred_gaussian[i] = np.dot(weights, self.y_gaussian)
@@ -360,7 +360,7 @@ class DisjunctiveKriging(BaseKriging):
 
                         warnings.warn(
                             f"Negative kriging variance {y_var_gaussian[i]:.6e} at prediction point {i}.",
-                            RuntimeWarning,
+                            RuntimeWarning, stacklevel=2,
                         )
                         y_var_gaussian[i] = 0.0
 

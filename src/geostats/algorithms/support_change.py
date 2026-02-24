@@ -339,7 +339,7 @@ class SupportCorrection:
         disc_xx, disc_yy = np.meshgrid(disc_x, disc_y)
         disc_xx = disc_xx.flatten()
         disc_yy = disc_yy.flatten()
-        n_points = len(disc_xx)
+        len(disc_xx)
 
         # Compute gamma_bar(V, V) - internal block variance (vectorized)
 
@@ -412,7 +412,7 @@ class SupportCorrection:
         xx_domain, yy_domain = np.meshgrid(disc_x_domain, disc_y_domain)
         xx_domain = xx_domain.flatten()
         yy_domain = yy_domain.flatten()
-        n_domain = len(xx_domain)
+        len(xx_domain)
 
         # Discretize block
         disc_x_block = np.linspace(-block_size[0] / 2, block_size[0] / 2, n_disc)
@@ -420,7 +420,7 @@ class SupportCorrection:
         xx_block, yy_block = np.meshgrid(disc_x_block, disc_y_block)
         xx_block = xx_block.flatten()
         yy_block = yy_block.flatten()
-        n_block = len(xx_block)
+        len(xx_block)
 
         # gamma_bar(V,V) - domain internal variance (vectorized)
 

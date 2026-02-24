@@ -100,10 +100,7 @@ def comprehensive_validation(
                 n_pairs += 1
                 sum_products += errors[i] * errors[j]
 
-    if n_pairs > 0:
-        morans_i = sum_products / n_pairs / (np.var(errors) + 1e-10)
-    else:
-        morans_i = 0.0
+    morans_i = sum_products / n_pairs / (np.var(errors) + 1e-10) if n_pairs > 0 else 0.0
 
     results["spatial_independence"] = {
         "morans_i": float(morans_i),

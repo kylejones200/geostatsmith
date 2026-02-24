@@ -240,7 +240,7 @@ def load_valley_sample() -> dict[str, Any]:
     # Valley runs diagonally
     # Rotate coordinates
     angle = np.pi / 4
-    X_rot = X_grid * np.cos(angle) + Y_grid * np.sin(angle)
+    X_grid * np.cos(angle) + Y_grid * np.sin(angle)
     Y_rot = -X_grid * np.sin(angle) + Y_grid * np.cos(angle)
 
     # U-shaped valley profile

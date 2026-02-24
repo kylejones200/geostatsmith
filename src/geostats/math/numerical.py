@@ -52,10 +52,7 @@ def weighted_least_squares(
     """
 
     try:
-        if weights is not None:
-            sigma = 1.0 / np.sqrt(weights)
-        else:
-            sigma = None
+        sigma = 1.0 / np.sqrt(weights) if weights is not None else None
 
         params, cov = curve_fit(
             func,

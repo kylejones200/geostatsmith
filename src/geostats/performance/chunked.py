@@ -93,10 +93,7 @@ class ChunkedKriging:
         n_chunks = int(np.ceil(n_pred / chunk_size))
 
         predictions = np.zeros(n_pred)
-        if return_variance:
-            variance = np.zeros(n_pred)
-        else:
-            variance = None
+        variance = np.zeros(n_pred) if return_variance else None
 
         for i in range(n_chunks):
             start_idx = i * chunk_size

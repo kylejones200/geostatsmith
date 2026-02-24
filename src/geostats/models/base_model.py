@@ -147,9 +147,9 @@ class VariogramModelBase(BaseModel):
 
         if weights is not None:
             weights = np.asarray(weights, dtype=np.float64)
-            weights_fit = weights[mask]
+            weights[mask]
         else:
-            weights_fit = None
+            pass
 
         # Initial parameter estimates
         sill_init = np.max(gamma_fit) if len(gamma_fit) > 0 else 1.0

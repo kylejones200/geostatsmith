@@ -53,10 +53,7 @@ def fit_variogram_model(
     lags_clean = lags[valid_mask]
     gamma_clean = gamma[valid_mask]
 
-    if weights is not None:
-        weights_clean = weights[valid_mask]
-    else:
-        weights_clean = None
+    weights_clean = weights[valid_mask] if weights is not None else None
 
     if len(lags_clean) == 0:
         raise FittingError("No valid data points after removing NaN values")
@@ -123,10 +120,7 @@ def automatic_fit(
     lags_clean = lags[valid_mask]
     gamma_clean = gamma[valid_mask]
 
-    if weights is not None:
-        weights_clean = weights[valid_mask]
-    else:
-        weights_clean = None
+    weights_clean = weights[valid_mask] if weights is not None else None
 
     if len(lags_clean) == 0:
         raise FittingError("No valid data points after removing NaN values")

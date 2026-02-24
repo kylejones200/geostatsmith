@@ -161,7 +161,7 @@ def experimental_variogram_directional(
     if maxlag is None:
         maxlag = np.max(dist) / 2.0
 
-    lag_width = maxlag / n_lags
+    maxlag / n_lags
     lag_bins = np.linspace(0, maxlag, n_lags + 1)
     lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
@@ -291,7 +291,7 @@ def robust_variogram(
     if maxlag is None:
         maxlag = np.max(dist) / 2.0
 
-    lag_width = maxlag / n_lags
+    maxlag / n_lags
     lag_bins = np.linspace(0, maxlag, n_lags + 1)
     lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
@@ -400,7 +400,7 @@ def madogram(
     if maxlag is None:
         maxlag = np.max(dist) / 2.0
 
-    lag_width = maxlag / n_lags
+    maxlag / n_lags
     lag_bins = np.linspace(0, maxlag, n_lags + 1)
     lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 
@@ -506,7 +506,7 @@ def rodogram(
     if maxlag is None:
         maxlag = np.max(dist) / 2.0
 
-    lag_width = maxlag / n_lags
+    maxlag / n_lags
     lag_bins = np.linspace(0, maxlag, n_lags + 1)
     lag_centers = (lag_bins[:-1] + lag_bins[1:]) / 2
 

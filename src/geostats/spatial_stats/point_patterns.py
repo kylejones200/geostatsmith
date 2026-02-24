@@ -223,7 +223,7 @@ def ripley_k_function(
 
     For a random pattern: K(d) = π * d^2
 
- 
+
     The L transformation (L = sqrt(K/π) - d) is often used because:
      pass
     - For random pattern: L(d) = 0
@@ -460,10 +460,7 @@ def quadrat_analysis(
 
         # Degrees of freedom = number of categories - 1 - number of estimated parameters (1 for lambda)
         df = len(observed_combined) - 2
-        if df > 0:
-            chi2_p = 1 - chi2.cdf(chi2_stat, df)
-        else:
-            chi2_p = np.nan
+        chi2_p = 1 - chi2.cdf(chi2_stat, df) if df > 0 else np.nan
 
     # Interpretation
     if not np.isnan(vmr):
@@ -477,10 +474,7 @@ def quadrat_analysis(
         pattern = "Unknown"
 
     if not np.isnan(chi2_p):
-        if chi2_p < 0.05:
-            significance = "significant"
-        else:
-            significance = "not significant"
+        significance = "significant" if chi2_p < 0.05 else "not significant"
     else:
         significance = "unknown"
 
