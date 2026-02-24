@@ -415,7 +415,9 @@ def plot_filled_contour(
     ax : matplotlib.Axes
     """
     if ax is None:
-        ax = plt.gca()
+        fig, ax = plt.subplots(figsize=(8, 6))
+    else:
+        fig = ax.figure
 
     # Filled contours
     contour = ax.contourf(X, Y, Z, levels=n_levels, cmap=cmap, **kwargs)
@@ -429,4 +431,4 @@ def plot_filled_contour(
     ax.set_title("Filled Contour Plot", fontsize=14, fontweight="bold")
     ax.set_aspect("equal")
 
-    return ax
+    return fig, ax

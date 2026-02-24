@@ -38,6 +38,16 @@ class VariogramModelBase(BaseModel):
             Range parameter (distance at which correlation becomes negligible)
         """
         super().__init__()
+        from ..core.validators import validate_positive
+        
+        # Validate parameters
+        if nugget < 0:
+            raise ValueError(f"nugget must be non-negative, got {nugget}")
+        if sill is not None and sill < 0:
+            raise ValueError(f"sill must be non-negative, got {sill}")
+        if range_param is not None and range_param <= 0:
+            raise ValueError(f"range_param must be positive, got {range_param}")
+        
         self._parameters = {
             "nugget": max(0.0, nugget),
             "sill": sill if sill is not None else 1.0,
