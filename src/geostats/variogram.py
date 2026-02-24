@@ -37,7 +37,6 @@ from .models.variogram_models import (
     SphericalModel,
 )
 
-logger = logging.getLogger(__name__)
 
 __all__ = [
     "experimental_variogram",

@@ -45,8 +45,6 @@ import logging
 import numpy as np
 import numpy.typing as npt
 
-logger = logging.getLogger(__name__)
-
 from ..algorithms.nested_variogram import NestedVariogram
 from ..core.base import BaseKriging
 from ..core.constants import REGULARIZATION_FACTOR

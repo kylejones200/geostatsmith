@@ -16,7 +16,6 @@ import numpy.typing as npt
 from scipy.interpolate import RBFInterpolator
 from scipy.spatial import Delaunay, cKDTree
 
-logger = logging.getLogger(__name__)
 
 from ..core.logging_config import get_logger
 

@@ -12,7 +12,6 @@ import numpy.typing as npt
 
 from ..models.base_model import VariogramModelBase
 
-logger = logging.getLogger(__name__)
 
 
 def auto_variogram(

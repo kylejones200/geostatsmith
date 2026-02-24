@@ -22,7 +22,6 @@ import numpy as np
 import numpy.typing as npt
 from scipy.spatial import KDTree
 
-logger = logging.getLogger(__name__)
 
 
 def cell_declustering(

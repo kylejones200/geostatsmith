@@ -32,7 +32,6 @@ from .validation_suite import (
     spatial_validation,
 )
 
-logger = logging.getLogger(__name__)
 
 __all__ = [
     "comprehensive_validation",

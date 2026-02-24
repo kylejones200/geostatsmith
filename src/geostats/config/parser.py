@@ -14,7 +14,6 @@ from pydantic import ValidationError
 from ..core.exceptions import GeoStatsError
 from .schemas import AnalysisConfig
 
-logger = logging.getLogger(__name__)
 
 
 class ConfigError(GeoStatsError):

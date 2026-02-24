@@ -53,7 +53,6 @@ import logging
 import numpy as np
 import numpy.typing as npt
 
-logger = logging.getLogger(__name__)
 
 from ..algorithms.fitting import fit_variogram_model
 from ..core.base import BaseKriging

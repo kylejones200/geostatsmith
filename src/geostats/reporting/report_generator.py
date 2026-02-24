@@ -12,7 +12,6 @@ from pathlib import Path
 import numpy as np
 import numpy.typing as npt
 
-logger = logging.getLogger(__name__)
 
 
 def generate_report(

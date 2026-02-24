@@ -16,7 +16,6 @@ import numpy.typing as npt
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
-logger = logging.getLogger(__name__)
 
 # Global cache directory
 CACHE_DIR = Path.home() / ".geostats_cache"

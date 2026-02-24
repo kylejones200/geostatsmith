@@ -20,7 +20,6 @@ from scipy.stats import chi2, poisson
 
 from ..core.logging_config import get_logger
 
-logger = logging.getLogger(__name__)
 
 logger = get_logger(__name__)
 

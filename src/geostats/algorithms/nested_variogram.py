@@ -33,7 +33,6 @@ import numpy as np
 import numpy.typing as npt
 from scipy.optimize import differential_evolution, minimize
 
-logger = logging.getLogger(__name__)
 
 from ..core.logging_config import get_logger
 from ..models.variogram_models import (

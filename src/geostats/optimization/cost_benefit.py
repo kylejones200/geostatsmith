@@ -14,7 +14,6 @@ import numpy.typing as npt
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
-logger = logging.getLogger(__name__)
 
 
 def _rmse(y_true: npt.NDArray[np.float64], y_pred: npt.NDArray[np.float64]) -> float:

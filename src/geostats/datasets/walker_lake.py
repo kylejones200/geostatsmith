@@ -19,7 +19,6 @@ import logging
 
 import numpy as np
 
-logger = logging.getLogger(__name__)
 
 
 def load_walker_lake() -> dict:

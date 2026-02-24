@@ -13,7 +13,6 @@ import numpy.typing as npt
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from .auto_variogram import auto_variogram
 
-logger = logging.getLogger(__name__)
 
 
 def auto_interpolate(

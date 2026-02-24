@@ -24,7 +24,6 @@ from scipy.interpolate import interp1d
 from ..core.constants import RANK_OFFSET
 from ..core.logging_config import get_logger
 
-logger = logging.getLogger(__name__)
 
 logger = get_logger(__name__)
 

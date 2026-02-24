@@ -37,7 +37,6 @@ from .auto_variogram import (
     auto_variogram,
 )
 
-logger = logging.getLogger(__name__)
 
 from .hyperparameter_tuning import (
     optimize_neighborhood,

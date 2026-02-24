@@ -13,7 +13,6 @@ import numpy.typing as npt
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
-logger = logging.getLogger(__name__)
 
 
 class ChunkedKriging:

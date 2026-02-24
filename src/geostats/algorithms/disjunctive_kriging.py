@@ -38,7 +38,6 @@ from ..math.distance import euclidean_distance
 from ..math.matrices import regularize_matrix
 from ..math.numerical import cross_validation_score
 
-logger = logging.getLogger(__name__)
 
 
 class DisjunctiveKriging(BaseKriging):

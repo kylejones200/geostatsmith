@@ -17,7 +17,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..algorithms.variogram import experimental_variogram
 from ..models.base_model import VariogramModelBase
 
-logger = logging.getLogger(__name__)
 
 
 def parallel_kriging(
