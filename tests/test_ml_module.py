@@ -150,12 +150,14 @@ class TestGaussianProcessGeostat:
         z = np.sin(x) + np.cos(y) + np.random.normal(0, 0.1, 30)
 
         gp = GaussianProcessGeostat(kernel='rbf')
-        gp.fit(x, y, z)
+        X = np.column_stack([x, y])
+        gp.fit(X, z)
 
         x_new = np.array([5.0, 6.0, 7.0])
         y_new = np.array([5.0, 6.0, 7.0])
+        X_new = np.column_stack([x_new, y_new])
 
-        predictions, std = gp.predict(x_new, y_new, return_std=True)
+        predictions, std = gp.predict(X_new, return_std=True)
 
         assert predictions.shape == (3,)
         assert std.shape == (3,)
@@ -167,10 +169,13 @@ class TestGaussianProcessGeostat:
         y = np.random.uniform(0, 10, 25)
         z = x + y + np.random.normal(0, 0.1, 25)
 
+        X = np.column_stack([x, y])
         for kernel in ['rbf', 'matern', 'rational_quadratic']:
-            gp.fit(x, y, z)
+            gp = GaussianProcessGeostat(kernel=kernel)
+            gp.fit(X, z)
 
-        predictions, _ = gp.predict(np.array([5.0]), np.array([5.0]), return_std=True)
+        X_new = np.column_stack([np.array([5.0]), np.array([5.0])])
+        predictions, _ = gp.predict(X_new, return_std=True)
         assert predictions.shape == (1,)
 
     def test_hyperparameter_optimization(self):
@@ -179,13 +184,15 @@ class TestGaussianProcessGeostat:
         y = np.random.uniform(0, 10, 40)
         z = np.sin(x) * np.cos(y) + np.random.normal(0, 0.2, 40)
 
-        gp = GaussianProcessGeostat(kernel='rbf', optimize=True)
-        gp.fit(x, y, z)
+        gp = GaussianProcessGeostat(kernel='rbf', optimize_kernel=True)
+        X = np.column_stack([x, y])
+        gp.fit(X, z)
 
         # Check that hyperparameters were optimized
-        assert hasattr(gp, 'kernel_params_')
+        assert hasattr(gp, 'fitted_kernel_')
 
-        predictions, _ = gp.predict(np.array([5.0]), np.array([5.0]), return_std=True)
+        X_new = np.column_stack([np.array([5.0]), np.array([5.0])])
+        predictions, _ = gp.predict(X_new, return_std=True)
         assert predictions.shape == (1,)
 
 class TestEnsembleKriging:
@@ -290,13 +297,14 @@ class TestMLIntegration:
         for method in methods:
             X = np.column_stack([x, y])
             X_new = np.column_stack([x_new, y_new])
-            method.fit(X, z)
-            try:
+            
+            if isinstance(method, GaussianProcessGeostat):
+                method.fit(X, z)
                 pred, _ = method.predict(X_new, return_std=True)
-            except (TypeError, AttributeError):
+            else:
+                method.fit(x, y, z, covariates=covariates)
                 pred, _ = method.predict(x_new, y_new, covariates_new=cov_new)
-
-        predictions.append(pred[0])
+            predictions.append(pred[0])
 
         # All methods should give reasonable predictions
         assert len(predictions) == 3
