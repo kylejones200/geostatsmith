@@ -168,4 +168,4 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Unused imports in __init__.py are fine
-"tests/**" = ["S101", "N806", "E741", "F841", "B017", "B904"]  # Allow common test patterns
+"tests/**" = ["S101", "N806", "E741", "F841", "B017", "B904", "E712", "B007", "B905"]  # Allow common test patterns
