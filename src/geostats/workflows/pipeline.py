@@ -578,43 +578,71 @@ class AnalysisPipeline:
             )
 
         def create_simple_kriging():
+            if self.x is None or self.y is None or self.z is None:
+                raise PipelineError("Data not loaded")
+            x_arr = np.asarray(self.x, dtype=np.float64)
+            y_arr = np.asarray(self.y, dtype=np.float64)
+            z_arr = np.asarray(self.z, dtype=np.float64)
             return SimpleKriging(
-                x=self.x,
-                y=self.y,
-                z=self.z,
+                x=x_arr,
+                y=y_arr,
+                z=z_arr,
                 variogram_model=self.variogram_model,
-                mean=self.z.mean(),
+                mean=float(z_arr.mean()),
             )
 
         def create_universal_kriging():
+            if self.x is None or self.y is None or self.z is None:
+                raise PipelineError("Data not loaded")
+            x_arr = np.asarray(self.x, dtype=np.float64)
+            y_arr = np.asarray(self.y, dtype=np.float64)
+            z_arr = np.asarray(self.z, dtype=np.float64)
             return UniversalKriging(
-                x=self.x,
-                y=self.y,
-                z=self.z,
+                x=x_arr,
+                y=y_arr,
+                z=z_arr,
                 variogram_model=self.variogram_model,
                 drift_terms=self.config.kriging.drift_terms,
             )
 
         def create_indicator_kriging():
+            if self.x is None or self.y is None or self.z is None:
+                raise PipelineError("Data not loaded")
+            x_arr = np.asarray(self.x, dtype=np.float64)
+            y_arr = np.asarray(self.y, dtype=np.float64)
+            z_arr = np.asarray(self.z, dtype=np.float64)
+            thresholds = self.config.kriging.thresholds
+            if not thresholds or len(thresholds) == 0:
+                raise PipelineError("Indicator kriging requires at least one threshold")
+            # Use first threshold for single-threshold indicator kriging
             return IndicatorKriging(
-                x=self.x,
-                y=self.y,
-                z=self.z,
+                x=x_arr,
+                y=y_arr,
+                z=z_arr,
                 variogram_model=self.variogram_model,
-                thresholds=self.config.kriging.thresholds,
+                threshold=float(thresholds[0]),
             )
 
         def create_cokriging():
+            if self.x is None or self.y is None or self.z is None:
+                raise PipelineError("Data not loaded")
             if self.z_secondary is None:
                 raise PipelineError(
                     "Cokriging requires secondary variable (z_secondary)"
                 )
+            x_arr = np.asarray(self.x, dtype=np.float64)
+            y_arr = np.asarray(self.y, dtype=np.float64)
+            z_primary_arr = np.asarray(self.z, dtype=np.float64)
+            z_secondary_arr = np.asarray(self.z_secondary, dtype=np.float64)
             return Cokriging(
-                x=self.x,
-                y=self.y,
-                primary=self.z,
-                secondary=self.z_secondary,
-                variogram_models=[self.variogram_model, self.variogram_model],
+                x_primary=x_arr,
+                y_primary=y_arr,
+                z_primary=z_primary_arr,
+                x_secondary=x_arr,  # Assuming same locations
+                y_secondary=y_arr,
+                z_secondary=z_secondary_arr,
+                variogram_primary=self.variogram_model,
+                variogram_secondary=self.variogram_model,
             )
 
         kriging_factory = {
@@ -660,11 +688,10 @@ class AnalysisPipeline:
         self.logger.info("Performing cross-validation...")
 
         try:
-            from ..validation.cross_validation import leave_one_out_cross_validation
-
-            cv_predictions, cv_metrics = leave_one_out_cross_validation(
-                self.kriging_model
-            )
+            if self.kriging_model is None:
+                raise PipelineError("Kriging model not fitted")
+            
+            cv_predictions, cv_metrics = self.kriging_model.cross_validate()
 
             self.cv_results = {
                 "predicted": cv_predictions,
@@ -729,9 +756,10 @@ class AnalysisPipeline:
 
     def generate_report(self):
         report_path = self.output_dir / "analysis_report.txt"
-        elapsed = (
-            datetime.now() - self.start_time if hasattr(self, "start_time") else "N/A"
-        )
+        if self.start_time is not None:
+            elapsed = datetime.now() - self.start_time
+        else:
+            elapsed = "N/A"
 
         with open(report_path, "w") as f:
             f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
