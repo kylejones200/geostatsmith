@@ -1,4 +1,4 @@
-[build-system    "B904",  # Style/preference
+[build-system]
     "N803",  # Style/preference
     "F401",  # Style/preference
     "F4",  # Style/preference
