@@ -573,8 +573,13 @@ class AnalysisPipeline:
         # Initialize kriging model using factory pattern (Pythonic dispatch)
 
         def create_ordinary_kriging():
+            if self.x is None or self.y is None or self.z is None:
+                raise PipelineError("Data not loaded")
+            x_arr = np.asarray(self.x, dtype=np.float64)
+            y_arr = np.asarray(self.y, dtype=np.float64)
+            z_arr = np.asarray(self.z, dtype=np.float64)
             return OrdinaryKriging(
-                x=self.x, y=self.y, z=self.z, variogram_model=self.variogram_model
+                x=x_arr, y=y_arr, z=z_arr, variogram_model=self.variogram_model
             )
 
         def create_simple_kriging():
