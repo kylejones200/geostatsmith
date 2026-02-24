@@ -642,6 +642,7 @@ def plot_variogram_with_model(
     # Plot experimental points
     if n_pairs is not None:
         from ..core.constants import SCATTER_SIZE_BASE, SCATTER_SIZE_SCALE
+
         sizes = n_pairs / np.max(n_pairs) * SCATTER_SIZE_SCALE + SCATTER_SIZE_BASE
         ax.scatter(
             lags,

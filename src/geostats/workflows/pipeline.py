@@ -71,7 +71,7 @@ class AnalysisPipeline:
         self.variance = None
         self.cv_results = None
         self.start_time: datetime | None = None
-        
+
         self.logger = self._setup_logging()
 
     def _setup_logging(self) -> logging.Logger:

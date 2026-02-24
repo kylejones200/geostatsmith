@@ -344,7 +344,7 @@ class TestNetCDFIO:
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")
     def teardown_method(self):
-        if hasattr(self, 'temp_dir') and self.temp_dir.exists():
+        if hasattr(self, "temp_dir") and self.temp_dir.exists():
             shutil.rmtree(self.temp_dir)
 
     @pytest.mark.skipif(not NETCDF_AVAILABLE, reason="netCDF4 not available")

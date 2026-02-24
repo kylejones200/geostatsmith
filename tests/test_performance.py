@@ -245,6 +245,7 @@ class TestCaching:
     def teardown_method(self):
         if self.temp_cache.exists():
             import shutil
+
             shutil.rmtree(self.temp_cache)
 
     def test_cached_kriging_initialization(self):
