@@ -287,23 +287,31 @@ class TestValidators:
         a = np.array([1, 2, 3, 4, 5])
         b = np.array([6, 7, 8])
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_array_shapes_match(a, b)
 
     """Tests for parameter validation"""
 
     def test_negative_nugget_rejected(self):
-        with pytest.raises((ValueError, AssertionError)):
-            validate_array_shapes_match(a, b)
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
+            SphericalModel(nugget=-0.1, sill=1.0, range_param=30.0)
+
+    def test_negative_sill_rejected(self):
         """Test that negative sill is rejected"""
-        with pytest.raises((ValueError, AssertionError)):
-            validate_array_shapes_match(a, b)
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
+            SphericalModel(nugget=0.1, sill=-1.0, range_param=30.0)
+
+    def test_negative_range_rejected(self):
         """Test that negative range is rejected"""
-        with pytest.raises((ValueError, AssertionError)):
-            validate_array_shapes_match(a, b)
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
+            SphericalModel(nugget=0.1, sill=1.0, range_param=-30.0)
+
+    def test_zero_range_rejected(self):
         """Test that zero range is rejected"""
-        with pytest.raises((ValueError, AssertionError)):
-            validate_array_shapes_match(a, b)
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
+            SphericalModel(nugget=0.1, sill=1.0, range_param=0.0)
+
+    def test_valid_parameters_accepted(self):
         """Test that valid parameters are accepted"""
         model = SphericalModel(nugget=0.1, sill=1.0, range_param=30.0)
 
