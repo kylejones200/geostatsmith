@@ -603,12 +603,13 @@ def plot_variogram_model(
 
 
 def plot_variogram_with_model(
+    lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
     model,
     n_pairs: npt.NDArray[np.int64] | None = None,
     ax: plt.Axes | None = None,
     **kwargs,
-) -> ...:
+) -> tuple[plt.Figure, plt.Axes]:
     """
        Plot experimental variogram with fitted model
 
@@ -633,12 +634,14 @@ def plot_variogram_with_model(
        ax : matplotlib.Axes
     """
     if ax is None:
-        ax = plt.gca()
+        fig, ax = plt.subplots(figsize=(8, 6))
     else:
-        ax = ax  # Use provided axes
+        fig = ax.figure
 
     # Plot experimental points
     if n_pairs is not None:
+        from ..core.constants import SCATTER_SIZE_BASE, SCATTER_SIZE_SCALE
+        sizes = n_pairs / np.max(n_pairs) * SCATTER_SIZE_SCALE + SCATTER_SIZE_BASE
         ax.scatter(
             lags,
             gamma,
@@ -649,6 +652,19 @@ def plot_variogram_with_model(
             linewidth=1,
             label="Experimental",
             zorder=5,
+            **kwargs,
+        )
+    else:
+        ax.scatter(
+            lags,
+            gamma,
+            alpha=0.7,
+            c="blue",
+            edgecolors="black",
+            linewidth=1,
+            label="Experimental",
+            zorder=5,
+            **kwargs,
         )
 
     # Plot model
@@ -664,7 +680,7 @@ def plot_variogram_with_model(
     )
 
     # Add model parameters
-    params = model.parameters
+    params = model._parameters  # type: ignore[attr-defined]
     param_text = "\n".join([f"{k}: {v:.3f}" for k, v in params.items()])
     ax.text(
         0.65,
