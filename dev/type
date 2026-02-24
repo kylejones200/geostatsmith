@@ -51,9 +51,9 @@ else
     # Full type check (Layer 2) - only check source, not tests
     # Tests often use dicts where typed configs are expected, which is fine
     if echo "$TYPE_CMD" | grep -q pyright; then
-        # Explicitly only check src/ - pyrightconfig.json should also exclude tests
-        # But being explicit ensures tests are never checked
-        $TYPE_CMD src/ --exclude "**/tests/**" --exclude "**/test_*.py"
+        # pyright respects pyrightconfig.json which excludes tests
+        # Just check src/ directory - pyrightconfig.json handles exclusions
+        $TYPE_CMD src/
     else
         # For mypy, use a config that's more lenient
         $TYPE_CMD src/
