@@ -8,13 +8,10 @@ for testing interpolation methods and demonstrating concepts.
 Reference: Python Recipes for Earth Sciences (Trauth 2024)
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 
 from ..core.logging_config import get_logger
-
 
 logger = get_logger(__name__)
 

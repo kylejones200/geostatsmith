@@ -5,7 +5,6 @@ Supports YAML and JSON formats with validation.
 """
 
 import json
-import logging
 from pathlib import Path
 
 import yaml

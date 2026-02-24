@@ -15,8 +15,6 @@ Reference:
 - Isaaks, E.H., & Srivastava, R.M. (1989). An Introduction to Applied Geostatistics
 """
 
-import logging
-
 import numpy as np
 
 

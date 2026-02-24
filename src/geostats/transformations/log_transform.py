@@ -16,7 +16,6 @@ Reference:
 - Lognormal transformation for kriging (§2805-2810)
 """
 
-import logging
 import warnings
 
 import numpy as np

@@ -5,8 +5,6 @@ Bootstrap Uncertainty Estimation
 Bootstrap methods for uncertainty quantification.
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 

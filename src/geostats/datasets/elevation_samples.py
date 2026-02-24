@@ -9,14 +9,12 @@ For full ETOPO2022, SRTM, or GTOPO30 data, users should download
 from the official sources.
 """
 
-import logging
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 
 from ..core.logging_config import get_logger
-
 
 logger = get_logger(__name__)
 

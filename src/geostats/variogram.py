@@ -4,7 +4,6 @@ High-level variogram API
 This module provides user-friendly functions for variogram analysis.
 """
 
-import logging
 from typing import Any
 
 import numpy as np
@@ -36,7 +35,6 @@ from .models.variogram_models import (
     PowerModel,
     SphericalModel,
 )
-
 
 __all__ = [
     "experimental_variogram",

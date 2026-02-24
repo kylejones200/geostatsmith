@@ -48,19 +48,15 @@ References:
  and regression-kriging"
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 
+# sklearn is a required dependency
+from sklearn.ensemble import RandomForestRegressor
 
-from ..algorithms.fitting import fit_variogram_model
 from ..core.base import BaseKriging
 from ..core.logging_config import get_logger
 from ..core.validators import validate_coordinates, validate_values
-
-# sklearn is a required dependency
-from sklearn.ensemble import RandomForestRegressor
 
 logger = get_logger(__name__)
 

@@ -5,7 +5,6 @@
 Functions for sample size estimation and cost-benefit analysis.
 """
 
-import logging
 from typing import Any
 
 import numpy as np

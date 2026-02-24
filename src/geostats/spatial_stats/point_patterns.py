@@ -10,7 +10,6 @@ Provides methods for analyzing the spatial distribution of points:
 Reference: Python Recipes for Earth Sciences (Trauth 2024), Section 7.8
 """
 
-import logging
 from typing import Any
 
 import numpy as np
@@ -19,7 +18,6 @@ from scipy.spatial import cKDTree, distance_matrix
 from scipy.stats import chi2, poisson
 
 from ..core.logging_config import get_logger
-
 
 logger = get_logger(__name__)
 

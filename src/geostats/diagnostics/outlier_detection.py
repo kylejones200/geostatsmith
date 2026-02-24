@@ -5,8 +5,6 @@ Outlier Detection and Robust Validation
 Tools for detecting outliers and robust validation.
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 

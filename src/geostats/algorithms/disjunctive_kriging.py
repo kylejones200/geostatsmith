@@ -24,8 +24,6 @@ References:
 - Gaussian anamorphosis: Transformation to standard normal
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 from scipy import stats

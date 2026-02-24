@@ -40,8 +40,6 @@ References:
 - Chilès & Delfiner (2012) §4.3.4: Factorial kriging analysis
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 

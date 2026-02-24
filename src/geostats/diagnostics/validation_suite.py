@@ -5,7 +5,6 @@ Validation Suite
 Complete validation and diagnostic analysis.
 """
 
-import logging
 from typing import Any
 
 import numpy as np

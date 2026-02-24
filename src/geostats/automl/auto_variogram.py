@@ -5,8 +5,6 @@
 Automatically select best variogram model and parameters.
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 

@@ -9,13 +9,10 @@ Provides non-kriging interpolation methods for comparison:
 Reference: Python Recipes for Earth Sciences (Trauth 2024)
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 from scipy.interpolate import RBFInterpolator
 from scipy.spatial import Delaunay, cKDTree
-
 
 from ..core.logging_config import get_logger
 

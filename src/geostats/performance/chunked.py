@@ -5,8 +5,6 @@ Chunked Processing for Large Datasets
 Process large prediction grids in chunks to manage memory usage.
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 

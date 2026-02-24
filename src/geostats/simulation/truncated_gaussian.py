@@ -41,7 +41,6 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-
 from ..core.constants import DEFAULT_N_REALIZATIONS, OPTIMIZATION_SEED
 from ..core.logging_config import get_logger
 
@@ -132,8 +131,6 @@ class TruncatedGaussianSimulation:
         # Transform conditioning data to Gaussian scores
         self._transform_conditioning_data()
 
-        import logging
-
         logger = logging.getLogger(__name__)
         logger.info(
             f"TGS initialized: {len(self.unique_categories)} categories, "
@@ -183,7 +180,6 @@ class TruncatedGaussianSimulation:
 
         where Phi^-1 is the inverse standard normal CDF
         """
-        import logging
 
         from scipy.stats import norm
 
@@ -207,7 +203,6 @@ class TruncatedGaussianSimulation:
         - Draw from truncated normal distribution N(0,1)
         - Truncated to interval corresponding to category c_i
         """
-        import logging
 
         from scipy.stats import truncnorm
 
@@ -297,8 +292,6 @@ class TruncatedGaussianSimulation:
         realizations_categorical = np.zeros(
             (self.config.n_realizations, n_nodes), dtype=np.int32
         )
-
-        import logging
 
         logger = logging.getLogger(__name__)
         logger.info(

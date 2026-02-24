@@ -36,8 +36,6 @@ from .auto_variogram import (
     auto_fit_variogram,  # Alias for backward compatibility
     auto_variogram,
 )
-
-
 from .hyperparameter_tuning import (
     optimize_neighborhood,
     tune_kriging,

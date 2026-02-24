@@ -5,7 +5,6 @@
 Optimize hyperparameters for kriging and related methods.
 """
 
-import logging
 from itertools import product
 
 import numpy as np

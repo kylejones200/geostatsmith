@@ -34,12 +34,10 @@ References:
 - Wolpert, D.H. (1992). "Stacked generalization"
 """
 
-import logging
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-
 
 from ..core.base import BaseKriging
 from ..core.logging_config import get_logger

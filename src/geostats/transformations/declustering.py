@@ -16,8 +16,6 @@ Reference:
 - Cell declustering and distance-based methods
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 from scipy.spatial import KDTree

@@ -39,13 +39,11 @@ References:
   for total air pollution measurements"
 """
 
-import logging
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 
 import numpy as np
 import numpy.typing as npt
-
 
 from ..core.logging_config import get_logger
 

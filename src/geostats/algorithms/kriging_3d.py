@@ -20,11 +20,8 @@ References:
 - Chilès & Delfiner (2012) - Geostatistics (Chapter 3)
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
-
 
 from ..core.base import BaseKriging
 from ..core.constants import REGULARIZATION_FACTOR

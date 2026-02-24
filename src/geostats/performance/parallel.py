@@ -5,7 +5,6 @@ Parallel Processing for Kriging
 Multi-core parallel implementations of kriging and related operations.
 """
 
-import logging
 import multiprocessing
 
 import numpy as np

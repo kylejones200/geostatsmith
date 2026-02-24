@@ -39,21 +39,19 @@ References:
 - Diggle, P.J. & Ribeiro, P.J. (2007). "Model-based Geostatistics". Springer.
 """
 
-import logging
 from collections.abc import Callable
 
 import numpy as np
 import numpy.typing as npt
 
+# sklearn is a required dependency
+from sklearn.base import BaseEstimator, RegressorMixin
 
 from ..core.base import BaseKriging
 from ..core.constants import REGULARIZATION_FACTOR
 from ..core.logging_config import get_logger
 from ..math.distance import euclidean_distance_matrix
 from ..math.matrices import regularize_matrix, solve_kriging_system
-
-# sklearn is a required dependency
-from sklearn.base import BaseEstimator, RegressorMixin
 
 logger = get_logger(__name__)
 

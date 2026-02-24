@@ -5,13 +5,11 @@
 Functions for reading and writing raster data formats (GeoTIFF, ASCII Grid).
 """
 
-import logging
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-
 
 try:
     RASTERIO_AVAILABLE = True

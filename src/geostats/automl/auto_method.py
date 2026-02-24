@@ -5,8 +5,6 @@
 Automatically select best interpolation method.
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 

@@ -26,13 +26,11 @@ References:
 - Wackernagel (2003) - Multivariate Geostatistics
 """
 
-import logging
 from dataclasses import dataclass
 
 import numpy as np
 import numpy.typing as npt
 from scipy.optimize import differential_evolution, minimize
-
 
 from ..core.logging_config import get_logger
 from ..models.variogram_models import (

@@ -36,8 +36,6 @@ Applications in geostatistics:
 - Reduce impact of outliers
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 from scipy import optimize, stats
@@ -45,7 +43,6 @@ from scipy import optimize, stats
 from ..core.constants import EPSILON
 from ..core.exceptions import GeoStatsError
 from ..core.logging_config import get_logger
-
 
 logger = get_logger(__name__)
 

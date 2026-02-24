@@ -5,7 +5,6 @@
 Functions for designing optimal spatial sampling strategies.
 """
 
-import logging
 from typing import Literal
 
 import numpy as np

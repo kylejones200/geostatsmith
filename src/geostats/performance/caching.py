@@ -6,7 +6,6 @@ Cache kriging results to avoid recomputation.
 """
 
 import hashlib
-import logging
 import pickle
 from pathlib import Path
 
@@ -15,7 +14,6 @@ import numpy.typing as npt
 
 from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
-
 
 # Global cache directory
 CACHE_DIR = Path.home() / ".geostats_cache"

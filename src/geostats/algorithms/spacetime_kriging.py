@@ -36,11 +36,8 @@ References:
 - Rouhani, S. & Hall, T.J. (1989). "Space-time kriging of groundwater data"
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
-
 
 from ..core.base import BaseKriging
 from ..core.constants import REGULARIZATION_FACTOR

@@ -32,12 +32,10 @@ References:
 - Journel & Huijbregts (1978) Mining Geostatistics, Chapter VI
 """
 
-import logging
 from collections.abc import Callable
 
 import numpy as np
 import numpy.typing as npt
-
 
 from ..core.base import BaseKriging
 from ..core.constants import REGULARIZATION_FACTOR

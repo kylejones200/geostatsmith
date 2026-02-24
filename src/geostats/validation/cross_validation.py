@@ -5,7 +5,6 @@ Supports parallel processing for k-fold and spatial cross-validation
 using Python's multiprocessing module.
 """
 
-import logging
 from typing import Any
 
 import numpy as np

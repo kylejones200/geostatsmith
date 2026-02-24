@@ -8,14 +8,11 @@ Provides tools for measuring spatial autocorrelation:
 These measure the degree to which nearby locations have similar values.
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 from scipy.spatial import distance_matrix
 
 from ..core.logging_config import get_logger
-
 
 logger = get_logger(__name__)
 

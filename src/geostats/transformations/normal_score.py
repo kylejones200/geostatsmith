@@ -14,8 +14,6 @@ Reference:
 - Used for Sequential Gaussian Simulation (SGS)
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 from scipy import stats
@@ -23,7 +21,6 @@ from scipy.interpolate import interp1d
 
 from ..core.constants import RANK_OFFSET
 from ..core.logging_config import get_logger
-
 
 logger = get_logger(__name__)
 

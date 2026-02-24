@@ -54,7 +54,6 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-
 from ..core.constants import DEFAULT_N_REALIZATIONS, OPTIMIZATION_SEED
 from ..core.logging_config import get_logger
 
@@ -172,8 +171,6 @@ class PlurigaussianSimulation:
         # Transform conditioning data to Gaussian fields
         self._transform_conditioning_data()
 
-        import logging
-
         logger = logging.getLogger(__name__)
         logger.info(
             f"Plurigaussian Simulation initialized: "
@@ -191,8 +188,6 @@ class PlurigaussianSimulation:
             self.unique_categories = unique_cats
 
         self.n_categories = len(self.unique_categories)
-
-        import logging
 
         logger = logging.getLogger(__name__)
         logger.debug(f"Categories: {self.unique_categories}")
@@ -292,8 +287,6 @@ class PlurigaussianSimulation:
         realizations_categorical = np.zeros(
             (self.config.n_realizations, n_nodes), dtype=np.int32
         )
-
-        import logging
 
         logger = logging.getLogger(__name__)
         logger.info(

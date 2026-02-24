@@ -22,8 +22,6 @@ This extends Universal Kriging to handle arbitrary spatial covariates beyond
 just polynomial functions of coordinates.
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 

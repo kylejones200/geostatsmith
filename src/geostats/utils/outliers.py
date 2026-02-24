@@ -17,8 +17,6 @@ References:
 - geokniga §2.3: "Data quality and outlier identification"
 """
 
-import logging
-
 import numpy as np
 import numpy.typing as npt
 
