@@ -16,7 +16,7 @@ from geostats.models.variogram_models import (
  SphericalModel, ExponentialModel, GaussianModel,
  LinearModel, PowerModel
 )
-from geostats.datasets import walker_lake
+from geostats.datasets.walker_lake import load_walker_lake
 
 class TestVariogramFitting:
 
@@ -225,7 +225,7 @@ class TestFittingMethods:
 class TestWalkerLakeDataset:
 
     def test_load_dataset(self):
-        data = walker_lake.load_data()
+        data = load_walker_lake()
 
         assert data is not None
         assert 'x' in data or 'X' in data
@@ -233,14 +233,14 @@ class TestWalkerLakeDataset:
         assert 'V' in data or 'value' in data
 
     def test_dataset_shape(self):
-        data = walker_lake.load_data()
+        data = load_walker_lake()
 
         # Should have at least 100 points (Walker Lake is a standard dataset)
         n_points = len(data.get('x', data.get('X', [])))
         assert n_points > 50
 
     def test_dataset_values_valid(self):
-        data = walker_lake.load_data()
+        data = load_walker_lake()
 
         x_key = 'x' if 'x' in data else 'X'
         y_key = 'y' if 'y' in data else 'Y'
@@ -259,7 +259,7 @@ class TestWalkerLakeDataset:
         assert all(v >= 0)
 
     def test_dataset_coordinates_reasonable(self):
-        data = walker_lake.load_data()
+        data = load_walker_lake()
 
         x_key = 'x' if 'x' in data else 'X'
         y_key = 'y' if 'y' in data else 'Y'
