@@ -376,10 +376,11 @@ class TestKrigingEdgeCases:
 
         # NaN coordinates
         with pytest.raises((ValueError, Exception)):
-            pass
+            ok.predict(np.array([np.nan]), np.array([50.0]))
 
+        # Invalid coordinates
         with pytest.raises((ValueError, Exception)):
-            pass
+            ok.predict(np.array([50.0]), np.array([np.inf]))
     """Test kriging variance properties"""
 
     def test_variance_at_data_point_is_small(self):
