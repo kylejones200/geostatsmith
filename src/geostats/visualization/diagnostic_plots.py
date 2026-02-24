@@ -84,7 +84,7 @@ def plot_histogram(
     ax: plt.Axes | None = None,
     fit_normal: bool = True,
     **kwargs,
-) -> ...:
+) -> plt.Axes:
     """
         Plot histogram with optional normal distribution overlay
 

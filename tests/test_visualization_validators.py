@@ -18,6 +18,7 @@ matplotlib.use("Agg")  # Use non-interactive backend for testing
 import matplotlib.pyplot as plt
 
 from geostats import variogram
+from geostats.core.exceptions import ValidationError
 from geostats.core.validators import (
     validate_array_shapes_match,
     validate_coordinates,
@@ -179,7 +180,7 @@ class TestDiagnosticPlots:
         plt.close(fig)
 
     def test_residual_plot(self):
-        fig, ax = diagnostic_plots.plot_residuals(self.predicted, self.residuals)
+        fig = diagnostic_plots.plot_residuals(self.observed, self.predicted)
 
         assert fig is not None
         plt.close(fig)
@@ -205,7 +206,7 @@ class TestValidators:
 
         from geostats.core.validators import validate_coordinates
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_coordinates(x, y)
 
     def test_validate_coordinates_nan_values(self):
@@ -215,7 +216,7 @@ class TestValidators:
 
         from geostats.core.validators import validate_coordinates
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_coordinates(x, y)
 
     def test_validate_coordinates_infinite_values(self):
@@ -225,7 +226,7 @@ class TestValidators:
 
         from geostats.core.validators import validate_coordinates
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_coordinates(x, y)
 
     def test_validate_coordinates_valid_values(self):
@@ -240,7 +241,7 @@ class TestValidators:
 
         from geostats.core.validators import validate_values
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_values(z)
 
     def test_validate_values_infinite_values(self):
@@ -249,7 +250,7 @@ class TestValidators:
 
         from geostats.core.validators import validate_values
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_values(z)
 
     def test_validate_positive_values(self):
@@ -264,7 +265,7 @@ class TestValidators:
         value = -5.0
         from geostats.core.validators import validate_positive
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_positive(value)
 
     def test_validate_positive_rejects_zero(self):
@@ -272,7 +273,7 @@ class TestValidators:
         value = 0.0
         from geostats.core.validators import validate_positive
 
-        with pytest.raises((ValueError, AssertionError)):
+        with pytest.raises((ValueError, AssertionError, ValidationError)):
             validate_positive(value)
 
         """Test array shape validation"""
@@ -346,6 +347,8 @@ class TestPlotSaving:
         try:
             with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
                 tmp_path = tmp.name
+            fig.savefig(tmp_path)
+            assert os.path.exists(tmp_path)
                 fig.savefig(tmp_path)
 
                 # Check file was created

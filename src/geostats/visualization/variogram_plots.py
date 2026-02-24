@@ -368,12 +368,13 @@ def plot_directional_variograms(
 
 
 def plot_variogram_map(
+    x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],
     n_lags: int = 10,
     lag_size: float | None = None,
     figsize: tuple = (10, 8),
-) -> ...:
+) -> plt.Figure:
     """
        Create a variogram map (2D variogram surface)
 
@@ -480,11 +481,12 @@ def plot_variogram_map(
 
 
 def plot_experimental_variogram(
+    lags: npt.NDArray[np.float64],
     gamma: npt.NDArray[np.float64],
     n_pairs: npt.NDArray[np.int64] | None = None,
     ax: plt.Axes | None = None,
     **kwargs,
-) -> ...:
+) -> tuple[plt.Figure, plt.Axes]:
     """
        Plot experimental variogram points
 
@@ -535,11 +537,12 @@ def plot_experimental_variogram(
 
 
 def plot_variogram_model(
-    max_distance: float = None,
+    model,
+    max_distance: float | None = None,
     ax: plt.Axes | None = None,
     n_points: int = 200,
     **kwargs,
-) -> ...:
+) -> tuple[plt.Figure, plt.Axes]:
     """
        Plot theoretical variogram model
 
@@ -562,9 +565,12 @@ def plot_variogram_model(
        ax : matplotlib.Axes
     """
     if ax is None:
-        ax = plt.gca()
+        fig, ax = plt.subplots(figsize=(8, 6))
     else:
-        ax = ax  # Use provided axes
+        fig = ax.figure
+
+    if max_distance is None:
+        max_distance = 100.0
 
     # Generate model curve
     h = np.linspace(0, max_distance, n_points)
@@ -575,7 +581,7 @@ def plot_variogram_model(
     )
 
     # Add model parameters
-    params = model.parameters
+    params = model._parameters  # type: ignore[attr-defined]
     param_text = "\n".join([f"{k}: {v:.3f}" for k, v in params.items()])
     ax.text(
         0.65,

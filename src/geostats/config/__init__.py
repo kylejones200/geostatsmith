@@ -27,6 +27,9 @@ from .schemas import (
     VisualizationConfig,
 )
 
+# Rebuild model after ConstantsConfig is defined
+AnalysisConfig.model_rebuild()
+
 __all__ = [
     # Schemas
     "AnalysisConfig",
