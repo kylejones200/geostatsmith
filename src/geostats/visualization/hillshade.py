@@ -193,14 +193,14 @@ def plot_hillshaded_dem(
     # Plot hillshade (grayscale base)
     ax.imshow(
         hs,
-        extent=[X.min(), X.max(), Y.min(), Y.max()],
+        extent=[x_grid.min(), x_grid.max(), y_grid.min(), y_grid.max()],
         cmap="gray",
         origin="lower",
         aspect="auto",
     )
 
     # Overlay colored elevation with transparency
-    im = ax.contourf(X, Y, elevation, levels=20, cmap=cmap, alpha=alpha)
+    im = ax.contourf(x_grid, y_grid, elevation, levels=20, cmap=cmap, alpha=alpha)
 
     # Add colorbar
     cbar = plt.colorbar(im, ax=ax, label="Elevation", fraction=0.046, pad=0.04)
@@ -215,8 +215,12 @@ def plot_hillshaded_dem(
 
 
 def create_multi_azimuth_hillshade(
+    elevation: npt.NDArray[np.float64],
     azimuths: list | None = None,
     altitude: float = 45.0,
+    z_factor: float = 1.0,
+    dx: float = 1.0,
+    dy: float = 1.0,
 ) -> npt.NDArray[np.float64]:
     """
     Create combined hillshade from multiple sun azimuths.
@@ -281,6 +285,7 @@ def create_multi_azimuth_hillshade(
 
 
 def slope_map(
+    elevation: npt.NDArray[np.float64],
     dx: float = 1.0,
     dy: float = 1.0,
     units: str = "degrees",
@@ -345,6 +350,7 @@ def slope_map(
 
 
 def aspect_map(
+    elevation: npt.NDArray[np.float64],
     dx: float = 1.0,
     dy: float = 1.0,
 ) -> npt.NDArray[np.float64]:

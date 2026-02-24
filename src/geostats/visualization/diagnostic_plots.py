@@ -146,6 +146,7 @@ def plot_histogram(
 
 
 def plot_qq_plot(
+    data: npt.NDArray[np.float64],
     ax: plt.Axes | None = None,
 ) -> ...:
     """
@@ -245,6 +246,7 @@ def plot_residuals(
 
 
 def qq_plot(
+    residuals: npt.NDArray[np.float64],
     ax: plt.Axes | None = None,
     **kwargs,
 ) -> ...:
@@ -279,38 +281,6 @@ def qq_plot(
     ax.grid(False)
 
     return fig, ax
-
-
-def plot_histogram(
-    bins: int = 30,
-    ax: plt.Axes | None = None,
-    **kwargs,
-) -> ...:
-    """
-        Create histogram of data
-
-     Parameters
-     ----------
-     data : np.ndarray
-     Data values
-     bins : int
-     Number of bins
-     ax : matplotlib.Axes, optional
-     Axes to plot on
-    **kwargs
-        Additional hist arguments
-
-    Returns
-    -------
-    fig : matplotlib.Figure
-    ax : matplotlib.Axes
-    """
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
-    else:
-        fig = ax.figure
-
-    ax.hist(data, bins=bins, alpha=0.7, color="blue", edgecolor="black", **kwargs)
 
     # Add statistics
     mean_val = np.mean(data)
@@ -402,51 +372,6 @@ def plot_obs_vs_pred(
     ax.set_aspect("equal")
     ax.grid(False)
     ax.legend(fontsize=10)
-
-    return fig, ax
-
-
-def plot_residuals(
-    residuals: npt.NDArray[np.float64],
-    ax: plt.Axes | None = None,
-    **kwargs,
-) -> ...:
-    """
-        Create residual plot
-
-     Parameters
-     ----------
-     predicted : np.ndarray
-     Predicted values
-     residuals : np.ndarray
-     Residual values
-     ax : matplotlib.Axes, optional
-     Axes to plot on
-    **kwargs
-        Additional scatter arguments
-
-    Returns
-    -------
-    fig : matplotlib.Figure
-    ax : matplotlib.Axes
-    """
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(8, 6))
-    else:
-        fig = ax.figure
-
-    # predicted and residuals are parameters, so they're defined
-    ax.scatter(
-        predicted, residuals, alpha=0.6, s=60, edgecolors="black", linewidth=1, **kwargs
-    )
-
-    # Zero line
-    ax.axhline(0, color="red", linestyle="--", linewidth=2)
-
-    ax.set_xlabel("Predicted Value", fontsize=12)
-    ax.set_ylabel("Residual", fontsize=12)
-    ax.set_title("Residual Plot", fontsize=14, fontweight="bold")
-    ax.grid(False)
 
     return fig, ax
 

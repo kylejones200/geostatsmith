@@ -22,21 +22,17 @@ import logging
 import numpy as np
 import numpy.typing as npt
 
-logger = logging.getLogger(__name__)
-
-from ..core.constants import EPSILON
-from ..core.logging_config import get_logger
-
-logger = get_logger(__name__)
-
-# Import constants from core
 from ..core.constants import (
+    EPSILON,
     IQR_MULTIPLIER,
     MODIFIED_Z_THRESHOLD,
     SPATIAL_NEIGHBORS_MIN,
     SPATIAL_THRESHOLD_FACTOR,
     Z_SCORE_THRESHOLD,
 )
+from ..core.logging_config import get_logger
+
+logger = get_logger(__name__)
 
 
 def detect_outliers_zscore(
