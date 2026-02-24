@@ -15,7 +15,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 
-
 def tune_kriging(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],

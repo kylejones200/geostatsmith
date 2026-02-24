@@ -13,7 +13,6 @@ import numpy as np
 import numpy.typing as npt
 
 
-
 def generate_report(
     y: npt.NDArray[np.float64],
     z: npt.NDArray[np.float64],

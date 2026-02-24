@@ -13,7 +13,6 @@ import numpy.typing as npt
 from ..models.base_model import VariogramModelBase
 
 
-
 def auto_variogram(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],

@@ -14,7 +14,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 
-
 class ChunkedKriging:
     """
        Kriging with chunked processing for large prediction grids.

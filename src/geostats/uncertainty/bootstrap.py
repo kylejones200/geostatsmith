@@ -16,7 +16,6 @@ from ..algorithms.variogram import experimental_variogram
 from ..models.base_model import VariogramModelBase
 
 
-
 def bootstrap_uncertainty(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],

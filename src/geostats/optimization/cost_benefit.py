@@ -15,7 +15,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 
-
 def _rmse(y_true: npt.NDArray[np.float64], y_pred: npt.NDArray[np.float64]) -> float:
     return np.sqrt(np.mean((y_true - y_pred) ** 2))
 

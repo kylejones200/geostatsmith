@@ -20,7 +20,6 @@ import logging
 import numpy as np
 
 
-
 def load_walker_lake() -> dict:
     """
         Load the Walker Lake dataset

@@ -39,7 +39,6 @@ from ..math.matrices import regularize_matrix
 from ..math.numerical import cross_validation_score
 
 
-
 class DisjunctiveKriging(BaseKriging):
     """
     Disjunctive Kriging for non-Gaussian data

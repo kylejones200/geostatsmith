@@ -52,10 +52,10 @@ from ..core.logging_config import get_logger
 from ..math.distance import euclidean_distance_matrix
 from ..math.matrices import regularize_matrix, solve_kriging_system
 
-logger = get_logger(__name__)
-
 # sklearn is a required dependency
 from sklearn.base import BaseEstimator, RegressorMixin
+
+logger = get_logger(__name__)
 
 
 class GaussianProcessGeostat(BaseEstimator, RegressorMixin, BaseKriging):

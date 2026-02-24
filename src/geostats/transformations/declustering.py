@@ -23,7 +23,6 @@ import numpy.typing as npt
 from scipy.spatial import KDTree
 
 
-
 def cell_declustering(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],

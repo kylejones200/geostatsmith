@@ -14,7 +14,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from .auto_variogram import auto_variogram
 
 
-
 def auto_interpolate(
     x: npt.NDArray[np.float64],
     y: npt.NDArray[np.float64],

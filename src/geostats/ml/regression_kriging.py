@@ -59,10 +59,10 @@ from ..core.base import BaseKriging
 from ..core.logging_config import get_logger
 from ..core.validators import validate_coordinates, validate_values
 
-logger = get_logger(__name__)
-
 # sklearn is a required dependency
 from sklearn.ensemble import RandomForestRegressor
+
+logger = get_logger(__name__)
 
 try:
     import xgboost as xgb

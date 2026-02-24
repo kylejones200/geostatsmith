@@ -15,7 +15,6 @@ from ..core.exceptions import GeoStatsError
 from .schemas import AnalysisConfig
 
 
-
 class ConfigError(GeoStatsError):
     pass
 

@@ -15,7 +15,6 @@ from ..algorithms.ordinary_kriging import OrdinaryKriging
 from ..models.base_model import VariogramModelBase
 
 
-
 def optimal_sampling_design(
     x_existing: npt.NDArray[np.float64],
     y_existing: npt.NDArray[np.float64],
