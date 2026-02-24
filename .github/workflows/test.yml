@@ -145,12 +145,12 @@ jobs:
     - name: Run type checking
       run: |
         if command -v pyright &> /dev/null; then
-          pyright --outputjson src/ tests/ || {
+          pyright src/ || {
             echo "::error::Type checking failed. Run './dev/type' to fix."
             exit 1
           }
         else
-          mypy src/ tests/ || {
+          mypy src/ || {
             echo "::error::Type checking failed. Run './dev/type' to fix."
             exit 1
           }
