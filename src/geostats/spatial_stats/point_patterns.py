@@ -266,7 +266,7 @@ def ripley_k_function(
     # Calculate K function
     K = np.zeros(len(distances))
 
-    for i, d in enumerate(distances):
+    for _i, d in enumerate(distances):
         count = np.sum(dist_matrix < d) - n  # Subtract diagonal
 
         # Edge correction

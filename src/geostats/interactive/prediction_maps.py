@@ -188,7 +188,9 @@ def interactive_uncertainty_map(
                     y=y_s,
                     mode="markers",
                     marker={
-                        "size": 6, "color": "white", "line": {"width": 1, "color": "black"}
+                        "size": 6,
+                        "color": "white",
+                        "line": {"width": 1, "color": "black"},
                     },
                     showlegend=False,
                     hoverinfo="skip",

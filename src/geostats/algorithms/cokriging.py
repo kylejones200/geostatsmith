@@ -178,11 +178,11 @@ class Cokriging(BaseKriging):
         """
         if any(
             v is None
-                for v in [
-                    self.variogram_primary,
-                    self.variogram_secondary,
-                    self.cross_variogram,
-                ]
+            for v in [
+                self.variogram_primary,
+                self.variogram_secondary,
+                self.cross_variogram,
+            ]
         ):
             raise KrigingError("All variogram models must be provided for cokriging")
 
@@ -400,7 +400,6 @@ class CollocatedCokriging(BaseKriging):
 
         # Adjust with secondary variable using correlation
         # Simplified collocated cokriging formula
-        np.mean(self.z)
         z_secondary = np.asarray(z_secondary)
         mean_secondary = np.mean(z_secondary)
 

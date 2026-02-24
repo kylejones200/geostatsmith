@@ -224,7 +224,7 @@ def spatial_cross_validation(
     # Collect results
     all_predictions = []
     all_true = []
-    for block_id, pred, true in results:
+    for _block_id, pred, true in results:
         all_predictions.extend(pred)
         all_true.extend(true)
 

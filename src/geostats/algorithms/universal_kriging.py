@@ -235,7 +235,8 @@ class UniversalKriging(BaseKriging):
                         f"Negative kriging variance {variances[i]:.6e} at prediction point {i}. "
                         "This may indicate numerical instability or trend overfitting. "
                         "Variance will be clamped to 0.",
-                        RuntimeWarning, stacklevel=2,
+                        RuntimeWarning,
+                        stacklevel=2,
                     )
                     variances[i] = ZERO_VALUE
 

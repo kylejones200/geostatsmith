@@ -116,7 +116,12 @@ def plot_variogram(
         transform=ax.transAxes,
         fontsize=FONTSIZE_DEFAULT,
         verticalalignment="bottom",
-        bbox={"boxstyle": "round", "facecolor": "#f0f0f0", "alpha": 0.8, "edgecolor": "none"},
+        bbox={
+            "boxstyle": "round",
+            "facecolor": "#f0f0f0",
+            "alpha": 0.8,
+            "edgecolor": "none",
+        },
     )
 
     # Descriptive title replaces axis labels
@@ -422,7 +427,9 @@ def plot_variogram_map(
     dy_flat = dy[mask]
     semivar_flat = semivar[mask]
 
-    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat, strict=False):
+    for dx_val, dy_val, semivar_val in zip(
+        dx_flat, dy_flat, semivar_flat, strict=False
+    ):
         yi = np.digitize(dy_val, y_bins) - 1
         xi = np.digitize(dx_val, x_bins) - 1
 
@@ -728,7 +735,9 @@ def plot_variogram_map(
     vario_map = np.zeros((2 * n_lags, 2 * n_lags))
     counts = np.zeros((2 * n_lags, 2 * n_lags))
 
-    for dx_val, dy_val, semivar_val in zip(dx_flat, dy_flat, semivar_flat, strict=False):
+    for dx_val, dy_val, semivar_val in zip(
+        dx_flat, dy_flat, semivar_flat, strict=False
+    ):
         yi = np.digitize(dy_val, y_bins) - 1
         xi = np.digitize(dx_val, x_bins) - 1
 

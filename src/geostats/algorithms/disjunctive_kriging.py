@@ -360,7 +360,8 @@ class DisjunctiveKriging(BaseKriging):
 
                         warnings.warn(
                             f"Negative kriging variance {y_var_gaussian[i]:.6e} at prediction point {i}.",
-                            RuntimeWarning, stacklevel=2,
+                            RuntimeWarning,
+                            stacklevel=2,
                         )
                         y_var_gaussian[i] = 0.0
 
