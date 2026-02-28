@@ -54,3 +54,42 @@ When reporting status:
 State whether ./dev/check passes.
 If it fails, show the first failing error block.
 Do not paste full logs unless requested.
+
+
+
+# Cursor Rules
+
+Follow CONTRACT.md. No exceptions.
+
+## Workflow
+
+You must pass local checks before any push.
+You must run scripts/check.sh before you claim success.
+
+You must keep diffs small.
+You must keep modules focused.
+You must keep separation of concerns.
+
+## Dependencies and schemas
+
+You must ask before you add any dependency.
+You must show a migration plan before any schema change.
+
+## Python rules
+
+You must write idiomatic Python.
+You must prefer dict lookup and vectorized logic over long if/elif chains.
+You must avoid a trash util.py file.
+You must put helpers in domain modules.
+
+## Web rules
+
+You must use Tailwind only.
+You must not add CSS modules.
+You must not add styled-components.
+
+## Completion standard
+
+You must include tests for new behavior.
+You must make CI pass.
+You must not leave TODO placeholders.

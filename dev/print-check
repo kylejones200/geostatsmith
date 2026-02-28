@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Check for print statements in library code (examples are OK)
+
+set -euo pipefail
+
+echo "🔍 Checking for print statements in library code..."
+
+# Find print statements in src/ (library code)
+PRINT_FOUND=0
+
+while IFS= read -r file; do
+    # Skip __main__ blocks and docstring examples
+    if grep -E "^\s*print\(" "$file" > /dev/null 2>&1; then
+        # Check if it's in a docstring or __main__ block
+        if ! grep -q "__main__\|'''\|"'"'"'"'"'"'" "$file" 2>/dev/null; then
+            echo "❌ print() found in library code: $file"
+            grep -n "^\s*print(" "$file" | head -3
+            PRINT_FOUND=1
+        fi
+    fi
+done < <(find src/ -name "*.py" -type f)
+
+if [ $PRINT_FOUND -eq 1 ]; then
+    echo ""
+    echo "❌ print() statements found in library code."
+    echo "   Use logging.getLogger(__name__) instead."
+    echo "   Examples directory is exempt from this rule."
+    exit 1
+fi
+
+echo "✅ No print statements in library code"

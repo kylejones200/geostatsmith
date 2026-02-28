@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Check for untracked placeholders
+
+set -euo pipefail
+
+echo "🔍 Checking for untracked placeholders..."
+
+# Find all NotImplementedError with PLACEHOLDER pattern
+PLACEHOLDER_PATTERN='NotImplementedError.*PLACEHOLDER'
+UNTRACKED=0
+
+while IFS= read -r file; do
+    if grep -E "$PLACEHOLDER_PATTERN" "$file" > /dev/null 2>&1; then
+        # Extract placeholder IDs
+        while IFS= read -r line; do
+            PLACEHOLDER_ID=$(echo "$line" | grep -oE 'P-[0-9]+' || echo "")
+            if [ -n "$PLACEHOLDER_ID" ]; then
+                # Check if ID exists in PLACEHOLDERS.md
+                if ! grep -q "$PLACEHOLDER_ID" PLACEHOLDERS.md 2>/dev/null; then
+                    echo "❌ Untracked placeholder found: $PLACEHOLDER_ID in $file"
+                    echo "   Line: $line"
+                    UNTRACKED=1
+                fi
+            fi
+        done < <(grep -n -E "$PLACEHOLDER_PATTERN" "$file")
+    fi
+done < <(find src/ tests/ -name "*.py" -type f)
+
+# Check for TODO/FIXME/XXX without PLACEHOLDER
+while IFS= read -r file; do
+    if grep -E "(TODO|FIXME|XXX)" "$file" > /dev/null 2>&1; then
+        if ! grep -q "PLACEHOLDER" "$file"; then
+            echo "⚠️  TODO/FIXME/XXX found without PLACEHOLDER in: $file"
+            grep -n -E "(TODO|FIXME|XXX)" "$file" | head -3
+        fi
+    fi
+done < <(find src/ -name "*.py" -type f)
+
+if [ $UNTRACKED -eq 1 ]; then
+    echo ""
+    echo "❌ Untracked placeholders found. All placeholders must be registered in PLACEHOLDERS.md"
+    exit 1
+fi
+
+echo "✅ All placeholders are tracked"

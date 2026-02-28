@@ -126,7 +126,7 @@ def plot_variogram(
 
     # Descriptive title replaces axis labels
     ax.set_title(
-        "Semivariance γ(h) vs Distance (h)", fontsize=FONTSIZE_TITLE, pad=TITLE_PAD
+        "Semivariance gamma(h) vs Distance (h)", fontsize=FONTSIZE_TITLE, pad=TITLE_PAD
     )
     ax.legend(fontsize=9, frameon=False)
 
@@ -185,7 +185,7 @@ def plot_variogram_cloud(
     )
 
     ax.set_xlabel("Distance (h)", fontsize=12)
-    ax.set_ylabel("Semivariance γ(h)", fontsize=12)
+    ax.set_ylabel("Semivariance gamma(h)", fontsize=12)
     ax.set_title("Variogram Cloud", fontsize=14, fontweight="bold")
     ax.grid(False)
 
@@ -286,7 +286,7 @@ def plot_h_scatterplot(
     ax.set_xlabel("z(x)", fontsize=12)
     ax.set_ylabel(f"z(x+h), h~={h_distance:.1f}", fontsize=12)
     title = (
-        f"h-Scatterplot (h={h_distance:.1f}, n={len(i_indices)} pairs, ρ={corr:.3f})"
+        f"h-Scatterplot (h={h_distance:.1f}, n={len(i_indices)} pairs, rho={corr:.3f})"
     )
     if direction is not None:
         title += f" (direction={direction:.0f} degrees)"
@@ -353,7 +353,7 @@ def plot_directional_variograms(
         )
 
     ax.set_xlabel("Distance (h)", fontsize=11)
-    ax.set_ylabel("γ(h)", fontsize=11)
+    ax.set_ylabel("gamma(h)", fontsize=11)
     ax.set_title(
         f"Direction: {direction} degrees (+/-{tolerance} degrees)",
         fontsize=12,
@@ -456,8 +456,8 @@ def plot_variogram_map(
     )
 
     plt.colorbar(im, ax=ax, label="Semivariance")
-    ax.set_xlabel("Δx", fontsize=12)
-    ax.set_ylabel("Δy", fontsize=12)
+    ax.set_xlabel("Delta x", fontsize=12)
+    ax.set_ylabel("Delta y", fontsize=12)
     ax.set_title("Variogram Map", fontsize=14, fontweight="bold")
     from ..core.constants import GRID_LINE_ALPHA, GRID_LINE_WIDTH
 
@@ -517,6 +517,7 @@ def plot_experimental_variogram(
     # Plot experimental points
     if n_pairs is not None:
         from ..core.constants import SCATTER_SIZE_BASE, SCATTER_SIZE_SCALE
+
         sizes = n_pairs / np.max(n_pairs) * SCATTER_SIZE_SCALE + SCATTER_SIZE_BASE
         ax.scatter(
             lags,
@@ -542,7 +543,7 @@ def plot_experimental_variogram(
         )
 
     ax.set_xlabel("Distance (h)", fontsize=12)
-    ax.set_ylabel("Semivariance γ(h)", fontsize=12)
+    ax.set_ylabel("Semivariance gamma(h)", fontsize=12)
     ax.set_title("Experimental Variogram", fontsize=14, fontweight="bold")
     ax.grid(False)
     ax.legend(fontsize=10)
@@ -608,7 +609,7 @@ def plot_variogram_model(
     )
 
     ax.set_xlabel("Distance (h)", fontsize=12)
-    ax.set_ylabel("Semivariance γ(h)", fontsize=12)
+    ax.set_ylabel("Semivariance gamma(h)", fontsize=12)
     ax.set_title("Theoretical Variogram Model", fontsize=14, fontweight="bold")
     ax.grid(False)
     ax.legend(fontsize=10)
@@ -708,7 +709,7 @@ def plot_variogram_with_model(
     )
 
     ax.set_xlabel("Distance (h)", fontsize=12)
-    ax.set_ylabel("Semivariance γ(h)", fontsize=12)
+    ax.set_ylabel("Semivariance gamma(h)", fontsize=12)
     ax.set_title("Variogram with Fitted Model", fontsize=14, fontweight="bold")
     ax.grid(False)
     ax.legend(fontsize=10)
@@ -799,8 +800,8 @@ def plot_variogram_map(
     )
 
     plt.colorbar(im, ax=ax, label="Semivariance")
-    ax.set_xlabel("Δx", fontsize=12)
-    ax.set_ylabel("Δy", fontsize=12)
+    ax.set_xlabel("Delta x", fontsize=12)
+    ax.set_ylabel("Delta y", fontsize=12)
     ax.set_title("Variogram Map", fontsize=14, fontweight="bold")
     from ..core.constants import GRID_LINE_ALPHA, GRID_LINE_WIDTH
 

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Check for forbidden exception patterns
+
+set -euo pipefail
+
+echo "🔍 Checking for forbidden exception patterns..."
+
+FORBIDDEN_PATTERNS=(
+    "except:\s*pass"
+    "except\s+Exception:\s*pass"
+    "except:\s*continue"
+    "except\s+Exception:\s*continue"
+)
+
+VIOLATIONS=0
+
+for pattern in "${FORBIDDEN_PATTERNS[@]}"; do
+    # Search in Python files
+    while IFS= read -r file; do
+        if grep -E "$pattern" "$file" > /dev/null 2>&1; then
+            echo "❌ Forbidden pattern found in: $file"
+            grep -n -E "$pattern" "$file"
+            VIOLATIONS=1
+        fi
+    done < <(find src/ -name "*.py" -type f)
+done
+
+if [ $VIOLATIONS -eq 1 ]; then
+    echo ""
+    echo "❌ Forbidden exception patterns found."
+    echo "   Every exception must: raise, return typed error, log and re-raise, or handle with explicit fallback."
+    echo "   Broad exceptions require BROAD_EXCEPT_OK comment with justification."
+    exit 1
+fi
+
+echo "✅ No forbidden exception patterns found"

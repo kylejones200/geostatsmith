@@ -244,7 +244,7 @@ def tune_variogram_hyperparameters(
     --------
     >>> from geostats.models.variogram_models import SphericalModel
     >>> results = tune_variogram_hyperparameters(x, y, z, SphericalModel, n_trials=10)
-    >>> print(f"Best nugget: {results['best_params']['nugget']}")
+    >>> results['best_params']['nugget']  # Best nugget value
     """
     from ..algorithms.variogram import experimental_variogram
 

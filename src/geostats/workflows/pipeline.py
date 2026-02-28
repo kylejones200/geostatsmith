@@ -695,7 +695,7 @@ class AnalysisPipeline:
         try:
             if self.kriging_model is None:
                 raise PipelineError("Kriging model not fitted")
-            
+
             cv_predictions, cv_metrics = self.kriging_model.cross_validate()
 
             self.cv_results = {
@@ -721,7 +721,10 @@ class AnalysisPipeline:
             "Note: Visualization integration pending - plots not yet generated"
         )
 
-        # TODO: Integrate with visualization modules
+        # PLACEHOLDER:P-001: Visualization integration
+        # Reason: Visualization module integration pending
+        # Exit condition: Visualization functions integrated with pipeline
+        # See PLACEHOLDERS.md for details
         # This would require:
         # - Saving predictions to appropriate format
         # - Calling plot functions with correct signatures

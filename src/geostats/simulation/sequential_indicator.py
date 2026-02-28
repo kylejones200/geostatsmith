@@ -241,8 +241,15 @@ class SequentialIndicatorSimulation:
                             np.array([x_loc]), np.array([y_loc]), return_variance=True
                         )
                         probabilities[k] = prob[0]
-                    except Exception:
-                        # Fallback to marginal probability
+                    except Exception as e:
+                        # BROAD_EXCEPT_OK: Kriging prediction can fail for various reasons
+                        # (singular matrix, numerical issues, etc.). Fallback to marginal probability
+                        # is a standard geostatistical practice for indicator kriging.
+                        logger.warning(
+                            "Indicator kriging prediction failed for threshold %d: %s. Using marginal probability.",
+                            k,
+                            str(e),
+                        )
                         probabilities[k] = np.mean(self.indicators[:, k])
 
                 # Clip probabilities (vectorized)

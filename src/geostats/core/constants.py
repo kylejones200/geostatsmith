@@ -210,8 +210,13 @@ def _load_constants() -> dict[str, Any]:
     if config_path:
         try:
             return _get_constants(config_path)
-        except (FileNotFoundError, Exception):
-            # Fall back to defaults if config fails to load
+        except (FileNotFoundError, Exception) as e:
+            # BROAD_EXCEPT_OK: Config loading can fail for various reasons (file not found,
+            # invalid YAML, permission errors, etc.). Falling back to defaults ensures
+            # the library remains functional even if config is unavailable.
+            logger.warning(
+                "Failed to load constants config: %s. Using defaults.", str(e)
+            )
             return _DEFAULT_CONSTANTS.copy()
     return _DEFAULT_CONSTANTS.copy()
 

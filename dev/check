@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Layer 2: Pre-push check (<1min)
-# Runs format, lint, type check, and tests
+# Runs format, lint, type check, tests, and contract compliance checks
 # This is the single command that Cursor and developers run before push
 
 set -euo pipefail
@@ -14,6 +14,13 @@ echo ""
 "$SCRIPT_DIR/fmt" || exit 1
 "$SCRIPT_DIR/lint" || exit 1
 "$SCRIPT_DIR/type" || exit 1
+
+# Contract compliance checks
+"$SCRIPT_DIR/ascii" || exit 1
+"$SCRIPT_DIR/exception-check" || exit 1
+"$SCRIPT_DIR/placeholder-check" || exit 1
+"$SCRIPT_DIR/print-check" || exit 1
+
 "$SCRIPT_DIR/test" || exit 1
 
 echo ""

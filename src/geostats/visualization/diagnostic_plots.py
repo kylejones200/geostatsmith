@@ -122,7 +122,7 @@ def plot_histogram(
             stats.norm.pdf(x, mu, std),
             "r-",
             linewidth=2,
-            label=f"Normal(μ={mu:.2f}, σ={std:.2f})",
+            label=f"Normal(mu={mu:.2f}, sigma={std:.2f})",
         )
         ax.legend()
 

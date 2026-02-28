@@ -1,0 +1,8 @@
+
+#!/usr/bin/env bash
+set -euo pipefail
+./scripts/check.sh
+Enable it once per clone.
+
+git config core.hooksPath .githooks
+chmod +x .githooks/pre-push

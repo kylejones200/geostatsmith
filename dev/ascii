@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Check for non-ASCII characters in source code
+
+set -euo pipefail
+
+echo "🔍 Checking for non-ASCII characters..."
+
+# Check Python source files
+NON_ASCII_FOUND=0
+
+# Find all Python files in src/ and tests/
+while IFS= read -r -d '' file; do
+    # Check for non-ASCII characters (excluding comments/docstrings in some cases)
+    if LC_ALL=C grep -P '[^\x00-\x7F]' "$file" > /dev/null 2>&1; then
+        echo "❌ Non-ASCII found in: $file"
+        LC_ALL=C grep -n -P '[^\x00-\x7F]' "$file" | head -5
+        NON_ASCII_FOUND=1
+    fi
+done < <(find src/ tests/ -name "*.py" -type f -print0)
+
+# Check documentation files
+while IFS= read -r -d '' file; do
+    if LC_ALL=C grep -P '[^\x00-\x7F]' "$file" > /dev/null 2>&1; then
+        echo "❌ Non-ASCII found in: $file"
+        LC_ALL=C grep -n -P '[^\x00-\x7F]' "$file" | head -5
+        NON_ASCII_FOUND=1
+    fi
+done < <(find docs/ -name "*.md" -type f -print0 2>/dev/null || true)
+
+if [ $NON_ASCII_FOUND -eq 1 ]; then
+    echo ""
+    echo "❌ Non-ASCII characters found. All source code must use ASCII only."
+    echo "   Replace Greek symbols with ASCII equivalents (gamma, mu, sigma, etc.)"
+    exit 1
+fi
+
+echo "✅ All files use ASCII only"

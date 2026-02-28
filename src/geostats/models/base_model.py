@@ -2,6 +2,7 @@
 Base classes for variogram and covariance models
 """
 
+import logging
 from abc import abstractmethod
 from typing import Any
 
@@ -9,6 +10,8 @@ import numpy as np
 import numpy.typing as npt
 
 from ..core.base import BaseModel
+
+logger = logging.getLogger(__name__)
 
 
 class VariogramModelBase(BaseModel):
@@ -39,7 +42,7 @@ class VariogramModelBase(BaseModel):
         """
         super().__init__()
         from ..core.validators import validate_positive
-        
+
         # Validate parameters
         if nugget < 0:
             raise ValueError(f"nugget must be non-negative, got {nugget}")
@@ -47,7 +50,7 @@ class VariogramModelBase(BaseModel):
             raise ValueError(f"sill must be non-negative, got {sill}")
         if range_param is not None and range_param <= 0:
             raise ValueError(f"range_param must be positive, got {range_param}")
-        
+
         self._parameters = {
             "nugget": max(0.0, nugget),
             "sill": sill if sill is not None else 1.0,
@@ -186,8 +189,14 @@ class VariogramModelBase(BaseModel):
             self._update_parameters_from_fit(params, fit_nugget)
             self._is_fitted = True
 
-        except Exception:
-            # Use initial estimates if fitting fails
+        except Exception as e:
+            # BROAD_EXCEPT_OK: Variogram fitting can fail for various numerical reasons
+            # (singular matrices, optimization failures, etc.). Using initial estimates
+            # provides a fallback that allows the model to still be usable.
+            logger.warning(
+                "Variogram fitting failed: %s. Using initial parameter estimates.",
+                str(e),
+            )
             self._parameters["nugget"] = nugget_init
             self._parameters["sill"] = sill_init
             self._parameters["range"] = range_init
