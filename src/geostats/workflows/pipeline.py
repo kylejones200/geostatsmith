@@ -477,7 +477,7 @@ class AnalysisPipeline:
             self.variogram_model = best_model
             model_name = best_model.__class__.__name__.replace("Model", "").lower()
             self.logger.info(f"Selected model: {model_name}")
-            params = best_model.get_parameters()
+            params = best_model._parameters  # type: ignore
             self.logger.info(f"  Nugget: {params.get('nugget', 0):.4f}")
             self.logger.info(f"  Sill: {params.get('sill', 0):.4f}")
             self.logger.info(f"  Range: {params.get('range', 0):.4f}")
@@ -543,25 +543,32 @@ class AnalysisPipeline:
         # Create prediction grid
         grid_cfg = self.config.kriging.grid
 
+        if self.x is None or self.y is None:
+            raise PipelineError("Data not loaded for grid creation")
+
+        # Convert to numpy arrays
+        x_arr = np.asarray(self.x, dtype=np.float64)
+        y_arr = np.asarray(self.y, dtype=np.float64)
+
         x_min = (
             grid_cfg.x_min
             if grid_cfg.x_min is not None
-            else self.x.min() - grid_cfg.buffer
+            else float(x_arr.min() - grid_cfg.buffer)
         )
         x_max = (
             grid_cfg.x_max
             if grid_cfg.x_max is not None
-            else self.x.max() + grid_cfg.buffer
+            else float(x_arr.max() + grid_cfg.buffer)
         )
         y_min = (
             grid_cfg.y_min
             if grid_cfg.y_min is not None
-            else self.y.min() - grid_cfg.buffer
+            else float(y_arr.min() - grid_cfg.buffer)
         )
         y_max = (
             grid_cfg.y_max
             if grid_cfg.y_max is not None
-            else self.y.max() + grid_cfg.buffer
+            else float(y_arr.max() + grid_cfg.buffer)
         )
 
         if grid_cfg.nx and grid_cfg.ny:
@@ -674,13 +681,15 @@ class AnalysisPipeline:
         self.kriging_model = kriging_factory[method]()
 
         # Predict
-        self.predictions, self.variance = self.kriging_model.predict(
+        predictions, variance = self.kriging_model.predict(
             grid_xx.ravel(), grid_yy.ravel(), return_variance=True
         )
 
         # Reshape to grid
-        self.predictions = self.predictions.reshape(grid_yy.shape)
-        self.variance = self.variance.reshape(grid_yy.shape)
+        if predictions is not None:
+            self.predictions = predictions.reshape(grid_yy.shape)
+        if variance is not None:
+            self.variance = variance.reshape(grid_yy.shape)
 
         # Back-transform if needed
         if self.transform is not None:
