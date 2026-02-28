@@ -325,59 +325,66 @@ class AnalysisPipeline:
     def model_variogram(self):
         self.logger.info("Modeling variogram...")
 
+        if self.x is None or self.y is None or self.z is None:
+            raise PipelineError("Data not loaded for variogram modeling")
+
+        # Convert to numpy arrays
+        x_arr = np.asarray(self.x, dtype=np.float64)
+        y_arr = np.asarray(self.y, dtype=np.float64)
+        z_arr = np.asarray(self.z, dtype=np.float64)
+
         # Compute experimental variogram
         max_lag = self.config.variogram.max_lag
         if max_lag is None:
-            dx = self.x.max() - self.x.min()
-            dy = self.y.max() - self.y.min()
+            dx = float(x_arr.max() - x_arr.min())
+            dy = float(y_arr.max() - y_arr.min())
             max_lag = np.sqrt(dx**2 + dy**2) / 3
             self.logger.info(f"Auto max_lag: {max_lag:.2f}")
+
+        # Import functions at module level
+        from ..algorithms.variogram import experimental_variogram, madogram
 
         # Use specified estimator
         estimator = self.config.variogram.estimator
         if estimator == "matheron":
-            from ..algorithms.variogram import experimental_variogram
-
             lags, gamma, n_pairs = experimental_variogram(
-                self.x,
-                self.y,
-                self.z,
+                x_arr,
+                y_arr,
+                z_arr,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag,
             )
         elif estimator == "cressie":
             lags, gamma, n_pairs = experimental_variogram(
-                self.x,
-                self.y,
-                self.z,
+                x_arr,
+                y_arr,
+                z_arr,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag,
                 estimator="cressie",
             )
         elif estimator == "dowd":
             lags, gamma, n_pairs = experimental_variogram(
-                self.x,
-                self.y,
-                self.z,
+                x_arr,
+                y_arr,
+                z_arr,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag,
                 estimator="dowd",
             )
         elif estimator == "madogram":
-            from ..algorithms.variogram import madogram
-
             lags, gamma, n_pairs = madogram(
-                self.x,
-                self.y,
-                self.z,
+                x_arr,
+                y_arr,
+                z_arr,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag,
             )
         else:
             lags, gamma, n_pairs = experimental_variogram(
-                self.x,
-                self.y,
-                self.z,
+                x_arr,
+                y_arr,
+                z_arr,
                 n_lags=self.config.variogram.n_lags,
                 maxlag=max_lag,
             )
