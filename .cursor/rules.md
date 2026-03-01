@@ -59,7 +59,7 @@ Do not paste full logs unless requested.
 
 # Cursor Rules
 
-Follow CONTRACT.md. No exceptions.
+Follow .cursor/rules/ci-gates.md. No exceptions.
 
 ## Workflow
 

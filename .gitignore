@@ -185,3 +185,7 @@ archive/
 experiments/
 
 .cursor/
+
+.cursor/rules
+
+*.cursor

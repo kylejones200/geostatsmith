@@ -20,6 +20,8 @@ import numpy as np
 import numpy.typing as npt
 from scipy.spatial import KDTree
 
+from ..core.validators import validate_coordinates
+
 
 def cell_declustering(
     x: npt.NDArray[np.float64],

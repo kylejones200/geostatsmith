@@ -33,4 +33,4 @@ if [ $VIOLATIONS -eq 1 ]; then
     exit 1
 fi
 
-echo "✅ No forbidden exception patterns found"
+echo " No forbidden exception patterns found"

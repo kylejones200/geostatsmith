@@ -7,7 +7,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "🚀 Running pre-push checks (Layer 2)..."
+echo "Running pre-push checks (Layer 2)..."
 echo ""
 
 # Run all Layer 2 checks

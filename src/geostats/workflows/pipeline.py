@@ -325,10 +325,14 @@ class AnalysisPipeline:
     def model_variogram(self):
         self.logger.info("Modeling variogram...")
 
-        if self.x is None or self.y is None or self.z is None:
-            raise PipelineError("Data not loaded for variogram modeling")
+        if self.x is None:
+            raise PipelineError("pipeline: expected array for x, got None")
+        if self.y is None:
+            raise PipelineError("pipeline: expected array for y, got None")
+        if self.z is None:
+            raise PipelineError("pipeline: expected array for z, got None")
 
-        # Convert to numpy arrays
+        # Convert to numpy arrays - now guaranteed non-None
         x_arr = np.asarray(self.x, dtype=np.float64)
         y_arr = np.asarray(self.y, dtype=np.float64)
         z_arr = np.asarray(self.z, dtype=np.float64)
@@ -543,10 +547,12 @@ class AnalysisPipeline:
         # Create prediction grid
         grid_cfg = self.config.kriging.grid
 
-        if self.x is None or self.y is None:
-            raise PipelineError("Data not loaded for grid creation")
+        if self.x is None:
+            raise PipelineError("pipeline: expected array for x, got None")
+        if self.y is None:
+            raise PipelineError("pipeline: expected array for y, got None")
 
-        # Convert to numpy arrays
+        # Convert to numpy arrays - now guaranteed non-None
         x_arr = np.asarray(self.x, dtype=np.float64)
         y_arr = np.asarray(self.y, dtype=np.float64)
 
@@ -681,15 +687,22 @@ class AnalysisPipeline:
         self.kriging_model = kriging_factory[method]()
 
         # Predict
-        predictions, variance = self.kriging_model.predict(
+        pred_result = self.kriging_model.predict(
             grid_xx.ravel(), grid_yy.ravel(), return_variance=True
         )
+        
+        # Handle tuple or single return
+        if isinstance(pred_result, tuple):
+            predictions, variance = pred_result
+        else:
+            predictions = pred_result
+            variance = None
 
         # Reshape to grid
         if predictions is not None:
-            self.predictions = predictions.reshape(grid_yy.shape)
+            self.predictions = np.asarray(predictions).reshape(grid_yy.shape)
         if variance is not None:
-            self.variance = variance.reshape(grid_yy.shape)
+            self.variance = np.asarray(variance).reshape(grid_yy.shape)
 
         # Back-transform if needed
         if self.transform is not None:

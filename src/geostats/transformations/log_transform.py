@@ -35,7 +35,7 @@ class LogTransform:
     Handles zero and negative values appropriately.
     """
 
-    def __init__(self, base: str = "natural", epsilon: float | None = None):
+    def __init__(self, base: str = "natural", epsilon: float | None = None, offset: float | None = None):
         """
         Initialize Log Transform.
 
@@ -46,9 +46,12 @@ class LogTransform:
         epsilon : float, optional
             Small value to add to zeros before logging.
             If None, automatically set to 1% of minimum positive value
+        offset : float, optional
+            Alias for epsilon (for backward compatibility)
         """
         self.base = base
-        self.epsilon_user = epsilon
+        # Support both epsilon and offset parameters
+        self.epsilon_user = offset if offset is not None else epsilon
         self.epsilon_fitted: float | None = None
         self.min_original: float | None = None
         self.max_original: float | None = None
@@ -62,6 +65,7 @@ class LogTransform:
             "10": (np.log10, lambda x: np.power(10, x)),
             "2": (np.log2, lambda x: np.power(2, x)),
         }
+        valid_bases = list(log_functions.keys())
 
         if base not in log_functions:
             raise ValueError(f"base must be one of {valid_bases}, got '{base}'")
@@ -190,6 +194,22 @@ class LogTransform:
             back_transformed = np.maximum(back_transformed - self.epsilon_fitted, 0)
 
         return back_transformed.reshape(original_shape)
+
+    def back_transform(self, log_data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
+        """
+        Back-transform log data to original scale (alias for inverse_transform).
+
+        Parameters
+        ----------
+        log_data : np.ndarray
+            Log-transformed data
+
+        Returns
+        -------
+        np.ndarray
+            Values in original data space
+        """
+        return self.inverse_transform(log_data)
 
     def fit_transform(self, data: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
