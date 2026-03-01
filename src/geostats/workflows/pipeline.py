@@ -532,7 +532,7 @@ class AnalysisPipeline:
             )
 
             self.logger.info(f"Using manual model: {model_type}")
-            params = self.variogram_model.get_parameters()
+            params = self.variogram_model._parameters  # type: ignore
             self.logger.info(f"  Nugget: {params.get('nugget', 0):.4f}")
             self.logger.info(f"  Sill: {params.get('sill', 0):.4f}")
             self.logger.info(f"  Range: {params.get('range', 0):.4f}")
