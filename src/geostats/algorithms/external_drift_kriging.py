@@ -184,7 +184,7 @@ class ExternalDriftKriging(BaseKriging):
         if self.variogram_model is None:
             raise ValueError("Variogram model must be fitted before prediction")
 
-        from ..utils.validation import validate_coordinates
+        from ..core.validators import validate_coordinates
 
         x_new, y_new = validate_coordinates(x_new, y_new)
         n_pred = len(x_new)

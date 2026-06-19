@@ -173,7 +173,7 @@ class UniversalKriging(BaseKriging):
         if self.variogram_model is None:
             raise ValueError("Variogram model must be fitted before prediction")
 
-        from ..utils.validation import validate_coordinates
+        from ..core.validators import validate_coordinates
 
         x_pred, y_pred = validate_coordinates(x, y)
         n_pred = len(x_pred)

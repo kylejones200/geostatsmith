@@ -72,6 +72,10 @@ class VariogramModelBase(BaseModel):
         """Range parameter"""
         return self._parameters["range"]
 
+    def get_parameters(self) -> dict:
+        """Return the model's fitted parameters as a dict."""
+        return dict(self._parameters)
+
     @abstractmethod
     def _model_function(self, h: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]:
         """
